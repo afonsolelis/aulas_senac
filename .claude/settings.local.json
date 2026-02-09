@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(grep:*)",
+      "Bash(wc:*)",
+      "Bash(file:*)",
+      "Bash(ls:*)",
+      "Bash(dpkg:*)",
+      "Bash(pdflatex:*)",
+      "Bash(xelatex:*)",
+      "Bash(lualatex:*)",
+      "Bash(bibtex:*)",
+      "Bash(biber:*)",
+      "Bash(latexmk:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(cd:*)"
+    ]
+  }
+}
