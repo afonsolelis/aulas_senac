@@ -1,23 +1,112 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planejamento de Testes e Casos de Teste. - Qualidade de Software</title>
-    <!-- Bootstrap 5 CSS -->
+    <title>Planejamento de Testes e Casos de Teste - Qualidade de Software</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/slides.css">
+    <style>
+        .uml-diagram {
+            background: #1a1a2e;
+            border-radius: 12px;
+            padding: 2rem;
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+        }
+        .uml-actor {
+            text-align: center;
+        }
+        .uml-usecase {
+            border: 2px solid #00d4ff;
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            background: rgba(0, 212, 255, 0.1);
+            display: inline-block;
+            margin: 0.5rem;
+        }
+        .uml-system {
+            border: 2px solid #ffc107;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+        }
+        .persona-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: 100%;
+        }
+        .persona-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+            color: white;
+        }
+        .tech-table {
+            font-size: 0.85rem;
+            width: 100%;
+        }
+        .tech-table th {
+            background: #1a1a2e;
+            color: white;
+            padding: 0.75rem;
+        }
+        .tech-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+        }
+        .code-example {
+            background: #1a1a2e;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+        .code-example .keyword { color: #ff79c6; }
+        .code-example .string { color: #50fa7b; }
+        .code-example .comment { color: #6272a4; }
+        .definition-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #dc3545;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            text-align: left;
+        }
+        .definition-box .term {
+            font-weight: 700;
+            color: #dc3545;
+            font-size: 1rem;
+        }
+        .definition-box .source {
+            font-size: 0.75rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+    </style>
 </head>
+
 <body class="slide-body">
 
     <div class="slide-container">
 
         <!-- Back Button -->
-        <a href="../qualidade-software.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+        <a href="../qualidade-software.html"
+            class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
             <i class="fas fa-arrow-left me-2"></i> Voltar
         </a>
 
@@ -25,9 +114,9 @@
         <div class="slide active" id="slide-1">
             <div class="glass-cover text-center">
                 <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-                     alt="Senac Logo" height="80" class="mb-4">
+                    alt="Senac Logo" height="80" class="mb-4">
                 <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
-                <h1 class="display-3 fw-bold mb-4 text-black">Planejamento de Testes e Casos de Teste.</h1>
+                <h1 class="display-4 fw-bold mb-4 text-black">Planejamento de Testes e Casos de Teste</h1>
                 <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
                 <h3 class="fw-normal text-dark">Professor Afonso</h3>
                 <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
@@ -36,67 +125,1056 @@
 
         <!-- Slide 2: Agenda -->
         <div class="slide" id="slide-2">
-            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
-            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
-                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i class="fas fa-check text-success me-3"></i> Planejamento de Testes e Casos de Teste</li>\n
-            </ul>
+            <h1 class="display-4 fw-bold mb-5 text-dark">Agenda</h1>
+            <div class="row">
+                <div class="col-md-9 mx-auto">
+                    <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-file-alt text-primary me-3"></i> IEEE 829: Documentação de Testes
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-users text-success me-3"></i> Personas e Análise de Stakeholders
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-project-diagram text-warning me-3"></i> Use Cases (IEEE 830 / UML 2.5)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-sitemap text-info me-3"></i> Diagramas UML de Caso de Uso
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-clipboard-list text-danger me-3"></i> Derivação de Test Cases
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <!-- Slide 3: Content 1 -->
+        <!-- Slide 3: IEEE 829 - Test Documentation -->
         <div class="slide" id="slide-3">
             <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Conceitos Iniciais</h2>
-                <p class="lead text-dark mb-5">Uma visão geral sobre Aula 04.</p>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
-                            <h4 class="text-dark">Ideia</h4>
-                            <p class="text-secondary small">O conceito central explicado de forma simples.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-cogs fa-3x text-info mb-3"></i>
-                            <h4 class="text-dark">Mecanismo</h4>
-                            <p class="text-secondary small">Como funciona na prática e seus componentes.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
-                            <h4 class="text-dark">Resultado</h4>
-                            <p class="text-secondary small">Os benefícios e impactos esperados.</p>
-                        </div>
+                <span class="badge bg-dark text-white fs-6 mb-4 px-4 py-2 rounded-pill">IEEE 829-2008</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Standard for Test Documentation</h2>
+
+                <div class="definition-box mx-auto" style="max-width: 800px;">
+                    <div class="term">Test Plan (Plano de Teste)</div>
+                    <p class="mb-0">"Documento que descreve o escopo, abordagem, recursos e cronograma das atividades de teste. Identifica itens de teste, funcionalidades a serem testadas, tarefas, responsáveis e riscos."</p>
+                    <div class="source">IEEE 829-2008 - Standard for Software and System Test Documentation</div>
+                </div>
+
+                <div class="row mt-4 g-3 justify-content-center">
+                    <div class="col-md-10">
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th>Artefato</th>
+                                    <th>Propósito</th>
+                                    <th>Quando Produzir</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Test Plan</strong></td>
+                                    <td>Estratégia geral, escopo, critérios de entrada/saída</td>
+                                    <td>Início do projeto</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Test Case Specification</strong></td>
+                                    <td>Casos de teste individuais com inputs/outputs esperados</td>
+                                    <td>Após definição de requisitos</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Test Procedure</strong></td>
+                                    <td>Passos detalhados para execução</td>
+                                    <td>Antes da execução</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Test Log</strong></td>
+                                    <td>Registro cronológico da execução</td>
+                                    <td>Durante execução</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Test Summary Report</strong></td>
+                                    <td>Avaliação dos resultados, decisão de release</td>
+                                    <td>Após execução</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Content 2 -->
+        <!-- Slide 4: Hierarquia de Planejamento -->
         <div class="slide" id="slide-4">
-             <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Aprofundamento</h2>
-                <p class="fs-4 text-secondary">Detalhes técnicos importantes sobre o tema.</p>
-                <div class="card border-0 shadow-lg mt-5 mx-auto" style="max-width: 800px;">
-                    <div class="card-body p-5">
-                         <blockquote class="blockquote mb-0">
-                          <p class="text-dark">"A educação é a arma mais poderosa que você pode usar para mudar o mundo."</p>
-                          <footer class="blockquote-footer mt-2">Nelson Mandela</footer>
-                        </blockquote>
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Hierarquia de Planejamento de Testes</h2>
+                <p class="lead text-muted mb-4">ISO/IEC 29119 - Processo de Teste de Software</p>
+
+                <div class="row justify-content-center align-items-stretch g-3">
+                    <div class="col-md-2">
+                        <div class="p-3 bg-dark text-white rounded-3 h-100 d-flex flex-column justify-content-center">
+                            <small class="text-white-50">Nível 1</small>
+                            <h6 class="fw-bold mb-1">Requisitos</h6>
+                            <small>Funcionais e Não-Funcionais</small>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right text-muted"></i></div>
+                    <div class="col-md-2">
+                        <div class="p-3 bg-primary text-white rounded-3 h-100 d-flex flex-column justify-content-center">
+                            <small class="text-white-50">Nível 2</small>
+                            <h6 class="fw-bold mb-1">Use Cases</h6>
+                            <small>Fluxos de interação</small>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right text-muted"></i></div>
+                    <div class="col-md-2">
+                        <div class="p-3 bg-success text-white rounded-3 h-100 d-flex flex-column justify-content-center">
+                            <small class="text-white-50">Nível 3</small>
+                            <h6 class="fw-bold mb-1">Test Cases</h6>
+                            <small>Cenários específicos</small>
+                        </div>
+                    </div>
+                    <div class="col-auto d-flex align-items-center"><i class="fas fa-arrow-right text-muted"></i></div>
+                    <div class="col-md-2">
+                        <div class="p-3 bg-warning text-dark rounded-3 h-100 d-flex flex-column justify-content-center">
+                            <small>Nível 4</small>
+                            <h6 class="fw-bold mb-1">Test Data</h6>
+                            <small>Dados de entrada</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 justify-content-center">
+                    <div class="col-md-10">
+                        <div class="alert alert-secondary text-start">
+                            <strong>Rastreabilidade Bidirecional:</strong> Cada caso de teste deve ser rastreável até um requisito (forward traceability), e cada requisito deve ter pelo menos um caso de teste associado (backward traceability). Isso permite medir a <strong>cobertura de requisitos</strong>.
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 5: Conclusion -->
+        <!-- Slide 5: Personas - Definição Técnica -->
         <div class="slide" id="slide-5">
-             <div class="text-center slide-content">
+            <div class="text-center slide-content">
+                <span class="badge bg-primary text-white fs-6 mb-4 px-4 py-2 rounded-pill">Análise de Stakeholders</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Personas</h2>
+
+                <div class="definition-box mx-auto" style="max-width: 800px;">
+                    <div class="term">Persona</div>
+                    <p class="mb-0">"Representação arquetípica de um grupo de usuários baseada em dados demográficos, comportamentais e psicográficos. Utilizada para guiar decisões de design e validar cenarios de teste."</p>
+                    <div class="source">Alan Cooper, "The Inmates Are Running the Asylum" (1999)</div>
+                </div>
+
+                <div class="row mt-4 g-3 justify-content-center">
+                    <div class="col-md-10">
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th>Atributo</th>
+                                    <th>Descrição</th>
+                                    <th>Impacto no Teste</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Demographics</strong></td>
+                                    <td>Idade, profissão, nivel técnico</td>
+                                    <td>Define complexidade aceitável da UI</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Goals</strong></td>
+                                    <td>Objetivos primários e secundários</td>
+                                    <td>Define casos de uso prioritários</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pain Points</strong></td>
+                                    <td>Frustrações e dificuldades</td>
+                                    <td>Define testes negativos e de usabilidade</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Context of Use</strong></td>
+                                    <td>Dispositivo, ambiente, frequência</td>
+                                    <td>Define matriz de compatibilidade</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Technical Proficiency</strong></td>
+                                    <td>Nível de habilidade técnica</td>
+                                    <td>Define threshold de usabilidade</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Exemplo de Personas -->
+        <div class="slide" id="slide-6">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-3 text-dark">Personas - Sistema E-commerce</h2>
+                <p class="text-muted mb-4">Cada persona representa um cluster de usuários com comportamentos similares</p>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="persona-card">
+                            <div class="persona-avatar">
+                                <i class="fas fa-user-graduaté"></i>
+                            </div>
+                            <h5 class="fw-bold">Maria, 22</h5>
+                            <span class="badge bg-primary mb-2">End User - Casual</span>
+                            <hr>
+                            <div class="text-start small">
+                                <p><strong>Goal:</strong> Encontrar livros com melhor custo-beneficio</p>
+                                <p><strong>Context:</strong> Mobile (85%), baixa laténcia tolerada</p>
+                                <p><strong>Pain Point:</strong> Checkout complexo, frete alto</p>
+                                <p><strong>Tech Level:</strong> Intermediário</p>
+                                <p class="mb-0"><strong>Test Focus:</strong> Mobile-first, fluxo de compra simplificado</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="persona-card">
+                            <div class="persona-avatar" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                                <i class="fas fa-user-tie"></i>
+                            </div>
+                            <h5 class="fw-bold">Carlos, 45</h5>
+                            <span class="badge bg-success mb-2">End User - Power</span>
+                            <hr>
+                            <div class="text-start small">
+                                <p><strong>Goal:</strong> Compras rápidas, histórico de pedidos</p>
+                                <p><strong>Context:</strong> Desktop (90%), múltiplas abas</p>
+                                <p><strong>Pain Point:</strong> Lentidão, muitos cliques</p>
+                                <p><strong>Tech Level:</strong> Avançado</p>
+                                <p class="mb-0"><strong>Test Focus:</strong> Performance, shortcuts, bulk actions</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="persona-card">
+                            <div class="persona-avatar" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                                <i class="fas fa-user-cog"></i>
+                            </div>
+                            <h5 class="fw-bold">Ana, 35</h5>
+                            <span class="badge bg-danger mb-2">Admin User</span>
+                            <hr>
+                            <div class="text-start small">
+                                <p><strong>Goal:</strong> Gerenciar estoque, processar pedidos</p>
+                                <p><strong>Context:</strong> Desktop, uso prolongado (8h+)</p>
+                                <p><strong>Pain Point:</strong> UI inconsistente, falta de atalhos</p>
+                                <p><strong>Tech Level:</strong> Avançado</p>
+                                <p class="mb-0"><strong>Test Focus:</strong> Fluxos admin, relatórios, RBAC</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Use Cases - Definição -->
+        <div class="slide" id="slide-7">
+            <div class="text-center slide-content">
+                <span class="badge bg-success text-white fs-6 mb-4 px-4 py-2 rounded-pill">UML 2.5 / IEEE 830</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Use Cases</h2>
+
+                <div class="definition-box mx-auto" style="max-width: 800px;">
+                    <div class="term">Use Case</div>
+                    <p class="mb-0">"Especificação de uma sequência de ações, incluindo variantes, que um sistema (ou entidade) pode executar, interagindo com atores do sistema, para produzir um resultado observável de valor."</p>
+                    <div class="source">OMG Unified Modeling Language (UML) Specification, v2.5.1</div>
+                </div>
+
+                <div class="row mt-4 g-3 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="p-3 bg-light rounded-3 text-start h-100">
+                            <h5 class="fw-bold text-dark"><i class="fas fa-check text-success me-2"></i>Componentes Obrigatórios</h5>
+                            <ul class="mb-0 small">
+                                <li><strong>ID e Nome:</strong> UC-XXX: Verbo + Objeto</li>
+                                <li><strong>Ator Primário:</strong> Quem inicia</li>
+                                <li><strong>Pre-condições:</strong> Estado antes</li>
+                                <li><strong>Pos-condições:</strong> Estado apos (sucesso)</li>
+                                <li><strong>Fluxo Básico:</strong> Happy path</li>
+                                <li><strong>Fluxos Alternativos:</strong> Variações validas</li>
+                                <li><strong>Fluxos de Exceção:</strong> Tratamento de erros</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="p-3 bg-light rounded-3 text-start h-100">
+                            <h5 class="fw-bold text-dark"><i class="fas fa-plus text-primary me-2"></i>Componentes Opcionais</h5>
+                            <ul class="mb-0 small">
+                                <li><strong>Atores Secundários:</strong> Sistemas externos</li>
+                                <li><strong>Trigger:</strong> Evento que inicia</li>
+                                <li><strong>Frequência:</strong> Vezes/dia, mês</li>
+                                <li><strong>Requisitos Especiais:</strong> NFRs</li>
+                                <li><strong>Regras de Negócio:</strong> BR-XXX</li>
+                                <li><strong>Notas:</strong> Decisões de design</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Use Case - Exemplo Completo -->
+        <div class="slide" id="slide-8">
+            <div class="slide-content">
+                <h2 class="display-6 fw-bold mb-3 text-dark text-center">Use Case Specification</h2>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <pre class="code-example" style="font-size: 0.8rem; margin: 0; white-space: pre-wrap;"><span class="keyword">UC-003:</span> <span class="string">Finalizar Compra</span>
+
+<span class="comment">/* Identificação */</span>
+<strong>Ator Primário:</strong> Cliente (Personas: Maria, Carlos)
+<strong>Atores Secundários:</strong> Payment Gatéway, Inventory Service, Email Service
+<strong>Trigger:</strong> Cliente clica em "Finalizar Compra" no carrinho
+
+<span class="comment">/* Condições */</span>
+<strong>Pre-condições:</strong>
+  [PRE-1] Usuário autenticado (sessão valida)
+  [PRE-2] Carrinho.items.length >= 1
+  [PRE-3] Para cada item: Inventory.available(item.sku) >= item.qty
+
+<strong>Pos-condições (Sucesso):</strong>
+  [POS-1] Order criada com status = PENDING_PAYMENT
+  [POS-2] Inventory reservado (soft lock)
+  [POS-3] Email de confirmação enviado
+
+<span class="comment">/* Fluxo Básico */</span>
+1. Sistema exibe Order Summary (items, subtotal, shipping options)
+2. Cliente seleciona endereço de entrega [A1: Novo endereço]
+3. Sistema calcula frete via Shipping Service
+4. Cliente seleciona método de pagamento [A2: Novo cartão]
+5. Sistema tokeniza dados via Payment Gatéway
+6. Cliente confirma pedido
+7. Sistema valida estoque (double-check)  [E1: Item indisponível]
+8. Sistema processa pagamento             [E2: Pagamento recusado]
+9. Sistema cria Order, reserva estoque
+10. Sistema envia email de confirmação
+11. Sistema exibe Order Confirmation (numero, prazo)
+
+<span class="comment">/* Fluxos Alternativos */</span>
+[A1] Novo endereço: 2a. Cliente clica "Adicionar endereço"
+                    2b. Sistema exibe form de endereço
+                    2c. Cliente preenche e salva -> Volta ao passo 3
+
+[A2] Novo cartão:   4a. Cliente clica "Adicionar cartão"
+                    4b. Sistema exibe form PCI-compliant
+                    4c. Cliente preenche -> Volta ao passo 5
+
+<span class="comment">/* Fluxos de Exceção */</span>
+[E1] Item indisponível: 7a. Sistema exibe erro com item(s) afetado(s)
+                        7b. Sistema oferece: remover item ou notificar quando disponivel
+                        7c. Use case termina ou volta ao passo 1
+
+[E2] Pagamento recusado: 8a. Sistema exibe mensagem do gatéway
+                         8b. Sistema permite retry com outro método
+                         8c. Volta ao passo 4</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: UML Use Case Diagram - Notação -->
+        <div class="slide" id="slide-9">
+            <div class="text-center slide-content">
+                <span class="badge bg-warning text-dark fs-6 mb-4 px-4 py-2 rounded-pill">UML 2.5</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Notação de Diagrama de Caso de Uso</h2>
+
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded-4 shadow-sm h-100">
+                            <svg viewBox="0 0 60 100" width="50" height="80" class="mb-2">
+                                <circle cx="30" cy="15" r="12" fill="none" stroke="#1a1a2e" stroke-width="2"/>
+                                <line x1="30" y1="27" x2="30" y2="60" stroke="#1a1a2e" stroke-width="2"/>
+                                <line x1="30" y1="35" x2="10" y2="50" stroke="#1a1a2e" stroke-width="2"/>
+                                <line x1="30" y1="35" x2="50" y2="50" stroke="#1a1a2e" stroke-width="2"/>
+                                <line x1="30" y1="60" x2="15" y2="85" stroke="#1a1a2e" stroke-width="2"/>
+                                <line x1="30" y1="60" x2="45" y2="85" stroke="#1a1a2e" stroke-width="2"/>
+                            </svg>
+                            <h6 class="fw-bold">Actor</h6>
+                            <p class="small text-muted mb-0">Entidade externa que interage. Pode ser usuário humano ou sistema.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded-4 shadow-sm h-100">
+                            <div class="border border-2 border-dark rounded-pill px-3 py-2 mb-2 mx-auto" style="max-width: 130px;">
+                                <small class="fw-bold">Fazer Login</small>
+                            </div>
+                            <h6 class="fw-bold">Use Case</h6>
+                            <p class="small text-muted mb-0">Elipse com nome (verbo no infinitivo + objeto direto)</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded-4 shadow-sm h-100">
+                            <div class="border border-2 border-secondary rounded-1 p-2 mb-2 mx-auto" style="max-width: 130px;">
+                                <small class="fw-bold text-secondary">Sistema</small>
+                            </div>
+                            <h6 class="fw-bold">System Boundary</h6>
+                            <p class="small text-muted mb-0">Retângulo que delimita o escopo. Atores ficam fora.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-3 bg-white border rounded-4 shadow-sm h-100">
+                            <svg viewBox="0 0 100 20" width="100" height="20" class="mb-2">
+                                <line x1="0" y1="10" x2="100" y2="10" stroke="#1a1a2e" stroke-width="2"/>
+                            </svg>
+                            <h6 class="fw-bold">Association</h6>
+                            <p class="small text-muted mb-0">Linha sólida (sem seta). Indica que ator participa do UC.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary mt-4 text-start" style="max-width: 800px; margin: 0 auto;">
+                    <strong>Convenção de Nomenclatura:</strong> Use cases devem ser nomeados com <code>Verbo + Objeto</code> no infinitivo.
+                    Correto: "Cadastrar Usuário", "Emitir Relatório". Incorreto: "Tela de Login", "Gerenciar Usuários".
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: UML Relações -->
+        <div class="slide" id="slide-10">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Relações entre Use Cases</h2>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-primary text-white py-2">
+                                <h6 class="mb-0 fw-bold">&lt;&lt;include&gt;&gt;</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <p><strong>Semântica:</strong> UC base sempre executa UC incluído.</p>
+                                <p><strong>Direção:</strong> Base --include--&gt; Incluido</p>
+                                <div class="code-example p-2 mb-2">
+(Fazer Compra) --&gt; (Validar Pagamento)
+                                </div>
+                                <p class="mb-0 text-muted"><strong>Use quando:</strong> Fatorar comportamento comum obrigatório (ex: autenticação)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-success text-white py-2">
+                                <h6 class="mb-0 fw-bold">&lt;&lt;extend&gt;&gt;</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <p><strong>Semântica:</strong> UC extensor opcionalmente estende UC base.</p>
+                                <p><strong>Direção:</strong> Extensor --extend--&gt; Base</p>
+                                <div class="code-example p-2 mb-2">
+(Aplicar Cupom) --&gt; (Fazer Compra)
+                                </div>
+                                <p class="mb-0 text-muted"><strong>Use quando:</strong> Comportamento condicional em extension point</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-warning text-dark py-2">
+                                <h6 class="mb-0 fw-bold">Generalization</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <p><strong>Semântica:</strong> UC filho herda comportamento do pai.</p>
+                                <p><strong>Direção:</strong> Filho --|&gt; Pai (seta fechada)</p>
+                                <div class="code-example p-2 mb-2">
+(Pagar com PIX) --|&gt; (Processar Pagamento)
+                                </div>
+                                <p class="mb-0 text-muted"><strong>Use quando:</strong> Variações de um mêsmo caso de uso</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger mt-4 text-start" style="max-width: 800px; margin: 0 auto;">
+                    <strong>Erros Comuns:</strong> (1) Inverter direcao de include/extend. (2) Usar seta em associação ator-UC.
+                    (3) Excesso de relações criando "spaghetti diagram". Limite: 2 niveis de profundidade.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Exemplo UML Completo -->
+        <div class="slide" id="slide-11">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-3 text-dark">Diagrama de Caso de Uso</h2>
+                <div class="p-3 border bg-white rounded shadow-sm">
+                    <img src="../../assets/use_case_diagram.png" alt="Diagrama de Caso de Uso" class="img-fluid">
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Derivação de Test Cases -->
+        <div class="slide" id="slide-12">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger text-white fs-6 mb-4 px-4 py-2 rounded-pill">Test Design</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Derivação de Test Cases</h2>
+                <p class="text-muted mb-4">Cada fluxo do Use Case gera um ou mais Test Cases</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th>Origem (UC-003)</th>
+                                    <th>Test Case</th>
+                                    <th>Tipo</th>
+                                    <th>Prioridade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Fluxo Básico (1-11)</td>
+                                    <td>TC-001: Compra com cartão crédito - sucesso</td>
+                                    <td><span class="badge bg-success">Positivo</span></td>
+                                    <td><span class="badge bg-danger">P1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fluxo Alternativo [A1]</td>
+                                    <td>TC-002: Compra com novo endereço</td>
+                                    <td><span class="badge bg-success">Positivo</span></td>
+                                    <td><span class="badge bg-warning text-dark">P2</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fluxo Alternativo [A2]</td>
+                                    <td>TC-003: Compra com novo cartão</td>
+                                    <td><span class="badge bg-success">Positivo</span></td>
+                                    <td><span class="badge bg-warning text-dark">P2</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fluxo Exceção [E1]</td>
+                                    <td>TC-004: Item fica indisponível durante checkout</td>
+                                    <td><span class="badge bg-danger">Negativo</span></td>
+                                    <td><span class="badge bg-danger">P1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Fluxo Exceção [E2]</td>
+                                    <td>TC-005: Pagamento recusado - saldo insuficiente</td>
+                                    <td><span class="badge bg-danger">Negativo</span></td>
+                                    <td><span class="badge bg-danger">P1</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pre-condição [PRE-1]</td>
+                                    <td>TC-006: Checkout sem autenticação</td>
+                                    <td><span class="badge bg-danger">Negativo</span></td>
+                                    <td><span class="badge bg-warning text-dark">P2</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pre-condição [PRE-2]</td>
+                                    <td>TC-007: Checkout com carrinho vazio</td>
+                                    <td><span class="badge bg-danger">Negativo</span></td>
+                                    <td><span class="badge bg-secondary">P3</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Test Case Specification -->
+        <div class="slide" id="slide-13">
+            <div class="slide-content">
+                <h2 class="display-6 fw-bold mb-3 text-dark text-center">Test Case Specification (IEEE 829)</h2>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <pre class="code-example" style="font-size: 0.78rem; margin: 0; white-space: pre-wrap;"><span class="keyword">TC-001:</span> <span class="string">Compra com cartão crédito - sucesso</span>
+
+<span class="comment">/* Rastreabilidade */</span>
+<strong>Use Case:</strong>     UC-003 - Finalizar Compra (Fluxo Básico)
+<strong>Requisito:</strong>    RF-015 - Sistema deve processar pagamentos com cartão
+<strong>Prioridade:</strong>   P1 (Critical Path)
+<strong>Tipo:</strong>         Funcional | Positivo | E2E | Regression
+
+<span class="comment">/* Setup */</span>
+<strong>Pre-condições:</strong>
+  - Usuário: test_user_001@test.com (autenticado)
+  - Carrinho: [{ sku: "BOOK-001", qty: 1, price: 89.90 }]
+  - Estoque BOOK-001: available >= 1
+  - Endereço cadastrado: ID=ADDR-001
+
+<strong>Test Data:</strong>
+  - Card: 4111111111111111 (Visa sandbox - approved)
+  - CVV: 123 | Exp: 12/28
+  - CEP: 01310-100 (Frete calculado: R$ 15.00)
+
+<span class="comment">/* Execution */</span>
+<strong>Steps:</strong>
+  1. GET /cart -> Assert items.length == 1
+  2. POST /checkout/start -> Assert 200, returns checkout_id
+  3. PUT /checkout/{id}/shipping { address_id: "ADDR-001" }
+  4. GET /checkout/{id}/shipping-options -> Assert frete = 15.00
+  5. PUT /checkout/{id}/payment { card_token: "tok_visa" }
+  6. POST /checkout/{id}/confirm
+
+<span class="comment">/* Verification */</span>
+<strong>Expected Results:</strong>
+  - Response: 201 Creatéd
+  - Body: { order_id: "ORD-XXXXX", status: "CONFIRMED", total: 104.90 }
+  - DB: Orders table has new record with status = "PENDING_FULFILLMENT"
+  - DB: Inventory.reserved(BOOK-001) incremented by 1
+  - Email: Confirmation sent to test_user_001@test.com
+  - Laténcy: p99 < 3000ms (incluindo gatéway)
+
+<strong>Cleanup:</strong>
+  - Cancel order via admin API
+  - Release inventory reservation</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Matriz de Rastreabilidade -->
+        <div class="slide" id="slide-14">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-3 text-dark">Requirements Traceability Matrix</h2>
+                <p class="text-muted mb-4">Garantindo cobertura e rastreabilidade bidirecional</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-11">
+                        <table class="tech-table text-center" style="font-size: 0.8rem;">
+                            <thead>
+                                <tr>
+                                    <th>Requisito</th>
+                                    <th>Use Case</th>
+                                    <th>Test Cases</th>
+                                    <th>Cobertura</th>
+                                    <th>Último Resultado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="text-start">RF-001: Autenticação</td>
+                                    <td>UC-001</td>
+                                    <td>TC-001..004</td>
+                                    <td><span class="badge bg-success">100%</span></td>
+                                    <td><span class="badge bg-success">PASS</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">RF-010: Busca de produtos</td>
+                                    <td>UC-002</td>
+                                    <td>TC-010..015</td>
+                                    <td><span class="badge bg-success">100%</span></td>
+                                    <td><span class="badge bg-success">PASS</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">RF-015: Checkout</td>
+                                    <td>UC-003</td>
+                                    <td>TC-020..027</td>
+                                    <td><span class="badge bg-success">100%</span></td>
+                                    <td><span class="badge bg-danger">FAIL (TC-025)</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">RF-020: Gestão de estoque</td>
+                                    <td>UC-010</td>
+                                    <td>TC-050..052</td>
+                                    <td><span class="badge bg-warning text-dark">60%</span></td>
+                                    <td><span class="badge bg-secondary">NOT RUN</span></td>
+                                </tr>
+                                <tr>
+                                    <td class="text-start">RF-025: Relatórios</td>
+                                    <td>UC-015</td>
+                                    <td>-</td>
+                                    <td><span class="badge bg-danger">0%</span></td>
+                                    <td><span class="badge bg-secondary">-</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-10">
+                        <div class="alert alert-secondary text-start small">
+                            <strong>Métricas derivadas:</strong><br>
+                            - <strong>Requirements Coverage:</strong> (Requisitos com TC / Total Requisitos) = 4/5 = 80%<br>
+                            - <strong>Test Execution Raté:</strong> (TCs executados / Total TCs) = 19/22 = 86%<br>
+                            - <strong>Pass Raté:</strong> (TCs passed / TCs executados) = 18/19 = 94.7%
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Ferramentas -->
+        <div class="slide" id="slide-15">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Ferramentas</h2>
+
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-3">
+                                <i class="fas fa-project-diagram fa-2x text-primary mb-2"></i>
+                                <h6 class="fw-bold">Draw.io / Diagrams.net</h6>
+                                <p class="small text-muted mb-2">Diagramas UML gratuito, integra com GitHub</p>
+                                <code class="small">diagrams.net</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-3">
+                                <i class="fas fa-code fa-2x text-success mb-2"></i>
+                                <h6 class="fw-bold">PlantUML</h6>
+                                <p class="small text-muted mb-2">UML as Code, versionavel, CI/CD friendly</p>
+                                <code class="small">plantuml.com</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-3">
+                                <i class="fas fa-clipboard-check fa-2x text-warning mb-2"></i>
+                                <h6 class="fw-bold">TestRail / Zephyr</h6>
+                                <p class="small text-muted mb-2">Test Case Management, integração Jira</p>
+                                <code class="small">testrail.com</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-3">
+                                <i class="fab fa-github fa-2x text-dark mb-2"></i>
+                                <h6 class="fw-bold">GitHub Issues + Labels</h6>
+                                <p class="small text-muted mb-2">Rastreabilidade com links entre issues</p>
+                                <code class="small">github.com</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 p-3 bg-dark text-white rounded-4 text-start">
+                    <h6 class="fw-bold mb-2">PlantUML Example</h6>
+                    <div class="code-example" style="font-size: 0.8rem;">
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor Cliente as C
+actor "Payment Gatéway" as PG
+
+rectangle "E-Commerce System" {
+    usecase "Buscar Produto" as UC1
+    usecase "Finalizar Compra" as UC2
+    usecase "Processar Pagamento" as UC3
+    usecase "Aplicar Cupom" as UC4
+
+    C --> UC1
+    C --> UC2
+    UC2 ..> UC3 : &lt;&lt;include&gt;&gt;
+    UC4 ..> UC2 : &lt;&lt;extend&gt;&gt;
+    UC3 --> PG
+}
+@enduml
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Atividade -->
+        <div class="slide" id="slide-16">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger fs-5 mb-4 px-5 py-3 rounded-pill">Atividade</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Exercício Prático</h2>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-dark text-white py-2">
+                                <h6 class="mb-0 fw-bold">Entregáveis</h6>
+                            </div>
+                            <div class="card-body text-start">
+                                <p class="small mb-2"><strong>Sistema:</strong> E-commerce de Livros</p>
+                                <ol class="small mb-0">
+                                    <li class="mb-2">2 Personas documentadas (formato tabular)</li>
+                                    <li class="mb-2">3 Use Cases completos (com fluxos alternativos e exceções)</li>
+                                    <li class="mb-2">1 Diagrama UML de Caso de Uso (PlantUML ou Draw.io)</li>
+                                    <li class="mb-2">6 Test Cases derivados (3 positivos, 3 negativos)</li>
+                                    <li class="mb-2">Matriz de Rastreabilidade (Requisito -> UC -> TC)</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-secondary text-white py-2">
+                                <h6 class="mb-0 fw-bold">Use Cases Sugeridos</h6>
+                            </div>
+                            <div class="card-body text-start">
+                                <ul class="small mb-0">
+                                    <li class="mb-1">UC: Cadastrar Usuário (com verificação de email)</li>
+                                    <li class="mb-1">UC: Recuperar Senha (com token expirável)</li>
+                                    <li class="mb-1">UC: Avaliar Livro (com moderação)</li>
+                                    <li class="mb-1">UC: Cancelar Pedido (com regras de prazo)</li>
+                                    <li class="mb-1">UC: Solicitar Reembolso (com workflow de aprovação)</li>
+                                    <li class="mb-1">UC: Gerar Relatório de Vendas (com filtros)</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary mt-4 text-start" style="max-width: 700px; margin: 0 auto;">
+                    <strong>Entrega:</strong> Repositório GitHub com pasta <code>/docs</code> contendo arquivos Markdown e diagrama PNG/SVG.
+                    Estrutura sugerida: <code>/docs/personas.md</code>, <code>/docs/use-cases/</code>, <code>/docs/test-cases/</code>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Estrutura do Plano de Teste -->
+        <div class="slide" id="slide-17">
+            <div class="text-center slide-content">
+                <span class="badge bg-dark text-white fs-6 mb-4 px-4 py-2 rounded-pill">IEEE 829 / ISO 29119</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Estrutura do Plano de Teste</h2>
+                <p class="text-muted mb-4">Seções essenciais para um plano claro e auditável</p>
+
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm h-100 text-start">
+                            <div class="card-header bg-primary text-white py-2">
+                                <h6 class="mb-0 fw-bold">Conteúdo Obrigatorio</h6>
+                            </div>
+                            <div class="card-body small">
+                                <ul class="mb-0">
+                                    <li class="mb-2"><strong>Escopo:</strong> o que entra e o que fica fora</li>
+                                    <li class="mb-2"><strong>Objetivos:</strong> metas e critérios de sucesso</li>
+                                    <li class="mb-2"><strong>Abordagem:</strong> niveis, tipos e técnicas</li>
+                                    <li class="mb-2"><strong>Ambiente:</strong> infra, dados e ferramentas</li>
+                                    <li class="mb-2"><strong>Critérios:</strong> entrada, saída e suspensão</li>
+                                    <li class="mb-2"><strong>Riscos:</strong> probabilidade, impacto e mitigação</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm h-100 text-start">
+                            <div class="card-header bg-secondary text-white py-2">
+                                <h6 class="mb-0 fw-bold">Conteúdo Recomendado</h6>
+                            </div>
+                            <div class="card-body small">
+                                <ul class="mb-0">
+                                    <li class="mb-2"><strong>Métricas:</strong> cobertura, pass raté, defeitos</li>
+                                    <li class="mb-2"><strong>Estimativas:</strong> esforço e cronograma</li>
+                                    <li class="mb-2"><strong>Recursos:</strong> pessoas, papéis e responsabilidades</li>
+                                    <li class="mb-2"><strong>Comunicação:</strong> cadencia e stakeholders</li>
+                                    <li class="mb-2"><strong>Dependências:</strong> APIs, dados, ambientes</li>
+                                    <li class="mb-2"><strong>Aprovação:</strong> aceite e sign-off</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Critérios de Entrada e Saida -->
+        <div class="slide" id="slide-18">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Critérios de Entrada e Saida</h2>
+                <p class="text-muted mb-4">Gatés que reduzem risco e evitam retrabalho</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <table class="tech-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Exemplos</th>
+                                    <th>Racional</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Entrada</strong></td>
+                                    <td>Build estável, requisitos aprovados, dados disponíveis</td>
+                                    <td>Evita iniciar testes sem insumos mínimos</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Suspensao</strong></td>
+                                    <td>Taxa de falha crítica &gt; 30%, ambiente instável</td>
+                                    <td>Protege tempo da equipe e evita ruído</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Saida</strong></td>
+                                    <td>Cobertura alvo, defeitos P1 = 0, RTM 100%</td>
+                                    <td>Define pronto para release ou próxima fase</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary mt-4 text-start" style="max-width: 800px; margin: 0 auto;">
+                    <strong>Boa prática:</strong> critérios devem ser mensuráveis e verificáveis (ex.: "Cobertura de requisitos &gt;= 90%").
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Estimativas e Cronograma -->
+        <div class="slide" id="slide-19">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Estimativas e Cronograma</h2>
+                <p class="text-muted mb-4">Planejamento realista evita gargalos no fim do ciclo</p>
+
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card border-0 shadow-sm text-start">
+                            <div class="card-body">
+                                <h6 class="fw-bold text-dark mb-3">Exemplo simplificado (Sprint de 2 semanas)</h6>
+                                <table class="tech-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Atividade</th>
+                                            <th>Esforco</th>
+                                            <th>Dependencia</th>
+                                            <th>Owner</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Revisão de requisitos</td>
+                                            <td>4h</td>
+                                            <td>Documento aprovado</td>
+                                            <td>QA Lead</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Design de casos</td>
+                                            <td>12h</td>
+                                            <td>Requisitos estaveis</td>
+                                            <td>QA</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Preparação de dados</td>
+                                            <td>6h</td>
+                                            <td>Ambiente pronto</td>
+                                            <td>DevOps</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Execução + regressao</td>
+                                            <td>16h</td>
+                                            <td>Build candidaté</td>
+                                            <td>QA Team</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Relatório final</td>
+                                            <td>2h</td>
+                                            <td>Resultados consólidados</td>
+                                            <td>QA Lead</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Riscos e Mitigação -->
+        <div class="slide" id="slide-20">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Riscos e Mitigação</h2>
+                <p class="text-muted mb-4">Risco = probabilidade x impacto</p>
+
+                <div class="row g-3 justify-content-center">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-danger text-white py-2">
+                                <h6 class="mb-0 fw-bold">Exemplos</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <ul class="mb-0">
+                                    <li class="mb-2">Ambiente instável</li>
+                                    <li class="mb-2">Mudança tardia de requisito</li>
+                                    <li class="mb-2">Dependencia externa off-line</li>
+                                    <li class="mb-2">Baixa cobertura automatizada</li>
+                                    <li class="mb-2">Dados sensíveis indisponíveis</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-warning text-dark py-2">
+                                <h6 class="mb-0 fw-bold">Mitigações</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <ul class="mb-0">
+                                    <li class="mb-2">Ambientes espelho + health checks</li>
+                                    <li class="mb-2">Freeze de requisitos por sprint</li>
+                                    <li class="mb-2">Mocks e stubs para APIs críticas</li>
+                                    <li class="mb-2">Smoke suite obrigatória</li>
+                                    <li class="mb-2">Dados sintéticos e mascaramento</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-header bg-success text-white py-2">
+                                <h6 class="mb-0 fw-bold">Monitoramento</h6>
+                            </div>
+                            <div class="card-body text-start small">
+                                <ul class="mb-0">
+                                    <li class="mb-2">Risco revisado semanalmente</li>
+                                    <li class="mb-2">Owner e plano de ação definidos</li>
+                                    <li class="mb-2">Indicadores: lead time e flakiness</li>
+                                    <li class="mb-2">Escalonamento quando P x I alto</li>
+                                    <li class="mb-2">Registro no Test Log</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Resumo -->
+        <div class="slide" id="slide-21">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Resumo</h2>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 text-start h-100">
+                            <h5 class="fw-bold text-dark mb-3">Conceitos</h5>
+                            <ul class="small mb-0">
+                                <li class="mb-2"><strong>IEEE 829:</strong> Estrutura de documentação de testes</li>
+                                <li class="mb-2"><strong>Personas:</strong> Arquétipos para guiar design e testes</li>
+                                <li class="mb-2"><strong>Use Cases:</strong> Fluxos de interação com o sistema</li>
+                                <li class="mb-2"><strong>UML:</strong> Atores, elipses, include/extend</li>
+                                <li class="mb-2"><strong>Test Cases:</strong> Derivados dos fluxos do UC</li>
+                                <li class="mb-2"><strong>RTM:</strong> Rastreabilidade bidirecional</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-dark text-white rounded-4 text-start h-100">
+                            <h5 class="fw-bold mb-3">Próxima Aula</h5>
+                            <ul class="small mb-0">
+                                <li class="mb-2">Testes Caixa Branca vs Caixa Preta</li>
+                                <li class="mb-2">Equivalence Partitioning</li>
+                                <li class="mb-2">Boundary Value Analysis</li>
+                                <li class="mb-2">Decision Table Testing</li>
+                                <li class="mb-2">Staté Transition Testing</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Encerramento -->
+        <div class="slide" id="slide-22">
+            <div class="text-center slide-content">
                 <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
-                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="#" class="btn btn-dark btn-lg rounded-pill px-5">Material Complementar</a>
-                    <a href="../qualidade-software.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+                <p class="lead text-dark mb-5">Obrigado pela atenção</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="material/aula02-planejamento.html" class="btn btn-danger btn-lg rounded-pill px-5">
+                        <i class="fas fa-book me-2"></i>Material Complementar
+                    </a>
+                    <a href="../qualidade-software.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">
+                        Voltar para Aulas
+                    </a>
                 </div>
             </div>
         </div>
@@ -106,25 +1184,28 @@
     <!-- Footer Navigation -->
     <footer class="slide-footer">
         <div class="slide-controls">
-            <button id="prevBtn"  disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-            <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress mx-3" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+            <span id="slideCounter" class="ms-3 text-muted small fw-bold">1 / 22</span>
         </div>
 
         <div class="text-center text-muted small d-none d-md-block">
-            Qualidade de Software - Planejamento de Testes e Casos de Teste.
+            Qualidade de Software - Planejamento de Testes
         </div>
 
         <a href="../../index.html">
-            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-                 alt="Senac" height="30" class="opacity-75">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                height="30" class="opacity-75">
         </a>
     </footer>
 
     <script src="../../js/standard_slides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
