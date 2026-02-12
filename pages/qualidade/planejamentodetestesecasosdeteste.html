@@ -592,12 +592,44 @@
             </div>
         </div>
 
-        <!-- Slide 11: Exemplo UML Completo -->
+        <!-- Slide 11: Anatomia do Diagrama -->
         <div class="slide" id="slide-11">
-            <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-3 text-dark">Diagrama de Caso de Uso</h2>
-                <div class="p-3 border bg-white rounded shadow-sm">
-                    <img src="../../assets/use_case_diagram.png" alt="Diagrama de Caso de Uso" class="img-fluid">
+            <div class="slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark text-center">Anatomia do Diagrama de Caso de Uso</h2>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="p-3 border bg-white rounded shadow-sm">
+                            <img src="../../assets/use_case_diagram.png" alt="Diagrama de Caso de Uso" class="img-fluid">
+                        </div>
+                    </div>
+                    <div class="col-lg-5">
+                        <ul class="list-group list-group-flush text-start mt-3 mt-lg-0">
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">1. Ator</h6>
+                                <small>Representa uma entidade (usuário ou sistema) que interage com o software. Ex: <strong>Cliente</strong>.</small>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">2. Caso de Uso (Elipse)</h6>
+                                <small>Descreve uma funcionalidade principal que agrega valor. Ex: <strong>Finalizar Compra</strong>.</small>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">3. <code>&lt;&lt;include&gt;&gt;</code> (Seta Tracejada)</h6>
+                                <small>Relação <strong>obrigatória</strong>. "Finalizar Compra" sempre precisa "Verificar Estoque" e "Processar Pagamento".</small>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">4. <code>&lt;&lt;extend&gt;&gt;</code> (Seta Tracejada)</h6>
+                                <small>Relação <strong>opcional</strong>. "Aplicar Cupom" pode ou não ser usado durante o "Finalizar Compra".</small>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">5. Generalização (Seta de Ponta Oca)</h6>
+                                <small>Indica <strong>especialização</strong> (herança). "Pagar com PIX" é um tipo específico de "Processar Pagamento".</small>
+                            </li>
+                            <li class="list-group-item bg-transparent">
+                                <h6 class="fw-bold mb-0">6. Associação (Linha Sólida)</h6>
+                                <small>Conecta um ator a um caso de uso, indicando participação.</small>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
