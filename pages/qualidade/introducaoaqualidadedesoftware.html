@@ -91,8 +91,139 @@
             </div>
         </div>
 
-        <!-- Slide 3: Agenda -->
+        <!-- Slide 3: Atividade Prática -->
         <div class="slide" id="slide-3">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger fs-3 mb-4 px-5 py-3 rounded-pill">Atividade Prática #1</span>
+                <h1 class="display-4 fw-bold mb-4 text-dark">Setup e Análise dos Testes</h1>
+                <p class="lead text-muted mb-5">Configuração do ambiente e identificação de problemas nos testes automatizados.</p>
+
+                <div class="row g-4 justify-content-center mt-5">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-lg p-4 bg-white rounded-4">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <i class="fas fa-bullseye fa-3x text-danger"></i>
+                                <div class="text-start">
+                                    <h3 class="fw-bold text-dark mb-0">Objetivo</h3>
+                                    <p class="text-muted mb-0">Fazer o projeto rodar localmente e analisar os testes falhando</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 justify-content-center mt-4">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-light rounded-4 h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-laptop-code text-primary me-2"></i>Pré-requisitos</h4>
+                            <ul class="list-unstyled fs-6 text-start">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Java JDK 17+</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Maven instalado</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Git</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>VS Code ou IDE Java</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-light rounded-4 h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-flag-checkered text-success me-2"></i>Entregável</h4>
+                            <p class="fs-6 text-start mb-0">Lista de problemas identificados nos testes e no código fonte.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Instruções da Prática -->
+        <div class="slide" id="slide-4">
+            <div class="text-center slide-content">
+                <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Mão na Massa</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Instruções da Prática</h2>
+
+                <div class="row g-4 text-start">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                            <h4 class="fw-bold text-primary mb-3"><span class="badge bg-primary me-2">1</span>Clone o Projeto</h4>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">cd qualidade_software</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                            <h4 class="fw-bold text-danger mb-3"><span class="badge bg-danger me-2">2</span>Rode os Testes</h4>
+                            <p class="small text-muted mb-2">Execute o comando Maven para build e testes:</p>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">mvn clean install</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm p-4 bg-light rounded-4 mt-4 text-start">
+                    <h4 class="fw-bold text-dark mb-3"><i class="fas fa-search text-warning me-2"></i>O que analisar:</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled fs-6">
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Quais testes <strong>falharam</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Qual o <strong>motivo da falha</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Existem testes <strong>ignorado/skipped</strong>?</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled fs-6">
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>O código está <strong>legível</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>Existe <strong>duplication</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>Os nomes de variáveis/métodos fazem sentido?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Transição Teoria -->
+        <div class="slide" id="slide-5">
+            <div class="text-center slide-content">
+                <div class="mb-5">
+                    <i class="fas fa-book-reader fa-5x text-primary mb-4"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-4 text-dark">Agora vamos à Teoria</h1>
+                <p class="lead text-muted mb-5">Com a prática em mente, vamos explorar os fundamentos de Qualidade de Software.</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-lg p-5 bg-gradient rounded-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h3 class="text-white fw-bold mb-3">Próximos Tópicos</h3>
+                            <ul class="list-unstyled text-white text-start fs-5">
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Definição de Qualidade de Software</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Custo da Qualidade (CoSQ)</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Normas e Padrões (ISO/IEEE)</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>SQA vs V&V</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-muted mt-4"><i class="fas fa-arrow-right me-2"></i>Use as setas do teclado para continuar</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Agenda -->
+        <div class="slide" id="slide-6">
             <h1 class="display-4 fw-bold mb-5 text-dark">Agenda de Hoje</h1>
             <div class="row">
                 <div class="col-md-9 mx-auto">
@@ -123,8 +254,8 @@
             </div>
         </div>
 
-        <!-- Slide 4: SWEBOK - Tópicos de Qualidade -->
-        <div class="slide" id="slide-4">
+        <!-- Slide 7: SWEBOK - Tópicos de Qualidade -->
+        <div class="slide" id="slide-7">
             <div class="text-center slide-content">
                 <span class="badge bg-info text-white fs-5 mb-3 px-4 py-2 rounded-pill">SWEBOK v4</span>
                 <h2 class="display-5 fw-bold mb-3 text-dark">Tópicos de Qualidade de Software</h2>
@@ -137,8 +268,8 @@
             </div>
         </div>
 
-        <!-- Slide 5: Avaliação -->
-        <div class="slide" id="slide-5">
+        <!-- Slide 8: Avaliação -->
+        <div class="slide" id="slide-8">
             <div class="text-center slide-content">
                 <span class="badge bg-primary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Avaliação</span>
                 <h2 class="display-4 fw-bold mb-4 text-dark">Como funciona a Avaliação</h2>
@@ -208,8 +339,8 @@
             </div>
         </div>
 
-        <!-- Slide 6: Definição de Qualidade -->
-        <div class="slide" id="slide-6">
+        <!-- Slide 9: Definição de Qualidade -->
+        <div class="slide" id="slide-9">
             <div class="text-center slide-content">
                 <span class="badge bg-secondary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Fundamentos</span>
                 <h2 class="display-5 fw-bold mb-5 text-dark">O que é Qualidade de Software?</h2>
@@ -254,8 +385,8 @@
             </div>
         </div>
 
-        <!-- Slide 7: Custo da Qualidade (CoSQ) -->
-        <div class="slide" id="slide-7">
+        <!-- Slide 10: Custo da Qualidade (CoSQ) -->
+        <div class="slide" id="slide-10">
             <div class="text-center slide-content">
                 <h2 class="display-4 fw-bold mb-4 text-dark">Custo da Qualidade (CoSQ)</h2>
                 <p class="lead text-muted mb-5">Investir antes sai mais barato que corrigir depois.</p>
@@ -308,8 +439,8 @@
             </div>
         </div>
 
-        <!-- Slide 8: Ecossistema de Normas -->
-        <div class="slide" id="slide-8">
+        <!-- Slide 11: Ecossistema de Normas -->
+        <div class="slide" id="slide-11">
             <div class="text-center slide-content">
                 <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Visão Geral</span>
                 <h2 class="display-4 fw-bold mb-5 text-dark">O "Mapas" das Normas</h2>
@@ -356,8 +487,8 @@
             </div>
         </div>
 
-        <!-- Slide 9: Gestão da Qualidade (SQM) -->
-        <div class="slide" id="slide-9">
+        <!-- Slide 12: Gestão da Qualidade (SQM) -->
+        <div class="slide" id="slide-12">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Gestão da Qualidade (SQM)</h2>
                 <p class="lead text-muted mb-5">"Faça o que você disse que faria." (ISO 9001)</p>
@@ -398,8 +529,8 @@
             </div>
         </div>
 
-        <!-- Slide 10: SQA - Quality Assurance -->
-        <div class="slide" id="slide-10">
+        <!-- Slide 13: SQA - Quality Assurance -->
+        <div class="slide" id="slide-13">
             <div class="text-center slide-content">
                 <span class="badge bg-danger text-white fs-5 mb-3 px-4 py-2 rounded-pill">IEEE 730</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">SQA: Software Quality Assurance</h2>
@@ -443,8 +574,8 @@
             </div>
         </div>
 
-        <!-- Slide 11: V&V - Verificação e Validação -->
-        <div class="slide" id="slide-11">
+        <!-- Slide 14: V&V - Verificação e Validação -->
+        <div class="slide" id="slide-14">
             <div class="text-center slide-content">
                 <span class="badge bg-success text-white fs-5 mb-3 px-4 py-2 rounded-pill">IEEE 1012</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">V&V: Verificação e Validação</h2>
@@ -488,8 +619,8 @@
             </div>
         </div>
 
-        <!-- Slide 12: Revisões e Inspeções -->
-        <div class="slide" id="slide-12">
+        <!-- Slide 15: Revisões e Inspeções -->
+        <div class="slide" id="slide-15">
             <div class="text-center slide-content">
                 <span class="badge bg-info text-dark fs-5 mb-3 px-4 py-2 rounded-pill">ISO 20246</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">Revisões Técnicas e Inspeções</h2>
@@ -545,8 +676,8 @@
             </div>
         </div>
 
-        <!-- Slide 13: ISO 25010 (Refined) -->
-        <div class="slide" id="slide-13">
+        <!-- Slide 16: ISO 25010 (Refined) -->
+        <div class="slide" id="slide-16">
             <div class="text-center slide-content">
                 <span class="badge bg-dark text-white fs-5 mb-3 px-4 py-2 rounded-pill">Produto - ISO 25010</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">Modelo de Qualidade do Produto</h2>
@@ -623,8 +754,8 @@
         </div>
 
 
-        <!-- Slide 14: Arquitetura e Qualidade -->
-        <div class="slide" id="slide-14">
+        <!-- Slide 17: Arquitetura e Qualidade -->
+        <div class="slide" id="slide-17">
             <div class="text-center slide-content">
                 <span class="badge bg-secondary text-white fs-5 mb-3 px-4 py-2 rounded-pill">Visão Macro - ISO/IEC
                     42010</span>
@@ -700,8 +831,8 @@
             </div>
         </div>
 
-        <!-- Slide 15: O que vamos aprender -->
-        <div class="slide" id="slide-15">
+        <!-- Slide 18: O que vamos aprender -->
+        <div class="slide" id="slide-18">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">O que vamos aprender neste semestre</h2>
                 <div class="row g-3">
@@ -751,8 +882,8 @@
             </div>
         </div>
 
-        <!-- Slide 16: Atividade Prática -->
-        <div class="slide" id="slide-16">
+        <!-- Slide 19: Atividade Prática -->
+        <div class="slide" id="slide-19">
             <div class="text-center slide-content">
                 <span class="badge bg-danger fs-4 mb-4 px-5 py-3 rounded-pill">Atividade Prática</span>
                 <h1 class="display-4 fw-bold mb-4 text-dark">Encontre os Bugs!</h1>
@@ -790,8 +921,8 @@
             </div>
         </div>
 
-        <!-- Slide 17: Setup do Ambiente -->
-        <div class="slide" id="slide-17">
+        <!-- Slide 20: Setup do Ambiente -->
+        <div class="slide" id="slide-20">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Setup do Ambiente (Windows)</h2>
                 <p class="lead text-muted mb-3">Passo a passo para configurar o projeto Java.</p>
@@ -888,8 +1019,8 @@
             </div>
         </div>
 
-        <!-- Slide 18: Resumo -->
-        <div class="slide" id="slide-18">
+        <!-- Slide 21: Resumo -->
+        <div class="slide" id="slide-21">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-5 text-dark">O que aprendemos hoje</h2>
                 <div class="row g-4 justify-content-center">
@@ -929,8 +1060,8 @@
             </div>
         </div>
 
-        <!-- Slide 19: Encerramento -->
-        <div class="slide" id="slide-19">
+        <!-- Slide 22: Encerramento -->
+        <div class="slide" id="slide-22">
             <div class="text-center slide-content">
                 <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
                 <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
@@ -949,23 +1080,26 @@
 
     <!-- Footer Navigation -->
     <footer class="slide-footer">
-        <div class="slide-controls">
+        <div class="d-flex align-items-center gap-3">
             <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-            <div class="progress mx-3" style="width: 100px; height: 6px;">
+            <div class="progress" style="width: 100px; height: 6px;">
                 <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
             </div>
-            <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-            <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
         </div>
 
         <div class="text-center text-muted small d-none d-md-block">
             Qualidade de Software - Introdução à Qualidade de Software
         </div>
 
-        <a href="../../index.html">
-            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
-                height="30" class="opacity-75">
-        </a>
+        <div class="d-flex align-items-center gap-3">
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                    height="30" class="opacity-75">
+            </a>
+        </div>
     </footer>
 
     <script src="../../js/standard_slides.js"></script>

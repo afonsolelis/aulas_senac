@@ -105,23 +105,26 @@
 
     <!-- Footer Navigation -->
     <footer class="slide-footer">
-        <div class="slide-controls">
-            <button id="prevBtn"  disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-            <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+        <div class="d-flex align-items-center gap-3">
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
         </div>
 
         <div class="text-center text-muted small d-none d-md-block">
             Qualidade de Software - Revisão Geral e Melhores Práticas.
         </div>
 
-        <a href="../../index.html">
-            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-                 alt="Senac" height="30" class="opacity-75">
-        </a>
+        <div class="d-flex align-items-center gap-3">
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac" height="30" class="opacity-75">
+            </a>
+        </div>
     </footer>
 
     <script src="../../js/standard_slides.js"></script>
