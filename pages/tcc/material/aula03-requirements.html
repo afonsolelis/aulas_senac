@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 03: Engenharia de Requisitos - TCC Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #34495e;
+            --accent-color: #3498db;
+            --text-color: #2c3e50;
+            --light-bg: #ecf0f1;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            border-radius: 0 0 50px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-bottom: 2rem;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+
+        .chapter-icon {
+            font-size: 2rem;
+            margin-right: 1rem;
+            opacity: 0.8;
+        }
+
+        .info-box {
+            background-color: #e8f4f8;
+            border-left: 5px solid var(--accent-color);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .example-box {
+            background-color: #d4edda;
+            border-left: 5px solid #28a745;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 5px;
+        }
+
+        .nav-pills .nav-link.active {
+            background-color: var(--accent-color);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../../index.html">
+                <i class="fas fa-graduation-cap me-2"></i>TCC Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../tcc.html">Voltar para Aulas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <span class="badge bg-info text-dark mb-2">Aula 03</span>
+                    <h1 class="display-4 fw-bold">Engenharia de Requisitos</h1>
+                    <p class="lead mb-0">O Guia Definitivo para definir O QUE seu sistema vai fazer antes de escrever
+                        uma linha de código.</p>
+                </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class="fas fa-tasks fa-8x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <!-- Introduction -->
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <p class="lead text-center">
+                    "A parte mais difícil de construir um sistema de software é decidir precisamente o que construir."
+                    <br><em class="text-muted">- Fred Brooks</em>
+                </p>
+                <p class="text-secondary text-center">
+                    Neste guia, você aprenderá a traduzir ideias vagas em especificações técnicas precisas, garantindo
+                    que seu TCC resolva o problema certo.
+                </p>
+            </div>
+        </div>
+
+        <!-- Chapter 1: Foundations -->
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-dark">
+                        <i class="fas fa-foundation chapter-icon"></i>
+                        <div>
+                            <h3 class="mb-0">Capítulo 1: O Que é Engenharia de Requisitos?</h3>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Engenharia de Requisitos não é burocracia. É o processo de descobrir, analisar, documentar e
+                            verificar os serviços que o sistema deve fornecer e as restrições sob as quais deve operar.
+                        </p>
+
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <h5 class="fw-bold text-danger"><i class="fas fa-times-circle me-2"></i>Sem Requisitos
+                                </h5>
+                                <ul class="text-muted">
+                                    <li>Você constrói a coisa errada.</li>
+                                    <li>O escopo explode (feature creep).</li>
+                                    <li>A banca reprova por falta de clareza.</li>
+                                    <li>O código vira uma "colcha de retalhos".</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="fw-bold text-success"><i class="fas fa-check-circle me-2"></i>Com Requisitos
+                                </h5>
+                                <ul class="text-muted">
+                                    <li>Escopo definido e "fechado".</li>
+                                    <li>Critérios claros de sucesso.</li>
+                                    <li>Base sólida para a arquitetura.</li>
+                                    <li>Testes fáceis de planejar.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 2: Functional Requirements -->
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-primary">
+                        <i class="fas fa-cogs chapter-icon"></i>
+                        <div>
+                            <h3 class="mb-0">Capítulo 2: Requisitos Funcionais (RF)</h3>
+                            <small class="text-white-50">O que o sistema FAZ</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Requisitos Funcionais descrevem as **funções** do software. São verborrágicos, diretos e
+                            testáveis. Devem descrever o comportamento do sistema em resposta a entradas.</p>
+
+                        <div class="example-box">
+                            <h5 class="fw-bold"><i class="fas fa-pen me-2"></i>Como Escrever (Sintaxe Recomendada)</h5>
+                            <p class="mb-2"><strong>[RF01] - Nome Curto:</strong> O sistema deve permitir que o [ATOR]
+                                realize [AÇÃO] para [OBJETIVO].</p>
+                            <hr>
+                            <p class="mb-1"><strong>Exemplos:</strong></p>
+                            <ul class="mb-0">
+                                <li><strong>[RF001] - Cadastro de Usuário:</strong> O sistema deve permitir que
+                                    visitantes se cadastrem informando e-mail, senha e nome completo.</li>
+                                <li><strong>[RF002] - Geração de Relatório:</strong> O sistema deve gerar um PDF com o
+                                    histórico de vendas do mês selecionado.</li>
+                                <li><strong>[RF003] - Alerta de Estoque:</strong> O sistema deve enviar um e-mail ao
+                                    gerente quando um produto atingir o estoque mínimo.</li>
+                            </ul>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong><i class="fas fa-exclamation-triangle me-2"></i>Erro Comum:</strong> Misturar "como"
+                            com "o que".
+                            <br>Errado: "O sistema deve usar um botão azul para salvar." (Isso é design/interface)
+                            <br>Certo: "O sistema deve permitir salvar as alterações do perfil."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 3: Non-Functional Requirements -->
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-success">
+                        <i class="fas fa-shield-alt chapter-icon"></i>
+                        <div>
+                            <h3 class="mb-0">Capítulo 3: Requisitos Não-Funcionais (RNF)</h3>
+                            <small class="text-white-50">Como o sistema se COMPORTA (Qualidade)</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Definem atributos de qualidade como desempenho, segurança, confiabilidade e usabilidade. São
+                            os "adjetivos" do sistema.</p>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Categoria</th>
+                                        <th>Descrição</th>
+                                        <th>Exemplo (TCC)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Desempenho</strong></td>
+                                        <td>Velocidade, latência, throughput.</td>
+                                        <td>[RNF01] O sistema deve carregar a dashboard em menos de 2 segundos em
+                                            conexões 4G.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Segurança</strong></td>
+                                        <td>Acesso, criptografia, proteção.</td>
+                                        <td>[RNF02] As senhas devem ser armazenadas com hash BCrypt.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Disponibilidade</strong></td>
+                                        <td>Uptime, recuperação de falhas.</td>
+                                        <td>[RNF03] O sistema deve estar disponível 99.5% do tempo no horário comercial.
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Portabilidade</strong></td>
+                                        <td>Onde roda (OS, Navegadores).</td>
+                                        <td>[RNF04] A aplicação web deve ser responsiva e funcionar em Chrome, Firefox e
+                                            Safari.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 4: User Stories & Use Cases -->
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-warning text-dark">
+                        <i class="fas fa-users chapter-icon"></i>
+                        <div>
+                            <h3 class="mb-0">Capítulo 4: Histórias de Usuário & Casos de Uso</h3>
+                            <small>Ágil vs. Tradicional (Escolha sua arma)</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row">
+                            <div class="col-md-6 border-end">
+                                <h5 class="text-primary fw-bold">Histórias de Usuário (Agile)</h5>
+                                <p class="small text-muted">Focadas no valor para o usuário. Ótimas para TCCs de
+                                    desenvolvimento ágil/apps.</p>
+                                <div class="bg-light p-3 rounded">
+                                    <strong>Template:</strong><br>
+                                    "Como [ATOR], eu quero [AÇÃO], para que [VALOR/BENEFÍCIO]."
+                                </div>
+                                <p class="mt-3 small"><em>Ex: "Como aluno, eu quero visualizar minhas notas, para
+                                        monitorar meu desempenho."</em></p>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="text-success fw-bold">Casos de Uso (UML/Tradicional)</h5>
+                                <p class="small text-muted">Detalhados, focados na interação passo-a-passo. Ótimos para
+                                    sistemas complexos/bancários.</p>
+                                <ul class="small mb-0">
+                                    <li><strong>Ator:</strong> Quem interage.</li>
+                                    <li><strong>Fluxo Principal:</strong> O caminho feliz.</li>
+                                    <li><strong>Fluxos Alternativos:</strong> O que acontece se algo der errado (ex:
+                                        senha incorreta).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chapter 5: MVP -->
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-danger">
+                        <i class="fas fa-rocket chapter-icon"></i>
+                        <div>
+                            <h3 class="mb-0">Capítulo 5: MVP (Minimum Viable Product)</h3>
+                            <small class="text-white-50">Corte o que não é essencial</small>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>O maior erro em TCC é querer "abraçar o mundo". Defina o MVP: a menor versão do produto que
+                            ainda resolve o problema central e prova sua tese.</p>
+
+                        <div class="info-box">
+                            <h5 class="fw-bold"><i class="fas fa-cut me-2"></i>A Técnica MoSCoW</h5>
+                            <p class="mb-0">Use para priorizar seus requisitos:</p>
+                            <ul class="mt-2 mb-0">
+                                <li><strong>Must Have (Deve ter):</strong> Se não tiver, o sistema não funciona. (Faz
+                                    parte do MVP)</li>
+                                <li><strong>Should Have (Deveria ter):</strong> Importante, mas pode esperar uma v2.
+                                </li>
+                                <li><strong>Could Have (Poderia ter):</strong> Desejável, "nice to have".</li>
+                                <li><strong>Won't Have (Não terá):</strong> Fora do escopo por enquanto.</li>
+                            </ul>
+                        </div>
+                        <p class="text-center fw-bold mt-3">Para o TCC1, foque 100% no "Must Have"!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2026 Hub de Aulas - TCC Ciência da Computação</p>
+            <small class="text-white-50">Material de Apoio Didático</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

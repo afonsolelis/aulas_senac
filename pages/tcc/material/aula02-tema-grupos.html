@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Didático - Formação de Grupos e Tema</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../css/style.css">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            line-height: 1.8;
+            color: #2d3436;
+        }
+
+        .content-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header-hero {
+            background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+            color: white;
+            padding: 3rem;
+            border-radius: 16px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 95, 115, 0.2);
+        }
+
+        .header-hero .badge-iso {
+            background: #ee9b00;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-hero h1 {
+            font-weight: 800;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        .header-hero .subtitle {
+            opacity: 0.9;
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 800px;
+        }
+
+        .header-hero .meta {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+            opacity: 0.95;
+            font-weight: 500;
+        }
+
+        .toc {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
+
+        .toc h5 {
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: #2d3436;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 0;
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .toc li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .toc li::before {
+            content: "\f061";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #0a9396;
+            margin-right: 10px;
+            font-size: 0.8rem;
+        }
+
+        .toc a {
+            color: #495057;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .toc a:hover {
+            color: #0a9396;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border-top: 5px solid #0a9396;
+            position: relative;
+        }
+
+        .chapter-number {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0a9396;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter h2 {
+            color: #2d3436;
+            font-weight: 800;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            letter-spacing: -0.5px;
+        }
+
+        .chapter h3 {
+            color: #005f73;
+            font-weight: 700;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .chapter h3 i {
+            margin-right: 10px;
+            opacity: 0.7;
+        }
+
+        .chapter p {
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            color: #4a4a4a;
+        }
+
+        .chapter ul,
+        .chapter ol {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+        }
+
+        .chapter li {
+            margin-bottom: 0.5rem;
+            color: #4a4a4a;
+        }
+
+        .code-block {
+            background: #2d3436;
+            color: #dfe6e9;
+            border-radius: 8px;
+            padding: 1.5rem;
+            font-family: 'Consolas', 'Monaco', monospace;
+            margin: 2rem 0;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            border-left: 4px solid #ee9b00;
+        }
+
+        .info-box {
+            background: #e3f2fd;
+            border: none;
+            border-left: 5px solid #2196f3;
+            border-radius: 8px;
+            padding: 1.5rem 2rem;
+            margin: 2rem 0;
+        }
+
+        .info-box.warning {
+            background: #fff3e0;
+            border-left-color: #ff9800;
+        }
+
+        .info-box.success {
+            background: #e8f5e9;
+            border-left-color: #4caf50;
+        }
+
+        .info-box .title {
+            font-weight: 800;
+            color: #2d3436;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .info-box .title i {
+            margin-right: 10px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s;
+            height: 100%;
+            background: #f8f9fa;
+        }
+
+        .card-custom:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-custom .card-body {
+            padding: 1.5rem;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            padding: 0 5px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                    alt="Senac Logo" class="me-2" style="height: 40px;">
+                <span class="fw-bold text-dark">Hub de Aulas</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a href="../../tcc.html" class="btn btn-outline-secondary btn-sm rounded-pill px-3"><i
+                        class="fas fa-arrow-left me-1"></i> Voltar</a>
+                <a href="../aula2-formacaodegruposeescolhadotema.html"
+                    class="btn btn-danger btn-sm rounded-pill px-3"><i class="fas fa-desktop me-1"></i> Ver Slides</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="header-hero">
+            <span class="badge-iso">Guia Definitivo</span>
+            <h1>Formação de Grupos e Escolha do Tema</h1>
+            <p class="subtitle">Um manual prático para transformar ideias vagas em projetos de TCC viáveis, inovadores e
+                academicamente relevantes.</p>
+            <div class="meta">
+                <span><i class="fas fa-book-reader me-2"></i>Tempo de Leitura: 15 min</span>
+                <span><i class="fas fa-layer-group me-2"></i>Módulo: Planejamento</span>
+                <span><i class="fas fa-graduation-cap me-2"></i>TCC - TADS</span>
+            </div>
+        </div>
+
+        <div class="toc">
+            <h5><i class="fas fa-list-ul me-2"></i>Conteúdo deste Guia</h5>
+            <ol>
+                <li><a href="#intro">Prefácio: Mentalidade de Startup</a></li>
+                <li><a href="#cap1">Capítulo 1: The Dream Team</a></li>
+                <li><a href="#cap2">Capítulo 2: A Fábrica de Ideias</a></li>
+                <li><a href="#cap3">Capítulo 3: O Filtro de Validação</a></li>
+                <li><a href="#cap4">Capítulo 4: Pesquisa Bibliométrica Pro</a></li>
+                <li><a href="#cap5">Capítulo 5: O Escritório Digital</a></li>
+            </ol>
+        </div>
+
+        <!-- Prefácio -->
+        <div class="chapter" id="intro" style="border-top-color: #2d3436;">
+            <div class="chapter-number">Prefácio</div>
+            <h2>Mentalidade de Startup</h2>
+            <p>
+                Muitos alunos encaram o TCC (Trabalho de Conclusão de Curso) como uma burocracia final, um obstáculo
+                entre eles e o diploma. Essa é a mentalidade errada.
+            </p>
+            <p>
+                No mercado de tecnologia atual, o seu TCC deve ser visto como o seu <strong>MVP (Minimum Viable
+                    Product)</strong>. É a sua primeira grande oportunidade de construir um produto complexo do zero,
+                passando por todas as fases do ciclo de desenvolvimento de software: concepção, análise, arquitetura,
+                desenvolvimento, testes e deploy.
+            </p>
+            <div class="info-box success">
+                <div class="title"><i class="fas fa-lightbulb"></i> A Oportunidade</div>
+                <p class="mb-0">
+                    Grandes empresas não querem ver apenas notas no seu currículo; elas querem ver o que você construiu.
+                    Um TCC bem feito é o melhor portfólio que você pode levar para uma entrevista de emprego.
+                </p>
+            </div>
+        </div>
+
+        <!-- Capítulo 1 -->
+        <div class="chapter" id="cap1">
+            <div class="chapter-number">Capítulo 1</div>
+            <h2>The Dream Team</h2>
+            <p>
+                A formação do grupo é a primeira decisão gerencial que você tomará. Esqueça a ideia de "fazer grupo com
+                amigos porque é divertido". Busque complementaridade. Em startups, existe um trio clássico de fundadores
+                que se aplica perfeitamente ao TCC:
+            </p>
+
+            <div class="row g-4 my-4">
+                <div class="col-md-4">
+                    <div class="card-custom">
+                        <div class="card-body text-center">
+                            <i class="fas fa-code fa-3x text-primary mb-3"></i>
+                            <h5 class="fw-bold">The Hacker</h5>
+                            <p class="small text-muted mb-0">O especialista técnico. Define a arquitetura, escolhe a
+                                stack e resolve os bugs mais difíceis.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-custom">
+                        <div class="card-body text-center">
+                            <i class="fas fa-paint-brush fa-3x text-danger mb-3"></i>
+                            <h5 class="fw-bold">The Hipster</h5>
+                            <p class="small text-muted mb-0">Focado na experiência do usuário (UX/UI) e no design do
+                                produto. Garante que o sistema seja usável e bonito.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card-custom">
+                        <div class="card-body text-center">
+                            <i class="fas fa-briefcase fa-3x text-success mb-3"></i>
+                            <h5 class="fw-bold">The Hustler</h5>
+                            <p class="small text-muted mb-0">O gerente/vendedor. Cuida da documentação, prazos,
+                                comunicação e "vende" a ideia para a banca.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>O Contrato de Convivência</h3>
+            <p>
+                Conflitos vão acontecer. Para mitigá-los, estabeleçam regras claras desde o dia 1:
+            </p>
+            <ul>
+                <li><strong>Horários de Reunião:</strong> "Toda quinta-feira às 19h no Discord, sem falta."</li>
+                <li><strong>Ferramentas Oficiais:</strong> Nada de mandar arquivo importante pelo WhatsApp. Código no
+                    GitHub, texto no Drive.</li>
+                <li><strong>Deadline Interno:</strong> O prazo do grupo deve ser sempre 3 dias antes do prazo do
+                    professor.</li>
+            </ul>
+        </div>
+
+        <!-- Capítulo 2 -->
+        <div class="chapter" id="cap2">
+            <div class="chapter-number">Capítulo 2</div>
+            <h2>A Fábrica de Ideias - Brainstorming</h2>
+            <p>
+                Uma folha em branco é assustadora. Para preenchê-la, precisamos de técnicas estruturadas de ideação. Não
+                espere pela "inspiração divina"; force a criatividade com método.
+            </p>
+
+            <h3>Técnica 1: Mapa Mental Ramificado</h3>
+            <p>Comece com um tema central amplo e vá quebrando em subproblemas.</p>
+            <div class="code-block">
+                Saúde (Tema Central)
+                ├── Problema: Filas de Espera
+                │ ├── Solução: App de agendamento? (Comum)
+                │ └── Solução: Previsão de tempo de espera com IA? (Inovador)
+                ├── Problema: Perda de Prontuários
+                │ └── Solução: Blockchain para dados médicos? (Complexo)
+                └── Problema: Acompanhamento Pós-Cirúrgico
+                └── Solução: Chatbot de monitoramento via WhatsApp? (Viável e Útil)
+            </div>
+
+            <h3>Técnica 2: SCAMPER</h3>
+            <p>Pegue uma solução que já existe (ex: Uber) e aplique os verbos:</p>
+            <ul>
+                <li><strong>S</strong>ubstituir: Uber, mas substituindo carros por barcos? (Logística fluvial).</li>
+                <li><strong>C</strong>ombinar: Uber + Tinder? (Caronas para encontros - talvez éticamente duvidoso, mas
+                    é uma ideia).</li>
+                <li><strong>A</strong>daptar: Uber para transporte de idosos com acompanhamento médico? (Nicho
+                    específico).</li>
+                <li><strong>E</strong>liminar: Uber sem motorista? (Carros autônomos - difícil pro TCC).</li>
+            </ul>
+
+            <h3>Técnica 3: Os 5 Porquês (Causa Raiz)</h3>
+            <p>Encontre a dor real do usuário.</p>
+            <ol>
+                <li>O trânsito é ruim. <strong>Por quê?</strong></li>
+                <li>Muitos carros na rua. <strong>Por quê?</strong></li>
+                <li>O transporte público é ineficiente. <strong>Por quê?</strong></li>
+                <li>As rotas dos ônibus são fixas e não atendem a demanda dinâmica. <strong>Por quê?</strong></li>
+                <li><strong>Ideia de TCC:</strong> Um sistema de rotas de ônibus dinâmicas baseadas em demanda em tempo
+                    real.</li>
+            </ol>
+        </div>
+
+        <!-- Capítulo 3 -->
+        <div class="chapter" id="cap3">
+            <div class="chapter-number">Capítulo 3</div>
+            <h2>O Filtro de Validação</h2>
+            <p>
+                Você teve 10 ideias. 9 delas provavelmente são ruins para um TCC. Como saber qual é a boa? Aplique o
+                filtro de validação técnica e acadêmica.
+            </p>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="info-box warning h-100 mt-0">
+                        <div class="title"><i class="fas fa-ban"></i> O que Mata um TCC</div>
+                        <ul class="mb-0">
+                            <li><strong>Escopo Gigante:</strong> Querer fazer um ERP completo.</li>
+                            <li><strong>Sem 'Dono':</strong> Fazer um sistema para ninguém. Quem é o usuário?</li>
+                            <li><strong>Mais do Mesmo:</strong> Outra locadora, outro controle de estoque simples.</li>
+                            <li><strong>Impossível Tecnologicamente:</strong> "App que detecta câncer usando a câmera do
+                                celular" (sem base científica prévia).</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="info-box success h-100 mt-0">
+                        <div class="title"><i class="fas fa-check-circle"></i> O que Aprova um TCC</div>
+                        <ul class="mb-0">
+                            <li><strong>Problema Real:</strong> Resolve uma dor clara.</li>
+                            <li><strong>Tecnologia Adequada:</strong> Usa ferramentas modernas (React, Node, Python,
+                                IA).</li>
+                            <li><strong>Viável:</strong> Dá para fazer um MVP em 4 meses.</li>
+                            <li><strong>Embasado:</strong> Existem artigos científicos sobre o tema.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <h3>Análise SWOT do Tema</h3>
+            <p>Antes de bater o martelo, faça a matriz:</p>
+            <ul>
+                <li><strong>Forças (Strengths):</strong> O grupo domina a tecnologia (ex: Java)? Ótimo.</li>
+                <li><strong>Fraquezas (Weaknesses):</strong> Ninguém sabe Mobile? Então não proponham um App nativo
+                    complexo.</li>
+                <li><strong>Oportunidades (Opportunities):</strong> A área de Telemedicina cresceu 300%? É um bom
+                    momento.</li>
+                <li><strong>Ameaças (Threats):</strong> A API do Twitter que vocês iam usar passou a ser paga? Risco
+                    alto.</li>
+            </ul>
+        </div>
+
+        <!-- Capítulo 4 -->
+        <div class="chapter" id="cap4">
+            <div class="chapter-number">Capítulo 4</div>
+            <h2>Pesquisa Bibliométrica Pro</h2>
+            <p>
+                Não confie em blogs ou vídeos do YouTube como base teórica. TCC exige ciência. Você precisa saber o
+                "Estado da Arte" do seu tema.
+            </p>
+
+            <h3>Para além do Google Scholar</h3>
+            <p>Amplie seus horizontes. A ciência de ponta muitas vezes está em inglês, em bases internacionais de acesso
+                aberto.</p>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Base</th>
+                            <th>Região/Foco</th>
+                            <th>Melhor para...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>OpenAIRE</strong></td>
+                            <td>Europa 🇪🇺</td>
+                            <td>Ciência de dados, GDPR, normas europeias.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>J-STAGE</strong></td>
+                            <td>Japão 🇯🇵</td>
+                            <td>Robótica, Hardware, IoT.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>KoreaScience</strong></td>
+                            <td>Coreia do Sul 🇰🇷</td>
+                            <td>Semicondutores, Telecomunicações, 5G.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>ArXiv</strong></td>
+                            <td>Global 🌎</td>
+                            <td>Pre-prints de IA e Machine Learning (o que há de mais recente).</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Papers with Code</strong></td>
+                            <td>Global 🌎</td>
+                            <td>Achar o código fonte de artigos de IA.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Prompt Engineering para Pesquisa</h3>
+            <p>Use o ChatGPT/Gemini/Perplexity não para escrever seu texto, mas para <strong>achar o que ler</strong>.
+            </p>
+
+            <div class="info-box">
+                <div class="title"><i class="fas fa-robot"></i> Prompt Mestre para Estado da Arte</div>
+                <p><em>"Atue como um pesquisador sênior em Engenharia de Software. Estou desenvolvendo um TCC sobre [SEU
+                        TEMA]. Liste os 5 principais desafios em aberto nesta área citados na literatura nos últimos 3
+                        anos. Para cada desafio, sugira 2 artigos seminais ou reviews recentes que eu deveria ler."</em>
+                </p>
+            </div>
+            <p class="small text-muted"><i class="fas fa-exclamation-triangle me-1"></i> Sempre verifique se os artigos
+                sugeridos realmente existem no Google Scholar. IAs podem alucinar referências.</p>
+        </div>
+
+        <!-- Capítulo 5 -->
+        <div class="chapter" id="cap5">
+            <div class="chapter-number">Capítulo 5</div>
+            <h2>O Escritório Digital (Setup)</h2>
+            <p>
+                Profissionalismo começa na organização. Criem esse ambiente na primeira semana:
+            </p>
+
+            <h3>1. Gestão de Tarefas (Kanban)</h3>
+            <p>Usem o <strong>Trello</strong> ou <strong>GitHub Projects</strong>. Colunas básicas:</p>
+            <div class="d-flex gap-2 mb-3">
+                <span class="badge bg-secondary">Backlog (Ideias)</span>
+                <span class="badge bg-primary">To Do (Semana)</span>
+                <span class="badge bg-warning text-dark">Doing (Agora)</span>
+                <span class="badge bg-success">Done (Feito)</span>
+            </div>
+
+            <h3>2. Repositório de Código</h3>
+            <p><strong>GitHub</strong> ou <strong>GitLab</strong>. Aprendam a usar <em>branches</em> (main, develop,
+                feature/login, feature/cadastro). Nunca commitem direto na main!</p>
+
+            <h3>3. Escrita Acadêmica</h3>
+            <p>Usem o <strong>Overleaf</strong> (Online LaTeX Editor) ou <strong>Google Docs</strong> (com Zotero
+                plugin). LaTeX é preferível pois formata ABNT automaticamente, poupando horas de dor de cabeça.</p>
+
+            <h3>4. Gestão de Referências</h3>
+            <p>Instalem o <strong>Zotero</strong> (extensão do Chrome). Viu um artigo bom? Clique no botão e ele salva o
+                PDF e gera a citação ABNT automaticamente. Não façam referências à mão!</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="../aula2-formacaodegruposeescolhadotema.html" class="btn btn-outline-dark rounded-pill px-4">
+                <i class="fas fa-arrow-left me-2"></i>Voltar aos Slides
+            </a>
+            <a href="../../tcc.html" class="btn btn-primary rounded-pill px-4">
+                <i class="fas fa-home me-2"></i>Hub de TCC
+            </a>
+        </div>
+    </div>
+
+    <footer class="bg-white border-top py-5 mt-5">
+        <div class="container text-center">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                height="30" class="mb-3 opacity-75">
+            <p class="text-muted mb-0">Hub de Aulas - Professor Afonso Lelis</p>
+            <p class="small text-muted">Material didático de apoio - Não substitui a presença em sala.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

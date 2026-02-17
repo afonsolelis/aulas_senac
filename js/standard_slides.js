@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const nextBtn = document.getElementById('nextBtn');
   const progressBar = document.getElementById('progressBar');
   const fullscreenBtn = document.getElementById('fullscreenBtn');
+  const slideCounter = document.getElementById('slideCounter');
 
   // --- Core Navigation ---
 
@@ -35,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nextBtn) nextBtn.disabled = (currentSlide === totalSlides);
 
     updateProgress();
+
+    if (slideCounter) {
+      slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
+    }
   }
 
   function nextSlide() {
@@ -53,26 +58,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch((err) => {
-            console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
-        });
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+      });
     } else {
-        document.exitFullscreen();
+      document.exitFullscreen();
     }
   }
 
   function updateFullscreenButtonIcon() {
     if (fullscreenBtn) {
-        const icon = fullscreenBtn.querySelector('i');
-        if (icon) {
-            if (document.fullscreenElement) {
-                icon.classList.remove('fa-expand');
-                icon.classList.add('fa-compress');
-            } else {
-                icon.classList.remove('fa-compress');
-                icon.classList.add('fa-expand');
-            }
+      const icon = fullscreenBtn.querySelector('i');
+      if (icon) {
+        if (document.fullscreenElement) {
+          icon.classList.remove('fa-expand');
+          icon.classList.add('fa-compress');
+        } else {
+          icon.classList.remove('fa-compress');
+          icon.classList.add('fa-expand');
         }
+      }
     }
   }
 
@@ -80,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (prevBtn) prevBtn.addEventListener('click', prevSlide);
   if (nextBtn) nextBtn.addEventListener('click', nextSlide);
-  
+
   if (fullscreenBtn) {
-      fullscreenBtn.addEventListener('click', toggleFullscreen);
+    fullscreenBtn.addEventListener('click', toggleFullscreen);
   }
 
   document.addEventListener('fullscreenchange', updateFullscreenButtonIcon);

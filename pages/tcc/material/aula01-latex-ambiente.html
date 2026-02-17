@@ -15,29 +15,168 @@
             min-height: 100vh;
             line-height: 1.7;
         }
-        .content-wrapper { max-width: 960px; margin: 0 auto; padding: 2rem 1rem; }
-        .header-hero { background: linear-gradient(135deg, #005f73 0%, #0a9396 100%); color: white; padding: 2.5rem; border-radius: 12px; margin-bottom: 2rem; }
-        .header-hero .badge-iso { background: #ee9b00; color: white; padding: 0.5rem 1rem; border-radius: 4px; font-size: 0.8rem; font-weight: 600; display: inline-block; margin-bottom: 1rem; }
-        .header-hero h1 { font-weight: 700; margin-bottom: 0.5rem; font-size: 2rem; }
-        .header-hero .subtitle { opacity: 0.85; font-size: 1.1rem; }
-        .header-hero .meta { margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255, 255, 255, 0.2); display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.9rem; opacity: 0.9; }
-        .toc { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 1.5rem; margin-bottom: 2rem; }
-        .toc h5 { font-weight: 700; margin-bottom: 1rem; color: #005f73; }
-        .toc ol { margin: 0; padding-left: 1.25rem; }
-        .toc li { padding: 0.25rem 0; }
-        .toc a { color: #495057; text-decoration: none; }
-        .toc a:hover { color: #ee9b00; }
-        .chapter { background: white; border-radius: 12px; padding: 2.25rem; margin-bottom: 2rem; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06); border-top: 4px solid #0a9396; }
-        .chapter-number { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: #0a9396; font-weight: 700; margin-bottom: 0.5rem; }
-        .chapter h2 { color: #005f73; font-weight: 700; margin-bottom: 1.25rem; font-size: 1.7rem; }
-        .chapter h3 { color: #005f73; font-weight: 600; margin-top: 1.75rem; margin-bottom: 0.75rem; font-size: 1.2rem; border-bottom: 2px solid #e9ecef; padding-bottom: 0.5rem; }
-        .code-block { background: #1a1a2e; color: #e2e8f0; border-radius: 8px; padding: 1rem 1.25rem; font-family: 'Courier New', monospace; margin: 1rem 0; overflow-x: auto; font-size: 0.88rem; white-space: pre-wrap; }
-        .code-block .comment { color: #94a3b8; }
-        .code-block .keyword { color: #ff79c6; }
-        .code-block .string { color: #50fa7b; }
-        .info-box { background: #d1ecf1; border: 1px solid #17a2b8; border-radius: 8px; padding: 1rem 1.25rem; margin: 1.25rem 0; }
-        .info-box .title { font-weight: 700; color: #0c5460; margin-bottom: 0.5rem; }
-        .nav-buttons { display: flex; justify-content: space-between; gap: 1rem; margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #e9ecef; flex-wrap: wrap; }
+
+        .content-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header-hero {
+            background: linear-gradient(135deg, #005f73 0%, #0a9396 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .header-hero .badge-iso {
+            background: #ee9b00;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .header-hero h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .header-hero .subtitle {
+            opacity: 0.85;
+            font-size: 1.1rem;
+        }
+
+        .header-hero .meta {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #005f73;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .toc li {
+            padding: 0.25rem 0;
+        }
+
+        .toc a {
+            color: #495057;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: #ee9b00;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 12px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-top: 4px solid #0a9396;
+        }
+
+        .chapter-number {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0a9396;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter h2 {
+            color: #005f73;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+        }
+
+        .chapter h3 {
+            color: #005f73;
+            font-weight: 600;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1a1a2e;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.88rem;
+            white-space: pre-wrap;
+        }
+
+        .code-block .comment {
+            color: #94a3b8;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .string {
+            color: #50fa7b;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .info-box .title {
+            font-weight: 700;
+            color: #0c5460;
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
     </style>
 </head>
 
@@ -45,12 +184,15 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
-                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height: 40px;">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                    alt="Senac Logo" class="me-2" style="height: 40px;">
                 <span class="fw-bold text-dark">Hub de Aulas</span>
             </a>
             <div class="d-flex align-items-center gap-2">
-                <a href="../../tcc.html" class="btn btn-outline-secondary btn-sm rounded-pill"><i class="fas fa-arrow-left me-1"></i> Voltar</a>
-                <a href="../introducaoaolatex.html" class="btn btn-danger btn-sm rounded-pill"><i class="fas fa-desktop me-1"></i> Ver Slides</a>
+                <a href="../../tcc.html" class="btn btn-outline-secondary btn-sm rounded-pill"><i
+                        class="fas fa-arrow-left me-1"></i> Voltar</a>
+                <a href="../aula1-introducaoaolatex.html" class="btn btn-danger btn-sm rounded-pill"><i
+                        class="fas fa-desktop me-1"></i> Ver Slides</a>
             </div>
         </div>
     </nav>
@@ -82,15 +224,24 @@
             <div class="chapter-number">Capítulo 1</div>
             <h2>O que é LaTeX?</h2>
             <p>
-                LaTeX (pronuncia-se "lá-tek" ou "lei-tek") não é um editor de texto como o Microsoft Word ou Google Docs. É um <strong>sistema de preparação de documentos</strong> de alta qualidade tipográfica. Com ele, você se concentra no conteúdo do seu trabalho, e o LaTeX cuida da formatação, garantindo um resultado profissional e consistente.
+                LaTeX (pronuncia-se "lá-tek" ou "lei-tek") não é um editor de texto como o Microsoft Word ou Google
+                Docs. É um <strong>sistema de preparação de documentos</strong> de alta qualidade tipográfica. Com ele,
+                você se concentra no conteúdo do seu trabalho, e o LaTeX cuida da formatação, garantindo um resultado
+                profissional e consistente.
             </p>
             <h3>Vantagens do LaTeX para Trabalhos Acadêmicos</h3>
             <ul>
-                <li><strong>Qualidade Tipográfica:</strong> A renderização de fórmulas matemáticas, tabelas e textos é superior à da maioria dos processadores de texto.</li>
-                <li><strong>Separação de Conteúdo e Estilo:</strong> Você escreve o texto em um arquivo <code>.tex</code> e a formatação é definida por comandos e classes, como a <code>abntex2</code> para normas ABNT.</li>
-                <li><strong>Automação:</strong> Geração automática de sumários, listas de figuras, referências bibliográficas e índices.</li>
-                <li><strong>Estabilidade:</strong> Lida com documentos muito longos e complexos (como uma tese) de forma mais estável que editores de texto convencionais.</li>
-                <li><strong>Padrão Acadêmico:</strong> É o padrão de fato em muitas áreas da ciência e engenharia para publicação de artigos e teses.</li>
+                <li><strong>Qualidade Tipográfica:</strong> A renderização de fórmulas matemáticas, tabelas e textos é
+                    superior à da maioria dos processadores de texto.</li>
+                <li><strong>Separação de Conteúdo e Estilo:</strong> Você escreve o texto em um arquivo
+                    <code>.tex</code> e a formatação é definida por comandos e classes, como a <code>abntex2</code> para
+                    normas ABNT.</li>
+                <li><strong>Automação:</strong> Geração automática de sumários, listas de figuras, referências
+                    bibliográficas e índices.</li>
+                <li><strong>Estabilidade:</strong> Lida com documentos muito longos e complexos (como uma tese) de forma
+                    mais estável que editores de texto convencionais.</li>
+                <li><strong>Padrão Acadêmico:</strong> É o padrão de fato em muitas áreas da ciência e engenharia para
+                    publicação de artigos e teses.</li>
             </ul>
         </div>
 
@@ -98,21 +249,28 @@
             <div class="chapter-number">Capítulo 2</div>
             <h2>Passo Inicial: Fazendo o Fork do Template</h2>
             <p>
-                Antes de configurar o ambiente, o primeiro passo é criar uma cópia do template oficial do TCC para a sua própria conta do GitHub. Esse processo é chamado de <strong>"Fork"</strong>. Fazer um fork cria um repositório seu, vinculado ao original, onde você e seu grupo poderão trabalhar.
+                Antes de configurar o ambiente, o primeiro passo é criar uma cópia do template oficial do TCC para a sua
+                própria conta do GitHub. Esse processo é chamado de <strong>"Fork"</strong>. Fazer um fork cria um
+                repositório seu, vinculado ao original, onde você e seu grupo poderão trabalhar.
             </p>
             <ol>
                 <li>
                     <strong>Acesse o Repositório Template:</strong><br>
-                    Navegue até o repositório oficial: <a href="https://github.com/afonsolelis/template_tcc_senac" target="_blank">https://github.com/afonsolelis/template_tcc_senac</a>
+                    Navegue até o repositório oficial: <a href="https://github.com/afonsolelis/template_tcc_senac"
+                        target="_blank">https://github.com/afonsolelis/template_tcc_senac</a>
                 </li>
                 <li>
                     <strong>Faça o Fork:</strong><br>
-                    No canto superior direito da página, clique no botão <strong>"Fork"</strong>. O GitHub irá perguntar para qual conta você deseja copiar o repositório. Selecione sua conta pessoal.
-                    <img src="https://docs.github.com/assets/cb-130386/images/help/repository/fork-button.png" alt="Botão de Fork do GitHub" class="img-fluid my-2 border rounded">
+                    No canto superior direito da página, clique no botão <strong>"Fork"</strong>. O GitHub irá perguntar
+                    para qual conta você deseja copiar o repositório. Selecione sua conta pessoal.
+                    <img src="https://docs.github.com/assets/cb-130386/images/help/repository/fork-button.png"
+                        alt="Botão de Fork do GitHub" class="img-fluid my-2 border rounded">
                 </li>
                 <li>
                     <strong>Clone o Seu Repositório:</strong><br>
-                    Após o fork ser concluído, você estará em uma nova página (<code>github.com/SEU_USUARIO/template_tcc_senac</code>). É <strong>deste novo repositório</strong> que você irá clonar os arquivos para seu ambiente local ou abrir no Codespaces.
+                    Após o fork ser concluído, você estará em uma nova página
+                    (<code>github.com/SEU_USUARIO/template_tcc_senac</code>). É <strong>deste novo repositório</strong>
+                    que você irá clonar os arquivos para seu ambiente local ou abrir no Codespaces.
                 </li>
             </ol>
         </div>
@@ -120,22 +278,31 @@
         <div class="chapter" id="cap3">
             <div class="chapter-number">Capítulo 3</div>
             <h2>Opção 1: Ambiente Local no Windows</h2>
-            <p>Configurar um ambiente local lhe dá total controle e permite trabalhar offline. Recomendamos a seguinte combinação de ferramentas:</p>
+            <p>Configurar um ambiente local lhe dá total controle e permite trabalhar offline. Recomendamos a seguinte
+                combinação de ferramentas:</p>
 
             <h3>Passo 1: Instalar uma Distribuição TeX (MiKTeX)</h3>
-            <p>Uma "distribuição" TeX é o motor que compila seus arquivos <code>.tex</code> em um PDF. Para Windows, o <strong>MiKTeX</strong> é uma excelente escolha por sua capacidade de instalar pacotes ausentes automaticamente.</p>
+            <p>Uma "distribuição" TeX é o motor que compila seus arquivos <code>.tex</code> em um PDF. Para Windows, o
+                <strong>MiKTeX</strong> é uma excelente escolha por sua capacidade de instalar pacotes ausentes
+                automaticamente.</p>
             <ol>
-                <li>Acesse o site oficial do MiKTeX: <a href="https://miktex.org/download" target="_blank">miktex.org/download</a>.</li>
+                <li>Acesse o site oficial do MiKTeX: <a href="https://miktex.org/download"
+                        target="_blank">miktex.org/download</a>.</li>
                 <li>Baixe o instalador para Windows.</li>
-                <li>Execute o instalador. Na tela "MiKTeX Setup", você pode escolher instalar apenas para seu usuário ou para todos (requer admin).</li>
-                <li>Na tela "Settings", em "Install missing packages on-the-fly", selecione <strong>"Yes"</strong>. Isso é crucial para que o MiKTeX baixe pacotes como o <code>abntex2</code> automaticamente quando você precisar deles.</li>
+                <li>Execute o instalador. Na tela "MiKTeX Setup", você pode escolher instalar apenas para seu usuário ou
+                    para todos (requer admin).</li>
+                <li>Na tela "Settings", em "Install missing packages on-the-fly", selecione <strong>"Yes"</strong>. Isso
+                    é crucial para que o MiKTeX baixe pacotes como o <code>abntex2</code> automaticamente quando você
+                    precisar deles.</li>
                 <li>Conclua a instalação.</li>
             </ol>
 
             <h3>Passo 2: Instalar o Editor (VS Code + LaTeX Workshop)</h3>
-            <p>O Visual Studio Code é um editor de código leve e poderoso. Com a extensão certa, ele se torna um ambiente LaTeX fantástico.</p>
+            <p>O Visual Studio Code é um editor de código leve e poderoso. Com a extensão certa, ele se torna um
+                ambiente LaTeX fantástico.</p>
             <ol>
-                <li>Se ainda não tiver, baixe e instale o <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>.</li>
+                <li>Se ainda não tiver, baixe e instale o <a href="https://code.visualstudio.com/"
+                        target="_blank">Visual Studio Code</a>.</li>
                 <li>Abra o VS Code, vá para a aba de <strong>Extensões</strong> (ícone de blocos ou Ctrl+Shift+X).</li>
                 <li>Procure por <strong>"LaTeX Workshop"</strong> e clique em "Instalar".</li>
             </ol>
@@ -149,59 +316,67 @@
                 <li>Cole o seguinte código no arquivo:</li>
             </ol>
             <div class="code-block">
-\documentclass[12pt, a4paper]{article}
-\usepackage[utf8]{inputenc}
-\usepackage[brazil]{babel}
+                \documentclass[12pt, a4paper]{article}
+                \usepackage[utf8]{inputenc}
+                \usepackage[brazil]{babel}
 
-\title{Meu Primeiro Documento LaTeX}
-\author{Seu Nome}
-\date{\today}
+                \title{Meu Primeiro Documento LaTeX}
+                \author{Seu Nome}
+                \date{\today}
 
-\begin{document}
+                \begin{document}
 
-\maketitle
+                \maketitle
 
-\section{Introdução}
-Olá, mundo! Este é meu primeiro documento gerado com LaTeX no VS Code.
+                \section{Introdução}
+                Olá, mundo! Este é meu primeiro documento gerado com LaTeX no VS Code.
 
-A fórmula de Bhaskara é: \( x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \)
+                A fórmula de Bhaskara é: \( x = \frac{-b \pm \sqrt{b^2-4ac}}{2a} \)
 
-\end{document}
+                \end{document}
             </div>
-            <p>Para compilar, clique no ícone de "Play" (Build LaTeX project) que aparece no canto superior direito do VS Code, ou use o atalho <code>Ctrl+Alt+B</code>. Após alguns instantes, um arquivo <code>main.pdf</code> aparecerá na sua pasta, e o VS Code o exibirá em uma aba ao lado.</p>
+            <p>Para compilar, clique no ícone de "Play" (Build LaTeX project) que aparece no canto superior direito do
+                VS Code, ou use o atalho <code>Ctrl+Alt+B</code>. Após alguns instantes, um arquivo
+                <code>main.pdf</code> aparecerá na sua pasta, e o VS Code o exibirá em uma aba ao lado.</p>
 
             <h3 id="docker-setup" class="mt-5">Opção Adicional: Ambiente Local com Docker</h3>
-            <p>Para usuários familiarizados com Docker, esta é uma abordagem poderosa que cria um ambiente LaTeX consistente e isolado, sem instalar nada diretamente na sua máquina (além do Docker).</p>
+            <p>Para usuários familiarizados com Docker, esta é uma abordagem poderosa que cria um ambiente LaTeX
+                consistente e isolado, sem instalar nada diretamente na sua máquina (além do Docker).</p>
             <h4>Pré-requisitos</h4>
             <ul>
-                <li><a href="https://docs.docker.com/get-docker/" target="_blank">Docker Desktop</a> instalado e em execução.</li>
+                <li><a href="https://docs.docker.com/get-docker/" target="_blank">Docker Desktop</a> instalado e em
+                    execução.</li>
             </ul>
             <h4>Passo 1: Crie o arquivo <code>docker-compose.yml</code></h4>
-            <p>Na raiz do seu projeto (a pasta que você clonou do seu fork), crie um arquivo chamado <code>docker-compose.yml</code> e cole o seguinte conteúdo:</p>
+            <p>Na raiz do seu projeto (a pasta que você clonou do seu fork), crie um arquivo chamado
+                <code>docker-compose.yml</code> e cole o seguinte conteúdo:</p>
             <div class="code-block">
-version: '3.9'
-services:
-  latex:
-    # Imagem completa do TeX Live, inclui todos os pacotes que você pode precisar
-    image: texlive/texlive-full:latest
-    container_name: tcc_latex_env
-    working_dir: /app
-    volumes:
-      # Mapeia a pasta atual do projeto para o diretório /app dentro do container
-      - .:/app
-    # Comando para manter o container rodando em segundo plano
-    command: tail -f /dev/null
-</div>
+                version: '3.9'
+                services:
+                latex:
+                # Imagem completa do TeX Live, inclui todos os pacotes que você pode precisar
+                image: texlive/texlive-full:latest
+                container_name: tcc_latex_env
+                working_dir: /app
+                volumes:
+                # Mapeia a pasta atual do projeto para o diretório /app dentro do container
+                - .:/app
+                # Comando para manter o container rodando em segundo plano
+                command: tail -f /dev/null
+            </div>
 
             <h4>Passo 2: Utilizando o Ambiente</h4>
-            <p>Com o arquivo salvo, você pode gerenciar o ambiente com os seguintes comandos no seu terminal, na raiz do projeto:</p>
+            <p>Com o arquivo salvo, você pode gerenciar o ambiente com os seguintes comandos no seu terminal, na raiz do
+                projeto:</p>
             <ol>
                 <li class="mb-2"><strong>Iniciar o ambiente:</strong><br>
                     <code class="d-block bg-dark text-white p-2 rounded user-select-all">docker-compose up -d</code>
                 </li>
                 <li class="mb-2"><strong>Compilar o documento:</strong><br>
-                    Para compilar o arquivo <code>main.tex</code>, execute o comando <code>pdflatex</code> dentro do container. Pode ser necessário rodar mais de uma vez para gerar referências e sumário corretamente.
-                    <code class="d-block bg-dark text-white p-2 rounded user-select-all">docker-compose exec latex pdflatex main.tex</code>
+                    Para compilar o arquivo <code>main.tex</code>, execute o comando <code>pdflatex</code> dentro do
+                    container. Pode ser necessário rodar mais de uma vez para gerar referências e sumário corretamente.
+                    <code
+                        class="d-block bg-dark text-white p-2 rounded user-select-all">docker-compose exec latex pdflatex main.tex</code>
                 </li>
                 <li><strong>Parar o ambiente:</strong><br>
                     Quando terminar de usar, pare e remova o container.
@@ -210,128 +385,143 @@ services:
             </ol>
             <div class="info-box">
                 <div class="title"><i class="fab fa-docker me-2"></i>Integração com VS Code</div>
-                <p class="mb-0">Se você tem a extensão "Dev Containers" do VS Code, ele pode detectar automaticamente seu arquivo <code>docker-compose.yml</code> e oferecer para reabrir o projeto dentro do container, dando a você uma experiência totalmente integrada, similar ao Codespaces, mas rodando localmente.</p>
+                <p class="mb-0">Se você tem a extensão "Dev Containers" do VS Code, ele pode detectar automaticamente
+                    seu arquivo <code>docker-compose.yml</code> e oferecer para reabrir o projeto dentro do container,
+                    dando a você uma experiência totalmente integrada, similar ao Codespaces, mas rodando localmente.
+                </p>
             </div>
         </div>
 
         <div class="chapter" id="cap4">
             <div class="chapter-number">Capítulo 4</div>
             <h2>Opção 2: Ambiente na Nuvem com GitHub Codespaces</h2>
-            <p>O GitHub Codespaces cria um ambiente de desenvolvimento completo que roda na nuvem e é acessado pelo seu navegador. É uma ótima opção para garantir que todos no grupo tenham o mesmo ambiente, sem precisar instalar nada localmente.</p>
+            <p>O GitHub Codespaces cria um ambiente de desenvolvimento completo que roda na nuvem e é acessado pelo seu
+                navegador. É uma ótima opção para garantir que todos no grupo tenham o mesmo ambiente, sem precisar
+                instalar nada localmente.</p>
 
             <h3>Passo 1: Configurar o Dev Container</h3>
             <p>A configuração do ambiente é feita através de um arquivo chamado <code>devcontainer.json</code>.</p>
             <ol>
                 <li>No seu repositório do GitHub, crie uma pasta chamada <code>.devcontainer</code>.</li>
                 <li>Dentro dela, crie um arquivo chamado <code>devcontainer.json</code>.</li>
-                <li>Cole o seguinte conteúdo no arquivo. Ele instrui o Codespaces a usar uma imagem base e instalar o conjunto completo de ferramentas TeX Live.</li>
+                <li>Cole o seguinte conteúdo no arquivo. Ele instrui o Codespaces a usar uma imagem base e instalar o
+                    conjunto completo de ferramentas TeX Live.</li>
             </ol>
             <div class="code-block">
-{
-    "name": "LaTeX Codespace",
-    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
-    "features": {
-        "ghcr.io/rocker-org/devcontainer-features/texlive:1": {
-            "scheme": "full"
-        }
-    },
-    "customizations": {
-        "vscode": {
-            "extensions": [
+                {
+                "name": "LaTeX Codespace",
+                "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+                "features": {
+                "ghcr.io/rocker-org/devcontainer-features/texlive:1": {
+                "scheme": "full"
+                }
+                },
+                "customizations": {
+                "vscode": {
+                "extensions": [
                 "james-yu.latex-workshop"
-            ]
-        }
-    }
-}
+                ]
+                }
+                }
+                }
             </div>
-            <p>Este arquivo faz três coisas importantes: usa uma imagem base do Ubuntu, instala a distribuição <strong>TeX Live completa</strong> e já instala a extensão <strong>LaTeX Workshop</strong> para você.</p>
+            <p>Este arquivo faz três coisas importantes: usa uma imagem base do Ubuntu, instala a distribuição
+                <strong>TeX Live completa</strong> e já instala a extensão <strong>LaTeX Workshop</strong> para você.
+            </p>
 
             <h3>Passo 2: Iniciar o Codespace</h3>
             <ol>
                 <li>Vá para a página principal do seu repositório no GitHub.</li>
                 <li>Clique no botão verde <strong>"&lt;&gt; Code"</strong>.</li>
-                <li>Vá para a aba <strong>"Codespaces"</strong> e clique em <strong>"Create codespace on main"</strong>.</li>
+                <li>Vá para a aba <strong>"Codespaces"</strong> e clique em <strong>"Create codespace on main"</strong>.
+                </li>
                 <li>Aguarde o GitHub configurar seu ambiente. Isso pode levar alguns minutos na primeira vez.</li>
             </ol>
-            
+
             <h3>Passo 3: Compilando na Nuvem</h3>
-            <p>Uma vez que o Codespace estiver pronto, ele abrirá uma instância do VS Code no seu navegador. O processo para criar e compilar seu arquivo <code>.tex</code> é <strong>exatamente o mesmo</strong> do ambiente local, pois a extensão LaTeX Workshop já estará instalada e configurada.</p>
+            <p>Uma vez que o Codespace estiver pronto, ele abrirá uma instância do VS Code no seu navegador. O processo
+                para criar e compilar seu arquivo <code>.tex</code> é <strong>exatamente o mesmo</strong> do ambiente
+                local, pois a extensão LaTeX Workshop já estará instalada e configurada.</p>
         </div>
 
         <div class="chapter" id="cap5">
             <div class="chapter-number">Capítulo 5</div>
             <h2>Estrutura de um Documento ABNT com abntex2</h2>
-            <p>O pacote <code>abntex2</code> é uma implementação das normas da ABNT para LaTeX. Ele simplifica enormemente a formatação de trabalhos acadêmicos.</p>
-            <p>Abaixo, um modelo inicial para um trabalho de TCC. Crie um arquivo <code>.tex</code> com este conteúdo e compile-o para ver a estrutura que ele gera.</p>
+            <p>O pacote <code>abntex2</code> é uma implementação das normas da ABNT para LaTeX. Ele simplifica
+                enormemente a formatação de trabalhos acadêmicos.</p>
+            <p>Abaixo, um modelo inicial para um trabalho de TCC. Crie um arquivo <code>.tex</code> com este conteúdo e
+                compile-o para ver a estrutura que ele gera.</p>
             <div class="code-block">
-\documentclass[
-    12pt, a4paper, oneside, brazil
-]{abntex2}
+                \documentclass[
+                12pt, a4paper, oneside, brazil
+                ]{abntex2}
 
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx} % Para incluir imagens
+                \usepackage[utf8]{inputenc}
+                \usepackage{graphicx} % Para incluir imagens
 
-% --- Informações do Documento ---
-\titulo{Título do Trabalho}
-\autor{Nome Completo do Autor}
-\local{Cidade}
-\data{\today}
-\instituicao{
-    Instituição de Ensino
-    \par
-    Curso de Análise e Desenvolvimento de Sistemas
-}
-\orientador{Prof. Dr. Nome do Orientador}
+                % --- Informações do Documento ---
+                \titulo{Título do Trabalho}
+                \autor{Nome Completo do Autor}
+                \local{Cidade}
+                \data{\today}
+                \instituicao{
+                Instituição de Ensino
+                \par
+                Curso de Análise e Desenvolvimento de Sistemas
+                }
+                \orientador{Prof. Dr. Nome do Orientador}
 
-% --- Início do Documento ---
-\begin{document}
+                % --- Início do Documento ---
+                \begin{document}
 
-% --- Elementos Pré-Textuais ---
-\imprimircapa
-\imprimirfolhaderosto
+                % --- Elementos Pré-Textuais ---
+                \imprimircapa
+                \imprimirfolhaderosto
 
-\begin{resumo}
-    Este é o resumo do seu trabalho...
-\end{resumo}
+                \begin{resumo}
+                Este é o resumo do seu trabalho...
+                \end{resumo}
 
-\begin{abstract}
-    This is the abstract of your work...
-\end{abstract}
+                \begin{abstract}
+                This is the abstract of your work...
+                \end{abstract}
 
-\tableofcontents % Sumário
+                \tableofcontents % Sumário
 
-% --- Elementos Textuais ---
-\textual
+                % --- Elementos Textuais ---
+                \textual
 
-\chapter{Introdução}
-    Aqui começa a introdução do seu trabalho.
-    Você pode usar o comando \verb|\cite{}| para citar referências.
+                \chapter{Introdução}
+                Aqui começa a introdução do seu trabalho.
+                Você pode usar o comando \verb|\cite{}| para citar referências.
 
-\chapter{Desenvolvimento}
-    \section{Seção 1}
-        Conteúdo da seção 1.
+                \chapter{Desenvolvimento}
+                \section{Seção 1}
+                Conteúdo da seção 1.
 
-    \section{Seção 2}
-        Conteúdo da seção 2.
+                \section{Seção 2}
+                Conteúdo da seção 2.
 
-\chapter{Conclusão}
-    Considerações finais do trabalho.
+                \chapter{Conclusão}
+                Considerações finais do trabalho.
 
-% --- Elementos Pós-Textuais ---
-\postextual
+                % --- Elementos Pós-Textuais ---
+                \postextual
 
-\bibliography{referencias.bib} % Arquivo de referências
+                \bibliography{referencias.bib} % Arquivo de referências
 
-\end{document}
+                \end{document}
             </div>
             <div class="info-box">
                 <div class="title"><i class="fas fa-info-circle me-2"></i>Próximos Passos</div>
-                <p class="mb-0">Para que as referências funcionem, você precisará criar um arquivo <code>referencias.bib</code> e usar um gerenciador como JabRef ou Zotero para formatar suas citações no formato BibTeX.</p>
+                <p class="mb-0">Para que as referências funcionem, você precisará criar um arquivo
+                    <code>referencias.bib</code> e usar um gerenciador como JabRef ou Zotero para formatar suas citações
+                    no formato BibTeX.</p>
             </div>
         </div>
 
         <div class="nav-buttons">
-            <a href="../introducaoaolatex.html" class="btn btn-danger rounded-pill px-4">
+            <a href="../aula1-introducaoaolatex.html" class="btn btn-danger rounded-pill px-4">
                 <i class="fas fa-desktop me-2"></i>Voltar aos Slides
             </a>
         </div>
@@ -339,7 +529,8 @@ services:
 
     <footer class="bg-light text-dark py-4 mt-5">
         <div class="container text-center">
-            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                height="25" class="mb-2 opacity-75">
             <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
         </div>
     </footer>
