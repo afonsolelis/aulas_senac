@@ -122,6 +122,52 @@
     .table-wrap {
       overflow-x: auto;
     }
+
+    .notebook {
+      border: 1px solid #dbe3ef;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: .9rem 0;
+      background: #f8fbff;
+    }
+
+    .notebook-head {
+      background: #eaf2ff;
+      color: #1e3a8a;
+      font-weight: 700;
+      font-size: .9rem;
+      padding: .5rem .75rem;
+      border-bottom: 1px solid #dbe3ef;
+    }
+
+    .nb-cell {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .nb-cell:last-child {
+      border-bottom: 0;
+    }
+
+    .nb-label {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      font-family: monospace;
+      font-size: .75rem;
+      color: #64748b;
+      background: #f1f5f9;
+      padding-top: .75rem;
+    }
+
+    .nb-content {
+      padding: .75rem;
+    }
+
+    .nb-out {
+      background: #ffffff;
+    }
   </style>
 </head>
 
@@ -156,6 +202,8 @@
         <li><a href="#conversao">Conversão de tipos: int e float</a></li>
         <li><a href="#operacoes">Operações matemáticas e cálculo real</a></li>
         <li><a href="#desafios">Como resolver os 20 desafios da aula</a></li>
+        <li><a href="#resolucoes-20">Resolução dos 20 exercícios (passo a passo)</a></li>
+        <li><a href="#notebook">Notebook guiado (estilo Colab)</a></li>
         <li><a href="#fechamento">Fechamento e roteiro de estudo</a></li>
       </ol>
     </section>
@@ -415,8 +463,201 @@ print(f"Resultado: {resultado}")</code></pre>
       </div>
     </section>
 
+    <section id="notebook" class="chapter">
+      <h2>12) Notebook guiado (estilo Colab)</h2>
+      <p>Use esta seção como roteiro de prática. A ideia é copiar cada célula para o Colab e executar em ordem.</p>
+
+      <div class="notebook">
+        <div class="notebook-head"><i class="fas fa-book me-2"></i>Notebook Aula 02 - Python Básico</div>
+
+        <div class="nb-cell">
+          <div class="nb-label">In [1]</div>
+          <div class="nb-content">
+            <pre class="bg-dark text-light p-3 mb-0"><code class="language-python">print("Olá, turma!")</code></pre>
+          </div>
+        </div>
+        <div class="nb-cell">
+          <div class="nb-label">Out [1]</div>
+          <div class="nb-content nb-out"><code>Olá, turma!</code></div>
+        </div>
+
+        <div class="nb-cell">
+          <div class="nb-label">In [2]</div>
+          <div class="nb-content">
+            <pre class="bg-dark text-light p-3 mb-0"><code class="language-python">nome = input("Digite seu nome: ")
+print("Bem-vindo,", nome)</code></pre>
+          </div>
+        </div>
+        <div class="nb-cell">
+          <div class="nb-label">Out [2]</div>
+          <div class="nb-content nb-out"><code>Bem-vindo, Afonso</code></div>
+        </div>
+
+        <div class="nb-cell">
+          <div class="nb-label">In [3]</div>
+          <div class="nb-content">
+            <pre class="bg-dark text-light p-3 mb-0"><code class="language-python">a = int(input("Primeiro número: "))
+b = int(input("Segundo número: "))
+print("Soma =", a + b)</code></pre>
+          </div>
+        </div>
+        <div class="nb-cell">
+          <div class="nb-label">Out [3]</div>
+          <div class="nb-content nb-out"><code>Soma = 10</code></div>
+        </div>
+
+        <div class="nb-cell">
+          <div class="nb-label">In [4]</div>
+          <div class="nb-content">
+            <pre class="bg-dark text-light p-3 mb-0"><code class="language-python">preco = float(input("Preço do produto: "))
+desconto = preco * 0.10
+final = preco - desconto
+print(f"Valor final: R$ {final:.2f}")</code></pre>
+          </div>
+        </div>
+        <div class="nb-cell">
+          <div class="nb-label">Out [4]</div>
+          <div class="nb-content nb-out"><code>Valor final: R$ 89.90</code></div>
+        </div>
+
+        <div class="nb-cell">
+          <div class="nb-label">In [5]</div>
+          <div class="nb-content">
+            <pre class="bg-dark text-light p-3 mb-0"><code class="language-python">texto = "5"
+numero = int(texto)
+print(texto + "5")    # concatenação
+print(numero + 5)     # soma</code></pre>
+          </div>
+        </div>
+        <div class="nb-cell">
+          <div class="nb-label">Out [5]</div>
+          <div class="nb-content nb-out"><code>55<br>10</code></div>
+        </div>
+      </div>
+
+      <h3>Mini desafio para praticar no Colab</h3>
+      <p>Crie uma célula nova que peça distância e tempo, e calcule a velocidade média. Depois mostre o resultado com
+        2 casas decimais.</p>
+    </section>
+
+    <section id="resolucoes-20" class="chapter">
+      <h2>13) Resolução dos 20 exercícios (passo a passo)</h2>
+      <p>Abaixo estão soluções diretas para os 20 desafios do slide. Estrutura usada: <strong>entrada</strong>,
+        <strong>processamento</strong> e <strong>saída</strong>.</p>
+
+      <h3>1) Escreva \"Olá, Mundo!\"</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python"># Passo único: saída
+print("Olá, Mundo!")</code></pre>
+
+      <h3>2) Peça o nome e responda \"Bem-vindo!\"</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">nome = input("Digite seu nome: ")      # Entrada
+print("Bem-vindo,", nome)               # Saída</code></pre>
+
+      <h3>3) Some dois números inteiros</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">a = int(input("Primeiro número: "))    # Entrada + conversão
+b = int(input("Segundo número: "))
+soma = a + b                            # Processamento
+print("Soma =", soma)                   # Saída</code></pre>
+
+      <h3>4) Peça um número e mostre o dobro</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">n = float(input("Digite um número: "))
+dobro = n * 2
+print("Dobro =", dobro)</code></pre>
+
+      <h3>5) Calcule a média de 3 notas</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">n1 = float(input("Nota 1: "))
+n2 = float(input("Nota 2: "))
+n3 = float(input("Nota 3: "))
+media = (n1 + n2 + n3) / 3
+print(f"Média = {media:.2f}")</code></pre>
+
+      <h3>6) Converta metros para centímetros (x100)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">metros = float(input("Metros: "))
+centimetros = metros * 100
+print("Centímetros =", centimetros)</code></pre>
+
+      <h3>7) Antecessor e sucessor de um número</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">n = int(input("Número inteiro: "))
+print("Antecessor =", n - 1)
+print("Sucessor =", n + 1)</code></pre>
+
+      <h3>8) Área de um quadrado (L x L)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">lado = float(input("Lado do quadrado: "))
+area = lado * lado
+print(f"Área = {area:.2f}")</code></pre>
+
+      <h3>9) Área de um retângulo (Base x Altura)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">base = float(input("Base: "))
+altura = float(input("Altura: "))
+area = base * altura
+print(f"Área = {area:.2f}")</code></pre>
+
+      <h3>10) Conversor: Real para Dólar (Divisão)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">reais = float(input("Valor em R$: "))
+cambio = float(input("Cotação do dólar: "))
+dolar = reais / cambio
+print(f"US$ {dolar:.2f}")</code></pre>
+
+      <h3>11) Ano de nascimento e idade (2026 - Ano)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">ano_nasc = int(input("Ano de nascimento: "))
+idade = 2026 - ano_nasc
+print("Idade =", idade)</code></pre>
+
+      <h3>12) Salário com aumento de 10%</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">salario = float(input("Salário atual: "))
+novo_salario = salario * 1.10
+print(f"Novo salário = R$ {novo_salario:.2f}")</code></pre>
+
+      <h3>13) Desconto fixo de R$10,00</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">preco = float(input("Preço do produto: "))
+final = preco - 10
+print(f"Preço com desconto = R$ {final:.2f}")</code></pre>
+
+      <h3>14) Dias para horas (Dias * 24)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">dias = int(input("Dias: "))
+horas = dias * 24
+print("Horas =", horas)</code></pre>
+
+      <h3>15) Minutos para segundos (Min * 60)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">minutos = int(input("Minutos: "))
+segundos = minutos * 60
+print("Segundos =", segundos)</code></pre>
+
+      <h3>16) Calculadora de IMC (Peso / Altura²)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">peso = float(input("Peso (kg): "))
+altura = float(input("Altura (m): "))
+imc = peso / (altura ** 2)
+print(f"IMC = {imc:.2f}")</code></pre>
+
+      <h3>17) Nome completo (nome + sobrenome)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">nome = input("Nome: ")
+sobrenome = input("Sobrenome: ")
+completo = nome + " " + sobrenome
+print("Nome completo:", completo)</code></pre>
+
+      <h3>18) Repetidor (palavra * número)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">palavra = input("Palavra: ")
+vezes = int(input("Quantidade de repetições: "))
+print(palavra * vezes)</code></pre>
+
+      <h3>19) Velocidade média (Distância / Tempo)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">distancia = float(input("Distância (km): "))
+tempo = float(input("Tempo (h): "))
+velocidade = distancia / tempo
+print(f"Velocidade média = {velocidade:.2f} km/h")</code></pre>
+
+      <h3>20) Celsius para Fahrenheit (C * 1.8 + 32)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">c = float(input("Temperatura em °C: "))
+f = c * 1.8 + 32
+print(f"Temperatura em °F = {f:.2f}")</code></pre>
+
+      <div class="box info">
+        Dica de estudo: execute cada exercício no Colab, altere os valores de entrada e observe como o resultado muda.
+      </div>
+    </section>
+
     <section id="fechamento" class="chapter">
-      <h2>12) Fechamento e roteiro de estudo</h2>
+      <h2>14) Fechamento e roteiro de estudo</h2>
 
       <h3>Resumo de aprendizagem</h3>
       <ul>

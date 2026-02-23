@@ -113,14 +113,16 @@
         <p class="mb-4">O que acontece quando você digita algo?</p>
 
         <div class="bg-white p-4 rounded shadow-sm d-inline-block">
-          <div class="mermaid">
-            graph LR
-            A[Teclado ⌨️] -->|Input| B(Memória RAM 🧠)
-            B -->|Lê Dados| C{CPU ⚙️}
-            C -->|Conta/Processa| B
-            B -->|Resultado| D[Monitor 🖥️]
-            style B fill:#d4edda,stroke:#28a745,stroke-width:2px
-            style C fill:#cce5ff,stroke:#007bff,stroke-width:2px
+          <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 small fw-semibold">
+            <span class="badge bg-secondary p-2">Teclado</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-success p-2">Memória RAM</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-primary p-2">CPU</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-success p-2">Memória RAM</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-dark p-2">Monitor</span>
           </div>
         </div>
 
@@ -259,10 +261,14 @@ print("Saindo um " + comida)
 </code></pre>
           </div>
           <div class="col-md-6">
-            <div class="mermaid">
-              graph TD
-              A[Teclado] -->|Dados Elétricos| B(RAM: Caixa 'comida')
-              B -->|Bytes| C[Monitor]
+            <div class="card border-0 shadow-sm p-4">
+              <div class="d-flex flex-column align-items-center gap-2 small fw-semibold">
+                <span class="badge bg-secondary p-2">Teclado</span>
+                <i class="fas fa-arrow-down text-muted"></i>
+                <span class="badge bg-success p-2">RAM: caixa \"comida\"</span>
+                <i class="fas fa-arrow-down text-muted"></i>
+                <span class="badge bg-dark p-2">Monitor</span>
+              </div>
             </div>
           </div>
         </div>
@@ -369,11 +375,12 @@ idade = int(input("Qual sua idade? "))
           </div>
         </div>
 
-        <div class="mermaid mt-4">
-          graph LR
-          A["10" (String)] -->|int()| B((10 (Int)))
-          style A fill:#f8d7da,stroke:#dc3545
-          style B fill:#d4edda,stroke:#28a745
+        <div class="mt-4 d-flex flex-wrap align-items-center justify-content-center gap-2 small fw-semibold">
+          <span class="badge text-bg-danger p-2">\"10\" (String)</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          <span class="badge text-bg-primary p-2">int()</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          <span class="badge text-bg-success p-2">10 (Int)</span>
         </div>
       </div>
     </div>
@@ -386,7 +393,8 @@ idade = int(input("Qual sua idade? "))
         <div class="row w-100 justify-content-center">
           <div class="col-md-6 text-start">
             <pre><code class="language-python">
-# A CPU busca 'preco', multiplica por 0.10, guarda em 'desconto'
+# A CPU busca 'preco' e multiplica por 0.10.
+# Depois, guarda o resultado em 'desconto'.
 preco = float(input("Preço: "))
 desconto = preco * 0.10
 final = preco - desconto
@@ -481,6 +489,10 @@ print(f"Final: {final}")
       Introdução à Lógica - Aula 02
     </div>
 
+    <a href="material/aula02-introducao-python.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
     <a href="../../index.html">
       <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
         height="30" class="opacity-75">
@@ -489,10 +501,6 @@ print(f"Final: {final}")
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
-  <!-- Mermaid JS -->
-  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <script>mermaid.initialize({ startOnLoad: true });</script>
-
   <script src="../../js/standard_slides.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
