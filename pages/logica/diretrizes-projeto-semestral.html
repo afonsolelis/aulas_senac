@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diretrizes do Projeto Semestral - Introdução à Lógica</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .guide-hero {
+      background: linear-gradient(120deg, #0f172a, #1d4ed8);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+    }
+
+    .guide-card {
+      border: 0;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(15, 23, 42, .06);
+    }
+
+    .badge-soft {
+      background: #e2e8f0;
+      color: #1e293b;
+      border-radius: 999px;
+      padding: .35rem .7rem;
+      font-size: .75rem;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../introducao-logica.html">Voltar para a disciplina</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4 py-md-5">
+    <section class="guide-hero mb-4">
+      <span class="badge bg-light text-dark mb-2">Projeto Semestral</span>
+      <h1 class="h3 fw-bold mb-2">Diretrizes do Projeto Final</h1>
+      <p class="mb-0 text-white-50">Disciplina: Introdução à Lógica | Ambiente obrigatório: Google Colab</p>
+    </section>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-4">
+        <div class="card guide-card h-100">
+          <div class="card-body">
+            <h2 class="h6 fw-bold"><i class="fas fa-user me-2 text-primary"></i>Individual</h2>
+            <p class="small text-muted mb-0">Projeto feito por 1 aluno, com escopo reduzido e bem organizado.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card guide-card h-100">
+          <div class="card-body">
+            <h2 class="h6 fw-bold"><i class="fas fa-user-friends me-2 text-success"></i>Dupla</h2>
+            <p class="small text-muted mb-0">Projeto feito por 2 alunos, com divisão clara de tarefas e integração.</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card guide-card h-100">
+          <div class="card-body">
+            <h2 class="h6 fw-bold"><i class="fas fa-users me-2 text-danger"></i>Trio</h2>
+            <p class="small text-muted mb-0">Projeto feito por 3 alunos, com escopo mais robusto e documentação curta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card guide-card mb-3">
+      <div class="card-body">
+        <h2 class="h5 fw-bold mb-3">Objetivo do Projeto</h2>
+        <p>Construir um projeto completo em <strong>Python no Google Colab</strong>, aplicando os conhecimentos vistos até a aula de
+          <strong>Portas Lógicas</strong>. O sistema deve resolver um problema real simples (educação, comércio,
+          organização pessoal, jogos lógicos, automação de cálculos etc.).</p>
+      </div>
+    </div>
+
+    <div class="card guide-card mb-3">
+      <div class="card-body">
+        <h2 class="h5 fw-bold mb-3">Conteúdos obrigatórios que o projeto deve usar</h2>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <span class="badge-soft">Input e Output</span>
+          <span class="badge-soft">Variáveis e Tipos</span>
+          <span class="badge-soft">Operações Matemáticas</span>
+          <span class="badge-soft">Condicionais</span>
+          <span class="badge-soft">Tabelas Verdade</span>
+          <span class="badge-soft">Lógica Proposicional</span>
+          <span class="badge-soft">Álgebra Booleana</span>
+          <span class="badge-soft">Portas Lógicas</span>
+        </div>
+        <ul class="mb-0">
+          <li>Pelo menos <strong>2 menus</strong> de navegação no terminal.</li>
+          <li>Pelo menos <strong>5 funcionalidades</strong> para projeto individual, <strong>7</strong> para dupla e <strong>9</strong> para trio.</li>
+          <li>Pelo menos <strong>3 decisões lógicas</strong> usando operadores booleanos (<code>and</code>, <code>or</code>, <code>not</code>).</li>
+          <li>Pelo menos <strong>1 simulação</strong> envolvendo portas lógicas (AND, OR, NOT, NAND, NOR, XOR ou XNOR).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card guide-card mb-3">
+      <div class="card-body">
+        <h2 class="h5 fw-bold mb-3">Estrutura mínima do notebook (Colab)</h2>
+        <ol class="mb-0">
+          <li>Capa com nome do projeto e integrantes.</li>
+          <li>Descrição curta do problema e objetivo.</li>
+          <li>Seção de funções principais.</li>
+          <li>Seção de execução do menu principal.</li>
+          <li>Testes com exemplos de entrada e saída.</li>
+          <li>Conclusão: o que funcionou e o que pode evoluir.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="card guide-card mb-3">
+      <div class="card-body">
+        <h2 class="h5 fw-bold mb-3">Tema obrigatório: problema real da vida profissional</h2>
+        <p>O projeto <strong>não deve</strong> ser um tema genérico inventado. Cada equipe deve identificar um problema
+          real do próprio contexto de trabalho (ou estágio/rotina profissional) e criar a solução em cima desse cenário.</p>
+        <ul class="mb-0">
+          <li>Exemplo: automatizar geração/comparação de cotações.</li>
+          <li>Exemplo: organizar envio e acompanhamento de logística.</li>
+          <li>Exemplo: validar pedidos, estoque ou regras de aprovação com lógica booleana.</li>
+          <li>Exemplo: automatizar conferências manuais repetitivas do dia a dia.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card guide-card mb-3 border-warning border-2">
+      <div class="card-body">
+        <h2 class="h5 fw-bold mb-3 text-warning-emphasis">Critérios de avaliação sugeridos</h2>
+        <ul class="mb-0">
+          <li><strong>Lógica e correção (40%)</strong>: decisões corretas e fluxo consistente.</li>
+          <li><strong>Aplicação dos conteúdos (30%)</strong>: uso real dos tópicos da disciplina.</li>
+          <li><strong>Organização do código (20%)</strong>: variáveis claras e funções bem separadas.</li>
+          <li><strong>Apresentação (10%)</strong>: explicação objetiva do funcionamento no Colab.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="alert alert-primary shadow-sm">
+      <h2 class="h6 fw-bold mb-2"><i class="fas fa-microphone me-2"></i>Avaliação final: prova oral individual</h2>
+      <p class="mb-2">A avaliação final do projeto será uma <strong>prova oral</strong>. O professor fará perguntas para
+        cada aluno sobre o funcionamento do projeto.</p>
+      <ul class="mb-0">
+        <li>Cada aluno deve explicar claramente a parte que desenvolveu.</li>
+        <li>As perguntas serão baseadas no código, na lógica e nas decisões do projeto.</li>
+        <li>Não basta só apresentar o resultado: é obrigatório demonstrar domínio da implementação.</li>
+      </ul>
+    </div>
+
+    <div class="alert alert-danger shadow-sm">
+      <h2 class="h6 fw-bold mb-2"><i class="fas fa-ban me-2"></i>Regras importantes</h2>
+      <ul class="mb-0">
+        <li>Não vale entregar somente exercícios soltos: deve ser um projeto integrado.</li>
+        <li>Não vale copiar projeto pronto da internet sem adaptação autoral.</li>
+        <li>Todo integrante deve conseguir explicar a lógica das principais partes.</li>
+      </ul>
+    </div>
+
+    <div class="d-flex gap-2 mt-4">
+      <a href="../introducao-logica.html" class="btn btn-outline-secondary btn-sm"><i class="fas fa-arrow-left me-1"></i>
+        Voltar ao cronograma</a>
+    </div>
+  </main>
+</body>
+
+</html>
