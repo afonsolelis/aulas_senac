@@ -277,27 +277,27 @@ print("Saindo um " + comida)
 
         <div class="row g-4 justify-content-center">
           <div class="col-md-3">
-            <div class="card border-primary mb-3">
+            <div class="card border-primary mb-3 h-100">
               <div class="card-header bg-primary text-white">String (Texto)</div>
-              <div class="card-body">
+              <div class="card-body d-flex flex-column justify-content-between">
                 <h1 class="font-monospace">"5"</h1>
                 <p class="card-text small">É um desenho. Ocupa mais espaço.</p>
               </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="card border-success mb-3">
+            <div class="card border-success mb-3 h-100">
               <div class="card-header bg-success text-white">Int (Inteiro)</div>
-              <div class="card-body">
+              <div class="card-body d-flex flex-column justify-content-between">
                 <h1 class="font-monospace">5</h1>
                 <p class="card-text small">É matemática pura (Binário).</p>
               </div>
             </div>
           </div>
           <div class="col-md-3">
-            <div class="card border-info mb-3">
+            <div class="card border-info mb-3 h-100">
               <div class="card-header bg-info text-white">Float (Real)</div>
-              <div class="card-body">
+              <div class="card-body d-flex flex-column justify-content-between">
                 <h1 class="font-monospace">5.0</h1>
                 <p class="card-text small">Precisa de bits extras para a vírgula.</p>
               </div>
@@ -472,6 +472,7 @@ print(f"Final: {final}")
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 14</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
