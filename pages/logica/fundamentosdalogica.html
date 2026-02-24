@@ -5,28 +5,39 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fundamentos da Lógica - Introdução à Lógica</title>
-  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
-  <!-- Prism JS for Code Highlighting -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+  <style>
+    .logic-table {
+      font-size: 0.95rem;
+    }
+
+    .logic-table td,
+    .logic-table th {
+      vertical-align: middle;
+    }
+
+    .flow-step {
+      border-radius: 12px;
+      padding: .8rem 1rem;
+      font-weight: 700;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, .08);
+    }
+  </style>
 </head>
 
 <body class="slide-body">
 
   <div class="slide-container">
 
-    <!-- Back Button -->
     <a href="../introducao-logica.html"
       class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
       <i class="fas fa-arrow-left me-2"></i> Voltar
     </a>
 
-    <!-- Slide 1: Capa -->
     <div class="slide active" id="slide-1">
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
@@ -34,179 +45,446 @@
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
         <h1 class="display-3 fw-bold mb-4 text-black">Fundamentos da Lógica</h1>
         <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Professor Afonso</h3>
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+        <h3 class="fw-normal text-dark">Python básico + estruturas condicionais</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Aula 03 - 4 horas</span>
       </div>
     </div>
 
-    <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-5 text-dark">O que vamos aprender?</h1>
-      <div class="row">
-        <div class="col-md-9 mx-auto">
-          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-history text-primary me-3"></i> O início de tudo (Aristóteles)
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-puzzle-piece text-success me-3"></i> Premissas e Conclusões
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-check-double text-danger me-3"></i> Argumentos Válidos x Verdadeiros
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fab fa-python text-warning me-3"></i> <strong>Python:</strong> Validando Lógica com Strings
-            </li>
-          </ul>
+      <h1 class="display-4 fw-bold mb-4 text-dark">Roteiro da Aula (4h)</h1>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-start">
+              <h4 class="text-primary">Parte 1</h4>
+              <ul class="mb-0">
+                <li>Lógica no dia a dia.</li>
+                <li>Tipos: bool, str, int e float.</li>
+                <li>Comparações e leitura de condição.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-0 shadow-sm h-100">
+            <div class="card-body text-start">
+              <h4 class="text-success">Parte 2</h4>
+              <ul class="mb-0">
+                <li>if, else, elif.</li>
+                <li>Condição composta com and.</li>
+                <li>40 exercícios progressivos.</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="alert alert-info mt-4 w-75 mx-auto text-start">
+        Nesta etapa vamos focar somente em <code>if</code>, <code>elif</code>, <code>else</code> e <code>and</code>.
+      </div>
     </div>
 
-    <!-- Slide 3: História -->
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-5 text-dark">Aristóteles: O Pai da Lógica</h2>
-        <div class="row align-items-center">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Lógica no Dia a Dia</h2>
+        <p class="lead mb-4">Programar é transformar decisões em passos claros.</p>
+
+        <div class="row g-4">
           <div class="col-md-4">
-            <div class="bg-light p-4 rounded-circle shadow-lg d-inline-block" style="width: 250px; height: 250px;">
-              <i class="fas fa-user-graduate fa-5x text-secondary mt-4"></i>
-              <p class="mt-2 fw-bold">384 a.C.</p>
+            <div class="alert alert-secondary h-100 text-start">
+              <strong>Exemplo 1</strong><br>
+              Se está chovendo, levo guarda-chuva.
             </div>
           </div>
-          <div class="col-md-8 text-start">
-            <blockquote class="blockquote border-start border-5 border-primary ps-4">
-              <p class="mb-3 fst-italic">"O homem é, por natureza, um animal político [e lógico]."</p>
-            </blockquote>
-            <p class="lead">Ele criou o <strong>Silogismo</strong>, a estrutura básica do raciocínio perfeito.</p>
+          <div class="col-md-4">
+            <div class="alert alert-secondary h-100 text-start">
+              <strong>Exemplo 2</strong><br>
+              Se nota &gt;= 7, está aprovado.
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="alert alert-secondary h-100 text-start">
+              <strong>Exemplo 3</strong><br>
+              Se login e senha corretos, liberar acesso.
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Slide 4: Estrutura do Argumento -->
     <div class="slide" id="slide-4">
       <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark">O Silogismo Clássico</h2>
-        <div class="card w-75 mx-auto border-0 shadow-sm">
-          <div class="card-body p-5 text-start">
-            <h4 class="text-primary mb-3">Premissa 1 (P1): <span class="text-dark fw-normal">Todo homem é mortal.</span>
-            </h4>
-            <h4 class="text-primary mb-3">Premissa 2 (P2): <span class="text-dark fw-normal">Sócrates é homem.</span>
-            </h4>
-            <hr>
-            <h3 class="text-success">Conclusão (C): <span class="text-dark fw-bold">Sócrates é mortal.</span></h3>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Tipos de Dados Essenciais</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <i class="fas fa-toggle-on fa-3x text-primary mb-3"></i>
+                <h4>Booleano</h4>
+                <p class="mb-1"><code>True</code> ou <code>False</code></p>
+              </div>
+            </div>
           </div>
-        </div>
-
-        <!-- Python Integration -->
-        <div class="mt-4 w-75 mx-auto text-start">
-          <span class="badge bg-warning text-dark mb-2">Python Example</span>
-          <pre><code class="language-python">
-# Representando em Python
-homens_sao_mortais = True
-socrates_eh_homem = True
-
-if homens_sao_mortais and socrates_eh_homem:
-    print("Logo, Sócrates é mortal.")
-else:
-    print("Lógica falhou.")
-</code></pre>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <i class="fas fa-font fa-3x text-success mb-3"></i>
+                <h4>String</h4>
+                <p class="mb-1">Texto com aspas</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+              <div class="card-body">
+                <i class="fas fa-hashtag fa-3x text-danger mb-3"></i>
+                <h4>Número</h4>
+                <p class="mb-1"><code>int</code> e <code>float</code></p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Slide 5: Validade vs Verdade -->
     <div class="slide" id="slide-5">
       <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-5 text-dark">Validade ≠ Verdade</h2>
-        <div class="row g-4">
-          <div class="col-md-6">
-            <div class="alert alert-success h-100 text-start">
-              <h4 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Argumento Válido</h4>
-              <p>A estrutura faz sentido, mesmo que as premissas sejam loucas.</p>
-              <hr>
-              <small>Todo porco voa.<br>Peppa é um porco.<br>Logo, Peppa voa.</small>
-              <p class="fw-bold mt-2">(Lógica perfeita, premissa falsa)</p>
-            </div>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Booleanos na Prática</h2>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">tem_ingresso = True
+porta_aberta = False
+
+print(tem_ingresso)
+print(porta_aberta)</code></pre>
           </div>
-          <div class="col-md-6">
-            <div class="alert alert-danger h-100 text-start">
-              <h4 class="alert-heading"><i class="fas fa-times-circle me-2"></i>Falácia</h4>
-              <p>Parece verdade, mas a estrutura está quebrada.</p>
-              <hr>
-              <small>Pinguins são preto e branco.<br>Antigos filmes são preto e branco.<br>Logo, pinguins são filmes
-                antigos.</small>
+          <div class="col-md-6 text-start">
+            <div class="alert alert-warning">
+              Booleano responde: sim/não, verdadeiro/falso.
+            </div>
+            <div class="alert alert-light border mb-0">
+              Toda estrutura <code>if</code> depende de um resultado booleano.
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Slide 6: Exercício Python -->
     <div class="slide" id="slide-6">
       <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark">Detectando Falácias com If</h2>
-        <p class="fs-4 mb-4">Vamos verificar se um animal voa baseado em premissas.</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Strings na Prática</h2>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">usuario = "admin"
+print(usuario == "admin")
+print(usuario == "Admin")
 
-        <div class="text-start mx-auto w-75">
-          <pre><code class="language-python">
-animal = "Pinguim"
-tem_asas = True
-voa = False  # Pinguim tem asas mas não voa!
-
-# Argumento Falho
-if tem_asas:
-    print(f"Todo animal com asas voa. Logo, o {animal} voa.")
-    # Isso vai imprimir que Pinguim voa (Falso!)
-
-# Lógica Correta
-if tem_asas and voa:
-    print(f"O {animal} voa.")
-else:
-    print(f"O {animal} não voa, apesar de ter asas.")
-</code></pre>
+nome = input("Nome: ").strip()</code></pre>
+          </div>
+          <div class="col-md-6 text-start">
+            <ul>
+              <li>String diferencia maiúscula de minúscula.</li>
+              <li><code>.strip()</code> remove espaços extras.</li>
+              <li>String é muito usada em login e validação.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
 
-
-    <!-- Slide 7: Desafio -->
     <div class="slide" id="slide-7">
       <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-5 text-dark">Desafio Rápido</h2>
-        <p class="lead">Identifique se o Python vai imprimir "Válido" ou "Inválido".</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Números e Conversão</h2>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">idade_txt = input("Idade: ")
+idade = int(idade_txt)
 
-        <div class="card bg-dark text-white w-50 mx-auto p-4">
-          <code>
-                premissa1 = False<br>
-                premissa2 = True<br>
-                <br>
-                if premissa1 and premissa2:<br>
-                &nbsp;&nbsp;print("Válido")<br>
-                else:<br>
-                &nbsp;&nbsp;print("Inválido")
-            </code>
+if idade >= 18:
+    print("Maior de idade")
+else:
+    print("Menor de idade")</code></pre>
+          </div>
+          <div class="col-md-6 text-start">
+            <div class="alert alert-danger">
+              Erro comum: <code>"18" &gt;= 18</code>
+            </div>
+            <div class="alert alert-success mb-0">
+              Correto: converter com <code>int()</code> ou <code>float()</code>.
+            </div>
+          </div>
         </div>
-        <p class="text-muted mt-3">Resposta: Inválido (Pois False e True = False)</p>
       </div>
     </div>
 
-    <!-- Slide 8: Encerramento -->
     <div class="slide" id="slide-8">
       <div class="text-center slide-content">
-        <h1 class="display-3 fw-bold mb-4 text-dark">Fim da Aula 03</h1>
-        <p class="lead mb-5">A lógica estrutura nosso pensamento e nosso código.</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Operadores de Comparação</h2>
+        <div class="table-responsive w-75 mx-auto">
+          <table class="table table-bordered table-striped logic-table bg-white">
+            <thead class="table-light">
+              <tr>
+                <th>Operador</th>
+                <th>Leitura</th>
+                <th>Exemplo</th>
+                <th>Resultado</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>==</code></td><td>igual</td><td><code>10 == 10</code></td><td><code>True</code></td></tr>
+              <tr><td><code>!=</code></td><td>diferente</td><td><code>5 != 2</code></td><td><code>True</code></td></tr>
+              <tr><td><code>&gt;</code></td><td>maior</td><td><code>7 &gt; 9</code></td><td><code>False</code></td></tr>
+              <tr><td><code>&lt;=</code></td><td>menor ou igual</td><td><code>3 &lt;= 3</code></td><td><code>True</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
 
-        <!-- Button removed -->
-        <div class="d-flex justify-content-center gap-3">
-          <a href="../introducao-logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar ao Menu</a>
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Estrutura <code>if</code> e <code>else</code></h2>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">saldo = 150
+
+if saldo >= 100:
+    print("Compra aprovada")
+else:
+    print("Saldo insuficiente")</code></pre>
+          </div>
+          <div class="col-md-6 text-start">
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <p class="mb-1">1. Testa condição</p>
+                <p class="mb-1">2. Verdadeiro: bloco do <code>if</code></p>
+                <p class="mb-0">3. Falso: bloco do <code>else</code></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Quando Usar <code>elif</code></h2>
+        <pre class="text-start mx-auto w-75"><code class="language-python">nota = 6.8
+
+if nota >= 9:
+    print("Excelente")
+elif nota >= 7:
+    print("Aprovado")
+elif nota >= 5:
+    print("Recuperação")
+else:
+    print("Reprovado")</code></pre>
+        <div class="alert alert-info mt-3 w-75 mx-auto text-start">
+          O Python testa de cima para baixo e para na primeira condição verdadeira.
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Condição Composta com <code>and</code></h2>
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">idade = 20
+pagou_ingresso = True
+
+if idade >= 18 and pagou_ingresso:
+    print("Entrada liberada")
+else:
+    print("Entrada negada")</code></pre>
+          </div>
+          <div class="col-md-6 text-start">
+            <div class="alert alert-success">
+              Com <code>and</code>, todas as partes precisam ser verdadeiras.
+            </div>
+            <div class="alert alert-light border mb-0">
+              True and True = True<br>
+              True and False = False
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Fluxograma: <code>if</code>, <code>elif</code> e <code>else</code></h2>
+
+        <div class="bg-white rounded-4 shadow-sm p-4 w-75 mx-auto">
+          <div class="flow-step bg-primary-subtle text-primary-emphasis">Início</div>
+          <div class="my-2"><i class="fas fa-arrow-down text-muted"></i></div>
+          <div class="flow-step bg-info-subtle text-info-emphasis">Ler dados (input)</div>
+          <div class="my-2"><i class="fas fa-arrow-down text-muted"></i></div>
+          <div class="flow-step bg-warning-subtle text-warning-emphasis">Condição 1 é verdadeira?</div>
+          <div class="d-flex justify-content-center gap-5 my-2">
+            <div><span class="badge bg-success">Sim</span> <i class="fas fa-arrow-right ms-1"></i> Ação do <code>if</code></div>
+            <div><span class="badge bg-danger">Não</span> <i class="fas fa-arrow-right ms-1"></i> Testar <code>elif</code></div>
+          </div>
+          <div class="flow-step bg-warning-subtle text-warning-emphasis">Condição 2 (<code>elif</code>) é verdadeira?</div>
+          <div class="d-flex justify-content-center gap-5 my-2">
+            <div><span class="badge bg-success">Sim</span> <i class="fas fa-arrow-right ms-1"></i> Ação do <code>elif</code></div>
+            <div><span class="badge bg-danger">Não</span> <i class="fas fa-arrow-right ms-1"></i> Ação do <code>else</code></div>
+          </div>
+          <div class="my-2"><i class="fas fa-arrow-down text-muted"></i></div>
+          <div class="flow-step bg-secondary-subtle text-secondary-emphasis">Fim</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo 1: Login Simples</h2>
+        <pre class="text-start mx-auto w-75"><code class="language-python">usuario = input("Usuário: ").strip().lower()
+senha = input("Senha: ").strip()
+
+if usuario == "aluno" and senha == "1234":
+    print("Acesso permitido")
+else:
+    print("Acesso negado")</code></pre>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo 2: Faixa Etária</h2>
+        <pre class="text-start mx-auto w-75"><code class="language-python">idade = int(input("Digite sua idade: "))
+
+if idade <= 12:
+    print("Criança")
+elif idade <= 17:
+    print("Adolescente")
+elif idade <= 59:
+    print("Adulto")
+else:
+    print("Idoso")</code></pre>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo 3: Desconto com <code>and</code></h2>
+        <pre class="text-start mx-auto w-75"><code class="language-python">preco = float(input("Preço: "))
+clube = input("É do clube? (s/n): ").strip().lower() == "s"
+
+if preco > 100 and clube:
+    print("Desconto aplicado")
+else:
+    print("Sem desconto")</code></pre>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Erros Comuns de Iniciantes</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="alert alert-danger text-start h-100"><strong>Erro 1:</strong> usar <code>=</code> no lugar de <code>==</code>.</div></div>
+          <div class="col-md-6"><div class="alert alert-danger text-start h-100"><strong>Erro 2:</strong> comparar <code>str</code> com <code>int</code>.</div></div>
+          <div class="col-md-6"><div class="alert alert-danger text-start h-100"><strong>Erro 3:</strong> esquecer <code>:</code> após <code>if/elif/else</code>.</div></div>
+          <div class="col-md-6"><div class="alert alert-danger text-start h-100"><strong>Erro 4:</strong> errar a indentação do bloco.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-17">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exercícios 1 a 20</h2>
+        <div class="card w-75 mx-auto border-0 shadow-sm">
+          <div class="card-body text-start">
+            <ol class="mb-0" style="columns:2;">
+              <li>Mostrar nome e idade.</li>
+              <li>Ler dois números e somar.</li>
+              <li>Converter texto para inteiro.</li>
+              <li>Dizer se número é positivo.</li>
+              <li>Dizer se número é negativo.</li>
+              <li>Dizer se número é zero.</li>
+              <li>Comparar dois números (maior).</li>
+              <li>Comparar dois números (igual/diferente).</li>
+              <li>Validar idade para voto.</li>
+              <li>Validar idade para CNH.</li>
+              <li>Classificar nota (aprovado/reprovado).</li>
+              <li>Classificar nota com recuperação.</li>
+              <li>Faixa etária com if/elif/else.</li>
+              <li>Senha simples (igualdade).</li>
+              <li>Login + senha com and.</li>
+              <li>Verificar presença e nota com and.</li>
+              <li>Ingresso + idade com and.</li>
+              <li>Preço e cadastro com and.</li>
+              <li>Desconto com and.</li>
+              <li>Acesso a laboratório com and.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-18">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exercícios 21 a 40</h2>
+        <div class="card w-75 mx-auto border-0 shadow-sm">
+          <div class="card-body text-start">
+            <ol class="mb-0" start="21" style="columns:2;">
+              <li>Calcular média de 3 notas.</li>
+              <li>Classificar média em 4 faixas.</li>
+              <li>Verificar senha mínima (tamanho).</li>
+              <li>Comparar duas strings.</li>
+              <li>Validar turno (M/T/N).</li>
+              <li>Classificar temperatura (frio/ameno/quente).</li>
+              <li>Calcular IMC e classificar.</li>
+              <li>Calcular bônus por meta atingida.</li>
+              <li>Calcular salário com desconto fixo.</li>
+              <li>Verificar aprovação por nota e presença.</li>
+              <li>Verificar cliente premium por regras.</li>
+              <li>Verificar acesso a evento por idade e ingresso.</li>
+              <li>Classificar triângulo por lados.</li>
+              <li>Classificar número (par/ímpar e faixa).</li>
+              <li>Validar CEP com tamanho.</li>
+              <li>Validar email contém @ e .</li>
+              <li>Comparar senha e confirmação.</li>
+              <li>Calculadora simples (+,-,*,/).</li>
+              <li>Menu de opções com if/elif/else.</li>
+              <li>Projeto final: sistema de boletim básico.</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-19">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Como Resolver os 40 Exercícios</h2>
+        <div class="alert alert-success w-75 mx-auto text-start">
+          Método padrão para todos:
+          <ol class="mb-0 mt-2">
+            <li>Ler dados com <code>input()</code>.</li>
+            <li>Converter para <code>int</code>/<code>float</code> quando necessário.</li>
+            <li>Escrever condição com comparação.</li>
+            <li>Montar blocos <code>if</code>, <code>elif</code> e <code>else</code>.</li>
+            <li>Imprimir resultado claro para usuário.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-20">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Fechamento da Aula 03</h1>
+        <p class="lead mb-4">Base consolidada: tipos + comparações + if/else/elif + and.</p>
+        <div class="alert alert-info w-75 mx-auto text-start">
+          Próximas aulas: avançaremos para novos operadores lógicos e estruturas mais completas.
+        </div>
+        <div class="d-flex justify-content-center gap-3 mt-4">
+          <a href="material/aula03-fundamentos-logica.html" class="btn btn-primary rounded-pill px-4">Material Escrito</a>
+          <a href="../introducao-logica.html" class="btn btn-outline-dark rounded-pill px-4">Voltar ao Menu</a>
         </div>
       </div>
     </div>
 
   </div>
 
-  <!-- Footer Navigation -->
   <footer class="slide-footer">
     <div class="slide-controls">
       <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
@@ -214,6 +492,7 @@ else:
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 20</span>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
 

@@ -1,37 +1,751 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 03 - Introdução à Lógica</title>
+  <title>Material Didático - Aula 03 - Fundamentos da Lógica</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-light">
-  <div class="container py-5">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-4 p-md-5">
-        <p class="text-muted small mb-2">Introdução à Lógica</p>
-        <h1 class="h3 fw-bold mb-3">Aula 03 - Fundamentos da Lógica</h1>
-        <p class="text-secondary mb-2">Este material traduz os pontos centrais do slide em linguagem direta e curta.</p>
-        <p class="text-secondary mb-4">Use este resumo como guia de estudo antes dos exercícios e para revisão da aula.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
-        <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
-        </ul>
-        <h2 class="h5 fw-bold mb-2">Atividades envolvidas</h2>
-        <p class="text-secondary mb-2">Exposição dialogada, demonstração prática no Colab e resolução guiada de exercícios.</p>
-        <h2 class="h5 fw-bold mb-2">Observações da aula</h2>
-        <p class="text-secondary mb-4">Registrar presença, participação e principais dúvidas para acompanhamento da turma.</p>
+  <style>
+    :root {
+      --text: #334155;
+      --title: #0f172a;
+      --border: #e2e8f0;
+    }
 
-        <div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-danger btn-sm" href="../fundamentosdalogica.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
-          <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    body {
+      background: #f3f6fb;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #1f2937, #0f766e);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .14);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .top-actions,
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc,
+    .chapter {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .toc {
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc a {
+      color: #0f766e;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .chapter {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--title);
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .chapter h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--title);
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    .box {
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      margin: .8rem 0;
+      border-left: 4px solid;
+      background: #f8fafc;
+    }
+
+    .info {
+      border-color: #0ea5e9;
+      background: #ecfeff;
+    }
+
+    .warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .good {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .mini-table td,
+    .mini-table th {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="mb-2"><span class="badge bg-light text-dark">Introdução à Lógica</span> <span
+          class="badge bg-danger">Aula 03</span></p>
+      <h1>Fundamentos da Lógica para Programação (4h)</h1>
+      <p class="mb-0 text-light">Material completo para iniciantes com Python básico, condições e 40 exercícios.
+        Nesta aula: <strong>if, else, elif e and</strong>.</p>
+    </header>
+
+    <div class="top-actions">
+      <a class="btn btn-danger btn-sm" href="../fundamentosdalogica.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    </div>
+
+    <section class="toc" aria-label="Sumário">
+      <h2 class="h6 fw-bold mb-2">Sumário</h2>
+      <ol class="mb-0">
+        <li><a href="#objetivo">Objetivo da aula</a></li>
+        <li><a href="#roteiro">Roteiro das 4 horas</a></li>
+        <li><a href="#tipos">Tipos de dados</a></li>
+        <li><a href="#comparacoes">Operadores de comparação</a></li>
+        <li><a href="#condicionais">if, elif e else</a></li>
+        <li><a href="#and">Condição composta com and</a></li>
+        <li><a href="#fluxograma">Fluxograma da decisão lógica</a></li>
+        <li><a href="#exemplos">Exemplos práticos</a></li>
+        <li><a href="#exercicios">40 exercícios</a></li>
+      </ol>
+    </section>
+
+    <section id="objetivo" class="chapter">
+      <h2>1) Objetivo da aula</h2>
+      <p>Consolidar a base de decisão em programação para turma iniciante: identificar tipos, comparar valores,
+        construir estruturas com <code>if</code>, <code>elif</code>, <code>else</code> e combinar regras com
+        <code>and</code>.
+      </p>
+      <div class="box info">
+        Escopo desta aula: <code>bool</code>, <code>str</code>, <code>int</code>, <code>float</code>, comparação,
+        <code>if/elif/else</code> e <code>and</code>.
+      </div>
+    </section>
+
+    <section id="roteiro" class="chapter">
+      <h2>2) Roteiro das 4 horas</h2>
+      <div class="table-wrap">
+        <table class="table table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>Tempo</th>
+              <th>Foco</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0h00 - 0h40</td><td>Lógica do dia a dia + tipos de dados.</td></tr>
+            <tr><td>0h40 - 1h30</td><td>Comparações + if e else.</td></tr>
+            <tr><td>1h30 - 2h10</td><td>elif + leitura de fluxograma.</td></tr>
+            <tr><td>2h10 - 2h20</td><td>Pausa.</td></tr>
+            <tr><td>2h20 - 3h00</td><td>Condições com and + exemplos reais.</td></tr>
+            <tr><td>3h00 - 4h00</td><td>Lista de 40 exercícios.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tipos" class="chapter">
+      <h2>3) Tipos de dados</h2>
+      <h3>Booleano (<code>bool</code>)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">tem_ingresso = True
+porta_aberta = False</code></pre>
+
+      <h3>String (<code>str</code>)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">usuario = "aluno"
+senha = "1234"</code></pre>
+
+      <h3>Número (<code>int</code> e <code>float</code>)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">idade = 18
+media = 7.5</code></pre>
+
+      <div class="box warn">
+        <code>input()</code> retorna texto. Para números, converter com <code>int()</code> ou <code>float()</code>.
+      </div>
+    </section>
+
+    <section id="comparacoes" class="chapter">
+      <h2>4) Operadores de comparação</h2>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>Operador</th>
+              <th>Leitura</th>
+              <th>Exemplo</th>
+              <th>Retorno</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>==</code></td><td>igual</td><td><code>10 == 10</code></td><td><code>True</code></td></tr>
+            <tr><td><code>!=</code></td><td>diferente</td><td><code>10 != 5</code></td><td><code>True</code></td></tr>
+            <tr><td><code>&gt;</code></td><td>maior</td><td><code>7 &gt; 9</code></td><td><code>False</code></td></tr>
+            <tr><td><code>&lt;=</code></td><td>menor ou igual</td><td><code>3 &lt;= 3</code></td><td><code>True</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="condicionais" class="chapter">
+      <h2>5) Estruturas condicionais: if, elif e else</h2>
+      <pre class="bg-dark text-light p-3"><code class="language-python">nota = 6.5
+
+if nota >= 7:
+    print("Aprovado")
+elif nota >= 5:
+    print("Recuperação")
+else:
+    print("Reprovado")</code></pre>
+
+      <div class="box good">
+        O Python testa de cima para baixo e executa apenas o primeiro bloco verdadeiro.
+      </div>
+    </section>
+
+    <section id="and" class="chapter">
+      <h2>6) Condição composta com and</h2>
+      <pre class="bg-dark text-light p-3"><code class="language-python">idade = 20
+pagou = True
+
+if idade >= 18 and pagou:
+    print("Entrada liberada")
+else:
+    print("Entrada negada")</code></pre>
+      <p><code>and</code> exige que todas as condições sejam verdadeiras.</p>
+    </section>
+
+    <section id="fluxograma" class="chapter">
+      <h2>7) Fluxograma da decisão lógica</h2>
+      <div class="bg-light border rounded p-3">
+        <p class="mb-2"><strong>Início</strong></p>
+        <p class="mb-2">⬇</p>
+        <p class="mb-2"><strong>Ler dados</strong></p>
+        <p class="mb-2">⬇</p>
+        <p class="mb-2"><strong>Condição do if?</strong></p>
+        <p class="mb-2">Se SIM → executa bloco do <code>if</code></p>
+        <p class="mb-2">Se NÃO → testa <code>elif</code></p>
+        <p class="mb-2">Se elif for SIM → executa bloco do <code>elif</code></p>
+        <p class="mb-2">Se elif for NÃO → executa bloco do <code>else</code></p>
+        <p class="mb-0">Fim</p>
+      </div>
+    </section>
+
+    <section id="exemplos" class="chapter">
+      <h2>8) Exemplos práticos</h2>
+      <h3>Login</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">usuario = input("Usuário: ").strip().lower()
+senha = input("Senha: ").strip()
+
+if usuario == "aluno" and senha == "1234":
+    print("Acesso permitido")
+else:
+    print("Acesso negado")</code></pre>
+
+      <h3>Faixa etária</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">idade = int(input("Idade: "))
+
+if idade <= 12:
+    print("Criança")
+elif idade <= 17:
+    print("Adolescente")
+elif idade <= 59:
+    print("Adulto")
+else:
+    print("Idoso")</code></pre>
+    </section>
+
+    <section id="exercicios" class="chapter">
+      <h2>9) Lista com 40 exercícios (Python básico + estruturas)</h2>
+      <p class="mb-3">Faça na ordem. Cada novo exercício reaproveita lógica dos anteriores.</p>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h6">Exercícios 1 a 20</h3>
+              <ol class="mb-0">
+                <li>Mostrar nome e idade digitados.</li>
+                <li>Ler dois números e mostrar soma.</li>
+                <li>Ler dois números e mostrar média.</li>
+                <li>Dizer se número é positivo.</li>
+                <li>Dizer se número é negativo.</li>
+                <li>Dizer se número é zero.</li>
+                <li>Dizer se número é par ou ímpar.</li>
+                <li>Comparar dois números e mostrar maior.</li>
+                <li>Comparar dois números e dizer se são iguais.</li>
+                <li>Validar idade para voto.</li>
+                <li>Validar idade para CNH.</li>
+                <li>Classificar nota (aprovado/reprovado).</li>
+                <li>Classificar nota (aprovado/recuperação/reprovado).</li>
+                <li>Classificar faixa etária com elif.</li>
+                <li>Validar senha fixa.</li>
+                <li>Validar usuário e senha com and.</li>
+                <li>Verificar acesso por idade e ingresso.</li>
+                <li>Verificar aprovação por nota e presença.</li>
+                <li>Verificar desconto por valor e cadastro.</li>
+                <li>Verificar entrada em laboratório por matrícula e uniforme.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-body">
+              <h3 class="h6">Exercícios 21 a 40</h3>
+              <ol start="21" class="mb-0">
+                <li>Calcular média de três notas.</li>
+                <li>Classificar média em 4 faixas com elif.</li>
+                <li>Calcular IMC e classificar em 4 faixas.</li>
+                <li>Calcular salário líquido com desconto fixo.</li>
+                <li>Validar turno (M/T/N) com elif.</li>
+                <li>Validar dia da semana (1-7).</li>
+                <li>Classificar temperatura (frio/ameno/quente).</li>
+                <li>Validar compra mínima com cupom interno (and).</li>
+                <li>Validar acesso admin por usuário e senha.</li>
+                <li>Validar aluno aprovado por média e frequência.</li>
+                <li>Comparar três números e mostrar maior.</li>
+                <li>Comparar três números e mostrar menor.</li>
+                <li>Classificar triângulo pelos lados.</li>
+                <li>Calculadora básica com escolha (+,-,*,/).</li>
+                <li>Menu simples com if/elif/else.</li>
+                <li>Validar senha e confirmação.</li>
+                <li>Validar texto não vazio.</li>
+                <li>Validar idade e categoria de competição.</li>
+                <li>Validar preço e categoria de produto.</li>
+                <li>Mini sistema de boletim (projeto final da aula).</li>
+              </ol>
+            </div>
+          </div>
         </div>
       </div>
+
+      <div class="box info">
+        Método sugerido para resolver todos: entrada → conversão → condição → saída.
+      </div>
+    </section>
+
+    <section id="gabarito" class="chapter">
+      <h2>10) Gabarito completo dos 40 exercícios</h2>
+      <p>Resoluções de referência. Você pode adaptar nomes de variáveis e mensagens.</p>
+
+      <pre class="bg-dark text-light p-3"><code class="language-python"># 01
+nome = input("Nome: ")
+idade = int(input("Idade: "))
+print(nome, idade)
+
+# 02
+a = float(input("A: "))
+b = float(input("B: "))
+print("Soma:", a + b)
+
+# 03
+a = float(input("A: "))
+b = float(input("B: "))
+print("Média:", (a + b) / 2)
+
+# 04
+n = float(input("Número: "))
+if n > 0:
+    print("Positivo")
+else:
+    print("Não é positivo")
+
+# 05
+n = float(input("Número: "))
+if n < 0:
+    print("Negativo")
+else:
+    print("Não é negativo")
+
+# 06
+n = float(input("Número: "))
+if n == 0:
+    print("Zero")
+else:
+    print("Não é zero")
+
+# 07
+n = int(input("Número: "))
+if n % 2 == 0:
+    print("Par")
+else:
+    print("Ímpar")
+
+# 08
+a = float(input("A: "))
+b = float(input("B: "))
+if a > b:
+    print("Maior:", a)
+else:
+    print("Maior:", b)
+
+# 09
+a = float(input("A: "))
+b = float(input("B: "))
+if a == b:
+    print("Iguais")
+else:
+    print("Diferentes")
+
+# 10
+idade = int(input("Idade: "))
+if idade >= 16:
+    print("Pode votar")
+else:
+    print("Não pode votar")
+
+# 11
+idade = int(input("Idade: "))
+if idade >= 18:
+    print("Pode tirar CNH")
+else:
+    print("Não pode tirar CNH")
+
+# 12
+nota = float(input("Nota: "))
+if nota >= 7:
+    print("Aprovado")
+else:
+    print("Reprovado")
+
+# 13
+nota = float(input("Nota: "))
+if nota >= 7:
+    print("Aprovado")
+elif nota >= 5:
+    print("Recuperação")
+else:
+    print("Reprovado")
+
+# 14
+idade = int(input("Idade: "))
+if idade <= 12:
+    print("Criança")
+elif idade <= 17:
+    print("Adolescente")
+elif idade <= 59:
+    print("Adulto")
+else:
+    print("Idoso")
+
+# 15
+senha = input("Senha: ")
+if senha == "1234":
+    print("Senha correta")
+else:
+    print("Senha incorreta")
+
+# 16
+usuario = input("Usuário: ").strip().lower()
+senha = input("Senha: ").strip()
+if usuario == "aluno" and senha == "1234":
+    print("Acesso permitido")
+else:
+    print("Acesso negado")
+
+# 17
+idade = int(input("Idade: "))
+ingresso = input("Tem ingresso? (s/n): ").strip().lower()
+if idade >= 18 and ingresso == "s":
+    print("Entrada liberada")
+else:
+    print("Entrada negada")
+
+# 18
+nota = float(input("Nota: "))
+presenca = float(input("Presença (%): "))
+if nota >= 7 and presenca >= 75:
+    print("Aprovado")
+else:
+    print("Reprovado")
+
+# 19
+valor = float(input("Valor da compra: "))
+cadastro = input("Tem cadastro? (s/n): ").strip().lower()
+if valor >= 100 and cadastro == "s":
+    print("Desconto aplicado")
+else:
+    print("Sem desconto")
+
+# 20
+matricula = input("Matrícula ativa? (s/n): ").strip().lower()
+uniforme = input("Está de uniforme? (s/n): ").strip().lower()
+if matricula == "s" and uniforme == "s":
+    print("Entrada liberada")
+else:
+    print("Entrada negada")
+
+# 21
+n1 = float(input("Nota 1: "))
+n2 = float(input("Nota 2: "))
+n3 = float(input("Nota 3: "))
+print("Média:", (n1 + n2 + n3) / 3)
+
+# 22
+media = float(input("Média: "))
+if media >= 9:
+    print("Excelente")
+elif media >= 7:
+    print("Bom")
+elif media >= 5:
+    print("Regular")
+else:
+    print("Insuficiente")
+
+# 23
+peso = float(input("Peso (kg): "))
+altura = float(input("Altura (m): "))
+imc = peso / (altura * altura)
+if imc < 18.5:
+    print("Abaixo do peso")
+elif imc < 25:
+    print("Peso normal")
+elif imc < 30:
+    print("Sobrepeso")
+else:
+    print("Obesidade")
+
+# 24
+salario = float(input("Salário bruto: "))
+desconto = float(input("Desconto (%): "))
+liquido = salario - (salario * desconto / 100)
+print("Salário líquido:", liquido)
+
+# 25
+turno = input("Turno (M/T/N): ").strip().upper()
+if turno == "M":
+    print("Matutino")
+elif turno == "T":
+    print("Vespertino")
+elif turno == "N":
+    print("Noturno")
+else:
+    print("Turno inválido")
+
+# 26
+dia = int(input("Dia (1-7): "))
+if dia == 1:
+    print("Domingo")
+elif dia == 2:
+    print("Segunda")
+elif dia == 3:
+    print("Terça")
+elif dia == 4:
+    print("Quarta")
+elif dia == 5:
+    print("Quinta")
+elif dia == 6:
+    print("Sexta")
+elif dia == 7:
+    print("Sábado")
+else:
+    print("Valor inválido")
+
+# 27
+temp = float(input("Temperatura: "))
+if temp < 18:
+    print("Frio")
+elif temp <= 28:
+    print("Ameno")
+else:
+    print("Quente")
+
+# 28
+valor = float(input("Valor da compra: "))
+cupom = input("Cupom interno válido? (s/n): ").strip().lower()
+if valor >= 150 and cupom == "s":
+    print("Compra aprovada com benefício")
+else:
+    print("Sem benefício")
+
+# 29
+usuario = input("Usuário: ").strip().lower()
+senha = input("Senha: ").strip()
+if usuario == "admin" and senha == "admin123":
+    print("Acesso admin liberado")
+else:
+    print("Acesso admin negado")
+
+# 30
+media = float(input("Média: "))
+freq = float(input("Frequência (%): "))
+if media >= 7 and freq >= 75:
+    print("Aprovado")
+else:
+    print("Reprovado")
+
+# 31
+a = float(input("A: "))
+b = float(input("B: "))
+c = float(input("C: "))
+maior = a
+if b > maior:
+    maior = b
+if c > maior:
+    maior = c
+print("Maior:", maior)
+
+# 32
+a = float(input("A: "))
+b = float(input("B: "))
+c = float(input("C: "))
+menor = a
+if b < menor:
+    menor = b
+if c < menor:
+    menor = c
+print("Menor:", menor)
+
+# 33
+a = float(input("Lado A: "))
+b = float(input("Lado B: "))
+c = float(input("Lado C: "))
+if a == b and b == c:
+    print("Equilátero")
+elif a == b and b != c:
+    print("Isósceles")
+elif a == c and c != b:
+    print("Isósceles")
+elif b == c and c != a:
+    print("Isósceles")
+else:
+    print("Escaleno")
+
+# 34
+n1 = float(input("Número 1: "))
+n2 = float(input("Número 2: "))
+op = input("Operação (+,-,*,/): ").strip()
+if op == "+":
+    print(n1 + n2)
+elif op == "-":
+    print(n1 - n2)
+elif op == "*":
+    print(n1 * n2)
+elif op == "/":
+    if n2 != 0:
+        print(n1 / n2)
+    else:
+        print("Divisão por zero não permitida")
+else:
+    print("Operação inválida")
+
+# 35
+op = int(input("Opção (1-3): "))
+if op == 1:
+    print("Cadastrar")
+elif op == 2:
+    print("Listar")
+elif op == 3:
+    print("Sair")
+else:
+    print("Opção inválida")
+
+# 36
+senha = input("Senha: ")
+confirmacao = input("Confirme a senha: ")
+if senha == confirmacao:
+    print("Senha confirmada")
+else:
+    print("Senhas diferentes")
+
+# 37
+texto = input("Digite um texto: ").strip()
+if texto != "":
+    print("Texto válido")
+else:
+    print("Texto vazio")
+
+# 38
+idade = int(input("Idade: "))
+if idade <= 12:
+    print("Categoria Infantil")
+elif idade <= 17:
+    print("Categoria Juvenil")
+else:
+    print("Categoria Adulto")
+
+# 39
+preco = float(input("Preço: "))
+if preco < 50:
+    print("Categoria econômica")
+elif preco <= 150:
+    print("Categoria intermediária")
+else:
+    print("Categoria premium")
+
+# 40
+n1 = float(input("Nota 1: "))
+n2 = float(input("Nota 2: "))
+freq = float(input("Frequência (%): "))
+media = (n1 + n2) / 2
+
+if media >= 7 and freq >= 75:
+    print("Aprovado")
+elif media >= 5 and freq >= 75:
+    print("Recuperação")
+else:
+    print("Reprovado")</code></pre>
+    </section>
+
+    <div class="footer-actions">
+      <a class="btn btn-danger btn-sm" href="../fundamentosdalogica.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
     </div>
-  </div>
+  </main>
 </body>
+
 </html>
