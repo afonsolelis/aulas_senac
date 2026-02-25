@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Descrição do Projeto - Qualidade de Software</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    body { font-size: 1.2rem; }
+    .lead { font-size: 1.4rem; }
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2.2rem; }
+    .small, .text-muted.small { font-size: 1.05rem !important; }
+    .x-small { font-size: 0.95rem !important; }
+    .card-title { font-size: 1.3rem; }
+    .badge { font-size: 0.9rem; padding: 0.6em 1em; }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../professor.html">Professor</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge bg-white text-danger mb-1">TADS</span>
+          <h1 class="h3 fw-bold text-white mb-0">Qualidade de Software</h1>
+        </div>
+        <p class="text-white-50 mb-0 small d-none d-md-block">2026.1</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        
+        <!-- Back Button -->
+        <a href="../qualidade-software.html" class="btn btn-outline-secondary mb-4 rounded-pill">
+          <i class="fas fa-arrow-left me-2"></i> Voltar para Cronograma
+        </a>
+
+        <!-- Main Content Card -->
+        <div class="glass-card bg-white p-4 p-md-5 mb-5">
+          <div class="text-center mb-5">
+            <i class="fas fa-project-diagram fa-3x text-danger mb-3"></i>
+            <h1 class="display-5 fw-bold">Projeto Semestral</h1>
+            <p class="lead text-muted">Gerenciador de Biblioteca Pessoal</p>
+            <hr class="mx-auto w-25">
+          </div>
+
+          <!-- Visão Geral -->
+          <section class="mb-5">
+            <h2 class="h4 fw-bold mb-3">
+              <i class="fas fa-info-circle text-danger me-2"></i>Visão Geral
+            </h2>
+            <p>
+              O objetivo deste projeto é desenvolver uma aplicação completa para <strong>cadastro e gerenciamento de livros</strong> de uma biblioteca pessoal, incluindo <strong>autenticação de usuários</strong>. 
+              A aplicação deve ser robusta, seguindo as melhores práticas de desenvolvimento e, principalmente, focada em <strong>qualidade e testabilidade</strong>.
+            </p>
+            <div class="bg-light p-3 rounded-3 border-start border-danger border-4">
+              <p class="mb-0 small">
+                O sistema deve permitir o CRUD de livros, o <strong>cadastro de novos usuários</strong>, com persistência em MongoDB 
+                e uma interface funcional que realize o <strong>gerenciamento de sessão</strong>.
+              </p>
+            </div>
+          </section>
+
+          <!-- Requisitos Técnicos -->
+          <section class="mb-5">
+            <h2 class="h4 fw-bold mb-4">
+              <i class="fas fa-tools text-danger me-2"></i>Requisitos Técnicos
+            </h2>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <div class="card h-100 border-light shadow-sm">
+                  <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-server text-primary me-2"></i>Backend</h5>
+                    <ul class="list-unstyled small">
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Spring Boot (Java)</li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>MongoDB (NoSQL)</li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Arquitetura MVC</li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Testcontainers & VCR</strong></li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Cadastro de Usuários</strong></li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card h-100 border-light shadow-sm">
+                  <div class="card-body">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-desktop text-primary me-2"></i>Frontend</h5>
+                    <ul class="list-unstyled small">
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Interface Web Funcional</li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Gerenciamento de Sessão</strong></li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Design Responsivo</li>
+                      <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Experiência do Usuário (UX)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Requisitos de Testes -->
+          <section class="mb-5">
+            <div class="d-flex align-items-center mb-4">
+              <h2 class="h4 fw-bold mb-0">
+                <i class="fas fa-vial text-danger me-2"></i>Estratégia de Testes
+              </h2>
+              <span class="badge bg-danger ms-3 px-3 py-2 rounded-pill">Mínimo 80% Cobertura</span>
+            </div>
+            
+            <div class="alert alert-warning border-0 shadow-sm mb-4">
+              <i class="fas fa-exclamation-triangle me-2"></i>
+              <strong>Atenção:</strong> O uso de <strong>Mocks está proibido</strong> no projeto final. Utilize <strong>Testcontainers</strong> para persistência e <strong>VCR</strong> para chamadas de API externas.
+            </div>
+            
+            <div class="row g-3">
+              <div class="col-md-3">
+                <div class="p-3 border rounded-3 text-center h-100 bg-light">
+                  <i class="fas fa-tasks text-muted mb-2"></i>
+                  <h6 class="fw-bold mb-1 small">Unitários/Integração</h6>
+                  <p class="x-small text-muted mb-0">Com Testcontainers e VCR</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded-3 text-center h-100 bg-light">
+                  <i class="fas fa-vials text-muted mb-2"></i>
+                  <h6 class="fw-bold mb-1 small">Parametrizados</h6>
+                  <p class="x-small text-muted mb-0">Múltiplos cenários</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded-3 text-center h-100 bg-light">
+                  <i class="fas fa-search text-muted mb-2"></i>
+                  <h6 class="fw-bold mb-1 small">Caixa Branca</h6>
+                  <p class="x-small text-muted mb-0">Lógica interna</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="p-3 border rounded-3 text-center h-100 bg-light">
+                  <i class="fas fa-box text-muted mb-2"></i>
+                  <h6 class="fw-bold mb-1 small">Caixa Preta</h6>
+                  <p class="x-small text-muted mb-0">E2E / Controller</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Documentação RTM -->
+          <section class="mb-5">
+            <div class="card bg-dark text-white border-0 overflow-hidden">
+              <div class="card-body p-4">
+                <div class="row align-items-center">
+                  <div class="col-md-8">
+                    <h5 class="fw-bold mb-2 text-warning"><i class="fas fa-file-alt me-2"></i>Documento RTM.md</h5>
+                    <p class="small mb-0 opacity-75">
+                      A Matriz de Rastreabilidade de Requisitos (RTM) deve mapear cada requisito funcional aos seus respectivos testes, garantindo 100% de cobertura. 
+                      <strong>Cada requisito deve ser acompanhado de um Diagrama UML de Sequência</strong> detalhando o fluxo da operação.
+                    </p>
+                  </div>
+                  <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <i class="fas fa-clipboard-check fa-3 title-opacity opacity-25" style="font-size: 4rem;"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Como Entregar -->
+          <section>
+            <h2 class="h4 fw-bold mb-4 text-center">Protocolo de Entrega</h2>
+            <div class="list-group list-group-flush border-top">
+              <div class="list-group-item bg-transparent py-3">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1 fw-bold">1. Repositório no GitHub</h6>
+                    <p class="mb-0 small text-muted">Código-fonte organizado e histórico de commits.</p>
+                  </div>
+                  <i class="fab fa-github fa-lg text-muted"></i>
+                </div>
+              </div>
+              <div class="list-group-item bg-transparent py-3">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1 fw-bold">2. Documentação</h6>
+                    <p class="mb-0 small text-muted">Inclusão do RTM.md (com diagramas UML de sequência) e README detalhado.</p>
+                  </div>
+                  <i class="fas fa-book fa-lg text-muted"></i>
+                </div>
+              </div>
+              <div class="list-group-item bg-transparent py-3">
+                <div class="d-flex w-100 justify-content-between align-items-center">
+                  <div>
+                    <h6 class="mb-1 fw-bold">3. Relatório de Cobertura</h6>
+                    <p class="mb-0 small text-muted">Evidência de cobertura mínima de 80% (ex: JaCoCo).</p>
+                  </div>
+                  <i class="fas fa-chart-pie fa-lg text-muted"></i>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Botão removido conforme solicitação -->
+          </section>
+
+        </div>
+
+        <!-- Dúvidas -->
+        <div class="alert alert-info border-0 shadow-sm d-flex align-items-center" role="alert">
+          <i class="fas fa-question-circle fa-2x me-3"></i>
+          <div>
+            <h6 class="alert-heading fw-bold mb-1">Dúvidas sobre o projeto?</h6>
+            <p class="mb-0 small">Consulte o professor durante as aulas ou utilize o fórum da disciplina.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-light text-dark py-4 mt-5 border-top">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2025 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
