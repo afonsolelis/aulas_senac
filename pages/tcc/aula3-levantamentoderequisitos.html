@@ -12,9 +12,66 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
+  <style>
+    /* Modo apresentação: canvas estável e ajuste uniforme (sem scroll) */
+    .aula3-deck .slide-container {
+      height: 89vh;
+      padding: 0.5rem;
+    }
+
+    .aula3-deck .slide {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .aula3-deck .slide-content {
+      width: 1260px;
+      max-width: none;
+    }
+
+    .aula3-deck .glass-cover {
+      width: 940px;
+      max-width: none;
+      padding: 3.4rem;
+    }
+
+    .aula3-deck .display-3 {
+      font-size: 2.8rem;
+    }
+
+    .aula3-deck .display-4 {
+      font-size: 2.25rem;
+    }
+
+    .aula3-deck .display-5 {
+      font-size: 1.95rem;
+    }
+
+    .aula3-deck p,
+    .aula3-deck li {
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .aula3-deck .card-header {
+      padding: 0.65rem 0.9rem;
+    }
+
+    .aula3-deck .card-body {
+      padding: 0.8rem 0.95rem;
+    }
+
+    .aula3-deck .row {
+      --bs-gutter-x: 0.9rem;
+      --bs-gutter-y: 0.9rem;
+    }
+  </style>
 </head>
 
-<body class="slide-body">
+<body class="slide-body aula3-deck">
 
   <div class="slide-container">
 
@@ -39,6 +96,7 @@
 
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
+      <div class="slide-content">
       <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
       <ul class="list-group list-group-flush fs-4 text-start bg-transparent mb-4">
         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
@@ -51,6 +109,10 @@
             class="fas fa-chart-line text-info me-3"></i> Pesquisa Experimental</li>
         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
             class="fas fa-book-open text-danger me-3"></i> Survey e Estado da Arte</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-filter text-secondary me-3"></i> Funil de Pesquisa Bibliográfica</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-microscope text-dark me-3"></i> Método de Kitchenham (RSL)</li>
         <li class="list-group-item bg-transparent text-dark border-0"><i class="fas fa-compass text-secondary me-3"></i>
           Framework de Decisão: Escolhendo Seu Caminho</li>
       </ul>
@@ -84,15 +146,16 @@
         <hr class="my-3">
         <p class="mb-0 text-center fw-bold fs-5">O TCC exige profundidade, fundamentação teórica e metodologia científica rigorosa!</p>
       </div>
+      </div>
     </div>
 
     <!-- Slide 3: Os Múltiplos Caminhos -->
     <div class="slide" id="slide-3">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Ciência da Computação ≠ Só Programar</h2>
-        <p class="text-center text-muted mb-5 fs-5">Seu TCC pode seguir diferentes naturezas de investigação científica</p>
+        <h2 class="display-5 fw-bold mb-2 text-dark text-center">Ciência da Computação ≠ Só Programar</h2>
+        <p class="text-center text-muted mb-3 fs-6">Seu TCC pode seguir diferentes naturezas de investigação científica</p>
 
-        <div class="row g-4">
+        <div class="row g-3">
           <div class="col-md-6">
             <div class="card h-100 border-primary shadow-lg">
               <div class="card-header bg-primary text-white py-3">
@@ -600,8 +663,175 @@
       </div>
     </div>
 
-    <!-- Slide 9: Framework de Decisão -->
+    <!-- Slide 9: Funil de Pesquisa Bibliográfica -->
     <div class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Funil de Pesquisa Bibliográfica</h2>
+        <p class="text-center text-muted mb-5">Como sair de milhares de resultados para um conjunto sólido de artigos</p>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-4" style="background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);">
+                <h4 class="text-white text-center mb-4"><i class="fas fa-filter me-2"></i>Etapas do Funil</h4>
+                <div class="row g-3 text-center">
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">1</h6>
+                      <p class="small mb-0">Tema e<br>pergunta</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">2</h6>
+                      <p class="small mb-0">String<br>de busca</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">3</h6>
+                      <p class="small mb-0">Bases<br>científicas</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">4</h6>
+                      <p class="small mb-0">Triagem<br>título/resumo</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">5</h6>
+                      <p class="small mb-0">Leitura<br>completa</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">6</h6>
+                      <p class="small mb-0">Corpus<br>final</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Exemplo Numérico do Funil</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Busca inicial: <strong>1.250</strong> resultados</li>
+                  <li>Remoção de duplicados: <strong>980</strong></li>
+                  <li>Título e resumo: <strong>210</strong></li>
+                  <li>Leitura completa: <strong>74</strong></li>
+                  <li>Avaliação de qualidade: <strong>42</strong></li>
+                  <li>Corpus final do TCC: <strong>30 a 45</strong> artigos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-warning shadow">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-check-double me-2"></i>Regras para um Funil Forte</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Defina período (ex.: 2019-2026)</li>
+                  <li>Use bases confiáveis: IEEE, ACM, Scopus, Springer</li>
+                  <li>Documente critérios de inclusão/exclusão</li>
+                  <li>Registre motivos de descarte por etapa</li>
+                  <li>Mantenha planilha de rastreabilidade dos papers</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Método de Kitchenham -->
+    <div class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Método de Kitchenham para Revisão Sistemática</h2>
+        <p class="text-center text-muted mb-5">Referência clássica em Engenharia de Software para conduzir RSL com rigor</p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-12">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-4">
+                <h4 class="fw-bold mb-3 text-primary"><i class="fas fa-microscope me-2"></i>As 3 Fases do Protocolo Kitchenham</h4>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">1. Planejamento</h5>
+                      <ul class="small mb-0">
+                        <li>Definir objetivo e perguntas de pesquisa (RQs)</li>
+                        <li>Definir string de busca</li>
+                        <li>Definir bases e critérios de seleção</li>
+                        <li>Definir critérios de qualidade</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">2. Condução</h5>
+                      <ul class="small mb-0">
+                        <li>Executar buscas nas bases</li>
+                        <li>Aplicar triagem por etapas</li>
+                        <li>Extrair dados com formulário padronizado</li>
+                        <li>Aplicar avaliação de qualidade dos estudos</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">3. Relato</h5>
+                      <ul class="small mb-0">
+                        <li>Sintetizar resultados por categoria</li>
+                        <li>Responder às RQs com evidências</li>
+                        <li>Reportar limitações e ameaças à validade</li>
+                        <li>Apresentar lacunas e trabalhos futuros</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-8">
+            <div class="alert alert-info border-0 shadow h-100 mb-0">
+              <h5 class="fw-bold"><i class="fas fa-book me-2"></i>Referência do Método</h5>
+              <p class="mb-2 small">
+                <strong>Kitchenham, B.; Charters, S.</strong> Guidelines for performing Systematic Literature Reviews in Software Engineering.
+                EBSE Technical Report EBSE-2007-01, Keele University and Durham University Joint Report, 2007.
+              </p>
+              <p class="mb-0 small">
+                Uso recomendado no TCC: citar no capítulo de metodologia ao justificar protocolo de revisão sistemática.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="alert alert-warning border-0 shadow h-100 mb-0">
+              <h5 class="fw-bold"><i class="fas fa-lightbulb me-2"></i>Dica prática</h5>
+              <p class="small mb-0">Monte uma planilha com colunas: ID, título, base, ano, critérios, decisão, motivo do descarte e categoria temática.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Framework de Decisão -->
+    <div class="slide" id="slide-11">
       <div class="slide-content text-center">
         <h2 class="display-5 fw-bold mb-4 text-dark">Como Escolher Sua Metodologia?</h2>
         <p class="text-muted mb-5 fs-5">Use este framework de perguntas para decidir o melhor caminho</p>
@@ -711,8 +941,8 @@
       </div>
     </div>
 
-    <!-- Slide 10: Definindo Objetivos e Hipóteses -->
-    <div class="slide" id="slide-10">
+    <!-- Slide 12: Definindo Objetivos e Hipóteses -->
+    <div class="slide" id="slide-12">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Definindo Objetivos e Hipóteses</h2>
         <p class="text-center text-muted mb-5">Como formular a "questão de pesquisa" do seu TCC</p>
@@ -788,8 +1018,8 @@
       </div>
     </div>
 
-    <!-- Slide 11: Exemplos Inspiradores -->
-    <div class="slide" id="slide-11">
+    <!-- Slide 13: Exemplos Inspiradores -->
+    <div class="slide" id="slide-13">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Exemplos Inspiradores de TCCs</h2>
         <p class="text-center text-muted mb-5">Projetos reais aprovados em Ciência da Computação</p>
@@ -887,8 +1117,8 @@
       </div>
     </div>
 
-    <!-- Slide 12: Atividade Prática -->
-    <div class="slide" id="slide-12">
+    <!-- Slide 14: Atividade Prática -->
+    <div class="slide" id="slide-14">
       <div class="slide-content text-center">
         <h2 class="display-5 fw-bold mb-4 text-dark">Atividade Prática - Defina Seu Caminho</h2>
         <div class="alert alert-primary border-0 shadow-lg mb-5 mx-auto" style="max-width: 800px;">
@@ -954,8 +1184,8 @@
       </div>
     </div>
 
-    <!-- Slide 13: O que Entregar -->
-    <div class="slide" id="slide-13">
+    <!-- Slide 15: O que Entregar -->
+    <div class="slide" id="slide-15">
       <div class="slide-content text-center">
         <h2 class="display-5 fw-bold mb-4 text-dark">Entrega da Semana</h2>
         <div class="row g-4 justify-content-center">
@@ -994,8 +1224,8 @@
       </div>
     </div>
 
-    <!-- Slide 14: Conclusion -->
-    <div class="slide" id="slide-14">
+    <!-- Slide 16: Conclusion -->
+    <div class="slide" id="slide-16">
       <div class="text-center slide-content">
         <h1 class="display-3 fw-bold mb-4 text-dark">Próximos Passos</h1>
         <div class="row justify-content-center mb-5">
@@ -1047,12 +1277,14 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
+      <span id="slideCounter" class="small text-muted ms-2 me-2"></span>
       <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
 
     <div class="text-center text-muted small d-none d-md-block">
-      TCC - Metodologias de Pesquisa em Ciência da Computação
+      TCC - Metodologias de Pesquisa em Ciência da Computação |
+      <a href="material/aula03-requirements.html" class="text-decoration-none">Material da Aula 3</a>
     </div>
 
     <a href="../../index.html">
@@ -1062,6 +1294,61 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+  <script>
+    // Ajuste automático de escala (largura + altura) para manter todos os slides visíveis.
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.slide-container');
+
+      function fitActiveSlide() {
+        const active = document.querySelector('.slide.active');
+        if (!active) return;
+
+        const content = active.querySelector('.slide-content, .glass-cover');
+        if (!content) return;
+
+        // Reset antes de medir
+        content.style.transform = '';
+        content.style.width = '';
+        content.style.position = '';
+        content.style.left = '';
+        content.style.top = '';
+        content.style.transformOrigin = 'top left';
+
+        const baseWidth = content.classList.contains('glass-cover') ? 940 : 1260;
+        content.style.width = `${baseWidth}px`;
+
+        const availableWidth = active.clientWidth - 16;
+        const availableHeight = active.clientHeight - 16;
+        const contentWidth = content.scrollWidth;
+        const contentHeight = content.scrollHeight;
+        if (!availableWidth || !availableHeight || !contentWidth || !contentHeight) return;
+
+        const scale = Math.min(1, availableWidth / contentWidth, availableHeight / contentHeight);
+        const fittedWidth = contentWidth * scale;
+        const fittedHeight = contentHeight * scale;
+        const left = Math.max(0, (availableWidth - fittedWidth) / 2);
+        const top = Math.max(0, (availableHeight - fittedHeight) / 2);
+
+        content.style.position = 'absolute';
+        content.style.left = `${left}px`;
+        content.style.top = `${top}px`;
+        content.style.transform = `scale(${scale})`;
+      }
+
+      const scheduleFit = () => requestAnimationFrame(fitActiveSlide);
+      scheduleFit();
+
+      window.addEventListener('resize', scheduleFit);
+      document.addEventListener('fullscreenchange', scheduleFit);
+      document.addEventListener('keydown', scheduleFit);
+      document.addEventListener('click', scheduleFit);
+
+      if (container) {
+        const observer = new MutationObserver(scheduleFit);
+        observer.observe(container, { attributes: true, subtree: true, attributeFilter: ['class'] });
+      }
+    });
+  </script>
 
 </body>
 
