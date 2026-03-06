@@ -68,6 +68,14 @@
       --bs-gutter-x: 0.9rem;
       --bs-gutter-y: 0.9rem;
     }
+
+    .aula3-deck .deck-back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1100;
+      pointer-events: auto;
+    }
   </style>
 </head>
 
@@ -76,7 +84,7 @@
   <div class="slide-container">
 
     <!-- Back Button -->
-    <a href="../tcc.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+    <a href="../tcc.html" class="btn btn-outline-secondary rounded-pill deck-back-button">
       <i class="fas fa-arrow-left me-2"></i> Voltar
     </a>
 
@@ -1189,7 +1197,7 @@
       <div class="slide-content text-center">
         <h2 class="display-5 fw-bold mb-4 text-dark">Entrega da Semana</h2>
         <div class="row g-4 justify-content-center">
-          <div class="col-md-8">
+          <div class="col-md-9">
             <div class="card border-primary shadow-lg">
               <div class="card-header bg-primary text-white">
                 <h4 class="mb-0"><i class="fas fa-file-upload me-2"></i>Proposta de Pesquisa (Preliminar)</h4>
@@ -1209,17 +1217,9 @@
                 <div class="alert alert-info mb-4">
                   <p class="mb-0"><i class="fas fa-info-circle me-2"></i><strong>Formato:</strong> Pode ser Word/Google Docs por enquanto. Na próxima aula, migraremos para o Template LaTeX oficial.</p>
                 </div>
-                <div class="d-grid gap-2">
-                  <a href="#" class="btn btn-success btn-lg"><i class="fas fa-upload me-2"></i>Enviar no Moodle</a>
-                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="alert alert-warning mt-4 border-0 shadow mx-auto" style="max-width: 800px;">
-          <h5><i class="fas fa-clock me-2"></i>Prazo</h5>
-          <p class="mb-0">Entrega até <strong>23:59 de domingo</strong> antes da próxima aula. Isso dará tempo para o professor revisar e dar feedback individual!</p>
         </div>
       </div>
     </div>

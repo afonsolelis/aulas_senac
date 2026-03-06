@@ -66,7 +66,7 @@
 
           <!-- Entrega Parcial -->
           <div class="col-md-4">
-            <a href="#"
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdqPg0nhLoLrofbQCXVsO4v35dP3BZUH09H7ViVEHbx68Y5KA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"
               class="alert alert-info border-0 shadow-sm h-100 mb-0 d-flex flex-column justify-content-center text-decoration-none"
               role="alert">
               <div class="d-flex align-items-center mb-2">
@@ -76,7 +76,6 @@
                 </div>
                 <div>
                   <h5 class="alert-heading fw-bold mb-1 text-dark">Entrega Parcial</h5>
-                  <p class="small mb-0 text-muted">Enviar Cap. 1-3</p>
                 </div>
               </div>
             </a>
@@ -367,7 +366,8 @@
         const titleEl = slideLink.querySelector("h5");
         const title = titleEl ? titleEl.textContent.trim() : "";
         const materialHref = materialByTitle[title] || materialMap[slideHref];
-        if (!materialHref) return;
+        const suppressActions = slideHref === "tcc/aula4-entregaformaldapropostadeprojeto.html";
+        if (!materialHref && !suppressActions) return;
 
         const card = document.createElement("div");
         card.className = slideLink.className.replace(" list-group-item-action", "");
@@ -379,13 +379,16 @@
           lessonText.classList.add("mb-auto");
         }
 
+        slideLink.replaceWith(card);
+
+        if (suppressActions) return;
+
         const actions = document.createElement("div");
         actions.className = "mt-3 d-flex flex-wrap gap-2";
         actions.innerHTML =
           '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
           '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
 
-        slideLink.replaceWith(card);
         card.appendChild(actions);
       });
     })();
