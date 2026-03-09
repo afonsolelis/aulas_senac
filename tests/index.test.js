@@ -17,133 +17,150 @@ describe('index.html', () => {
     doc = loadHTML('index.html');
   });
 
-  // --- HEAD ---
   describe('HEAD', () => {
     test('tem <html lang="pt-br">', () => {
-      expect(doc.documentElement.lang).toBe('pt-br');
+      const lang = doc.documentElement.lang;
+
+      expect(lang).toBe('pt-br');
     });
 
     test('tem <meta charset="UTF-8">', () => {
       const meta = doc.querySelector('meta[charset]');
+      const charset = meta?.getAttribute('charset').toUpperCase();
+
       expect(meta).not.toBeNull();
-      expect(meta.getAttribute('charset').toUpperCase()).toBe('UTF-8');
+      expect(charset).toBe('UTF-8');
     });
 
     test('tem <meta name="viewport">', () => {
       const meta = doc.querySelector('meta[name="viewport"]');
+
       expect(meta).not.toBeNull();
     });
 
     test('<title> contém "Hub de Aulas"', () => {
-      expect(doc.title).toContain('Hub de Aulas');
+      const title = doc.title;
+
+      expect(title).toContain('Hub de Aulas');
     });
 
     test('carrega CSS do Bootstrap via CDN', () => {
-      const links = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'));
-      const bootstrap = links.find(l => l.href.includes('bootstrap'));
-      expect(bootstrap).toBeDefined();
+      const stylesheets = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'));
+      const bootstrapCSS = stylesheets.find(l => l.href.includes('bootstrap'));
+
+      expect(bootstrapCSS).toBeDefined();
     });
 
     test('carrega o CSS customizado (css/style.css)', () => {
-      const links = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'));
-      const custom = links.find(l => l.getAttribute('href') === 'css/style.css');
-      expect(custom).toBeDefined();
+      const stylesheets = Array.from(doc.querySelectorAll('link[rel="stylesheet"]'));
+      const customCSS = stylesheets.find(l => l.getAttribute('href') === 'css/style.css');
+
+      expect(customCSS).toBeDefined();
     });
   });
 
-  // --- NAVBAR ---
   describe('Navbar', () => {
     test('existe uma <nav> com classe navbar', () => {
-      const nav = doc.querySelector('nav.navbar');
-      expect(nav).not.toBeNull();
+      const navbar = doc.querySelector('nav.navbar');
+
+      expect(navbar).not.toBeNull();
     });
 
     test('navbar tem logo do Senac com alt text', () => {
-      const nav = doc.querySelector('nav.navbar');
-      const img = nav.querySelector('img');
-      expect(img).not.toBeNull();
-      expect(img.alt.toLowerCase()).toContain('senac');
+      const navbar = doc.querySelector('nav.navbar');
+      const logo = navbar.querySelector('img');
+      const alt = logo?.alt.toLowerCase();
+
+      expect(logo).not.toBeNull();
+      expect(alt).toContain('senac');
     });
 
     test('navbar tem link para a página do Professor', () => {
-      const nav = doc.querySelector('nav.navbar');
-      const links = Array.from(nav.querySelectorAll('a'));
-      const professor = links.find(l => l.getAttribute('href') === 'pages/professor.html');
-      expect(professor).toBeDefined();
+      const navLinks = Array.from(doc.querySelectorAll('nav.navbar a'));
+      const professorLink = navLinks.find(l => l.getAttribute('href') === 'pages/professor.html');
+
+      expect(professorLink).toBeDefined();
     });
   });
 
-  // --- SEÇÃO DISCIPLINAS ---
   describe('Seção #disciplinas', () => {
     test('existe a seção com id "disciplinas"', () => {
       const section = doc.querySelector('#disciplinas');
+
       expect(section).not.toBeNull();
     });
 
     test('tem exatamente 4 cards de disciplinas', () => {
       const cards = doc.querySelectorAll('#disciplinas .card');
+
       expect(cards.length).toBe(4);
     });
 
     test('card de Qualidade tem link para pages/qualidade-software.html', () => {
-      const links = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const link = links.find(l => l.getAttribute('href') === 'pages/qualidade-software.html');
-      expect(link).toBeDefined();
+      const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
+      const qualidadeLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/qualidade-software.html');
+
+      expect(qualidadeLink).toBeDefined();
     });
 
     test('card de Lógica tem link para pages/introducao-logica.html', () => {
-      const links = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const link = links.find(l => l.getAttribute('href') === 'pages/introducao-logica.html');
-      expect(link).toBeDefined();
+      const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
+      const logicaLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/introducao-logica.html');
+
+      expect(logicaLink).toBeDefined();
     });
 
     test('card de TCC tem link para pages/tcc.html', () => {
-      const links = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const link = links.find(l => l.getAttribute('href') === 'pages/tcc.html');
-      expect(link).toBeDefined();
+      const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
+      const tccLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/tcc.html');
+
+      expect(tccLink).toBeDefined();
     });
 
     test('card do Professor tem link para pages/professor.html', () => {
-      const links = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const link = links.find(l => l.getAttribute('href') === 'pages/professor.html');
-      expect(link).toBeDefined();
+      const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
+      const professorLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/professor.html');
+
+      expect(professorLink).toBeDefined();
     });
 
-    test('todos os links de "Acessar" apontam para arquivos que existem', () => {
-      const links = Array.from(doc.querySelectorAll('#disciplinas a[href]'));
-      links.forEach(link => {
-        const href = link.getAttribute('href');
-        const filePath = path.join(ROOT, href);
-        expect(fs.existsSync(filePath)).toBe(true);
-      });
+    test('todos os links de "Acessar" apontam para arquivos que existem no disco', () => {
+      const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a[href]'));
+      const hrefs = disciplinaLinks.map(l => l.getAttribute('href'));
+      const filePaths = hrefs.map(href => path.join(ROOT, href));
+
+      filePaths.forEach(filePath => expect(fs.existsSync(filePath)).toBe(true));
     });
   });
 
-  // --- FOOTER ---
   describe('Footer', () => {
     test('existe um <footer>', () => {
       const footer = doc.querySelector('footer');
+
       expect(footer).not.toBeNull();
     });
 
     test('footer tem logo do Senac', () => {
       const footer = doc.querySelector('footer');
-      const img = footer.querySelector('img');
-      expect(img).not.toBeNull();
+      const logo = footer.querySelector('img');
+
+      expect(logo).not.toBeNull();
     });
 
     test('footer tem texto de copyright com "Senac"', () => {
       const footer = doc.querySelector('footer');
-      expect(footer.textContent).toContain('Senac');
+      const footerText = footer.textContent;
+
+      expect(footerText).toContain('Senac');
     });
   });
 
-  // --- SCRIPTS ---
   describe('Scripts', () => {
     test('carrega JS do Bootstrap via CDN', () => {
       const scripts = Array.from(doc.querySelectorAll('script[src]'));
-      const bootstrap = scripts.find(s => s.src.includes('bootstrap'));
-      expect(bootstrap).toBeDefined();
+      const bootstrapJS = scripts.find(s => s.src.includes('bootstrap'));
+
+      expect(bootstrapJS).toBeDefined();
     });
   });
 });
