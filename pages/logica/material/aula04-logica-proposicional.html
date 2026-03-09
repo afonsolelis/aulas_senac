@@ -1,37 +1,493 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 04 - Introdução à Lógica</title>
+  <title>Material Didático - Aula 04 - Lógica Proposicional</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body class="bg-light">
-  <div class="container py-5">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-4 p-md-5">
-        <p class="text-muted small mb-2">Introdução à Lógica</p>
-        <h1 class="h3 fw-bold mb-3">Aula 04 - Lógica Proposicional</h1>
-        <p class="text-secondary mb-2">Este material traduz os pontos centrais do slide em linguagem direta e curta.</p>
-        <p class="text-secondary mb-4">Use este resumo como guia de estudo antes dos exercícios e para revisão da aula.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
-        <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
-        </ul>
-        <h2 class="h5 fw-bold mb-2">Atividades envolvidas</h2>
-        <p class="text-secondary mb-2">Exposição dialogada, demonstração prática no Colab e resolução guiada de exercícios.</p>
-        <h2 class="h5 fw-bold mb-2">Observações da aula</h2>
-        <p class="text-secondary mb-4">Registrar presença, participação e principais dúvidas para acompanhamento da turma.</p>
+  <style>
+    :root {
+      --text: #334155;
+      --title: #0f172a;
+      --border: #e2e8f0;
+    }
 
-        <div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-danger btn-sm" href="../logicaproposicional.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
-          <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
-        </div>
-      </div>
+    body {
+      background: #f3f6fb;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #111827, #0f766e);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .14);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .top-actions,
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc,
+    .chapter {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .toc {
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc a {
+      color: #0f766e;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .chapter {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--title);
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .chapter h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--title);
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    .box {
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      margin: .8rem 0;
+      border-left: 4px solid;
+      background: #f8fafc;
+    }
+
+    .info {
+      border-color: #0ea5e9;
+      background: #ecfeff;
+    }
+
+    .warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .good {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .mini-table td,
+    .mini-table th {
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="mb-2"><span class="badge bg-light text-dark">Introdução à Lógica</span> <span
+          class="badge bg-danger">Aula 04</span></p>
+      <h1>Lógica Proposicional com Python (4h)</h1>
+      <p class="mb-0 text-light">Versão ampliada da aula: contexto histórico, evolução até os computadores,
+        aplicações reais e prática intensa com Python.</p>
+    </header>
+
+    <div class="top-actions">
+      <a class="btn btn-danger btn-sm" href="../logicaproposicional.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
     </div>
-  </div>
+
+    <section class="toc" aria-label="Sumário">
+      <h2 class="h6 fw-bold mb-2">Sumário</h2>
+      <ol class="mb-0">
+        <li><a href="#objetivo">Objetivo da aula</a></li>
+        <li><a href="#historia">De onde vem a lógica?</a></li>
+        <li><a href="#evolucao">Como a lógica virou computação</a></li>
+        <li><a href="#usos">Uso da lógica hoje</a></li>
+        <li><a href="#conceitos">Conceitos essenciais</a></li>
+        <li><a href="#python">Tradução para Python</a></li>
+        <li><a href="#ludico">Exemplos lúdicos e comentados</a></li>
+        <li><a href="#roteiro">Roteiro das 4 horas</a></li>
+        <li><a href="#erros">Erros comuns</a></li>
+        <li><a href="#exercicios">20 exercícios (2 últimos horários)</a></li>
+      </ol>
+    </section>
+
+    <section id="objetivo" class="chapter">
+      <h2>1) Objetivo da aula</h2>
+      <p>Fazer o aluno entender que lógica proposicional não é apenas teoria: é uma linguagem para descrever decisões,
+        validar regras e construir programas confiáveis.</p>
+      <div class="box info">
+        Competências da aula: reconhecer proposições, usar conectivos, transformar frases em fórmulas e implementar
+        essas regras em Python com <code>and</code>, <code>or</code>, <code>not</code>.
+      </div>
+    </section>
+
+    <section id="historia" class="chapter">
+      <h2>2) De onde vem a lógica?</h2>
+      <h3>2.1 Origem filosófica</h3>
+      <p>A lógica nasce com a tentativa de organizar o raciocínio humano. Na Grécia Antiga, Aristóteles sistematizou
+        formas de argumentação corretas (silogismos), buscando separar opinião de conclusão válida.</p>
+
+      <h3>2.2 Da filosofia para a matemática</h3>
+      <p>No século XIX, George Boole mostrou que raciocínios poderiam ser representados por uma álgebra com dois
+        valores: verdadeiro e falso. Essa ideia foi um divisor de águas, porque transformou argumentos em operações.</p>
+
+      <div class="box good">
+        Em resumo: a lógica começou para organizar o pensamento e virou um sistema formal que máquinas conseguem
+        executar.
+      </div>
+    </section>
+
+    <section id="evolucao" class="chapter">
+      <h2>3) Como a lógica virou computação</h2>
+      <h3>3.1 A ponte com circuitos</h3>
+      <p>Claude Shannon demonstrou que a álgebra booleana modela circuitos elétricos. Portas lógicas implementam
+        fisicamente operações como AND, OR e NOT.</p>
+
+      <h3>3.2 Do hardware ao software</h3>
+      <ul>
+        <li>No hardware: transistores formam portas lógicas.</li>
+        <li>No software: linguagens de programação aplicam as mesmas operações em regras.</li>
+        <li>No dia a dia: qualquer decisão condicional em código é lógica proposicional em ação.</li>
+      </ul>
+
+      <pre class="bg-dark text-light p-3"><code class="language-python"># A mesma ideia em software
+sensor_porta = True
+alarme_ativado = True
+
+acionar_sirene = sensor_porta and alarme_ativado
+print("Sirene:", acionar_sirene)</code></pre>
+    </section>
+
+    <section id="usos" class="chapter">
+      <h2>4) Uso da lógica hoje</h2>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>Área</th>
+              <th>Exemplo</th>
+              <th>Regra lógica</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sistemas Web</td>
+              <td>Login</td>
+              <td>Usuário válido <code>and</code> senha correta</td>
+            </tr>
+            <tr>
+              <td>E-commerce</td>
+              <td>Desconto</td>
+              <td>Cliente VIP <code>or</code> compra alta</td>
+            </tr>
+            <tr>
+              <td>Segurança</td>
+              <td>Acesso físico</td>
+              <td>Crachá ativo <code>and</code> horário permitido</td>
+            </tr>
+            <tr>
+              <td>Educação</td>
+              <td>Aprovação</td>
+              <td>Nota mínima <code>and</code> frequência mínima</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="conceitos" class="chapter">
+      <h2>5) Conceitos essenciais</h2>
+
+      <h3>5.1 Proposição</h3>
+      <p>Frase declarativa com valor lógico verdadeiro ou falso.</p>
+      <ul>
+        <li>Proposição: "10 é maior que 3".</li>
+        <li>Não proposição: "Feche a porta".</li>
+      </ul>
+
+      <h3>5.2 Conectivos e leitura</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>Conectivo</th>
+              <th>Símbolo</th>
+              <th>Python</th>
+              <th>Leitura</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Conjunção</td>
+              <td><code>P ^ Q</code></td>
+              <td><code>p and q</code></td>
+              <td>P e Q</td>
+            </tr>
+            <tr>
+              <td>Disjunção</td>
+              <td><code>P v Q</code></td>
+              <td><code>p or q</code></td>
+              <td>P ou Q</td>
+            </tr>
+            <tr>
+              <td>Negação</td>
+              <td><code>~P</code></td>
+              <td><code>not p</code></td>
+              <td>Não P</td>
+            </tr>
+            <tr>
+              <td>Condicional</td>
+              <td><code>P -&gt; Q</code></td>
+              <td><code>(not p) or q</code></td>
+              <td>Se P, então Q</td>
+            </tr>
+            <tr>
+              <td>Bicondicional</td>
+              <td><code>P &lt;-&gt; Q</code></td>
+              <td><code>p == q</code></td>
+              <td>P se e somente se Q</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>5.3 Precedência</h3>
+      <p>Sem parênteses, o Python avalia nesta ordem: <code>not</code> -&gt; <code>and</code> -&gt; <code>or</code>.</p>
+      <div class="box warn">Regra prática: em expressão composta, use parênteses para tornar a intenção explícita.</div>
+    </section>
+
+    <section id="python" class="chapter">
+      <h2>6) Tradução para Python</h2>
+
+      <h3>6.1 Regra simples</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">tem_login = True
+senha_correta = True
+
+acesso = tem_login and senha_correta
+print(acesso)  # True</code></pre>
+
+      <h3>6.2 Condicional lógica como fórmula</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python"># P -> Q
+p = True
+q = False
+print((not p) or q)  # False</code></pre>
+
+      <h3>6.3 Bicondicional</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">p = False
+q = False
+print(p == q)  # True</code></pre>
+
+      <h3>6.4 Mini tabela verdade automática</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">valores = [True, False]
+for p in valores:
+    for q in valores:
+        print(p, q, "->", (not p) or q)</code></pre>
+    </section>
+
+    <section id="ludico" class="chapter">
+      <h2>7) Exemplos lúdicos e comentados</h2>
+
+      <h3>7.1 Mundo do jogo</h3>
+      <p>Um personagem pode abrir o baú se tiver chave e energia acima de 30.</p>
+      <pre class="bg-dark text-light p-3"><code class="language-python">tem_chave = True
+energia = 25
+
+abrir_bau = tem_chave and energia > 30
+print("Pode abrir o baú?", abrir_bau)</code></pre>
+
+      <h3>7.2 Dia de praia</h3>
+      <p>A turma vai para praia se for sábado e não estiver chovendo.</p>
+      <pre class="bg-dark text-light p-3"><code class="language-python">eh_sabado = True
+chovendo = False
+
+ir_praia = eh_sabado and (not chovendo)
+print("Ir à praia?", ir_praia)</code></pre>
+
+      <h3>7.3 Controle de laboratório</h3>
+      <p>Entrada liberada para monitor ou aluno com matrícula ativa e documento.</p>
+      <pre class="bg-dark text-light p-3"><code class="language-python">eh_monitor = False
+matricula_ativa = True
+tem_documento = True
+
+liberado = eh_monitor or (matricula_ativa and tem_documento)
+print("Entrada liberada?", liberado)</code></pre>
+
+      <h3>7.4 Funções para reutilizar regra</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">def implicacao(p, q):
+    return (not p) or q
+
+def bicondicional(p, q):
+    return p == q
+
+print(implicacao(True, False))
+print(bicondicional(True, True))</code></pre>
+
+      <h3>7.5 Verificação de equivalência (De Morgan)</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">p = True
+q = False
+
+a = not (p and q)
+b = (not p) or (not q)
+
+print(a, b, a == b)  # True True True</code></pre>
+
+      <div class="box info">
+        Dinâmica em sala: cada grupo traduz primeiro em português, depois para símbolos e só então codifica em Python.
+      </div>
+    </section>
+
+    <section id="roteiro" class="chapter">
+      <h2>8) Roteiro das 4 horas</h2>
+      <div class="table-wrap">
+        <table class="table table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>Tempo</th>
+              <th>Foco</th>
+              <th>Método</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1º horário</td>
+              <td>História da lógica + conceitos base</td>
+              <td>Aula dialogada com linha do tempo</td>
+            </tr>
+            <tr>
+              <td>2º horário</td>
+              <td>Conectivos + tradução para Python</td>
+              <td>Demonstração e simulação ao vivo</td>
+            </tr>
+            <tr>
+              <td>3º horário</td>
+              <td>Exercícios 1 a 10</td>
+              <td>Prática guiada e correção parcial</td>
+            </tr>
+            <tr>
+              <td>4º horário</td>
+              <td>Exercícios 11 a 20</td>
+              <td>Prática aplicada e fechamento coletivo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="erros" class="chapter">
+      <h2>9) Erros comuns</h2>
+      <ul>
+        <li>Confundir <code>=</code> com <code>==</code>.</li>
+        <li>Esquecer parênteses em regra composta.</li>
+        <li>Interpretar <code>P -&gt; Q</code> como se exigisse P verdadeiro para funcionar.</li>
+        <li>Não testar cenários com <code>True</code> e <code>False</code> antes de validar a regra.</li>
+      </ul>
+    </section>
+
+    <section id="exercicios" class="chapter">
+      <h2>10) Lista de 20 exercícios (2 últimos horários)</h2>
+      <p>Estes exercícios são para prática em sala. Sem entrega formal final.</p>
+
+      <h3>3º horário (Exercícios 1 a 10) - Prática guiada</h3>
+      <ol>
+        <li>Crie <code>p</code> e <code>q</code> booleanos e imprima <code>p and q</code>.</li>
+        <li>Imprima <code>p or q</code>.</li>
+        <li>Imprima <code>not p</code>.</li>
+        <li>Com <code>p=True</code>, <code>q=False</code>, <code>r=True</code>, calcule <code>(p and q) or r</code>.</li>
+        <li>Calcule <code>not (p and q)</code>.</li>
+        <li>Implemente <code>p -&gt; q</code> usando <code>(not p) or q</code>.</li>
+        <li>Implemente <code>p &lt;-&gt; q</code> usando <code>p == q</code>.</li>
+        <li>Leia dois números e mostre se ambos são positivos.</li>
+        <li>Leia idade e retorne <code>True</code> se estiver entre 18 e 60.</li>
+        <li>Leia usuário/senha e valide acesso.</li>
+      </ol>
+
+      <h3>4º horário (Exercícios 11 a 20) - Prática aplicada</h3>
+      <ol start="11">
+        <li>Regra de desconto: VIP ou compra maior que 200.</li>
+        <li>Regra de laboratório: crachá ativo e horário válido.</li>
+        <li>Aprovação: nota >= 7 e frequência >= 75.</li>
+        <li>Recuperação: 5 <= nota < 7 e frequência >= 75.</li>
+        <li>Exiba <code>p and q</code>, <code>p or q</code> e <code>not p</code> na mesma linha.</li>
+        <li>Leia três booleanos e avalie <code>(p and q) or (not r)</code>.</li>
+        <li>Modele: "Se estudou então passa".</li>
+        <li>Modele: "Sistema online se e somente se servidor e rede ativos".</li>
+        <li>Gere mini tabela verdade de <code>p -&gt; q</code>.</li>
+        <li>Regra de empréstimo: (renda >= 3000 e nome limpo) ou fiador válido.</li>
+      </ol>
+
+      <div class="box good">
+        Fechamento sugerido: 15 minutos finais com socialização das soluções e comparação de estratégias.
+      </div>
+    </section>
+
+            <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+        <ol class="text-secondary mb-4">
+          <li>Resuma em 5 linhas os pontos centrais de <strong>Lógica Proposicional com Python (4h)</strong>.</li>
+          <li>Explique 3 conceitos-chave da aula com exemplo prático.</li>
+          <li>Descreva 2 erros comuns e como evitar cada um.</li>
+          <li>Monte um mini-caso de aplicação real do conteúdo.</li>
+          <li>Liste 3 critérios para validar se a atividade foi bem executada.</li>
+        </ol>
+
+<div class="footer-actions">
+      <a class="btn btn-danger btn-sm" href="../logicaproposicional.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../introducao-logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    </div>
+  </main>
 </body>
+
 </html>
