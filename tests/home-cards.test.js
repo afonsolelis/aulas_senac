@@ -27,17 +27,22 @@ describe('Cards das Home Pages - Botões Slide e Material', () => {
    */
   function extractSlideLinks(doc, htmlContent) {
     const slideLinks = [];
-    
-    // Links diretos para slides
+
+    // Links diretos para slides (exclui cards com no-actions)
     const links = doc.querySelectorAll('a[href*="slide_"]');
     for (const link of links) {
+      // Pula cards marcados como no-actions (acompanhamentos)
+      if (link.classList.contains("no-actions")) {
+        continue;
+      }
+      
       slideLinks.push({
         href: link.getAttribute('href'),
         hasButtons: link.parentElement.querySelector('a.btn[href*="slide_"]') !== null,
         element: link
       });
     }
-    
+
     return slideLinks;
   }
 
