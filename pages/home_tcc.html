@@ -394,48 +394,34 @@
         const suppressActions = slideHref === "tcc/slide_aula4-entregaformaldapropostadeprojeto.html";
         if (!materialHref && !suppressActions) return;
 
+        // Cria novo card com layout atualizado
         const card = document.createElement("div");
         card.className = slideLink.className.replace(" list-group-item-action", "");
-        card.innerHTML = slideLink.innerHTML;
-
-        const lessonText = card.querySelector("p");
-        if (lessonText) {
-          lessonText.classList.remove("mb-1");
-          lessonText.classList.add("mb-auto");
-          lessonText.classList.add("mt-2");
+        
+        const h5 = slideLink.querySelector("h5");
+        const p = slideLink.querySelector("p");
+        const badge = slideLink.querySelector("span.badge");
+        
+        // Monta header com botões ao lado do título
+        let headerHtml = '<div class="d-flex w-100 align-items-center mb-2 gap-2">';
+        headerHtml += '<h5 class="mb-0 fw-bold text-dark">' + (h5 ? h5.textContent : "") + '</h5>';
+        
+        if (!suppressActions) {
+          headerHtml += '<div class="d-flex gap-2 ms-auto">';
+          headerHtml += '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>';
+          headerHtml += '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
+          headerHtml += '</div>';
         }
-
-        // Atualiza o header para incluir botões ao lado do título
-        const headerDiv = card.querySelector("div.d-flex");
-        if (headerDiv) {
-          headerDiv.className = "d-flex w-100 align-items-center mb-2 gap-2";
-          
-          const badge = headerDiv.querySelector("span.badge");
-          const h5 = headerDiv.querySelector("h5");
-          
-          if (!headerDiv.querySelector("div.d-flex.gap-2")) {
-            // Cria container dos botões
-            const buttonsDiv = document.createElement("div");
-            buttonsDiv.className = "d-flex gap-2 ms-auto";
-            buttonsDiv.innerHTML =
-              '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
-              '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
-            
-            // Insere botões antes do badge
-            if (badge) {
-              headerDiv.insertBefore(buttonsDiv, badge);
-            } else {
-              headerDiv.appendChild(buttonsDiv);
-            }
-          }
-          
-          // Atualiza h5 para mb-0
-          if (h5) {
-            h5.classList.remove("mb-1");
-            h5.classList.add("mb-0");
-          }
+        
+        if (badge) {
+          headerHtml += badge.outerHTML;
         }
-
+        headerHtml += '</div>';
+        
+        // Monta corpo do card
+        let bodyHtml = '<p class="mb-auto text-muted small mt-2">' + (p ? p.textContent : "") + '</p>';
+        
+        card.innerHTML = headerHtml + bodyHtml;
         slideLink.replaceWith(card);
       });
     })();
