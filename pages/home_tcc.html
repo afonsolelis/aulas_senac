@@ -177,16 +177,16 @@
 
             <!-- Aula 04: 06/03 -->
             <div class="col-12">
-              <a href="tcc/slide_aula4-entregaformaldapropostadeprojeto.html"
-                class="list-group-item list-group-item-action border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
-                <div class="d-flex w-100 justify-content-between mb-2">
-                  <h5 class="mb-1 fw-bold text-dark">Entrega formal da proposta</h5>
+              <div
+                class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle no-actions">
+                <div class="d-flex w-100 align-items-center mb-2 gap-2">
+                  <h5 class="mb-0 fw-bold text-dark">Entrega formal da proposta</h5>
                   <span class="badge bg-danger text-white border fw-normal"><i
                       class="fas fa-exclamation-circle me-1"></i>
                     06 Mar</span>
                 </div>
-                <p class="mb-1 text-muted small">Aula 04 - Enviar PDF no card de Entrega Parcial</p>
-              </a>
+                <p class="mb-auto text-muted small mt-2">Aula 04 - Enviar PDF no card de Entrega Parcial</p>
+              </div>
             </div>
 
             <!-- Aula 05: 13/03 -->
@@ -366,7 +366,6 @@
         "tcc/slide_aula1-introducaoaolatex.html": "tcc/material/material_aula01-latex-ambiente.html",
         "tcc/slide_aula2-formacaodegruposeescolhadotema.html": "tcc/material/material_aula02-tema-grupos.html",
         "tcc/slide_aula3-levantamentoderequisitos.html": "tcc/material/material_aula03-requirements.html",
-        "tcc/slide_aula4-entregaformaldapropostadeprojeto.html": "tcc/material/material_aula04-proposal.html",
         "tcc/slide_aula5-estudodeviabilidadetecnica.html": "tcc/material/material_aula05-feasibility.html",
         "tcc/slide_aula6-revisaobibliografica.html": "tcc/material/material_aula06-bibliography.html",
         "tcc/slide_aula7-fundamentacaoteorica.html": "tcc/material/material_aula07-foundation.html",
@@ -391,8 +390,7 @@
         const titleEl = slideLink.querySelector("h5");
         const title = titleEl ? titleEl.textContent.trim() : "";
         const materialHref = materialByTitle[title] || materialMap[slideHref];
-        const suppressActions = slideHref === "tcc/slide_aula4-entregaformaldapropostadeprojeto.html";
-        if (!materialHref && !suppressActions) return;
+        if (!materialHref) return;
 
         // Cria novo card com layout atualizado
         const card = document.createElement("div");
@@ -405,13 +403,10 @@
         // Monta header com botões ao lado do título
         let headerHtml = '<div class="d-flex w-100 align-items-center mb-2 gap-2">';
         headerHtml += '<h5 class="mb-0 fw-bold text-dark">' + (h5 ? h5.textContent : "") + '</h5>';
-        
-        if (!suppressActions) {
-          headerHtml += '<div class="d-flex gap-2 ms-auto">';
-          headerHtml += '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>';
-          headerHtml += '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
-          headerHtml += '</div>';
-        }
+        headerHtml += '<div class="d-flex gap-2 ms-auto">';
+        headerHtml += '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>';
+        headerHtml += '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
+        headerHtml += '</div>';
         
         if (badge) {
           headerHtml += badge.outerHTML;
