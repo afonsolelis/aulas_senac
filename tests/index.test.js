@@ -96,23 +96,23 @@ describe('index.html', () => {
       expect(cards.length).toBe(4);
     });
 
-    test('card de Qualidade tem link para pages/qualidade-software.html', () => {
+    test('card de Qualidade tem link para pages/home_qualidade.html', () => {
       const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const qualidadeLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/qualidade-software.html');
+      const qualidadeLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/home_qualidade.html');
 
       expect(qualidadeLink).toBeDefined();
     });
 
-    test('card de Lógica tem link para pages/introducao-logica.html', () => {
+    test('card de Lógica tem link para pages/home_logica.html', () => {
       const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const logicaLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/introducao-logica.html');
+      const logicaLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/home_logica.html');
 
       expect(logicaLink).toBeDefined();
     });
 
-    test('card de TCC tem link para pages/tcc.html', () => {
+    test('card de TCC tem link para pages/home_tcc.html', () => {
       const disciplinaLinks = Array.from(doc.querySelectorAll('#disciplinas a'));
-      const tccLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/tcc.html');
+      const tccLink = disciplinaLinks.find(l => l.getAttribute('href') === 'pages/home_tcc.html');
 
       expect(tccLink).toBeDefined();
     });
