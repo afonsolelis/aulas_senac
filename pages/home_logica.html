@@ -298,14 +298,14 @@
   <script>
     (function () {
       const materialMap = {
-        "logica/introducaoalogicaeferramentas.html": "logica/material/aula01-introducao-logica.html",
-        "logica/introducaoaopython.html": "logica/material/aula02-introducao-python.html",
-        "logica/fundamentosdalogica.html": "logica/material/aula03-fundamentos-logica.html",
-        "logica/logicaproposicional.html": "logica/material/aula04-logica-proposicional.html",
-        "logica/tabelasverdade.html": "logica/material/aula05-tabelas-verdade.html",
-        "logica/algebrabooleanaeportaslogicas.html": "logica/material/aula07-algebra-booleana.html",
-        "logica/logicadeprogramacaoloopsefuncoes.html": "logica/material/aula08-loops-funcoes.html",
-        "logica/portaslogicas.html": "logica/material/aula10-portas-logicas.html",
+        "logica/slide_introducaoalogicaeferramentas.html": "logica/material/material_aula01-introducao-logica.html",
+        "logica/slide_introducaoaopython.html": "logica/material/material_aula02-introducao-python.html",
+        "logica/slide_fundamentosdalogica.html": "logica/material/material_aula03-fundamentos-logica.html",
+        "logica/slide_logicaproposicional.html": "logica/material/material_aula04-logica-proposicional.html",
+        "logica/slide_tabelasverdade.html": "logica/material/material_aula05-tabelas-verdade.html",
+        "logica/slide_algebrabooleanaeportaslogicas.html": "logica/material/material_aula07-algebra-booleana.html",
+        "logica/slide_logicadeprogramacaoloopsefuncoes.html": "logica/material/material_aula08-loops-funcoes.html",
+        "logica/slide_portaslogicas.html": "logica/material/material_aula10-portas-logicas.html",
       };
 
       document.querySelectorAll(".row.g-3 .col-md-6 > a.list-group-item[href]").forEach(function (slideLink) {
@@ -326,7 +326,7 @@
         const actions = document.createElement("div");
         actions.className = "mt-3 d-flex flex-wrap gap-2";
         actions.innerHTML =
-          '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
+          '<a href="' + slideHref + '" class="btn btn-info btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
           '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
 
         slideLink.replaceWith(card);

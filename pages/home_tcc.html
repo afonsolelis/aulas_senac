@@ -363,20 +363,22 @@
   <script>
     (function () {
       const materialMap = {
-        "tcc/aula3-levantamentoderequisitos.html": "tcc/material/aula03-requirements.html",
-        "tcc/aula4-entregaformaldapropostadeprojeto.html": "tcc/material/aula04-proposal.html",
-        "tcc/aula5-estudodeviabilidadetecnica.html": "tcc/material/aula05-feasibility.html",
-        "tcc/aula6-revisaobibliografica.html": "tcc/material/aula06-bibliography.html",
-        "tcc/aula7-fundamentacaoteorica.html": "tcc/material/aula07-foundation.html",
-        "tcc/aula8-execucaodapesquisa.html": "tcc/material/aula08-research.html",
-        "tcc/aula9-analisedeResultados.html": "tcc/material/aula09-results.html",
-        "tcc/aula10-checkpointdedesenvolvimento.html": "tcc/material/aula10-checkpoint.html",
-        "tcc/aula13-preparodaapresentacaofinal.html": "tcc/material/aula13-presentation-prep.html",
-        "tcc/aula14-apresentacaoparaabancaavaliadora.html": "tcc/material/aula14-defense.html"
+        "tcc/slide_aula1-introducaoaolatex.html": "tcc/material/material_aula01-latex-ambiente.html",
+        "tcc/slide_aula2-formacaodegruposeescolhadotema.html": "tcc/material/material_aula02-tema-grupos.html",
+        "tcc/slide_aula3-levantamentoderequisitos.html": "tcc/material/material_aula03-requirements.html",
+        "tcc/slide_aula4-entregaformaldapropostadeprojeto.html": "tcc/material/material_aula04-proposal.html",
+        "tcc/slide_aula5-estudodeviabilidadetecnica.html": "tcc/material/material_aula05-feasibility.html",
+        "tcc/slide_aula6-revisaobibliografica.html": "tcc/material/material_aula06-bibliography.html",
+        "tcc/slide_aula7-fundamentacaoteorica.html": "tcc/material/material_aula07-foundation.html",
+        "tcc/slide_aula8-execucaodapesquisa.html": "tcc/material/material_aula08-research.html",
+        "tcc/slide_aula9-analisedeResultados.html": "tcc/material/material_aula09-results.html",
+        "tcc/slide_aula10-checkpointdedesenvolvimento.html": "tcc/material/material_aula10-checkpoint.html",
+        "tcc/slide_aula13-preparodaapresentacaofinal.html": "tcc/material/material_aula13-presentation-prep.html",
+        "tcc/slide_aula14-apresentacaoparaabancaavaliadora.html": "tcc/material/material_aula14-defense.html"
       };
       const materialByTitle = {
-        "Checkpoint Orientado 2": "tcc/material/aula11-checkpoint-2.html",
-        "Checkpoint Orientado 3": "tcc/material/aula12-checkpoint-3.html"
+        "Checkpoint Orientado 2": "tcc/material/material_aula11-checkpoint-2.html",
+        "Checkpoint Orientado 3": "tcc/material/material_aula12-checkpoint-3.html"
       };
 
       document.querySelectorAll(".row.g-3 .col-md-6 > a.list-group-item[href]").forEach(function (slideLink) {
@@ -384,7 +386,7 @@
         const titleEl = slideLink.querySelector("h5");
         const title = titleEl ? titleEl.textContent.trim() : "";
         const materialHref = materialByTitle[title] || materialMap[slideHref];
-        const suppressActions = slideHref === "tcc/aula4-entregaformaldapropostadeprojeto.html";
+        const suppressActions = slideHref === "tcc/slide_aula4-entregaformaldapropostadeprojeto.html";
         if (!materialHref && !suppressActions) return;
 
         const card = document.createElement("div");
