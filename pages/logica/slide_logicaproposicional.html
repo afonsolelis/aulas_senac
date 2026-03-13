@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lógica Proposicional - Introdução à Lógica</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+</head>
+
+<body class="slide-body">
+  <div class="slide-container">
+
+    <a href="../home_logica.html"
+      class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Lógica Proposicional</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <h1 class="display-4 fw-bold mb-5 text-dark">Objetivos da Aula 04</h1>
+      <div class="row">
+        <div class="col-md-9 mx-auto">
+          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-check-circle text-primary me-3"></i> Identificar proposições e classificar em V/F
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-link text-success me-3"></i> Aplicar conectivos: <strong>and, or, not</strong>
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-project-diagram text-danger me-3"></i> Traduzir sentenças para fórmulas lógicas
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fab fa-python text-warning me-3"></i> Implementar expressões proposicionais em Python
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Proposição: o que entra e o que não entra</h2>
+        <p class="lead mb-4">Proposição é frase declarativa com valor lógico definido: <strong>Verdadeiro</strong> ou
+          <strong>Falso</strong>.</p>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-success border-2 h-100 p-4">
+              <h4 class="text-success fw-bold"><i class="fas fa-check me-2"></i>São Proposições</h4>
+              <ul class="list-unstyled text-start mt-3 mb-0">
+                <li>"Belém é capital do Pará."</li>
+                <li>"7 é número par."</li>
+                <li>"Hoje é segunda-feira."</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-danger border-2 h-100 p-4">
+              <h4 class="text-danger fw-bold"><i class="fas fa-times me-2"></i>Não São Proposições</h4>
+              <ul class="list-unstyled text-start mt-3 mb-0">
+                <li>"Feche a porta." (ordem)</li>
+                <li>"Qual seu nome?" (pergunta)</li>
+                <li>"x + 2 = 9" (aberta, sem contexto)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-4 bg-light p-3 rounded d-inline-block shadow-sm">
+          <code class="text-dark fs-5">No Python: proposição -> variável booleana (True/False)</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">Conectivos Fundamentais</h2>
+        <div class="table-responsive w-75 mx-auto">
+          <table class="table table-hover fs-5 align-middle">
+            <thead class="table-dark">
+              <tr>
+                <th>Nome</th>
+                <th>Símbolo</th>
+                <th>Python</th>
+                <th>Função</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-bold text-primary">Conjunção</td>
+                <td>^</td>
+                <td class="font-monospace text-primary">and</td>
+                <td>Só é V se tudo for V</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-warning">Disjunção</td>
+                <td>v</td>
+                <td class="font-monospace text-warning">or</td>
+                <td>É V se pelo menos um for V</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-danger">Negação</td>
+                <td>~</td>
+                <td class="font-monospace text-danger">not</td>
+                <td>Inverte o valor lógico</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Outros Conectivos Importantes</h2>
+        <div class="row g-4 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+              <h4 class="fw-bold text-primary">Condicional: P -> Q</h4>
+              <p class="mb-2">Leitura: "Se P, então Q"</p>
+              <p class="mb-2">Em Python: <code>(not p) or q</code></p>
+              <p class="mb-0 text-muted small">Falsa apenas quando P é V e Q é F.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+              <h4 class="fw-bold text-success">Bicondicional: P &lt;-&gt; Q</h4>
+              <p class="mb-2">Leitura: "P se e somente se Q"</p>
+              <p class="mb-2">Em Python: <code>p == q</code></p>
+              <p class="mb-0 text-muted small">Verdadeira quando P e Q têm o mesmo valor.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Ordem de Avaliação</h2>
+        <p class="fs-4 mb-4">Sem parênteses, o Python segue a precedência:</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap mb-4">
+          <span class="badge bg-danger p-3 fs-5">1) not</span>
+          <span class="badge bg-primary p-3 fs-5">2) and</span>
+          <span class="badge bg-warning text-dark p-3 fs-5">3) or</span>
+        </div>
+        <div class="text-start mx-auto w-75">
+          <pre><code class="language-python">p = True
+q = False
+r = True
+
+resultado = p or q and not r
+# not r -> False
+# q and False -> False
+# p or False -> True
+
+print(resultado)  # True</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Da Linguagem Natural para Fórmula</h2>
+        <div class="row g-4 align-items-start">
+          <div class="col-md-6 text-start">
+            <div class="p-4 bg-light rounded border">
+              <h4 class="fw-bold mb-3">Frase</h4>
+              <p class="mb-0">"Vou ao cinema se tenho dinheiro e não estou cansado."</p>
+            </div>
+          </div>
+          <div class="col-md-6 text-start">
+            <div class="p-4 bg-dark text-white rounded">
+              <h4 class="fw-bold mb-3">Tradução</h4>
+              <p class="mb-1">P: tenho dinheiro</p>
+              <p class="mb-1">Q: estou cansado</p>
+              <p class="mb-3">C: vou ao cinema</p>
+              <code>C = P and (not Q)</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Tabela-Verdade em Python</h2>
+        <p class="mb-4">Expressão exemplo: <code>(P and Q) or (not R)</code></p>
+
+        <div class="text-start mx-auto w-75">
+          <pre><code class="language-python">valores = [True, False]
+
+print("P Q R | (P and Q) or (not R)")
+print("-" * 34)
+
+for p in valores:
+    for q in valores:
+        for r in valores:
+            resultado = (p and q) or (not r)
+            print(p, q, r, "|", resultado)</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Funções Lógicas em Python</h2>
+        <p class="mb-4">Criando funções para reaproveitar condicional e bicondicional.</p>
+        <div class="text-start mx-auto w-75">
+          <pre><code class="language-python">def implicacao(p, q):
+    return (not p) or q
+
+def bicondicional(p, q):
+    return p == q
+
+print(implicacao(True, False))   # False
+print(implicacao(False, False))  # True
+print(bicondicional(True, True)) # True
+print(bicondicional(True, False))# False</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo Prático: Sistema de Acesso</h2>
+        <p class="mb-4">Regra: liberar se for professor <strong>ou</strong> aluno com matrícula ativa.</p>
+
+        <div class="row align-items-center">
+          <div class="col-md-7 text-start">
+            <pre><code class="language-python">eh_professor = False
+matricula_ativa = True
+eh_aluno = True
+
+liberar = eh_professor or (eh_aluno and matricula_ativa)
+
+if liberar:
+    print("Acesso liberado")
+else:
+    print("Acesso negado")</code></pre>
+          </div>
+          <div class="col-md-5">
+            <div class="card bg-warning-subtle border-0 p-4 text-start">
+              <p class="mb-2"><strong>Ponto-chave:</strong> parênteses evitam erro lógico.</p>
+              <p class="mb-0">Sempre explicite a intenção da regra de negócio.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo Prático: Regra de Bolsa</h2>
+        <p class="mb-4">Condição: bolsa se <code>media >= 8</code> e <code>frequencia >= 80</code> ou vulnerabilidade social.</p>
+        <div class="text-start mx-auto w-75">
+          <pre><code class="language-python">media = 7.5
+frequencia = 90
+vulnerabilidade_social = True
+
+recebe_bolsa = (media >= 8 and frequencia >= 80) or vulnerabilidade_social
+
+print("Recebe bolsa?", recebe_bolsa)  # True</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Prática dos 2 Últimos Horários</h2>
+
+        <div class="row g-4 text-start justify-content-center">
+          <div class="col-md-5">
+            <div class="card border-primary h-100 shadow-sm">
+              <div class="card-header bg-primary text-white fw-bold">3º Horário</div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Revisão guiada de conectivos e tradução.</li>
+                  <li>8 exercícios iniciais com correção comentada.</li>
+                  <li>Foco: <code>and</code>, <code>or</code>, <code>not</code> e precedência.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card border-success h-100 shadow-sm">
+              <div class="card-header bg-success text-white fw-bold">4º Horário</div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>12 exercícios de aplicação em cenários reais.</li>
+                  <li>Mini-desafio: condicional e bicondicional em Python.</li>
+                  <li>Exercícios para treino em sala, com correção coletiva.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Da Filosofia ao Computador</h2>
+        <div class="row g-4 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+              <h4 class="fw-bold text-primary">Origem da Lógica</h4>
+              <ul class="mb-0">
+                <li>Aristóteles formalizou regras de argumentação (silogismos).</li>
+                <li>Séculos depois, a lógica virou linguagem matemática.</li>
+                <li>Boole criou a álgebra booleana (V/F).</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4">
+              <h4 class="fw-bold text-success">Chegada aos Computadores</h4>
+              <ul class="mb-0">
+                <li>Claude Shannon ligou lógica booleana a circuitos elétricos.</li>
+                <li>Portas lógicas implementam AND, OR e NOT em hardware.</li>
+                <li>Programação usa as mesmas ideias em software.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Onde a Lógica Proposicional é Usada</h2>
+        <div class="row g-4 text-start justify-content-center">
+          <div class="col-md-4">
+            <div class="p-4 border rounded bg-light h-100">
+              <h5 class="fw-bold text-dark">Apps e Sistemas</h5>
+              <p class="mb-0">Login, permissões, filtros, validação de formulários e regras de negócio.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-4 border rounded bg-light h-100">
+              <h5 class="fw-bold text-dark">Eletrônica Digital</h5>
+              <p class="mb-0">Processadores, memória e circuitos funcionam com portas lógicas.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-4 border rounded bg-light h-100">
+              <h5 class="fw-bold text-dark">IA e Dados</h5>
+              <p class="mb-0">Regras de decisão, classificação e automações dependem de operações lógicas.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark">Encerramento da Aula 04</h1>
+        <p class="lead mb-4">Você viu a lógica nascer na filosofia, virar matemática e chegar ao software.</p>
+        <p class="mb-5">Agora: consolidar com os exercícios em Python e discutir as soluções em sala.</p>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="material/material_aula04-logica-proposicional.html" class="btn btn-danger btn-lg rounded-pill px-4">
+            <i class="fas fa-book me-2"></i>Ver Material Completo
+          </a>
+          <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-4">Voltar ao Menu</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 15</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      Introdução à Lógica - Aula 04
+    </div>
+
+    <a href="material/material_aula04-logica-proposicional.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+  <script src="../../js/standard_slides.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

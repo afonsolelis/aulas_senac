@@ -1,0 +1,1355 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 03 - TCC: Metodologias de Pesquisa em Ciência da Computação</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <style>
+    /* Modo apresentação: canvas estável e ajuste uniforme (sem scroll) */
+    .aula3-deck .slide-container {
+      height: 89vh;
+      padding: 0.5rem;
+    }
+
+    .aula3-deck .slide {
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .aula3-deck .slide-content {
+      width: 1260px;
+      max-width: none;
+    }
+
+    .aula3-deck .glass-cover {
+      width: 940px;
+      max-width: none;
+      padding: 3.4rem;
+    }
+
+    .aula3-deck .display-3 {
+      font-size: 2.8rem;
+    }
+
+    .aula3-deck .display-4 {
+      font-size: 2.25rem;
+    }
+
+    .aula3-deck .display-5 {
+      font-size: 1.95rem;
+    }
+
+    .aula3-deck p,
+    .aula3-deck li {
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+
+    .aula3-deck .card-header {
+      padding: 0.65rem 0.9rem;
+    }
+
+    .aula3-deck .card-body {
+      padding: 0.8rem 0.95rem;
+    }
+
+    .aula3-deck .row {
+      --bs-gutter-x: 0.9rem;
+      --bs-gutter-y: 0.9rem;
+    }
+
+    .aula3-deck .deck-back-button {
+      position: fixed;
+      top: 1rem;
+      left: 1rem;
+      z-index: 1100;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body class="slide-body aula3-deck">
+
+  <div class="slide-container">
+
+    <!-- Back Button -->
+    <a href="../home_tcc.html" class="btn btn-outline-secondary rounded-pill deck-back-button">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC1 - Ciência da Computação</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Metodologias de Pesquisa</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Definindo o Caminho da Sua Pesquisa</h3>
+        <p class="text-muted mt-3 fs-5">Teoria, Experimentos, Artefatos ou Engenharia?</p>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
+      <ul class="list-group list-group-flush fs-4 text-start bg-transparent mb-4">
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-brain text-primary me-3"></i> Os Múltiplos Caminhos da Ciência da Computação</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-flask text-success me-3"></i> Design Science Research (DSR)</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-square-root-alt text-warning me-3"></i> Pesquisa Teórica e Matemática</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-chart-line text-info me-3"></i> Pesquisa Experimental</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-book-open text-danger me-3"></i> Survey e Estado da Arte</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-filter text-secondary me-3"></i> Funil de Pesquisa Bibliográfica</li>
+        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i
+            class="fas fa-microscope text-dark me-3"></i> Método de Kitchenham (RSL)</li>
+        <li class="list-group-item bg-transparent text-dark border-0"><i class="fas fa-compass text-secondary me-3"></i>
+          Framework de Decisão: Escolhendo Seu Caminho</li>
+      </ul>
+
+      <div class="alert alert-danger border-0 shadow-lg mx-auto" style="max-width: 900px;">
+        <h3 class="fw-bold mb-3"><i class="fas fa-exclamation-circle me-2"></i>ATENÇÃO: TCC ≠ PI (Projeto Interdisciplinar)</h3>
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="bg-white rounded p-3 border border-danger">
+              <h5 class="text-danger fw-bold mb-2"><i class="fas fa-times-circle me-2"></i>Projeto Interdisciplinar (PI)</h5>
+              <ul class="small mb-0">
+                <li>Projeto de curto prazo (15 dias a 1 mês)</li>
+                <li>Objetivo: Criar algo funcional rapidamente</li>
+                <li>Foco em execução e entrega</li>
+                <li>Pode ser uma POC simples</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="bg-white rounded p-3 border border-success">
+              <h5 class="text-success fw-bold mb-2"><i class="fas fa-check-circle me-2"></i>Trabalho de Conclusão (TCC)</h5>
+              <ul class="small mb-0">
+                <li>Pesquisa extensa de 1 ano (TCC1 + TCC2)</li>
+                <li>Objetivo: Contribuir cientificamente para a área</li>
+                <li>Foco em rigor metodológico e fundamentação</li>
+                <li>Deve gerar conhecimento novo/validação</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <hr class="my-3">
+        <p class="mb-0 text-center fw-bold fs-5">O TCC exige profundidade, fundamentação teórica e metodologia científica rigorosa!</p>
+      </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Os Múltiplos Caminhos -->
+    <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-2 text-dark text-center">Ciência da Computação ≠ Só Programar</h2>
+        <p class="text-center text-muted mb-3 fs-6">Seu TCC pode seguir diferentes naturezas de investigação científica</p>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow-lg">
+              <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-flask me-2"></i>Design Science Research</h4>
+              </div>
+              <div class="card-body p-4">
+                <p class="fw-bold text-primary">Criar para Resolver</p>
+                <p>Você projeta e constrói um <strong>artefato</strong> (algoritmo, framework, sistema, modelo) para resolver um problema real.</p>
+                <hr>
+                <p class="small text-muted mb-2"><strong>Exemplos:</strong></p>
+                <ul class="small">
+                  <li>Um sistema de detecção de fraudes bancárias</li>
+                  <li>Framework para otimização de rotas com drones</li>
+                  <li>Algoritmo de compressão de imagens médicas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-warning shadow-lg">
+              <div class="card-header bg-warning text-dark py-3">
+                <h4 class="mb-0"><i class="fas fa-square-root-alt me-2"></i>Pesquisa Teórica</h4>
+              </div>
+              <div class="card-body p-4">
+                <p class="fw-bold text-warning">Provar e Demonstrar</p>
+                <p>Você investiga propriedades matemáticas, complexidade, ou demonstra teoremas sobre computação.</p>
+                <hr>
+                <p class="small text-muted mb-2"><strong>Exemplos:</strong></p>
+                <ul class="small">
+                  <li>Análise de complexidade de algoritmos de ordenação</li>
+                  <li>Prova de corretude de protocolos criptográficos</li>
+                  <li>Estudo de propriedades de grafos em redes sociais</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-info shadow-lg">
+              <div class="card-header bg-info text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-chart-line me-2"></i>Pesquisa Experimental</h4>
+              </div>
+              <div class="card-body p-4">
+                <p class="fw-bold text-info">Medir e Comparar</p>
+                <p>Você realiza experimentos controlados para avaliar desempenho, comparar técnicas ou validar hipóteses.</p>
+                <hr>
+                <p class="small text-muted mb-2"><strong>Exemplos:</strong></p>
+                <ul class="small">
+                  <li>Benchmark de bancos de dados NoSQL vs SQL</li>
+                  <li>Análise de performance de modelos de ML</li>
+                  <li>Estudo comparativo de algoritmos de clustering</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-danger shadow-lg">
+              <div class="card-header bg-danger text-white py-3">
+                <h4 class="mb-0"><i class="fas fa-book-open me-2"></i>Survey / Estado da Arte</h4>
+              </div>
+              <div class="card-body p-4">
+                <p class="fw-bold text-danger">Mapear e Sintetizar</p>
+                <p>Você faz uma revisão sistemática da literatura para mapear o estado atual de uma área de pesquisa.</p>
+                <hr>
+                <p class="small text-muted mb-2"><strong>Exemplos:</strong></p>
+                <ul class="small">
+                  <li>Revisão de técnicas de XAI (Explainable AI)</li>
+                  <li>Mapeamento de métodos de detecção de deepfakes</li>
+                  <li>Survey sobre blockchain em IoT</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Design Science Research (DSR) - Parte 1 -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Design Science Research (DSR)</h2>
+        <p class="text-center text-muted mb-5">A metodologia de "criar para resolver" — popular em TCC de CC</p>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-5" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h3 class="fw-bold mb-4 text-white text-center"><i class="fas fa-lightbulb me-2"></i>O Ciclo DSR</h3>
+                <div class="row g-4 text-center">
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <div class="bg-primary text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <h2 class="mb-0 fw-bold">1</h2>
+                      </div>
+                      <h5 class="fw-bold text-dark mb-2">Problema</h5>
+                      <p class="small text-muted mb-0">Identificar problema real</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <div class="bg-success text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <h2 class="mb-0 fw-bold">2</h2>
+                      </div>
+                      <h5 class="fw-bold text-dark mb-2">Solução</h5>
+                      <p class="small text-muted mb-0">Projetar artefato</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <div class="bg-warning text-dark rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <h2 class="mb-0 fw-bold">3</h2>
+                      </div>
+                      <h5 class="fw-bold text-dark mb-2">Avaliação</h5>
+                      <p class="small text-muted mb-0">Validar eficácia</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <div class="bg-danger text-white rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <h2 class="mb-0 fw-bold">4</h2>
+                      </div>
+                      <h5 class="fw-bold text-dark mb-2" style="white-space: nowrap;">Contribuição</h5>
+                      <p class="small text-muted mb-0">Documentar aprendizado</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-success shadow-lg">
+              <div class="card-header bg-success text-white py-3">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2"></i>Quando Usar DSR?</h5>
+              </div>
+              <div class="card-body p-4">
+                <ul class="mb-0 fs-5">
+                  <li class="mb-2">Você quer construir algo (sistema, algoritmo, ferramenta)</li>
+                  <li class="mb-2">Há um problema prático a ser resolvido</li>
+                  <li class="mb-2">A solução pode ser avaliada objetivamente</li>
+                  <li class="mb-0">Você quer contribuir com um artefato novo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow-lg">
+              <div class="card-header bg-primary text-white py-3">
+                <h5 class="mb-0"><i class="fas fa-tools me-2"></i>Tipos de Artefatos DSR</h5>
+              </div>
+              <div class="card-body p-4">
+                <ul class="mb-0 fs-5">
+                  <li class="mb-2"><strong>Constructos:</strong> Vocabulário e símbolos</li>
+                  <li class="mb-2"><strong>Modelos:</strong> Abstrações e representações</li>
+                  <li class="mb-2"><strong>Métodos:</strong> Algoritmos e práticas</li>
+                  <li class="mb-0"><strong>Instanciações:</strong> Sistemas implementados</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: DSR - Artefatos de Engenharia -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">DSR: Artefatos de Engenharia de Software</h2>
+        <p class="text-center text-muted mb-5">Se você vai desenvolver POC/Sistema, precisa entregar documentação completa</p>
+
+        <div class="alert alert-warning border-0 shadow-lg mb-4">
+          <h4 class="fw-bold mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Artefatos OBRIGATÓRIOS para DSR com POC</h4>
+          <p class="lead mb-4">Se você escolher DSR e for desenvolver uma POC (Proof of Concept) ou sistema, seu TCC DEVE incluir:</p>
+
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card border-primary h-100">
+                <div class="card-header bg-primary text-white">
+                  <h5 class="mb-0"><i class="fas fa-diagram-project me-2"></i>Modelagem UML</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="mb-0">
+                    <li class="mb-2"><strong>Diagrama de Casos de Uso:</strong> Requisitos funcionais e atores</li>
+                    <li class="mb-2"><strong>Diagrama de Classes:</strong> Estrutura orientada a objetos</li>
+                    <li class="mb-2"><strong>Diagrama de Sequência:</strong> Fluxos principais de interação</li>
+                    <li class="mb-0"><strong>Diagrama ER:</strong> Modelo de banco de dados relacional</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="card border-success h-100">
+                <div class="card-header bg-success text-white">
+                  <h5 class="mb-0"><i class="fas fa-code-branch me-2"></i>Arquitetura e Implementação</h5>
+                </div>
+                <div class="card-body">
+                  <ul class="mb-0">
+                    <li class="mb-2"><strong>Arquitetura da Solução:</strong> Diagrama de componentes/camadas</li>
+                    <li class="mb-2"><strong>Especificação de APIs:</strong> Endpoints, métodos e contratos</li>
+                    <li class="mb-2"><strong>Protótipos de Interface:</strong> Wireframes/Mockups (Figma)</li>
+                    <li class="mb-0"><strong>Código-fonte:</strong> Repositório Git com documentação</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info border-0 shadow-lg">
+          <h5 class="fw-bold mb-3"><i class="fas fa-star me-2"></i>Exemplo Real de DSR em TCC</h5>
+          <div class="row">
+            <div class="col-md-12">
+              <p class="mb-2"><strong class="fs-5">"Sistema de Recomendação de Disciplinas Baseado em Grafos de Conhecimento"</strong></p>
+              <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                  <div class="bg-white rounded p-3 border border-primary">
+                    <h6 class="text-primary fw-bold mb-2">Problema</h6>
+                    <p class="small mb-0">Alunos não sabem quais disciplinas optativas cursar</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="bg-white rounded p-3 border border-success">
+                    <h6 class="text-success fw-bold mb-2">Artefato</h6>
+                    <p class="small mb-0">Algoritmo + Sistema Web + UML + Arquitetura</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="bg-white rounded p-3 border border-warning">
+                    <h6 class="text-warning fw-bold mb-2">Avaliação</h6>
+                    <p class="small mb-0">100 alunos testaram, 87% de satisfação</p>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="bg-white rounded p-3 border border-danger">
+                    <h6 class="text-danger fw-bold mb-2">Contribuição</h6>
+                    <p class="small mb-0">Modelo de grafo + código open-source</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Pesquisa Teórica/Matemática -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Pesquisa Teórica e Matemática</h2>
+        <p class="text-center text-muted mb-5">Quando você quer provar, demonstrar ou analisar formalmente</p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-12">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-5 text-center" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                <h3 class="fw-bold mb-4 text-white">Áreas de Investigação Teórica</h3>
+                <div class="row g-4">
+                  <div class="col-md-4">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 220px;">
+                      <i class="fas fa-project-diagram fa-3x mb-3 text-primary"></i>
+                      <h5 class="fw-bold text-dark mb-2">Teoria dos Grafos</h5>
+                      <p class="small text-muted mb-0">Propriedades, coloração, caminho mínimo, isomorfismo</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 220px;">
+                      <i class="fas fa-infinity fa-3x mb-3 text-warning"></i>
+                      <h5 class="fw-bold text-dark mb-2">Complexidade</h5>
+                      <p class="small text-muted mb-0">Análise Big-O, classes P vs NP, redução polinomial</p>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 220px;">
+                      <i class="fas fa-lock fa-3x mb-3 text-danger"></i>
+                      <h5 class="fw-bold text-dark mb-2">Criptografia</h5>
+                      <p class="small text-muted mb-0">Prova de segurança, teoria dos números, protocolos</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-warning shadow-lg">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-tasks me-2"></i>Estrutura de TCC Teórico</h5>
+              </div>
+              <div class="card-body">
+                <ol class="mb-0">
+                  <li><strong>Definições Formais:</strong> Axiomas e notação matemática</li>
+                  <li><strong>Teoremas e Lemas:</strong> Proposições a serem provadas</li>
+                  <li><strong>Provas:</strong> Demonstrações formais (indução, contradição)</li>
+                  <li><strong>Corolários:</strong> Consequências diretas</li>
+                  <li><strong>Exemplos:</strong> Casos concretos ilustrativos</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-info shadow-lg">
+              <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Exemplo de Objetivo Teórico</h5>
+              </div>
+              <div class="card-body">
+                <div class="alert alert-secondary mb-0">
+                  <p class="fw-bold">"Análise de Complexidade de Algoritmos de Ordenação em Grafos Dinâmicos"</p>
+                  <hr>
+                  <p class="small mb-2"><strong>Objetivo Geral:</strong> Demonstrar formalmente os limites inferiores de complexidade para algoritmos de ordenação topológica em grafos que sofrem atualizações dinâmicas.</p>
+                  <p class="small mb-0"><strong>Contribuição:</strong> Prova de que certa classe de algoritmos não pode ser mais eficiente que O(n log n) no pior caso.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-4 border-0 shadow">
+          <h5><i class="fas fa-exclamation-triangle me-2"></i>Importante!</h5>
+          <p class="mb-0">TCCs teóricos ainda precisam de <strong>validação</strong>: implementar os algoritmos e mostrar exemplos práticos que confirmem suas provas formais.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Pesquisa Experimental -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Pesquisa Experimental</h2>
+        <p class="text-center text-muted mb-5">Método Científico Clássico: Hipótese → Experimento → Análise</p>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-5" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                <h3 class="fw-bold mb-4 text-center text-white">O Processo Experimental</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="text-center flex-fill">
+                    <div class="bg-white rounded-circle p-4 mx-auto mb-3 shadow-sm" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-question fa-3x text-primary"></i>
+                    </div>
+                    <h5 class="text-white fw-bold">Hipótese</h5>
+                    <p class="small text-white">Afirmação testável</p>
+                  </div>
+                  <i class="fas fa-arrow-right fa-2x mx-3 text-white"></i>
+                  <div class="text-center flex-fill">
+                    <div class="bg-white rounded-circle p-4 mx-auto mb-3 shadow-sm" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-vials fa-3x text-success"></i>
+                    </div>
+                    <h5 class="text-white fw-bold">Experimento</h5>
+                    <p class="small text-white">Coleta de dados</p>
+                  </div>
+                  <i class="fas fa-arrow-right fa-2x mx-3 text-white"></i>
+                  <div class="text-center flex-fill">
+                    <div class="bg-white rounded-circle p-4 mx-auto mb-3 shadow-sm" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                      <i class="fas fa-chart-bar fa-3x text-warning"></i>
+                    </div>
+                    <h5 class="text-white fw-bold">Análise</h5>
+                    <p class="small text-white">Estatística & Conclusão</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-success shadow">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-microscope me-2"></i>Tipos de Experimentos</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li><strong>Benchmark:</strong> Comparação de desempenho de tecnologias (ex: Redis vs Memcached)</li>
+                  <li><strong>A/B Testing:</strong> Comparar duas versões (ex: UI com e sem gamificação)</li>
+                  <li><strong>Estudo de Caso:</strong> Aplicação em contexto real controlado</li>
+                  <li><strong>Simulação:</strong> Modelar cenários complexos (ex: tráfego de rede)</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-danger shadow">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-ruler me-2"></i>Métricas Essenciais</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li><strong>Performance:</strong> Tempo de execução, throughput, latência</li>
+                  <li><strong>Escalabilidade:</strong> Como cresce com volume de dados</li>
+                  <li><strong>Acurácia:</strong> Precision, Recall, F1-Score (ML)</li>
+                  <li><strong>Recursos:</strong> Uso de CPU, memória, disco, rede</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-primary mt-4 border-0 shadow">
+          <h5><i class="fas fa-flask me-2"></i>Exemplo de TCC Experimental</h5>
+          <p class="mb-2"><strong>"Análise Comparativa de Modelos de Linguagem para Classificação de Sentimentos em Português Brasileiro"</strong></p>
+          <p class="small mb-2"><strong>Hipótese:</strong> Modelos treinados especificamente em PT-BR superam modelos multilíngues na tarefa de análise de sentimento.</p>
+          <p class="small mb-0"><strong>Experimento:</strong> Treinar 5 modelos (BERT, GPT, RoBERTa) em dataset de 50k reviews, comparar F1-Score e tempo de inferência.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Survey / Estado da Arte -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Survey e Revisão Sistemática</h2>
+        <p class="text-center text-muted mb-5">Mapeando o conhecimento existente em uma área</p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-12">
+            <div class="card border-0 shadow-lg" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);">
+              <div class="card-body p-5">
+                <h3 class="fw-bold mb-4 text-center text-white"><i class="fas fa-map-marked-alt me-2"></i>O Que é um Survey?</h3>
+                <p class="lead text-center text-white mb-4">Uma investigação <strong>abrangente e sistemática</strong> da literatura científica sobre um tópico específico, organizando e sintetizando o estado atual do conhecimento.</p>
+                <hr class="border-light mb-4">
+                <div class="row g-4 text-center">
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <i class="fas fa-search fa-3x mb-3 text-info"></i>
+                      <h6 class="fw-bold text-dark mb-2">Buscar</h6>
+                      <p class="small text-muted mb-0">Encontrar artigos relevantes</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <i class="fas fa-filter fa-3x mb-3 text-warning"></i>
+                      <h6 class="fw-bold text-dark mb-2">Filtrar</h6>
+                      <p class="small text-muted mb-0">Critérios de inclusão/exclusão</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <i class="fas fa-layer-group fa-3x mb-3 text-success"></i>
+                      <h6 class="fw-bold text-dark mb-2">Classificar</h6>
+                      <p class="small text-muted mb-0">Taxonomia e categorização</p>
+                    </div>
+                  </div>
+                  <div class="col-md-3">
+                    <div class="bg-white rounded shadow-sm p-4 h-100 d-flex flex-column justify-content-center" style="min-height: 200px;">
+                      <i class="fas fa-lightbulb fa-3x mb-3 text-danger"></i>
+                      <h6 class="fw-bold text-dark mb-2">Sintetizar</h6>
+                      <p class="small text-muted mb-0">Lacunas e tendências</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-book me-2"></i>Quando Fazer um Survey?</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>A área de pesquisa é nova e fragmentada</li>
+                  <li>Você quer identificar lacunas de pesquisa (research gaps)</li>
+                  <li>Há muitos trabalhos, mas nenhuma visão consolidada</li>
+                  <li>Seu interesse é mais analítico que construtivo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-warning shadow">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Estrutura de um Survey</h5>
+              </div>
+              <div class="card-body">
+                <ol class="mb-0">
+                  <li><strong>Protocolo de Busca:</strong> Bases, strings, critérios</li>
+                  <li><strong>Seleção:</strong> Quantos artigos encontrados/selecionados</li>
+                  <li><strong>Extração:</strong> Dados relevantes de cada paper</li>
+                  <li><strong>Taxonomia:</strong> Classificação dos trabalhos</li>
+                  <li><strong>Análise:</strong> Tendências, lacunas, direções futuras</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 border-0 shadow">
+          <h5><i class="fas fa-graduation-cap me-2"></i>Exemplo de TCC Survey</h5>
+          <p class="mb-0"><strong>"Técnicas de Explicabilidade em Deep Learning: Uma Revisão Sistemática"</strong><br>
+          <small>Análise de 87 artigos (2018-2024) sobre XAI, classificados em 4 categorias (feature-based, example-based, saliency, attention), identificando que apenas 12% validam explicações com usuários reais — gap importante!</small></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Funil de Pesquisa Bibliográfica -->
+    <div class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Funil de Pesquisa Bibliográfica</h2>
+        <p class="text-center text-muted mb-5">Como sair de milhares de resultados para um conjunto sólido de artigos</p>
+
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-4" style="background: linear-gradient(135deg, #0ea5e9 0%, #2563eb 100%);">
+                <h4 class="text-white text-center mb-4"><i class="fas fa-filter me-2"></i>Etapas do Funil</h4>
+                <div class="row g-3 text-center">
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">1</h6>
+                      <p class="small mb-0">Tema e<br>pergunta</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">2</h6>
+                      <p class="small mb-0">String<br>de busca</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">3</h6>
+                      <p class="small mb-0">Bases<br>científicas</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">4</h6>
+                      <p class="small mb-0">Triagem<br>título/resumo</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">5</h6>
+                      <p class="small mb-0">Leitura<br>completa</p>
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="bg-white rounded p-3 h-100">
+                      <h6 class="fw-bold text-primary mb-2">6</h6>
+                      <p class="small mb-0">Corpus<br>final</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Exemplo Numérico do Funil</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Busca inicial: <strong>1.250</strong> resultados</li>
+                  <li>Remoção de duplicados: <strong>980</strong></li>
+                  <li>Título e resumo: <strong>210</strong></li>
+                  <li>Leitura completa: <strong>74</strong></li>
+                  <li>Avaliação de qualidade: <strong>42</strong></li>
+                  <li>Corpus final do TCC: <strong>30 a 45</strong> artigos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-warning shadow">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-check-double me-2"></i>Regras para um Funil Forte</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Defina período (ex.: 2019-2026)</li>
+                  <li>Use bases confiáveis: IEEE, ACM, Scopus, Springer</li>
+                  <li>Documente critérios de inclusão/exclusão</li>
+                  <li>Registre motivos de descarte por etapa</li>
+                  <li>Mantenha planilha de rastreabilidade dos papers</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Método de Kitchenham -->
+    <div class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Método de Kitchenham para Revisão Sistemática</h2>
+        <p class="text-center text-muted mb-5">Referência clássica em Engenharia de Software para conduzir RSL com rigor</p>
+
+        <div class="row g-4 mb-4">
+          <div class="col-md-12">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-4">
+                <h4 class="fw-bold mb-3 text-primary"><i class="fas fa-microscope me-2"></i>As 3 Fases do Protocolo Kitchenham</h4>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">1. Planejamento</h5>
+                      <ul class="small mb-0">
+                        <li>Definir objetivo e perguntas de pesquisa (RQs)</li>
+                        <li>Definir string de busca</li>
+                        <li>Definir bases e critérios de seleção</li>
+                        <li>Definir critérios de qualidade</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">2. Condução</h5>
+                      <ul class="small mb-0">
+                        <li>Executar buscas nas bases</li>
+                        <li>Aplicar triagem por etapas</li>
+                        <li>Extrair dados com formulário padronizado</li>
+                        <li>Aplicar avaliação de qualidade dos estudos</li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="border rounded p-3 h-100">
+                      <h5 class="fw-bold text-dark">3. Relato</h5>
+                      <ul class="small mb-0">
+                        <li>Sintetizar resultados por categoria</li>
+                        <li>Responder às RQs com evidências</li>
+                        <li>Reportar limitações e ameaças à validade</li>
+                        <li>Apresentar lacunas e trabalhos futuros</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-8">
+            <div class="alert alert-info border-0 shadow h-100 mb-0">
+              <h5 class="fw-bold"><i class="fas fa-book me-2"></i>Referência do Método</h5>
+              <p class="mb-2 small">
+                <strong>Kitchenham, B.; Charters, S.</strong> Guidelines for performing Systematic Literature Reviews in Software Engineering.
+                EBSE Technical Report EBSE-2007-01, Keele University and Durham University Joint Report, 2007.
+              </p>
+              <p class="mb-0 small">
+                Uso recomendado no TCC: citar no capítulo de metodologia ao justificar protocolo de revisão sistemática.
+              </p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="alert alert-warning border-0 shadow h-100 mb-0">
+              <h5 class="fw-bold"><i class="fas fa-lightbulb me-2"></i>Dica prática</h5>
+              <p class="small mb-0">Monte uma planilha com colunas: ID, título, base, ano, critérios, decisão, motivo do descarte e categoria temática.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Framework de Decisão -->
+    <div class="slide" id="slide-11">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Como Escolher Sua Metodologia?</h2>
+        <p class="text-muted mb-5 fs-5">Use este framework de perguntas para decidir o melhor caminho</p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg">
+              <div class="card-body p-5">
+                <div class="decision-tree">
+                  <div class="alert alert-primary border-3 border-primary mb-4">
+                    <h4 class="mb-3"><i class="fas fa-question-circle me-2"></i>Pergunta 1: Você quer CRIAR algo novo?</h4>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card bg-success text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-check me-2"></i>SIM</h5>
+                            <p class="mb-0 small">→ Considere <strong>DSR</strong> (Design Science Research)</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card bg-info text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-times me-2"></i>NÃO</h5>
+                            <p class="mb-0 small">→ Continue para próxima pergunta</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-warning border-3 border-warning mb-4">
+                    <h4 class="mb-3"><i class="fas fa-question-circle me-2"></i>Pergunta 2: Você quer PROVAR algo matematicamente?</h4>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card bg-success text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-check me-2"></i>SIM</h5>
+                            <p class="mb-0 small">→ Considere <strong>Pesquisa Teórica</strong></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card bg-info text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-times me-2"></i>NÃO</h5>
+                            <p class="mb-0 small">→ Continue para próxima pergunta</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-info border-3 border-info mb-4">
+                    <h4 class="mb-3"><i class="fas fa-question-circle me-2"></i>Pergunta 3: Você quer COMPARAR ou MEDIR algo?</h4>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card bg-success text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-check me-2"></i>SIM</h5>
+                            <p class="mb-0 small">→ Considere <strong>Pesquisa Experimental</strong></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card bg-info text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-times me-2"></i>NÃO</h5>
+                            <p class="mb-0 small">→ Continue para próxima pergunta</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="alert alert-danger border-3 border-danger mb-0">
+                    <h4 class="mb-3"><i class="fas fa-question-circle me-2"></i>Pergunta 4: Você quer MAPEAR o estado da arte?</h4>
+                    <div class="row g-3">
+                      <div class="col-md-6">
+                        <div class="card bg-success text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-check me-2"></i>SIM</h5>
+                            <p class="mb-0 small">→ Considere <strong>Survey / Revisão Sistemática</strong></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="card bg-secondary text-white h-100">
+                          <div class="card-body">
+                            <h5><i class="fas fa-comments me-2"></i>NÃO TEM CERTEZA</h5>
+                            <p class="mb-0 small">→ Converse com o orientador!</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 border-0 shadow mx-auto" style="max-width: 800px;">
+          <h5><i class="fas fa-info-circle me-2"></i>Dica Importante</h5>
+          <p class="mb-0">Muitos TCCs combinam metodologias! Ex: DSR + Experimental (você cria algo E avalia comparando com alternativas existentes).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Definindo Objetivos e Hipóteses -->
+    <div class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Definindo Objetivos e Hipóteses</h2>
+        <p class="text-center text-muted mb-5">Como formular a "questão de pesquisa" do seu TCC</p>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-primary shadow-lg">
+              <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-bullseye me-2"></i>Objetivo Geral</h4>
+              </div>
+              <div class="card-body">
+                <p class="fw-bold">O QUE você vai fazer (verbo no infinitivo)</p>
+                <hr>
+                <p class="small mb-2"><strong>Exemplos por Metodologia:</strong></p>
+                <ul class="small mb-3">
+                  <li><strong>DSR:</strong> "Desenvolver um algoritmo de..."</li>
+                  <li><strong>Teórica:</strong> "Demonstrar formalmente que..."</li>
+                  <li><strong>Experimental:</strong> "Avaliar o desempenho de..."</li>
+                  <li><strong>Survey:</strong> "Mapear as técnicas existentes de..."</li>
+                </ul>
+                <div class="alert alert-light mb-0">
+                  <small><strong>Exemplo completo:</strong><br>"Desenvolver um algoritmo de detecção de anomalias em séries temporais financeiras utilizando redes neurais recorrentes"</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-success shadow-lg">
+              <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="fas fa-list-ol me-2"></i>Objetivos Específicos</h4>
+              </div>
+              <div class="card-body">
+                <p class="fw-bold">COMO você vai atingir o objetivo geral (3-5 passos)</p>
+                <hr>
+                <p class="small mb-2"><strong>Exemplo (DSR):</strong></p>
+                <ol class="small mb-0">
+                  <li>Realizar revisão bibliográfica sobre detecção de anomalias</li>
+                  <li>Modelar o problema como série temporal multivariada</li>
+                  <li>Implementar LSTM com camada de atenção</li>
+                  <li>Avaliar em dataset público (Yahoo S5, NAB)</li>
+                  <li>Comparar F1-Score com baseline (Isolation Forest, ARIMA)</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-12">
+            <div class="card border-warning shadow-lg">
+              <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-flask me-2"></i>Hipóteses de Pesquisa (Opcional, mas Recomendado)</h4>
+              </div>
+              <div class="card-body">
+                <p class="mb-3">Uma <strong>afirmação testável</strong> que você vai confirmar ou refutar no seu TCC.</p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <div class="alert alert-success mb-0">
+                      <h6 class="text-success"><i class="fas fa-check-circle me-2"></i>BOA Hipótese</h6>
+                      <p class="small mb-0">"Algoritmos baseados em transformers superam RNNs tradicionais em tarefas de NLP para textos longos (>512 tokens), com ganho médio de 15% em F1-Score."</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="alert alert-danger mb-0">
+                      <h6 class="text-danger"><i class="fas fa-times-circle me-2"></i>Hipótese RUIM</h6>
+                      <p class="small mb-0">"Deep Learning é melhor que Machine Learning."<br><small class="text-muted">(Muito vaga, sem especificidade, sem métrica)</small></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Exemplos Inspiradores -->
+    <div class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Exemplos Inspiradores de TCCs</h2>
+        <p class="text-center text-muted mb-5">Projetos reais aprovados em Ciência da Computação</p>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-lg" style="border-left: 5px solid #667eea !important;">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="bg-primary text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-flask fa-2x"></i>
+                  </div>
+                  <div>
+                    <span class="badge bg-primary">DSR</span>
+                    <h5 class="mb-0 mt-1">Sistema de Cache Distribuído</h5>
+                  </div>
+                </div>
+                <p class="small text-muted mb-2">"Framework de cache distribuído com invalidação preditiva baseada em aprendizado de máquina"</p>
+                <hr>
+                <p class="small mb-1"><strong>Problema:</strong> Cache tradicional tem hit rate baixo</p>
+                <p class="small mb-1"><strong>Solução:</strong> Algoritmo que prevê quando invalidar</p>
+                <p class="small mb-0"><strong>Resultado:</strong> 34% de melhoria em hit rate</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-lg" style="border-left: 5px solid #f5af19 !important;">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="bg-warning text-dark rounded-circle p-3 me-3">
+                    <i class="fas fa-square-root-alt fa-2x"></i>
+                  </div>
+                  <div>
+                    <span class="badge bg-warning text-dark">Teórico</span>
+                    <h5 class="mb-0 mt-1">Limites de Compressão</h5>
+                  </div>
+                </div>
+                <p class="small text-muted mb-2">"Análise de limites teóricos de compressão para grafos esparsos"</p>
+                <hr>
+                <p class="small mb-1"><strong>Objetivo:</strong> Provar limite inferior de bits necessários</p>
+                <p class="small mb-1"><strong>Método:</strong> Teoria da informação + provas formais</p>
+                <p class="small mb-0"><strong>Resultado:</strong> Teorema publicado em conferência</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-lg" style="border-left: 5px solid #4facfe !important;">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="bg-info text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-chart-line fa-2x"></i>
+                  </div>
+                  <div>
+                    <span class="badge bg-info">Experimental</span>
+                    <h5 class="mb-0 mt-1">Benchmark de Bancos NoSQL</h5>
+                  </div>
+                </div>
+                <p class="small text-muted mb-2">"Análise comparativa de desempenho de bancos NoSQL para IoT"</p>
+                <hr>
+                <p class="small mb-1"><strong>Hipótese:</strong> Time-series DBs superam document DBs em IoT</p>
+                <p class="small mb-1"><strong>Experimento:</strong> 1M inserts, queries com 5 bancos diferentes</p>
+                <p class="small mb-0"><strong>Resultado:</strong> TimescaleDB 3x mais rápido que MongoDB</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-lg" style="border-left: 5px solid #f093fb !important;">
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="bg-danger text-white rounded-circle p-3 me-3">
+                    <i class="fas fa-book-open fa-2x"></i>
+                  </div>
+                  <div>
+                    <span class="badge bg-danger">Survey</span>
+                    <h5 class="mb-0 mt-1">Blockchain em Saúde</h5>
+                  </div>
+                </div>
+                <p class="small text-muted mb-2">"Revisão sistemática de aplicações de blockchain em registros médicos eletrônicos"</p>
+                <hr>
+                <p class="small mb-1"><strong>Corpus:</strong> 142 artigos (2016-2024) de IEEE/ACM</p>
+                <p class="small mb-1"><strong>Taxonomia:</strong> 6 categorias de aplicação identificadas</p>
+                <p class="small mb-0"><strong>Gap:</strong> 78% não tratam LGPD/GDPR adequadamente</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 border-0 shadow text-center">
+          <h5><i class="fas fa-lightbulb me-2"></i>Todos esses projetos geraram artigos científicos publicados!</h5>
+          <p class="mb-0 small">Seu TCC pode se tornar uma contribuição real para a área.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Atividade Prática -->
+    <div class="slide" id="slide-14">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Atividade Prática - Defina Seu Caminho</h2>
+        <div class="alert alert-primary border-0 shadow-lg mb-5 mx-auto" style="max-width: 800px;">
+          <h4><i class="fas fa-pencil-alt me-2"></i>Rascunho da Proposta de Pesquisa</h4>
+          <p class="mb-0">Vamos estruturar o "coração científico" do seu TCC</p>
+        </div>
+
+        <div class="row g-4 justify-content-center text-start">
+          <div class="col-md-10">
+            <div class="card shadow-lg border-0">
+              <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                <h4 class="mb-0"><i class="fas fa-tasks me-2"></i>Checklist de Entrega</h4>
+              </div>
+              <div class="card-body p-4">
+                <ol class="list-group list-group-numbered">
+                  <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold mb-2"><i class="fas fa-compass text-primary me-2"></i>Escolha da Metodologia</div>
+                      <p class="mb-0 small text-muted">Qual caminho você vai seguir? DSR, Teórico, Experimental ou Survey?<br>
+                      Justifique brevemente (2-3 frases) por que essa metodologia é adequada ao seu tema.</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold mb-2"><i class="fas fa-bullseye text-success me-2"></i>Objetivo Geral</div>
+                      <p class="mb-0 small text-muted">Uma frase clara começando com verbo no infinitivo (Desenvolver, Demonstrar, Avaliar, Mapear...)</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold mb-2"><i class="fas fa-list-ol text-warning me-2"></i>Objetivos Específicos</div>
+                      <p class="mb-0 small text-muted">Liste 3-5 passos de COMO você vai atingir o objetivo geral.</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold mb-2"><i class="fas fa-flask text-info me-2"></i>Hipótese (se aplicável)</div>
+                      <p class="mb-0 small text-muted">Para TCCs experimentais: qual afirmação você vai testar?<br>
+                      Para DSR: qual melhoria você espera alcançar?</p>
+                    </div>
+                  </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-start p-3">
+                    <div class="ms-2 me-auto">
+                      <div class="fw-bold mb-2"><i class="fas fa-ruler text-danger me-2"></i>Métricas de Avaliação</div>
+                      <p class="mb-0 small text-muted">Como você vai saber se teve sucesso? (Ex: F1-Score > 0.85, Tempo < 100ms, Identificar 5+ gaps na literatura)</p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-4 border-0 shadow mx-auto" style="max-width: 800px;">
+          <h5><i class="fas fa-users me-2"></i>Trabalho em Grupo</h5>
+          <p class="mb-0">Discutam entre os membros do grupo e alinhem a metodologia. Todos precisam entender e concordar com a abordagem escolhida!</p>
+        </div>
+
+        <div class="alert alert-danger mt-3 border-0 shadow mx-auto" style="max-width: 800px;">
+          <h5><i class="fas fa-drafting-compass me-2"></i>Atenção Grupos DSR!</h5>
+          <p class="mb-0">Se você escolheu DSR com desenvolvimento de POC/sistema, <strong>já comece a pensar nos artefatos de Engenharia de Software</strong> que serão necessários: UML (Casos de Uso, Classes, Sequência), Diagrama ER, Arquitetura, Protótipos e Repositório Git.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: O que Entregar -->
+    <div class="slide" id="slide-15">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Entrega da Semana</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-9">
+            <div class="card border-primary shadow-lg">
+              <div class="card-header bg-primary text-white">
+                <h4 class="mb-0"><i class="fas fa-file-upload me-2"></i>Proposta de Pesquisa (Preliminar)</h4>
+              </div>
+              <div class="card-body text-start p-5">
+                <p class="lead mb-4">Entregar um documento PDF contendo:</p>
+                <ul class="mb-4">
+                  <li><strong>Título do Projeto</strong></li>
+                  <li><strong>Integrantes</strong> (nome + matrícula)</li>
+                  <li><strong>Metodologia Escolhida</strong> + Justificativa</li>
+                  <li><strong>Objetivo Geral</strong></li>
+                  <li><strong>Objetivos Específicos</strong> (3-5 itens)</li>
+                  <li><strong>Hipótese de Pesquisa</strong> (se aplicável)</li>
+                  <li><strong>Métricas de Avaliação</strong></li>
+                </ul>
+                <hr>
+                <div class="alert alert-info mb-4">
+                  <p class="mb-0"><i class="fas fa-info-circle me-2"></i><strong>Formato:</strong> Pode ser Word/Google Docs por enquanto. Na próxima aula, migraremos para o Template LaTeX oficial.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Conclusion -->
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Próximos Passos</h1>
+        <div class="row justify-content-center mb-5">
+          <div class="col-md-8">
+            <div class="card shadow-lg border-0">
+              <div class="card-body p-5">
+                <ul class="list-group text-start">
+                  <li class="list-group-item border-0 py-3">
+                    <i class="fas fa-calendar-check text-primary me-3 fa-lg"></i>
+                    <strong>Próxima Aula (Semana 10):</strong> Entrega Formal da Proposta no Template LaTeX
+                  </li>
+                  <li class="list-group-item border-0 py-3">
+                    <i class="fas fa-laptop-code text-success me-3 fa-lg"></i>
+                    <strong>Setup Técnico:</strong> Configurar LaTeX + Git + Template Senac
+                  </li>
+                  <li class="list-group-item border-0 py-3">
+                    <i class="fas fa-book-reader text-warning me-3 fa-lg"></i>
+                    <strong>Leitura Recomendada:</strong> Começar a revisão bibliográfica na sua área
+                  </li>
+                  <li class="list-group-item border-0 py-3">
+                    <i class="fas fa-comments text-info me-3 fa-lg"></i>
+                    <strong>Orientação:</strong> Agende horário com o professor se tiver dúvidas sobre metodologia
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success border-0 shadow-lg mx-auto mb-5" style="max-width: 700px;">
+          <h4 class="mb-3"><i class="fas fa-quote-left me-2"></i>Lembre-se</h4>
+          <p class="lead mb-0">"Ciência da Computação é mais do que código — é sobre resolver problemas complexos com rigor científico, seja através de teoremas, experimentos ou artefatos inovadores."</p>
+        </div>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="../home_tcc.html" class="btn btn-warning btn-lg rounded-pill px-5">
+            <i class="fas fa-arrow-left me-2"></i>Voltar para Aulas
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn"  disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted ms-2 me-2"></span>
+      <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      TCC - Metodologias de Pesquisa em Ciência da Computação |
+      <a href="material/material_aula03-requirements.html" class="text-decoration-none">Material da Aula 3</a>
+    </div>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+  <script>
+    // Ajuste automático de escala (largura + altura) para manter todos os slides visíveis.
+    document.addEventListener('DOMContentLoaded', () => {
+      const container = document.querySelector('.slide-container');
+
+      function fitActiveSlide() {
+        const active = document.querySelector('.slide.active');
+        if (!active) return;
+
+        const content = active.querySelector('.slide-content, .glass-cover');
+        if (!content) return;
+
+        // Reset antes de medir
+        content.style.transform = '';
+        content.style.width = '';
+        content.style.position = '';
+        content.style.left = '';
+        content.style.top = '';
+        content.style.transformOrigin = 'top left';
+
+        const baseWidth = content.classList.contains('glass-cover') ? 940 : 1260;
+        content.style.width = `${baseWidth}px`;
+
+        const availableWidth = active.clientWidth - 16;
+        const availableHeight = active.clientHeight - 16;
+        const contentWidth = content.scrollWidth;
+        const contentHeight = content.scrollHeight;
+        if (!availableWidth || !availableHeight || !contentWidth || !contentHeight) return;
+
+        const scale = Math.min(1, availableWidth / contentWidth, availableHeight / contentHeight);
+        const fittedWidth = contentWidth * scale;
+        const fittedHeight = contentHeight * scale;
+        const left = Math.max(0, (availableWidth - fittedWidth) / 2);
+        const top = Math.max(0, (availableHeight - fittedHeight) / 2);
+
+        content.style.position = 'absolute';
+        content.style.left = `${left}px`;
+        content.style.top = `${top}px`;
+        content.style.transform = `scale(${scale})`;
+      }
+
+      const scheduleFit = () => requestAnimationFrame(fitActiveSlide);
+      scheduleFit();
+
+      window.addEventListener('resize', scheduleFit);
+      document.addEventListener('fullscreenchange', scheduleFit);
+      document.addEventListener('keydown', scheduleFit);
+      document.addEventListener('click', scheduleFit);
+
+      if (container) {
+        const observer = new MutationObserver(scheduleFit);
+        observer.observe(container, { attributes: true, subtree: true, attributeFilter: ['class'] });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

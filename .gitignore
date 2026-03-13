@@ -117,6 +117,7 @@ Temporary Items
 *.log
 *.sqlite
 *.db
+*.lock
 
 # ----------------------------------------------------------------------
 # Node.js (If applicable)

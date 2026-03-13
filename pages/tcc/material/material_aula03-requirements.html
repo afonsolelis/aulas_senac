@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aula 03: Metodologias de Pesquisa em Ciência da Computação - Material Detalhado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0f3d3e;
+            --secondary-color: #145c5d;
+            --accent-color: #f4a261;
+            --text-color: #1f2937;
+            --light-bg: #f3f4f6;
+            --ok-color: #2a9d8f;
+            --warn-color: #e76f51;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.65;
+            background-color: #f8f9fa;
+        }
+
+        .hero-section {
+            background: linear-gradient(140deg, var(--primary-color) 0%, var(--secondary-color) 70%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 48px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+
+        .chapter-card {
+            border: none;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            margin-bottom: 2rem;
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+        }
+
+        .chapter-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
+        }
+
+        .chapter-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .chapter-icon {
+            font-size: 1.7rem;
+            opacity: 0.95;
+        }
+
+        .info-box {
+            background-color: #e9f5f5;
+            border-left: 5px solid var(--secondary-color);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .warning-box {
+            background-color: #fff4e6;
+            border-left: 5px solid var(--accent-color);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .example-box {
+            background-color: #edf7ed;
+            border-left: 5px solid var(--ok-color);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .danger-box {
+            background-color: #fdecea;
+            border-left: 5px solid var(--warn-color);
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+            border-radius: 8px;
+        }
+
+        .tag {
+            border-radius: 999px;
+            font-weight: 600;
+            padding: 0.35rem 0.8rem;
+            margin: 0.15rem;
+            display: inline-block;
+            font-size: 0.88rem;
+        }
+
+        .section-subtitle {
+            color: #4b5563;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .table thead th {
+            white-space: nowrap;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="../../../index.html">
+                <i class="fas fa-graduation-cap me-2"></i>TCC Hub
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../../home_tcc.html">Voltar para Aulas</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div class="container">
+            <div class="row align-items-center gy-4">
+                <div class="col-lg-8">
+                    <span class="badge bg-warning text-dark mb-2">Aula 03</span>
+                    <h1 class="display-5 fw-bold">Metodologias de Pesquisa em Ciência da Computação</h1>
+                    <p class="lead mb-2">Material detalhado para você definir método, validar resultados e justificar cientificamente seu TCC.</p>
+                    <div>
+                        <span class="tag bg-light text-dark">DSR</span>
+                        <span class="tag bg-light text-dark">Teórica</span>
+                        <span class="tag bg-light text-dark">Experimental</span>
+                        <span class="tag bg-light text-dark">Survey</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center d-none d-lg-block">
+                    <i class="fas fa-compass fa-8x text-white-50"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <p class="lead text-center mb-2">"Problema sem método vira opinião. Método sem problema vira burocracia."</p>
+                <p class="text-secondary text-center mb-0">Use este guia como referência prática para escrever a metodologia do TCC1 e evitar inconsistências entre objetivo, execução e resultados.</p>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-dark">
+                        <i class="fas fa-list-check chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Objetivos da Aula e Estrutura do Material</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p class="section-subtitle">Ao final da Aula 03, você deve conseguir:</p>
+                        <ul>
+                            <li>Diferenciar as principais metodologias de pesquisa aplicáveis em Computação.</li>
+                            <li>Selecionar o método mais adequado ao seu problema de TCC.</li>
+                            <li>Definir como a solução será avaliada (evidências, métricas e validade).</li>
+                            <li>Redigir uma justificativa metodológica defensável para banca.</li>
+                        </ul>
+
+                        <div class="info-box">
+                            <strong>Como usar este material:</strong> leia os capítulos na ordem, preencha os checklists e finalize com o roteiro de entrega da semana.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-secondary">
+                        <i class="fas fa-route chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 1: O que caracteriza pesquisa em TCC de Computação</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>TCC não é somente implementação. É investigação orientada por pergunta, com método explícito, análise de evidências e contribuição para o conhecimento da área.</p>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <h3 class="h6 text-danger fw-bold">Sinais de abordagem fraca</h3>
+                                <ul class="mb-0">
+                                    <li>Objetivo genérico: "criar um sistema" sem critério de sucesso.</li>
+                                    <li>Sem hipótese ou pergunta de pesquisa clara.</li>
+                                    <li>Sem plano de validação ou métrica objetiva.</li>
+                                    <li>Conclusão baseada apenas em opinião pessoal.</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="h6 text-success fw-bold">Sinais de abordagem científica</h3>
+                                <ul class="mb-0">
+                                    <li>Problema delimitado com contexto e justificativa.</li>
+                                    <li>Objetivo geral + objetivos específicos verificáveis.</li>
+                                    <li>Método compatível com o tipo de pergunta.</li>
+                                    <li>Avaliação com evidência, limitação e ameaça à validade.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Diferença crítica:</strong> Projeto Interdisciplinar tende a priorizar entrega funcional. TCC exige rigor metodológico e justificativa de contribuição.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-primary">
+                        <i class="fas fa-flask chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 2: Design Science Research (DSR) em profundidade</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>DSR é apropriada quando você precisa <strong>projetar e avaliar um artefato</strong> para resolver um problema relevante. O foco não é só "fazer funcionar", mas demonstrar utilidade, qualidade e contribuição.</p>
+
+                        <h3 class="h6 fw-bold mt-3">2.1 Quando usar DSR</h3>
+                        <ul>
+                            <li>Você vai construir algo novo (modelo, framework, sistema, método, arquitetura).</li>
+                            <li>Existe problema real e contexto de aplicação definido.</li>
+                            <li>Você consegue medir resultados com métricas objetivas.</li>
+                        </ul>
+
+                        <h3 class="h6 fw-bold mt-3">2.2 Ciclo recomendado (versão prática)</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Etapa</th>
+                                        <th>Pergunta-chave</th>
+                                        <th>Entregável esperado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Problematização</strong></td>
+                                        <td>Qual problema relevante será resolvido?</td>
+                                        <td>Descrição do problema, contexto e lacuna.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Definição de objetivos</strong></td>
+                                        <td>Que resultado prova que a solução funciona?</td>
+                                        <td>Objetivos e critérios mensuráveis de sucesso.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Projeto do artefato</strong></td>
+                                        <td>Como a solução será estruturada?</td>
+                                        <td>Arquitetura, decisões técnicas e justificativas.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Construção</strong></td>
+                                        <td>Qual versão mínima valida a proposta?</td>
+                                        <td>Protótipo/MVP funcional e documentado.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Avaliação</strong></td>
+                                        <td>A solução entrega ganho em relação ao baseline?</td>
+                                        <td>Métricas, análise de resultados e limitações.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Comunicação</strong></td>
+                                        <td>Qual é a contribuição científica?</td>
+                                        <td>Relato estruturado da contribuição e lições.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h3 class="h6 fw-bold mt-3">2.3 Estratégias de avaliação em DSR</h3>
+                        <ul>
+                            <li><strong>Teste experimental:</strong> comparar antes/depois ou com baseline.</li>
+                            <li><strong>Estudo de caso:</strong> aplicar solução em cenário real.</li>
+                            <li><strong>Simulação:</strong> validar comportamento em cenários controlados.</li>
+                            <li><strong>Avaliação por especialistas:</strong> julgamento técnico estruturado.</li>
+                        </ul>
+
+                        <div class="danger-box">
+                            <strong>Erros frequentes em DSR:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Construir artefato sem baseline de comparação.</li>
+                                <li>Escolher métricas que não refletem o problema.</li>
+                                <li>Não declarar ameaças à validade dos resultados.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header bg-success">
+                        <i class="fas fa-square-root-alt chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 3: Pesquisa Teórica e Matemática</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Indicada quando a contribuição principal está em formalização, prova, análise de complexidade, modelagem e propriedades de algoritmos/sistemas.</p>
+
+                        <h3 class="h6 fw-bold">3.1 Produtos típicos</h3>
+                        <ul>
+                            <li>Teoremas, proposições e demonstrações formais.</li>
+                            <li>Modelos matemáticos para descrever comportamento computacional.</li>
+                            <li>Análise assintótica de algoritmos e limites de desempenho.</li>
+                        </ul>
+
+                        <h3 class="h6 fw-bold mt-3">3.2 Estrutura mínima recomendada</h3>
+                        <ol>
+                            <li>Definições e notação formal do problema.</li>
+                            <li>Hipóteses e premissas adotadas.</li>
+                            <li>Desenvolvimento teórico (lemmas, provas, contraexemplos).</li>
+                            <li>Discussão de aplicabilidade e limitações.</li>
+                        </ol>
+
+                        <div class="example-box">
+                            <strong>Exemplo de pergunta teórica:</strong> "Qual é a complexidade temporal esperada da variação X do algoritmo Y sob distribuição Z de entrada?"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header" style="background-color: #0d6efd;">
+                        <i class="fas fa-chart-line chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 4: Pesquisa Experimental (com rigor)</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Pesquisa experimental mede desempenho e comportamento em condições controladas. Exige desenho de experimento consistente para sustentar conclusões.</p>
+
+                        <h3 class="h6 fw-bold">4.1 Elementos obrigatórios do desenho experimental</h3>
+                        <ul>
+                            <li><strong>Hipótese:</strong> afirmação testável sobre comportamento esperado.</li>
+                            <li><strong>Variável independente:</strong> fator manipulado (algoritmo, parâmetro, arquitetura).</li>
+                            <li><strong>Variável dependente:</strong> medida observada (acurácia, latência, F1, consumo).</li>
+                            <li><strong>Controle:</strong> baseline e condições constantes para comparação justa.</li>
+                            <li><strong>Replicação:</strong> repetição suficiente para reduzir aleatoriedade.</li>
+                        </ul>
+
+                        <h3 class="h6 fw-bold mt-3">4.2 Checklist de qualidade experimental</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Descrição</th>
+                                        <th>Status esperado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Dataset</td>
+                                        <td>Origem, pré-processamento e divisão bem descritos.</td>
+                                        <td>Reprodutível</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Métricas</td>
+                                        <td>Métricas alinhadas ao problema de negócio/pesquisa.</td>
+                                        <td>Relevante</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ambiente</td>
+                                        <td>Hardware, software e parâmetros documentados.</td>
+                                        <td>Auditável</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comparação</td>
+                                        <td>Baseline coerente e critérios idênticos para todos os métodos.</td>
+                                        <td>Justa</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Validade</td>
+                                        <td>Ameaças internas/externas explicitadas.</td>
+                                        <td>Transparente</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Boa prática:</strong> mantenha scripts de execução e configuração versionados para facilitar réplica por orientador e banca.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header" style="background-color: #6f42c1;">
+                        <i class="fas fa-book-open chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 5: Survey e Revisão Sistemática da Literatura</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Essa abordagem é ideal quando o objetivo é mapear estado da arte, identificar tendências e lacunas, e propor agenda de pesquisa para um tema específico.</p>
+
+                        <h3 class="h6 fw-bold">5.1 Fluxo resumido recomendado</h3>
+                        <ol>
+                            <li>Definir pergunta de pesquisa e escopo temporal.</li>
+                            <li>Escolher bases de busca (ex.: IEEE, ACM, Scopus).</li>
+                            <li>Montar string de busca com sinônimos e operadores booleanos.</li>
+                            <li>Aplicar critérios de inclusão/exclusão.</li>
+                            <li>Extrair dados com protocolo padronizado.</li>
+                            <li>Sintetizar evidências (quantitativa, qualitativa ou ambas).</li>
+                        </ol>
+
+                        <h3 class="h6 fw-bold mt-3">5.2 Exemplos de critérios</h3>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="info-box h-100 mb-0">
+                                    <strong>Inclusão</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Artigos revisados por pares.</li>
+                                        <li>Período de 2018 a 2026.</li>
+                                        <li>Relacionados diretamente à pergunta.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="danger-box h-100 mb-0">
+                                    <strong>Exclusão</strong>
+                                    <ul class="mb-0 mt-2">
+                                        <li>Sem texto completo acessível.</li>
+                                        <li>Sem método claramente descrito.</li>
+                                        <li>Duplicatas ou fora do domínio.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="example-box">
+                            <strong>Produto final esperado:</strong> mapa das abordagens, comparação de resultados, lacunas e oportunidades para novos trabalhos.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header" style="background-color: #795548;">
+                        <i class="fas fa-compass chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 6: Framework para escolher a metodologia</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Use este quadro para decidir com objetividade:</p>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Se sua pergunta é...</th>
+                                        <th>Método principal</th>
+                                        <th>Evidência esperada</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>"Como construir solução para problema real?"</td>
+                                        <td><span class="tag bg-primary text-white">DSR</span></td>
+                                        <td>Artefato + avaliação de utilidade.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>"Como provar propriedade/comportamento formal?"</td>
+                                        <td><span class="tag bg-dark text-white">Teórica</span></td>
+                                        <td>Demonstração formal e análise lógica.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>"Qual técnica performa melhor sob condição X?"</td>
+                                        <td><span class="tag bg-success text-white">Experimental</span></td>
+                                        <td>Métricas comparativas e teste replicável.</td>
+                                    </tr>
+                                    <tr>
+                                        <td>"O que a literatura mostra sobre tema Y?"</td>
+                                        <td><span class="tag bg-info text-dark">Survey</span></td>
+                                        <td>Mapeamento de evidências e lacunas.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="warning-box">
+                            <strong>Dica:</strong> métodos podem ser combinados, mas sempre defina um método principal para guiar a narrativa do TCC.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header" style="background-color: #dc3545;">
+                        <i class="fas fa-bullseye chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 7: Objetivos, hipóteses e métricas (modelo de escrita)</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <h3 class="h6 fw-bold">Template de objetivo geral</h3>
+                        <div class="info-box">
+                            "Investigar/avaliar/desenvolver [solução/metodologia] para [problema] no contexto [domínio], medindo [métricas] sob [condições]."
+                        </div>
+
+                        <h3 class="h6 fw-bold">Template de hipótese</h3>
+                        <div class="info-box">
+                            <strong>H1:</strong> "A abordagem proposta [X] melhora [métrica] em relação ao baseline [Y] no cenário [Z]."
+                        </div>
+
+                        <h3 class="h6 fw-bold">Template de métrica</h3>
+                        <ul>
+                            <li>Desempenho: latência média, throughput, tempo de resposta.</li>
+                            <li>Qualidade de modelo: acurácia, precisão, recall, F1, AUC.</li>
+                            <li>Qualidade de software: taxa de erro, cobertura de testes, disponibilidade.</li>
+                        </ul>
+
+                        <div class="danger-box">
+                            Evite hipótese vaga: "o sistema ficou melhor". Sempre declare <strong>melhor em quê</strong>, <strong>comparado com o quê</strong> e <strong>em qual cenário</strong>.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-5">
+            <div class="col-lg-10 mx-auto">
+                <div class="chapter-card">
+                    <div class="chapter-header" style="background-color: #198754;">
+                        <i class="fas fa-clipboard-check chapter-icon"></i>
+                        <div>
+                            <h2 class="h4 mb-0">Capítulo 8: Entrega da Semana (roteiro detalhado)</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <p>Entregue um documento curto (1 a 2 páginas) contendo:</p>
+                        <ol>
+                            <li><strong>Tema e problema:</strong> contexto, impacto e recorte.</li>
+                            <li><strong>Pergunta de pesquisa:</strong> clara, específica e testável.</li>
+                            <li><strong>Método principal:</strong> DSR, teórica, experimental ou survey (com justificativa).</li>
+                            <li><strong>Plano de validação:</strong> como os resultados serão verificados.</li>
+                            <li><strong>Riscos e limitações iniciais:</strong> dados, tempo, recursos e escopo.</li>
+                        </ol>
+
+                        <div class="example-box">
+                            <strong>Critério de avaliação docente:</strong> coerência entre problema, objetivo, metodologia e forma de validação.
+                        </div>
+
+                        <div class="info-box mb-0">
+                            <strong>Checklist final antes de enviar:</strong>
+                            <ul class="mb-0 mt-2">
+                                <li>Minha metodologia responde diretamente minha pergunta de pesquisa.</li>
+                                <li>Tenho critérios objetivos para dizer se o trabalho foi bem-sucedido.</li>
+                                <li>Consigo explicar limites e ameaças à validade com transparência.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    
+        <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+        <ol class="text-secondary mb-4">
+          <li>Resuma em 5 linhas os pontos centrais de <strong>Metodologias de Pesquisa em Ciência da Computação</strong>.</li>
+          <li>Explique 3 conceitos-chave da aula com exemplo prático.</li>
+          <li>Descreva 2 erros comuns e como evitar cada um.</li>
+          <li>Monte um mini-caso de aplicação real do conteúdo.</li>
+          <li>Liste 3 critérios para validar se a atividade foi bem executada.</li>
+        </ol>
+
+
+<footer class="bg-dark text-white py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2026 Hub de Aulas - TCC Ciência da Computação</p>
+            <small class="text-white-50">Material de Apoio Didático | Aula 03</small>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

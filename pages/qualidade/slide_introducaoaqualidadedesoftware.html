@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdução à Qualidade de Software - Qualidade de Software</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/slides.css">
+</head>
+
+<body class="slide-body">
+
+    <div class="slide-container">
+
+        <!-- Back Button -->
+        <a href="../home_qualidade.html"
+            class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Voltar
+        </a>
+
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide-1">
+            <div class="glass-cover text-center">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                    alt="Senac Logo" height="80" class="mb-4">
+                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
+                <h1 class="display-3 fw-bold mb-4 text-black">Introdução à Qualidade de Software</h1>
+                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <h3 class="fw-normal text-dark">Professor Afonso</h3>
+                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Projeto no GitHub -->
+        <div class="slide" id="slide-2">
+            <div class="text-center slide-content">
+                <span class="badge bg-dark text-white fs-5 mb-4 px-4 py-2 rounded-pill">Repositório da Disciplina</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Projeto no GitHub</h2>
+                <p class="lead text-muted mb-5">Todo o código, exemplos e atividades da disciplina estão neste
+                    repositório.</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <a href="https://github.com/afonsolelis/qualidade_software" target="_blank"
+                            class="card border-0 shadow-lg text-decoration-none hover-scale p-0 overflow-hidden">
+                            <div class="bg-dark text-white p-5 text-center">
+                                <i class="fab fa-github fa-5x mb-4 text-white-50"></i>
+                                <h3 class="fw-bold text-white">afonsolelis/qualidade_software</h3>
+                                <p class="text-white-50 mb-0 mt-2">Repositorio oficial com códigos, exemplos e projetos
+                                    da disciplina.</p>
+                            </div>
+                            <div class="bg-white p-4 d-flex justify-content-between align-items-center">
+                                <div class="d-flex gap-4">
+                                    <span class="text-muted small"><i class="fas fa-code-branch text-success me-1"></i>
+                                        Clone o repo</span>
+                                    <span class="text-muted small"><i class="fas fa-star text-warning me-1"></i> Dê uma
+                                        estrela</span>
+                                    <span class="text-muted small"><i class="fas fa-file-alt text-info me-1"></i> Leia o
+                                        README</span>
+                                </div>
+                                <span class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                    <i class="fas fa-external-link-alt me-1"></i> Acessar
+                                </span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row justify-content-center mt-4 g-3">
+                    <div class="col-md-5">
+                        <div class="alert alert-light border mb-0">
+                            <i class="fas fa-terminal text-dark me-2"></i>
+                            <code
+                                class="text-dark">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="https://github.com/joaopauloaramuni/projeto-de-software/blob/main/SWEBOK/swebok-v4.pdf"
+                            target="_blank"
+                            class="btn btn-outline-danger btn-lg rounded-pill w-100 h-100 d-flex align-items-center justify-content-center gap-2">
+                            <i class="fas fa-file-pdf fa-lg"></i> SWEBOK v4 (PDF)
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Atividade Prática -->
+        <div class="slide" id="slide-3">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger fs-3 mb-4 px-5 py-3 rounded-pill">Atividade Prática #1</span>
+                <h1 class="display-4 fw-bold mb-4 text-dark">Setup e Análise dos Testes</h1>
+                <p class="lead text-muted mb-5">Configuração do ambiente e identificação de problemas nos testes automatizados.</p>
+
+                <div class="row g-4 justify-content-center mt-5">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-lg p-4 bg-white rounded-4">
+                            <div class="d-flex align-items-center gap-3 mb-3">
+                                <i class="fas fa-bullseye fa-3x text-danger"></i>
+                                <div class="text-start">
+                                    <h3 class="fw-bold text-dark mb-0">Objetivo</h3>
+                                    <p class="text-muted mb-0">Fazer o projeto rodar localmente e analisar os testes falhando</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 justify-content-center mt-4">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-light rounded-4 h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-laptop-code text-primary me-2"></i>Pré-requisitos</h4>
+                            <ul class="list-unstyled fs-6 text-start">
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Java JDK 17+</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Maven instalado</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>Git</li>
+                                <li class="mb-2"><i class="fas fa-check text-success me-2"></i>VS Code ou IDE Java</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-light rounded-4 h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-flag-checkered text-success me-2"></i>Entregável</h4>
+                            <p class="fs-6 text-start mb-0">Lista de problemas identificados nos testes e no código fonte.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Instruções da Prática -->
+        <div class="slide" id="slide-4">
+            <div class="text-center slide-content">
+                <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Mão na Massa</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Instruções da Prática</h2>
+
+                <div class="row g-4 text-start">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                            <h4 class="fw-bold text-primary mb-3"><span class="badge bg-primary me-2">1</span>Clone o Projeto</h4>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">cd qualidade_software</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                            <h4 class="fw-bold text-danger mb-3"><span class="badge bg-danger me-2">2</span>Rode os Testes</h4>
+                            <p class="small text-muted mb-2">Execute o comando Maven para build e testes:</p>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">mvn clean install</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm p-4 bg-light rounded-4 mt-4 text-start">
+                    <h4 class="fw-bold text-dark mb-3"><i class="fas fa-search text-warning me-2"></i>O que analisar:</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <ul class="list-unstyled fs-6">
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Quais testes <strong>falharam</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Qual o <strong>motivo da falha</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-danger me-2"></i>Existem testes <strong>ignorado/skipped</strong>?</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <ul class="list-unstyled fs-6">
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>O código está <strong>legível</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>Existe <strong>duplication</strong>?</li>
+                                <li class="mb-2"><i class="fas fa-caret-right text-primary me-2"></i>Os nomes de variáveis/métodos fazem sentido?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Transição Teoria -->
+        <div class="slide" id="slide-5">
+            <div class="text-center slide-content">
+                <div class="mb-5">
+                    <i class="fas fa-book-reader fa-5x text-primary mb-4"></i>
+                </div>
+                <h1 class="display-4 fw-bold mb-4 text-dark">Agora vamos à Teoria</h1>
+                <p class="lead text-muted mb-5">Com a prática em mente, vamos explorar os fundamentos de Qualidade de Software.</p>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <div class="card border-0 shadow-lg p-5 bg-gradient rounded-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h3 class="text-white fw-bold mb-3">Próximos Tópicos</h3>
+                            <ul class="list-unstyled text-white text-start fs-5">
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Definição de Qualidade de Software</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Custo da Qualidade (CoSQ)</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>Normas e Padrões (ISO/IEEE)</li>
+                                <li class="mb-3"><i class="fas fa-chevron-right me-2 text-warning"></i>SQA vs V&V</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-muted mt-4"><i class="fas fa-arrow-right me-2"></i>Use as setas do teclado para continuar</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Agenda -->
+        <div class="slide" id="slide-6">
+            <h1 class="display-4 fw-bold mb-5 text-dark">Agenda de Hoje</h1>
+            <div class="row">
+                <div class="col-md-9 mx-auto">
+                    <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-handshake text-primary me-3"></i> Apresentação e Avaliação (SWEBOK v4)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-book-open text-danger me-3"></i> Fundamentos da Qualidade (SWEBOK Cap. 12)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-balance-scale text-success me-3"></i> Custo da Qualidade (CoSQ)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-sitemap text-warning me-3"></i> O Ecossistema de Normas (ISO/IEEE)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-shield-alt text-info me-3"></i> SQA vs V&V (Garantia vs Verificação)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-project-diagram text-dark me-3"></i> Arquitetura e Qualidade (Visão Macro)
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-tasks text-success me-3"></i> Prática: Inspeção de Qualidade
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: SWEBOK - Tópicos de Qualidade -->
+        <div class="slide" id="slide-7">
+            <div class="text-center slide-content">
+                <span class="badge bg-info text-white fs-5 mb-3 px-4 py-2 rounded-pill">SWEBOK v4</span>
+                <h2 class="display-5 fw-bold mb-3 text-dark">Tópicos de Qualidade de Software</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <img src="../../assets/breakdown_topics_quality.png"
+                            alt="Breakdown of Topics - Software Quality (SWEBOK)" class="img-fluid rounded-4 shadow-sm">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Avaliação -->
+        <div class="slide" id="slide-8">
+            <div class="text-center slide-content">
+                <span class="badge bg-primary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Avaliação</span>
+                <h2 class="display-4 fw-bold mb-4 text-dark">Como funciona a Avaliação</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-10">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4">
+                            <svg viewBox="0 0 900 300" width="100%" height="300" role="img"
+                                aria-label="Roadmap de avaliação">
+                                <defs>
+                                    <linearGradient id="bgGlow" x1="0" y1="0" x2="1" y2="1">
+                                        <stop offset="0%" stop-color="#f8fafc" />
+                                        <stop offset="100%" stop-color="#eef2f7" />
+                                    </linearGradient>
+                                    <linearGradient id="roadline" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stop-color="#dc3545" />
+                                        <stop offset="50%" stop-color="#fd7e14" />
+                                        <stop offset="100%" stop-color="#198754" />
+                                    </linearGradient>
+                                    <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                        <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000"
+                                            flood-opacity="0.18" />
+                                    </filter>
+                                </defs>
+
+                                <rect x="24" y="26" width="852" height="248" rx="24" fill="url(#bgGlow)" />
+                                <path d="M80 160 C 240 110, 390 210, 520 150 S 760 120, 820 160" fill="none"
+                                    stroke="url(#roadline)" stroke-width="8" stroke-linecap="round" />
+                                <path d="M80 160 C 240 110, 390 210, 520 150 S 760 120, 820 160" fill="none"
+                                    stroke="#ffffff" stroke-width="2" stroke-dasharray="6 10" opacity="0.7" />
+
+                                <!-- Atividades -->
+                                <circle cx="170" cy="145" r="20" fill="#dc3545" filter="url(#softShadow)" />
+                                <circle cx="170" cy="145" r="10" fill="#ffffff" />
+                                <rect x="85" y="60" width="170" height="70" rx="14" fill="#dc3545" />
+                                <text x="170" y="88" text-anchor="middle" font-size="18" fill="#ffffff"
+                                    font-family="Arial, sans-serif">Atividades</text>
+                                <text x="170" y="112" text-anchor="middle" font-size="14" fill="#e9ecef"
+                                    font-family="Arial, sans-serif">30% da nota</text>
+                                <text x="170" y="205" text-anchor="middle" font-size="14" fill="#1f2937"
+                                    font-family="Arial, sans-serif">Semanais</text>
+
+                                <!-- Prova -->
+                                <circle cx="460" cy="165" r="20" fill="#fd7e14" filter="url(#softShadow)" />
+                                <circle cx="460" cy="165" r="10" fill="#ffffff" />
+                                <rect x="375" y="60" width="170" height="70" rx="14" fill="#fd7e14" />
+                                <text x="460" y="88" text-anchor="middle" font-size="18" fill="#ffffff"
+                                    font-family="Arial, sans-serif">Prova</text>
+                                <text x="460" y="112" text-anchor="middle" font-size="14" fill="#e9ecef"
+                                    font-family="Arial, sans-serif">30% da nota</text>
+                                <text x="460" y="225" text-anchor="middle" font-size="14" fill="#1f2937"
+                                    font-family="Arial, sans-serif">Meio do semestre</text>
+
+                                <!-- Projeto Final -->
+                                <circle cx="735" cy="145" r="20" fill="#198754" filter="url(#softShadow)" />
+                                <circle cx="735" cy="145" r="10" fill="#ffffff" />
+                                <rect x="620" y="60" width="230" height="70" rx="14" fill="#198754" />
+                                <text x="735" y="86" text-anchor="middle" font-size="16" fill="#ffffff"
+                                    font-family="Arial, sans-serif">Projeto Final</text>
+                                <text x="735" y="112" text-anchor="middle" font-size="14" fill="#d1e7dd"
+                                    font-family="Arial, sans-serif">40% da nota</text>
+                                <text x="735" y="205" text-anchor="middle" font-size="14" fill="#1f2937"
+                                    font-family="Arial, sans-serif">Final do semestre</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Definição de Qualidade -->
+        <div class="slide" id="slide-9">
+            <div class="text-center slide-content">
+                <span class="badge bg-secondary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Fundamentos</span>
+                <h2 class="display-5 fw-bold mb-5 text-dark">O que é Qualidade de Software?</h2>
+
+                <div class="row justify-content-center g-4">
+                    <div class="col-md-10">
+                        <div
+                            class="card border-0 shadow-lg p-5 bg-white rounded-4 border-start border-5 border-primary">
+                            <i class="fas fa-quote-left fa-3x text-primary mb-3 opacity-25"></i>
+                            <figure>
+                                <blockquote class="blockquote">
+                                    <p class="fs-3 text-dark fw-normal mb-4">
+                                        "Capacidade de um produto de software de satisfazer <strong>necessidades
+                                            declaradas e implícitas</strong> sob condições especificadas."
+                                    </p>
+                                </blockquote>
+                                <figcaption class="blockquote-footer fs-5 mt-2">
+                                    <cite title="Source Title">ISO/IEC 25010 & IEEE 730</cite>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-5 justify-content-center g-4">
+                    <div class="col-md-5">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-light shadow-sm h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i
+                                    class="fas fa-check-double text-success me-2"></i>Conformidade</h4>
+                            <p class="text-muted">Atender aos <strong>requisitos</strong> estabelecidos (funcionais e
+                                não-funcionais).</p>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-light shadow-sm h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-heart text-danger me-2"></i>Valor</h4>
+                            <p class="text-muted">Atender às <strong>expectativas</strong> e necessidades reais dos
+                                stakeholders (Fitness for use).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Custo da Qualidade (CoSQ) -->
+        <div class="slide" id="slide-10">
+            <div class="text-center slide-content">
+                <h2 class="display-4 fw-bold mb-4 text-dark">Custo da Qualidade (CoSQ)</h2>
+                <p class="lead text-muted mb-5">Investir antes sai mais barato que corrigir depois.</p>
+
+                <div class="row g-4 justify-content-center align-items-stretch">
+                    <!-- Custo de Conformidade -->
+                    <div class="col-md-5">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-header bg-success text-white py-3">
+                                <h4 class="m-0 fw-bold"><i class="fas fa-shield-alt me-2"></i>Custo de Conformidade</h4>
+                                <small class="opacity-75">Dinheiro bem gasto (Investimento)</small>
+                            </div>
+                            <div class="card-body bg-success-subtle p-4 text-start">
+                                <h5 class="fw-bold text-success-emphasis"><i class="fas fa-hard-hat me-2"></i>Prevenção
+                                </h5>
+                                <p class="small mb-3">Treinamento, melhoria de processos, ferramentas, planejamento.</p>
+
+                                <h5 class="fw-bold text-success-emphasis"><i class="fas fa-search me-2"></i>Avaliação
+                                    (Appraisal)</h5>
+                                <p class="small mb-0">Testes, revisões de código, auditorias, inspeções.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-greater-than-equal fa-2x text-muted"></i>
+                    </div>
+
+                    <!-- Custo de Não-Conformidade -->
+                    <div class="col-md-5">
+                        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+                            <div class="card-header bg-danger text-white py-3">
+                                <h4 class="m-0 fw-bold"><i class="fas fa-dumpster-fire me-2"></i>Custo de
+                                    Não-Conformidade</h4>
+                                <small class="opacity-75">Dinheiro jogado fora (Perda)</small>
+                            </div>
+                            <div class="card-body bg-danger-subtle p-4 text-start">
+                                <h5 class="fw-bold text-danger-emphasis"><i class="fas fa-house-damage me-2"></i>Falha
+                                    Interna</h5>
+                                <p class="small mb-3">Rework, correção de bugs antes do lançamento, atrasos.</p>
+
+                                <h5 class="fw-bold text-danger-emphasis"><i
+                                        class="fas fa-skull-crossbones me-2"></i>Falha Externa</h5>
+                                <p class="small mb-0">Suporte, recalls, perda de reputação, multas, perda de clientes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Ecossistema de Normas -->
+        <div class="slide" id="slide-11">
+            <div class="text-center slide-content">
+                <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Visão Geral</span>
+                <h2 class="display-4 fw-bold mb-5 text-dark">O "Mapas" das Normas</h2>
+
+                <div class="position-relative mx-auto" style="max-width: 900px;">
+                    <!-- ISO 12207 -->
+                    <div
+                        class="d-inline-block p-4 border border-2 border-dark rounded-4 bg-white shadow mb-5 position-relative">
+                        <h4 class="fw-bold mb-2">ISO/IEC/IEEE 12207</h4>
+                        <span class="badge bg-dark">Ciclo de Vida de Software</span>
+                        <p class="small text-muted mt-2 mb-0">Define os processos gerais (Desenvolvimento, Manutenção,
+                            Operação)</p>
+                    </div>
+
+                    <!-- Arrows Connection (Simulated with simple spacing/icons for now) -->
+                    <div class="row justify-content-center g-4">
+                        <div class="col-md-4">
+                            <div class="p-3 bg-primary text-white rounded-3 shadow h-100 transform-hover">
+                                <h5 class="fw-bold border-bottom pb-2">Gestão da Qualidade</h5>
+                                <div class="badge bg-white text-primary mb-2">ISO 9001</div>
+                                <div class="badge bg-white text-primary mb-2">ISO 90003</div>
+                                <p class="small mt-2">Foco na Organização e Processos Gerenciais.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-success text-white rounded-3 shadow h-100 transform-hover">
+                                <h5 class="fw-bold border-bottom pb-2">Processos Técnicos</h5>
+                                <div class="badge bg-white text-success mb-2">IEEE 730 (SQA)</div>
+                                <div class="badge bg-white text-success mb-2">IEEE 1012 (V&V)</div>
+                                <div class="badge bg-white text-success mb-2">ISO 20246 (Reviews)</div>
+                                <p class="small mt-2">Garantia, Verificação, Validação e Revisões.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="p-3 bg-info text-dark rounded-3 shadow h-100 transform-hover">
+                                <h5 class="fw-bold border-bottom border-dark pb-2">Produto</h5>
+                                <div class="badge bg-dark text-white mb-2">ISO 25010</div>
+                                <p class="small mt-2">Características de Qualidade do Software (Performance,
+                                    Usabilidade...).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Gestão da Qualidade (SQM) -->
+        <div class="slide" id="slide-12">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Gestão da Qualidade (SQM)</h2>
+                <p class="lead text-muted mb-5">"Faça o que você disse que faria." (ISO 9001)</p>
+
+                <div class="row justify-content-center align-items-center mb-5">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-lg bg-warning-subtle text-dark p-4 rounded-circle aspect-ratio-1x1 d-flex flex-column justify-content-center"
+                            style="width: 300px; height: 300px; margin: 0 auto;">
+                            <h3 class="fw-bold mb-3">PDCA</h3>
+                            <div class="d-flex flex-column gap-2 text-start px-4">
+                                <div><strong class="text-danger">P</strong>lan (Planejar)</div>
+                                <div><strong class="text-primary">D</strong>o (Executar)</div>
+                                <div><strong class="text-success">C</strong>heck (Verificar)</div>
+                                <div><strong class="text-dark">A</strong>ct (Agir/Corrigir)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-start">
+                        <h3 class="mb-3 text-primary fw-bold">O Sistema de Gestão (QMS)</h3>
+                        <ul class="list-group list-group-flush fs-5 bg-transparent">
+                            <li class="list-group-item bg-transparent"><i
+                                    class="fas fa-caret-right me-2 text-primary"></i>Define <strong>políticas</strong> e
+                                objetivos de qualidade.</li>
+                            <li class="list-group-item bg-transparent"><i
+                                    class="fas fa-caret-right me-2 text-primary"></i>Estabelece
+                                <strong>processos</strong> documentados.
+                            </li>
+                            <li class="list-group-item bg-transparent"><i
+                                    class="fas fa-caret-right me-2 text-primary"></i>Garante recursos e
+                                <strong>treinamento</strong>.
+                            </li>
+                            <li class="list-group-item bg-transparent"><i
+                                    class="fas fa-caret-right me-2 text-primary"></i>Foco na <strong>melhoria
+                                    contínua</strong>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: SQA - Quality Assurance -->
+        <div class="slide" id="slide-13">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger text-white fs-5 mb-3 px-4 py-2 rounded-pill">IEEE 730</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">SQA: Software Quality Assurance</h2>
+                <p class="lead text-muted mb-5">SQA não é apenas "testar o software". É garantir que o processo
+                    funciona.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div
+                            class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-danger">
+                            <h4 class="fw-bold mb-3">Garantia do Processo</h4>
+                            <p class="text-muted">"O time está seguindo as regras e padrões definidos?"</p>
+                            <hr>
+                            <ul class="text-start small text-muted">
+                                <li class="mb-2">Auditorias de SCM (code review, branches).</li>
+                                <li class="mb-2">Verificação de conformidade com padrões.</li>
+                                <li class="mb-2">Garantia de que reviews e testes estão acontecendo.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div
+                            class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-danger">
+                            <h4 class="fw-bold mb-3">Garantia do Produto</h4>
+                            <p class="text-muted">"O produto final atende aos requisitos de qualidade?"</p>
+                            <hr>
+                            <ul class="text-start small text-muted">
+                                <li class="mb-2">Planejamento de V&V (Verificação e Validação).</li>
+                                <li class="mb-2">Medição de métricas de qualidade (Defect Density).</li>
+                                <li class="mb-2">Decisão de "Aprontamento" (Release Readiness).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger mt-4 d-inline-block">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Importante:</strong> SQA deve ter <strong>independência</strong> organizacional para não
+                    sofrer pressão de prazos.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: V&V - Verificação e Validação -->
+        <div class="slide" id="slide-14">
+            <div class="text-center slide-content">
+                <span class="badge bg-success text-white fs-5 mb-3 px-4 py-2 rounded-pill">IEEE 1012</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">V&V: Verificação e Validação</h2>
+
+                <div class="row align-items-center justify-content-center g-5 mt-2">
+                    <!-- Verification -->
+                    <div class="col-md-5">
+                        <div class="p-4 bg-white border border-secondary rounded-4 shadow-sm position-relative">
+                            <span
+                                class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-secondary fs-6 px-3">Técnico</span>
+                            <h3 class="fw-bold text-secondary mb-3 mt-2">Verificação</h3>
+                            <p class="fs-4 fst-italic text-dark">"Are we building the product <span
+                                    class="text-decoration-underline">right</span>?"</p>
+                            <p class="small text-muted mt-3">Avaliar se o produto de uma fase atende às condições
+                                impostas na fase anterior (ex: Código reflete o Design?).</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 d-none d-md-block">
+                        <div class="vr" style="height: 150px; width: 2px;"></div>
+                    </div>
+
+                    <!-- Validation -->
+                    <div class="col-md-5">
+                        <div class="p-4 bg-white border border-success rounded-4 shadow-sm position-relative">
+                            <span
+                                class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-success fs-6 px-3">Usuário</span>
+                            <h3 class="fw-bold text-success mb-3 mt-2">Validação</h3>
+                            <p class="fs-4 fst-italic text-dark">"Are we building the <span
+                                    class="text-decoration-underline">right</span> product?"</p>
+                            <p class="small text-muted mt-3">Avaliar se o sistema atende às necessidades e expectativas
+                                do usuário final (ex: O usuário consegue usar?).</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 p-3 bg-light rounded-4 border border-dark-subtle d-inline-block">
+                    <i class="fas fa-tools me-2"></i> <strong>Técnicas:</strong> Análise Estática (Revisões), Análise
+                    Dinâmica (Testes), Métodos Formais.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Revisões e Inspeções -->
+        <div class="slide" id="slide-15">
+            <div class="text-center slide-content">
+                <span class="badge bg-info text-dark fs-5 mb-3 px-4 py-2 rounded-pill">ISO 20246</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Revisões Técnicas e Inspeções</h2>
+                <p class="lead text-muted mb-5">A forma mais barata de encontrar defeitos (Análise Estática).</p>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="fas fa-comments fa-2x text-primary mb-3"></i>
+                                <h5 class="card-title fw-bold">Ad Hoc Review</h5>
+                                <p class="card-text small text-muted">Informal, sem preparação. "Dá uma olhada aqui pra
+                                    mim?"</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="fas fa-tasks fa-2x text-success mb-3"></i>
+                                <h5 class="card-title fw-bold">Checklist-Based</h5>
+                                <p class="card-text small text-muted">Sistemática. O revisor segue uma lista de itens a
+                                    verificar (ex: Padrão de código, Segurança).</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card h-100 border-0 shadow-sm p-3">
+                            <div class="card-body">
+                                <i class="fas fa-user-secret fa-2x text-danger mb-3"></i>
+                                <h5 class="card-title fw-bold">Role/Perspective Based</h5>
+                                <p class="card-text small text-muted">Revisores assumem papéis específicos: Usuário
+                                    final, Hacker, Administrador de DB.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-8">
+                        <div class="alert alert-info border-0 shadow-sm rounded-4">
+                            <div class="d-flex align-items-center">
+                                <i class="fab fa-github fa-2x me-3"></i>
+                                <div class="text-start">
+                                    <h6 class="fw-bold mb-1">Pull Requests</h6>
+                                    <p class="mb-0 small">No dia a dia moderno, a maioria das revisões acontece via
+                                        Pull/Merge Requests, mas as técnicas acima devem ser aplicadas dentro delas!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: ISO 25010 (Refined) -->
+        <div class="slide" id="slide-16">
+            <div class="text-center slide-content">
+                <span class="badge bg-dark text-white fs-5 mb-3 px-4 py-2 rounded-pill">Produto - ISO 25010</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Modelo de Qualidade do Produto</h2>
+                <p class="lead text-muted mb-4">Como avaliamos se o software é "bom"? (Requisitos Não-Funcionais)</p>
+
+                <div class="row g-2 justify-content-center">
+                    <!-- Cards compactos para as 8 características -->
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-cogs text-primary me-2"></i><span class="fw-bold small">Adequação
+                                    Funcional</span></div>
+                            <small class="text-muted x-small">Completude, Correção, Adequação.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-tachometer-alt text-success me-2"></i><span
+                                    class="fw-bold small">Performance</span></div>
+                            <small class="text-muted x-small">Tempo de resposta, uso de recursos.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-puzzle-piece text-info me-2"></i><span
+                                    class="fw-bold small">Compatibilidade</span></div>
+                            <small class="text-muted x-small">Coexistência, Interoperabilidade.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-hand-pointer text-warning me-2"></i><span
+                                    class="fw-bold small">Usabilidade</span></div>
+                            <small class="text-muted x-small">Aprendizado, Operabilidade, Acessibilidade.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-shield-alt text-danger me-2"></i><span class="fw-bold small">Segurança
+                                    (Security)</span></div>
+                            <small class="text-muted x-small">Confidencialidade, Integridade, Autenticidade.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-server text-secondary me-2"></i><span
+                                    class="fw-bold small">Confiabilidade</span></div>
+                            <small class="text-muted x-small">Disponibilidade, Tolerância a falhas, Recuperação.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-wrench text-dark me-2"></i><span
+                                    class="fw-bold small">Manutenibilidade</span></div>
+                            <small class="text-muted x-small">Modularidade, Reusabilidade, Testabilidade.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="p-2 border rounded-3 bg-white shadow-sm h-100 text-start">
+                            <div class="d-flex align-items-center mb-1"><i
+                                    class="fas fa-mobile-alt text-success me-2"></i><span
+                                    class="fw-bold small">Portabilidade</span></div>
+                            <small class="text-muted x-small">Adaptabilidade, Facilidade de instalação.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Slide 17: Arquitetura e Qualidade -->
+        <div class="slide" id="slide-17">
+            <div class="text-center slide-content">
+                <span class="badge bg-secondary text-white fs-5 mb-3 px-4 py-2 rounded-pill">Visão Macro - ISO/IEC
+                    42010</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Arquitetura e Qualidade</h2>
+                <p class="lead text-muted mb-4">A qualidade nasce nas decisões arquiteturais ("Shift Left").</p>
+
+                <!-- Flow: Business -> Mechanisms -->
+                <div class="row justify-content-center align-items-stretch g-3 mb-5">
+                    <div class="col-md-3">
+                        <div
+                            class="p-3 bg-dark text-white rounded-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                            <i class="fas fa-briefcase fa-2x mb-2"></i>
+                            <h6 class="fw-bold mb-0 small">Business Drivers</h6>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center"><i
+                            class="fas fa-arrow-right fa-2x text-muted"></i></div>
+                    <div class="col-md-3">
+                        <div
+                            class="p-3 bg-danger text-white rounded-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                            <i class="fas fa-list-alt fa-2x mb-2"></i>
+                            <h6 class="fw-bold mb-0 small">Requisitos (ASRs)</h6>
+                            <small class="x-small">Funcionais & Não-Funcionais</small>
+                        </div>
+                    </div>
+                    <div class="col-md-1 d-flex align-items-center justify-content-center"><i
+                            class="fas fa-arrow-right fa-2x text-muted"></i></div>
+                    <div class="col-md-3">
+                        <div
+                            class="p-3 bg-primary text-white rounded-3 shadow-sm h-100 d-flex flex-column justify-content-center">
+                            <i class="fas fa-cogs fa-2x mb-2"></i>
+                            <h6 class="fw-bold mb-0 small">Mecanismos & Tech</h6>
+                            <small class="x-small">Decisões Arquiteturais</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5 Views (4+1 Model) -->
+                <h4 class="fw-bold text-dark mb-3"><i class="fas fa-layer-group me-2 text-primary"></i>As 5 Visões
+                    Arquiteturais</h4>
+                <div class="row justify-content-center g-2 align-items-stretch">
+                    <div class="col-md-2">
+                        <div
+                            class="p-2 border border-primary rounded-3 bg-white text-primary small fw-bold h-100 d-flex flex-column justify-content-center">
+                            Lógica<br><span class="x-small text-muted fw-normal">(Classes, Estrutura)</span></div>
+                    </div>
+                    <div class="col-md-2">
+                        <div
+                            class="p-2 border border-success rounded-3 bg-white text-success small fw-bold h-100 d-flex flex-column justify-content-center">
+                            Processo<br><span class="x-small text-muted fw-normal">(Concurrency, Performance)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div
+                            class="p-2 border border-warning rounded-3 bg-white text-warning small fw-bold h-100 d-flex flex-column justify-content-center">
+                            Desenvolvimento<br><span class="x-small text-muted fw-normal">(Pacotes, Bibliotecas)</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div
+                            class="p-2 border border-danger rounded-3 bg-white text-danger small fw-bold h-100 d-flex flex-column justify-content-center">
+                            Física<br><span class="x-small text-muted fw-normal">(Deployment, Hardware)</span></div>
+                    </div>
+                    <div class="col-md-2">
+                        <div
+                            class="p-2 bg-secondary text-white rounded-3 small fw-bold h-100 d-flex flex-column justify-content-center">
+                            Cenários<br><span class="x-small text-white-50 fw-normal">(Use Cases, User Stories)</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="small text-muted mt-3">Cada visão aborda diferentes atributos de qualidade (ex: Física &rarr;
+                    Escalabilidade, Processo &rarr; Performance).</p>
+            </div>
+        </div>
+
+        <!-- Slide 18: O que vamos aprender -->
+        <div class="slide" id="slide-18">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">O que vamos aprender neste semestre</h2>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-vial fa-2x text-primary mb-3"></i>
+                            <h5 class="fw-bold">Testes Unitários</h5>
+                            <p class="text-muted small">Jest, cobertura de código, mocks e stubs.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-sync-alt fa-2x text-success mb-3"></i>
+                            <h5 class="fw-bold">TDD</h5>
+                            <p class="text-muted small">Test Driven Development - escrever o teste antes do código.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-robot fa-2x text-warning mb-3"></i>
+                            <h5 class="fw-bold">Automação</h5>
+                            <p class="text-muted small">GitHub Actions, CI/CD e testes automatizados.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-desktop fa-2x text-danger mb-3"></i>
+                            <h5 class="fw-bold">Testes E2E</h5>
+                            <p class="text-muted small">Cypress e testes de ponta a ponta.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-tachometer-alt fa-2x text-info mb-3"></i>
+                            <h5 class="fw-bold">Performance</h5>
+                            <p class="text-muted small">Testes de carga com JMeter.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-tasks fa-2x text-dark mb-3"></i>
+                            <h5 class="fw-bold">Gestão de Bugs</h5>
+                            <p class="text-muted small">GitHub Projects e fluxo de issues.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Atividade Prática -->
+        <div class="slide" id="slide-19">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger fs-4 mb-4 px-5 py-3 rounded-pill">Atividade Prática</span>
+                <h1 class="display-4 fw-bold mb-4 text-dark">Encontre os Bugs!</h1>
+
+                <div class="row text-start mt-4 g-4">
+                    <div class="col-md-6">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+                            <h4 class="text-dark mb-3"><i class="fas fa-clipboard-list text-primary me-2"></i>
+                                Instruções</h4>
+                            <ol class="fs-5">
+                                <li class="mb-3">Acesse o repositório do projeto no GitHub.</li>
+                                <li class="mb-3">Clone o projeto na sua máquina.</li>
+                                <li class="mb-3">Analise o código e identifique <strong>problemas de qualidade</strong>.
+                                </li>
+                                <li class="mb-3">Classifique cada problema encontrado.</li>
+                            </ol>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card border-0 bg-dark text-white p-4 rounded-4 h-100">
+                            <h4 class="mb-3"><i class="fas fa-tags me-2 text-warning"></i> Classifique como:</h4>
+                            <ul class="list-unstyled fs-5">
+                                <li class="mb-3"><span class="badge bg-danger me-2">Bug</span> Erro que causa
+                                    comportamento incorreto</li>
+                                <li class="mb-3"><span class="badge bg-warning text-dark me-2">Usabilidade</span>
+                                    Difícil de usar ou entender</li>
+                                <li class="mb-3"><span class="badge bg-info me-2">Performance</span> Lento ou
+                                    ineficiente</li>
+                                <li class="mb-3"><span class="badge bg-secondary me-2">Segurança</span> Vulnerabilidade
+                                    potencial</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Setup do Ambiente -->
+        <div class="slide" id="slide-20">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Setup do Ambiente (Windows)</h2>
+                <p class="lead text-muted mb-3">Passo a passo para configurar o projeto Java.</p>
+
+                <div class="row g-3 text-start">
+                    <!-- Passo 1: Scoop + Maven -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+                            <h5 class="fw-bold text-danger mb-3"><span class="badge bg-danger me-2">1</span> Instalar o
+                                Scoop e Maven</h5>
+                            <p class="small text-muted mb-2">Abra o <strong>PowerShell</strong> como administrador:</p>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-2 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code
+                                    class="text-info small">Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-2 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">irm get.scoop.sh | iex</code>
+                            </div>
+                            <p class="small text-muted mb-2">Depois instale o Maven:</p>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-2 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">scoop install maven</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">mvn --version</code>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Passo 2: Clone + VS Code -->
+                    <div class="col-md-6">
+                        <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+                            <h5 class="fw-bold text-primary mb-3"><span class="badge bg-primary me-2">2</span> Clonar e
+                                abrir no VS Code</h5>
+                            <p class="small text-muted mb-2">No terminal, clone o repositório:</p>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-2 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code
+                                    class="text-info small">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-3 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">code qualidade_software</code>
+                            </div>
+                            <h5 class="fw-bold text-success mb-3"><span class="badge bg-success me-2">3</span> Rodar o
+                                projeto com Maven</h5>
+                            <p class="small text-muted mb-2">No terminal integrado do VS Code (<kbd>Ctrl+`</kbd>):</p>
+                            <div class="bg-dark text-white p-3 rounded-3 mb-2 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">mvn clean install</code>
+                            </div>
+                            <div class="bg-dark text-white p-3 rounded-3 position-relative">
+                                <button
+                                    class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0"
+                                    onclick="copyToClipboard(this)">
+                                    <i class="fas fa-copy text-white-50"></i>
+                                </button>
+                                <code class="text-info small">mvn spring-boot:run</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Resumo -->
+        <div class="slide" id="slide-21">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-5 text-dark">O que aprendemos hoje</h2>
+                <div class="row g-4 justify-content-center">
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-white rounded-4 text-start h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i
+                                    class="fas fa-check-circle text-success me-2"></i>Conceitos</h4>
+                            <ul class="list-unstyled fs-5">
+                                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Qualidade de
+                                    Software = requisitos + expectativas</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>QA (processo)
+                                    vs QC (produto) vs Teste (execução)</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Shift Left:
+                                    encontre bugs cedo</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>ISO 25010: 8
+                                    características de qualidade</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="card border-0 shadow-sm p-4 bg-dark text-white rounded-4 text-start h-100">
+                            <h4 class="fw-bold mb-3"><i class="fas fa-arrow-right text-warning me-2"></i>Próximos passos
+                            </h4>
+                            <ul class="list-unstyled fs-5">
+                                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Clone o
+                                    repositório do projeto</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Instale as
+                                    ferramentas</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Explore o
+                                    código do projeto</li>
+                                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Próxima
+                                    aula: Processos de Software e QA</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Encerramento -->
+        <div class="slide" id="slide-22">
+            <div class="text-center slide-content">
+                <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="https://github.com/afonsolelis/qualidade_software" target="_blank"
+                        class="btn btn-dark btn-lg rounded-pill px-5">
+                        <i class="fab fa-github me-2"></i>Projeto no GitHub
+                    </a>
+                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar
+                        para Aulas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="slide-footer">
+        <div class="d-flex align-items-center gap-3">
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+        </div>
+
+        <div class="text-center text-muted small d-none d-md-block">
+            Qualidade de Software - Introdução à Qualidade de Software
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="material/material_aula01-introducao-qualidade.html" class="btn btn-outline-primary btn-sm rounded-pill">
+                <i class="fas fa-book me-1"></i> Ver material escrito
+            </a>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                    height="30" class="opacity-75">
+            </a>
+        </div>
+    </footer>
+
+    <script src="../../js/standard_slides.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function copyToClipboard(button) {
+            const codeBlock = button.nextElementSibling;
+            const codeText = codeBlock.innerText;
+
+            navigator.clipboard.writeText(codeText).then(() => {
+                const icon = button.querySelector('i');
+                const originalClass = icon.className;
+
+                icon.className = 'fas fa-check text-success';
+
+                setTimeout(() => {
+                    icon.className = originalClass;
+                }, 2000);
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+            });
+        }
+    </script>
+
+</body>
+
+</html>

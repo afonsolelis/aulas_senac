@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introdução ao Python - Introdução à Lógica</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <!-- Prism JS for Code Highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+</head>
+
+<body class="slide-body">
+
+  <div class="slide-container">
+
+    <!-- Back Button -->
+    <a href="../home_logica.html"
+      class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Capa -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Python & O Computador</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <h1 class="display-4 fw-bold mb-5 text-dark">Agenda de Hoje</h1>
+      <div class="row">
+        <div class="col-md-9 mx-auto">
+          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-microchip text-primary me-3"></i> <strong>Como o PC pensa?</strong> (Cozinha & Memória)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-search text-success me-3"></i> <strong>Estuturas de Dados:</strong> Como achar as
+              gavetas? (Hash)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-cogs text-info me-3"></i> <strong>CPU:</strong> Entendendo Instruções
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fab fa-python text-warning me-3"></i> <strong>Python Puro:</strong> Print, Input e Contas
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: A Metáfora da Cozinha -->
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">O Computador é uma Cozinha</h2>
+        <p class="fs-4">Para entender programação, imagine um restaurante.</p>
+
+        <div class="row g-4 mt-4">
+          <!-- CPU -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm bg-white">
+              <div class="card-body">
+                <i class="fas fa-user-graduate fa-4x text-primary mb-3"></i>
+                <h3 class="fw-bold">O Chef (CPU)</h3>
+                <p class="text-muted">Ele é super rápido, mas não lembra de nada. Ele só corta e cozinha o que está na
+                  frente dele.</p>
+              </div>
+            </div>
+          </div>
+          <!-- RAM -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm bg-white">
+              <div class="card-body">
+                <i class="fas fa-table fa-4x text-success mb-3"></i>
+                <h3 class="fw-bold">A Bancada (RAM)</h3>
+                <p class="text-muted">Onde os ingredientes (Dados) ficam enquanto o Chef trabalha. É rápido, mas se a
+                  luz acabar, tudo some!</p>
+              </div>
+            </div>
+          </div>
+          <!-- HD -->
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm bg-white">
+              <div class="card-body">
+                <i class="fas fa-archive fa-4x text-warning mb-3"></i>
+                <h3 class="fw-bold">A Dispensa (HD)</h3>
+                <p class="text-muted">Lugar lento para guardar coisas pra sempre. O Chef (CPU) odeia ir até lá.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: O Caminho dos Dados (Mermaid) -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">O Fluxo da Informação</h2>
+        <p class="mb-4">O que acontece quando você digita algo?</p>
+
+        <div class="bg-white p-4 rounded shadow-sm d-inline-block">
+          <div class="d-flex flex-wrap align-items-center justify-content-center gap-2 small fw-semibold">
+            <span class="badge bg-secondary p-2">Teclado</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-success p-2">Memória RAM</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-primary p-2">CPU</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-success p-2">Memória RAM</span>
+            <i class="fas fa-arrow-right text-muted"></i>
+            <span class="badge bg-dark p-2">Monitor</span>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 w-75 mx-auto text-start">
+          <small><strong>Nota:</strong> A CPU nunca fala direto com o Monitor. Ela sempre escreve na RAM [print()], e a
+            RAM manda pro Monitor.</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Variáveis são Caixas -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Variáveis = Caixas Etiquetadas</h2>
+        <p class="fs-4">Na Memória RAM, guardamos dados em gavetas numeradas.</p>
+
+        <div class="row justify-content-center mt-5">
+          <!-- Box 1 -->
+          <div class="col-md-3">
+            <div class="position-relative">
+              <span class="badge bg-dark position-absolute top-0 start-50 translate-middle fs-5">nome</span>
+              <div class="border border-3 border-dark p-4 rounded bg-warning text-dark fw-bold fs-3 shadow">
+                "Afonso"
+              </div>
+              <p class="mt-2 text-muted small">Gaveta: 0x7ffd8a</p>
+            </div>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-center justify-content-center">
+            <i class="fas fa-plus fa-2x text-muted"></i>
+          </div>
+
+          <!-- Box 2 -->
+          <div class="col-md-3">
+            <div class="position-relative">
+              <span class="badge bg-dark position-absolute top-0 start-50 translate-middle fs-5">idade</span>
+              <div class="border border-3 border-dark p-4 rounded bg-info text-white fw-bold fs-3 shadow">
+                30
+              </div>
+              <p class="mt-2 text-muted small">Gaveta: 0x7ffd9b</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mt-5 text-start w-50 mx-auto">
+          <pre><code class="language-python">
+nome = "Afonso"  # Cria uma caixa 'nome' com texto
+idade = 30       # Cria uma caixa 'idade' com número
+</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Hash Map (O Segredo da Memória) -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">O Vestiário Gigante</h2>
+        <p class="fs-4">Imagine um vestiário com 1 bilhão de gavetas (Sua RAM).</p>
+
+        <div class="row align-items-center justify-content-center mt-4">
+          <div class="col-md-6">
+            <div class="alert alert-warning text-dark py-4 shadow-sm">
+              <h4 class="fw-bold"><i class="fas fa-question-circle me-2"></i>Como achar a caixa "idade"?</h4>
+              <p>O computador procura em cada gaveta? <br> Gaveta 1? Não. Gaveta 2? Não... Gaveta 5000? Não.</p>
+              <p class="fw-bold text-danger">Isso demoraria milênios!</p>
+            </div>
+          </div>
+
+          <div class="col-md-1"><i class="fas fa-arrow-right fa-3x text-primary"></i></div>
+
+          <div class="col-md-5">
+            <div class="card border-primary p-3 bg-light shadow">
+              <h4 class="text-primary fw-bold">A Mágica do HASH</h4>
+              <p>Transformamos a palavra "idade" em um número Matemático único.</p>
+              <div class="bg-dark text-white p-2 rounded font-monospace">
+                Hash("idade") = 0x7ffd9b
+              </div>
+              <p class="mt-2 text-success fw-bold">O computador vai direto na gaveta certa!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Instruções CPU (As Comandas) -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">As Comandas do Chef (CPU)</h2>
+        <p class="mb-5">O Chef não pensa no prato pronto. Ele segue passos minúsculos chamados
+          <strong>Instruções</strong>.
+        </p>
+
+        <div class="row justify-content-center g-3">
+          <div class="col-md-3">
+            <div class="p-3 border rounded shadow-sm bg-white h-100">
+              <span class="badge bg-danger mb-2">1. FETCH (Pegar)</span>
+              <p class="small">O Chef pega uma comanda na memória.</p>
+              <i class="fas fa-hand-holding fa-2x text-muted"></i>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 border rounded shadow-sm bg-white h-100">
+              <span class="badge bg-warning text-dark mb-2">2. DECODE (Ler)</span>
+              <p class="small">O Chef lê: "MOVE Tomate TO Tábua".</p>
+              <i class="fas fa-glasses fa-2x text-muted"></i>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="p-3 border rounded shadow-sm bg-white h-100">
+              <span class="badge bg-success mb-2">3. EXECUTE (Fazer)</span>
+              <p class="small">O Chef realmente move o tomate.</p>
+              <i class="fas fa-utensils fa-2x text-muted"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark mt-4 w-75 mx-auto">
+          <p class="mb-0">Seu código Python (<code>a = 1 + 1</code>) vira centenas dessas comandas!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Input e Output (Code) -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Código vs Realidade</h2>
+
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">
+# O INPUT pega do teclado e joga na RAM
+comida = input("O que você quer? ")
+
+# O PRINT pega da RAM e joga na Tela
+print("Saindo um " + comida)
+</code></pre>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-0 shadow-sm p-4">
+              <div class="d-flex flex-column align-items-center gap-2 small fw-semibold">
+                <span class="badge bg-secondary p-2">Teclado</span>
+                <i class="fas fa-arrow-down text-muted"></i>
+                <span class="badge bg-success p-2">RAM: caixa \"comida\"</span>
+                <i class="fas fa-arrow-down text-muted"></i>
+                <span class="badge bg-dark p-2">Monitor</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Tipos de Dados -->
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">A Forma da Caixa</h2>
+        <p class="lead">O computador usa caixas diferentes para coisas diferentes.</p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-3">
+            <div class="card border-primary mb-3 h-100">
+              <div class="card-header bg-primary text-white">String (Texto)</div>
+              <div class="card-body d-flex flex-column justify-content-between">
+                <h1 class="font-monospace">"5"</h1>
+                <p class="card-text small">É um desenho. Ocupa mais espaço.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-success mb-3 h-100">
+              <div class="card-header bg-success text-white">Int (Inteiro)</div>
+              <div class="card-body d-flex flex-column justify-content-between">
+                <h1 class="font-monospace">5</h1>
+                <p class="card-text small">É matemática pura (Binário).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card border-info mb-3 h-100">
+              <div class="card-header bg-info text-white">Float (Real)</div>
+              <div class="card-body d-flex flex-column justify-content-between">
+                <h1 class="font-monospace">5.0</h1>
+                <p class="card-text small">Precisa de bits extras para a vírgula.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: O Erro de Soma -->
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Por que "5" + "5" = "55"?</h2>
+        <p class="fs-4">Instruções diferentes para tipos diferentes.</p>
+
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-4">
+            <div class="d-flex justify-content-center gap-1">
+              <div class="border p-2 bg-light">"5"</div>
+              <i class="fas fa-plus bg-white p-2"></i>
+              <div class="border p-2 bg-light">"5"</div>
+            </div>
+            <p class="mt-2 text-muted"><strong>Instrução:</strong> CONCATENATE (Colar)</p>
+          </div>
+
+          <div class="col-md-1"><i class="fas fa-arrow-right fa-2x"></i></div>
+
+          <div class="col-md-3">
+            <div class="border p-2 bg-warning fw-bold fs-3">"55"</div>
+          </div>
+        </div>
+
+        <hr class="w-50 mx-auto my-4">
+
+        <div class="row justify-content-center align-items-center">
+          <div class="col-md-4">
+            <div class="d-flex justify-content-center gap-1">
+              <div class="border p-2 bg-success text-white">5</div>
+              <i class="fas fa-plus bg-white p-2"></i>
+              <div class="border p-2 bg-success text-white">5</div>
+            </div>
+            <p class="mt-2 text-muted"><strong>Instrução:</strong> ADD (Somar)</p>
+          </div>
+
+          <div class="col-md-1"><i class="fas fa-arrow-right fa-2x"></i></div>
+
+          <div class="col-md-3">
+            <div class="border p-2 bg-success text-white fw-bold fs-3">10</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: A Solução (Conversão) -->
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">A Máquina de Conversão</h2>
+        <p class="mb-4">Use <code>int()</code> para transformar a "caixa" de texto em "caixa" de número.</p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-8">
+            <pre><code class="language-python">
+texto = input("Digite um número: ")  # Entra como Texto "10"
+numero = int(texto)                  # Vira Número 10
+
+# Ou direto:
+idade = int(input("Qual sua idade? "))
+</code></pre>
+          </div>
+        </div>
+
+        <div class="mt-4 d-flex flex-wrap align-items-center justify-content-center gap-2 small fw-semibold">
+          <span class="badge text-bg-danger p-2">\"10\" (String)</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          <span class="badge text-bg-primary p-2">int()</span>
+          <i class="fas fa-arrow-right text-muted"></i>
+          <span class="badge text-bg-success p-2">10 (Int)</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Calculando de Verdade -->
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Calculando na CPU</h2>
+
+        <div class="row w-100 justify-content-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">
+# A CPU busca 'preco' e multiplica por 0.10.
+# Depois, guarda o resultado em 'desconto'.
+preco = float(input("Preço: "))
+desconto = preco * 0.10
+final = preco - desconto
+
+print(f"Final: {final}")
+</code></pre>
+          </div>
+          <div class="col-md-5">
+            <div class="card bg-light p-4 border-success border-start border-5">
+              <h5>Operações Matemáticas</h5>
+              <ul class="list-unstyled text-start font-monospace mt-3">
+                <li>+ Soma</li>
+                <li>- Subtração</li>
+                <li>* Multiplicação</li>
+                <li>/ Divisão (Vira Float)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Exercícios -->
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Hora de Praticar (20 Desafios)</h2>
+        <p class="mb-3 text-muted">A prática leva à perfeição. Façam todos!</p>
+
+        <div class="row">
+          <!-- Coluna 1 -->
+          <div class="col-md-6 text-start">
+            <ol class="list-group list-group-numbered list-group-flush small">
+              <li class="list-group-item bg-transparent py-1">Escreva "Olá, Mundo!".</li>
+              <li class="list-group-item bg-transparent py-1">Peça o nome e responda "Bem-vindo!".</li>
+              <li class="list-group-item bg-transparent py-1">Some dois números inteiros.</li>
+              <li class="list-group-item bg-transparent py-1">Peça um número e mostre o seu dobro.</li>
+              <li class="list-group-item bg-transparent py-1">Calcule a média de 3 notas.</li>
+              <li class="list-group-item bg-transparent py-1">Converta metros para centímetros (x100).</li>
+              <li class="list-group-item bg-transparent py-1">Antecessor e Sucessor de um número.</li>
+              <li class="list-group-item bg-transparent py-1">Calcule a Área de um Quadrado (L x L).</li>
+              <li class="list-group-item bg-transparent py-1">Calcule a Área de um Retângulo (Base x Altura).</li>
+              <li class="list-group-item bg-transparent py-1">Conversor: Real para Dólar (Divisão).</li>
+            </ol>
+          </div>
+
+          <!-- Coluna 2 -->
+          <div class="col-md-6 text-start">
+            <ol class="list-group list-group-numbered list-group-flush small" start="11">
+              <li class="list-group-item bg-transparent py-1">Peça Ano Nasc. e diga a Idade (2026 - Ano).</li>
+              <li class="list-group-item bg-transparent py-1">Salário com Aumento: (Salário * 1.10).</li>
+              <li class="list-group-item bg-transparent py-1">Desconto de Produto: (Preço - R$10,00).</li>
+              <li class="list-group-item bg-transparent py-1">Dias para Horas (Dias * 24).</li>
+              <li class="list-group-item bg-transparent py-1">Minutos para Segundos (Min * 60).</li>
+              <li class="list-group-item bg-transparent py-1">Calculadora de IMC (Peso / Altura²).</li>
+              <li class="list-group-item bg-transparent py-1">Nome Completo (Peça Nome, depois Sobrenome).</li>
+              <li class="list-group-item bg-transparent py-1">Repetidor (Peça palavra e número, multiplique).</li>
+              <li class="list-group-item bg-transparent py-1">Velocidade Média (Distância / Tempo).</li>
+              <li class="list-group-item bg-transparent py-1">Celsius para Fahrenheit (C * 1.8 + 32).</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Encerramento -->
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Parabéns!</h1>
+        <p class="lead mb-5">Você agora entende o que acontece "debaixo do capô".</p>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar ao Menu</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 14</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      Introdução à Lógica - Aula 02
+    </div>
+
+    <a href="material/material_aula02-introducao-python.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+  <script src="../../js/standard_slides.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

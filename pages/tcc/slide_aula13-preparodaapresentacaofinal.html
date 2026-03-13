@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semana 14 - Trabalho de Conclusão</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/slides.css">
+</head>
+<body class="slide-body">
+
+    <div class="slide-container">
+
+        <!-- Back Button -->
+        <a href="../home_tcc.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Voltar
+        </a>
+
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide-1">
+            <div class="glass-cover text-center">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac Logo" height="80" class="mb-4">
+                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Trabalho de Conclusão</h5>
+                <h1 class="display-3 fw-bold mb-4 text-black">Semana 14</h1>
+                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <h3 class="fw-normal text-dark">Professor Afonso</h3>
+                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Agenda -->
+        <div class="slide" id="slide-2">
+            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
+            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+                
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i class="fas fa-check text-success me-3"></i> Tópico 1</li>
+            
+            </ul>
+        </div>
+
+        <!-- Slide 3: Content 1 -->
+        <div class="slide" id="slide-3">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Conceitos Iniciais</h2>
+                <p class="lead text-dark mb-5">Uma visão geral sobre Preparo da Apresentação Final..</p>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
+                            <h4 class="text-dark">Ideia</h4>
+                            <p class="text-secondary small">O conceito central explicado de forma simples.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fas fa-cogs fa-3x text-info mb-3"></i>
+                            <h4 class="text-dark">Mecanismo</h4>
+                            <p class="text-secondary small">Como funciona na prática e seus componentes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
+                            <h4 class="text-dark">Resultado</h4>
+                            <p class="text-secondary small">Os benefícios e impactos esperados.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Content 2 -->
+        <div class="slide" id="slide-4">
+             <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Aprofundamento</h2>
+                <p class="fs-4 text-secondary">Detalhes técnicos importantes sobre o tema.</p>
+                <div class="card border-0 shadow-lg mt-5 mx-auto" style="max-width: 800px;">
+                    <div class="card-body p-5">
+                         <blockquote class="blockquote mb-0">
+                          <p class="text-dark">"A educação é a arma mais poderosa que você pode usar para mudar o mundo."</p>
+                          <footer class="blockquote-footer mt-2">Nelson Mandela</footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Conclusion -->
+        <div class="slide" id="slide-5">
+             <div class="text-center slide-content">
+                <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="#" class="btn btn-dark btn-lg rounded-pill px-5">Recursos Extras</a>
+                    <a href="../home_tcc.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="slide-footer">
+        <div class="slide-controls">
+            <button id="prevBtn"  disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+            <a href="material/material_aula13-presentation-prep.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 5</span>
+      <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+        </div>
+
+        <div class="text-center text-muted small d-none d-md-block">
+            Trabalho de Conclusão - Semana 14
+        </div>
+
+        <a href="../../index.html">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                 alt="Senac" height="30" class="opacity-75">
+        </a>
+    </footer>
+
+    <script src="../../js/standard_slides.js"></script>
+
+</body>
+</html>

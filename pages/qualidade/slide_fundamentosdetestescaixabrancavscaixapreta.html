@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fundamentos de Testes: Caixa Branca vs. Caixa Preta - Qualidade de Software</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/slides.css">
+    <!-- Mermaid for UML Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --accent-blue: #1666d1;
+            --accent-cyan: #10a5b5;
+            --accent-green: #1f9d61;
+            --ink-900: #14233b;
+            --ink-700: #42536b;
+            --surface-soft: #f3f7fd;
+            --surface-card: #ffffff;
+            --border-soft: #d8e2f0;
+            --elevation: 0 14px 34px rgba(18, 37, 68, 0.12);
+        }
+
+        .slide-body {
+            background:
+                radial-gradient(circle at 15% 15%, rgba(22, 102, 209, 0.18), transparent 32%),
+                radial-gradient(circle at 85% 80%, rgba(16, 165, 181, 0.15), transparent 28%),
+                linear-gradient(145deg, #edf3fb 0%, #f7fbff 55%, #eff6ff 100%);
+        }
+
+        .slide {
+            padding: 2.5rem 3.25rem 2rem;
+            position: relative;
+        }
+
+        .slide .row {
+            width: min(1180px, 100%);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .slide > h1 {
+            color: var(--ink-900) !important;
+            letter-spacing: -0.02em;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+        }
+
+        .slide > h1::after {
+            content: "";
+            display: block;
+            width: 92px;
+            height: 5px;
+            margin: 0.75rem auto 0;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+        }
+
+        .slide p.lead {
+            color: var(--ink-700) !important;
+            max-width: 980px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .glass-cover {
+            background: linear-gradient(165deg, rgba(255, 255, 255, 0.94), rgba(241, 247, 255, 0.96));
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 20px 45px rgba(20, 35, 59, 0.16);
+            backdrop-filter: blur(3px);
+        }
+
+        .slide .bg-white,
+        .slide .bg-light {
+            background: var(--surface-card) !important;
+            border: 1px solid var(--border-soft);
+            box-shadow: var(--elevation);
+        }
+
+        .slide .text-dark,
+        .slide h4,
+        .slide h5 {
+            color: var(--ink-900) !important;
+        }
+
+        .slide .text-white,
+        .slide .text-white * {
+            color: #ffffff !important;
+        }
+
+        .slide .text-secondary,
+        .slide .text-muted {
+            color: var(--ink-700) !important;
+        }
+
+        .slide ul,
+        .slide ol {
+            line-height: 1.6;
+            text-align: left;
+            padding-left: 1.25rem;
+        }
+
+        .slide .p-4:not(.text-center) {
+            text-align: left;
+        }
+
+        .list-group-item {
+            border: 0 !important;
+            border-bottom: 1px solid var(--border-soft) !important;
+            background: transparent !important;
+            color: var(--ink-900) !important;
+            font-weight: 500;
+        }
+
+        .objective-list {
+            list-style: none;
+            padding-left: 0 !important;
+            margin: 0.75rem 0 0;
+            display: grid;
+            gap: 0.6rem;
+        }
+
+        .objective-list li {
+            position: relative;
+            padding: 0.6rem 0.8rem 0.6rem 2.2rem;
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            background: linear-gradient(180deg, #f8fbff, #f2f7ff);
+            color: var(--ink-700);
+            font-weight: 500;
+        }
+
+        .objective-list li::before {
+            content: "\f058";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: var(--accent-blue);
+            position: absolute;
+            left: 0.78rem;
+            top: 0.62rem;
+            font-size: 0.92rem;
+        }
+
+        .side-vision-card {
+            min-height: 230px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mermaid {
+            background: var(--surface-soft);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 20px 0;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.85), var(--elevation);
+        }
+
+        .code-block {
+            background: linear-gradient(140deg, #0f1728, #1c2436 70%);
+            color: #dbe7ff;
+            padding: 22px;
+            border-radius: 14px;
+            border: 1px solid #34405b;
+            box-shadow: 0 14px 30px rgba(11, 18, 33, 0.35);
+            font-family: 'Fira Code', 'Consolas', 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.45;
+            white-space: pre-wrap;
+            word-break: break-word;
+            overflow-x: auto;
+            text-align: left;
+            width: min(1260px, 100%);
+            margin: 0 auto;
+        }
+
+        .code-block .keyword { color: #82bcff; }
+        .code-block .string { color: #ffc18a; }
+        .code-block .annotation { color: #f0e68a; }
+        .code-block .comment { color: #82cb9b; }
+        .code-block .type { color: #7ae4de; }
+
+        .alert {
+            border-radius: 14px;
+            border-width: 1px;
+            box-shadow: 0 8px 18px rgba(15, 34, 62, 0.08);
+        }
+
+        .comparison-table {
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: var(--elevation);
+            border: 1px solid var(--border-soft);
+            background: #ffffff;
+        }
+
+        .comparison-table td, .comparison-table th {
+            vertical-align: middle;
+            border-color: var(--border-soft);
+        }
+
+        .comparison-table thead th {
+            background: #1d3658;
+            color: #f0f5ff;
+            border-color: #29456e;
+        }
+
+        .pyramid-level {
+            border: 1px solid rgba(255, 255, 255, 0.45);
+            box-shadow: 0 8px 18px rgba(20, 35, 59, 0.18);
+            font-weight: 600;
+        }
+
+        .slide > .mermaid {
+            width: min(980px, 100%);
+            margin: 0.6rem auto 0;
+        }
+
+        .mermaid svg {
+            width: 100% !important;
+            max-width: none !important;
+            height: auto !important;
+            min-height: 330px;
+        }
+
+        #slide-13 .mermaid,
+        #slide-14 .mermaid {
+            margin-top: 0.25rem;
+            padding: 14px;
+        }
+
+        #slide-13 .mermaid svg,
+        #slide-14 .mermaid svg {
+            min-height: 250px;
+        }
+
+        #slide-13 p.lead,
+        #slide-14 p.lead {
+            margin-bottom: 0.7rem !important;
+        }
+
+        .slide > .comparison-table {
+            width: min(1280px, 100%);
+            margin: 0 auto;
+            font-size: 1.36rem;
+        }
+
+        .slide .card-list {
+            list-style: none;
+            padding-left: 0 !important;
+            margin: 0.65rem 0 0;
+            display: grid;
+            gap: 0.45rem;
+        }
+
+        .slide .card-list li {
+            position: relative;
+            padding-left: 1.6rem;
+        }
+
+        .slide .card-list li::before {
+            content: "\2022";
+            color: #4c8fda;
+            position: absolute;
+            left: 0.45rem;
+        }
+
+        #slide-19 .slide-content {
+            max-width: 760px;
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.86), rgba(239, 246, 255, 0.9));
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            border-radius: 24px;
+            padding: 2.2rem 1.8rem;
+            box-shadow: 0 20px 34px rgba(20, 35, 59, 0.13);
+        }
+
+        .btn-outline-secondary,
+        .btn-outline-dark {
+            border-width: 2px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .top-actions {
+            z-index: 1100;
+        }
+
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1.5rem 1.1rem;
+            }
+
+            .slide > h1 {
+                font-size: 1.7rem !important;
+            }
+
+            .slide p.lead {
+                font-size: 1rem;
+            }
+
+            .glass-cover {
+                padding: 2rem 1.35rem;
+            }
+
+            .code-block {
+                font-size: 0.78rem;
+                padding: 14px;
+            }
+
+            .slide > .comparison-table {
+                font-size: 1rem;
+            }
+
+            .mermaid svg {
+                min-height: 240px;
+            }
+        }
+    </style>
+</head>
+<body class="slide-body">
+
+    <div class="slide-container">
+
+        <div class="top-actions position-absolute top-0 start-0 m-4 d-flex gap-2">
+            <a href="../home_qualidade.html" class="btn btn-outline-secondary rounded-pill">
+                <i class="fas fa-arrow-left me-2"></i> Voltar
+            </a>
+        </div>
+
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide-1">
+            <div class="glass-cover text-center">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac Logo" height="80" class="mb-4">
+                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
+                <h1 class="display-3 fw-bold mb-4 text-black">Fundamentos de Testes:<br>Caixa Branca vs. Caixa Preta</h1>
+                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <h3 class="fw-normal text-dark">Professor Afonso</h3>
+                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Agenda -->
+        <div class="slide" id="slide-2">
+            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
+            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Introdução aos Testes de Software
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Teste Caixa Branca (White-Box)
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Testes Paramétricos com @CsvSource
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Teste Caixa Preta (Black-Box)
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Testes End-to-End (E2E)
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Diagrama UML de Sequência
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle">
+                    <i class="fas fa-check text-success me-3"></i> Comparação e Melhores Práticas
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: Introdução -->
+        <div class="slide" id="slide-3">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Introdução aos Testes de Software</h1>
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                        <i class="fas fa-search fa-3x text-primary mb-3"></i>
+                        <h4 class="text-dark">O que são Testes?</h4>
+                        <p class="text-secondary">Processo de verificar se o software atende aos requisitos especificados e se comporta conforme o esperado.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                        <i class="fas fa-balance-scale fa-3x text-success mb-3"></i>
+                        <h4 class="text-dark">Duas Abordagens Principais</h4>
+                        <ul class="text-secondary text-start card-list">
+                            <li><strong>Caixa Branca:</strong> Foco na estrutura interna do código</li>
+                            <li><strong>Caixa Preta:</strong> Foco no comportamento externo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: O que é Caixa Branca? -->
+        <div class="slide" id="slide-4">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Teste Caixa Branca (White-Box)</h1>
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-primary mb-3"><i class="fas fa-code me-2"></i>Definição</h4>
+                        <p class="text-dark fs-5">
+                            O teste de <strong>Caixa Branca</strong> analisa a estrutura interna do código. 
+                            O testador tem acesso completo ao código-fonte e conhece a implementação interna.
+                        </p>
+                        <h4 class="text-primary mb-3 mt-4"><i class="fas fa-bullseye me-2"></i>Objetivos</h4>
+                        <ul class="text-secondary fs-5 objective-list">
+                            <li>Verificar caminhos de execução do código</li>
+                            <li>Testar condições, loops e branches</li>
+                            <li>Validar lógica interna e estruturas de dados</li>
+                            <li>Cobertura de código (statements, branches, paths)</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-light rounded-4 shadow-sm text-center side-vision-card">
+                        <i class="fas fa-eye fa-5x text-primary mb-3"></i>
+                        <h5 class="text-dark">"Enxergamos" o código</h5>
+                        <p class="text-muted small">Conhecimento interno da implementação é essencial</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Exemplo Prático - Caixa Branca -->
+        <div class="slide" id="slide-5">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Exemplo: Teste de Unidade com JUnit</h1>
+            <p class="lead text-secondary mb-4">Testando a lógica interna de um método de cálculo</p>
+            <div class="code-block">
+<span class="annotation">@SpringBootTest</span>
+<span class="keyword">public class</span> <span class="type">CalculadoraTest</span> {
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">Calculadora</span> calculadora;
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> <span class="type">testarSoma</span>() {
+        <span class="comment">// Arrange - conhecemos a estrutura interna</span>
+        <span class="type">int</span> a = 5, b = 3;
+        
+        <span class="comment">// Act - executamos o método</span>
+        <span class="type">int</span> resultado = calculadora.<span class="type">somar</span>(a, b);
+        
+        <span class="comment">// Assert - validamos o resultado esperado</span>
+        <span class="type">assertEquals</span>(8, resultado);
+    }
+}</div>
+            <p class="text-muted small mt-3"><i class="fas fa-info-circle me-2"></i>Teste de unidade focado em validar a lógica interna do método <code>somar()</code></p>
+        </div>
+
+        <!-- Slide 6: Testes Paramétricos -->
+        <div class="slide" id="slide-6">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Testes Paramétricos com @CsvSource</h1>
+            <p class="lead text-secondary mb-4">Executando o mesmo teste com múltiplos conjuntos de dados</p>
+            <div class="code-block">
+<span class="annotation">@ParameterizedTest</span>
+<span class="annotation">@CsvSource({</span>
+    <span class="string">"2, 3, 5"</span>,
+    <span class="string">"10, 20, 30"</span>,
+    <span class="string">"-5, 5, 0"</span>,
+    <span class="string">"0, 0, 0"</span>,
+    <span class="string">"100, 200, 300"</span>
+<span class="annotation">})</span>
+<span class="keyword">void</span> <span class="type">testarSomaComMultiplosValores</span>(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span> esperado) {
+    <span class="comment">// Arrange</span>
+    
+    <span class="comment">// Act</span>
+    <span class="type">int</span> resultado = calculadora.<span class="type">somar</span>(a, b);
+    
+    <span class="comment">// Assert - valida para cada conjunto de parâmetros</span>
+    <span class="type">assertEquals</span>(esperado, resultado);
+}</div>
+            <div class="alert alert-info mt-3">
+                <i class="fas fa-lightbulb me-2"></i>
+                <strong>Vantagem:</strong> Um único método de teste valida múltiplos cenários, aumentando a cobertura de testes.
+            </div>
+        </div>
+
+        <!-- Slide 7: @CsvSource com Casos Complexos -->
+        <div class="slide" id="slide-7">
+            <h1 class="display-5 fw-bold mb-4 text-dark">@CsvSource - Casos Mais Complexos</h1>
+            <p class="lead text-secondary mb-4">Testando validações e regras de negócio</p>
+            <div class="code-block">
+<span class="annotation">@ParameterizedTest</span>
+<span class="annotation">@CsvSource({</span>
+    <span class="string">"usuario@email.com, Senha123!, true"</span>,
+    <span class="string">"email-invalido, Senha123!, false"</span>,
+    <span class="string">"usuario@email.com, 123, false"</span>,
+    <span class="string">", Senha123!, false"</span>,
+    <span class="string">"usuario@email.com, , false"</span>
+<span class="annotation">})</span>
+<span class="keyword">void</span> <span class="type">testarValidacaoUsuario</span>(
+        <span class="type">String</span> email, 
+        <span class="type">String</span> senha, 
+        <span class="type">boolean</span> esperado) {
+    
+    <span class="comment">// Act</span>
+    <span class="type">boolean</span> valido = validador.<span class="type">validarUsuario</span>(email, senha);
+    
+    <span class="comment">// Assert</span>
+    <span class="type">assertEquals</span>(esperado, valido);
+}</div>
+            <p class="text-muted small mt-3"><i class="fas fa-shield-alt me-2"></i>Teste de caixa branca: conhecemos a lógica de validação interna</p>
+        </div>
+
+        <!-- Slide 8: O que é Caixa Preta? -->
+        <div class="slide" id="slide-8">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Teste Caixa Preta (Black-Box)</h1>
+            <div class="row g-4">
+                <div class="col-md-8">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-primary mb-3"><i class="fas fa-box me-2"></i>Definição</h4>
+                        <p class="text-dark fs-5">
+                            O teste de <strong>Caixa Preta</strong> valida o comportamento externo do sistema 
+                            sem conhecer a implementação interna. Foca nos requisitos funcionais.
+                        </p>
+                        <h4 class="text-primary mb-3 mt-4"><i class="fas fa-bullseye me-2"></i>Objetivos</h4>
+                        <ul class="text-secondary fs-5 objective-list">
+                            <li>Validar funcionalidades do ponto de vista do usuário</li>
+                            <li>Testar entradas e saídas esperadas</li>
+                            <li>Verificar conformidade com requisitos</li>
+                            <li>Testes funcionais, de sistema e aceitação</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-light rounded-4 shadow-sm text-center side-vision-card">
+                        <i class="fas fa-box-open fa-5x text-dark mb-3"></i>
+                        <h5 class="text-dark">Não "enxergamos" o código</h5>
+                        <p class="text-muted small">Apenas entradas e saídas são observadas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Exemplo Prático - Caixa Preta -->
+        <div class="slide" id="slide-9">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Exemplo: Teste Funcional</h1>
+            <p class="lead text-secondary mb-4">Validando o comportamento sem conhecer a implementação</p>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h5 class="text-primary mb-3"><i class="fas fa-user me-2"></i>Perspectiva do Usuário</h5>
+                        <ol class="text-secondary">
+                            <li>Usuário insere credenciais</li>
+                            <li>Clica em "Entrar"</li>
+                            <li>Espera ser redirecionado para dashboard</li>
+                        </ol>
+                        <div class="alert alert-success mt-3">
+                            <strong>Foco:</strong> O sistema funciona conforme esperado?
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h5 class="text-primary mb-3"><i class="fas fa-list-check me-2"></i>Critérios de Aceite</h5>
+                        <ul class="text-secondary card-list">
+                            <li>Login válido → Dashboard</li>
+                            <li>Login inválido → Mensagem de erro</li>
+                            <li>Campos vazios → Validação</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Testes End-to-End (E2E) -->
+        <div class="slide" id="slide-10">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Testes End-to-End (E2E)</h1>
+            <p class="lead text-secondary mb-4">Testes de caixa preta que simulam o fluxo completo do usuário</p>
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-primary mb-3"><i class="fas fa-play-circle me-2"></i>Características</h4>
+                        <ul class="text-secondary fs-5 card-list">
+                            <li>Testam o sistema completo</li>
+                            <li>Simulam cenários reais de uso</li>
+                            <li>Validam integração entre componentes</li>
+                            <li>Não requerem conhecimento do código</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-light rounded-4 shadow-sm">
+                        <h4 class="text-success mb-3"><i class="fas fa-tools me-2"></i>Ferramentas Comuns</h4>
+                        <ul class="text-secondary card-list">
+                            <li><i class="fab fa-chrome me-2"></i>Selenium</li>
+                            <li><i class="fab fa-firefox me-2"></i>Cypress</li>
+                            <li><i class="fas fa-play me-2"></i>Playwright</li>
+                            <li><i class="fas fa-robot me-2"></i>TestCafe</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Exemplo E2E com Selenium -->
+        <div class="slide" id="slide-11">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Exemplo: E2E com Selenium</h1>
+            <p class="lead text-secondary mb-4">Automatizando o fluxo de login</p>
+            <div class="code-block">
+<span class="annotation">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)</span>
+<span class="annotation">@ExtendWith(SeleniumExtension.class)</span>
+<span class="keyword">public class</span> <span class="type">LoginE2ETest</span> {
+
+    <span class="annotation">@Autowired</span>
+    <span class="keyword">private</span> <span class="type">WebDriver</span> webDriver;
+
+    <span class="annotation">@Test</span>
+    <span class="keyword">void</span> <span class="type">testarFluxoLoginCompleto</span>() {
+        <span class="comment">// Acessa a página de login</span>
+        webDriver.<span class="type">get</span>(<span class="string">"/login"</span>);
+        
+        <span class="comment">// Preenche o formulário (caixa preta - não sabemos a implementação)</span>
+        webDriver.<span class="type">findElement</span>(By.<span class="type">id</span>(<span class="string">"email"</span>)).<span class="type">sendKeys</span>(<span class="string">"user@email.com"</span>);
+        webDriver.<span class="type">findElement</span>(By.<span class="type">id</span>(<span class="string">"senha"</span>)).<span class="type">sendKeys</span>(<span class="string">"Senha123!"</span>);
+        webDriver.<span class="type">findElement</span>(By.<span class="type">id</span>(<span class="string">"btn-login"</span>)).<span class="type">click</span>();
+        
+        <span class="comment">// Valida redirecionamento</span>
+        <span class="type">assertTrue</span>(webDriver.<span class="type">getCurrentUrl</span>().<span class="type">contains</span>(<span class="string">"/dashboard"</span>));
+    }
+}</div>
+        </div>
+
+        <!-- Slide 12: UML Sequence Diagram - Introdução -->
+        <div class="slide" id="slide-12">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Diagrama UML de Sequência</h1>
+            <p class="lead text-secondary mb-4">Visualizando o fluxo de interações entre componentes</p>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-primary mb-3"><i class="fas fa-project-diagram me-2"></i>O que é?</h4>
+                        <p class="text-secondary">
+                            Diagrama que mostra como objetos interagem ao longo do tempo, 
+                            representando a sequência de mensagens trocadas entre eles.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-success mb-3"><i class="fas fa-check-circle me-2"></i>Importância para Testes</h4>
+                        <ul class="text-secondary card-list">
+                            <li>Entende o fluxo completo do sistema</li>
+                            <li>Identifica pontos de teste</li>
+                            <li>Documenta comportamento esperado</li>
+                            <li>Facilita comunicação da equipe</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: UML - Fluxo Caixa Branca -->
+        <div class="slide" id="slide-13">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Fluxo Caixa Branca - Diagrama de Sequência</h1>
+            <p class="lead text-secondary mb-4">Visualizando as chamadas internas de método</p>
+            <div class="mermaid">
+sequenceDiagram
+    participant T as Teste Unitário
+    participant C as Calculadora
+    participant V as Validador
+    participant R as Repositório
+
+    T->>C: somar(a, b)
+    C->>V: validarEntradas(a, b)
+    V-->>C: true
+    C->>C: executarSoma(a, b)
+    C->>R: registrarOperacao()
+    R-->>C: OK
+    C-->>T: resultado: int
+    T->>T: Assert do valor retornado
+            </div>
+        </div>
+
+        <!-- Slide 14: UML - Fluxo Caixa Preta -->
+        <div class="slide" id="slide-14">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Fluxo Caixa Preta - Diagrama de Sequência</h1>
+            <p class="lead text-secondary mb-4">Visualizando apenas as interações externas</p>
+            <div class="mermaid">
+sequenceDiagram
+    participant U as Usuário
+    participant I as Interface
+    participant S as Sistema
+    participant B as Banco de Dados
+
+    U->>I: Insere credenciais
+    U->>I: Clica "Entrar"
+    I->>S: POST /api/login
+    S->>B: Validar usuário
+    B-->>S: Dados do usuário
+    S-->>I: 200 OK + Token
+    I-->>U: Redireciona Dashboard
+    U->>U: Usuário vê o resultado final
+            </div>
+        </div>
+
+        <!-- Slide 15: Comparação Lado a Lado -->
+        <div class="slide" id="slide-15">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Comparação: Caixa Branca vs. Caixa Preta</h1>
+            <table class="table table-bordered comparison-table fs-5">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Característica</th>
+                        <th>Caixa Branca</th>
+                        <th>Caixa Preta</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Conhecimento do Código</strong></td>
+                        <td>Requer acesso completo</td>
+                        <td>Não requer</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Foco</strong></td>
+                        <td>Estrutura interna, lógica</td>
+                        <td>Requisitos, comportamento</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Quem executa</strong></td>
+                        <td>Desenvolvedores</td>
+                        <td>Testadores / QA</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Nível de Teste</strong></td>
+                        <td>Unidade, Integração</td>
+                        <td>Sistema, Aceitação</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Exemplo</strong></td>
+                        <td>@ParameterizedTest</td>
+                        <td>Selenium, Cypress</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Slide 16: Pirâmide de Testes -->
+        <div class="slide" id="slide-16">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Pirâmide de Testes</h1>
+            <p class="lead text-secondary mb-4">Equilíbrio entre diferentes tipos de teste</p>
+            <div class="row g-4 align-items-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <div class="pyramid-container" style="max-width: 400px; margin: 0 auto;">
+                            <div class="pyramid-level bg-success text-white p-3 mb-2 rounded" style="font-size: 0.8rem;">
+                                <i class="fas fa-layer-group me-2"></i>E2E / Caixa Preta<br/><small>(Menos quantidade)</small>
+                            </div>
+                            <div class="pyramid-level bg-warning text-dark p-3 mb-2 rounded" style="font-size: 1rem;">
+                                <i class="fas fa-puzzle-piece me-2"></i>Integração<br/><small>(Quantidade média)</small>
+                            </div>
+                            <div class="pyramid-level bg-primary text-white p-4 rounded" style="font-size: 1.2rem;">
+                                <i class="fas fa-cube me-2"></i>Unidade / Caixa Branca<br/><small>(Maior quantidade)</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm">
+                        <h4 class="text-primary mb-3"><i class="fas fa-info-circle me-2"></i>Princípios</h4>
+                        <ul class="text-secondary fs-5 card-list">
+                            <li>Base larga: muitos testes de unidade (rápidos, baratos)</li>
+                            <li>Meio: testes de integração (validam comunicação)</li>
+                            <li>Topo: poucos testes E2E (lentos, caros)</li>
+                            <li>Equilíbrio é essencial para qualidade</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Melhores Práticas -->
+        <div class="slide" id="slide-17">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Melhores Práticas</h1>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                        <h4 class="text-primary mb-3"><i class="fas fa-code me-2"></i>Caixa Branca</h4>
+                        <ul class="text-secondary fs-5 card-list">
+                            <li>Use @ParameterizedTest para cobrir casos variados</li>
+                            <li>Mantenha testes independentes e isolados</li>
+                            <li>Nomeie testes de forma descritiva</li>
+                            <li>Teste caminhos felizes e exceções</li>
+                            <li>Busque alta cobertura de código</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 bg-white rounded-4 shadow-sm h-100">
+                        <h4 class="text-success mb-3"><i class="fas fa-box me-2"></i>Caixa Preta</h4>
+                        <ul class="text-secondary fs-5 card-list">
+                            <li>Baseie testes em requisitos funcionais</li>
+                            <li>Simule cenários reais de usuário</li>
+                            <li>Automatize fluxos críticos E2E</li>
+                            <li>Valide mensagens e feedbacks ao usuário</li>
+                            <li>Teste em ambientes similares à produção</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Resumo -->
+        <div class="slide" id="slide-18">
+            <h1 class="display-5 fw-bold mb-4 text-dark">Resumo da Aula</h1>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="p-4 bg-primary text-white rounded-4 shadow-sm">
+                        <i class="fas fa-code fa-3x mb-3"></i>
+                        <h4>Caixa Branca</h4>
+                        <p class="small mb-0">Testa a estrutura interna do código. Usa @CsvSource para testes paramétricos. Foco em unidade e integração.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-dark text-white rounded-4 shadow-sm">
+                        <i class="fas fa-box fa-3x mb-3"></i>
+                        <h4>Caixa Preta</h4>
+                        <p class="small mb-0">Testa comportamento externo. Usa Selenium/Cypress para E2E. Foco em sistema e aceitação.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 bg-success text-white rounded-4 shadow-sm">
+                        <i class="fas fa-balance-scale fa-3x mb-3"></i>
+                        <h4>Equilíbrio</h4>
+                        <p class="small mb-0">Ambas abordagens são complementares. Use a pirâmide de testes como guia.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: Dúvidas -->
+        <div class="slide" id="slide-19">
+             <div class="text-center slide-content">
+                <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="slide-footer">
+        <div class="d-flex align-items-center gap-3">
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+        </div>
+
+        <div class="text-center text-muted small d-none d-md-block">
+            Qualidade de Software - Fundamentos de Testes: Caixa Branca vs. Caixa Preta
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <a href="material/material_aula03-fundamentos-caixa-branca-preta.html" class="btn btn-dark btn-sm rounded-pill">
+                <i class="fas fa-book me-2"></i>Material didático
+            </a>
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac" height="30" class="opacity-75">
+            </a>
+        </div>
+    </footer>
+
+    <script src="../../js/standard_slides.js"></script>
+    <script>
+        // Initialize Mermaid
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+        });
+    </script>
+
+</body>
+</html>

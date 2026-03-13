@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 13 - TCC: Metodologia de Pesquisa</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+</head>
+
+<body class="slide-body">
+
+  <div class="slide-container">
+
+    <!-- Back Button -->
+    <a href="../home_tcc.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Cover -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC1 - Ciência da Computação</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Metodologia de Pesquisa</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Escolha e justificativa do caminho metodológico</h3>
+        <p class="text-muted mt-3 fs-5">Métodos, procedimentos e critérios para um TCC consistente</p>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 13 - 2026.1</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card border-primary h-100">
+            <div class="card-header bg-primary text-white">
+              <h5 class="mb-0"><i class="fas fa-compass me-2"></i>Parte 1: Conceitos</h5>
+            </div>
+            <div class="card-body">
+              <ul class="mb-0">
+                <li>O que é metodologia</li>
+                <li>Método, metodologia e técnica</li>
+                <li>Principais caminhos metodológicos</li>
+                <li>Critérios de escolha</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-success h-100">
+            <div class="card-header bg-success text-white">
+              <h5 class="mb-0"><i class="fas fa-clipboard-list me-2"></i>Parte 2: Projeto</h5>
+            </div>
+            <div class="card-body">
+              <ul class="mb-0">
+                <li>Estrutura do capítulo de metodologia</li>
+                <li>Procedimentos e instrumentos</li>
+                <li>Coleta, análise e validação</li>
+                <li>Checklist de qualidade</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Definicao -->
+    <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">O Que É Metodologia?</h2>
+
+        <div class="alert alert-primary border-0 shadow mb-4">
+          <h4 class="fw-bold mb-3"><i class="fas fa-book me-2"></i>Definição</h4>
+          <p class="mb-0">Metodologia é o <strong>conjunto organizado de decisões</strong> que define como a pesquisa será conduzida,
+            garantindo rigor, reprodutibilidade e alinhamento com o problema e objetivos do TCC.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-success shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-success"><i class="fas fa-road me-2"></i>Método</h5>
+                <p class="small mb-0">O caminho principal de pesquisa (ex.: experimental, DSR, survey).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-primary shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-map me-2"></i>Metodologia</h5>
+                <p class="small mb-0">A organização completa do estudo: método, procedimentos e análise.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-warning shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-warning"><i class="fas fa-tools me-2"></i>Técnicas</h5>
+                <p class="small mb-0">Ferramentas usadas no processo (entrevistas, testes, métricas).</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Caminhos -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Principais Caminhos Metodológicos</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-flask me-2"></i>Experimental</h5>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Testa hipóteses com controle de variáveis e comparação de resultados.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-cube me-2"></i>Design Science Research</h5>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Constrói um artefato para resolver um problema e o valida com critérios claros.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-info shadow-lg h-100">
+              <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-book-open me-2"></i>Survey / Estado da Arte</h5>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Mapeia a literatura para identificar tendências e lacunas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-search me-2"></i>Estudo de Caso</h5>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Investiga profundamente um contexto real para gerar insights aplicados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 mb-0 text-center">
+          <strong>Escolha o caminho</strong> que melhor responde ao seu problema e objetivos.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Criterios -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Critérios de Escolha</h2>
+
+        <div class="row g-4">
+          <div class="col-md-7">
+            <div class="card border-secondary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-secondary mb-3"><i class="fas fa-balance-scale me-2"></i>Decisão metodológica</h5>
+                <ul class="mb-0">
+                  <li><strong>Problema:</strong> precisa medir? comparar? construir?</li>
+                  <li><strong>Objetivos:</strong> validar, explorar ou criar?</li>
+                  <li><strong>Dados:</strong> há acesso a dados confiáveis?</li>
+                  <li><strong>Recursos:</strong> tempo, ferramentas e equipe disponíveis</li>
+                  <li><strong>Ética:</strong> há coleta com pessoas?</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-primary mb-2">Mini-matriz de escolha</h6>
+                <ul class="small mb-0">
+                  <li>Precisa comparar desempenho? Experimental</li>
+                  <li>Vai construir algo novo? DSR</li>
+                  <li>Quer mapear pesquisas? Survey</li>
+                  <li>Problema em contexto real? Estudo de caso</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Estrutura -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Estrutura do Capítulo</h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-primary shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-layer-group me-2"></i>Tipo</h5>
+                <p class="small mb-0">Tipo de pesquisa e abordagem (qualitativa, quantitativa ou mista).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-success shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-success"><i class="fas fa-route me-2"></i>Procedimentos</h5>
+                <p class="small mb-0">Etapas, instrumentos, amostragem e coleta de dados.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-warning shadow h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-warning"><i class="fas fa-chart-line me-2"></i>Análise</h5>
+                <p class="small mb-0">Como os dados serão analisados e validados.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary mt-4 text-center">
+          <strong>Dica:</strong> cada etapa deve ser replicável por outra pessoa.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Encadeamento -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Encadeamento Metodológico</h2>
+
+        <div class="card border-info shadow-lg">
+          <div class="card-body">
+            <p class="mb-2"><strong>Problema:</strong> Alta taxa de evasão em cursos EAD.</p>
+            <p class="mb-2"><strong>Objetivo:</strong> Identificar fatores que influenciam a evasão.</p>
+            <p class="mb-2"><strong>Método:</strong> Estudo de caso com abordagem mista.</p>
+            <p class="mb-2"><strong>Coleta:</strong> Questionário + análise de logs da plataforma.</p>
+            <p class="mb-0"><strong>Análise:</strong> Estatística descritiva + análise temática.</p>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 mb-0 text-center">
+          <strong>Metodologia bem definida</strong> evita incoerências na execução.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Instrumentos -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Instrumentos e Dados</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-microphone me-2"></i>Qualitativos</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Entrevistas semiestruturadas</li>
+                  <li>Observação direta</li>
+                  <li>Grupos focais</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-table me-2"></i>Quantitativos</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Questionários estruturados</li>
+                  <li>Logs e métricas de uso</li>
+                  <li>Experimentos controlados</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Validade -->
+    <div class="slide" id="slide-9">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Validade e Confiabilidade</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-shield-alt me-2"></i>Ameaças</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Amostra pequena ou enviesada</li>
+                  <li>Instrumento mal formulado</li>
+                  <li>Coleta inconsistente</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-double me-2"></i>Mitigação</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Piloto com amostra reduzida</li>
+                  <li>Critérios claros de inclusão</li>
+                  <li>Revisão por orientador</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Cronograma -->
+    <div class="slide" id="slide-10">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Cronograma e Entregáveis</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-calendar-alt me-2"></i>Planejamento</h5>
+                <ul class="mb-0">
+                  <li>Definição do método e instrumentos</li>
+                  <li>Coleta de dados</li>
+                  <li>Análise e discussão</li>
+                  <li>Redação final</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-info shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-info"><i class="fas fa-flag-checkered me-2"></i>Entregáveis</h5>
+                <ul class="mb-0">
+                  <li>Capítulo de metodologia</li>
+                  <li>Instrumentos anexos</li>
+                  <li>Resultados organizados</li>
+                  <li>Conclusões e limitações</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Erros comuns -->
+    <div class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Erros Comuns</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-times-circle me-2"></i>Evite</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Método não compatível com o objetivo</li>
+                  <li>Procedimentos vagos ou sem detalhes</li>
+                  <li>Instrumentos sem validação</li>
+                  <li>Ausência de critérios de análise</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Prefira</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Justificativa clara do método</li>
+                  <li>Etapas replicáveis e mensuráveis</li>
+                  <li>Instrumentos anexados e testados</li>
+                  <li>Relação direta com os objetivos</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Checklist -->
+    <div class="slide" id="slide-12">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Checklist da Metodologia</h2>
+
+        <div class="alert alert-warning border-0 shadow-lg mx-auto" style="max-width: 900px;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <i class="fas fa-check text-success me-2"></i>O método responde ao problema e objetivos?
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-check text-success me-2"></i>As etapas estão claras e sequenciadas?
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-check text-success me-2"></i>Os instrumentos estão definidos?
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-check text-success me-2"></i>Há critérios de análise bem descritos?
+            </li>
+            <li class="list-group-item">
+              <i class="fas fa-check text-success me-2"></i>Você consegue replicar o estudo no futuro?
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Encerramento -->
+    <div class="slide" id="slide-13">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Atividade da Semana</h2>
+
+        <div class="row g-4">
+          <div class="col-md-7">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h4 class="fw-bold text-primary mb-3"><i class="fas fa-tasks me-2"></i>Entrega</h4>
+                <ol class="mb-0">
+                  <li>Defina o método principal do seu TCC</li>
+                  <li>Descreva as etapas e instrumentos</li>
+                  <li>Indique como os dados serão analisados</li>
+                  <li>Revise a coerência com seus objetivos</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-success border-0 shadow mt-4 text-center">
+          <strong>Metodologia clara, pesquisa sólida.</strong>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn"  disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <a href="material/material_aula07-foundation.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 13</span>
+      <button id="nextBtn"  class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      TCC - Metodologia de Pesquisa (Semana 13)
+    </div>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

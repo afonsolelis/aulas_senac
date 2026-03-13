@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCC1 - Hub de Aulas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="professor.html">Professor</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge bg-white text-warning mb-1">Ciência da Computação</span>
+          <h1 class="h3 fw-bold text-white mb-0">TCC1 - Trabalho de Conclusão</h1>
+        </div>
+        <p class="text-white-50 mb-0 small d-none d-md-block">2026.1</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        <!-- Ações do Semestre (Template, Entrega Parcial, Depósito) -->
+        <!-- Ações do Semestre (Template, Entrega Parcial, Depósito) -->
+        <div class="row mb-4 g-3">
+          <!-- Template Link -->
+          <div class="col-md-3">
+            <a href="https://github.com/afonsolelis/template_tcc_senac" target="_blank"
+              class="alert alert-warning border-0 shadow-sm h-100 mb-0 d-flex flex-column justify-content-center text-decoration-none"
+              role="alert">
+              <div class="d-flex align-items-center mb-2">
+                <div
+                  class="bg-warning text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 50px; height: 50px;">
+                  <i class="fab fa-github fa-lg"></i>
+                </div>
+                <div>
+                  <h5 class="alert-heading fw-bold mb-1 text-dark">Template LaTeX</h5>
+                  <p class="small mb-0 text-muted">Acessar GitHub</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Entrega Parcial -->
+          <div class="col-md-3">
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSdqPg0nhLoLrofbQCXVsO4v35dP3BZUH09H7ViVEHbx68Y5KA/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer"
+              class="alert alert-info border-0 shadow-sm h-100 mb-0 d-flex flex-column justify-content-center text-decoration-none"
+              role="alert">
+              <div class="d-flex align-items-center mb-2">
+                <div class="bg-info text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 50px; height: 50px;">
+                  <i class="fas fa-upload fa-lg"></i>
+                </div>
+                <div>
+                  <h5 class="alert-heading fw-bold mb-1 text-dark">Entrega Parcial</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Depósito Final -->
+          <div class="col-md-3">
+            <a href="#"
+              class="alert alert-success border-0 shadow-sm h-100 mb-0 d-flex flex-column justify-content-center text-decoration-none"
+              role="alert">
+              <div class="d-flex align-items-center mb-2">
+                <div
+                  class="bg-success text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 50px; height: 50px;">
+                  <i class="fas fa-check-circle fa-lg"></i>
+                </div>
+                <div>
+                  <h5 class="alert-heading fw-bold mb-1 text-dark">Depósito TCC1</h5>
+                  <p class="small mb-0 text-muted">Enviar Versão Banca</p>
+                </div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Drive de TCCs -->
+          <div class="col-md-3">
+            <a href="https://www.dropbox.com/scl/fo/rlfx7a1i56m7q58k3irns/AG_Pn7qkwiaV77rhLDUw4ok?rlkey=280f91jjyn9hcyau2vfdkevww&st=4t5l1qjz&dl=0" target="_blank" rel="noopener noreferrer"
+              class="alert alert-secondary border-0 shadow-sm h-100 mb-0 d-flex flex-column justify-content-center text-decoration-none"
+              role="alert">
+              <div class="d-flex align-items-center mb-2">
+                <div
+                  class="bg-secondary text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                  style="width: 50px; height: 50px;">
+                  <i class="fas fa-folder-open fa-lg"></i>
+                </div>
+                <div>
+                  <h5 class="alert-heading fw-bold mb-1 text-dark">Drive de TCCs</h5>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-tasks text-warning me-2"></i> Cronograma de Entregas</h3>
+
+          <div class="row g-3">
+
+            <!-- Aula 01: 13/02 -->
+            <div class="col-md-6">
+              <div class="list-group-item border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Introdução ao LaTeX</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    13 Fev</span>
+                </div>
+                <p class="mb-auto text-muted small">Aula 01 - Configuração de ambiente e estrutura de um documento ABNT.
+                </p>
+                <div class="mt-3">
+                  <a href="tcc/slide_aula1-introducaoaolatex.html" class="btn btn-danger btn-sm me-2"><i
+                      class="fas fa-desktop me-1"></i> Ver slide</a>
+                  <a href="tcc/material/material_aula01-latex-ambiente.html" class="btn btn-primary btn-sm"><i
+                      class="fas fa-book me-1"></i> Ver Material</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aula 02: 20/02 -->
+            <div class="col-md-6">
+              <div class="list-group-item border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Formação de Grupos e Tema</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    20 Fev</span>
+                </div>
+                <p class="mb-auto text-muted small">Aula 02 - Dinâmicas de grupo, brainstorming e validação de ideias.
+                </p>
+                <div class="mt-3">
+                  <a href="tcc/slide_aula2-formacaodegruposeescolhadotema.html" class="btn btn-danger btn-sm me-2"><i
+                      class="fas fa-desktop me-1"></i> Ver slide</a>
+                  <a href="tcc/material/material_aula02-tema-grupos.html" class="btn btn-primary btn-sm"><i
+                      class="fas fa-book me-1"></i> Ver Material</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Aula 03: 27/02 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula3-levantamentoderequisitos.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Metodologias de Pesquisa</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    27 Fev</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 03</p>
+              </a>
+            </div>
+
+            <!-- Aula 04: 06/03 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula4-entregaformaldapropostadeprojeto.html"
+                class="list-group-item list-group-item-action border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Entrega formal da proposta</h5>
+                  <span class="badge bg-danger text-white border fw-normal"><i
+                      class="fas fa-exclamation-circle me-1"></i>
+                    06 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 04 - Enviar PDF no card de Entrega Parcial</p>
+              </a>
+            </div>
+
+            <!-- Aula 05: 13/03 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula5-estudodeviabilidadetecnica.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Estudo de Viabilidade</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    13 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 05</p>
+              </a>
+            </div>
+
+            <!-- Aula 06: 20/03 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula6-revisaobibliografica.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Revisão Bibliográfica</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    20 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 06</p>
+              </a>
+            </div>
+
+            <!-- Aula 07: 27/03 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula7-fundamentacaoteorica.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Fundamentação Teórica</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    27 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 07</p>
+              </a>
+            </div>
+
+            <!-- Feriado: Paixão de Cristo (03/04) -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-warning rounded shadow-sm p-3 h-100 d-flex flex-column bg-warning-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Feriado: Paixão de Cristo</h5>
+                  <span class="badge bg-warning text-dark border fw-normal"><i class="fas fa-umbrella-beach me-1"></i>
+                    03 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Não haverá aula</p>
+              </div>
+            </div>
+
+            <!-- Aula 08: 10/04 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula8-execucaodapesquisa.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Caminhos da Pós-Graduação</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    10 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 08</p>
+              </a>
+            </div>
+
+            <!-- Aula 09: 17/04 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula9-analisedeResultados.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Definição de Objetivos</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    17 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 09</p>
+              </a>
+            </div>
+
+            <!-- Aula 10: 24/04 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula10-checkpointdedesenvolvimento.html"
+                class="list-group-item list-group-item-action border border-info rounded shadow-sm p-3 h-100 d-flex flex-column bg-info-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Checkpoint Orientado 1</h5>
+                  <span class="badge bg-info text-white border fw-normal"><i class="fas fa-tasks me-1"></i>
+                    24 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 10 - Orientação individual</p>
+              </a>
+            </div>
+
+            <!-- Feriado: Dia do Trabalho (01/05) -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-warning rounded shadow-sm p-3 h-100 d-flex flex-column bg-warning-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Feriado: Dia do Trabalho</h5>
+                  <span class="badge bg-warning text-dark border fw-normal"><i class="fas fa-umbrella-beach me-1"></i>
+                    01 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Não haverá aula</p>
+              </div>
+            </div>
+
+            <!-- Aula 11: 08/05 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula10-checkpointdedesenvolvimento.html"
+                class="list-group-item list-group-item-action border border-info rounded shadow-sm p-3 h-100 d-flex flex-column bg-info-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Checkpoint Orientado 2</h5>
+                  <span class="badge bg-info text-white border fw-normal"><i class="fas fa-tasks me-1"></i>
+                    08 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 11 - Orientação individual</p>
+              </a>
+            </div>
+
+            <!-- Aula 12: 15/05 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula10-checkpointdedesenvolvimento.html"
+                class="list-group-item list-group-item-action border border-info rounded shadow-sm p-3 h-100 d-flex flex-column bg-info-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Checkpoint Orientado 3</h5>
+                  <span class="badge bg-info text-white border fw-normal"><i class="fas fa-tasks me-1"></i>
+                    15 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 12 - Orientação individual</p>
+              </a>
+            </div>
+
+            <!-- Aula 13: 22/05 -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula13-preparodaapresentacaofinal.html"
+                class="list-group-item list-group-item-action border border-success rounded shadow-sm p-3 h-100 d-flex flex-column bg-success-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Depósito TCC1</h5>
+                  <span class="badge bg-success text-white border fw-normal"><i class="fas fa-flag-checkered me-1"></i>
+                    22 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 13 - Entrega de Versão da Banca</p>
+              </a>
+            </div>
+
+            <!-- Aula 14: 29/05 (Final) -->
+            <div class="col-md-6">
+              <a href="tcc/slide_aula14-apresentacaoparaabancaavaliadora.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Encerramento TCC1</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    29 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 14 - Fechamento do semestre</p>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-light text-dark py-4 mt-5">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2025 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const materialMap = {
+        "tcc/aula3-levantamentoderequisitos.html": "tcc/material/aula03-requirements.html",
+        "tcc/aula4-entregaformaldapropostadeprojeto.html": "tcc/material/aula04-proposal.html",
+        "tcc/aula5-estudodeviabilidadetecnica.html": "tcc/material/aula05-feasibility.html",
+        "tcc/aula6-revisaobibliografica.html": "tcc/material/aula06-bibliography.html",
+        "tcc/aula7-fundamentacaoteorica.html": "tcc/material/aula07-foundation.html",
+        "tcc/aula8-execucaodapesquisa.html": "tcc/material/aula08-research.html",
+        "tcc/aula9-analisedeResultados.html": "tcc/material/aula09-results.html",
+        "tcc/aula10-checkpointdedesenvolvimento.html": "tcc/material/aula10-checkpoint.html",
+        "tcc/aula13-preparodaapresentacaofinal.html": "tcc/material/aula13-presentation-prep.html",
+        "tcc/aula14-apresentacaoparaabancaavaliadora.html": "tcc/material/aula14-defense.html"
+      };
+      const materialByTitle = {
+        "Checkpoint Orientado 2": "tcc/material/aula11-checkpoint-2.html",
+        "Checkpoint Orientado 3": "tcc/material/aula12-checkpoint-3.html"
+      };
+
+      document.querySelectorAll(".row.g-3 .col-md-6 > a.list-group-item[href]").forEach(function (slideLink) {
+        const slideHref = slideLink.getAttribute("href");
+        const titleEl = slideLink.querySelector("h5");
+        const title = titleEl ? titleEl.textContent.trim() : "";
+        const materialHref = materialByTitle[title] || materialMap[slideHref];
+        const suppressActions = slideHref === "tcc/aula4-entregaformaldapropostadeprojeto.html";
+        if (!materialHref && !suppressActions) return;
+
+        const card = document.createElement("div");
+        card.className = slideLink.className.replace(" list-group-item-action", "");
+        card.innerHTML = slideLink.innerHTML;
+
+        const lessonText = card.querySelector("p");
+        if (lessonText) {
+          lessonText.classList.remove("mb-1");
+          lessonText.classList.add("mb-auto");
+        }
+
+        slideLink.replaceWith(card);
+
+        if (suppressActions) return;
+
+        const actions = document.createElement("div");
+        actions.className = "mt-3 d-flex flex-wrap gap-2";
+        actions.innerHTML =
+          '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
+          '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
+
+        card.appendChild(actions);
+      });
+    })();
+  </script>
+</body>
+
+</html>

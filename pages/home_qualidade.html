@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qualidade de Software - Hub de Aulas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="professor.html">Professor</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge bg-white text-danger mb-1">TADS</span>
+          <h1 class="h3 fw-bold text-white mb-0">Qualidade de Software</h1>
+        </div>
+        <p class="text-white-50 mb-0 small d-none d-md-block">2026.1</p>
+      </div>
+    </div>
+  </header>
+
+  <div class="container py-5">
+    <div class="row">
+      <div class="col-md-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-book-open text-danger me-2"></i> Cronograma de Aulas</h3>
+
+          <!-- Project and Activity Cards -->
+          <div class="row g-3 mb-4 justify-content-center">
+            <div class="col-md-4">
+              <a href="https://github.com/afonsolelis/qualidade_software" target="_blank"
+                class="card h-100 border-0 shadow-sm text-decoration-none bg-success text-white hover-scale">
+                <div class="card-body p-4 d-flex flex-column justify-content-center align-items-center text-center">
+                  <i class="fab fa-github fa-3x mb-3 text-white-50"></i>
+                  <h5 class="card-title fw-bold">Projeto da Aula</h5>
+                  <p class="card-text small text-white-50">Repositório oficial com códigos e exemplos.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="qualidade/slide_projeto_descricao.html"
+                class="card h-100 border-0 shadow-sm text-decoration-none bg-primary text-white hover-scale">
+                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                  <i class="fas fa-project-diagram fa-3x mb-3"></i>
+                  <h5 class="card-title fw-bold">Descrição do Projeto</h5>
+                  <p class="card-text small text-white-50">Detalhes e requisitos do projeto semestral.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-4">
+              <a href="https://forms.google.com/PLACEHOLDER" target="_blank"
+                class="card h-100 border-0 shadow-sm text-decoration-none bg-success text-white hover-scale">
+                <div class="card-body text-center d-flex flex-column justify-content-center align-items-center p-4">
+                  <i class="fas fa-upload fa-3x mb-3"></i>
+                  <h5 class="card-title fw-bold">Entrega do Projeto</h5>
+                  <p class="card-text small text-white-50">Envie aqui o link do seu projeto final.</p>
+                </div>
+              </a>
+            </div>
+          </div>
+
+          <div class="row g-3">
+
+            <!-- Aula 01: 10/02 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_introducaoaqualidadedesoftware.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Introdução à Qualidade</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    10 Fev</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 01</p>
+              </a>
+            </div>
+
+            <!-- Feriado: Carnaval (17/02) -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-warning rounded shadow-sm p-3 h-100 d-flex flex-column bg-warning-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Feriado: Carnaval</h5>
+                  <span class="badge bg-warning text-dark border fw-normal"><i class="fas fa-umbrella-beach me-1"></i>
+                    17 Fev</span>
+                </div>
+                <p class="mb-1 text-muted small">Não haverá aula</p>
+              </div>
+            </div>
+
+            <!-- Aula 02: 24/02 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_planejamentodetestesecasosdeteste.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Planejamento e Casos de Testes</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    24 Fev</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 02</p>
+              </a>
+            </div>
+
+            <!-- Aula 03: 03/03 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_fundamentosdetestescaixabrancavscaixapreta.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Fundamentos: Caixa Branca/Preta</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    03 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 03</p>
+              </a>
+            </div>
+
+            <!-- Avaliação 1: 10/03 -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Avaliação 1</h5>
+                  <span class="badge bg-danger text-white border fw-normal"><i
+                      class="fas fa-exclamation-circle me-1"></i>
+                    10 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Primeira avaliação</p>
+              </div>
+            </div>
+
+            <!-- Aula 05: 17/03 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_trello.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Gestão de Bugs com GitHub Projects</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    17 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 05</p>
+              </a>
+            </div>
+
+            <!-- Aula 06: 24/03 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_introducaoatestesautomatizados.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Introdução ao GitHub Actions</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    24 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 06</p>
+              </a>
+            </div>
+
+            <!-- Aula 07: 31/03 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_jest.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Testes de Unidade (Jest)</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    31 Mar</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 07</p>
+              </a>
+            </div>
+
+            <!-- Aula 08: 07/04 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_tddtestdrivendevelopment.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">TDD: Test Driven Development</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    07 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 08</p>
+              </a>
+            </div>
+
+            <!-- Avaliação 2: 14/04 -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Avaliação 2</h5>
+                  <span class="badge bg-danger text-white border fw-normal"><i
+                      class="fas fa-exclamation-circle me-1"></i>
+                    14 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Segunda avaliação</p>
+              </div>
+            </div>
+
+            <!-- Feriado: Tiradentes (21/04) -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-warning rounded shadow-sm p-3 h-100 d-flex flex-column bg-warning-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Feriado: Tiradentes</h5>
+                  <span class="badge bg-warning text-dark border fw-normal"><i class="fas fa-umbrella-beach me-1"></i>
+                    21 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Não haverá aula</p>
+              </div>
+            </div>
+
+            <!-- Aula 10: 28/04 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_cdetestes.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">VCR e chamadas de API seguras</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    28 Abr</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 10</p>
+              </a>
+            </div>
+
+            <!-- Aula 11: 05/05 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_testesdeapicompostman.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">BDD com Gherkin</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    05 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 11</p>
+              </a>
+            </div>
+
+            <!-- Aula 12: 12/05 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_testesdecargaeperformancejmeter.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Testes de Carga com JMeter</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    12 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 12</p>
+              </a>
+            </div>
+
+            <!-- Aula 13: 19/05 -->
+            <div class="col-md-6">
+              <a href="qualidade/slide_revisaogeralemelhorespraticas.html"
+                class="list-group-item list-group-item-action border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Revisão e Melhores Práticas</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    19 Mai</span>
+                </div>
+                <p class="mb-1 text-muted small">Aula 13</p>
+              </a>
+            </div>
+
+            <!-- Aula 14: 26/05 (Final) -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Avaliação e Projeto Final</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    26 Mai</span>
+                </div>
+                <p class="mb-auto text-muted small">Aula 14</p>
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                  <a href="qualidade/slide_aula14-avaliacaoeprojetofinal.html" class="btn btn-danger btn-sm"><i
+                      class="fas fa-desktop me-1"></i> Ver slide</a>
+                  <a href="qualidade/material/material_aula14-avaliacao-projeto-final.html" class="btn btn-primary btn-sm"><i
+                      class="fas fa-book me-1"></i> Ver material</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Revisão: 02/06 -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-light rounded shadow-sm p-3 h-100 d-flex flex-column bg-white">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Revisão Geral</h5>
+                  <span class="badge bg-light text-dark border fw-normal"><i class="far fa-calendar-alt me-1"></i>
+                    02 Jun</span>
+                </div>
+                <p class="mb-auto text-muted small">Aula 15</p>
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                  <a href="qualidade/slide_aula15-revisaogeral.html" class="btn btn-danger btn-sm"><i
+                      class="fas fa-desktop me-1"></i> Ver slide</a>
+                  <a href="qualidade/material/material_aula15-revisao-geral.html" class="btn btn-primary btn-sm"><i
+                      class="fas fa-book me-1"></i> Ver material</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recuperação: 09/06 -->
+            <div class="col-md-6">
+              <div
+                class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
+                <div class="d-flex w-100 justify-content-between mb-2">
+                  <h5 class="mb-1 fw-bold text-dark">Prova de Recuperação</h5>
+                  <span class="badge bg-danger text-white border fw-normal"><i
+                      class="fas fa-exclamation-circle me-1"></i>
+                    09 Jun</span>
+                </div>
+                <p class="mb-1 text-muted small">Recuperação</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-light text-dark py-4 mt-5">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2025 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    (function () {
+      const materialMap = {
+        "qualidade/introducaoaqualidadedesoftware.html": "qualidade/material/aula01-introducao-qualidade.html",
+        "qualidade/planejamentodetestesecasosdeteste.html": "qualidade/material/aula02-planejamento.html",
+        "qualidade/fundamentosdetestescaixabrancavscaixapreta.html": "qualidade/material/aula03-fundamentos-caixa-branca-preta.html",
+        "qualidade/trello.html": "qualidade/material/aula05-gestao-bugs-projetos.html",
+        "qualidade/introducaoatestesautomatizados.html": "qualidade/material/aula06-introducao-github-actions.html",
+        "qualidade/jest.html": "qualidade/material/aula07-testes-unidade-jest.html",
+        "qualidade/tddtestdrivendevelopment.html": "qualidade/material/aula08-tdd.html",
+        "qualidade/cdetestes.html": "qualidade/material/aula10-vcr-api-seguras.html",
+        "qualidade/testesdeapicompostman.html": "qualidade/material/aula11-bdd-gherkin.html",
+        "qualidade/testesdecargaeperformancejmeter.html": "qualidade/material/aula12-jmeter-carga.html",
+        "qualidade/revisaogeralemelhorespraticas.html": "qualidade/material/aula13-revisao-melhores-praticas.html"
+      };
+
+      document.querySelectorAll(".row.g-3 .col-md-6 > a.list-group-item[href]").forEach(function (slideLink) {
+        const slideHref = slideLink.getAttribute("href");
+        const materialHref = materialMap[slideHref];
+        if (!materialHref) return;
+
+        const card = document.createElement("div");
+        card.className = slideLink.className.replace(" list-group-item-action", "");
+        card.innerHTML = slideLink.innerHTML;
+
+        const lessonText = card.querySelector("p");
+        if (lessonText) {
+          lessonText.classList.remove("mb-1");
+          lessonText.classList.add("mb-auto");
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "mt-3 d-flex flex-wrap gap-2";
+        actions.innerHTML =
+          '<a href="' + slideHref + '" class="btn btn-danger btn-sm"><i class="fas fa-desktop me-1"></i> Ver slide</a>' +
+          '<a href="' + materialHref + '" class="btn btn-primary btn-sm"><i class="fas fa-book me-1"></i> Ver material</a>';
+
+        slideLink.replaceWith(card);
+        card.appendChild(actions);
+      });
+    })();
+  </script>
+</body>
+
+</html>

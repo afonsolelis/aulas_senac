@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Didático - Planejamento de Testes e Casos de Teste</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../../css/style.css">
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .content-wrapper {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        .header-hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+        }
+
+        .header-hero .badge-iso {
+            background: #dc3545;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .header-hero h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+
+        .header-hero .subtitle {
+            opacity: 0.85;
+            font-size: 1.1rem;
+        }
+
+        .header-hero .meta {
+            margin-top: 1.25rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h5 {
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #1a1a2e;
+        }
+
+        .toc ol {
+            margin: 0;
+            padding-left: 1.25rem;
+        }
+
+        .toc li {
+            padding: 0.25rem 0;
+        }
+
+        .toc a {
+            color: #495057;
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            color: #dc3545;
+        }
+
+        .chapter {
+            background: white;
+            border-radius: 12px;
+            padding: 2.25rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+            border-top: 4px solid #dc3545;
+        }
+
+        .chapter-number {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #dc3545;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter h2 {
+            color: #1a1a2e;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            font-size: 1.7rem;
+        }
+
+        .chapter h3 {
+            color: #1a1a2e;
+            font-weight: 600;
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 0.5rem;
+        }
+
+        .chapter h4 {
+            color: #495057;
+            font-weight: 600;
+            margin-top: 1.25rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.05rem;
+        }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 4px solid #dc3545;
+            padding: 1.25rem 1.5rem;
+            margin: 1.25rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box .term {
+            font-weight: 700;
+            color: #dc3545;
+            font-size: 1.05rem;
+        }
+
+        .definition-box .source {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .tech-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25rem 0;
+            font-size: 0.95rem;
+        }
+
+        .tech-table th {
+            background: #1a1a2e;
+            color: white;
+            padding: 0.9rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .tech-table td {
+            padding: 0.9rem;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: top;
+        }
+
+        .tech-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .info-box {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .info-box .title {
+            font-weight: 700;
+            color: #0c5460;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .warning-box .title {
+            font-weight: 700;
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            background: #1a1a2e;
+            color: #e2e8f0;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+            overflow-x: auto;
+            font-size: 0.88rem;
+            white-space: pre-wrap;
+        }
+
+        .code-block .comment {
+            color: #94a3b8;
+        }
+
+        .code-block .keyword {
+            color: #ff79c6;
+        }
+
+        .code-block .string {
+            color: #50fa7b;
+        }
+
+        .exercise-box {
+            background: #1a1a2e;
+            color: white;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin: 1rem 0;
+        }
+
+        .exercise-box .title {
+            color: #ffc107;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .checklist {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+
+        .checklist li {
+            margin-bottom: 0.45rem;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e9ecef;
+            flex-wrap: wrap;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                    alt="Senac Logo" class="me-2" style="height: 40px;">
+                <span class="fw-bold text-dark">Hub de Aulas</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a href="../../home_qualidade.html" class="btn btn-outline-secondary btn-sm rounded-pill">
+                    <i class="fas fa-arrow-left me-1"></i> Voltar
+                </a>
+                <a href="../slide_planejamentodetestesecasosdeteste.html" class="btn btn-danger btn-sm rounded-pill">
+                    <i class="fas fa-desktop me-1"></i> Ver Slides
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="header-hero">
+            <span class="badge-iso">IEEE 829 | IEEE 830 | UML 2.5 | ISO/IEC 29119</span>
+            <h1>Planejamento de Testes e Casos de Teste</h1>
+            <p class="subtitle">Guia prático para transformar requisitos em casos de teste rastreáveis</p>
+            <div class="meta">
+                <span><i class="fas fa-book-open me-2"></i>Aula 02</span>
+                <span><i class="fas fa-clock me-2"></i>Material Complementar</span>
+                <span><i class="fas fa-graduation-cap me-2"></i>Qualidade de Software - TADS</span>
+            </div>
+        </div>
+
+        <div class="toc">
+            <h5><i class="fas fa-list me-2"></i>Sumário</h5>
+            <ol>
+                <li><a href="#cap1">Visão Geral do Planejamento de Testes</a></li>
+                <li><a href="#cap2">IEEE 829: Estrutura de Documentação de Testes</a></li>
+                <li><a href="#cap3">Personas e Análise de Stakeholders</a></li>
+                <li><a href="#cap4">Use Cases (IEEE 830): Anatomia Completa</a></li>
+                <li><a href="#cap5">Diagrama UML de Caso de Uso</a></li>
+                <li><a href="#cap6">Derivação de Casos de Teste</a></li>
+                <li><a href="#cap7">Matriz de Rastreabilidade (RTM)</a></li>
+                <li><a href="#cap8">Critérios de Entrada, Saída e Suspensão</a></li>
+                <li><a href="#cap9">Fluxo de Trabalho e Ferramentas</a></li>
+                <li><a href="#cap10">Exercícios de Fixação</a></li>
+            </ol>
+        </div>
+
+        <div class="chapter" id="cap1">
+            <div class="chapter-number">Capítulo 1</div>
+            <h2>Visão Geral do Planejamento de Testes</h2>
+
+            <p>
+                Planejamento de testes é a atividade que define <strong>o que será testado</strong>, <strong>como</strong>,
+                <strong>quando</strong>, <strong>por quem</strong> e <strong>com quais critérios de aceite</strong>.
+                Sem planejamento, a execução de testes tende a virar uma lista de tentativas ad hoc (improvisadas), com baixa cobertura,
+                alto retrabalho e uma falsa sensação de segurança. É a diferença entre construir uma casa com uma planta de engenharia
+                e construí-la "no olho". Ambas podem resultar em uma casa, mas apenas uma garante que ela não vai desabar.
+            </p>
+
+            <p>
+                Em termos de engenharia, o planejamento funciona como um <strong>mecanismo de redução de incerteza</strong>.
+                Ele transforma requisitos abstratos ("o sistema deve ser rápido") em um plano executável com ordem, prioridade e métricas de sucesso
+                ("a tela de login deve carregar em menos de 2 segundos com 100 usuários simultâneos").
+                Quando a equipe não explicita esse caminho, os testes costumam concentrar-se apenas no "fluxo feliz" (o caminho ideal) e
+                deixam de cobrir exceções, regras de negócio críticas e integrações sensíveis, que é onde os bugs mais caros costumam se esconder.
+            </p>
+
+            <p>
+                Outro papel central do planejamento é <strong>alinhar expectativas</strong> entre QA (Quality Assurance), desenvolvimento e produto (negócio).
+                O time técnico entende quais evidências precisa produzir; o negócio entende quais riscos continuam
+                abertos no momento do release. Esse alinhamento evita discussões subjetivas no fim da sprint,
+                porque os critérios de aceite já estavam definidos antes da execução. Sem isso, a frase "pra mim está funcionando" se torna comum e perigosa.
+            </p>
+
+            <div class="definition-box">
+                <div class="term">Plano de Teste</div>
+                <p class="mb-0">
+                    Um documento vivo que descreve o escopo, a abordagem, os recursos, o cronograma, as responsabilidades,
+                    os riscos e os critérios para as atividades de teste de um projeto. Ele não é um artefato burocrático, mas um
+                    mapa estratégico que guia a equipe para encontrar os problemas mais importantes o mais cedo possível.
+                </p>
+                <div class="source">Referência: IEEE 829 (estrutura tradicional) e ISO/IEC 29119 (abordagem moderna)</div>
+            </div>
+
+            <h3>1.1 Objetivos principais do Planejamento</h3>
+            <ul>
+                <li><strong>Garantir cobertura dos requisitos críticos:</strong> Assegurar que as funcionalidades que mais importam para o negócio sejam validadas.</li>
+                <li><strong>Reduzir riscos de negócio antes do release:</strong> Identificar e mitigar problemas que poderiam causar perda de receita, dano à reputação ou insatisfação do cliente.</li>
+                <li><strong>Dar previsibilidade para prazo e esforço de QA:</strong> Estimar com mais precisão quanto tempo e recursos serão necessários para a fase de testes.</li>
+                <li><strong>Permitir rastreabilidade ponta a ponta:</strong> Criar um elo claro entre um requisito de negócio, o caso de uso que o implementa e o caso de teste que o valida.</li>
+            </ul>
+
+            <h4>Como esses objetivos se refletem no dia a dia</h4>
+            <p>
+                Cobertura mínima não significa testar tudo; significa testar o que tem maior impacto em receita,
+                conformidade, segurança e experiência do usuário. Redução de risco, por sua vez, exige escolher cenários
+                com base em probabilidade de falha e severidade de impacto, e não apenas em facilidade de execução.
+            </p>
+            <p>
+                Previsibilidade de prazo acontece quando o plano já define dependências, ambientes, massa de dados
+                e responsáveis. Sem isso, cada bloqueio técnico surge como surpresa. A rastreabilidade fecha o ciclo:
+                sempre que um requisito muda, a equipe sabe exatamente quais casos de teste revisar, evitando que a mudança quebre outra parte do sistema silenciosamente.
+            </p>
+
+            <h3>1.2 Hierarquia de decomposição: Do Negócio ao Teste</h3>
+            <p>O processo de planejamento segue uma decomposição lógica, que transforma a necessidade do negócio em ações de teste verificáveis.</p>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Nível</th>
+                        <th>Artefato</th>
+                        <th>Pergunta-chave</th>
+                        <th>Exemplo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>Requisito (RF/RNF)</td>
+                        <td>Qual necessidade do negócio deve ser atendida?</td>
+                        <td>"O sistema deve permitir que o cliente pague com PIX."</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Use Case</td>
+                        <td>Como o ator interage com o sistema para atingir esse objetivo?</td>
+                        <td>"Finalizar Compra com PIX"</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Test Case</td>
+                        <td>Como validar que o fluxo funciona ou falha corretamente?</td>
+                        <td>"Validar geração de QR Code PIX com carrinho válido."</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>Dados de Teste</td>
+                        <td>Quais entradas tornam o teste reproduzível e confiável?</td>
+                        <td>Usuário: 'teste@senac.br', Produto: 'Livro XYZ', Valor: R$ 59,90</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <div class="title"><i class="fas fa-info-circle me-2"></i>Regra de ouro da cobertura</div>
+                <p class="mb-0">
+                    Se um requisito não possui um caso de teste associado, ele não está sendo testado (está sem cobertura).
+                    Se um caso de teste não mapeia para nenhum requisito, ele provavelmente é desperdício de esforço. A rastreabilidade é a cola que une valor de negócio e esforço técnico.
+                </p>
+            </div>
+        </div>
+
+        <div class="chapter" id="cap2">
+            <div class="chapter-number">Capítulo 2</div>
+            <h2>IEEE 829: Estrutura de Documentação de Testes</h2>
+
+            <p>
+                O padrão IEEE 829, conhecido como "Standard for Software and System Test Documentation", organiza a documentação de QA em artefatos com propósitos distintos.
+                Mesmo em times ágeis que evitam documentação pesada, essa estrutura continua sendo um excelente checklist mental para garantir que nenhuma etapa importante foi esquecida.
+            </p>
+
+            <p>
+                A principal contribuição do IEEE 829 é separar claramente as preocupações de <strong>planejamento (estratégia)</strong>,
+                <strong>projeto (tática)</strong>, <strong>execução (operação)</strong> e <strong>fechamento (análise)</strong>. Sem essa separação,
+                é comum o time misturar informações estratégicas com detalhes operacionais em um único documento, o que dificulta a auditoria,
+                a manutenção e o reuso de artefatos em ciclos futuros.
+            </p>
+
+            <p>
+                Na prática, muitas equipes não produzem todos os documentos em formato formal. Em vez disso, mantêm o conteúdo
+                essencial distribuído entre a wiki do projeto (Confluence), a ferramenta de gestão de tarefas (Jira), o repositório de código (GitHub) e os pipelines de CI/CD.
+                O ponto não é a burocracia, mas garantir que as decisões importantes de QA estejam registradas, acessíveis e possam ser verificadas.
+            </p>
+
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Artefato (IEEE 829)</th>
+                        <th>Conteúdo esperado</th>
+                        <th>Quando produzir</th>
+                        <th>Equivalente Ágil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Test Plan</strong></td>
+                        <td>Escopo, estratégia, ambiente, riscos, critérios, cronograma.</td>
+                        <td>Início do ciclo de QA.</td>
+                        <td>Página no Confluence, Épico no Jira.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Design Specification</strong></td>
+                        <td>Técnicas de projeto, particionamentos, valores limite, cobertura alvo.</td>
+                        <td>Após estabilização dos requisitos.</td>
+                        <td>Seção na User Story, anexo no Jira.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Case Specification</strong></td>
+                        <td>ID, pré-condições, passos, dados, resultados esperados.</td>
+                        <td>Antes da execução.</td>
+                        <td>Test cases no Zephyr/TestRail, ou arquivos <code>.feature</code> (BDD).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Procedure</strong></td>
+                        <td>Ordem de execução, script e instruções operacionais.</td>
+                        <td>Na preparação da rodada de testes.</td>
+                        <td>Scripts de automação, checklist no Jira.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Log / Incident Report</strong></td>
+                        <td>Registro da execução, defeitos (bugs) e evidências (logs, screenshots).</td>
+                        <td>Durante a execução.</td>
+                        <td>Bugs reportados no Jira, logs do pipeline.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Test Summary Report</strong></td>
+                        <td>Status final, cobertura, riscos residuais e recomendação de release.</td>
+                        <td>No fechamento da sprint/release.</td>
+                        <td>Dashboard no Jira, e-mail de resumo, retrospectiva.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>2.1 Estrutura aprofundada de um Test Plan</h3>
+            <p>Um bom plano de teste é um documento de comunicação. Ele deve ser claro o suficiente para que qualquer pessoa do projeto possa entendê-lo.</p>
+            <div class="checklist">
+                <ul class="mb-0">
+                    <li><strong>Identificador do Plano de Teste:</strong> Um código único para versionamento.</li>
+                    <li><strong>Introdução:</strong> Breve resumo do projeto e dos objetivos do plano.</li>
+                    <li><strong>Itens a serem testados:</strong> Lista das funcionalidades, módulos ou histórias de usuário.</li>
+                    <li><strong>Funcionalidades a não serem testadas (Escopo Negativo):</strong> O que está explicitamente fora do teste e por quê. Essencial para alinhar expectativas.</li>
+                    <li><strong>Abordagem:</strong> Tipos de teste (Funcional, API, Regressão, Performance, Segurança, Usabilidade) e a justificativa para cada um.</li>
+                    <li><strong>Critérios de Item Passa/Falha:</strong> Definição objetiva do que constitui um sucesso ou falha para um caso de teste.</li>
+                    <li><strong>Critérios de Suspensão e Requisito para Reinício:</strong> Condições para pausar os testes (ex: "mais de 10 bugs críticos encontrados") e para retomá-los.</li>
+                    <li><strong>Entregáveis do Teste:</strong> Lista de todos os documentos e artefatos que serão produzidos.</li>
+                    <li><strong>Necessidades de Ambiente:</strong> Hardware, software, versões, integrações externas, massa de dados necessária.</li>
+                    <li><strong>Papéis e Responsabilidades:</strong> Quem faz o quê (QA, Dev, PO, aprovadores).</li>
+                    <li><strong>Cronograma:</strong> Marcos importantes e estimativas de tempo.</li>
+                    <li><strong>Riscos e Plano de Mitigação:</strong> Quais são os riscos (ex: "ambiente de teste instável") e o que será feito para contorná-los.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="chapter" id="cap3">
+            <div class="chapter-number">Capítulo 3</div>
+            <h2>Personas e Análise de Stakeholders</h2>
+
+            <p>
+                Testar para um "usuário genérico" é ineficaz. Personas ajudam a priorizar cenários de teste alinhados ao perfil real de uso, forçando a equipe a pensar em comportamentos concretos e suas motivações.
+            </p>
+
+            <p>
+                No contexto de QA, uma persona não é apenas um artefato de UX. Ela é um insumo técnico para decidir a matriz de dispositivos (um jovem universitário pode usar um celular moderno, enquanto um usuário mais velho pode usar um tablet mais antigo), a tolerância à performance, a clareza da linguagem em mensagens de erro, os requisitos de acessibilidade e o risco de abandono de um fluxo. Quanto mais específica a persona, mais objetiva se torna a escolha dos casos de teste.
+            </p>
+
+            <h3>3.1 Exemplo prático de Persona</h3>
+            <div class="definition-box">
+                <div class="term">Persona: Ana, a Estudante Conectada</div>
+                <p><strong>Perfil:</strong> 22 anos, estudante de design, mora em uma capital. Usa intensamente o smartphone (Android topo de linha) para tudo, desde estudar até socializar. É experiente com tecnologia, mas impaciente com interfaces lentas ou confusas.</p>
+                <p><strong>Objetivo Principal:</strong> Comprar um livro para a faculdade de forma rápida, aproveitando um cupom de desconto que recebeu por e-mail.</p>
+                <p><strong>Pain Points (Dores):</strong> Detesta preencher formulários longos. Fica frustrada se o site não salva seu carrinho entre sessões. Abandona a compra se o processo de pagamento for complicado.</p>
+                <p><strong>Contexto de Uso:</strong> Geralmente compra pelo celular, na rede 4G, enquanto está no transporte público. O tempo de atenção é curto e pode ser interrompido a qualquer momento.</p>
+                <hr>
+                <p class="mb-0"><strong>Implicações para Testes:</strong>
+                    <ul>
+                        <li><strong>Testes de Performance:</strong> O tempo de carregamento das páginas no 4G é crítico.</li>
+                        <li><strong>Testes de Usabilidade:</strong> O fluxo de checkout deve ter o mínimo de passos possível. Testar o preenchimento automático de formulários.</li>
+                        <li><strong>Testes de Interrupção:</strong> O que acontece se ela receber uma ligação no meio da compra? O estado do carrinho é mantido?</li>
+                        <li><strong>Testes Funcionais:</strong> O fluxo de aplicação de cupom de desconto deve ser testado exaustivamente, incluindo cupons válidos, inválidos e expirados.</li>
+                    </ul>
+                </p>
+            </div>
+
+            <h3>3.2 Mapeando Stakeholders além do usuário final</h3>
+            <p>Um software não afeta apenas o usuário final. Uma falha pode ter um efeito cascata em várias áreas da empresa. Mapear esses stakeholders ajuda a identificar riscos não-óbvios.</p>
+            <ul>
+                <li><strong>Operação/Atendimento:</strong> Um bug que gera cobranças duplicadas vai sobrecarregar a equipe de suporte. Os testes devem validar a clareza das mensagens de erro para que o suporte possa orientar o cliente.</li>
+                <li><strong>Financeiro:</strong> Uma falha no cálculo de impostos ou frete pode causar prejuízo direto. Testes de valores limite e regras de negócio financeiras são cruciais.</li>
+                <li><strong>Marketing:</strong> Se a funcionalidade de cupom de desconto falhar, uma campanha inteira pode ser comprometida.</li>
+                <li><strong>Tecnologia:</strong> Um código que gera logs excessivos pode aumentar os custos de infraestrutura. Um sistema sem boa observabilidade dificulta a investigação de problemas em produção.</li>
+            </ul>
+
+            <h4>Priorização por stakeholder</h4>
+            <p>
+                Quando houver conflito de prioridade, use uma matriz simples de impacto: "quem perde mais" em caso de falha. Em um fluxo de checkout, por exemplo, o financeiro e o negócio têm peso elevado. Em um painel administrativo, a operação e a tecnologia concentram os principais riscos. Esse mapeamento ajuda a justificar por que um bug aparentemente "pequeno" para o usuário final pode ser crítico para a empresa.
+            </p>
+        </div>
+
+        <div class="chapter" id="cap4">
+            <div class="chapter-number">Capítulo 4</div>
+            <h2>Use Cases (IEEE 830): Anatomia Completa</h2>
+
+            <p>
+                O Caso de Uso (Use Case) é a ponte entre o requisito (o "o quê") e a execução do teste (o "como"). Ele descreve uma interação entre um ator (usuário ou outro sistema) e o software para atingir um objetivo específico. Um caso de uso bem escrito é a principal fonte de inspiração para a criação de cenários de teste positivos e negativos.
+            </p>
+
+            <p>
+                A chave de um bom caso de uso é descrever um <strong>comportamento observável</strong> sob a ótica do ator. Isso reduz ambiguidades como "o sistema valida o campo corretamente", substituindo por passos verificáveis: "Se o usuário inserir um e-mail sem '@', o sistema deve exibir a mensagem 'Formato de e-mail inválido' abaixo do campo e o botão 'Avançar' deve permanecer desabilitado". Quanto mais observável for a descrição, mais fácil será criar oráculos de teste objetivos.
+            </p>
+
+            <h3>4.1 User Story vs. Use Case</h3>
+            <p>Em metodologias ágeis, é comum o uso de User Stories. Embora parecidas, elas têm focos diferentes:</p>
+            <ul>
+                <li><strong>User Story:</strong> É uma descrição curta e simples de uma funcionalidade sob a perspectiva de quem a deseja. Ex: "Como um cliente, eu quero poder pagar com PIX para ter uma confirmação mais rápida". Foca no <strong>valor</strong> e no <strong>porquê</strong>.</li>
+                <li><strong>Use Case:</strong> É uma descrição mais detalhada de como o sistema se comporta passo a passo para atender a essa necessidade, incluindo fluxos alternativos e de exceção. Foca no <strong>comportamento</strong> e no <strong>como</strong>.</li>
+            </ul>
+            <p>Eles se complementam: uma User Story pode ser detalhada por um ou mais Use Cases, que por sua vez serão a base para os Test Cases.</p>
+
+            <h3>4.2 Exemplo de Use Case aprofundado</h3>
+            <div class="code-block"><span class="keyword">UC-003:</span> <span class="string">Finalizar Compra</span>
+
+<span class="comment">ID:</span> UC-003
+<span class="comment">Nome:</span> Finalizar Compra
+<span class="comment">Resumo:</span> Permite que um cliente autenticado conclua um pedido, selecionando endereço, frete e forma de pagamento.
+<span class="comment">Ator primário:</span> Cliente
+<span class="comment">Ator secundário:</span> Sistema de Pagamento (Gateway), Sistema de Estoque
+<span class="comment">Pré-condições:</span>
+- O Cliente deve estar autenticado no sistema.
+- O carrinho de compras deve conter pelo menos um item.
+- O Sistema de Estoque está online.
+
+<span class="comment">Pós-condição de sucesso:</span>
+- Um novo pedido é criado no sistema com o status "Aguardando Pagamento" ou "Pagamento Aprovado".
+- O estoque do item comprado é decrementado.
+- Um e-mail de confirmação de pedido é enviado ao Cliente.
+
+<span class="comment">Pós-condição de falha:</span>
+- Nenhum pedido é criado.
+- O estoque não é alterado.
+- O Cliente permanece na tela de checkout com uma mensagem de erro clara.
+
+<span class="comment">Fluxo Básico (Happy Path):</span>
+1. O Cliente clica no botão "Finalizar Compra" no carrinho.
+2. O Sistema exibe a tela de checkout com o resumo do pedido (itens, quantidades, preços).
+3. O Sistema exibe os endereços salvos do Cliente e o frete calculado para o endereço padrão.
+4. O Cliente confirma o endereço e o frete.
+5. O Cliente seleciona uma forma de pagamento salva (ex: Cartão de Crédito final 4242).
+6. O Cliente clica em "Confirmar Pedido".
+7. O Sistema reserva o estoque dos itens (ator secundário: Sistema de Estoque).
+8. O Sistema envia os dados da transação para o Sistema de Pagamento (ator secundário).
+9. O Sistema de Pagamento retorna "Pagamento Aprovado".
+10. O Sistema cria o pedido, atualiza seu status para "Pagamento Aprovado" e dispara o e-mail de confirmação.
+11. O Sistema exibe a tela de "Pedido Realizado com Sucesso" para o Cliente.
+
+<span class="comment">Fluxos Alternativos:</span>
+[A1] Cliente cadastra um novo endereço:
+    No passo 4 do Fluxo Básico, o Cliente seleciona "Adicionar novo endereço", preenche o formulário e o salva. O fluxo então retorna ao passo 4, com o novo endereço selecionado.
+[A2] Cliente escolhe outra forma de pagamento:
+    No passo 5 do Fluxo Básico, o Cliente seleciona "Pagar com PIX". O sistema gera um QR Code e um código "copia e cola". O fluxo segue para uma tela de espera de pagamento.
+
+<span class="comment">Fluxos de Exceção:</span>
+[E1] Item indisponível no momento da confirmação:
+    No passo 7 do Fluxo Básico, o Sistema de Estoque informa que um item não está mais disponível. O Sistema interrompe a transação, exibe a mensagem "O item [Nome do Item] não está mais disponível em estoque" e retorna o Cliente ao carrinho para ajuste.
+[E2] Pagamento recusado pelo gateway:
+    No passo 9 do Fluxo Básico, o Sistema de Pagamento retorna "Pagamento Recusado". O Sistema exibe a mensagem "Seu pagamento foi recusado. Por favor, tente novamente com outro cartão ou forma de pagamento" e permite que o Cliente retorne ao passo 5.
+[E3] Sistema de Pagamento offline:
+    No passo 8 do Fluxo Básico, o Sistema não consegue se comunicar com o Sistema de Pagamento. O Sistema exibe a mensagem "Nosso sistema de pagamentos está temporariamente indisponível. Por favor, tente novamente em alguns minutos."
+</div>
+        </div>
+
+        <div class="chapter" id="cap5">
+            <div class="chapter-number">Capítulo 5</div>
+            <h2>Diagrama UML de Caso de Uso</h2>
+
+            <p>
+                O diagrama UML de Caso de Uso não substitui a especificação textual detalhada, mas oferece uma visão macro poderosa. Ele ajuda a visualizar as fronteiras do sistema, quem interage com ele (atores) e as principais funcionalidades disponíveis, além das relações entre elas.
+            </p>
+
+            <p>
+                A maior utilidade do diagrama é estratégica: ele <strong>explicita o escopo</strong>. Muitas falhas de planejamento acontecem porque a equipe mistura responsabilidades do sistema interno com sistemas externos sem deixar uma fronteira clara. Quando a fronteira está bem definida, fica mais simples decidir o que será testado de forma ponta a ponta (end-to-end) e o que será validado por meio de contratos de integração (com mocks ou stubs).
+            </p>
+
+            <h3>5.1 Notação essencial</h3>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Elemento</th>
+                        <th>Representação</th>
+                        <th>Objetivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Actor</strong></td>
+                        <td>Figura de "boneco palito"</td>
+                        <td>Representa uma entidade externa que interage com o sistema (pode ser um humano, outro software ou até mesmo o tempo).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Use Case</strong></td>
+                        <td>Elipse com o nome da funcionalidade</td>
+                        <td>Representa uma funcionalidade completa que entrega valor ao ator (ex: "Finalizar Compra").</td>
+                    </tr>
+                    <tr>
+                        <td><strong>System Boundary</strong></td>
+                        <td>Retângulo que envolve os casos de uso</td>
+                        <td>Define o que está dentro (escopo do sistema) e o que está fora. Atores ficam sempre do lado de fora.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Association</strong></td>
+                        <td>Linha contínua</td>
+                        <td>Conecta um ator a um caso de uso, indicando interação.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>5.2 Relações entre Casos de Uso: Include, Extend e Generalization</h3>
+            <p>Essas relações ajudam a organizar e reutilizar comportamentos, mas são frequentemente mal utilizadas.</p>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Relação</th>
+                        <th>Uso correto</th>
+                        <th>Exemplo</th>
+                        <th>Palavra-chave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>&lt;&lt;include&gt;&gt;</code></td>
+                        <td>Comportamento <strong>obrigatório</strong> e reutilizado. O caso de uso base não funciona sem o caso de uso incluído.</td>
+                        <td>"Finalizar Compra" <strong>inclui</strong> "Processar Pagamento". Não se pode finalizar uma compra sem pagar.</td>
+                        <td>"Sempre"</td>
+                    </tr>
+                    <tr>
+                        <td><code>&lt;&lt;extend&gt;&gt;</code></td>
+                        <td>Comportamento <strong>opcional</strong> ou condicional que adiciona funcionalidade ao caso de uso base.</td>
+                        <td>"Aplicar Cupom de Desconto" <strong>estende</strong> "Finalizar Compra". A compra pode ser finalizada sem um cupom.</td>
+                        <td>"Às vezes"</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Generalization</strong></td>
+                        <td>Especialização (herança). O caso de uso filho é um tipo específico do caso de uso pai e herda seu comportamento.</td>
+                        <td>"Pagar com PIX" e "Pagar com Cartão" são especializações de "Processar Pagamento".</td>
+                        <td>"É um tipo de"</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center">
+                <img src="../../../assets/use_case_diagram.png" alt="Diagrama de Caso de Uso para E-commerce" class="img-fluid rounded shadow-sm border">
+            </div>
+            <p>Este diagrama, gerado a partir do código PlantUML, ilustra as interações principais. O <strong>Cliente</strong> inicia a "Finalizar Compra", que obrigatoriamente (<code>&lt;&lt;include&gt;&gt;</code>) envolve "Verificar Estoque" e "Processar Pagamento". Opcionalmente (<code>&lt;&lt;extend&gt;&gt;</code>), o cliente pode "Aplicar Cupom". O processamento de pagamento é uma função genérica, especializada em "Pagar com PIX" ou "Pagar com Cartão". Atores externos como o "Sistema de Estoque" e o "Sistema de Pagamento" também são mostrados.</p>
+        </div>
+
+        <div class="chapter" id="cap6">
+            <div class="chapter-number">Capítulo 6</div>
+            <h2>Derivação de Casos de Teste</h2>
+
+            <p>
+                A derivação de casos de teste é o processo de converter os fluxos abstratos de um Use Case em validações concretas e executáveis. Cada caso de teste deve ter um objetivo claro, passos definidos, dados de entrada, um resultado esperado (oráculo) e um critério de sucesso.
+            </p>
+
+            <p>
+                O ponto central da derivação é manter o vínculo semântico entre a origem (o requisito) e a evidência (o teste). Cada teste precisa responder de forma clara: "Qual requisito estou validando?" e "Qual comportamento observável comprova que passou ou falhou?". Sem essas duas respostas, o caso de teste se torna apenas um procedimento operacional sem valor analítico.
+            </p>
+
+            <h3>6.1 Regra prática de derivação</h3>
+            <ul>
+                <li>O <strong>Fluxo Básico</strong> deve gerar pelo menos 1 Test Case positivo de alta prioridade (P1), validando o caminho feliz.</li>
+                <li>Cada <strong>Fluxo Alternativo</strong> deve gerar pelo menos 1 Test Case positivo, validando as variações de sucesso.</li>
+                <li>Cada <strong>Fluxo de Exceção</strong> deve gerar pelo menos 1 Test Case negativo, validando se o sistema lida corretamente com os erros.</li>
+                <li>Cada <strong>Pré-condição</strong> relevante pode gerar um teste negativo (ex: o que acontece se o usuário não está logado?).</li>
+                <li>As <strong>Regras de Negócio</strong> implícitas (ex: "o cupom só é válido para a primeira compra") devem gerar casos de teste específicos.</li>
+            </ul>
+
+            <h3>6.2 Exemplo de Mapeamento UC → TC (para UC-003)</h3>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Origem (UC-003)</th>
+                        <th>ID do Test Case</th>
+                        <th>Título do Test Case</th>
+                        <th>Tipo</th>
+                        <th>Prioridade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Fluxo Básico</td>
+                        <td>TC-001</td>
+                        <td>Validar compra bem-sucedida com cartão de crédito salvo</td>
+                        <td>Positivo</td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td>Fluxo Alternativo [A2]</td>
+                        <td>TC-002</td>
+                        <td>Validar compra bem-sucedida utilizando PIX</td>
+                        <td>Positivo</td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td>Fluxo de Exceção [E1]</td>
+                        <td>TC-003</td>
+                        <td>Verificar bloqueio da compra quando um item fica sem estoque</td>
+                        <td>Negativo</td>
+                        <td>P1</td>
+                    </tr>
+                    <tr>
+                        <td>Fluxo de Exceção [E2]</td>
+                        <td>TC-004</td>
+                        <td>Verificar mensagem de erro para pagamento recusado</td>
+                        <td>Negativo</td>
+                        <td>P2</td>
+                    </tr>
+                    <tr>
+                        <td>Pré-condição</td>
+                        <td>TC-005</td>
+                        <td>Verificar redirecionamento para login ao tentar finalizar compra sem estar autenticado</td>
+                        <td>Negativo</td>
+                        <td>P2</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>6.3 Detalhando um Caso de Teste (TC-001)</h3>
+            <div class="code-block">
+<span class="keyword">ID:</span> TC-001
+<span class="keyword">Título:</span> Validar compra bem-sucedida com cartão de crédito salvo
+<span class="keyword">Use Case Vinculado:</span> UC-003: Finalizar Compra
+<span class="keyword">Requisito Vinculado:</span> RF-015: O sistema deve permitir o pagamento com cartão de crédito.
+<span class="keyword">Prioridade:</span> P1 (Crítico)
+<span class="keyword">Tipo:</span> Positivo, Funcional
+
+<span class="keyword">Pré-condições:</span>
+1. O usuário "teste@senac.br" está cadastrado e autenticado.
+2. O usuário possui um cartão de crédito válido (final 4242) salvo em sua conta.
+3. O produto "Livro de Testes" (SKU: 12345) tem 10 unidades em estoque.
+4. O carrinho do usuário contém 1 unidade do produto "Livro de Testes".
+
+<span class="keyword">Dados de Teste:</span>
+- Usuário: teste@senac.br
+- Senha: (não relevante para o passo a passo)
+- Produto: SKU 12345
+- Cartão: final 4242
+
+<span class="keyword">Passos para Execução:</span>
+1. Navegar para a página do carrinho de compras.
+2. Clicar no botão "Finalizar Compra".
+3. Na tela de checkout, verificar se o endereço padrão está selecionado.
+4. Na seção de pagamento, verificar se o cartão com final 4242 está selecionado.
+5. Clicar no botão "Confirmar Pedido".
+
+<span class="keyword">Resultado Esperado:</span>
+1. O sistema deve processar o pedido sem erros.
+2. O usuário deve ser redirecionado para a página de "Pedido Realizado com Sucesso".
+3. A página de sucesso deve exibir o número do novo pedido.
+4. O usuário deve receber um e-mail de confirmação contendo os detalhes do pedido.
+5. Ao consultar o sistema de backoffice, o estoque do produto SKU 12345 deve ser 9 unidades.
+6. Um novo pedido deve existir no banco de dados para o usuário "teste@senac.br" com status "Pagamento Aprovado".
+</div>
+        </div>
+
+        <div class="chapter" id="cap7">
+            <div class="chapter-number">Capítulo 7</div>
+            <h2>Matriz de Rastreabilidade (RTM)</h2>
+
+            <p>
+                A Matriz de Rastreabilidade de Requisitos (RTM) é uma tabela que conecta os requisitos de negócio, os casos de uso, os casos de teste e, opcionalmente, os defeitos encontrados. Sua principal função é garantir que todos os requisitos foram cobertos por testes, permitindo uma análise de impacto rápida e precisa.
+            </p>
+
+            <p>
+                A RTM não é apenas uma ferramenta de controle; é uma ferramenta de <strong>gestão de mudança e risco</strong>. Sempre que um requisito é alterado, a matriz mostra exatamente quais casos de uso e testes precisam ser revisitados. Isso evita regressões silenciosas (quando uma mudança quebra algo que antes funcionava) e ajuda a priorizar a reexecução de testes com base no impacto real da mudança. Para fins de auditoria, ela prova que o sistema foi devidamente validado contra o que foi solicitado.
+            </p>
+
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>ID Requisito</th>
+                        <th>Descrição do Requisito</th>
+                        <th>ID Use Case</th>
+                        <th>ID Test Case(s)</th>
+                        <th>Status do Teste</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>RF-015</td>
+                        <td>Finalizar checkout com cartão</td>
+                        <td>UC-003</td>
+                        <td>TC-001, TC-004</td>
+                        <td><span class="badge bg-success">PASS</span> / <span class="badge bg-success">PASS</span></td>
+                    </tr>
+                    <tr>
+                        <td>RF-016</td>
+                        <td>Finalizar checkout com PIX</td>
+                        <td>UC-003</td>
+                        <td>TC-002</td>
+                        <td><span class="badge bg-danger">FAIL</span> (Defeito: BUG-101)</td>
+                    </tr>
+                    <tr>
+                        <td>RF-020</td>
+                        <td>Sistema deve validar estoque</td>
+                        <td>UC-003</td>
+                        <td>TC-003</td>
+                        <td><span class="badge bg-warning text-dark">BLOCKED</span></td>
+                    </tr>
+                    <tr>
+                        <td>RF-025</td>
+                        <td>Emitir relatório de vendas</td>
+                        <td>UC-015</td>
+                        <td>-</td>
+                        <td><strong class="text-danger">SEM COBERTURA</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>7.1 Métricas Derivadas da RTM</h3>
+            <p>A matriz é a fonte para métricas de qualidade essenciais:</p>
+            <div class="code-block">
+<span class="comment">// Exemplo com base na tabela acima (4 requisitos no total)</span>
+
+<span class="keyword">Cobertura de Requisitos</span> = (Requisitos com pelo menos 1 TC / Total de Requisitos) * 100
+= (3 / 4) * 100 = <span class="string">75%</span>
+
+<span class="keyword">Taxa de Execução</span> = (TCs executados (Pass/Fail) / Total de TCs planejados) * 100
+= (3 / 4) * 100 = <span class="string">75%</span> (TC-003 está bloqueado, não foi executado)
+
+<span class="keyword">Taxa de Sucesso (Pass Rate)</span> = (TCs com status PASS / TCs executados) * 100
+= (2 / 3) * 100 = <span class="string">66.7%</span>
+</div>
+
+            <p>
+                Nenhuma métrica isolada representa a qualidade por completo. Uma taxa de sucesso de 100% com uma cobertura de 50% pode ser extremamente arriscada, pois metade dos requisitos não foi testada. O ideal é interpretar as métricas em conjunto e relacioná-las à criticidade dos requisitos. Um "FAIL" em um requisito P1 é muito mais grave do que em um P3.
+            </p>
+
+            <div class="warning-box">
+                <div class="title"><i class="fas fa-exclamation-triangle me-2"></i>Sinal de Risco Crítico</div>
+                <p class="mb-0">
+                    Um requisito crítico para o negócio (como RF-025) com o status "SEM COBERTURA" deve ser um impeditivo (blocker) para o release do software. Isso indica uma lacuna completa na validação de uma funcionalidade importante.
+                </p>
+            </div>
+        </div>
+
+        <div class="chapter" id="cap8">
+            <div class="chapter-number">Capítulo 8</div>
+            <h2>Critérios de Entrada, Saída e Suspensão</h2>
+
+            <p>
+                Critérios são "portões" (gates) objetivos e pré-acordados que governam o início, a pausa e a conclusão da fase de testes. Eles transformam decisões que poderiam ser subjetivas ("vocês acham que já podemos começar a testar?") em checkpoints formais, protegendo o cronograma e a sanidade da equipe.
+            </p>
+
+            <p>
+                Em ambientes ágeis, a ausência desses gates costuma gerar dois extremos ruins:
+                o <strong>início prematuro</strong> (QA tenta testar um build instável, gerando dezenas de bugs inválidos e perdendo tempo) ou o
+                <strong>encerramento prematuro</strong> (o time declara a tarefa como "pronta" sem atingir um nível mínimo de qualidade, empurrando bugs para produção).
+                Critérios explícitos criam disciplina operacional e deixam claro quando uma decisão é puramente técnica e quando ela depende de um aceite formal do negócio.
+            </p>
+
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Tipo de Critério</th>
+                        <th>Exemplo Objetivo</th>
+                        <th>Benefício Principal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Entrada (Entry Criteria)</strong></td>
+                        <td>- O build da versão X foi concluído com sucesso.<br>- Os smoke tests automatizados passaram.<br>- A documentação dos requisitos está completa e aprovada.<br>- O ambiente de teste (QA) está estável e com a massa de dados necessária.</td>
+                        <td>Evita que a equipe de QA perca tempo testando um software que fundamentalmente não está pronto.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Suspensão (Suspension Criteria)</strong></td>
+                        <td>- Mais de 50% dos testes críticos estão falhando.<br>- O ambiente de QA está indisponível por mais de 4 horas.<br>- Um bug bloqueador (blocker) impede a continuação dos testes em um fluxo principal.</td>
+                        <td>Reduz o retrabalho e o ruído. É mais eficiente pausar, esperar a correção e retomar, do que continuar reportando dezenas de bugs consequentes do mesmo problema raiz.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Saída (Exit Criteria)</strong></td>
+                        <td>- 100% dos casos de teste planejados foram executados.<br>- A taxa de sucesso (Pass Rate) é de 95% ou mais.<br>- Não há defeitos críticos (P1) ou graves (P2) abertos.<br>- A cobertura de requisitos atingiu a meta de 90%.</td>
+                        <td>Aumenta a confiança na decisão de release, baseando-a em dados e não em "achismo". Fornece uma "Definition of Done" clara para a qualidade.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>8.1 Priorização baseada em risco</h3>
+            <p>
+                Com tempo e recursos limitados, é impossível testar tudo. A priorização deve ser baseada em risco, que é a combinação de <strong>Probabilidade de Falha x Impacto no Negócio</strong>.
+            </p>
+            <p>
+                Uma abordagem prática é classificar cada funcionalidade ou requisito em uma matriz de risco. Por exemplo, usando uma escala de 1 (baixo) a 5 (alto) para cada eixo:
+            </p>
+            <ul>
+                <li><strong>Probabilidade:</strong> Quão complexa é a funcionalidade? Houve muitas mudanças recentes nela? O histórico de bugs é alto?</li>
+                <li><strong>Impacto:</strong> Se falhar, causa perda de receita? Viola alguma lei? Afeta todos os usuários? Gera uma imagem negativa para a marca?</li>
+            </ul>
+            <p><strong>Risco = Probabilidade x Impacto</strong>. Itens com maior pontuação de risco (ex: um fluxo de pagamento, que é complexo e tem alto impacto) devem ser testados primeiro e com maior profundidade.</p>
+        </div>
+
+        <div class="chapter" id="cap9">
+            <div class="chapter-number">Capítulo 9</div>
+            <h2>Fluxo de Trabalho e Ferramentas</h2>
+
+            <p>
+                O processo e as ferramentas devem servir ao objetivo de qualidade, e não o contrário. Um fluxo de trabalho enxuto, com artefatos consistentes e boa rastreabilidade, vale mais do que uma stack de ferramentas complexa usada de forma superficial. O foco deve ser sempre a previsibilidade da execução e a geração de evidências confiáveis.
+            </p>
+
+            <h3>9.1 Fluxo de Trabalho Recomendado</h3>
+            <p>Este é um fluxo prático que conecta todos os conceitos vistos na aula:</p>
+            <ol>
+                <li><strong>Análise de Requisitos e Personas:</strong> Entenda o que precisa ser construído e para quem.</li>
+                <li><strong>Modelagem com Casos de Uso:</strong> Detalhe o comportamento do sistema em fluxos (básico, alternativos, exceções). Crie um diagrama UML para a visão geral.</li>
+                <li><strong>Criação do Plano de Teste:</strong> Defina o escopo, a estratégia, os ambientes e os critérios de aceite.</li>
+                <li><strong>Derivação dos Casos de Teste:</strong> Escreva os testes com base nos casos de uso, cobrindo todos os fluxos.</li>
+                <li><strong>Criação da Matriz de Rastreabilidade:</strong> Mapeie os requisitos aos casos de teste para garantir a cobertura.</li>
+                <li><strong>Preparação do Ambiente e Dados:</strong> Configure o ambiente de QA e a massa de dados necessária.</li>
+                <li><strong>Execução dos Testes:</strong> Execute os casos de teste, registrando os resultados e as evidências.</li>
+                <li><strong>Report de Defeitos:</strong> Abra bugs detalhados para cada falha encontrada.</li>
+                <li><strong>Análise e Relatório Final:</strong> Analise as métricas da RTM e escreva um relatório de resumo com a recomendação de release.</li>
+            </ol>
+
+            <h3>9.2 Ferramentas Sugeridas</h3>
+            <table class="tech-table">
+                <thead>
+                    <tr>
+                        <th>Objetivo</th>
+                        <th>Ferramenta</th>
+                        <th>Uso prático e dicas</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Modelagem UML e Fluxos</td>
+                        <td><strong>Draw.io / diagrams.net</strong> (gratuito) ou <strong>PlantUML</strong> (baseado em texto)</td>
+                        <td>Use o Draw.io para diagramas visuais colaborativos. Use o PlantUML se você prefere versionar seus diagramas como código em um repositório Git.</td>
+                    </tr>
+                    <tr>
+                        <td>Gestão de Casos de Teste</td>
+                        <td><strong>TestRail</strong>, <strong>Zephyr</strong> (plugins para Jira) ou uma <strong>planilha bem estruturada</strong></td>
+                        <td>Comece com uma planilha (Google Sheets) para entender a estrutura. Use ferramentas dedicadas para gerenciar grandes suítes de teste, histórico de execução e relatórios.</td>
+                    </tr>
+                    <tr>
+                        <td>Gestão de Projetos e Defeitos</td>
+                        <td><strong>Jira</strong>, <strong>Azure DevOps</strong>, <strong>GitHub Issues</strong></td>
+                        <td>Use labels/tags para vincular bugs (ex: `BUG-101`) a histórias de usuário e épicos. A integração entre essas ferramentas é fundamental para a rastreabilidade.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="info-box">
+                <div class="title"><i class="fas fa-info-circle me-2"></i>Para entrega acadêmica e projetos pequenos</div>
+                <p class="mb-0">
+                    Mantenha os artefatos em uma pasta <code>/docs</code> ou <code>/quality</code> dentro do seu repositório Git, com nomenclatura consistente (ex: <code>UC01_Login.md</code>, <code>TC01_Login_Sucesso.md</code>). Use Markdown para os documentos de texto e versionamento do Git para controlar as mudanças. Isso facilita a avaliação, a revisão em equipe e a evolução do projeto.
+                </p>
+            </div>
+        </div>
+
+        <div class="chapter" id="cap10">
+            <div class="chapter-number">Capítulo 10</div>
+            <h2>Exercícios de Fixação</h2>
+
+            <p>
+                Os exercícios abaixo foram desenhados para consolidar o ciclo completo da aula: modelagem de contexto, especificação de comportamento, derivação de testes e tomada de decisão orientada por métricas. O objetivo não é apenas preencher templates, mas justificar tecnicamente cada escolha realizada.
+            </p>
+
+            <div class="exercise-box">
+                <div class="title"><i class="fas fa-pen me-2"></i>Exercício 1 - Persona e Análise de Risco</div>
+                <p>
+                    Você está testando um aplicativo de banco digital. Crie duas personas distintas:
+                    <br>1. <strong>João, 68 anos</strong>, aposentado, usando um smartphone de entrada (Android Go) com internet limitada. Seu principal objetivo é pagar contas.
+                    <br>2. <strong>Beatriz, 25 anos</strong>, freelancer, usuária de iPhone de última geração. Usa o app para tudo: PIX, investimentos, etc.
+                </p>
+                <p class="mb-0"><strong>Tarefa:</strong> Para cada persona, liste 3 cenários de teste prioritários e justifique a prioridade com base no perfil e nos riscos associados a cada uma.</p>
+            </div>
+
+            <div class="exercise-box">
+                <div class="title"><i class="fas fa-pen me-2"></i>Exercício 2 - Use Case Completo e Derivação</div>
+                <p>
+                    Considere a funcionalidade "Recuperar Senha por E-mail" em um portal de e-commerce.
+                </p>
+                <p><strong>Tarefa:</strong>
+                    <br>1. Escreva o caso de uso completo, incluindo um fluxo básico, um fluxo alternativo (ex: o usuário clica no link expirado) e dois fluxos de exceção (ex: e-mail não cadastrado; serviço de e-mail fora do ar).
+                    <br>2. Derive e detalhe (no formato do capítulo 6.3) pelo menos 4 casos de teste (2 positivos, 2 negativos), classificando-os por prioridade (P1, P2, P3).
+                </p>
+            </div>
+
+            <div class="exercise-box">
+                <div class="title"><i class="fas fa-pen me-2"></i>Exercício 3 - RTM e Decisão de Release</div>
+                <p>
+                    Você recebeu a seguinte RTM no final de uma sprint. O prazo para o release é amanhã.
+                </p>
+                <table class="tech-table text-white">
+                    <thead><tr><th>Req. ID</th><th>Criticidade</th><th>Test Case(s)</th><th>Status</th></tr></thead>
+                    <tbody>
+                        <tr><td>RF-01</td><td>P1</td><td>TC01, TC02</td><td>PASS / PASS</td></tr>
+                        <tr><td>RF-02</td><td>P1</td><td>TC03</td><td>FAIL (BUG-201)</td></tr>
+                        <tr><td>RF-03</td><td>P2</td><td>TC04, TC05</td><td>PASS / BLOCKED</td></tr>
+                        <tr><td>RF-04</td><td>P3</td><td>-</td><td>SEM COBERTURA</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Tarefa:</strong> Escreva um breve parágrafo com sua recomendação final de release para o gerente de produto. Justifique sua decisão (Go/No-Go) com base nas métricas e nos riscos evidentes na RTM. O que você recomendaria fazer sobre cada problema?
+                </p>
+            </div>
+
+            <div class="nav-buttons">
+                <a href="material_aula01-introducao-qualidade.html" class="btn btn-outline-secondary rounded-pill px-4">
+                    <i class="fas fa-arrow-left me-2"></i>Material Aula 01
+                </a>
+                <a href="../slide_planejamentodetestesecasosdeteste.html" class="btn btn-danger rounded-pill px-4">
+                    <i class="fas fa-desktop me-2"></i>Voltar aos Slides
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light text-dark py-4 mt-5">
+        <div class="container text-center">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+                height="25" class="mb-2 opacity-75">
+            <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

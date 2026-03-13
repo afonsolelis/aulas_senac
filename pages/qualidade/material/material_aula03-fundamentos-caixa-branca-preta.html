@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Didático - Aula 03 - Fundamentos de Testes: Caixa Branca vs. Caixa Preta</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --ink: #1b2a3a;
+      --muted: #5c6f82;
+      --paper: #f3f7fb;
+      --line: #dbe5f0;
+      --accent: #0d6efd;
+      --accent-soft: #eaf2ff;
+    }
+
+    body {
+      background: linear-gradient(180deg, #eef3f9 0%, #f7faff 60%, #eef4fb 100%);
+      color: var(--ink);
+    }
+
+    .book {
+      max-width: 1040px;
+    }
+
+    .book-header {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 14px 34px rgba(27, 42, 58, 0.08);
+    }
+
+    .chapter {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(27, 42, 58, 0.06);
+    }
+
+    .chapter h2 {
+      font-size: 1.35rem;
+      margin-bottom: 0.9rem;
+    }
+
+    .lead-note {
+      background: var(--accent-soft);
+      border: 1px solid #cfe2ff;
+      border-radius: 12px;
+      color: #1f3f73;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .code-block {
+      background: #0f1d2d;
+      color: #dce9ff;
+      border-radius: 12px;
+      border: 1px solid #2b3f58;
+      padding: 1rem;
+      font-family: "Fira Code", Consolas, "Courier New", monospace;
+      font-size: 0.9rem;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .line-by-line {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .line-by-line li {
+      margin-bottom: 0.5rem;
+      color: var(--muted);
+    }
+
+    .compare-table td,
+    .compare-table th {
+      vertical-align: top;
+    }
+
+    .toc a {
+      color: #224a7e;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <main class="container py-4 py-md-5 book">
+    <section class="book-header p-4 p-md-5 mb-4">
+      <p class="text-uppercase text-muted small mb-2">Qualidade de Software</p>
+      <h1 class="h2 fw-bold mb-3">Aula 03 - Fundamentos de Testes: Caixa Branca vs. Caixa Preta</h1>
+      <p class="text-secondary mb-3">Este material segue os slides da aula e foi organizado como capítulo didático. O objetivo é entender quando usar cada abordagem de teste, como escrever testes melhores e como ler cada trecho de código com clareza.</p>
+              <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+        <ol class="text-secondary mb-4">
+          <li>Resuma em 5 linhas os objetivos da aula: <strong>tema da aula</strong>.</li>
+          <li>Liste 3 práticas recomendadas e explique quando usar cada uma.</li>
+          <li>Descreva 2 riscos comuns ao aplicar o conteúdo e como mitigar.</li>
+          <li>Crie um mini-cenário real e aplique o conteúdo da aula passo a passo.</li>
+          <li>Prepare 3 critérios de validação para verificar se a atividade foi bem executada.</li>
+        </ol>
+
+<div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-danger btn-sm" href="../slide_fundamentosdetestescaixabrancavscaixapreta.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
+        <a class="btn btn-outline-secondary btn-sm" href="../../home_qualidade.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+      </div>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4 toc" id="sumario">
+      <h2><i class="fas fa-book-open me-2 text-primary"></i>Sumário</h2>
+      <ol class="mb-0 text-secondary">
+        <li><a href="#introducao">Introdução aos testes de software</a></li>
+        <li><a href="#caixa-branca">Caixa Branca: conceito e objetivos</a></li>
+        <li><a href="#junit">Exemplo 1: teste de unidade com JUnit</a></li>
+        <li><a href="#csv-basico">Exemplo 2: @CsvSource com múltiplos dados</a></li>
+        <li><a href="#csv-complexo">Exemplo 3: @CsvSource com validação de usuário</a></li>
+        <li><a href="#caixa-preta">Caixa Preta: conceito e objetivos</a></li>
+        <li><a href="#funcional">Exemplo funcional de login</a></li>
+        <li><a href="#e2e">Exemplo 4: E2E com Selenium</a></li>
+        <li><a href="#uml">Fluxos UML de sequência (branca e preta)</a></li>
+        <li><a href="#comparacao">Comparação, pirâmide e boas práticas</a></li>
+      </ol>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="introducao">
+      <h2>1) Introdução aos Testes de Software</h2>
+      <p class="mb-2">Testar software é validar se o sistema atende aos requisitos e se se comporta como esperado em diferentes cenários.</p>
+      <p class="mb-0">Na aula, usamos duas visões complementares:</p>
+      <ul class="text-secondary mb-0">
+        <li><strong>Caixa Branca:</strong> observa lógica interna, métodos, condições e caminhos.</li>
+        <li><strong>Caixa Preta:</strong> observa apenas entradas e saídas visíveis ao usuário.</li>
+      </ul>
+      <hr>
+      <h3 class="h6 fw-bold">Por que isso importa na prática?</h3>
+      <p class="text-secondary mb-2">Sem testes, o time descobre defeitos tarde demais: em homologação, produção ou com o cliente. Quanto mais tarde o defeito é encontrado, maior é o custo para corrigir.</p>
+      <p class="text-secondary mb-2">Com testes bem planejados, você cria uma rede de segurança para evoluir o sistema sem medo de quebrar funcionalidades já prontas.</p>
+      <p class="text-secondary mb-0">Resumo de estratégia: caixa branca garante a saúde da lógica interna; caixa preta garante que o usuário recebe o comportamento esperado.</p>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="caixa-branca">
+      <h2>2) Teste Caixa Branca (White-Box)</h2>
+      <div class="lead-note"><strong>Ideia central:</strong> o testador conhece o código-fonte e usa esse conhecimento para escolher cenários de teste.</div>
+      <h3 class="h6 fw-bold">Objetivos principais</h3>
+      <ul class="text-secondary mb-0">
+        <li>Verificar caminhos de execução (if/else, loops, branches).</li>
+        <li>Testar a lógica interna e estruturas de dados.</li>
+        <li>Aumentar cobertura de código com critério (não apenas porcentagem).</li>
+        <li>Detectar defeitos cedo, no nível de unidade e integração.</li>
+      </ul>
+      <hr>
+      <h3 class="h6 fw-bold">Como pensar ao criar um teste de caixa branca</h3>
+      <ol class="text-secondary mb-0">
+        <li>Mapeie a regra de negócio e os caminhos possíveis (sucesso, erro, borda).</li>
+        <li>Escolha entradas que forcem cada caminho a ser executado.</li>
+        <li>Valide o resultado e, quando fizer sentido, o efeito colateral (log, persistência, exceção).</li>
+        <li>Mantenha o teste simples e com um único motivo de falha por cenário.</li>
+      </ol>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="junit">
+      <h2>3) Exemplo 1: Teste de Unidade com JUnit</h2>
+      <p class="text-secondary">Trecho alinhado ao slide: validação do método <code>somar(a, b)</code>.</p>
+      <pre class="code-block">@SpringBootTest
+public class CalculadoraTest {
+
+    @Autowired
+    private Calculadora calculadora;
+
+    @Test
+    void testarSoma() {
+        // Arrange - conhecemos a estrutura interna
+        int a = 5, b = 3;
+
+        // Act - executamos o método
+        int resultado = calculadora.somar(a, b);
+
+        // Assert - validamos o resultado esperado
+        assertEquals(8, resultado);
+    }
+}</pre>
+      <h3 class="h6 fw-bold mt-3">Explicação linha a linha</h3>
+      <ol class="line-by-line">
+        <li><code>@SpringBootTest</code>: sobe o contexto do Spring para permitir injeção de dependências no teste.</li>
+        <li><code>public class CalculadoraTest</code>: classe que agrupa os testes da calculadora.</li>
+        <li><code>@Autowired</code>: injeta uma instância real de <code>Calculadora</code>.</li>
+        <li><code>private Calculadora calculadora</code>: objeto que será testado.</li>
+        <li><code>@Test</code>: marca o método como caso de teste executável pelo JUnit.</li>
+        <li><code>void testarSoma()</code>: nome do cenário; descreve o que está sendo validado.</li>
+        <li><code>int a = 5, b = 3;</code>: dados de entrada do cenário (fase Arrange).</li>
+        <li><code>int resultado = calculadora.somar(a, b);</code>: execução da regra de negócio (fase Act).</li>
+        <li><code>assertEquals(8, resultado);</code>: verificação do comportamento esperado (fase Assert).</li>
+      </ol>
+      <h3 class="h6 fw-bold mt-3">Leitura didática do fluxo AAA (Arrange, Act, Assert)</h3>
+      <ul class="text-secondary mb-0">
+        <li><strong>Arrange:</strong> você prepara o estado inicial e as entradas do teste.</li>
+        <li><strong>Act:</strong> executa apenas a ação principal que quer validar.</li>
+        <li><strong>Assert:</strong> confirma se o resultado observado bate com o comportamento esperado.</li>
+      </ul>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="csv-basico">
+      <h2>4) Exemplo 2: Testes Paramétricos com @CsvSource</h2>
+      <p class="text-secondary">Aqui, o mesmo teste roda várias vezes mudando apenas os parâmetros de entrada.</p>
+      <pre class="code-block">@ParameterizedTest
+@CsvSource({
+    "2, 3, 5",
+    "10, 20, 30",
+    "-5, 5, 0",
+    "0, 0, 0",
+    "100, 200, 300"
+})
+void testarSomaComMultiplosValores(int a, int b, int esperado) {
+    int resultado = calculadora.somar(a, b);
+    assertEquals(esperado, resultado);
+}</pre>
+      <h3 class="h6 fw-bold mt-3">Explicação linha a linha</h3>
+      <ol class="line-by-line">
+        <li><code>@ParameterizedTest</code>: indica que o método será executado múltiplas vezes.</li>
+        <li><code>@CsvSource({...})</code>: fornece conjuntos de dados no formato CSV.</li>
+        <li>Cada string como <code>"2, 3, 5"</code> representa <code>a</code>, <code>b</code> e <code>esperado</code>.</li>
+        <li><code>void testarSomaComMultiplosValores(...)</code>: assinatura compatível com os três campos do CSV.</li>
+        <li><code>int resultado = calculadora.somar(a, b);</code>: execução repetida para cada linha.</li>
+        <li><code>assertEquals(esperado, resultado);</code>: valida o resultado correspondente ao conjunto atual.</li>
+      </ol>
+      <p class="mb-0"><strong>Vantagem prática:</strong> menos duplicação e mais cobertura em menos código.</p>
+      <p class="text-secondary mt-2 mb-0"><strong>Interpretação pedagógica:</strong> esse formato ajuda a ensinar o aluno a pensar em classes de equivalência e valores de fronteira sem copiar e colar vários métodos de teste.</p>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="csv-complexo">
+      <h2>5) Exemplo 3: @CsvSource para validação de usuário</h2>
+      <p class="text-secondary">Esse caso testa regras de negócio: formato de e-mail, senha e campos vazios.</p>
+      <pre class="code-block">@ParameterizedTest
+@CsvSource({
+    "usuario@email.com, Senha123!, true",
+    "email-invalido, Senha123!, false",
+    "usuario@email.com, 123, false",
+    ", Senha123!, false",
+    "usuario@email.com, , false"
+})
+void testarValidacaoUsuario(String email, String senha, boolean esperado) {
+    boolean valido = validador.validarUsuario(email, senha);
+    assertEquals(esperado, valido);
+}</pre>
+      <h3 class="h6 fw-bold mt-3">Explicação linha a linha</h3>
+      <ol class="line-by-line">
+        <li>Primeira linha CSV: cenário válido completo, retorno esperado <code>true</code>.</li>
+        <li>Segunda linha: e-mail inválido deve reprovar (<code>false</code>).</li>
+        <li>Terceira linha: senha fraca deve reprovar.</li>
+        <li>Quarta linha: e-mail vazio deve reprovar.</li>
+        <li>Quinta linha: senha vazia deve reprovar.</li>
+        <li><code>validarUsuario(email, senha)</code>: executa a regra interna da aplicação.</li>
+        <li><code>assertEquals(esperado, valido)</code>: compara o resultado obtido com o esperado para cada cenário.</li>
+      </ol>
+      <h3 class="h6 fw-bold mt-3">Por que esse caso é valioso em avaliação</h3>
+      <ul class="text-secondary mb-0">
+        <li>Demonstra domínio de regra de negócio, não apenas sintaxe de framework.</li>
+        <li>Mostra cobertura de cenários inválidos, que costumam ser os mais esquecidos.</li>
+        <li>Treina escrita de teste orientada a comportamento esperado.</li>
+      </ul>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="caixa-preta">
+      <h2>6) Teste Caixa Preta (Black-Box)</h2>
+      <div class="lead-note"><strong>Ideia central:</strong> validar comportamento externo sem depender de como o código foi implementado.</div>
+      <h3 class="h6 fw-bold">Objetivos principais</h3>
+      <ul class="text-secondary mb-0">
+        <li>Verificar se requisitos funcionais foram atendidos.</li>
+        <li>Testar entradas e saídas com foco no valor para o usuário.</li>
+        <li>Cobrir cenários de uso real (fluxos felizes e erros).</li>
+        <li>Apoiar testes de sistema, aceitação e E2E.</li>
+      </ul>
+      <hr>
+      <h3 class="h6 fw-bold">Mentalidade de caixa preta</h3>
+      <p class="text-secondary mb-2">Aqui o teste não se preocupa se a implementação usa classe A ou B, nem qual algoritmo foi escolhido. O foco é: dado um input, o usuário recebeu o output correto?</p>
+      <p class="text-secondary mb-0">Essa visão aproxima o teste dos requisitos do produto e da linguagem do negócio.</p>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="funcional">
+      <h2>7) Exemplo funcional: fluxo de login</h2>
+      <p class="mb-2">Visão do usuário (sem olhar código interno):</p>
+      <ol class="text-secondary">
+        <li>Usuário informa e-mail e senha.</li>
+        <li>Clica no botão <strong>Entrar</strong>.</li>
+        <li>Sistema redireciona para dashboard, ou exibe erro/validação.</li>
+      </ol>
+      <p class="mb-2 fw-semibold">Critérios de aceite usados nos slides</p>
+      <ul class="text-secondary mb-0">
+        <li>Login válido -> dashboard.</li>
+        <li>Login inválido -> mensagem de erro.</li>
+        <li>Campos vazios -> mensagem de validação.</li>
+      </ul>
+      <h3 class="h6 fw-bold mt-3">Como transformar isso em casos de teste</h3>
+      <ol class="text-secondary mb-0">
+        <li>Escreva pré-condição (usuário cadastrado, sistema no ar, rota disponível).</li>
+        <li>Descreva passos de execução (preencher campos, clicar em entrar).</li>
+        <li>Defina resultado esperado de forma objetiva (URL, mensagem, status visual).</li>
+        <li>Documente dados de teste (credencial válida, inválida, vazia).</li>
+      </ol>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="e2e">
+      <h2>8) Exemplo 4: Teste E2E com Selenium</h2>
+      <p class="text-secondary">Teste de ponta a ponta simulando um usuário real no navegador.</p>
+      <pre class="code-block">@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@ExtendWith(SeleniumExtension.class)
+public class LoginE2ETest {
+
+    @Autowired
+    private WebDriver webDriver;
+
+    @Test
+    void testarFluxoLoginCompleto() {
+        webDriver.get("/login");
+
+        webDriver.findElement(By.id("email")).sendKeys("user@email.com");
+        webDriver.findElement(By.id("senha")).sendKeys("Senha123!");
+        webDriver.findElement(By.id("btn-login")).click();
+
+        assertTrue(webDriver.getCurrentUrl().contains("/dashboard"));
+    }
+}</pre>
+      <h3 class="h6 fw-bold mt-3">Explicação linha a linha</h3>
+      <ol class="line-by-line">
+        <li><code>@SpringBootTest(...RANDOM_PORT)</code>: sobe a aplicação para teste web real.</li>
+        <li><code>@ExtendWith(SeleniumExtension.class)</code>: ativa suporte/configuração de Selenium.</li>
+        <li><code>private WebDriver webDriver</code>: driver que controla o navegador.</li>
+        <li><code>webDriver.get("/login")</code>: abre a tela de login.</li>
+        <li><code>findElement(By.id("email"))...</code>: preenche o campo de e-mail.</li>
+        <li><code>findElement(By.id("senha"))...</code>: preenche a senha.</li>
+        <li><code>findElement(By.id("btn-login")).click()</code>: executa a ação do usuário.</li>
+        <li><code>assertTrue(...contains("/dashboard"))</code>: valida o resultado final visível.</li>
+      </ol>
+      <h3 class="h6 fw-bold mt-3">Observações importantes para não gerar falso positivo</h3>
+      <ul class="text-secondary mb-0">
+        <li>Espere elementos carregarem antes de interagir (wait explícito/implícito).</li>
+        <li>Evite validar só URL; valide também texto ou elemento da dashboard.</li>
+        <li>Use dados de teste controlados para o ambiente de aula/laboratório.</li>
+      </ul>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="uml">
+      <h2>9) UML de Sequência: como interpretar os fluxos</h2>
+      <p class="mb-2"><strong>Fluxo Caixa Branca:</strong> mostra chamadas internas entre componentes (Teste -> Calculadora -> Validador -> Repositório).</p>
+      <p class="mb-3 text-secondary">Esse fluxo ajuda a decidir onde criar testes de unidade e integração, além de visualizar dependências internas.</p>
+      <p class="mb-2"><strong>Fluxo Caixa Preta:</strong> mostra interação externa (Usuário -> Interface -> Sistema -> Banco) até o resultado final.</p>
+      <p class="mb-0 text-secondary">Esse fluxo orienta critérios de aceite e cenários E2E baseados em comportamento observável.</p>
+      <hr>
+      <h3 class="h6 fw-bold">Como usar os diagramas para planejar testes</h3>
+      <ul class="text-secondary mb-0">
+        <li>Cada seta pode virar um ponto de verificação de teste.</li>
+        <li>Mensagens de retorno indicam expectativas que podem ser assertadas.</li>
+        <li>Pontos de decisão (sucesso/erro) sugerem cenários alternativos.</li>
+      </ul>
+    </section>
+
+    <section class="chapter p-4 p-md-5 mb-4" id="comparacao">
+      <h2>10) Comparação final, pirâmide e boas práticas</h2>
+      <div class="table-responsive mb-3">
+        <table class="table table-bordered compare-table">
+          <thead class="table-dark">
+            <tr>
+              <th>Característica</th>
+              <th>Caixa Branca</th>
+              <th>Caixa Preta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Conhecimento do código</td>
+              <td>Necessário</td>
+              <td>Não necessário</td>
+            </tr>
+            <tr>
+              <td>Foco</td>
+              <td>Estrutura e lógica interna</td>
+              <td>Requisitos e comportamento</td>
+            </tr>
+            <tr>
+              <td>Níveis comuns</td>
+              <td>Unidade e integração</td>
+              <td>Sistema, aceitação e E2E</td>
+            </tr>
+            <tr>
+              <td>Exemplos da aula</td>
+              <td>@ParameterizedTest / @CsvSource</td>
+              <td>Selenium / Cypress</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="mb-2"><strong>Pirâmide de testes (resumo da aula):</strong></p>
+      <ul class="text-secondary mb-3">
+        <li>Base: muitos testes de unidade (rápidos e baratos).</li>
+        <li>Meio: quantidade moderada de integração.</li>
+        <li>Topo: poucos testes E2E (mais lentos e caros).</li>
+      </ul>
+      <p class="mb-2 fw-semibold">Boas práticas principais</p>
+      <ul class="text-secondary mb-0">
+        <li>Caixa branca: testes isolados, descritivos e com casos de exceção.</li>
+        <li>Caixa preta: cenários reais, requisitos claros e validação de feedback ao usuário.</li>
+        <li>Combine as duas abordagens: elas se complementam.</li>
+      </ul>
+      <hr>
+      <h3 class="h6 fw-bold">Checklist de estudo para fixação</h3>
+      <ol class="text-secondary mb-0">
+        <li>Consigo explicar a diferença entre testar implementação e testar comportamento?</li>
+        <li>Consigo criar pelo menos 5 casos com <code>@CsvSource</code> cobrindo bordas e inválidos?</li>
+        <li>Consigo descrever um fluxo E2E com pré-condições, passos e resultados esperados?</li>
+        <li>Consigo justificar a pirâmide de testes em custo, velocidade e confiança?</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>

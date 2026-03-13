@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Didático - Aula 05 - Tabelas Verdade</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --text: #334155;
+      --title: #0f172a;
+      --border: #e2e8f0;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: var(--text);
+      line-height: 1.75;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #111827, #0f766e);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .14);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .top-actions,
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc,
+    .chapter {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .toc {
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc a {
+      color: #0f766e;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .chapter {
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--title);
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .chapter h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--title);
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    .box {
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      margin: .8rem 0;
+      border-left: 4px solid;
+      background: #f8fafc;
+    }
+
+    .info {
+      border-color: #0ea5e9;
+      background: #ecfeff;
+    }
+
+    .warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .good {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
+    .danger {
+      border-color: #ef4444;
+      background: #fef2f2;
+    }
+
+    pre {
+      border-radius: 10px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .mini-table td,
+    .mini-table th {
+      vertical-align: middle;
+    }
+
+    .dojo-section {
+      background: linear-gradient(135deg, #1e3a5f 0%, #0f766e 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .dojo-section h3 {
+      color: #fbbf24;
+      border-bottom: 2px solid #fbbf24;
+      padding-bottom: 0.5rem;
+    }
+
+    .dojo-section .box {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-left-color: #fbbf24;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+    <header class="hero">
+      <p class="mb-2"><span class="badge bg-light text-dark">Introdução à Lógica</span> <span
+          class="badge bg-danger">Aula 05</span></p>
+      <h1>Tabelas Verdade (4h)</h1>
+      <p class="mb-0 text-light">Construção sistemática, classificação de proposições, aplicação em Python e prática intensiva.</p>
+    </header>
+
+    <div class="top-actions">
+      <a class="btn btn-danger btn-sm" href="../slide_tabelasverdade.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    </div>
+
+    <section class="toc" aria-label="Sumário">
+      <h2 class="h6 fw-bold mb-2">Sumário</h2>
+      <ol class="mb-0">
+        <li><a href="#objetivo">Objetivo</a></li>
+        <li><a href="#o-que-e">Definição</a></li>
+        <li><a href="#construcao">Regra 2ⁿ</a></li>
+        <li><a href="#conectivos">Conectivos</a></li>
+        <li><a href="#classificacao">Classificação</a></li>
+        <li><a href="#exemplos-guiados">Exemplos</a></li>
+        <li><a href="#python">Implementação Python</a></li>
+        <li><a href="#dojô">DOJÔ</a></li>
+        <li><a href="#erros">Erros Comuns</a></li>
+        <li><a href="#exercicios">Exercícios</a></li>
+      </ol>
+    </section>
+
+    <section id="objetivo" class="chapter">
+      <h2>1) Objetivo</h2>
+      <p>Ao final desta aula, você será capaz de:</p>
+      <ul>
+        <li>Construir tabelas verdade para expressões com qualquer número de variáveis</li>
+        <li>Classificar proposições como tautologia, contradição ou contingência</li>
+        <li>Validar equivalências lógicas usando tabelas verdade</li>
+        <li>Implementar geradores automáticos de tabelas em Python</li>
+      </ul>
+      <div class="box info">
+        <strong>Pré-requisitos:</strong> Conhecimento básico de lógica proposicional (conectivos ∧, ∨, ¬, →, ↔) e
+        noções elementares de Python (variáveis booleanas, operadores <code>and</code>, <code>or</code>, <code>not</code>).
+      </div>
+    </section>
+
+    <section id="o-que-e" class="chapter">
+      <h2>2) Definição</h2>
+      <p>Uma <strong>tabela verdade</strong> é um método sistemático para enumerar todos os valores possíveis de
+        verdade de uma proposição composta, dada todas as combinações possíveis de valores das variáveis que a compõem.</p>
+
+      <h3>2.1 Aplicação prática</h3>
+      <p>Considere um sistema de controle de acesso que libera entrada se:</p>
+      <ul>
+        <li>O usuário tem credencial válida <strong>E</strong> o horário está dentro do permitido</li>
+        <li><strong>OU</strong> se o usuário é administrador</li>
+      </ul>
+      <p>Formalmente: <code>(Credencial ∧ Horário) ∨ Administrador</code></p>
+      <p>A tabela verdade permite verificar o comportamento do sistema para todas as combinações possíveis de
+        credencial, horário e tipo de usuário — essencial para validar regras de negócio antes da implementação.</p>
+
+      <h3>2.2 Estrutura</h3>
+      <ul>
+        <li><strong>Colunas de entrada:</strong> variáveis proposicionais (P, Q, R...)</li>
+        <li><strong>Colunas intermediárias:</strong> subexpressões (útil para expressões complexas)</li>
+        <li><strong>Coluna de saída:</strong> valor final da expressão</li>
+      </ul>
+    </section>
+
+    <section id="construcao" class="chapter">
+      <h2>3) Regra 2ⁿ</h2>
+      <p>O número de linhas de uma tabela verdade é dado por:</p>
+
+      <div class="text-center my-4">
+        <div class="card p-4 border-0 shadow-sm bg-dark text-white d-inline-block">
+          <h1 class="display-4 fw-bold mb-0">2<sup>n</sup></h1>
+          <p class="mb-0 mt-2 text-light">n = número de variáveis distintas</p>
+        </div>
+      </div>
+
+      <h3>3.1 Fundamentação</h3>
+      <p>Cada variável booleana assume exatamente dois valores: Verdadeiro (V) ou Falso (F). Para n variáveis
+        independentes, o número total de combinações é o produto cartesiano de n conjuntos binários: 2 × 2 × ... × 2 = 2ⁿ.</p>
+
+      <h3>3.2 Exemplos</h3>
+      <ul>
+        <li>1 variável: 2¹ = 2 linhas</li>
+        <li>2 variáveis: 2² = 4 linhas</li>
+        <li>3 variáveis: 2³ = 8 linhas</li>
+        <li>4 variáveis: 2⁴ = 16 linhas</li>
+      </ul>
+
+      <h3>3.3 Algoritmo de preenchimento</h3>
+      <p>Para organizar as colunas de entrada, adote o seguinte padrão:</p>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr>
+              <th>P</th>
+              <th>Q</th>
+              <th>R</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td>V</td></tr>
+            <tr><td>V</td><td>V</td><td>F</td></tr>
+            <tr><td>V</td><td>F</td><td>V</td></tr>
+            <tr><td>V</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>V</td><td>V</td></tr>
+            <tr><td>F</td><td>V</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>V</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="box info">
+        <strong>Padrão:</strong> A primeira coluna alterna a cada 2ⁿ⁻¹ linhas, a segunda a cada 2ⁿ⁻², e assim por
+        diante, até a última coluna que alterna a cada linha (V, F, V, F...).
+      </div>
+    </section>
+
+    <section id="conectivos" class="chapter">
+      <h2>4) Tabelas dos Conectivos</h2>
+
+      <h3>4.1 Conjunção (∧)</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P ∧ Q</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>V</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>V</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td>F</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Condição de verdade:</strong> P ∧ Q é verdadeiro se, e somente se, P e Q são ambos verdadeiros.</p>
+
+      <h3>4.2 Disjunção (∨)</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P ∨ Q</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>V</td><td>F</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>F</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>F</td><td>F</td><td class="fw-bold text-danger">F</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Condição de verdade:</strong> P ∨ Q é falso se, e somente se, P e Q são ambos falsos.</p>
+
+      <h3>4.3 Condicional (→)</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P → Q</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>V</td><td>F</td><td class="fw-bold text-danger">F</td></tr>
+            <tr><td>F</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>F</td><td>F</td><td class="fw-bold text-success">V</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Condição de verdade:</strong> P → Q é falso apenas quando P é verdadeiro e Q é falso.</p>
+      <div class="box info">
+        <strong>Equivalência útil:</strong> P → Q ≡ ¬P ∨ Q. Esta transformação é frequentemente usada em
+        implementação de regras condicionais em código.
+      </div>
+
+      <h3>4.4 Bicondicional (↔)</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P ↔ Q</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td class="fw-bold text-success">V</td></tr>
+            <tr><td>V</td><td>F</td><td>F</td></tr>
+            <tr><td>F</td><td>V</td><td>F</td></tr>
+            <tr><td>F</td><td>F</td><td class="fw-bold text-success">V</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Condição de verdade:</strong> P ↔ Q é verdadeiro quando P e Q possuem o mesmo valor lógico.</p>
+
+      <h3>4.5 Negação (¬)</h3>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered mini-table">
+          <thead class="table-light">
+            <tr><th>P</th><th>¬P</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>F</td></tr>
+            <tr><td>F</td><td>V</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="classificacao" class="chapter">
+      <h2>5) Classificação de Proposições</h2>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <div class="p-4 border border-success rounded bg-light h-100">
+            <h3 class="text-success fw-bold">Tautologia</h3>
+            <p>Proposição cujo valor lógico é <strong>sempre verdadeiro</strong>, independentemente dos valores das
+            variáveis.</p>
+            <p class="text-muted mb-1">Exemplo: P ∨ ¬P</p>
+            <div class="box good">
+              <strong>Identificação:</strong> coluna final contém apenas V.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 border border-danger rounded bg-light h-100">
+            <h3 class="text-danger fw-bold">Contradição</h3>
+            <p>Proposição cujo valor lógico é <strong>sempre falso</strong>, independentemente dos valores das
+            variáveis.</p>
+            <p class="text-muted mb-1">Exemplo: P ∧ ¬P</p>
+            <div class="box danger">
+              <strong>Identificação:</strong> coluna final contém apenas F.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-4 border border-warning rounded bg-light h-100">
+            <h3 class="text-warning fw-bold">Contingência</h3>
+            <p>Proposição que pode ser <strong>verdadeira ou falsa</strong>, dependendo dos valores das variáveis.</p>
+            <p class="text-muted mb-1">Exemplo: P ∧ Q</p>
+            <div class="box warn">
+              <strong>Identificação:</strong> coluna final contém V e F.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="mt-4">5.1 Procedimento de classificação</h3>
+      <ol>
+        <li>Construa a tabela verdade completa</li>
+        <li>Examine exclusivamente a coluna final</li>
+        <li>Aplique o critério:</li>
+        <ul>
+          <li>Apenas V → Tautologia</li>
+          <li>Apenas F → Contradição</li>
+          <li>V e F misturados → Contingência</li>
+        </ul>
+      </ol>
+    </section>
+
+    <section id="exemplos-guiados" class="chapter">
+      <h2>6) Exemplos Resolvidos</h2>
+
+      <h3>6.1 Exemplo 1: (P ∧ Q) ∨ ¬P</h3>
+      <p><strong>Passo 1 — Identificação:</strong> Variáveis P e Q → 2² = 4 linhas.</p>
+      <p><strong>Passo 2 — Construção:</strong></p>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P ∧ Q</th><th>¬P</th><th>(P ∧ Q) ∨ ¬P</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td>V</td><td>F</td><td><strong>V</strong></td></tr>
+            <tr><td>V</td><td>F</td><td>F</td><td>F</td><td><strong>F</strong></td></tr>
+            <tr><td>F</td><td>V</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>F</td><td>F</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Passo 3 — Classificação:</strong> Contingência (coluna final contém V e F).</p>
+
+      <h3>6.2 Exemplo 2: Equivalência entre P → Q e ¬P ∨ Q</h3>
+      <p><strong>Objetivo:</strong> Demonstrar que as fórmulas são logicamente equivalentes.</p>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>P → Q</th><th>¬P</th><th>¬P ∨ Q</th><th>(P → Q) ↔ (¬P ∨ Q)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>V</td><td>F</td><td>F</td><td>F</td><td>F</td><td><strong>V</strong></td></tr>
+            <tr><td>F</td><td>V</td><td>V</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Conclusão:</strong> A bicondicional é tautológica, portanto as fórmulas são equivalentes.</p>
+      <div class="box good">
+        <strong>Aplicação:</strong> Esta equivalência permite substituir condicionais por disjunções em linguagens
+        de programação que não possuem operador de implicação direta.
+      </div>
+
+      <h3>6.3 Exemplo 3: P ∧ (Q ∨ R)</h3>
+      <p><strong>Dimensão:</strong> 3 variáveis → 2³ = 8 linhas.</p>
+      <div class="table-wrap">
+        <table class="table table-striped table-bordered">
+          <thead class="table-light">
+            <tr><th>P</th><th>Q</th><th>R</th><th>Q ∨ R</th><th>P ∧ (Q ∨ R)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>V</td><td>V</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>V</td><td>V</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>V</td><td>F</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+            <tr><td>V</td><td>F</td><td>F</td><td>F</td><td><strong>F</strong></td></tr>
+            <tr><td>F</td><td>V</td><td>V</td><td>V</td><td><strong>F</strong></td></tr>
+            <tr><td>F</td><td>V</td><td>F</td><td>V</td><td><strong>F</strong></td></tr>
+            <tr><td>F</td><td>F</td><td>V</td><td>V</td><td><strong>F</strong></td></tr>
+            <tr><td>F</td><td>F</td><td>F</td><td>F</td><td><strong>F</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Classificação:</strong> Contingência.</p>
+    </section>
+
+    <section id="python" class="chapter">
+      <h2>7) Implementação em Python</h2>
+
+      <h3>7.1 Gerador para 2 variáveis</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python"># Tabela para (P and Q) or not P
+print("P | Q | Resultado")
+print("-" * 20)
+
+for p in [True, False]:
+    for q in [True, False]:
+        resultado = (p and q) or (not p)
+        print(f"{int(p)} | {int(q)} | {int(resultado)}")</code></pre>
+      <p><strong>Saída:</strong></p>
+      <pre class="bg-light text-dark p-3 border">P | Q | Resultado
+--------------------
+1 | 1 | 1
+1 | 0 | 0
+0 | 1 | 1
+0 | 0 | 1</pre>
+
+      <h3>7.2 Gerador para 3 variáveis</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python"># Tabela para P and (Q or R)
+print("P | Q | R | Resultado")
+print("-" * 28)
+
+for p in [True, False]:
+    for q in [True, False]:
+        for r in [True, False]:
+            resultado = p and (q or r)
+            print(f"{int(p)} | {int(q)} | {int(r)} | {int(resultado)}")</code></pre>
+
+      <h3>7.3 Classificador automático</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">def classificar_proposicao(resultados: list[bool]) -> str:
+    """Retorna 'Tautologia', 'Contradição' ou 'Contingência'."""
+    if all(resultados):
+        return "Tautologia"
+    elif not any(resultados):
+        return "Contradição"
+    else:
+        return "Contingência"
+
+# Exemplo
+resultados = [True, False, True, True]
+print(classificar_proposicao(resultados))  # Contingência</code></pre>
+
+      <h3>7.4 Gerador genérico com itertools</h3>
+      <pre class="bg-dark text-light p-3"><code class="language-python">from itertools import product
+
+def gerar_tabela_verdade(n: int, expressao: callable) -> None:
+    """
+    Gera tabela verdade para n variáveis.
+    
+    Args:
+        n: número de variáveis
+        expressao: função que recebe n booleanos e retorna um booleano
+    """
+    combinacoes = list(product([True, False], repeat=n))
+    
+    cabecalho = " | ".join([f"V{i}" for i in range(n)]) + " | Resultado"
+    print(cabecalho)
+    print("-" * len(cabecalho))
+    
+    resultados = []
+    for valores in combinacoes:
+        resultado = expressao(*valores)
+        resultados.append(resultado)
+        linha = " | ".join(str(int(v)) for v in valores)
+        print(f"{linha} | {int(resultado)}")
+    
+    print(f"\nClassificação: {classificar_proposicao(resultados)}")
+
+# Exemplo de uso:
+expressao = lambda p, q: (p and q) or (not p)
+gerar_tabela_verdade(2, expressao)</code></pre>
+
+      <div class="box info">
+        <strong>Nota:</strong> A função <code>itertools.product</code> gera o produto cartesiano automaticamente,
+        eliminando a necessidade de loops aninhados manuais.
+      </div>
+    </section>
+
+    <section id="dojô" class="dojo-section">
+      <h2><i class="fas fa-dojo me-2"></i>8) DOJÔ de Prática</h2>
+      <p>Sessão de exercícios de curta duração para consolidação do conteúdo. Cada kata deve ser resolvido em 3-5
+        minutos, seguido de correção coletiva.</p>
+
+      <div class="box">
+        <strong>Metodologia:</strong>
+        <ul class="mb-0 mt-2">
+          <li>Resolução individual do problema</li>
+          <li>Discussão em duplas (opcional)</li>
+          <li>Correção coletiva com justificativa formal</li>
+        </ul>
+      </div>
+
+      <h3 class="mt-4">Kata 1: Construção</h3>
+      <p>Construa a tabela verdade de <code>P ∨ ¬Q</code> e classifique.</p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <div class="table-wrap mt-2">
+          <table class="table table-striped table-bordered">
+            <thead class="table-light">
+              <tr><th>P</th><th>Q</th><th>¬Q</th><th>P ∨ ¬Q</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>V</td><td>V</td><td>F</td><td><strong>V</strong></td></tr>
+              <tr><td>V</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+              <tr><td>F</td><td>V</td><td>F</td><td><strong>F</strong></td></tr>
+              <tr><td>F</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Classificação:</strong> Contingência.</p>
+      </details>
+
+      <h3>Kata 2: Lei de De Morgan</h3>
+      <p>Verifique se <code>¬(P ∧ Q)</code> é equivalente a <code>¬P ∨ ¬Q</code>.</p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <div class="table-wrap mt-2">
+          <table class="table table-striped table-bordered">
+            <thead class="table-light">
+              <tr><th>P</th><th>Q</th><th>P∧Q</th><th>¬(P∧Q)</th><th>¬P</th><th>¬Q</th><th>¬P∨¬Q</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>V</td><td>V</td><td>V</td><td>F</td><td>F</td><td>F</td><td><strong>F</strong></td></tr>
+              <tr><td>V</td><td>F</td><td>F</td><td>V</td><td>F</td><td>V</td><td><strong>V</strong></td></tr>
+              <tr><td>F</td><td>V</td><td>F</td><td>V</td><td>V</td><td>F</td><td><strong>V</strong></td></tr>
+              <tr><td>F</td><td>F</td><td>F</td><td>V</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Conclusão:</strong> Colunas idênticas → equivalentes.</p>
+      </details>
+
+      <h3>Kata 3: Classificação Rápida</h3>
+      <p>Classifique sem construir a tabela: <code>(P ∧ ¬P) ∨ (Q ∨ ¬Q)</code></p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <p><strong>Análise:</strong></p>
+        <ul>
+          <li><code>P ∧ ¬P</code> é contradição (sempre F)</li>
+          <li><code>Q ∨ ¬Q</code> é tautologia (sempre V)</li>
+          <li>F ∨ V = V (sempre)</li>
+        </ul>
+        <p><strong>Classificação:</strong> Tautologia.</p>
+      </details>
+
+      <h3>Kata 4: Implementação</h3>
+      <p>Implemente em Python a tabela de <code>(P and Q) or (Q and R)</code>.</p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <pre class="bg-dark text-light p-3 mt-2"><code class="language-python">print("P | Q | R | Resultado")
+print("-" * 28)
+
+for p in [True, False]:
+    for q in [True, False]:
+        for r in [True, False]:
+            resultado = (p and q) or (q and r)
+            print(f"{int(p)} | {int(q)} | {int(r)} | {int(resultado)}")</code></pre>
+      </details>
+
+      <h3>Kata 5: Bicondicional</h3>
+      <p>Classifique: <code>(P → Q) ∧ (Q → P)</code></p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <p>Esta expressão define o bicondicional <code>P ↔ Q</code>.</p>
+        <div class="table-wrap mt-2">
+          <table class="table table-striped table-bordered">
+            <thead class="table-light">
+              <tr><th>P</th><th>Q</th><th>P→Q</th><th>Q→P</th><th>(P→Q)∧(Q→P)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>V</td><td>V</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+              <tr><td>V</td><td>F</td><td>F</td><td>V</td><td><strong>F</strong></td></tr>
+              <tr><td>F</td><td>V</td><td>V</td><td>F</td><td><strong>F</strong></td></tr>
+              <tr><td>F</td><td>F</td><td>V</td><td>V</td><td><strong>V</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>Classificação:</strong> Contingência.</p>
+      </details>
+
+      <h3>Kata 6: Modelagem</h3>
+      <p>Traduza: "Se está chovendo e não tenho guarda-chuva, então me molho".</p>
+      <details class="box info">
+        <summary><strong>Solução</strong></summary>
+        <pre class="bg-dark text-light p-3 mt-2"><code class="language-python">chovendo = True
+tenho_guarda_chuva = False
+
+me_molho = chovendo and (not tenho_guarda_chuva)
+print(me_molho)  # True</code></pre>
+      </details>
+    </section>
+
+    <section id="erros" class="chapter">
+      <h2>9) Erros Comuns</h2>
+
+      <div class="box danger">
+        <strong>1. Número incorreto de linhas</strong>
+        <p class="mb-0 mt-2">Verifique sempre: 2ⁿ linhas. Um erro frequente é usar 6 linhas para 3 variáveis
+        (o correto é 8).</p>
+      </div>
+
+      <div class="box danger">
+        <strong>2. Sequência de preenchimento incorreta</strong>
+        <p class="mb-0 mt-2">Siga o padrão: primeira coluna alterna a cada 2ⁿ⁻¹, segunda a cada 2ⁿ⁻², etc.</p>
+      </div>
+
+      <div class="box danger">
+        <strong>3. Interpretação equivocada do condicional</strong>
+        <p class="mb-0 mt-2">P → Q é falso <strong>apenas</strong> quando P=V e Q=F. Nos demais casos, é verdadeiro.</p>
+      </div>
+
+      <div class="box danger">
+        <strong>4. Negligenciar parênteses</strong>
+        <p class="mb-0 mt-2"><code>(P ∧ Q) ∨ R</code> ≠ <code>P ∧ (Q ∨ R)</code>. A ordem de avaliação altera o resultado.</p>
+      </div>
+
+      <div class="box danger">
+        <strong>5. Classificar com base em colunas intermediárias</strong>
+        <p class="mb-0 mt-2">A classificação considera <strong>exclusivamente</strong> a coluna final.</p>
+      </div>
+
+      <div class="box warn">
+        <strong>Recomendação:</strong> Construa colunas intermediárias para cada subexpressão. Isso facilita a
+        depuração e reduz erros de avaliação.
+      </div>
+    </section>
+
+    <section id="exercicios" class="chapter">
+      <h2>10) Exercícios</h2>
+
+      <h3>Nível Básico (1-5)</h3>
+      <ol>
+        <li>Construa a tabela de <code>P ∧ ¬Q</code> e classifique.</li>
+        <li>Construa a tabela de <code>¬(P ∨ Q)</code> e classifique.</li>
+        <li>Quantas linhas tem a tabela de <code>P → (Q ∨ R)</code>? Construa-a.</li>
+        <li>Classifique: <code>P ∨ ¬P</code></li>
+        <li>Classifique: <code>P ∧ ¬P</code></li>
+      </ol>
+
+      <h3>Nível Intermediário (6-12)</h3>
+      <ol start="6">
+        <li>Construa e classifique: <code>(P ∧ Q) → R</code></li>
+        <li>Verifique a equivalência: <code>(P → Q) ≡ (¬Q → ¬P)</code> (contrapositiva)</li>
+        <li>Construa: <code>P ↔ (Q ∧ R)</code></li>
+        <li>Classifique: <code>(P ∨ Q) ∧ (¬P ∨ ¬Q)</code></li>
+        <li>Implemente em Python: <code>(P or Q) and (not P or R)</code></li>
+        <li>Traduza: "Se tenho dinheiro e tempo, então viajo ou estudo".</li>
+        <li>Compare: <code>¬(P → Q)</code> e <code>P ∧ ¬Q</code></li>
+      </ol>
+
+      <h3>Nível Avançado (13-17)</h3>
+      <ol start="13">
+        <li>Prove: <code>((P → Q) ∧ (Q → R)) → (P → R)</code> (silogismo hipotético)</li>
+        <li>Verifique: <code>P ∧ (Q ∨ R) ≡ (P ∧ Q) ∨ (P ∧ R)</code> (distributividade)</li>
+        <li>Implemente um classificador automático para 2 variáveis em Python.</li>
+        <li>Construa e classifique: <code>(P ↔ Q) ↔ (R ↔ S)</code></li>
+        <li>Prove: <code>¬(P ↔ Q) ≡ P ↔ ¬Q</code></li>
+      </ol>
+
+      <h3>Desafios (18-20)</h3>
+      <ol start="18">
+        <li><strong>Lógica:</strong> A afirma "B é inocente", B afirma "C é culpado", C diz "A mente". Apenas um
+        fala a verdade. Determine o culpado modelando com proposições.</li>
+        <li><strong>Python:</strong> Implemente um gerador que aceita expressões como string (ex:
+        <code>"(P and Q) or R"</code>) usando <code>eval()</code>.</li>
+        <li><strong>Python:</strong> Crie um verificador de tautologias que retorna <code>True</code> se a
+        expressão for tautológica.</li>
+      </ol>
+
+      <div class="box good">
+        <strong>Orientação:</strong> Dedique aproximadamente 15 minutos por exercício intermediário. Use Python
+        para validação das respostas.
+      </div>
+    </section>
+
+    <section class="chapter">
+      <h2>Resumo</h2>
+      <div class="table-wrap">
+        <table class="table table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>Conceito</th>
+              <th>Regra</th>
+              <th>Python</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Linhas</td>
+              <td>2ⁿ</td>
+              <td><code>2 ** n</code></td>
+            </tr>
+            <tr>
+              <td>Conjunção</td>
+              <td>V sse ambos V</td>
+              <td><code>P and Q</code></td>
+            </tr>
+            <tr>
+              <td>Disjunção</td>
+              <td>F sse ambos F</td>
+              <td><code>P or Q</code></td>
+            </tr>
+            <tr>
+              <td>Condicional</td>
+              <td>F sse P=V, Q=F</td>
+              <td><code>(not P) or Q</code></td>
+            </tr>
+            <tr>
+              <td>Bicondicional</td>
+              <td>V sse iguais</td>
+              <td><code>P == Q</code></td>
+            </tr>
+            <tr>
+              <td>Tautologia</td>
+              <td>Coluna final = V</td>
+              <td><code>all(resultados)</code></td>
+            </tr>
+            <tr>
+              <td>Contradição</td>
+              <td>Coluna final = F</td>
+              <td><code>not any(resultados)</code></td>
+            </tr>
+            <tr>
+              <td>Contingência</td>
+              <td>Coluna final = V e F</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="footer-actions">
+      <a class="btn btn-danger btn-sm" href="../slide_tabelasverdade.html"><i class="fas fa-desktop me-1"></i> Ver
+        slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+
+</html>

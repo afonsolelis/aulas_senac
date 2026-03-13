@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introdução à Lógica e Ferramentas - Introdução à Lógica</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+</head>
+
+<body class="slide-body">
+
+  <div class="slide-container">
+
+    <!-- Back Button -->
+    <a href="../home_logica.html"
+      class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Capa -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Introdução à Lógica e Ferramentas</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <h1 class="display-4 fw-bold mb-5 text-dark">Agenda de Hoje (3h)</h1>
+      <div class="row">
+        <div class="col-md-9 mx-auto">
+          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-users text-primary me-3"></i> Icebreaker & "O Robô Humano"
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-brain text-success me-3"></i> Pensamento Computacional (Deep Dive)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-puzzle-piece text-danger me-3"></i> Desafio de Lógica: A Travessia
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-project-diagram text-warning me-3"></i> Fluxogramas: Símbolos e Decisões
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-tools text-info me-3"></i> Ferramentas: Draw.io & Colab
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-laptop-code text-dark me-3"></i> Projeto Final: O Algoritmo do Caixa Eletrônico
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Icebreaker -->
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <h2 class="display-4 fw-bold mb-4 text-primary">Quem somos?</h2>
+        <div class="row justify-content-center g-4">
+          <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-5 bg-white rounded-4">
+              <i class="fas fa-comments fa-4x text-info mb-4"></i>
+              <h3 class="fw-bold mb-4">Apresentação Relâmpago (30s)</h3>
+              <ul class="list-unstyled text-start fs-4 mt-3 ps-5">
+                <li class="mb-3">📛 <strong>Nome e Idade</strong></li>
+                <li class="mb-3">🎯 <strong>Por que TI?</strong> (Games? Dinheiro? Curiosidade?)</li>
+                <li class="mb-3">🍕 <strong>Sua comida favorita</strong> (Para quebrarmos o gelo)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3b: Pesquisa Codigo Fonte 2025 -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-4 px-4 py-2 rounded-pill">Participação</span>
+        <h2 class="display-4 fw-bold mb-4 text-dark">Pesquisa Codigo Fonte 2025</h2>
+        <p class="lead text-muted mb-5">Reserve alguns minutos para responder. Sua opinião faz diferença.</p>
+        <a class="btn btn-lg btn-primary rounded-pill px-5 py-3 shadow-sm"
+          href="https://pesquisa.codigofonte.com.br/2025" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-external-link-alt me-2"></i> Acessar a Pesquisa
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide 4: Avaliação -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Avaliacao</span>
+        <h2 class="display-4 fw-bold mb-4 text-dark">Como vai ser a nossa avaliacao</h2>
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4">
+              <svg viewBox="0 0 900 300" width="100%" height="300" role="img"
+                aria-label="Roadmap de avaliacao com datas e pesos">
+                <defs>
+                  <linearGradient id="bgGlow" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#f8fafc" />
+                    <stop offset="100%" stop-color="#eef2f7" />
+                  </linearGradient>
+                  <linearGradient id="roadline" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#0d6efd" />
+                    <stop offset="50%" stop-color="#20c997" />
+                    <stop offset="100%" stop-color="#fd7e14" />
+                  </linearGradient>
+                  <filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000000"
+                      flood-opacity="0.18" />
+                  </filter>
+                </defs>
+
+                <rect x="24" y="26" width="852" height="248" rx="24" fill="url(#bgGlow)" />
+                <path d="M80 160 C 240 110, 390 210, 520 150 S 760 120, 820 160" fill="none"
+                  stroke="url(#roadline)" stroke-width="8" stroke-linecap="round" />
+                <path d="M80 160 C 240 110, 390 210, 520 150 S 760 120, 820 160" fill="none"
+                  stroke="#ffffff" stroke-width="2" stroke-dasharray="6 10" opacity="0.7" />
+
+                <!-- Prova 1 -->
+                <circle cx="170" cy="145" r="20" fill="#0d6efd" filter="url(#softShadow)" />
+                <circle cx="170" cy="145" r="10" fill="#ffffff" />
+                <rect x="85" y="60" width="170" height="70" rx="14" fill="#0d6efd" />
+                <text x="170" y="88" text-anchor="middle" font-size="18" fill="#ffffff"
+                  font-family="Arial, sans-serif">Prova 1</text>
+                <text x="170" y="112" text-anchor="middle" font-size="14" fill="#e9ecef"
+                  font-family="Arial, sans-serif">30% da nota</text>
+                <text x="170" y="205" text-anchor="middle" font-size="16" fill="#1f2937"
+                  font-family="Arial, sans-serif">23 de marco</text>
+
+                <!-- Prova 2 -->
+                <circle cx="460" cy="165" r="20" fill="#20c997" filter="url(#softShadow)" />
+                <circle cx="460" cy="165" r="10" fill="#ffffff" />
+                <rect x="375" y="60" width="170" height="70" rx="14" fill="#20c997" />
+                <text x="460" y="88" text-anchor="middle" font-size="18" fill="#ffffff"
+                  font-family="Arial, sans-serif">Prova 2</text>
+                <text x="460" y="112" text-anchor="middle" font-size="14" fill="#e9ecef"
+                  font-family="Arial, sans-serif">30% da nota</text>
+                <text x="460" y="225" text-anchor="middle" font-size="16" fill="#1f2937"
+                  font-family="Arial, sans-serif">13 de abril</text>
+
+                <!-- Trabalho + prova oral -->
+                <circle cx="735" cy="145" r="20" fill="#fd7e14" filter="url(#softShadow)" />
+                <circle cx="735" cy="145" r="10" fill="#ffffff" />
+                <rect x="620" y="60" width="230" height="70" rx="14" fill="#fd7e14" />
+                <text x="735" y="86" text-anchor="middle" font-size="16" fill="#ffffff"
+                  font-family="Arial, sans-serif">Trabalho + prova oral</text>
+                <text x="735" y="112" text-anchor="middle" font-size="14" fill="#fff4e6"
+                  font-family="Arial, sans-serif">40% da nota</text>
+                <text x="735" y="205" text-anchor="middle" font-size="16" fill="#1f2937"
+                  font-family="Arial, sans-serif">11 de maio</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: O que é Lógica? -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">Lógica: Humana vs. Computacional</h2>
+        <div class="row align-items-center">
+          <div class="col-md-5">
+            <div class="p-5 border border-dark-subtle rounded-4 bg-white shadow-sm mb-4">
+              <h2 class="fw-bold text-secondary mb-3"><i class="fas fa-user mb-2 d-block"></i>Aristóteles</h2>
+              <p class="fs-4 fst-italic">"Todo homem é mortal. Sócrates é homem. Logo, Sócrates é mortal."</p>
+            </div>
+          </div>
+          <div class="col-md-2 text-center">
+            <h1 class="fw-bold text-dark">VS</h1>
+          </div>
+          <div class="col-md-5">
+            <div class="p-5 border border-primary rounded-4 bg-primary-subtle shadow-sm mb-4">
+              <h2 class="fw-bold text-primary mb-3"><i class="fas fa-robot mb-2 d-block"></i>Computador</h2>
+              <p class="fs-4 font-monospace">IF (Socrates.isHuman) {<br> Socrates.isMortal = true;<br>}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Atividade Robô Humano -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger text-white fs-5 mb-4 px-4 py-2 rounded-pill">Dinâmica em Grupo</span>
+        <h2 class="display-3 fw-bold mb-5 text-dark">O Robô Humano 🤖</h2>
+
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <div class="card p-5 border-0 shadow-lg bg-light text-start">
+              <h4 class="mb-4">Instruções:</h4>
+              <ol class="fs-4">
+                <li class="mb-3">Eu (Professor) sou um robô.</li>
+                <li class="mb-3">Minha bateria está acabando e preciso beber água.</li>
+                <li class="mb-3"><strong>Vocês devem me dar comandos.</strong></li>
+              </ol>
+              <div class="alert alert-warning mt-4 text-center">
+                <i class="fas fa-exclamation-triangle me-2"></i> Atenção: Eu executo <strong>exatamente</strong> (e
+                literalmente) o que for dito!
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Pensamento Computacional (Intro) -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h2 class="display-4 fw-bold mb-5 text-dark">Pensamento Computacional</h2>
+        <p class="lead mb-5 text-muted">Como pensar como um programador sênior em 4 passos.</p>
+        <div class="row g-4">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-hover p-4 bg-white rounded-4">
+              <i class="fas fa-chart-pie fa-3x text-warning mb-3"></i>
+              <h4 class="fw-bold">Decomposição</h4>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-hover p-4 bg-white rounded-4">
+              <i class="fas fa-fingerprint fa-3x text-info mb-3"></i>
+              <h4 class="fw-bold">Padrões</h4>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-hover p-4 bg-white rounded-4">
+              <i class="fas fa-eye-slash fa-3x text-success mb-3"></i>
+              <h4 class="fw-bold">Abstração</h4>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-hover p-4 bg-white rounded-4">
+              <i class="fas fa-list-ol fa-3x text-danger mb-3"></i>
+              <h4 class="fw-bold">Algoritmos</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Decomposição (Exemplo) -->
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-warning"><i class="fas fa-chart-pie me-3"></i>Decomposição</h2>
+        <p class="fs-4 mb-5">Problema Grande: <strong>Organizar um Churrasco para 50 pessoas.</strong></p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div class="d-flex justify-content-between text-start">
+              <div class="card p-3 border-secondary" style="width: 30%;">
+                <h5 class="fw-bold text-danger"><i class="fas fa-drumstick-bite me-2"></i>Comida</h5>
+                <ul class="small">
+                  <li>Carne</li>
+                  <li>Pão de Alho</li>
+                  <li>Salada</li>
+                </ul>
+              </div>
+              <div class="card p-3 border-secondary" style="width: 30%;">
+                <h5 class="fw-bold text-info"><i class="fas fa-beer me-2"></i>Bebida</h5>
+                <ul class="small">
+                  <li>Refrigerante</li>
+                  <li>Suco</li>
+                  <li>Gelo</li>
+                </ul>
+              </div>
+              <div class="card p-3 border-secondary" style="width: 30%;">
+                <h5 class="fw-bold text-success"><i class="fas fa-map-marker-alt me-2"></i>Logística</h5>
+                <ul class="small">
+                  <li>Local</li>
+                  <li>Mesas</li>
+                  <li>Música</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-5 text-muted">Dividir para conquistar!</p>
+      </div>
+    </div>
+
+    <!-- Slide 8: Abstração (Exemplo) -->
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-success"><i class="fas fa-eye-slash me-3"></i>Abstração</h2>
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <img
+              src="https://mobilidade.estadao.com.br/wp-content/uploads/2025/06/Captura-de-tela-2025-06-23-134033.png.webp"
+              class="img-fluid rounded shadow" alt="Mapa Metrô Real (Google Maps)">
+            <p class="small mt-2 text-danger">Realidade (Ruas e Caos)</p>
+          </div>
+          <div class="col-md-6">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/London_Underground_Overground_DLR_Crossrail_map.svg/1024px-London_Underground_Overground_DLR_Crossrail_map.svg.png"
+              class="img-fluid rounded shadow" alt="Mapa Metrô Simplificado">
+            <p class="small mt-2 text-success">Abstração (Foco no importante)</p>
+          </div>
+        </div>
+        <p class="mt-4 fs-4 bg-white p-3 rounded shadow-sm">Abstrair é ignorar os detalhes irrelevantes (curvas dos
+          túneis) e focar no que importa (as estações e conexões).</p>
+      </div>
+    </div>
+
+    <!-- Slide 9: Desafio Lógica (Rio) -->
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Desafio Hard 🤯</span>
+        <h2 class="display-4 fw-bold mb-5 text-dark">A Travessia do Rio</h2>
+
+        <div class="row g-4 align-items-center">
+          <div class="col-md-5 text-start">
+            <p class="fs-5">Você precisa atravessar um rio com:</p>
+            <ul class="fs-4 fw-bold text-primary">
+              <li>🐺 Um Lobo</li>
+              <li>🐐 Uma Cabra</li>
+              <li>🥬 Um Repolho</li>
+            </ul>
+            <p class="fs-5 mt-4"><strong>Regras:</strong></p>
+            <ul class="text-danger small">
+              <li>O barco só aguenta VOCÊ + 1 ITEM.</li>
+              <li>Se ficar sozinho, o Lobo come a Cabra.</li>
+              <li>Se ficar sozinha, a Cabra come o Repolho.</li>
+            </ul>
+          </div>
+          <div class="col-md-7">
+            <div class="card p-5 border-0 shadow-lg bg-light text-center">
+              <h3 class="mb-4">Como você faz a travessia sem ninguém morrer?</h3>
+              <button class="btn btn-dark btn-lg mt-3"
+                onclick="this.nextElementSibling.classList.remove('d-none'); this.classList.add('d-none');">Ver
+                Solução</button>
+              <div class="d-none mt-4 text-start small border-top pt-3 animate__animated animate__fadeIn">
+                <ol>
+                  <li>Leva a <strong>Cabra</strong>. (Lobo fica com Repolho - OK)</li>
+                  <li>Volta sozinho.</li>
+                  <li>Leva o <strong>Lobo</strong>.</li>
+                  <li>Volta com a <strong>Cabra</strong>! (Gênio!)</li>
+                  <li>Deixa a Cabra, leva o <strong>Repolho</strong>.</li>
+                  <li>Volta sozinho.</li>
+                  <li>Leva a <strong>Cabra</strong>.</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Algoritmos -->
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Algo...ritmos!</h2>
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <div class="card p-4 border-0 bg-white shadow-sm">
+              <h4 class="fw-bold mb-3">Definição Técnica</h4>
+              <p>"Uma sequência finita de instruções bem definidas e não ambíguas."</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card p-4 border-0 bg-warning-subtle shadow-sm">
+              <h4 class="fw-bold mb-3">Definição Prática</h4>
+              <p>"Uma receita de bolo que funciona sempre, se você seguir os passos."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Fluxogramas Teoria -->
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <h2 class="display-4 fw-bold mb-5 text-dark">Fluxogramas</h2>
+        <p class="lead mb-5">A linguagem visual dos algoritmos. Padrão Universal.</p>
+
+        <div class="row justify-content-center g-4">
+          <div class="col-md-3">
+            <div
+              class="p-4 border border-2 border-dark rounded-pill bg-light h-100 d-flex flex-column justify-content-center align-items-center">
+              <span class="fw-bold fs-5">Início / Fim</span>
+              <small class="text-muted mt-2">Terminador</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="p-4 border border-2 border-dark bg-info-subtle h-100 d-flex flex-column justify-content-center align-items-center"
+              style="transform: skew(-10deg);">
+              <span class="fw-bold fs-5" style="transform: skew(10deg);">Entrada / Saída</span>
+              <small class="text-muted mt-2" style="transform: skew(10deg);">Ler dados / Escrever tela</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div
+              class="p-4 border border-2 border-dark bg-white h-100 d-flex flex-column justify-content-center align-items-center">
+              <span class="fw-bold fs-5">Processo</span>
+              <small class="text-muted mt-2">Cálculos / Ações</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="d-flex justify-content-center align-items-center h-100">
+              <div
+                class="p-4 border border-2 border-dark bg-warning h-100 d-flex flex-column justify-content-center align-items-center aspect-ratio-1"
+                style="transform: rotate(45deg); width: 150px; height: 150px;">
+                <span class="fw-bold fs-5" style="transform: rotate(-45deg);">Decisão</span>
+                <small class="text-dark mt-2" style="transform: rotate(-45deg);">Sim / Não</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Fluxograma Simples -->
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">Exemplo 1: Tomada de Decisão</h2>
+        <h4 class="mb-5 text-primary">"Levo ou não o guarda-chuva?"</h4>
+
+        <div class="d-flex flex-column align-items-center font-monospace">
+          <div class="badge bg-dark rounded-pill fs-5 mb-2 px-4 py-2">Início</div>
+          <i class="fas fa-arrow-down mb-2"></i>
+
+          <div class="p-3 bg-white border border-dark mb-2" style="transform: skew(-10deg);">Olhar para o céu</div>
+          <i class="fas fa-arrow-down mb-2"></i>
+
+          <div class="bg-warning border border-dark p-4 position-relative"
+            style="clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); width: 200px; height: 100px; display: flex; align-items: center; justify-content: center;">
+            <span class="fw-bold">Está Chovendo?</span>
+          </div>
+
+          <div class="d-flex justify-content-between w-50 mt-2" style="max-width: 400px;">
+            <div class="text-center w-50 pe-3">
+              <span class="text-success fw-bold">Sim</span>
+              <i class="fas fa-arrow-down d-block text-success"></i>
+              <div class="p-3 border border-dark bg-light mt-2">Pegar Guarda-chuva</div>
+            </div>
+            <div class="text-center w-50 ps-3">
+              <span class="text-danger fw-bold">Não</span>
+              <i class="fas fa-arrow-down d-block text-danger"></i>
+              <div class="p-3 border border-dark bg-light mt-2">Pegar Óculos de Sol</div>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <i class="fas fa-arrow-down"></i>
+            <br>
+            <div class="badge bg-dark rounded-pill fs-5 mt-2 px-4 py-2">Sair de Casa (Fim)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Fluxograma Login (Loop) -->
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo 2: Loops (Repetição)</h2>
+        <h4 class="mb-4 text-primary">"Login no Instagram"</h4>
+
+        <div class="card p-4 border bg-light mx-auto" style="max-width: 800px;">
+          <div class="d-flex flex-column align-items-center font-monospace small">
+            <div class="badge bg-secondary rounded-pill mb-2">Início</div>
+            <i class="fas fa-arrow-down"></i>
+
+            <div class="p-2 border bg-white mb-2">Digitar Senha</div>
+            <i class="fas fa-arrow-down"></i>
+
+            <div class="d-flex align-items-center">
+              <div class="bg-warning border p-3 d-flex align-items-center justify-content-center"
+                style="clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); width: 120px; height: 80px;">
+                <strong>Senha Correta?</strong>
+              </div>
+              <!-- Linha do Não (Loop) -->
+              <div class="ms-3 d-flex align-items-center">
+                <span class="text-danger me-2">Não</span>
+                <div
+                  style="width: 20px; height: 100px; border-top: 2px solid red; border-right: 2px solid red; border-bottom: 2px solid red; border-left: 0; margin-left: -10px; margin-top: -60px;">
+                </div>
+                <i class="fas fa-arrow-left text-danger" style="margin-left: -5px; margin-top: -120px;"></i>
+              </div>
+            </div>
+
+            <div class="mt-2 text-center">
+              <span class="text-success d-block">Sim</span>
+              <i class="fas fa-arrow-down text-success"></i>
+              <div class="p-2 border bg-success text-white mt-1">Entrar no App</div>
+              <i class="fas fa-arrow-down"></i>
+              <div class="badge bg-secondary rounded-pill mt-2">Fim</div>
+            </div>
+          </div>
+          <p class="mt-4 text-muted">A repetição (tenta novamente) acontece enquanto a condição for "Não".</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Ferramentas -->
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">Ferramentas de Trabalho</h2>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 p-5 border-0 shadow bg-white">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Google_Colaboratory_SVG_Logo.svg"
+                height="80" class="mx-auto mb-3" alt="Colab">
+              <h3 class="fw-bold">Google Colab</h3>
+              <p>Onde vamos escrever código Python.</p>
+              <a href="#" class="btn btn-outline-primary mt-3">Link da Turma</a>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 p-5 border-0 shadow bg-white">
+              <img src="https://avatars.githubusercontent.com/u/17257962?s=280&v=4" height="80" class="mx-auto mb-3"
+                alt="Draw.io">
+              <h3 class="fw-bold">Draw.io (Diagrams.net)</h3>
+              <p>Onde vamos desenhar nossos fluxogramas.</p>
+              <a href="https://app.diagrams.net/" target="_blank" class="btn btn-outline-warning mt-3">Acessar Agora</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Atividade Final - Instruções -->
+    <div class="slide" id="slide-17">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-4 mb-4 px-5 py-3 rounded-pill">Desafio Final 🏆</span>
+        <h1 class="display-4 fw-bold mb-4 text-dark">O Algoritmo do Caixa Eletrônico</h1>
+
+        <div class="row text-start mt-5 g-5">
+          <div class="col-md-6">
+            <h4 class="text-dark bg-warning-subtle p-2 d-inline-block rounded mb-3">Missão</h4>
+            <p class="fs-5">Em duplas, usem o <strong>Draw.io</strong> para criar o fluxograma completo de um saque no
+              caixa eletrônico.</p>
+
+            <h4 class="text-dark bg-info-subtle p-2 d-inline-block rounded mb-3 mt-3">Requisitos Obrigatórios</h4>
+            <ul class="fs-5">
+              <li><i class="fas fa-key me-2 text-danger"></i> Pedir Senha (com Loop de erro).</li>
+              <li><i class="fas fa-money-bill-wave me-2 text-success"></i> Verificar Saldo (Decisão).</li>
+              <li><i class="fas fa-check-circle me-2 text-primary"></i> Entregar Dinheiro (Apenas se tiver saldo).</li>
+              <li><i class="fas fa-receipt me-2 text-muted"></i> Imprimir Comprovante (Opcional).</li>
+            </ul>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-0 bg-dark text-white p-4">
+              <h4 class="mb-3"><i class="fas fa-upload me-2"></i> Entrega</h4>
+              <ol class="fs-5">
+                <li class="mb-3">Desem no Draw.io.</li>
+                <li class="mb-3">Exportem como Imagem (PNG).</li>
+                <li class="mb-3">Preparem-se para explicar a lógica para a turma em 2 minutos.</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Boss Fight - Carro Autônomo -->
+    <div class="slide" id="slide-18">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-warning fs-4 mb-4 px-5 py-3 rounded-pill border border-warning">BOSS FIGHT
+          ☠️</span>
+        <h1 class="display-4 fw-bold mb-4 text-dark">Desafio do Dia: O Carro Autônomo</h1>
+
+        <p class="lead mb-5">Vocês agora são o "cérebro" de um carro autônomo. Crie um algoritmo para atravessar um
+          cruzamento.</p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-5">
+            <div class="card bg-light border-0 shadow-sm p-4 text-start h-100">
+              <h4 class="text-danger fw-bold mb-3"><i class="fas fa-exclamation-triangle me-2"></i>Variáveis de Entrada
+              </h4>
+              <ul class="list-unstyled fs-5">
+                <li class="mb-2"><i class="fas fa-traffic-light me-2 text-muted"></i> <strong>Semáforo:</strong> Verde,
+                  Amarelo ou Vermelho?</li>
+                <li class="mb-2"><i class="fas fa-walking me-2 text-muted"></i> <strong>Pedestre:</strong> Na faixa ou
+                  esperando?</li>
+                <li class="mb-2"><i class="fas fa-ambulance me-2 text-muted"></i> <strong>Emergência:</strong> Sirene
+                  ligada?</li>
+                <li><i class="fas fa-car-crash me-2 text-muted"></i> <strong>Carro da frente:</strong> Freou
+                  bruscamente?</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card bg-dark text-white border-0 shadow-lg p-4 h-100">
+              <h4 class="text-warning fw-bold mb-3"><i class="fas fa-brain me-2"></i>Regra de Ouro</h4>
+              <p class="fs-4 fst-italic">"A vida humana tem prioridade absoluta sobre as leis de trânsito."</p>
+              <hr class="border-secondary">
+              <p class="small text-white-50">Exemplo: Se o sinal estiver verde, mas uma criança correr para a rua, o
+                carro DEVE parar.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-5 d-inline-block shadow-sm">
+          <i class="fas fa-pencil-alt me-2"></i> Rascunhem a lógica no papel ou no Draw.io em <strong>5
+            minutos</strong>!
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Encerramento -->
+    <div class="slide" id="slide-19">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Missão Cumprida! 🚀</h1>
+        <p class="lead text-dark mb-5">Hoje vocês aprenderam a pensar como programadores.</p>
+        <div class="d-flex justify-content-center gap-3">
+          <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para
+            Aulas</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 19</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      Introdução à Lógica - Aula 01
+    </div>
+
+    <a href="material/material_aula01-introducao-logica.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

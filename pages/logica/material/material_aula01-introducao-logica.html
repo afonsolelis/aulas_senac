@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Didático - Aula 01 - Introdução à Lógica e Ferramentas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --brand-dark: #1f2937;
+      --brand-blue: #0d6efd;
+      --brand-soft: #f8fafc;
+      --brand-border: #e5e7eb;
+      --brand-text: #334155;
+    }
+
+    body {
+      background: #f3f6fb;
+      color: var(--brand-text);
+      line-height: 1.75;
+    }
+
+    .page-wrap {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    .hero {
+      background: linear-gradient(120deg, #111827, #1e3a8a);
+      color: #fff;
+      border-radius: 14px;
+      padding: 2rem;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, .14);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero h1 {
+      font-size: 2rem;
+      font-weight: 800;
+    }
+
+    .hero p {
+      margin-bottom: 0;
+      color: #dbeafe;
+    }
+
+    .top-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .chapter {
+      background: #fff;
+      border: 1px solid var(--brand-border);
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .chapter h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--brand-dark);
+      margin-bottom: .75rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+
+    .chapter h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--brand-dark);
+      margin-top: 1rem;
+      margin-bottom: .5rem;
+    }
+
+    .box {
+      border-radius: 10px;
+      padding: .9rem 1rem;
+      margin: .8rem 0;
+      border-left: 4px solid;
+      background: #f8fafc;
+    }
+
+    .box.info {
+      border-color: #0ea5e9;
+      background: #ecfeff;
+    }
+
+    .box.warn {
+      border-color: #f59e0b;
+      background: #fffbeb;
+    }
+
+    .box.good {
+      border-color: #22c55e;
+      background: #f0fdf4;
+    }
+
+    .toc {
+      background: #fff;
+      border: 1px solid var(--brand-border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+
+    .toc a {
+      color: #1d4ed8;
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table td,
+    table th {
+      vertical-align: top;
+      min-width: 150px;
+    }
+
+    .footer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page-wrap">
+    <header class="hero">
+      <p class="mb-2"><span class="badge bg-light text-dark">Introdução à Lógica</span> <span
+          class="badge bg-danger">Aula 01</span></p>
+      <h1>Introdução à Lógica e Ferramentas</h1>
+      <p>Material didático detalhado baseado no slide da Aula 1, estruturado como capítulo de livro para estudo
+        autônomo.</p>
+    </header>
+
+    <div class="top-actions">
+      <a class="btn btn-danger btn-sm" href="../slide_introducaoalogicaeferramentas.html"><i
+          class="fas fa-desktop me-1"></i> Ver slide</a>
+      <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i
+          class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+    </div>
+
+    <section class="toc" aria-label="Sumário">
+      <h2 class="h6 fw-bold mb-2">Sumário</h2>
+      <ol class="mb-0">
+        <li><a href="#objetivos">Objetivos da aula e visão geral</a></li>
+        <li><a href="#fundamentos">O que é lógica: da vida real para o computador</a></li>
+        <li><a href="#robot">Dinâmica do robô humano e precisão de comandos</a></li>
+        <li><a href="#pc">Pensamento computacional: os 4 pilares</a></li>
+        <li><a href="#desafio-rio">Desafio da travessia do rio</a></li>
+        <li><a href="#algoritmo">Algoritmos: definição, propriedades e boas práticas</a></li>
+        <li><a href="#fluxograma">Fluxogramas: símbolos, decisões e repetição</a></li>
+        <li><a href="#ferramentas">Ferramentas da disciplina: Colab e Draw.io</a></li>
+        <li><a href="#projeto">Projeto final da aula: caixa eletrônico</a></li>
+        <li><a href="#boss">Desafio extra: carro autônomo e ética</a></li>
+        <li><a href="#resumo">Resumo final e roteiro de estudo</a></li>
+      </ol>
+    </section>
+
+    <section id="objetivos" class="chapter">
+      <h2>1) Objetivos da aula e visão geral</h2>
+      <p>A primeira aula foi desenhada para alinhar turma, método e expectativa. O objetivo principal não é “decorar
+        conceitos”, mas iniciar uma nova forma de pensar: sair de instruções vagas e passar para passos explícitos,
+        verificáveis e reproduzíveis.</p>
+
+      <h3>Agenda trabalhada no slide</h3>
+      <ul>
+        <li>Integração da turma e quebra de gelo.</li>
+        <li>Pensamento computacional (visão introdutória e aplicada).</li>
+        <li>Desafio de lógica (travessia do rio).</li>
+        <li>Fluxogramas (símbolos, decisão e repetição).</li>
+        <li>Ferramentas práticas (Draw.io e Colab).</li>
+        <li>Atividade de fechamento com problema realista.</li>
+      </ul>
+
+      <div class="box info">
+        <strong>Ideia central da aula:</strong> programar é construir raciocínio estruturado antes de escrever código.
+      </div>
+    </section>
+
+    <section id="fundamentos" class="chapter">
+      <h2>2) O que é lógica: da vida real para o computador</h2>
+      <p>Lógica é um conjunto de regras para construir conclusões corretas a partir de premissas. Em termos simples,
+        lógica responde: “Se isso é verdade, o que necessariamente vem depois?”</p>
+
+      <h3>Exemplo clássico (humano)</h3>
+      <p>“Todo homem é mortal. Sócrates é homem. Logo, Sócrates é mortal.”</p>
+
+      <h3>Equivalente computacional</h3>
+      <pre class="bg-dark text-light p-3 rounded"><code>if (Socrates.isHuman) {
+  Socrates.isMortal = true;
+}</code></pre>
+
+      <p>No computador, toda decisão precisa ser transformada em condição explícita. Não existe “intuição de contexto”
+        como no ser humano. O computador executa regras, não interpreta intenções implícitas.</p>
+
+      <div class="box warn">
+        <strong>Erro comum de iniciante:</strong> assumir que o programa “entende” o que você quis dizer. O programa só
+        entende o que foi especificado sem ambiguidade.
+      </div>
+    </section>
+
+    <section id="robot" class="chapter">
+      <h2>3) Dinâmica do robô humano: por que precisão importa</h2>
+      <p>Na atividade, o professor assume o papel de robô e executa literalmente os comandos dados pela turma para
+        “beber água”. Esse exercício mostra, de forma concreta, o problema da ambiguidade.</p>
+
+      <h3>Comando ruim vs. comando bom</h3>
+      <div class="table-wrap">
+        <table class="table table-bordered table-striped">
+          <thead class="table-light">
+            <tr>
+              <th>Comando ruim</th>
+              <th>Problema</th>
+              <th>Comando melhor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>“Vai lá e pega água.”</td>
+              <td>Não define direção, distância, objeto exato, pré-condições.</td>
+              <td>“Dê 3 passos para frente, vire 90° à direita, avance 2 passos...”</td>
+            </tr>
+            <tr>
+              <td>“Bebe água.”</td>
+              <td>Sem copo na mão, sem abrir recipiente, sem ordem operacional.</td>
+              <td>“Pegue o copo, aproxime da boca, incline o copo e engula.”</td>
+            </tr>
+            <tr>
+              <td>“Se der errado, tenta de novo.”</td>
+              <td>Sem critério de erro, sem limite de tentativas.</td>
+              <td>“Repita no máximo 3 vezes enquanto senha incorreta.”</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Conceitos que essa dinâmica ensina</h3>
+      <ul>
+        <li>Sequência lógica de ações.</li>
+        <li>Pré-condições para executar uma etapa.</li>
+        <li>Detalhamento operacional (quem faz, quando faz, como faz).</li>
+        <li>Tratamento de erro e repetição.</li>
+      </ul>
+
+      <div class="box good">
+        Quanto mais específica for sua instrução, menor a chance de comportamento inesperado no algoritmo.
+      </div>
+    </section>
+
+    <section id="pc" class="chapter">
+      <h2>4) Pensamento computacional: os 4 pilares</h2>
+      <p>Pensamento computacional é uma metodologia de resolução de problemas. Ele não depende de linguagem de
+        programação; pode ser aplicado em qualquer área que exija estrutura e decisão.</p>
+
+      <h3>4.1 Decomposição</h3>
+      <p>É dividir um problema grande em partes menores e mais controláveis.</p>
+      <p><strong>Exemplo do slide:</strong> organizar um churrasco para 50 pessoas, separando em blocos:</p>
+      <ul>
+        <li>Comida.</li>
+        <li>Bebida.</li>
+        <li>Logística.</li>
+      </ul>
+      <p>Quando você decompõe, reduz complexidade e facilita distribuição de tarefas.</p>
+
+      <h3>4.2 Reconhecimento de padrões</h3>
+      <p>É identificar semelhanças entre problemas diferentes para reaproveitar soluções. Exemplo: login de sistema,
+        senha de Wi-Fi e PIN bancário seguem estrutura parecida de autenticação.</p>
+
+      <h3>4.3 Abstração</h3>
+      <p>É filtrar o que importa e ignorar detalhes irrelevantes para o objetivo atual. O slide compara mapa real com
+        mapa simplificado de metrô: o desenho exato da rua é menos importante que conexões entre estações.</p>
+
+      <h3>4.4 Algoritmos</h3>
+      <p>É transformar a solução em sequência clara e finita de passos executáveis.</p>
+
+      <div class="box info">
+        <strong>Fórmula prática:</strong> decompor → observar padrões → abstrair → formalizar em algoritmo.
+      </div>
+    </section>
+
+    <section id="desafio-rio" class="chapter">
+      <h2>5) Desafio da travessia do rio (lobo, cabra e repolho)</h2>
+      <p>Esse problema clássico ensina planejamento sob restrições. Você controla um barco com capacidade para “você + 1
+        item”. Restrições:</p>
+      <ul>
+        <li>Lobo com cabra sem supervisão: cabra é comida.</li>
+        <li>Cabra com repolho sem supervisão: repolho é comido.</li>
+      </ul>
+
+      <h3>Lógica da solução</h3>
+      <ol>
+        <li>Levar a cabra.</li>
+        <li>Voltar sozinho.</li>
+        <li>Levar o lobo.</li>
+        <li>Voltar com a cabra.</li>
+        <li>Levar o repolho.</li>
+        <li>Voltar sozinho.</li>
+        <li>Levar a cabra.</li>
+      </ol>
+
+      <h3>O que aprender com isso</h3>
+      <ul>
+        <li>Restrições mudam o caminho ótimo.</li>
+        <li>Às vezes é necessário “desfazer” parcialmente um avanço para viabilizar o resultado final.</li>
+        <li>Planejamento não linear é comum em algoritmos reais.</li>
+      </ul>
+    </section>
+
+    <section id="algoritmo" class="chapter">
+      <h2>6) Algoritmos: definição, propriedades e boas práticas</h2>
+      <p><strong>Definição técnica:</strong> sequência finita de instruções bem definidas e não ambíguas para resolver um
+        problema.</p>
+      <p><strong>Definição prática:</strong> receita que, quando seguida corretamente, produz resultado previsível.</p>
+
+      <h3>Propriedades essenciais de um bom algoritmo</h3>
+      <ul>
+        <li><strong>Finitude:</strong> deve terminar.</li>
+        <li><strong>Precisão:</strong> cada passo deve ser claro.</li>
+        <li><strong>Entrada:</strong> dados necessários devem estar definidos.</li>
+        <li><strong>Saída:</strong> resultado esperado deve estar definido.</li>
+        <li><strong>Efetividade:</strong> passos precisam ser executáveis.</li>
+      </ul>
+
+      <h3>Exemplo simples (linguagem natural estruturada)</h3>
+      <pre class="bg-dark text-light p-3 rounded"><code>Algoritmo: Verificar maioridade
+1. Ler idade.
+2. Se idade >= 18, então:
+   2.1 Exibir "Maior de idade".
+3. Senão:
+   3.1 Exibir "Menor de idade".
+4. Fim.</code></pre>
+
+      <div class="box warn">
+        <strong>Atenção:</strong> algoritmo não é sinônimo de código. Código é uma implementação do algoritmo em uma
+        linguagem específica.
+      </div>
+    </section>
+
+    <section id="fluxograma" class="chapter">
+      <h2>7) Fluxogramas: símbolos, decisões e repetição</h2>
+      <p>Fluxograma é a representação visual de um algoritmo. Ele facilita validação da lógica antes da codificação.</p>
+
+      <h3>7.1 Símbolos básicos do slide</h3>
+      <ul>
+        <li><strong>Terminador (oval):</strong> início/fim.</li>
+        <li><strong>Entrada/Saída (paralelogramo):</strong> leitura ou exibição de dados.</li>
+        <li><strong>Processo (retângulo):</strong> ação/cálculo interno.</li>
+        <li><strong>Decisão (losango):</strong> condição com ramificações (sim/não).</li>
+        <li><strong>Seta:</strong> direção do fluxo lógico.</li>
+      </ul>
+
+      <h3>7.2 Exemplo de decisão: guarda-chuva</h3>
+      <p>Pergunta central: “Está chovendo?”</p>
+      <ul>
+        <li>Se <strong>sim</strong>: pegar guarda-chuva.</li>
+        <li>Se <strong>não</strong>: pegar óculos de sol.</li>
+      </ul>
+      <p>Esse é o padrão mais comum de <strong>desvio condicional</strong>.</p>
+
+      <h3>7.3 Exemplo de repetição: login</h3>
+      <p>No fluxo de login, a condição “senha correta?” controla um <strong>loop</strong>:</p>
+      <ul>
+        <li>Enquanto a resposta for “não”, volta para digitar senha.</li>
+        <li>Quando for “sim”, entra no app e finaliza.</li>
+      </ul>
+
+      <h3>Erros comuns em fluxograma</h3>
+      <ul>
+        <li>Setas sem direção clara.</li>
+        <li>Decisão com apenas uma saída.</li>
+        <li>Fluxo que nunca termina.</li>
+        <li>Mistura de ação com condição no mesmo bloco.</li>
+      </ul>
+
+      <div class="box good">
+        Faça sempre uma “simulação manual” do fluxograma com dados de teste para verificar se o fluxo está consistente.
+      </div>
+    </section>
+
+    <section id="ferramentas" class="chapter">
+      <h2>8) Ferramentas da disciplina</h2>
+
+      <h3>8.1 Google Colab</h3>
+      <p>Ambiente online para escrever e executar Python no navegador, sem instalação local obrigatória. Na disciplina,
+        será usado para testar lógica com código.</p>
+      <ul>
+        <li>Vantagem: acesso rápido e colaboração.</li>
+        <li>Uso típico: exercícios em Python e experimentos de algoritmo.</li>
+      </ul>
+
+      <h3>8.2 Draw.io (Diagrams.net)</h3>
+      <p>Ferramenta de diagramação para construir fluxogramas com símbolos padrão.</p>
+      <ul>
+        <li>Vantagem: organização visual da lógica antes do código.</li>
+        <li>Uso típico: modelar decisões, loops e sequência de processos.</li>
+      </ul>
+
+      <div class="box info">
+        Estratégia recomendada: desenhe primeiro no Draw.io, valide com colega/professor e só depois implemente no
+        Colab.
+      </div>
+    </section>
+
+    <section id="projeto" class="chapter">
+      <h2>9) Projeto final da aula: algoritmo do caixa eletrônico</h2>
+      <p>Problema proposto: construir, em dupla, um fluxograma de saque no caixa eletrônico com requisitos obrigatórios.</p>
+
+      <h3>Requisitos obrigatórios do slide</h3>
+      <ul>
+        <li>Pedir senha com loop de erro.</li>
+        <li>Verificar saldo com decisão.</li>
+        <li>Entregar dinheiro apenas quando houver saldo suficiente.</li>
+        <li>Comprovante opcional.</li>
+      </ul>
+
+      <h3>Modelo conceitual sugerido (texto)</h3>
+      <ol>
+        <li>Início.</li>
+        <li>Solicitar senha.</li>
+        <li>Senha correta?
+          <ul>
+            <li>Não: informar erro e voltar para solicitar senha.</li>
+            <li>Sim: seguir para valor de saque.</li>
+          </ul>
+        </li>
+        <li>Ler valor desejado.</li>
+        <li>Saldo suficiente?
+          <ul>
+            <li>Não: informar saldo insuficiente e encerrar/retornar ao menu.</li>
+            <li>Sim: efetivar saque.</li>
+          </ul>
+        </li>
+        <li>Perguntar se deseja comprovante.</li>
+        <li>Se sim, imprimir comprovante.</li>
+        <li>Fim.</li>
+      </ol>
+
+      <h3>Checklist de qualidade da atividade</h3>
+      <ul>
+        <li>Todos os losangos possuem ramo “sim” e “não”.</li>
+        <li>Nenhum caminho fica sem saída.</li>
+        <li>Existe início e fim explícitos.</li>
+        <li>A regra de negócio “não sacar sem saldo” está garantida.</li>
+      </ul>
+    </section>
+
+    <section id="boss" class="chapter">
+      <h2>10) Desafio extra: carro autônomo e prioridade ética</h2>
+      <p>No desafio avançado, a turma modela decisões de um carro em cruzamento com várias entradas:</p>
+      <ul>
+        <li>Estado do semáforo.</li>
+        <li>Presença de pedestre.</li>
+        <li>Sirene de emergência.</li>
+        <li>Frenagem brusca do carro à frente.</li>
+      </ul>
+
+      <p>A regra de ouro apresentada no slide foi: <strong>a vida humana tem prioridade absoluta sobre regras de
+          trânsito.</strong></p>
+
+      <h3>Por que esse desafio é importante</h3>
+      <ul>
+        <li>Mostra conflitos de decisão no mundo real.</li>
+        <li>Exige hierarquia de regras (nem toda regra tem o mesmo peso).</li>
+        <li>Introduz raciocínio de segurança e ética em algoritmos.</li>
+      </ul>
+
+      <div class="box warn">
+        Em sistemas críticos, não basta “funcionar”. O algoritmo precisa ser seguro, justificável e auditável.
+      </div>
+    </section>
+
+    <section id="resumo" class="chapter">
+      <h2>11) Resumo final e roteiro de estudo</h2>
+      <h3>O que você deve dominar após esta aula</h3>
+      <ul>
+        <li>Diferença entre lógica intuitiva (humana) e lógica formal (computacional).</li>
+        <li>Importância de instruções não ambíguas.</li>
+        <li>Quatro pilares do pensamento computacional.</li>
+        <li>Leitura e criação de fluxogramas simples com decisão e repetição.</li>
+        <li>Uso básico de Draw.io e visão inicial de Colab.</li>
+      </ul>
+
+      <h3>Roteiro prático de revisão (30 a 40 minutos)</h3>
+      <ol>
+        <li>Releia as seções 2, 4 e 7 deste material.</li>
+        <li>Desenhe no papel o fluxograma de “login com 3 tentativas”.</li>
+        <li>No Draw.io, modele o algoritmo de saque com comprovante opcional.</li>
+        <li>Explique sua lógica em voz alta em até 2 minutos (treino de prova oral).</li>
+      </ol>
+
+      <h3>Exercícios de fixação</h3>
+      <p><strong>Exercício 1:</strong> escreva um algoritmo para “preparar café” sem ambiguidade.</p>
+      <p><strong>Exercício 2:</strong> transforme esse algoritmo em fluxograma com pelo menos 1 decisão.</p>
+      <p><strong>Exercício 3:</strong> adicione um loop de erro (ex.: falta de água/filtro) e ajuste o fluxo.</p>
+
+      <div class="box good">
+        Se você consegue ensinar esse conteúdo para outra pessoa com clareza, você realmente aprendeu a base da lógica.
+      </div>
+
+      <h3>Atividades envolvidas</h3>
+      <p>Dinâmica de abertura, exposição dialogada, desafios de raciocínio, construção de fluxogramas e prática guiada em dupla.</p>
+
+      <h3>Observações da aula</h3>
+      <p>Registrar participação, principais dúvidas e desempenho na explicação oral da lógica desenvolvida em sala.</p>
+
+      <div class="footer-actions">
+        <a class="btn btn-danger btn-sm" href="../slide_introducaoalogicaeferramentas.html"><i
+            class="fas fa-desktop me-1"></i> Ver slide</a>
+        <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i
+            class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+      </div>
+    </section>
+  </main>
+</body>
+
+</html>

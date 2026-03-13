@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loops e Funções - Introdução à Lógica</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <!-- Prism JS for Code Highlighting -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+</head>
+
+<body class="slide-body">
+
+  <div class="slide-container">
+
+    <!-- Back Button -->
+    <a href="../home_logica.html"
+      class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Capa -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
+        <h1 class="display-3 fw-bold mb-4 text-black">Loops e Funções</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <h1 class="display-4 fw-bold mb-5 text-dark">Automatizando Tudo</h1>
+      <div class="row">
+        <div class="col-md-9 mx-auto">
+          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-sync text-primary me-3"></i> O Poder da Repetição (Loops)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-redo text-success me-3"></i> O comando <strong>While</strong> (Enquanto)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-list-ol text-danger me-3"></i> O comando <strong>For</strong> (Para cada)
+            </li>
+            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+              <i class="fas fa-cube text-warning me-3"></i> Funções (D.R.Y. - Don't Repeat Yourself)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 3: Bart Simpson (Loops) -->
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">Para que repetir?</h2>
+
+        <div class="row w-75 mx-auto">
+          <div class="col-md-12">
+            <div class="card bg-success text-white p-4 shadow-lg border-0">
+              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
+              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
+              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
+              <p class="fs-4 fst-italic">...</p>
+            </div>
+            <div class="mt-4">
+              <pre><code class="language-python">
+# O jeito Programador (1 segundo)
+for i in range(100):
+    print("Eu não vou desperdiçar giz.")
+</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: While -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">While (Enquanto)</h2>
+        <p class="fs-4">Repete ENQUANTO a condição for verdadeira.</p>
+
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">
+bateria = 10
+
+while bateria > 0:
+    print(f"Bateria: {bateria}% - Jogando...")
+    bateria = bateria - 1
+
+print("Desligando...")
+</code></pre>
+          </div>
+          <div class="col-md-6">
+            <div class="alert alert-danger shadow-sm">
+              <h4 class="fw-bold"><i class="fas fa-skull-crossbones me-2"></i>Cuidado com o Loop Infinito!</h4>
+              <p>Se a bateria nunca diminuir, o programa nunca para (Dormammu, eu vim barganhar!).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: For -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">For (Para Cada)</h2>
+        <p class="fs-4">Percorre uma lista ou um intervalo definido.</p>
+
+        <div class="row align-items-center">
+          <div class="col-md-6 text-start">
+            <pre><code class="language-python">
+# Contar até 5
+for numero in range(1, 6):
+    print(numero)
+
+# Lista de Compras
+frutas = ["Maçã", "Banana", "Uva"]
+for item in frutas:
+    print(f"Comprei: {item}")
+</code></pre>
+          </div>
+          <div class="col-md-6">
+            <div class="card bg-light border-0 p-4">
+              <p class="lead">Perfeito para quando você sabe <strong>quantas vezes</strong> quer repetir ou tem uma
+                <strong>lista</strong> de itens.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Tabela Verdade Automática -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">Hack</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Gerando Tabela Verdade</h2>
+        <p class="mb-4">E se usássemos Python para resolver Lógica?</p>
+
+        <div class="text-start mx-auto" style="max-width: 600px;">
+          <pre><code class="language-python">
+print("A  |  B  |  A and B")
+print("-" * 20)
+
+opcoes = [True, False]
+
+for a in opcoes:
+    for b in opcoes:
+        resultado = a and b
+        print(f"{a} | {b} | {resultado}")
+</code></pre>
+        </div>
+        <p class="text-muted mt-3 small">Isso testa todas as combinações (V-V, V-F, F-V, F-F)!</p>
+      </div>
+    </div>
+
+    <!-- Slide 7: Funções -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Funções (Def)</h2>
+        <p class="fs-4 text-muted">Aprenda a criar seus próprios comandos.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-8 text-start">
+            <pre><code class="language-python">
+# Definindo a função (Receita)
+def somar(numero1, numero2):
+    total = numero1 + numero2
+    return total
+
+# Usando a função
+resultado = somar(10, 50)
+print(resultado) # 60
+</code></pre>
+          </div>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-4 mx-auto">
+            <div class="card bg-white shadow-sm border-info border-top-0 border-end-0 border-bottom-0 border-5 p-3">
+              <strong>Vantagem:</strong> Organização e Reúso. Se precisar somar em 10 lugares diferentes, basta chamar a
+              função.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Slide 8: Encerramento -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Fim da Aula 08</h1>
+        <p class="lead mb-5">Loops e Funções são o coração da automação.</p>
+
+        <div class="d-flex justify-content-center gap-3">
+          <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar ao Menu</a>
+          <!-- Removed next button -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+      Introdução à Lógica - Aula 08
+    </div>
+
+    <a href="material/material_aula08-loops-funcoes.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+
+  <script src="../../js/standard_slides.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
