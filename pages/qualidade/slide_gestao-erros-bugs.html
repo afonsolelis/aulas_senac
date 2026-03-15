@@ -94,6 +94,42 @@
             background: #fff;
         }
 
+        .focus-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 1px solid #dee2e6;
+            border-radius: 18px;
+            padding: 1.35rem;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+            text-align: left;
+            height: 100%;
+        }
+
+        .focus-card h4 {
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .attribute-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 14px;
+            padding: 1rem;
+            text-align: left;
+            height: 100%;
+        }
+
+        .attribute-card small {
+            color: #6c757d;
+        }
+
+        .question-box {
+            background: linear-gradient(135deg, #eef6ff 0%, #ffffff 100%);
+            border: 1px solid #b6d4fe;
+            border-radius: 16px;
+            padding: 1.25rem;
+            text-align: left;
+        }
+
         .flow-card {
             padding: 1.25rem 1rem;
             text-align: center;
@@ -185,7 +221,7 @@
         </div>
 
         <div class="slide" id="slide-2">
-            <h1 class="display-4 fw-bold mb-5 text-dark">Agenda</h1>
+                <h1 class="display-4 fw-bold mb-5 text-dark">Agenda</h1>
             <div class="row">
                 <div class="col-md-9 mx-auto">
                     <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
@@ -193,13 +229,22 @@
                             <i class="fas fa-book text-danger me-3"></i> SWEBOK: erro, defeito e falha
                         </li>
                         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-compass text-dark me-3"></i> SEBoK: qualidade, stakeholders e evidência
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
                             <i class="fas fa-bug text-warning me-3"></i> Como registrar bugs com qualidade
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-shield-halved text-info me-3"></i> Verificação, não conformidade e atributos de qualidade
                         </li>
                         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
                             <i class="fas fa-filter text-primary me-3"></i> Severidade, prioridade e triagem
                         </li>
                         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
                             <i class="fas fa-arrows-rotate text-success me-3"></i> Ciclo de vida do defeito e métricas
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-screwdriver-wrench text-secondary me-3"></i> Causa raiz e melhoria contínua
                         </li>
                         <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
                             <i class="fas fa-graduation-cap text-dark me-3"></i> O que a prova já mostrou sobre risco
@@ -210,6 +255,44 @@
         </div>
 
         <div class="slide" id="slide-3">
+            <div class="text-center slide-content">
+                <span class="badge bg-secondary text-white fs-6 mb-4 px-4 py-2 rounded-pill">Base Conceitual</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">SWEBOK x SEBoK: Papéis Complementares</h2>
+
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-md-6">
+                        <div class="focus-card h-100">
+                            <h4 class="text-danger"><i class="fas fa-book me-2"></i>SWEBOK</h4>
+                            <p class="text-muted mb-3">Organiza o corpo de conhecimento de engenharia de software com foco direto em teste, qualidade, defeitos, incidentes e medição.</p>
+                            <ul class="small mb-0">
+                                <li>`faults vs. failures`</li>
+                                <li>`test incident reporting`</li>
+                                <li>classificação de defeitos</li>
+                                <li>métricas de qualidade e teste</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="focus-card h-100">
+                            <h4 class="text-primary"><i class="fas fa-compass me-2"></i>SEBoK</h4>
+                            <p class="text-muted mb-3">Amplia a análise para sistemas, stakeholders, atributos de qualidade, gestão da qualidade, risco e verificação baseada em evidência.</p>
+                            <ul class="small mb-0">
+                                <li>`fitness for use`</li>
+                                <li>quality management</li>
+                                <li>system verification</li>
+                                <li>decisão orientada por risco</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary mt-4 text-start mx-auto" style="max-width: 940px;">
+                    <strong>Leitura didática:</strong> o SWEBOK ajuda a nomear e operar o defeito; o SEBoK ajuda a entender por que esse defeito importa para o sistema, para o negócio e para os stakeholders.
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-4">
             <div class="text-center slide-content">
                 <span class="badge bg-dark text-white fs-6 mb-4 px-4 py-2 rounded-pill">SWEBOK v4</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">Erro, Defeito e Falha Não São Sinônimos</h2>
@@ -249,7 +332,7 @@
             </div>
         </div>
 
-        <div class="slide" id="slide-4">
+        <div class="slide" id="slide-5">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo Prático de Encadeamento</h2>
                 <p class="lead text-muted mb-4">O bug não nasce na tela. Ele nasce antes e aparece depois.</p>
@@ -287,7 +370,47 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-5">
+        <div class="slide" id="slide-6">
+            <div class="text-center slide-content">
+                <span class="badge bg-primary text-white fs-6 mb-4 px-4 py-2 rounded-pill">SEBoK</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Qualidade É Fitness for Use</h2>
+                <p class="lead text-muted mb-4">Ausência de bug não basta. O sistema precisa servir ao uso real e aos stakeholders certos.</p>
+
+                <div class="row g-3 align-items-stretch">
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-danger">Disponibilidade</h6>
+                            <small>Se cai em homologação por 2h, já há evidência de risco operacional.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-primary">Correção</h6>
+                            <small>Frete zerado para todos quebra a regra de negócio e gera prejuízo.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-success">Desempenho</h6>
+                            <small>Fluxo funcional ainda pode falhar no RNF de tempo de resposta.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-dark">Segurança</h6>
+                            <small>Persistência de erro, bloqueio e auditoria também são qualidade.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question-box mx-auto mt-4" style="max-width: 940px;">
+                    <h5 class="fw-bold text-dark mb-2">Pergunta correta na gestão de bugs</h5>
+                    <p class="mb-0 text-muted">Além de "o que quebrou?", pergunte "qual atributo de qualidade foi afetado?" e "qual stakeholder absorve esse impacto?". Isso muda a prioridade, o discurso técnico e a decisão de release.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-7">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Como Registrar um Bug de Forma Útil</h2>
                 <p class="lead text-muted mb-4">SWEBOK e prática de mercado convergem: sem evidência e reprodutibilidade, o bug vira ruído.</p>
@@ -341,7 +464,41 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-6">
+        <div class="slide" id="slide-8">
+            <div class="text-center slide-content">
+                <span class="badge bg-info text-dark fs-6 mb-4 px-4 py-2 rounded-pill">System Verification</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Evidência Objetiva e Não Conformidade</h2>
+                <p class="lead text-muted mb-4">No SEBoK, verificar é comparar o resultado real com uma referência e provar isso com evidência.</p>
+
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-dark">1. Referência</h4>
+                            <p class="small mb-0">Requisito, critério de aceite, contrato de API, política ou RNF formal.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-dark">2. Observação</h4>
+                            <p class="small mb-0">Resultado executado no sistema, com contexto, ambiente e massa de dados.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-dark">3. Evidência</h4>
+                            <p class="small mb-0">Log, print, vídeo, payload, consulta ou métrica que demonstre a não conformidade.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="definition-box mx-auto mt-4" style="max-width: 920px;">
+                    <div class="term">Triagem melhor</div>
+                    <p class="mb-0">Quando a equipe trabalha com referência + observação + evidência, ela reduz disputa subjetiva, fecha bugs com mais segurança e retesta com critério técnico.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-9">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Severidade x Prioridade</h2>
                 <p class="lead text-muted mb-4">Impacto técnico não é a mesma coisa que urgência de negócio.</p>
@@ -393,7 +550,7 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-7">
+        <div class="slide" id="slide-10">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Triagem de Defeitos</h2>
                 <p class="lead text-muted mb-4">Triagem existe para transformar uma lista de falhas em decisão operacional.</p>
@@ -440,7 +597,7 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-8">
+        <div class="slide" id="slide-11">
             <div class="text-center slide-content">
                 <span class="badge bg-primary text-white fs-6 mb-4 px-4 py-2 rounded-pill">Defect Tracking</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">Ciclo de Vida do Bug</h2>
@@ -507,7 +664,7 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-9">
+        <div class="slide" id="slide-12">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">Métricas que Fazem Sentido</h2>
                 <p class="lead text-muted mb-4">Métrica boa apoia decisão; métrica solta engana.</p>
@@ -577,7 +734,46 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-10">
+        <div class="slide" id="slide-13">
+            <div class="text-center slide-content">
+                <span class="badge bg-warning text-dark fs-6 mb-4 px-4 py-2 rounded-pill">Melhoria Contínua</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Causa Raiz, Não Só Correção Pontual</h2>
+                <p class="lead text-muted mb-4">Fechar bug resolve o sintoma. Aprender com o bug melhora o sistema.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-danger">Requisito ambíguo</h6>
+                            <small>Time entendeu diferente e codificou regra errada.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-primary">Teste fraco</h6>
+                            <small>Faltaram valores de fronteira, cenários vazios ou RNFs.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-success">Ambiente instável</h6>
+                            <small>Homologação, dados ou integrações geram ruído recorrente.</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="attribute-card h-100">
+                            <h6 class="fw-bold text-dark">Processo falho</h6>
+                            <small>Critério de entrada ruim, revisão fraca ou fechamento prematuro.</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning mt-4 text-start mx-auto" style="max-width: 940px;">
+                    <strong>Leitura alinhada ao SEBoK:</strong> gestão da qualidade madura não apenas corrige defeitos; ela mede padrões, identifica causas recorrentes e ajusta o processo para prevenir reincidência.
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-14">
             <div class="text-center slide-content">
                 <h2 class="display-5 fw-bold mb-4 text-dark">O que a Prova Já Indicou</h2>
                 <p class="lead text-muted mb-4">Os comentários das avaliações desta semana reforçam três padrões de erro recorrentes.</p>
@@ -612,7 +808,7 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-11">
+        <div class="slide" id="slide-15">
             <div class="text-center slide-content">
                 <span class="badge bg-danger fs-5 mb-4 px-4 py-2 rounded-pill">Checklist de Time</span>
                 <h2 class="display-5 fw-bold mb-4 text-dark">Boas Práticas Para Não Afogar o Projeto</h2>
@@ -644,7 +840,7 @@ if (tentativas >= 5) {
             </div>
         </div>
 
-        <div class="slide" id="slide-12">
+        <div class="slide" id="slide-16">
             <div class="text-center slide-content">
                 <h1 class="display-4 fw-bold mb-4 text-dark">Dúvidas?</h1>
                 <p class="lead text-dark mb-4">Próximo passo em aula: transformar falha observada em bug rastreável e priorizado.</p>
@@ -652,7 +848,7 @@ if (tentativas >= 5) {
                     <a href="material/material_aula05-gestao-erros-bugs.html" class="btn btn-dark btn-lg rounded-pill px-5">Material Escrito</a>
                     <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
                 </div>
-                <p class="text-muted mt-4 mb-0">Referências centrais: SWEBOK v4, Software Testing e Software Quality.</p>
+                <p class="text-muted mt-4 mb-0">Referências centrais: SWEBOK v4, Software Testing e Software Quality; SEBoK, Quality Management e System Verification.</p>
             </div>
         </div>
 
