@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Erros e Bugs - Qualidade de Software</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/slides.css">
+    <style>
+        .concept-card,
+        .metric-card,
+        .triage-card,
+        .flow-card,
+        .exam-card {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+            height: 100%;
+        }
+
+        .concept-card {
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .concept-icon {
+            width: 68px;
+            height: 68px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.6rem;
+            color: #fff;
+        }
+
+        .icon-error { background: linear-gradient(135deg, #fd7e14, #dc3545); }
+        .icon-defect { background: linear-gradient(135deg, #0d6efd, #6610f2); }
+        .icon-failure { background: linear-gradient(135deg, #198754, #20c997); }
+
+        .definition-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-left: 5px solid #dc3545;
+            padding: 1rem 1.25rem;
+            border-radius: 0 12px 12px 0;
+            text-align: left;
+        }
+
+        .definition-box .term {
+            font-weight: 700;
+            color: #dc3545;
+        }
+
+        .mini-source {
+            font-size: 0.78rem;
+            color: #6c757d;
+        }
+
+        .example-code {
+            background: #1a1a2e;
+            color: #e2e8f0;
+            border-radius: 14px;
+            padding: 1rem 1.25rem;
+            font-family: "Courier New", monospace;
+            font-size: 0.88rem;
+            text-align: left;
+            white-space: pre-wrap;
+        }
+
+        .comparison-table,
+        .metric-table {
+            width: 100%;
+            font-size: 0.92rem;
+        }
+
+        .comparison-table th,
+        .metric-table th {
+            background: #1a1a2e;
+            color: #fff;
+            padding: 0.85rem;
+            text-align: left;
+        }
+
+        .comparison-table td,
+        .metric-table td {
+            padding: 0.85rem;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: top;
+            text-align: left;
+            background: #fff;
+        }
+
+        .flow-card {
+            padding: 1.25rem 1rem;
+            text-align: center;
+        }
+
+        .flow-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.85rem;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .arrow-col {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 1.3rem;
+        }
+
+        .triage-card {
+            padding: 1.4rem;
+            text-align: left;
+        }
+
+        .matrix-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe5d0 100%);
+            border: 1px solid #f5c08a;
+            border-radius: 18px;
+            padding: 1.5rem;
+            text-align: left;
+        }
+
+        .metric-card {
+            padding: 1.25rem;
+            text-align: left;
+        }
+
+        .exam-card {
+            padding: 1.25rem;
+            text-align: left;
+        }
+
+        .pill-label {
+            display: inline-block;
+            padding: 0.35rem 0.7rem;
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        .bg-soft-danger { background: #f8d7da; color: #842029; }
+        .bg-soft-warning { background: #fff3cd; color: #664d03; }
+        .bg-soft-primary { background: #dbeafe; color: #0c4a6e; }
+        .bg-soft-success { background: #d1e7dd; color: #0f5132; }
+
+        .kpi-number {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="slide-body">
+
+    <div class="slide-container">
+
+        <a href="../home_qualidade.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Voltar
+        </a>
+
+        <div class="slide active" id="slide-1">
+            <div class="glass-cover text-center">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac Logo" height="80" class="mb-4">
+                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
+                <h1 class="display-4 fw-bold mb-4 text-black">Gestão de Erros e Bugs</h1>
+                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <p class="lead text-dark mb-3">Do conceito no SWEBOK até a triagem, correção, verificação e fechamento.</p>
+                <h3 class="fw-normal text-dark">Professor Afonso</h3>
+                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-2">
+            <h1 class="display-4 fw-bold mb-5 text-dark">Agenda</h1>
+            <div class="row">
+                <div class="col-md-9 mx-auto">
+                    <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-book text-danger me-3"></i> SWEBOK: erro, defeito e falha
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-bug text-warning me-3"></i> Como registrar bugs com qualidade
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-filter text-primary me-3"></i> Severidade, prioridade e triagem
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-arrows-rotate text-success me-3"></i> Ciclo de vida do defeito e métricas
+                        </li>
+                        <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                            <i class="fas fa-graduation-cap text-dark me-3"></i> O que a prova já mostrou sobre risco
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-3">
+            <div class="text-center slide-content">
+                <span class="badge bg-dark text-white fs-6 mb-4 px-4 py-2 rounded-pill">SWEBOK v4</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Erro, Defeito e Falha Não São Sinônimos</h2>
+
+                <div class="row g-4 justify-content-center align-items-stretch">
+                    <div class="col-md-4">
+                        <div class="concept-card">
+                            <div class="concept-icon icon-error"><i class="fas fa-person-circle-xmark"></i></div>
+                            <h4 class="fw-bold text-dark">Erro</h4>
+                            <p class="mb-2 text-muted">Ação humana incorreta: entendimento errado do requisito, regra codificada de forma errada, configuração incorreta.</p>
+                            <div class="pill-label bg-soft-warning">Origem humana</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="concept-card">
+                            <div class="concept-icon icon-defect"><i class="fas fa-code-branch"></i></div>
+                            <h4 class="fw-bold text-dark">Defeito / Bug</h4>
+                            <p class="mb-2 text-muted">Problema introduzido no artefato: código, requisito, script de teste, configuração ou documentação.</p>
+                            <div class="pill-label bg-soft-primary">Presente no produto</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="concept-card">
+                            <div class="concept-icon icon-failure"><i class="fas fa-triangle-exclamation"></i></div>
+                            <h4 class="fw-bold text-dark">Falha</h4>
+                            <p class="mb-2 text-muted">Comportamento observável incorreto em execução: valor errado, travamento, lentidão, indisponibilidade.</p>
+                            <div class="pill-label bg-soft-danger">Visível em runtime</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="definition-box mx-auto mt-4" style="max-width: 900px;">
+                    <div class="term">Encadeamento clássico</div>
+                    <p class="mb-1">Erro humano gera um defeito no artefato; quando executado em certas condições, esse defeito se manifesta como falha.</p>
+                    <div class="mini-source">Base conceitual alinhada ao SWEBOK: Software Testing Fundamentals e Software Quality.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-4">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Exemplo Prático de Encadeamento</h2>
+                <p class="lead text-muted mb-4">O bug não nasce na tela. Ele nasce antes e aparece depois.</p>
+
+                <div class="row align-items-center g-4">
+                    <div class="col-md-6">
+                        <div class="example-code">
+if (tentativas >= 5) {
+    bloquearConta();
+}
+
+// requisito correto:
+// bloquear apenas APOS a 5a falha, ou seja, na 6a tentativa
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-start">
+                        <div class="definition-box mb-3">
+                            <div class="term">Erro</div>
+                            <p class="mb-0">Leitura equivocada do requisito de bloqueio.</p>
+                        </div>
+                        <div class="definition-box mb-3" style="border-left-color:#0d6efd;">
+                            <div class="term" style="color:#0d6efd;">Defeito</div>
+                            <p class="mb-0">Condição `>= 5` implementada no código.</p>
+                        </div>
+                        <div class="definition-box" style="border-left-color:#198754;">
+                            <div class="term" style="color:#198754;">Falha</div>
+                            <p class="mb-0">Usuário legítimo é bloqueado uma tentativa antes do esperado.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-warning mt-4 text-start mx-auto" style="max-width: 920px;">
+                    <strong>Lição para QA:</strong> reportamos a falha observada, mas investigamos o defeito e tentamos chegar à causa raiz do erro para evitar recorrência.
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-5">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Como Registrar um Bug de Forma Útil</h2>
+                <p class="lead text-muted mb-4">SWEBOK e prática de mercado convergem: sem evidência e reprodutibilidade, o bug vira ruído.</p>
+
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-md-6">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Campo</th>
+                                    <th>Por que existe</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Título objetivo</strong></td>
+                                    <td>Resume a falha de forma rastreável.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pré-condições</strong></td>
+                                    <td>Estado inicial do sistema, ambiente, usuário e dados.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Passos para reproduzir</strong></td>
+                                    <td>Permitem repetição consistente por QA e DEV.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Resultado esperado x atual</strong></td>
+                                    <td>Separa regra de negócio do sintoma observado.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Evidências</strong></td>
+                                    <td>Logs, screenshot, vídeo, payload, stack trace.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="exam-card h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check text-success me-2"></i>Modelo enxuto</h4>
+                            <p class="mb-2"><strong>Título:</strong> Login bloqueia conta na 5a senha incorreta, mas RNF-008 exige bloqueio após a 5a falha completa.</p>
+                            <p class="mb-2"><strong>Pré-condição:</strong> Usuário ativo, sem bloqueio anterior.</p>
+                            <p class="mb-2"><strong>Passos:</strong> Informar senha errada cinco vezes consecutivas.</p>
+                            <p class="mb-2"><strong>Esperado:</strong> Conta segue ativa até a quinta tentativa; bloqueio somente na próxima.</p>
+                            <p class="mb-0"><strong>Atual:</strong> Conta é bloqueada imediatamente na quinta tentativa.</p>
+                            <hr>
+                            <p class="small text-muted mb-0">Esse formato reduz idas e voltas na triagem e ajuda a separar erro de implementação de ambiguidade de requisito.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-6">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Severidade x Prioridade</h2>
+                <p class="lead text-muted mb-4">Impacto técnico não é a mesma coisa que urgência de negócio.</p>
+
+                <div class="row g-4 align-items-stretch">
+                    <div class="col-md-7">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Critério</th>
+                                    <th>Severidade</th>
+                                    <th>Prioridade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Foco</strong></td>
+                                    <td>Quão grave é a falha no sistema</td>
+                                    <td>Com que urgência o negócio quer resolver</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Olhar principal</strong></td>
+                                    <td>Técnico e operacional</td>
+                                    <td>Produto, risco, prazo, cliente</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pergunta-chave</strong></td>
+                                    <td>"O que quebra?"</td>
+                                    <td>"O que precisa entrar primeiro?"</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Exemplo</strong></td>
+                                    <td>Checkout indisponível = severidade crítica</td>
+                                    <td>Frete zerado para todos = prioridade máxima pelo prejuízo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="matrix-box h-100">
+                            <h4 class="fw-bold text-dark mb-3"><i class="fas fa-scale-balanced me-2"></i>Casos clássicos</h4>
+                            <p class="mb-3"><span class="pill-label bg-soft-danger me-2">Alta severidade</span> API cai em produção.</p>
+                            <p class="mb-3"><span class="pill-label bg-soft-warning me-2">Alta prioridade</span> Frete sai R$ 0,00 e gera perda financeira direta.</p>
+                            <p class="mb-3"><span class="pill-label bg-soft-primary me-2">Baixa severidade</span> Erro de alinhamento visual sem impedir fluxo.</p>
+                            <p class="mb-0"><span class="pill-label bg-soft-success me-2">Priorização correta</span> considera stakeholder, risco, release e custo da falha.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-7">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Triagem de Defeitos</h2>
+                <p class="lead text-muted mb-4">Triagem existe para transformar uma lista de falhas em decisão operacional.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-primary"><i class="fas fa-filter me-2"></i>Validar</h4>
+                            <ul class="small mb-0">
+                                <li>É reproduzível?</li>
+                                <li>É defeito real ou uso incorreto?</li>
+                                <li>É duplicado de outro bug?</li>
+                                <li>Falta requisito ou ambiente?</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-danger"><i class="fas fa-ranking-star me-2"></i>Classificar</h4>
+                            <ul class="small mb-0">
+                                <li>Severidade e prioridade</li>
+                                <li>Módulo e área impactada</li>
+                                <li>Stakeholders afetados</li>
+                                <li>Risco para o release</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-success"><i class="fas fa-person-circle-check me-2"></i>Encaminhar</h4>
+                            <ul class="small mb-0">
+                                <li>Definir responsável</li>
+                                <li>Decidir correção imediata ou backlog</li>
+                                <li>Apontar bloqueios e dependências</li>
+                                <li>Agendar reteste e regressão</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-secondary mt-4 text-start mx-auto" style="max-width: 940px;">
+                    <strong>Conexão com a prova:</strong> homologação fora do SLA, frete zerado e bloqueios de fluxo principal não podem ser tratados como detalhe. Mesmo fora de produção, são risco de negócio.
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-8">
+            <div class="text-center slide-content">
+                <span class="badge bg-primary text-white fs-6 mb-4 px-4 py-2 rounded-pill">Defect Tracking</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Ciclo de Vida do Bug</h2>
+
+                <div class="row justify-content-center align-items-stretch g-3">
+                    <div class="col-md-2">
+                        <div class="flow-card">
+                            <div class="flow-badge bg-danger text-white">1</div>
+                            <h6 class="fw-bold">New</h6>
+                            <small class="text-muted">Bug reportado</small>
+                        </div>
+                    </div>
+                    <div class="col-auto arrow-col"><i class="fas fa-arrow-right"></i></div>
+                    <div class="col-md-2">
+                        <div class="flow-card">
+                            <div class="flow-badge bg-warning text-dark">2</div>
+                            <h6 class="fw-bold">Triaged</h6>
+                            <small class="text-muted">Validado e priorizado</small>
+                        </div>
+                    </div>
+                    <div class="col-auto arrow-col"><i class="fas fa-arrow-right"></i></div>
+                    <div class="col-md-2">
+                        <div class="flow-card">
+                            <div class="flow-badge bg-primary text-white">3</div>
+                            <h6 class="fw-bold">In Progress</h6>
+                            <small class="text-muted">Correção em andamento</small>
+                        </div>
+                    </div>
+                    <div class="col-auto arrow-col"><i class="fas fa-arrow-right"></i></div>
+                    <div class="col-md-2">
+                        <div class="flow-card">
+                            <div class="flow-badge bg-info text-dark">4</div>
+                            <h6 class="fw-bold">Fixed</h6>
+                            <small class="text-muted">Dev concluiu</small>
+                        </div>
+                    </div>
+                    <div class="col-auto arrow-col"><i class="fas fa-arrow-right"></i></div>
+                    <div class="col-md-2">
+                        <div class="flow-card">
+                            <div class="flow-badge bg-success text-white">5</div>
+                            <h6 class="fw-bold">Verified / Closed</h6>
+                            <small class="text-muted">QA retestou e fechou</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-4 g-4">
+                    <div class="col-md-6">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-dark mb-3">Estados auxiliares comuns</h4>
+                            <p class="mb-2"><span class="pill-label bg-soft-warning me-2">Blocked</span> depende de outro bug ou ambiente.</p>
+                            <p class="mb-2"><span class="pill-label bg-soft-primary me-2">Duplicate</span> já existe registro equivalente.</p>
+                            <p class="mb-2"><span class="pill-label bg-soft-success me-2">Won't Fix</span> risco aceito ou custo inviável.</p>
+                            <p class="mb-0"><span class="pill-label bg-soft-danger me-2">Reopened</span> correção falhou no reteste ou houve regressão.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="triage-card h-100">
+                            <h4 class="fw-bold text-dark mb-3">Erro comum de time iniciante</h4>
+                            <p class="mb-0">Fechar bug quando o desenvolvedor "acha" que corrigiu. No fluxo correto, só fecha depois de reteste, evidência e avaliação de regressão no comportamento afetado.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-9">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Métricas que Fazem Sentido</h2>
+                <p class="lead text-muted mb-4">Métrica boa apoia decisão; métrica solta engana.</p>
+
+                <div class="row g-4 mb-4">
+                    <div class="col-md-3">
+                        <div class="metric-card h-100">
+                            <div class="kpi-number">12</div>
+                            <p class="fw-bold mb-1 mt-2">Bugs abertos</p>
+                            <small class="text-muted">volume atual por release</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card h-100">
+                            <div class="kpi-number">3</div>
+                            <p class="fw-bold mb-1 mt-2">Críticos</p>
+                            <small class="text-muted">impactam GO/NO-GO</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card h-100">
+                            <div class="kpi-number">8%</div>
+                            <p class="fw-bold mb-1 mt-2">Reabertura</p>
+                            <small class="text-muted">qualidade da correção</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="metric-card h-100">
+                            <div class="kpi-number">75%</div>
+                            <p class="fw-bold mb-1 mt-2">Cobertura RF</p>
+                            <small class="text-muted">número não substitui criticidade</small>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="metric-table mx-auto" style="max-width: 980px;">
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Uso correto</th>
+                            <th>Risco de interpretação errada</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Densidade de defeitos</strong></td>
+                            <td>Comparar módulos e identificar áreas frágeis.</td>
+                            <td>Não prova qualidade sozinha; módulo pequeno pode parecer pior.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Taxa de reabertura</strong></td>
+                            <td>Indica se as correções estão realmente resolvendo.</td>
+                            <td>Reabertura alta sugere correção superficial ou teste fraco.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pass Rate</strong></td>
+                            <td>Ajuda a medir estabilidade da execução.</td>
+                            <td>95% pode esconder 5% exatamente nos fluxos críticos.</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Bugs por severidade</strong></td>
+                            <td>Suporta decisão de release.</td>
+                            <td>Quantidade baixa não compensa um único bloqueador aberto.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-10">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">O que a Prova Já Indicou</h2>
+                <p class="lead text-muted mb-4">Os comentários das avaliações desta semana reforçam três padrões de erro recorrentes.</p>
+
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="exam-card h-100">
+                            <h4 class="fw-bold text-danger"><i class="fas fa-shield-halved me-2"></i>Cobertura incompleta</h4>
+                            <p class="mb-2">Testar e-mail inválido não cobre senha vazia, ausência de caractere especial ou valores de fronteira.</p>
+                            <p class="small text-muted mb-0">Falha recorrente: declarar requisito coberto quando só um pedaço foi exercitado.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="exam-card h-100">
+                            <h4 class="fw-bold text-primary"><i class="fas fa-gauge-high me-2"></i>RF aprovado, RNF ignorado</h4>
+                            <p class="mb-2">Login funcional não significa login performático, seguro ou disponível.</p>
+                            <p class="small text-muted mb-0">Falha recorrente: chamar de concluído sem evidência para performance, SLA ou segurança.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="exam-card h-100">
+                            <h4 class="fw-bold text-success"><i class="fas fa-money-bill-trend-up me-2"></i>Impacto de negócio subestimado</h4>
+                            <p class="mb-2">Frete zerado ou release com P1 sem cobertura é risco alto, mesmo que o botão ainda funcione.</p>
+                            <p class="small text-muted mb-0">Falha recorrente: confundir "fluxo executa" com "negócio está protegido".</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="alert alert-danger mt-4 text-start mx-auto" style="max-width: 940px;">
+                    <strong>Resumo operacional:</strong> um bom gestor de bugs não conta defeitos apenas por volume. Ele conecta bug a requisito, risco, stakeholder, impacto financeiro e decisão de release.
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-11">
+            <div class="text-center slide-content">
+                <span class="badge bg-danger fs-5 mb-4 px-4 py-2 rounded-pill">Checklist de Time</span>
+                <h2 class="display-5 fw-bold mb-4 text-dark">Boas Práticas Para Não Afogar o Projeto</h2>
+
+                <div class="row justify-content-center">
+                    <div class="col-md-9">
+                        <ul class="list-group list-group-flush fs-5 text-start bg-transparent">
+                            <li class="list-group-item bg-transparent border-bottom border-dark-subtle py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Registre a falha com contexto completo: ambiente, dados, passos e evidências.
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom border-dark-subtle py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Classifique severidade e prioridade separadamente.
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom border-dark-subtle py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Não feche sem reteste e sem avaliar regressão.
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom border-dark-subtle py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Use métricas para decidir, não para maquiar risco.
+                            </li>
+                            <li class="list-group-item bg-transparent border-bottom border-dark-subtle py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Ataque causa raiz quando o mesmo tipo de bug se repete.
+                            </li>
+                            <li class="list-group-item bg-transparent py-3">
+                                <i class="fas fa-check-circle text-success me-3"></i> Trate falha em homologação como sinal antecipado de problema em produção.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide-12">
+            <div class="text-center slide-content">
+                <h1 class="display-4 fw-bold mb-4 text-dark">Dúvidas?</h1>
+                <p class="lead text-dark mb-4">Próximo passo em aula: transformar falha observada em bug rastreável e priorizado.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="material/material_aula05-gestao-erros-bugs.html" class="btn btn-dark btn-lg rounded-pill px-5">Material Escrito</a>
+                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+                </div>
+                <p class="text-muted mt-4 mb-0">Referências centrais: SWEBOK v4, Software Testing e Software Quality.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="slide-footer">
+        <div class="d-flex align-items-center gap-3">
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+        </div>
+
+        <div class="text-center text-muted small d-none d-md-block">
+            Qualidade de Software - Gestão de Erros e Bugs.
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="material/material_aula05-gestao-erros-bugs.html" class="btn btn-outline-primary btn-sm rounded-pill">
+                <i class="fas fa-book me-1"></i> Ver material escrito
+            </a>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac" height="30" class="opacity-75">
+            </a>
+        </div>
+    </footer>
+
+    <script src="../../js/standard_slides.js"></script>
+
+</body>
+</html>

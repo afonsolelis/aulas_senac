@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material - Aula 05 - Gestão de Erros e Bugs</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+      :root {
+          --t1-color: #dc3545;
+          --t2-color: #0d6efd;
+      }
+      .exam-container {
+          margin-bottom: 50px;
+      }
+      .question-card {
+          background-color: #fff;
+          border-radius: 8px;
+          border: 1px solid #dee2e6;
+          padding: 25px;
+          margin-bottom: 30px;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+      .t1-border { border-left: 6px solid var(--t1-color); }
+      .t2-border { border-left: 6px solid var(--t2-color); }
+      
+      .question-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+      }
+      .badge-t1 { background-color: var(--t1-color); }
+      .badge-t2 { background-color: var(--t2-color); }
+      
+      .code-block {
+          background-color: #f8f9fa;
+          border: 1px solid #e9ecef;
+          border-radius: 6px;
+          padding: 15px;
+          margin: 15px 0;
+          font-family: 'Courier New', Courier, monospace;
+          font-size: 0.9rem;
+          white-space: pre-wrap;
+      }
+      .alternatives-box {
+          margin: 15px 0;
+          padding-left: 20px;
+      }
+      .correct-option {
+          background-color: #d1e7dd;
+          border: 1px solid #a3cfbb;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-weight: bold;
+          color: #0f5132;
+          margin-top: 15px;
+      }
+      .commentary-box {
+          background-color: #fff3cd;
+          border-left: 4px solid #ffc107;
+          padding: 15px;
+          margin-top: 15px;
+          font-size: 0.95rem;
+          color: #664d03;
+      }
+      .swebok-ref {
+          background-color: #e2e3e5;
+          border-radius: 8px;
+          padding: 20px;
+          margin-bottom: 40px;
+      }
+  </style>
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="card border-0 shadow-sm mb-4">
+      <div class="card-body p-4 p-md-5">
+        <div class="d-flex justify-content-between align-items-start mb-4">
+            <div>
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
+                <p class="text-muted small mb-0">Qualidade de Software - Professor Afonso</p>
+            </div>
+            <span class="badge bg-dark">Aula 05</span>
+        </div>
+
+        <h1 class="display-5 fw-bold mb-4 text-center">Resolução Comentada das Avaliações</h1>
+
+        <div class="swebok-ref">
+            <h5 class="fw-bold"><i class="fas fa-book-open me-2"></i> Fundamentação Teórica (SWEBOK v4)</h5>
+            <p class="mb-0">A resolução destas questões baseia-se nos capítulos:</p>
+            <ul class="mb-0 mt-2">
+                <li><strong>Capítulo 10 (Software Quality):</strong> Gestão de defeitos e processos de controle.</li>
+                <li><strong>Capítulo 4 (Software Testing):</strong> Técnicas de caixa branca, preta e relatórios de incidentes.</li>
+            </ul>
+        </div>
+
+        <!-- =====================================================================
+             TURMA 1
+             ===================================================================== -->
+        <h2 class="h3 fw-bold text-danger mb-4 border-bottom pb-2"><i class="fas fa-users me-2"></i> Turma 1 (STADSCAS4NA)</h2>
+
+        <!-- Turma 1 - Questão 1 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 1: Testes Parametrizados</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Observe o seguinte código de teste parametrizado, desenvolvido para validar um serviço de autenticação:</p>
+            <div class="code-block">
+@ParameterizedTest
+@CsvSource({
+    "usuario@email.com, Senha123!, true",
+    "email-invalido,    Senha123!, false",
+    "usuario@email.com, 123,       false"
+})
+void testarValidacaoUsuario(String email, String senha, boolean esperado) {
+    boolean valido = validador.validarUsuario(email, senha);
+    assertEquals(esperado, valido);
+}</div>
+            <p>O requisito funcional <strong>RF-010</strong> especifica: <em>"O sistema deve validar o formato do e-mail e exigir que a senha possua ao menos 8 caracteres, incluindo letra maiúscula e caractere especial."</em> Avalie as afirmativas:</p>
+            <ol type="I">
+                <li>O teste cobre integralmente o RF-010, pois valida e-mail inválido e senha fraca.</li>
+                <li>Há lacuna de cobertura para os cenários de e-mail vazio e senha vazia, que são partições de entrada inválida distintas não representadas.</li>
+                <li>O caso "email-invalido, Senha123!, false" valida apenas o formato do e-mail, sem exercitar a regra de senha fraca.</li>
+                <li>Para atingir cobertura completa do RF-010, seriam necessários também casos com e-mail vazio, senha vazia e senha sem caractere especial.</li>
+            </ol>
+            <div class="correct-option">OPÇÃO CORRETA: (D) II, III e IV, apenas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong><br>
+                A afirmativa <strong>I</strong> está incorreta porque o RF-010 possui múltiplos critérios (tamanho, maiúscula e caractere especial). O teste não incluiu senhas com 8 caracteres mas sem letra maiúscula ou sem caractere especial, logo a cobertura é parcial. <br>
+                <strong>II</strong> está correta: No teste de software, "valor inválido" e "vazio" são partições de equivalência diferentes. <br>
+                <strong>III</strong> está correta: Em validações encadeadas, se o e-mail falha, o processamento da senha geralmente não ocorre para aquele caso, focando o teste no e-mail. <br>
+                <strong>IV</strong> está correta: Lista exatamente as lacunas identificadas.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 2 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 2: Requisitos Não Funcionais</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Um requisito não funcional especifica: <em>"A tela de login deve responder em menos de 2 segundos para até 100 usuários simultâneos em conexão 4G."</em> Após os testes funcionais aprovarem o módulo de login com credenciais válidas e inválidas, o time de QA declara a funcionalidade como concluída e aprovada para release. O gestor de qualidade contesta a decisão.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (B) O gestor está correto: a aprovação dos testes funcionais não garante o atendimento do RNF de performance.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Esta questão aborda a distinção fundamental entre RF e RNF. Testes funcionais validam a <strong>lógica de negócio</strong> (se o usuário entra ou não). O RNF de performance valida o <strong>comportamento sob carga</strong>. Sem simular os 100 usuários em uma rede restrita (4G), não há evidência técnica de que o critério de 2 segundos será mantido.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 3 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 3: Escopo (IEEE 829)</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>O analista excluiu o módulo de relatórios (RF-025, P2) alegando que "não é funcionalidade do usuário final". Avalie:</p>
+            <ol type="I">
+                <li>A decisão de excluir do escopo de teste um requisito funcional mapeado deve ser explicitamente justificada e aprovada pelos stakeholders relevantes.</li>
+                <li>O campo "Itens a não serem testados" do IEEE 829 existe para documentar exatamente esse tipo de decisão.</li>
+                <li>Como RF-025 tem criticidade P2, pode ser excluído sem nenhum impacto no release.</li>
+                <li>A exclusão sem aprovação formal configura lacuna de rastreabilidade na RTM.</li>
+            </ol>
+            <div class="correct-option">OPÇÃO CORRETA: (C) I, II e IV, apenas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> O QA não é "dono" do escopo, mas o guardião da qualidade. Se o Product Owner aprovou o requisito, sua exclusão é um risco de negócio que deve ser assinado pelos stakeholders (I). A afirmativa III é falsa pois P2 (Prioridade 2) ainda é importante e sua ausência de teste é um risco. A RTM (Matriz de Rastreabilidade) ficaria incompleta, sem cobertura para o RF-025 (IV).
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 4 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 4: Modelagem UML</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>UC-01 "Realizar Matrícula", UC-02 "Verificar Pendências Financeiras" (obrigatório) e UC-03 "Aplicar Desconto de Bolsista" (condicional).</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) UC-02 deveria ser include e UC-03 deveria ser extend.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Na UML, <code>&lt;&lt;include&gt;&gt;</code> representa uma parte obrigatória do fluxo (reuso compulsório). Se não há matrícula sem verificação, ela é incluída. <code>&lt;&lt;extend&gt;&gt;</code> é para comportamentos opcionais ou condicionais, como o desconto que só ocorre para quem é bolsista.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 5 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 5: Métricas de RTM</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Dados: Req=8; Cobertos=6; TCs Planejados=10; Exec=8; Pass=6; Fail=2. Um P1 sem cobertura.</p>
+            <ol type="I">
+                <li>A cobertura de requisitos é de 75%. (6/8 = OK)</li>
+                <li>A taxa de execução é de 80%. (8/10 = OK)</li>
+                <li>A taxa de sucesso (Pass Rate) é de 75%. (6 Pass / 8 Exec = OK)</li>
+                <li>P1 sem cobertura deve ser impeditivo. (OK)</li>
+            </ol>
+            <div class="correct-option">OPÇÃO CORRETA: (D) I, II, III e IV. Todas estão corretas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Esta questão testa cálculos de KPI de teste. Cobertura (Requisitos testados/Totais), Execução (TCs rodados/Planejados) e Pass Rate (Sucessos/Executados). A afirmativa IV reforça que métricas numéricas não superam a criticidade do negócio: um bug P1 não testado é um risco inaceitável.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 6 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 6: Personas</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Persona "Ana" (Android, 4G, transporte público) vs Teste em Wi-Fi de 100Mbps sem concorrência.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) I, II e IV, apenas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Personas não são apenas para UX; elas definem o <strong>contexto ambiental</strong> do teste técnico. Testar performance em Wi-Fi ideal esconde problemas de latência e concorrência que Ana enfrentará na rede 4G. A afirmativa III é falsa justamente porque as personas ditam esses parâmetros técnicos.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 7 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 7: Caixa Branca</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Método com 4 ramos de desconto (Premium, Padrão, Fidelidade, Sem Desconto).</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) 4 casos: (600, true), (600, false), (400, true) e (400, false).</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Para atingir 100% de <strong>Branch Coverage</strong>, cada "ramo" (decisão) do código deve ser percorrido. Como há um <code>if</code>, dois <code>else if</code> e um <code>else</code>, cada um levando a um retorno diferente, precisamos de 4 casos de teste específicos para garantir que nenhum pedaço do código fique sem execução.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 8 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 8: Critérios de Entrada</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Smoke tests falharam (3/5) e documentação de RFs não aprovada.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) Não iniciar os testes: os critérios de entrada não foram atingidos.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Conforme o IEEE 829, os Entry Criteria servem para evitar desperdício. Se o "Smoke Test" falha, o build está "quebrado" na base. Se a documentação não está aprovada, o QA não tem um parâmetro oficial para dizer o que é certo ou errado (Pass/Fail).
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 9 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 9: Suspensão</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>Bug bloqueia 60% de Pagamento. Módulo de Cadastro está disponível.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (B) A decisão é correta: suspender apenas o módulo afetado e continuar com módulos independentes.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> O objetivo do QA é produtividade com qualidade. Se um módulo está bloqueado, tentar testá-lo gerará "ruído" (bugs duplicados ou irrelevantes). Parar o projeto inteiro se há outras partes testáveis é ineficiente; logo, a suspensão parcial é a melhor prática.
+            </div>
+        </div>
+
+        <!-- Turma 1 - Questão 10 -->
+        <div class="question-card t1-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 10: Segurança</h4>
+                <span class="badge badge-t1">T1</span>
+            </div>
+            <p>QA testou login válido/inválido (RF), mas ignorou a regra de bloqueio após 5 tentativas (RNF).</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) Os testes cobrem o RF-012, mas ignoram completamente o RNF-008.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Um erro comum é achar que testar "senha incorreta" uma vez cobre a regra de segurança. O RNF-008 exige um cenário de <strong>persistência de erro</strong> e verificação de <strong>efeito colateral</strong> (envio de e-mail), o que não foi feito nos casos A, B e C.
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             TURMA 2
+             ===================================================================== -->
+        <h2 class="h3 fw-bold text-primary mb-4 border-bottom pb-2 mt-5"><i class="fas fa-users me-2"></i> Turma 2 (STADSCAS4NB)</h2>
+
+        <!-- Turma 2 - Questão 1 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 1: Testes E2E (Selenium)</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Analise o código Selenium para o RF-007: <em>"Após login, redirecionar para dashboard e visualizar nome completo no cabeçalho."</em></p>
+            <div class="code-block">
+void testarFluxoLoginCompleto() {
+    webDriver.get("/login");
+    webDriver.findElement(By.id("email")).sendKeys("user@email.com");
+    webDriver.findElement(By.id("senha")).sendKeys("Senha123!");
+    webDriver.findElement(By.id("btn-login")).click();
+    assertTrue(webDriver.getCurrentUrl().contains("/dashboard"));
+}</div>
+            <div class="correct-option">OPÇÃO CORRETA: (D) II, III e IV, apenas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> O teste valida a URL, mas o requisito funcional exige também a verificação do <strong>nome no cabeçalho</strong>. Logo, a cobertura é parcial (II). É um teste de caixa preta (III) porque interage com a UI sem conhecer o código do backend. A afirmativa IV sugere a correção necessária para atingir 100% de cobertura do RF.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 2 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 2: SLA e Disponibilidade</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>RNF: 99,9% de disponibilidade (max 43 min/mês de queda). Em homologação, caiu por 2 horas. Analista disse que não precisa registrar bug pois não foi em produção.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) A analista está incorreta. Homologação simula produção; queda de 2h indica violação do SLA.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Testes em homologação servem para <strong>prever</strong> o comportamento em produção. Se o sistema não aguenta o SLA no ambiente controlado, ele certamente falhará no real. Ignorar isso é omitir um risco crítico de negócio.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 3 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 3: Teste Parametrizado</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Teste de soma com <code>@ParameterizedTest</code>. RF exige cálculo correto. RNF exige tempo < 10ms.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) I, II e IV, apenas.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> O teste valida a funcionalidade (I). Ele <strong>não</strong> valida a performance (II) porque o <code>assertEquals</code> não mede tempo. A afirmativa III é falsa pois o uso de dados parametrizados para uma função matemática simples é técnica de caixa preta (valida entrada/saída), não exige ver o código interno para saber que 2+3=5.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 4 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 4: Caixa Branca (Frete)</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <pre><code>if (peso <= 0) { throw Exception; }
+if (SUL || SUDESTE) { ... }
+else if (NORDESTE) { ... }
+else { ... }</code></pre>
+            <div class="correct-option">OPÇÃO CORRETA: (C) TC1: peso -1; TC2: SUL; TC3: NORDESTE; TC4: NORTE.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Para cobrir 100% dos ramos (Branch Coverage), precisamos disparar: a exceção (TC1), entrar no primeiro bloco do <code>if</code> regional (TC2), entrar no <code>else if</code> (TC3) e cair no <code>else</code> final (TC4). Qualquer conjunto menor deixaria caminhos lógicos sem teste.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 5 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 5: IEEE 829 Ágil</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Time usa Jira/Confluence em vez de documentos formais IEEE 829.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) O IEEE 829 não exige formato físico; equivalentes digitais (Jira/Confluence) são válidos.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Qualidade é sobre <strong>processo e conteúdo</strong>, não papel. O padrão IEEE 829 define a <strong>informação</strong> que deve ser registrada (estratégia, critérios, resultados). Se essa informação está em um Card do Jira ou página do Confluence, o padrão está sendo atendido em uma cultura ágil.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 6 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 6: Fluxos de Caso de Uso</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Analista documentou apenas o fluxo básico de "Recuperar Senha".</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) Fluxos alternativos e de exceção estão ausentes.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Um teste baseado apenas no fluxo básico (Happy Path) é insuficiente. Bugs críticos geralmente se escondem nas <strong>exceções</strong> (serviço fora, e-mail inexistente) e nos <strong>fluxos alternativos</strong> (link expirado). Sem documentar isso, o QA não derivará testes para esses cenários.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 7 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 7: Valores de Fronteira</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Sistema aceita 0% a 100%. Analista testou apenas 50%.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) Testar apenas o centro (50%) é insuficiente. A análise de fronteira (BVA) exige testar os limites.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Partições de Equivalência dizem que 50% representa a classe válida. Porém, a <strong>Análise de Valor de Fronteira</strong> complementa isso, pois programadores costumam errar em operadores de comparação (<code>></code> vs <code>>=</code>). Logo, testar -1, 0, 1, 99, 100 e 101 é mandatório.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 8 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 8: Aprovação de Release</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Cobertura=90%, Execução=100%, Pass Rate=98%. Gerente aprovou direto.</p>
+            <div class="correct-option">OPÇÃO CORRETA: (D) As análises de B e C são complementares e necessárias.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Métricas agregadas mentem. Se os 10% de requisitos não testados forem os mais importantes, ou se os 2% de falha forem em segurança, o sistema é instável. O QA deve contextualizar a criticidade (P1/P2) antes do sinal verde.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 9 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 9: Impacto de Negócio</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>Bug: Frete exibe R$ 0,00 para todos. Dev disse que é baixa prioridade pois "não impede a compra".</p>
+            <div class="correct-option">OPÇÃO CORRETA: (C) Alta prioridade (P1/Blocker): o bug causa prejuízo financeiro direto.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Prioridade não é definida apenas por "conseguir clicar no botão", mas pelo <strong>impacto no stakeholder</strong>. Um bug que faz a empresa perder dinheiro em cada transação é um desastre financeiro e deve ser corrigido imediatamente.
+            </div>
+        </div>
+
+        <!-- Turma 2 - Questão 10 -->
+        <div class="question-card t2-border">
+            <div class="question-header">
+                <h4 class="h5 fw-bold mb-0">Questão 10: Exit Criteria</h4>
+                <span class="badge badge-t2">T2</span>
+            </div>
+            <p>95,6% Pass, 100% Cobertura, zero P1 abertos, dois P2 abertos. Qual a recomendação?</p>
+            <div class="correct-option">OPÇÃO CORRETA: (B) GO condicional: critérios atingidos, riscos residuais comunicados.</div>
+            <div class="commentary-box">
+                <strong>Comentário Completo:</strong> Em um mundo real, raramente se atinge 100% de Pass sem bugs abertos. Se os bugs são de baixa severidade (P2) e conhecidos, o QA recomenda o GO condicional, deixando para o Negócio a decisão de assumir o risco residual para cumprir o prazo.
+            </div>
+        </div>
+
+
+        <!-- =====================================================================
+             CONTEÚDO TEÓRICO DA AULA
+             ===================================================================== -->
+        <hr class="my-5">
+
+        <h2 class="h3 fw-bold mb-3">Conteúdo da Aula: Gestão de Erros e Bugs</h2>
+        <p class="text-secondary mb-4">
+            Após a correção das provas, esta aula aprofunda a gestão de erros e bugs sob duas lentes complementares:
+            o <strong>SWEBOK</strong>, que organiza o conhecimento de teste e qualidade de software, e o <strong>SEBoK</strong>,
+            que amplia a discussão para gestão da qualidade, atributos de qualidade, medição, risco e evidências de verificação
+            em sistemas complexos.
+        </p>
+
+        <div class="swebok-ref">
+            <h5 class="fw-bold"><i class="fas fa-book-open me-2"></i> Base Teórica Utilizada</h5>
+            <ul class="mb-0 mt-2">
+                <li><strong>SWEBOK v4:</strong> capítulos de <em>Software Testing</em> e <em>Software Quality</em>, com ênfase em <em>faults vs. failures</em>, <em>test incident reporting</em>, classificação de defeitos e métricas.</li>
+                <li><strong>SEBoK:</strong> artigos de <em>Quality Management</em> e <em>System Verification</em>, com ênfase em qualidade como <em>fitness for use</em>, atributos de qualidade, medição, risco e evidência objetiva para decisão.</li>
+            </ul>
+        </div>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-diagram-project me-2"></i> 1. Conceitos Fundamentais</h3>
+        <p class="text-secondary">
+            Um erro de qualidade costuma ser discutido de forma vaga no dia a dia, mas o vocabulário técnico é importante.
+            O <strong>SWEBOK</strong> diferencia a origem humana do problema, o defeito inserido no artefato e a falha observada
+            em execução. Essa distinção evita análises rasas e melhora a comunicação entre QA, desenvolvimento e gestão.
+        </p>
+        <ul class="text-secondary">
+            <li><strong>Erro:</strong> ação humana incorreta, como interpretar mal uma regra de negócio ou configurar o ambiente de forma inadequada.</li>
+            <li><strong>Defeito / Bug / Fault:</strong> problema introduzido em um artefato, como código, requisito, script de teste, pipeline ou documentação.</li>
+            <li><strong>Falha / Failure:</strong> manifestação observável do defeito quando o sistema é executado em determinadas condições.</li>
+        </ul>
+        <div class="commentary-box">
+            <strong>Leitura prática:</strong> o usuário normalmente percebe a <em>falha</em>, o QA registra a evidência da falha,
+            o time técnico localiza o <em>defeito</em>, e a melhoria contínua tenta eliminar a causa do <em>erro</em> que o gerou.
+        </div>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-crosshairs me-2"></i> 2. Qualidade Como Atendimento às Necessidades</h3>
+        <p class="text-secondary">
+            O <strong>SEBoK</strong> reforça que qualidade não é apenas "ausência de bugs". Um sistema de qualidade é aquele que
+            atende às necessidades dos stakeholders e é <strong>fit for use</strong>. Isso conecta diretamente os bugs encontrados
+            em aula aos impactos no negócio: um sistema pode "funcionar" tecnicamente e ainda assim falhar em confiabilidade,
+            disponibilidade, segurança, desempenho ou usabilidade.
+        </p>
+        <p class="text-secondary">
+            Por isso, um defeito deve sempre ser interpretado em dois níveis:
+        </p>
+        <ul class="text-secondary">
+            <li><strong>Nível local:</strong> qual regra, comportamento ou componente falhou?</li>
+            <li><strong>Nível sistêmico:</strong> que atributo de qualidade foi comprometido e qual stakeholder sofre o impacto?</li>
+        </ul>
+        <p class="text-secondary">
+            Exemplos discutidos nas provas mostram isso claramente: indisponibilidade em homologação ameaça <strong>availability</strong>;
+            frete zerado ameaça <strong>correctness</strong> e <strong>business viability</strong>; bloqueio prematuro de conta afeta
+            <strong>functional suitability</strong> e experiência do usuário.
+        </p>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-clipboard-list me-2"></i> 3. Registro de Incidentes e Bug Reports</h3>
+        <p class="text-secondary">
+            O <strong>SWEBOK</strong> trata o <em>test incident reporting</em> como parte essencial do processo de teste. Um bom relatório
+            reduz retrabalho, evita ruído e melhora a velocidade da correção. O objetivo não é "avisar que quebrou", mas produzir
+            evidência suficiente para análise, priorização, correção e reteste.
+        </p>
+        <ul class="text-secondary">
+            <li><strong>Título claro:</strong> descreve a falha de forma curta e rastreável.</li>
+            <li><strong>Contexto:</strong> ambiente, versão, perfil de usuário, massa de dados, navegador, dispositivo ou API envolvida.</li>
+            <li><strong>Pré-condições:</strong> estado necessário antes da execução.</li>
+            <li><strong>Passos para reproduzir:</strong> sequência objetiva e reproduzível.</li>
+            <li><strong>Resultado esperado:</strong> comportamento definido pelo requisito, regra de negócio ou critério de aceite.</li>
+            <li><strong>Resultado atual:</strong> o que realmente ocorreu.</li>
+            <li><strong>Evidências:</strong> logs, screenshot, vídeo, stack trace, request/response, consulta ao banco, payloads.</li>
+        </ul>
+        <div class="commentary-box">
+            <strong>Erro frequente de iniciante:</strong> registrar "não funcionou" sem contexto. Isso não é um bug report útil;
+            é apenas um relato informal. Qualidade exige reprodutibilidade e evidência objetiva.
+        </div>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-layer-group me-2"></i> 4. Classificação: Severidade, Prioridade e Risco</h3>
+        <p class="text-secondary">
+            Na prática, dois conceitos são confundidos o tempo todo:
+        </p>
+        <ul class="text-secondary">
+            <li><strong>Severidade:</strong> impacto técnico e operacional da falha sobre o sistema.</li>
+            <li><strong>Prioridade:</strong> urgência de correção do ponto de vista do negócio, release, cliente ou operação.</li>
+        </ul>
+        <p class="text-secondary">
+            O <strong>SEBoK</strong> ajuda a refinar essa decisão ao lembrar que qualidade é multidimensional e precisa considerar
+            atributos e stakeholders. Um bug pode ser tecnicamente simples, mas ter prioridade máxima por gerar prejuízo direto,
+            violar compliance ou comprometer a imagem da organização.
+        </p>
+        <p class="text-secondary">
+            Em termos de decisão, a priorização madura combina:
+        </p>
+        <ul class="text-secondary">
+            <li>impacto no usuário e no negócio;</li>
+            <li>probabilidade de ocorrência;</li>
+            <li>criticidade do fluxo afetado;</li>
+            <li>proximidade do release;</li>
+            <li>existência de mitigação ou workaround.</li>
+        </ul>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-arrows-rotate me-2"></i> 5. Ciclo de Vida do Defeito</h3>
+        <p class="text-secondary">
+            Defeitos não devem ser tratados como itens isolados, mas como elementos de um fluxo controlado. O ciclo de vida mais comum
+            inclui estados como:
+        </p>
+        <div class="code-block">New -> Triaged/Open -> In Progress -> Fixed -> Retest/Verified -> Closed
+\-> Reopened (quando a correção falha ou há regressão)</div>
+        <p class="text-secondary">
+            O ponto central é que <strong>corrigido não significa resolvido</strong>. O fechamento adequado depende de reteste,
+            confirmação do comportamento esperado e avaliação de regressão. Esse cuidado está alinhado à visão do
+            <strong>SEBoK System Verification</strong>, que enfatiza verificação com base em <strong>evidência objetiva</strong>,
+            comparação contra referência e registro formal do status conforme ou não conforme.
+        </p>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-magnifying-glass-chart me-2"></i> 6. Métricas de Defeitos e Medição de Qualidade</h3>
+        <p class="text-secondary">
+            O <strong>SWEBOK</strong> apresenta métricas como apoio à gestão de qualidade. Já o <strong>SEBoK</strong> reforça que qualidade
+            precisa ser medida, monitorada, analisada e melhorada. Em outras palavras: se o time não mede, ele opera por impressão.
+        </p>
+        <ul class="text-secondary">
+            <li><strong>Densidade de defeitos:</strong> ajuda a comparar módulos, releases ou componentes.</li>
+            <li><strong>Taxa de reabertura:</strong> mostra se as correções estão sendo eficazes.</li>
+            <li><strong>Bugs por severidade:</strong> apoia decisões de GO / NO-GO.</li>
+            <li><strong>Pass Rate:</strong> mostra estabilidade da execução, mas não substitui análise de criticidade.</li>
+            <li><strong>Cobertura de requisitos:</strong> mostra amplitude da validação, mas não garante que os cenários críticos foram bem explorados.</li>
+        </ul>
+        <div class="commentary-box">
+            <strong>Ponto importante visto nas provas:</strong> métricas agregadas podem mascarar risco. Um projeto com 95% de sucesso ainda
+            pode estar inadequado para release se os 5% restantes estiverem concentrados em segurança, pagamento, disponibilidade ou outro fluxo crítico.
+        </div>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-shield-halved me-2"></i> 7. Verificação, Não Conformidade e Evidência</h3>
+        <p class="text-secondary">
+            O <strong>SEBoK</strong> descreve verificação como a confirmação, por meio de <strong>evidência objetiva</strong>, de que os
+            requisitos especificados foram cumpridos. Esse ponto é muito útil para aulas de bugs porque muda a postura do time:
+            não basta opinião, percepção ou suposição; é preciso comparar o comportamento real com a referência correta.
+        </p>
+        <p class="text-secondary">
+            Assim, um bug bem tratado nasce de três perguntas:
+        </p>
+        <ol class="text-secondary">
+            <li>Qual era a referência esperada? Requisito, regra, contrato de API, critério de aceite, política de negócio?</li>
+            <li>Qual foi o resultado obtido na execução?</li>
+            <li>Que evidência demonstra a não conformidade?</li>
+        </ol>
+        <p class="text-secondary">
+            Esse raciocínio diminui discussões improdutivas do tipo "na minha máquina funciona" e aumenta a rastreabilidade técnica.
+        </p>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-triangle-exclamation me-2"></i> 8. Falhas em Homologação Também São Risco Real</h3>
+        <p class="text-secondary">
+            Uma lição importante extraída das avaliações é que falhas em homologação não podem ser desprezadas. O ambiente de teste serve
+            exatamente para antecipar comportamento problemático antes da liberação. O <strong>SEBoK</strong> trata risco como a combinação
+            entre probabilidade e gravidade das consequências; portanto, uma indisponibilidade, uma degradação de performance ou uma falha
+            financeira em homologação já é um indicador de risco relevante, não um detalhe sem importância.
+        </p>
+        <p class="text-secondary">
+            Ignorar esse sinal significa empurrar incerteza para o release. A gestão de bugs madura faz o contrário: usa o ambiente de teste
+            como mecanismo de descoberta antecipada, contenção e aprendizagem.
+        </p>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-screwdriver-wrench me-2"></i> 9. Causa Raiz e Melhoria Contínua</h3>
+        <p class="text-secondary">
+            Fechar bugs é necessário, mas não suficiente. O ganho real de maturidade aparece quando o time identifica padrões:
+            requisitos ambíguos, falhas de comunicação, ausência de testes de fronteira, ambiente instável, revisão insuficiente de código,
+            massa de dados inadequada, dependências externas frágeis ou critérios de entrada mal definidos.
+        </p>
+        <p class="text-secondary">
+            Em linguagem de gestão da qualidade, isso significa sair da reação pontual e caminhar para <strong>prevenção</strong>.
+            Essa visão está alinhada ao <strong>SEBoK Quality Management</strong>, que enfatiza melhoria sistemática baseada em medição,
+            análise e controle.
+        </p>
+
+        <h3 class="h5 fw-bold mb-3"><i class="fas fa-list-check me-2"></i> Síntese Operacional da Aula</h3>
+        <ul class="text-secondary mb-4">
+            <li>Nem todo problema observado é descrito corretamente; por isso a terminologia técnica importa.</li>
+            <li>Bug bem registrado precisa de referência, contexto, reprodução e evidência.</li>
+            <li>Severidade e prioridade não são sinônimos.</li>
+            <li>Métricas ajudam, mas precisam ser interpretadas à luz da criticidade e do risco.</li>
+            <li>Homologação é espaço de descoberta antecipada de risco, não um ambiente para ignorar falhas.</li>
+            <li>Gestão de bugs madura conecta software, processo, stakeholder, atributo de qualidade e decisão de release.</li>
+        </ul>
+
+        <h3 class="h5 fw-bold mb-3">Exercícios de Fixação</h3>
+        <div class="card bg-white p-3 mb-4">
+            <ol class="text-secondary mb-0">
+              <li>Explique, com um exemplo próprio, a diferença entre erro, defeito e falha segundo a abordagem do SWEBOK.</li>
+              <li>Escolha um bug das questões acima e reescreva seu relatório usando título, pré-condições, passos, resultado esperado, resultado atual e evidências.</li>
+              <li>Mostre por que um bug de baixa complexidade técnica pode ter prioridade máxima quando analisado pela ótica do negócio e dos stakeholders, como propõe o SEBoK.</li>
+              <li>Explique por que o conceito de evidência objetiva, usado em verificação no SEBoK, melhora a qualidade da triagem e do reteste.</li>
+            </ol>
+        </div>
+
+        <h3 class="h5 fw-bold mb-3">Referências Conceituais</h3>
+        <div class="card bg-white p-3 mb-4">
+            <ul class="text-secondary mb-0">
+                <li><strong>SWEBOK v4:</strong> áreas de conhecimento <em>Software Testing</em> e <em>Software Quality</em>.</li>
+                <li><strong>SEBoK:</strong> artigos <em>Quality Management</em> e <em>System Verification</em>, além do contexto de atributos de qualidade e medição.</li>
+                <li><strong>Aplicação em aula:</strong> interpretação de riscos, não conformidades, cobertura insuficiente e impacto de negócio com base nos comentários das avaliações.</li>
+            </ul>
+        </div>
+
+        <div class="d-flex flex-wrap gap-2 mt-5">
+          <a class="btn btn-danger btn-sm rounded-pill px-4" href="../slide_gestao-erros-bugs.html"><i class="fas fa-desktop me-1"></i> Ver slide da aula</a>
+          <a class="btn btn-outline-secondary btn-sm rounded-pill px-4" href="../../home_qualidade.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center py-4 text-muted small">
+      &copy; 2025 Senac - Qualidade de Software - Gabarito Consolidado
+  </footer>
+</body>
+</html>
