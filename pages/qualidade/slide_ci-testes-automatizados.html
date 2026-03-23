@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testes Automatizados em CI - Qualidade de Software</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/slides.css">
+    <style>
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            text-align: left;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+        .code-block .kw  { color: #569cd6; }
+        .code-block .str { color: #ce9178; }
+        .code-block .cm  { color: #6a9955; }
+        .code-block .val { color: #b5cea8; }
+        .pipeline-step {
+            border-left: 4px solid #0d6efd;
+            padding: 0.75rem 1rem;
+            background: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 0.5rem;
+        }
+        .pyramid-bar {
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: white;
+            margin: 0.25rem auto;
+        }
+    </style>
+</head>
+<body class="slide-body">
+
+    <div class="slide-container">
+
+        <!-- Back Button -->
+        <a href="../home_qualidade.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+            <i class="fas fa-arrow-left me-2"></i> Voltar
+        </a>
+
+        <!-- Slide 1: Capa -->
+        <div class="slide active" id="slide-1">
+            <div class="glass-cover text-center">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac Logo" height="80" class="mb-4">
+                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
+                <h1 class="display-3 fw-bold mb-4 text-black">Testes Automatizados em CI.</h1>
+                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <h3 class="fw-normal text-dark">Professor Afonso</h3>
+                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+            </div>
+        </div>
+
+        <!-- Slide 2: Agenda -->
+        <div class="slide" id="slide-2">
+            <h1 class="display-4 fw-bold mb-5 text-dark">Agenda</h1>
+            <ul class="list-group list-group-flush fs-5 text-start bg-transparent">
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> O problema: integração tardia e dor
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> O que é Continuous Integration (CI)?
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> A pirâmide de testes no contexto de CI
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> Anatomia de um pipeline de CI
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> GitHub Actions na prática
+                </li>
+                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
+                    <i class="fas fa-circle-dot text-primary me-3"></i> Boas práticas e armadilhas comuns
+                </li>
+                <li class="list-group-item bg-transparent text-dark py-3">
+                    <i class="fas fa-circle-dot text-danger me-3"></i> Atividade prática
+                </li>
+            </ul>
+        </div>
+
+        <!-- Slide 3: O Problema -->
+        <div class="slide" id="slide-3">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-3 text-dark">O problema que CI resolve</h2>
+                <p class="lead text-secondary mb-4">"Funciona na minha máquina" — todo dev já disse isso.</p>
+                <div class="row g-4">
+                    <div class="col-md-4">
+                        <div class="p-4 border border-danger rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-code-branch fa-3x text-danger mb-3"></i>
+                            <h5 class="text-dark fw-bold">Branches longas</h5>
+                            <p class="text-secondary small">Cada dev trabalha isolado por dias ou semanas. Ao juntar o código, surgem conflitos gigantescos e bugs difíceis de rastrear.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-warning rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-bug fa-3x text-warning mb-3"></i>
+                            <h5 class="text-dark fw-bold">Regressões silenciosas</h5>
+                            <p class="text-secondary small">Uma alteração em módulo A quebra módulo B — e ninguém percebe até o código chegar em produção, custando horas de debug urgente.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark rounded-4 bg-white shadow-sm h-100">
+                            <i class="fas fa-clock fa-3x text-dark mb-3"></i>
+                            <h5 class="text-dark fw-bold">Feedback lento</h5>
+                            <p class="text-secondary small">Sem automação, o ciclo teste → feedback demora horas ou dias. Erros de hoje são descobertos semanas depois, quando o contexto já foi perdido.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-dark mt-4 rounded-4 text-start">
+                    <i class="fas fa-quote-left me-2"></i>
+                    <strong>Integração de código sem testes automáticos = confiança cega.</strong>
+                    Você só sabe que quebrou quando o usuário reclama.
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: O que é CI -->
+        <div class="slide" id="slide-4">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-3 text-dark">O que é Continuous Integration?</h2>
+                <p class="lead text-secondary mb-5">CI é a prática de integrar código ao repositório principal com <strong>frequência</strong>, com validação <strong>automática</strong> a cada integração.</p>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm text-start h-100">
+                            <h5 class="fw-bold text-primary mb-3"><i class="fas fa-history me-2"></i>Origem</h5>
+                            <p class="text-secondary small mb-2">Conceito formalizado por <strong>Martin Fowler</strong> e popularizado pelo movimento XP (Extreme Programming) no início dos anos 2000.</p>
+                            <p class="text-secondary small">Princípio central: <em>"se integrar dói, faça com mais frequência até não doer mais."</em></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm text-start h-100">
+                            <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-double me-2"></i>Premissas essenciais</h5>
+                            <ul class="text-secondary small mb-0">
+                                <li class="mb-2">Repositório único e compartilhado (trunk/main)</li>
+                                <li class="mb-2">Builds automatizados a cada push</li>
+                                <li class="mb-2">Testes automatizados como parte do build</li>
+                                <li class="mb-2">Build quebrado = prioridade máxima</li>
+                                <li>Feedback em minutos, não em horas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mt-1">
+                    <div class="col-12">
+                        <div class="p-3 border border-primary rounded-4 bg-white shadow-sm">
+                            <div class="d-flex justify-content-around align-items-center flex-wrap gap-3">
+                                <div class="text-center"><i class="fas fa-pencil fa-2x text-primary mb-1"></i><br><small class="fw-bold">Commit</small></div>
+                                <i class="fas fa-arrow-right text-muted"></i>
+                                <div class="text-center"><i class="fas fa-upload fa-2x text-warning mb-1"></i><br><small class="fw-bold">Push</small></div>
+                                <i class="fas fa-arrow-right text-muted"></i>
+                                <div class="text-center"><i class="fas fa-cogs fa-2x text-info mb-1"></i><br><small class="fw-bold">Build</small></div>
+                                <i class="fas fa-arrow-right text-muted"></i>
+                                <div class="text-center"><i class="fas fa-vial fa-2x text-success mb-1"></i><br><small class="fw-bold">Testes</small></div>
+                                <i class="fas fa-arrow-right text-muted"></i>
+                                <div class="text-center"><i class="fas fa-bell fa-2x text-danger mb-1"></i><br><small class="fw-bold">Feedback</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Pirâmide de Testes -->
+        <div class="slide" id="slide-5">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-3 text-dark">A Pirâmide de Testes em CI</h2>
+                <p class="lead text-secondary mb-4">Não são todos os testes que devem rodar do mesmo jeito em CI.</p>
+                <div class="row g-4 align-items-center">
+                    <div class="col-md-5">
+                        <div class="pyramid-bar" style="width:60%; background:#dc3545; height:60px; font-size:0.85rem;">
+                            E2E / UI<br><small class="fw-normal opacity-75">lentos · raros</small>
+                        </div>
+                        <div class="pyramid-bar" style="width:80%; background:#fd7e14; height:65px; font-size:0.85rem;">
+                            Integração<br><small class="fw-normal opacity-75">moderados</small>
+                        </div>
+                        <div class="pyramid-bar" style="width:100%; background:#198754; height:70px; font-size:0.9rem;">
+                            Unitários<br><small class="fw-normal opacity-75">rápidos · muitos · baratos</small>
+                        </div>
+                    </div>
+                    <div class="col-md-7 text-start">
+                        <div class="pipeline-step mb-3">
+                            <h6 class="fw-bold text-success mb-1"><i class="fas fa-bolt me-2"></i>Testes Unitários — rode sempre</h6>
+                            <p class="small text-secondary mb-0">Rápidos (segundos), isolados, cobrem a lógica de negócio. São o coração do CI. Qualquer commit deve passar por eles.</p>
+                        </div>
+                        <div class="pipeline-step mb-3" style="border-color: #fd7e14;">
+                            <h6 class="fw-bold text-warning mb-1"><i class="fas fa-database me-2"></i>Testes de Integração — rode no merge</h6>
+                            <p class="small text-secondary mb-0">Validam comunicação entre módulos, banco, APIs externas. Mais lentos — ideais para rodar em PRs antes do merge.</p>
+                        </div>
+                        <div class="pipeline-step" style="border-color: #dc3545;">
+                            <h6 class="fw-bold text-danger mb-1"><i class="fas fa-globe me-2"></i>E2E — rode periodicamente</h6>
+                            <p class="small text-secondary mb-0">Simulam o usuário real. Muito lentos e frágeis para rodar a cada commit. Rodam em pipelines noturnos ou antes de releases.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Anatomia do Pipeline -->
+        <div class="slide" id="slide-6">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Anatomia de um Pipeline de CI</h2>
+                <p class="lead text-secondary mb-4">Um pipeline é uma sequência de <strong>jobs</strong> que validam a saúde do código.</p>
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-primary bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-primary fs-4">1</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Checkout & Setup</h6>
+                                <p class="small text-secondary">Clona o repositório, instala dependências (npm install, pip install), configura variáveis de ambiente.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-warning bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-warning fs-4">2</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Lint & Build</h6>
+                                <p class="small text-secondary">Verifica estilo de código (ESLint, Prettier), erros de compilação, tipagem (TypeScript). Falha rápido antes dos testes.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-success bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-success fs-4">3</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Testes Unitários</h6>
+                                <p class="small text-secondary">Executa a suite de testes. Gera relatório de cobertura. Falha se cobertura cai abaixo do threshold.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-info bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-info fs-4">4</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Testes de Integração</h6>
+                                <p class="small text-secondary">Sobe serviços auxiliares (banco via Docker), executa testes que cruzam fronteiras de módulo ou sistema.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-danger bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-danger fs-4">5</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Segurança & Qualidade</h6>
+                                <p class="small text-secondary">Auditoria de dependências (npm audit), análise estática de segurança, varredura de vulnerabilidades.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card border-0 shadow-sm h-100 rounded-4">
+                            <div class="card-body p-4 text-center">
+                                <div class="rounded-circle bg-dark bg-opacity-10 mx-auto mb-3 d-flex align-items-center justify-content-center" style="width:60px;height:60px;">
+                                    <span class="fw-bold text-dark fs-4">6</span>
+                                </div>
+                                <h6 class="fw-bold text-dark">Notificação</h6>
+                                <p class="small text-secondary">Resultado visível no PR. Verde = pode mergear. Vermelho = bloqueia merge até o time corrigir.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: GitHub Actions - Conceito -->
+        <div class="slide" id="slide-7">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-3 text-dark">GitHub Actions</h2>
+                <p class="lead text-secondary mb-4">A plataforma de CI/CD nativa do GitHub — grátis para repositórios públicos.</p>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm text-start h-100">
+                            <h6 class="fw-bold text-dark mb-3"><i class="fas fa-layer-group text-primary me-2"></i>Conceitos fundamentais</h6>
+                            <ul class="small text-secondary mb-0">
+                                <li class="mb-2"><strong>Workflow:</strong> arquivo YAML que define o pipeline (<code>.github/workflows/</code>)</li>
+                                <li class="mb-2"><strong>Trigger (on):</strong> evento que dispara o workflow — push, pull_request, schedule...</li>
+                                <li class="mb-2"><strong>Job:</strong> conjunto de steps que roda em uma máquina virtual isolada</li>
+                                <li class="mb-2"><strong>Step:</strong> comando ou action individual dentro de um job</li>
+                                <li><strong>Action:</strong> unidade reutilizável de código (ex: <code>actions/checkout@v4</code>)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm text-start h-100">
+                            <h6 class="fw-bold text-dark mb-3"><i class="fas fa-server text-success me-2"></i>Runners disponíveis</h6>
+                            <ul class="small text-secondary mb-0">
+                                <li class="mb-2"><strong>ubuntu-latest</strong> — Linux (mais usado, mais rápido)</li>
+                                <li class="mb-2"><strong>windows-latest</strong> — Windows Server</li>
+                                <li class="mb-2"><strong>macos-latest</strong> — macOS (mais lento e caro)</li>
+                                <li class="mb-2"><strong>Self-hosted</strong> — sua própria máquina/servidor</li>
+                            </ul>
+                            <hr>
+                            <p class="small text-secondary mb-0">Cada job roda em uma VM zerada — o ambiente é limpo a cada execução, garantindo reproducibilidade.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Workflow YAML Básico -->
+        <div class="slide" id="slide-8">
+            <div class="slide-content">
+                <h2 class="display-5 fw-bold mb-3 text-dark text-center">Workflow básico — Node.js + Jest</h2>
+                <div class="code-block">
+<span class="cm"># .github/workflows/ci.yml</span>
+<span class="kw">name:</span> <span class="str">CI</span>
+
+<span class="kw">on:</span>
+  <span class="kw">push:</span>
+    <span class="kw">branches:</span> [<span class="str">"main"</span>]
+  <span class="kw">pull_request:</span>
+    <span class="kw">branches:</span> [<span class="str">"main"</span>]
+
+<span class="kw">jobs:</span>
+  <span class="kw">test:</span>
+    <span class="kw">runs-on:</span> <span class="str">ubuntu-latest</span>
+
+    <span class="kw">steps:</span>
+      - <span class="kw">name:</span> <span class="str">Checkout do código</span>
+        <span class="kw">uses:</span> <span class="str">actions/checkout@v4</span>
+
+      - <span class="kw">name:</span> <span class="str">Configurar Node.js</span>
+        <span class="kw">uses:</span> <span class="str">actions/setup-node@v4</span>
+        <span class="kw">with:</span>
+          <span class="kw">node-version:</span> <span class="str">"20"</span>
+          <span class="kw">cache:</span> <span class="str">"npm"</span>
+
+      - <span class="kw">name:</span> <span class="str">Instalar dependências</span>
+        <span class="kw">run:</span> <span class="str">npm ci</span>
+
+      - <span class="kw">name:</span> <span class="str">Verificar lint</span>
+        <span class="kw">run:</span> <span class="str">npm run lint</span>
+
+      - <span class="kw">name:</span> <span class="str">Rodar testes com cobertura</span>
+        <span class="kw">run:</span> <span class="str">npm test -- --coverage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Workflow com Matrix -->
+        <div class="slide" id="slide-9">
+            <div class="slide-content">
+                <h2 class="display-5 fw-bold mb-3 text-dark text-center">Testando em múltiplas versões — Matrix Strategy</h2>
+                <div class="code-block">
+<span class="kw">jobs:</span>
+  <span class="kw">test:</span>
+    <span class="kw">runs-on:</span> <span class="str">ubuntu-latest</span>
+
+    <span class="kw">strategy:</span>
+      <span class="kw">matrix:</span>
+        <span class="kw">node-version:</span> [<span class="val">18</span>, <span class="val">20</span>, <span class="val">22</span>]  <span class="cm"># roda 3 jobs em paralelo</span>
+
+    <span class="kw">steps:</span>
+      - <span class="kw">uses:</span> <span class="str">actions/checkout@v4</span>
+
+      - <span class="kw">name:</span> <span class="str">Node ${{ matrix.node-version }}</span>
+        <span class="kw">uses:</span> <span class="str">actions/setup-node@v4</span>
+        <span class="kw">with:</span>
+          <span class="kw">node-version:</span> <span class="str">${{ matrix.node-version }}</span>
+
+      - <span class="kw">run:</span> <span class="str">npm ci</span>
+      - <span class="kw">run:</span> <span class="str">npm test</span>
+
+  <span class="kw">deploy:</span>
+    <span class="kw">needs:</span> <span class="str">test</span>            <span class="cm"># só executa se "test" passou</span>
+    <span class="kw">if:</span> <span class="str">github.ref == 'refs/heads/main'</span>
+    <span class="kw">runs-on:</span> <span class="str">ubuntu-latest</span>
+    <span class="kw">steps:</span>
+      - <span class="kw">run:</span> <span class="str">echo "Fazendo deploy!"</span>
+                </div>
+                <p class="text-muted small text-center mt-3">
+                    <i class="fas fa-info-circle me-1"></i>
+                    <strong>needs:</strong> cria dependência entre jobs. <strong>if:</strong> condiciona execução. <strong>matrix:</strong> paraleliza em múltiplos ambientes.
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Boas Práticas -->
+        <div class="slide" id="slide-10">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Boas práticas para testes em CI</h2>
+                <div class="row g-3 text-start">
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #198754;">
+                            <h6 class="fw-bold text-success mb-1"><i class="fas fa-check me-2"></i>Use <code>npm ci</code> em vez de <code>npm install</code></h6>
+                            <p class="small text-secondary mb-0">Instalação determinística, respeita o lockfile, mais rápida em CI onde não há node_modules em cache.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #198754;">
+                            <h6 class="fw-bold text-success mb-1"><i class="fas fa-check me-2"></i>Cache de dependências</h6>
+                            <p class="small text-secondary mb-0">Use <code>cache: "npm"</code> no setup-node para evitar baixar pacotes do zero a cada execução. Economiza minutos de build.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #198754;">
+                            <h6 class="fw-bold text-success mb-1"><i class="fas fa-check me-2"></i>Falhe rápido (fail-fast)</h6>
+                            <p class="small text-secondary mb-0">Coloque lint e build antes dos testes. Se o código nem compila, não perca tempo rodando testes.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #198754;">
+                            <h6 class="fw-bold text-success mb-1"><i class="fas fa-check me-2"></i>Nunca commite segredos no YAML</h6>
+                            <p class="small text-secondary mb-0">Use <strong>GitHub Secrets</strong> (<code>secrets.MINHA_CHAVE</code>) para tokens, senhas e chaves de API. Jamais no arquivo YAML.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #dc3545;">
+                            <h6 class="fw-bold text-danger mb-1"><i class="fas fa-times me-2"></i>Evite: testes que dependem de ordem</h6>
+                            <p class="small text-secondary mb-0">Cada teste deve ser independente. Testes acoplados causam falhas intermitentes em CI (flaky tests).</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="pipeline-step" style="border-color: #dc3545;">
+                            <h6 class="fw-bold text-danger mb-1"><i class="fas fa-times me-2"></i>Evite: testes que acessam internet externa</h6>
+                            <p class="small text-secondary mb-0">APIs externas reais tornam o CI instável. Use mocks, fixtures ou serviços locais via Docker Compose.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Atividade -->
+        <div class="slide" id="slide-11">
+            <div class="slide-content text-center">
+                <h2 class="display-5 fw-bold mb-3 text-dark">Atividade Prática</h2>
+                <p class="lead text-secondary mb-4">Vamos criar um pipeline de CI real para um projeto Node.js.</p>
+                <div class="row g-3 text-start">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm rounded-4">
+                            <div class="card-body p-4">
+                                <h6 class="fw-bold text-dark mb-3"><i class="fas fa-tasks text-primary me-2"></i>Passo a passo</h6>
+                                <ol class="text-secondary">
+                                    <li class="mb-2">Faça um <strong>fork</strong> do repositório-base disponibilizado pelo professor</li>
+                                    <li class="mb-2">Crie a pasta <code>.github/workflows/</code> na raiz do projeto</li>
+                                    <li class="mb-2">Crie o arquivo <code>ci.yml</code> com: checkout, setup-node (v20), npm ci, npm test</li>
+                                    <li class="mb-2">Faça um <strong>push</strong> e observe o GitHub executar o workflow na aba <em>Actions</em></li>
+                                    <li class="mb-2">Introduza um <strong>bug intencional</strong> em um teste e faça novo push — veja o CI falhar</li>
+                                    <li>Corrija o bug, faça push e observe o CI ficar verde novamente</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-success rounded-4 mb-0">
+                            <h6 class="fw-bold"><i class="fas fa-star me-2"></i>Desafio extra</h6>
+                            <p class="small mb-0">Adicione uma matrix strategy testando nas versões Node 18 e 20. Configure o relatório de cobertura como artifact do workflow.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-warning rounded-4 mb-0">
+                            <h6 class="fw-bold"><i class="fas fa-clock me-2"></i>Entrega</h6>
+                            <p class="small mb-0">Compartilhe o link do repositório com o workflow funcionando (aba Actions com execução verde).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Conclusão -->
+        <div class="slide" id="slide-12">
+            <div class="text-center slide-content">
+                <h2 class="display-5 fw-bold mb-4 text-dark">Recapitulando</h2>
+                <div class="row g-3 mb-5">
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fas fa-sync-alt fa-3x text-primary mb-3"></i>
+                            <h5 class="text-dark">CI = Integração contínua</h5>
+                            <p class="text-secondary small">Commitar frequentemente com validação automática elimina a dor de integração tardia.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fas fa-layer-group fa-3x text-success mb-3"></i>
+                            <h5 class="text-dark">Pirâmide no pipeline</h5>
+                            <p class="text-secondary small">Unitários sempre, integração no PR, E2E periodicamente. Velocidade é essencial em CI.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
+                            <i class="fab fa-github fa-3x text-dark mb-3"></i>
+                            <h5 class="text-dark">GitHub Actions</h5>
+                            <p class="text-secondary small">YAML declarativo, triggers flexíveis, matrix para múltiplos ambientes, secrets para segurança.</p>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="display-4 fw-bold text-dark mb-3">Dúvidas?</h1>
+                <p class="lead text-secondary mb-4">Obrigado pela atenção!</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="material/material_aula06-introducao-github-actions.html" class="btn btn-dark btn-lg rounded-pill px-5">
+                        <i class="fas fa-book me-2"></i>Material da aula
+                    </a>
+                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer Navigation -->
+    <footer class="slide-footer">
+        <div class="d-flex align-items-center gap-3">
+            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+            <div class="progress" style="width: 100px; height: 6px;">
+                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
+        </div>
+
+        <div class="text-center text-muted small d-none d-md-block">
+            Qualidade de Software - Testes Automatizados em CI
+        </div>
+
+        <div class="d-flex align-items-center gap-3">
+            <span id="slideCounter" class="text-muted small fw-medium"></span>
+            <a href="material/material_aula06-introducao-github-actions.html" class="btn btn-outline-primary btn-sm rounded-pill">
+                <i class="fas fa-book me-1"></i> Ver material escrito
+            </a>
+            <a href="../../index.html">
+                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                     alt="Senac" height="30" class="opacity-75">
+            </a>
+        </div>
+    </footer>
+
+    <script src="../../js/standard_slides.js"></script>
+
+</body>
+</html>
