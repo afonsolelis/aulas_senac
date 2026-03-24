@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 06 - Qualidade de Software</title>
+  <title>Material - Aula 06 - Testes Automatizados em CI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
@@ -13,26 +13,262 @@
       <div class="card-body p-4 p-md-5">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
         <p class="text-muted small mb-2">Qualidade de Software</p>
-        <h1 class="h3 fw-bold mb-3">Aula 06 - Introdução ao GitHub Actions</h1>
-        <p class="text-secondary mb-2">Resumo da automação de testes em pipeline para feedback rápido.</p>
-        <p class="text-secondary mb-4">Inclui visão do ciclo de commit, execução de testes e validação contínua.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
+        <h1 class="h3 fw-bold mb-3">Aula 06 - Testes Automatizados em CI</h1>
+        <p class="text-secondary mb-2">Material de apoio sobre Continuous Integration, GitHub Actions e a construção de um <code>ci.yml</code> confiável.</p>
+        <p class="text-secondary mb-4">Este pipeline será exigido na entrega do projeto final. O repositório precisa executar testes automaticamente e ficar verde na aba <strong>Actions</strong>.</p>
+
+        <div class="alert alert-danger border-0 mb-4">
+          <h2 class="h6 fw-bold mb-2"><i class="fas fa-circle-exclamation me-2"></i>Regra para a entrega final</h2>
+          <p class="mb-2">O projeto final deve possuir workflow de CI versionado em <code>.github/workflows/ci.yml</code>.</p>
+          <ul class="mb-0">
+            <li>O pipeline deve rodar a cada <code>push</code> e <code>pull_request</code>.</li>
+            <li>Os testes precisam executar sem intervenção manual.</li>
+            <li>A execução deve aparecer com sucesso na aba <strong>Actions</strong> do GitHub.</li>
+            <li>Entrega com workflow quebrado ou ausente não atende ao padrão esperado.</li>
+          </ul>
+        </div>
+
+        <h2 class="h5 fw-bold mb-3">1. O que é CI</h2>
+        <p class="text-secondary">Continuous Integration é a prática de validar automaticamente o projeto sempre que código novo entra no repositório. Em vez de descobrir problemas só no dia da apresentação, a equipe recebe feedback rápido a cada alteração.</p>
         <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
+          <li>Garante que o projeto continua executando após cada mudança.</li>
+          <li>Reduz integração manual e surpresa entre branches.</li>
+          <li>Cria uma evidência objetiva de qualidade para o projeto.</li>
+          <li>Facilita correção rápida de erros antes da entrega final.</li>
         </ul>
-                <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+
+        <h2 class="h5 fw-bold mb-3">2. O que um bom CI precisa validar</h2>
+        <p class="text-secondary">Um pipeline bom não é o mais longo. É o que valida o essencial com velocidade e previsibilidade.</p>
+        <div class="row g-3 mb-4">
+          <div class="col-md-6">
+            <div class="border rounded p-3 bg-white h-100">
+              <h3 class="h6 fw-bold">Validações mínimas</h3>
+              <ul class="text-secondary mb-0">
+                <li>Instalação limpa de dependências.</li>
+                <li>Lint ou checagem de padrão, quando existir no projeto.</li>
+                <li>Execução dos testes automatizados.</li>
+                <li>Falha imediata se algum passo quebrar.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="border rounded p-3 bg-white h-100">
+              <h3 class="h6 fw-bold">Características desejáveis</h3>
+              <ul class="text-secondary mb-0">
+                <li>Tempo de execução curto.</li>
+                <li>Passos determinísticos e reprodutíveis.</li>
+                <li>Sem depender de máquina local do aluno.</li>
+                <li>Saída clara para diagnosticar falhas.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="h5 fw-bold mb-3">3. Anatomia de um bom <code>ci.yml</code></h2>
+        <p class="text-secondary">No GitHub Actions, um workflow é composto por gatilhos, jobs e steps. O arquivo deve ficar em <code>.github/workflows/ci.yml</code>.</p>
         <ol class="text-secondary mb-4">
-          <li>Resuma em 5 linhas os objetivos da aula: <strong>Aula 06 - Introdução ao GitHub Actions</strong>.</li>
-          <li>Liste 3 práticas recomendadas e explique quando usar cada uma.</li>
-          <li>Descreva 2 riscos comuns ao aplicar o conteúdo e como mitigar.</li>
-          <li>Crie um mini-cenário real e aplique o conteúdo da aula passo a passo.</li>
-          <li>Prepare 3 critérios de validação para verificar se a atividade foi bem executada.</li>
+          <li><strong>name:</strong> nome legível do workflow.</li>
+          <li><strong>on:</strong> define quando o pipeline roda.</li>
+          <li><strong>jobs:</strong> separa a execução em blocos lógicos.</li>
+          <li><strong>runs-on:</strong> sistema operacional usado pelo runner.</li>
+          <li><strong>steps:</strong> sequência de ações do job.</li>
         </ol>
 
-<div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-danger btn-sm" href="../slide_introducaoatestesautomatizados.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
+        <h2 class="h5 fw-bold mb-3">4. Exemplo recomendado para projeto Node.js</h2>
+        <p class="text-secondary">Este é um ponto de partida sólido para a maior parte dos projetos da disciplina.</p>
+        <pre class="bg-dark text-light p-3 rounded small mb-4"><code>name: CI
+
+on:
+  push:
+    branches: ["main", "develop"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do codigo
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Rodar lint
+        run: npm run lint --if-present
+
+      - name: Rodar testes
+        run: npm test -- --runInBand
+
+      - name: Gerar build
+        run: npm run build --if-present</code></pre>
+
+        <h2 class="h5 fw-bold mb-3">5. Por que esse exemplo é bom</h2>
+        <ul class="text-secondary mb-4">
+          <li><code>actions/checkout@v4</code> baixa o repositório no runner.</li>
+          <li><code>actions/setup-node@v4</code> define a versão do Node de forma explícita.</li>
+          <li><code>npm ci</code> instala dependências a partir do lockfile, com mais previsibilidade que <code>npm install</code>.</li>
+          <li><code>--if-present</code> evita falhas em projetos que ainda não possuem script de lint ou build.</li>
+          <li>O job falha automaticamente se lint, teste ou build quebrarem.</li>
+        </ul>
+
+        <h2 class="h5 fw-bold mb-3">6. Boas práticas para um CI realmente útil</h2>
+        <div class="row g-3 mb-4">
+          <div class="col-md-4">
+            <div class="border rounded p-3 bg-white h-100">
+              <h3 class="h6 fw-bold">Seja determinístico</h3>
+              <p class="text-secondary small mb-0">Use versões explícitas, lockfile commitado e comandos reproduzíveis.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded p-3 bg-white h-100">
+              <h3 class="h6 fw-bold">Falhe cedo</h3>
+              <p class="text-secondary small mb-0">Lint e testes rápidos devem rodar cedo para economizar tempo.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="border rounded p-3 bg-white h-100">
+              <h3 class="h6 fw-bold">Não dependa da sua máquina</h3>
+              <p class="text-secondary small mb-0">Se algo só funciona localmente, o pipeline está revelando um problema real do projeto.</p>
+            </div>
+          </div>
+        </div>
+        <ul class="text-secondary mb-4">
+          <li>Mantenha o pipeline curto e focado no que protege a entrega.</li>
+          <li>Use nomes claros nos steps para facilitar leitura da aba Actions.</li>
+          <li>Evite segredos desnecessários em workflows de teste.</li>
+          <li>Separe testes lentos dos testes obrigatórios de cada push, se necessário.</li>
+          <li>Não esconda erro com comandos como <code>|| true</code>.</li>
+        </ul>
+
+        <h2 class="h5 fw-bold mb-3">7. Erros comuns em <code>ci.yml</code></h2>
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered bg-white align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>Erro</th>
+                <th>Problema causado</th>
+                <th>Como corrigir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Usar <code>npm install</code> sem necessidade</td>
+                <td>Instalação menos previsível</td>
+                <td>Preferir <code>npm ci</code></td>
+              </tr>
+              <tr>
+                <td>Rodar apenas em <code>main</code></td>
+                <td>Erro só aparece tarde demais</td>
+                <td>Rodar também em <code>pull_request</code></td>
+              </tr>
+              <tr>
+                <td>Depender de banco externo manual</td>
+                <td>Pipeline instável ou impossível de reproduzir</td>
+                <td>Subir serviços no workflow ou usar estratégia de teste apropriada</td>
+              </tr>
+              <tr>
+                <td>Teste que depende de internet real</td>
+                <td>Falhas intermitentes</td>
+                <td>Isolar integração, usar VCR ou ambiente controlado</td>
+              </tr>
+              <tr>
+                <td>Não versionar lockfile</td>
+                <td>Resultado diferente em cada execução</td>
+                <td>Commitar <code>package-lock.json</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2 class="h5 fw-bold mb-3">8. E quando o projeto usa banco, API ou containers?</h2>
+        <p class="text-secondary">Projeto real quase nunca é só uma função isolada. Se os testes dependem de infraestrutura, isso precisa estar explícito no pipeline.</p>
+        <ul class="text-secondary mb-4">
+          <li>Banco de dados: subir serviço com <code>services:</code> no workflow ou usar Testcontainers.</li>
+          <li>APIs externas: evitar chamadas reais e usar abordagem controlada, como VCR, fixtures ou ambiente local.</li>
+          <li>Docker: se a aplicação já sobe por container, o CI pode usar <code>docker compose</code> para validar integração.</li>
+          <li>Variáveis de ambiente: documentar no repositório e configurar secrets apenas quando forem realmente necessários.</li>
+        </ul>
+
+        <h2 class="h5 fw-bold mb-3">9. Exemplo com serviço de banco no GitHub Actions</h2>
+        <pre class="bg-dark text-light p-3 rounded small mb-4"><code>name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: app
+          POSTGRES_DB: app_test
+        ports:
+          - 5432:5432
+        options: &gt;-
+          --health-cmd="pg_isready -U app -d app_test"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Rodar testes de integracao
+        env:
+          DATABASE_URL: postgres://app:app@localhost:5432/app_test
+        run: npm test</code></pre>
+
+        <h2 class="h5 fw-bold mb-3">10. Critérios mínimos para o projeto final</h2>
+        <div class="alert alert-warning border-0 mb-4">
+          <ul class="mb-0">
+            <li>O repositório deve conter o arquivo <code>.github/workflows/ci.yml</code>.</li>
+            <li>O workflow deve executar automaticamente no GitHub.</li>
+            <li>O projeto precisa ter scripts funcionais no <code>package.json</code> ou equivalente.</li>
+            <li>O grupo deve conseguir mostrar uma execução verde recente na entrega.</li>
+            <li>Se houver testes de integração, a infraestrutura necessária deve subir no pipeline.</li>
+          </ul>
+        </div>
+
+        <h2 class="h5 fw-bold mb-3">11. Checklist antes de entregar</h2>
+        <ol class="text-secondary mb-4">
+          <li>Fazer clone limpo do projeto e confirmar que ele não depende de arquivos locais escondidos.</li>
+          <li>Revisar se o workflow está em <code>.github/workflows/ci.yml</code>.</li>
+          <li>Conferir se os scripts usados no workflow existem de fato.</li>
+          <li>Fazer um push pequeno e verificar o resultado na aba Actions.</li>
+          <li>Corrigir qualquer falha antes da entrega, em vez de explicar verbalmente que "na sua máquina funciona".</li>
+        </ol>
+
+        <h2 class="h5 fw-bold mb-3">12. Exercícios de fixação</h2>
+        <ol class="text-secondary mb-4">
+          <li>Explique por que <code>npm ci</code> é preferível a <code>npm install</code> em CI.</li>
+          <li>Monte um <code>ci.yml</code> para o seu projeto atual e identifique quais scripts ele exige.</li>
+          <li>Liste três motivos que fariam um workflow passar localmente e falhar no GitHub Actions.</li>
+          <li>Adapte o pipeline para subir o banco que seu projeto usa.</li>
+          <li>Defina o que seu grupo precisa mostrar no dia da entrega para comprovar que o CI está funcionando.</li>
+        </ol>
+
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-danger btn-sm" href="../slide_ci-testes-automatizados.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
           <a class="btn btn-outline-secondary btn-sm" href="../../home_qualidade.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
         </div>
       </div>
