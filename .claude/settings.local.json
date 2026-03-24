@@ -20,7 +20,8 @@
       "Bash(node debug_test.js)",
       "Bash(node /home/afonsolelis/repositorios/senac/aulas_senac/debug_test.js)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)"
     ]
   }
 }
