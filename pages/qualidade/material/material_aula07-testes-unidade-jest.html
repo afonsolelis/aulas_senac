@@ -3,9 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 07 - Qualidade de Software</title>
+  <title>Material - Aula 07 - Jest no GitHub Actions + SonarCloud</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --qa-blue: #114b74;
+      --qa-bg: #f4f8fb;
+    }
+    .section-title {
+      border-left: 4px solid var(--qa-blue);
+      padding-left: 12px;
+      margin: 28px 0 14px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .info-box {
+      background: var(--qa-bg);
+      border-left: 4px solid var(--qa-blue);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    pre {
+      background: #0f1720;
+      color: #dbe7f1;
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body class="bg-light">
   <div class="container py-5">
@@ -13,25 +41,68 @@
       <div class="card-body p-4 p-md-5">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
         <p class="text-muted small mb-2">Qualidade de Software</p>
-        <h1 class="h3 fw-bold mb-3">Aula 07 - Testes de Unidade (Jest)</h1>
-        <p class="text-secondary mb-2">Material curto sobre estrutura de testes unitários e organização de casos em Jest.</p>
-        <p class="text-secondary mb-4">Priorize clareza dos testes, cobertura útil e manutenção simples.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
-        <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
+        <h1 class="h3 fw-bold mb-3">Aula 07 - Jest no GitHub Actions + SonarCloud</h1>
+        <p class="text-secondary mb-2">Esta aula retoma os testes com Jest, mas desloca o foco para integração contínua no GitHub Actions e para a análise de qualidade em repositórios públicos.</p>
+        <p class="text-secondary mb-4">A ideia central é simples: o teste continua importante, mas agora ele vira parte de uma política de merge e de um fluxo de observabilidade do código.</p>
+
+        <h2 class="section-title">1. O papel de cada ferramenta</h2>
+        <ul class="text-secondary">
+          <li><strong>Jest:</strong> valida comportamento e gera cobertura.</li>
+          <li><strong>GitHub Actions:</strong> executa tudo automaticamente em push e pull request.</li>
+          <li><strong>SonarCloud:</strong> lê o código e a cobertura para apontar smells, bugs potenciais, duplicação e quality gate.</li>
         </ul>
-                <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+
+        <div class="info-box text-secondary">
+          Quando falamos “SonarQube” em aula, vale diferenciar: para repositórios públicos, a forma mais prática costuma ser o <strong>SonarCloud</strong>, que evita instalar e manter servidor.
+        </div>
+
+        <h2 class="section-title">2. Workflow mínimo no GitHub Actions</h2>
+        <pre><code>name: quality-ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm test -- --ci --coverage</code></pre>
+
+        <h2 class="section-title">3. Integração com SonarCloud</h2>
+        <p class="text-secondary">Para que a cobertura apareça no dashboard, o Jest precisa gerar <code>coverage/lcov.info</code>. Esse arquivo é apontado em <code>sonar-project.properties</code>.</p>
+        <pre><code>sonar.projectKey=minha-org_meu-projeto
+sonar.organization=minha-org
+sonar.sources=src
+sonar.tests=tests
+sonar.test.inclusions=**/*.test.js
+sonar.javascript.lcov.reportPaths=coverage/lcov.info</code></pre>
+
+        <h2 class="section-title">4. O que observar no pull request</h2>
+        <ul class="text-secondary">
+          <li>Se os testes passaram.</li>
+          <li>Se a cobertura do código novo caiu.</li>
+          <li>Se apareceram smells, duplicação ou security hotspots.</li>
+          <li>Se o quality gate ficou verde antes do merge.</li>
+        </ul>
+
+        <h2 class="section-title">5. Exercícios de fixação</h2>
         <ol class="text-secondary mb-4">
-          <li>Resuma em 5 linhas os objetivos da aula: <strong>Aula 07 - Testes de Unidade (Jest)</strong>.</li>
-          <li>Liste 3 práticas recomendadas e explique quando usar cada uma.</li>
-          <li>Descreva 2 riscos comuns ao aplicar o conteúdo e como mitigar.</li>
-          <li>Crie um mini-cenário real e aplique o conteúdo da aula passo a passo.</li>
-          <li>Prepare 3 critérios de validação para verificar se a atividade foi bem executada.</li>
+          <li>Explique a diferença entre validar comportamento com Jest e avaliar qualidade estrutural com SonarCloud.</li>
+          <li>Monte um workflow mínimo para um projeto Node.js público com testes e cobertura.</li>
+          <li>Descreva por que <code>npm ci</code> é mais adequado que <code>npm install</code> em CI.</li>
+          <li>Liste três motivos para usar SonarCloud em um repositório público em vez de subir um SonarQube próprio em uma aula prática.</li>
+          <li>Defina um quality gate simples para novo código e justifique os critérios escolhidos.</li>
         </ol>
 
-<div class="d-flex flex-wrap gap-2">
+        <div class="d-flex flex-wrap gap-2">
           <a class="btn btn-danger btn-sm" href="../slide_jest.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
           <a class="btn btn-outline-secondary btn-sm" href="../../home_qualidade.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
         </div>

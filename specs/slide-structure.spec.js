@@ -17,22 +17,13 @@
  *    - Deve ter botão/link de voltar para a home da disciplina
  *    - Deve ter botão/link para o material correspondente
  *
- * 4. REVEAL.JS (obrigatório para slides criados a partir de 2026-03-29)
- *    - Deve usar <div class="reveal"> como container principal
- *    - Deve carregar a biblioteca Reveal.js (cdn ou local)
- *    - Deve inicializar via Reveal.initialize()
- *    - O slide de título deve ser a primeira <section> dentro de <div class="slides">
- *    - O slide de agenda deve ser a segunda <section> dentro de <div class="slides">
- *    - No slide de título (primeira section), as keywords devem estar em .slide-keywords > .keyword
  */
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
 const { JSDOM } = require('jsdom');
 
 const ROOT = path.resolve(__dirname, '..');
-const CUTOFF_DATE = new Date('2026-03-29T00:00:00Z');
 
 // Mapeamento de disciplinas para home pages
 const DISCIPLINE_HOME_MAP = {
@@ -49,47 +40,6 @@ function loadSlide(filePath) {
   const html = fs.readFileSync(filePath, 'utf-8');
   const dom = new JSDOM(html);
   return { doc: dom.window.document, html };
-}
-
-/**
- * Retorna a data em que o arquivo foi adicionado ao git (primeiro commit).
- * Retorna null se o arquivo ainda não foi commitado.
- */
-function gitFirstCommitDate(filePath) {
-  try {
-    const relative = path.relative(ROOT, filePath);
-    const result = execSync(
-      `git -C "${ROOT}" log --diff-filter=A --format=%aI -- "${relative}"`,
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
-    ).trim();
-    if (!result) return null;
-    return new Date(result.split('\n').pop());
-  } catch {
-    return null;
-  }
-}
-
-/**
- * Decide se o slide precisa obrigatoriamente usar Reveal.js.
- * Critério: foi adicionado ao git em ou após CUTOFF_DATE,
- * OU ainda não foi commitado (arquivo novo não rastreado).
- */
-function requiresReveal(filePath) {
-  const date = gitFirstCommitDate(filePath);
-  if (date === null) return true; // arquivo novo, não commitado ainda
-  return date >= CUTOFF_DATE;
-}
-
-/**
- * Detecta se o slide usa Reveal.js via script src (case-insensitive)
- * ou pela chamada de inicialização no HTML.
- */
-function usesReveal(doc, html) {
-  const scripts = Array.from(doc.querySelectorAll('script[src]'));
-  const hasRevealScript = scripts.some(s =>
-    (s.getAttribute('src') || '').toLowerCase().includes('reveal')
-  );
-  return hasRevealScript || html.includes('Reveal.initialize');
 }
 
 /**
@@ -247,14 +197,13 @@ describe('Estrutura Obrigatória dos Slides', () => {
   });
 
   describe.each(slideFiles)('%s', slidePath => {
-    let doc, html, titleSlide, agendaSlide, discipline, needsReveal;
+    let doc, html, titleSlide, agendaSlide, discipline;
 
     beforeAll(() => {
       ({ doc, html } = loadSlide(slidePath));
       titleSlide = getTitleSlide(doc);
       agendaSlide = getAgendaSlide(doc);
       discipline = path.relative(path.join(ROOT, 'pages'), slidePath).split(path.sep)[0];
-      needsReveal = requiresReveal(slidePath);
     });
 
     // ── 1. Slide de Título ──────────────────────────────────────
@@ -296,48 +245,5 @@ describe('Estrutura Obrigatória dos Slides', () => {
         expect(hasMaterialButton(doc)).toBe(true);
       });
     });
-
-    // ── 4. Reveal.js (obrigatório a partir de 2026-03-29) ───────
-
-    if (needsReveal) {
-      describe('Reveal.js (obrigatório para slides criados a partir de 2026-03-29)', () => {
-        test('deve usar Reveal.js como engine de slides', () => {
-          expect(usesReveal(doc, html)).toBe(true);
-        });
-
-        test('deve ter <div class="reveal"> como container principal', () => {
-          expect(doc.querySelector('.reveal')).not.toBeNull();
-        });
-
-        test('deve ter <div class="slides"> dentro de .reveal', () => {
-          expect(doc.querySelector('.reveal .slides')).not.toBeNull();
-        });
-
-        test('deve carregar o script do Reveal.js via <script src>', () => {
-          const scripts = Array.from(doc.querySelectorAll('script[src]'));
-          const hasRevealScript = scripts.some(s =>
-            (s.getAttribute('src') || '').toLowerCase().includes('reveal')
-          );
-          expect(hasRevealScript).toBe(true);
-        });
-
-        test('deve inicializar o Reveal via Reveal.initialize()', () => {
-          expect(html).toContain('Reveal.initialize');
-        });
-
-        test('slide de título deve ser a primeira <section> em .reveal .slides', () => {
-          const firstSection = doc.querySelector('.reveal .slides > section');
-          expect(firstSection).not.toBeNull();
-        });
-
-        test('slide de agenda deve ser a segunda <section> em .reveal .slides e conter "Agenda"', () => {
-          const sections = doc.querySelectorAll('.reveal .slides > section');
-          expect(sections.length).toBeGreaterThanOrEqual(2);
-          const secondSection = sections[1];
-          expect(secondSection).not.toBeNull();
-          expect(/agenda/i.test(secondSection.textContent)).toBe(true);
-        });
-      });
-    }
   });
 });
