@@ -21,7 +21,19 @@
       "Bash(node /home/afonsolelis/repositorios/senac/aulas_senac/debug_test.js)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(find /home/afonsolelis/repositorios/aulas_senac -type f -name *logica* -o -type d -name *logica*)",
+      "Bash(find /home/afonsolelis/repositorios/aulas_senac -type f -name *redes* -o -type d -name *redes*)",
+      "Bash(find /home/afonsolelis/repositorios/aulas_senac -type f \\\\\\(-name *.html -o -name *.md -o -name *.txt \\\\\\))",
+      "Bash(npx jest:*)",
+      "Bash(grep -v \"^$\")",
+      "Bash(find /home/afonsolelis/repositorios/aulas_senac/pages -name slide_*.html -type f)",
+      "Bash(ls /home/afonsolelis/repositorios/aulas_senac/*.json)",
+      "Bash(ls /home/afonsolelis/repositorios/aulas_senac/.env*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "Bash(npm test:*)"
     ]
   }
 }
