@@ -3,106 +3,706 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Testes de Unidade (xUnit/Jest). - Qualidade de Software</title>
-    <meta name="keywords" content="Jest, xUnit, testes de unidade, JavaScript, Java, qualidade de software, test runner">
+    <title>Jest no GitHub Actions CI - Qualidade de Software</title>
+    <meta name="keywords" content="Jest, GitHub Actions, CI, cobertura de código, coverage, pipeline, testes automatizados, workflow">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/slides.css">
+
+    <style>
+        .yaml-key   { color: #79b8ff; }
+        .yaml-val   { color: #9ecbff; }
+        .yaml-comm  { color: #6a737d; font-style: italic; }
+        .step-badge { display:inline-flex; align-items:center; justify-content:center;
+                      width:30px; height:30px; border-radius:50%; background:#0d6efd;
+                      color:#fff; font-weight:700; flex-shrink:0; }
+        .step-row   { display:flex; align-items:flex-start; gap:12px; margin-bottom:14px; font-size:1.05rem; }
+        .pill-ok    { background:#d1e7dd; color:#0f5132; border-radius:20px; padding:3px 12px; font-size:.9rem; }
+        .pill-fail  { background:#f8d7da; color:#842029; border-radius:20px; padding:3px 12px; font-size:.9rem; }
+        .file-tree  { font-family:monospace; font-size:1rem; line-height:1.8; }
+        .file-tree .dir  { color:#79b8ff; font-weight:700; }
+        .file-tree .file { color:#e6edf3; }
+        .file-tree .note { color:#6a737d; }
+        .ci-box     { border-radius:10px; background:#0d1117; color:#e6edf3;
+                      font-family:monospace; font-size:.92rem; padding:16px 20px; line-height:1.7; }
+        .ci-pass    { color:#3fb950; }
+        .ci-fail    { color:#f85149; }
+        .ci-info    { color:#79b8ff; }
+        .ci-warn    { color:#d29922; }
+    </style>
 </head>
 <body class="slide-body">
 
     <div class="slide-container">
 
-        <!-- Back Button -->
         <a href="../home_qualidade.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
             <i class="fas fa-arrow-left me-2"></i> Voltar
         </a>
 
-        <!-- Slide 1: Cover -->
+        <!-- Slide 1: Título -->
         <div class="slide active" id="slide-1">
             <div class="glass-cover text-center">
                 <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
                      alt="Senac Logo" height="80" class="mb-4">
                 <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
-                <h1 class="display-3 fw-bold mb-4 text-black">Testes de Unidade (xUnit/Jest).</h1>
-                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+                <h1 class="display-4 fw-bold mb-3 text-black">Jest no GitHub Actions CI</h1>
+                <p class="lead text-muted mb-4">Automatizando testes, cobertura e feedback no pipeline</p>
+                <div class="slide-keywords mt-2">
+                    <span class="keyword">Jest</span>
+                    <span class="keyword">GitHub Actions</span>
+                    <span class="keyword">Coverage</span>
+                    <span class="keyword">Pipeline</span>
+                    <span class="keyword">Artifacts</span>
+                </div>
+                <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
                 <h3 class="fw-normal text-dark">Professor Afonso</h3>
-                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+                <span class="badge bg-danger mt-2 px-3 py-2 rounded-pill">2026.1</span>
             </div>
         </div>
 
         <!-- Slide 2: Agenda -->
         <div class="slide" id="slide-2">
-            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
-            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
-                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i class="fas fa-check text-success me-3"></i> Testes de Unidade (xUnit/Jest)</li>\n
-            </ul>
+            <h1 class="display-5 fw-bold mb-4 text-dark">Agenda da Aula</h1>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush fs-5 bg-transparent">
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-history text-secondary me-3"></i> Recap: o que já sabemos sobre Jest
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-exclamation-triangle text-warning me-3"></i> Por que Jest local ≠ Jest no CI
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-folder-open text-primary me-3"></i> Estrutura de projeto pronta para CI
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-file-code text-success me-3"></i> Workflow YAML completo passo a passo
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush fs-5 bg-transparent">
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-chart-bar text-info me-3"></i> Coverage: relatório e thresholds
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-paperclip text-danger me-3"></i> Artifacts: salvando resultados no CI
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-shield-alt text-dark me-3"></i> Branch protection com status checks
+                        </li>
+                        <li class="list-group-item bg-transparent border-bottom py-3">
+                            <i class="fas fa-bug text-danger me-3"></i> Debugando falhas no CI
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
 
-        <!-- Slide 3: Content 1 -->
+        <!-- Slide 3: Recap Jest -->
         <div class="slide" id="slide-3">
-            <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Conceitos Iniciais</h2>
-                <p class="lead text-dark mb-5">Uma visão geral sobre Aula 07.</p>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
-                            <h4 class="text-dark">Ideia</h4>
-                            <p class="text-secondary small">O conceito central explicado de forma simples.</p>
-                        </div>
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-history text-secondary me-2"></i>Recap — O que já sabemos sobre Jest</h2>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm h-100">
+                        <h5 class="fw-bold text-primary"><i class="fas fa-vial me-2"></i>Estrutura de um teste</h5>
+                        <pre style="font-size:.85rem; margin:0; margin-top:8px;"><code class="language-javascript">describe('soma', () => {
+  test('retorna 3', () => {
+    expect(soma(1, 2)).toBe(3);
+  });
+});</code></pre>
                     </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-cogs fa-3x text-info mb-3"></i>
-                            <h4 class="text-dark">Mecanismo</h4>
-                            <p class="text-secondary small">Como funciona na prática e seus componentes.</p>
-                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm h-100">
+                        <h5 class="fw-bold text-success"><i class="fas fa-terminal me-2"></i>Comandos básicos</h5>
+                        <pre style="font-size:.85rem; margin:0; margin-top:8px;"><code class="language-bash">npm test           # roda testes
+npm test -- --watch  # modo watch
+npm test -- --coverage
+# relatório de cobertura</code></pre>
                     </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
-                            <h4 class="text-dark">Resultado</h4>
-                            <p class="text-secondary small">Os benefícios e impactos esperados.</p>
-                        </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm h-100">
+                        <h5 class="fw-bold text-warning"><i class="fas fa-cog me-2"></i>Matchers comuns</h5>
+                        <pre style="font-size:.85rem; margin:0; margin-top:8px;"><code class="language-javascript">expect(x).toBe(3)
+expect(x).toEqual({a:1})
+expect(fn).toThrow()
+expect(x).toBeTruthy()
+expect(arr).toHaveLength(2)</code></pre>
                     </div>
                 </div>
             </div>
+            <div class="alert alert-info mt-3 mb-0 fs-5">
+                <i class="fas fa-arrow-right me-2"></i>Hoje o foco é: como tudo isso roda <strong>automaticamente</strong> no GitHub a cada push.
+            </div>
         </div>
 
-        <!-- Slide 4: Content 2 -->
+        <!-- Slide 4: Local vs CI -->
         <div class="slide" id="slide-4">
-             <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Aprofundamento</h2>
-                <p class="fs-4 text-secondary">Detalhes técnicos importantes sobre o tema.</p>
-                <div class="card border-0 shadow-lg mt-5 mx-auto" style="max-width: 800px;">
-                    <div class="card-body p-5">
-                         <blockquote class="blockquote mb-0">
-                          <p class="text-dark">"A educação é a arma mais poderosa que você pode usar para mudar o mundo."</p>
-                          <footer class="blockquote-footer mt-2">Nelson Mandela</footer>
-                        </blockquote>
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-exclamation-triangle text-warning me-2"></i>Jest Local vs Jest no CI — As Diferenças</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-4 border border-success rounded-4 bg-white h-100">
+                        <h5 class="fw-bold text-success mb-3"><i class="fas fa-laptop me-2"></i>Local (sua máquina)</h5>
+                        <ul class="fs-5 mb-0">
+                            <li class="mb-2">Tem <code>.env</code> com variáveis configuradas</li>
+                            <li class="mb-2">Banco de dados rodando localmente</li>
+                            <li class="mb-2">Modo <code>--watch</code> é útil</li>
+                            <li class="mb-2">Erros aparecem no terminal</li>
+                            <li class="mb-2">Node.js já instalado</li>
+                            <li>Pastas e arquivos já existem</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-4 border border-danger rounded-4 bg-white h-100">
+                        <h5 class="fw-bold text-danger mb-3"><i class="fab fa-github me-2"></i>CI (GitHub Actions)</h5>
+                        <ul class="fs-5 mb-0">
+                            <li class="mb-2">Máquina <strong>virgem</strong> a cada execução</li>
+                            <li class="mb-2">Sem <code>.env</code> — usa <strong>Secrets</strong></li>
+                            <li class="mb-2"><code>--watch</code> trava o processo — use <code>--ci</code></li>
+                            <li class="mb-2">Falha deve <strong>parar o merge</strong></li>
+                            <li class="mb-2"><code>npm ci</code> em vez de <code>npm install</code></li>
+                            <li>Precisa de <code>--forceExit</code> em alguns casos</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning mt-3 mb-0 fs-5">
+                <i class="fas fa-lightbulb me-2"></i>
+                Regra de ouro: <strong>"Se o teste só passa na minha máquina, ele não é um teste — é uma prece."</strong>
+            </div>
+        </div>
+
+        <!-- Slide 5: Estrutura de projeto -->
+        <div class="slide" id="slide-5">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-folder-open text-primary me-2"></i>Estrutura de Projeto Pronta para CI</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-4">
+                    <div class="ci-box">
+<span class="dir">meu-projeto/</span>
+├── <span class="dir">.github/</span>
+│   └── <span class="dir">workflows/</span>
+│       └── <span class="file">ci.yml</span>  <span class="note">← pipeline</span>
+├── <span class="dir">src/</span>
+│   └── <span class="file">soma.js</span>
+├── <span class="dir">tests/</span>
+│   └── <span class="file">soma.test.js</span>
+├── <span class="file">jest.config.js</span>  <span class="note">← config</span>
+├── <span class="file">package.json</span>
+└── <span class="file">.gitignore</span>  <span class="note">← sem node_modules</span>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <p class="fw-bold mb-2">jest.config.js</p>
+                    <pre style="font-size:.95rem; margin:0;"><code class="language-javascript">/** @type {import('jest').Config} */
+module.exports = {
+  testEnvironment: 'node',
+  collectCoverageFrom: ['src/**/*.js'],
+  coverageThreshold: {
+    global: {
+      lines:      80,   // ← CI falha se < 80%
+      functions:  80,
+      branches:   70,
+      statements: 80,
+    }
+  },
+  coverageReporters: ['text', 'lcov', 'html'],
+};</code></pre>
+                    <div class="alert alert-info mt-2 mb-0 fs-5">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <code>lcov</code> gera o arquivo que o GitHub usa para exibir cobertura por linha.
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 5: Conclusion -->
-        <div class="slide" id="slide-5">
-             <div class="text-center slide-content">
-                <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
-                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="#" class="btn btn-dark btn-lg rounded-pill px-5">Recursos Extras</a>
-                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+        <!-- Slide 6: package.json scripts -->
+        <div class="slide" id="slide-6">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-file-code text-success me-2"></i>package.json — Scripts para CI</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <pre style="font-size:.95rem; margin:0;"><code class="language-json">{
+  "name": "meu-projeto",
+  "scripts": {
+    "test":     "jest",
+    "test:ci":  "jest --ci --forceExit",
+    "coverage": "jest --coverage",
+    "coverage:ci": "jest --ci --coverage --forceExit"
+  },
+  "devDependencies": {
+    "jest": "^29.0.0"
+  }
+}</code></pre>
+                </div>
+                <div class="col-md-6 d-flex flex-column gap-3">
+                    <div class="p-3 border rounded-4 bg-white shadow-sm">
+                        <p class="fw-bold mb-1"><code>--ci</code></p>
+                        <p class="mb-0 text-muted fs-5">Desativa o modo interativo, trata snapshot desatualizado como falha. Ideal para pipelines.</p>
+                    </div>
+                    <div class="p-3 border rounded-4 bg-white shadow-sm">
+                        <p class="fw-bold mb-1"><code>--forceExit</code></p>
+                        <p class="mb-0 text-muted fs-5">Força o Jest a encerrar após os testes. Evita que conexões abertas (banco, servidor) travem o CI.</p>
+                    </div>
+                    <div class="p-3 border rounded-4 bg-white shadow-sm">
+                        <p class="fw-bold mb-1"><code>npm ci</code> vs <code>npm install</code></p>
+                        <p class="mb-0 text-muted fs-5"><code>npm ci</code> instala exatamente o que está no <code>package-lock.json</code> — reproduzível e mais rápido.</p>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div>
+        <!-- Slide 7: Workflow YAML completo -->
+        <div class="slide" id="slide-7">
+            <h2 class="display-6 fw-bold mb-2 text-dark"><i class="fas fa-file-code text-warning me-2"></i>Workflow YAML — <code>.github/workflows/ci.yml</code></h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <pre style="font-size:.82rem; margin:0;"><code class="language-yaml">name: CI — Jest
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Rodar testes com coverage
+        run: npm run coverage:ci</code></pre>
+                </div>
+                <div class="col-md-6">
+                    <div class="step-row"><span class="step-badge">1</span><div><strong>on:</strong> dispara no push para main/develop e em todo Pull Request</div></div>
+                    <div class="step-row"><span class="step-badge">2</span><div><strong>checkout@v4</strong> clona o repositório na máquina do CI</div></div>
+                    <div class="step-row"><span class="step-badge">3</span><div><strong>setup-node@v4</strong> instala Node 20 e ativa cache do npm para acelerar</div></div>
+                    <div class="step-row"><span class="step-badge">4</span><div><strong>npm ci</strong> instala dependências de forma reproduzível</div></div>
+                    <div class="step-row"><span class="step-badge">5</span><div><strong>npm run coverage:ci</strong> roda Jest com <code>--ci --coverage --forceExit</code></div></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Salvando artifacts -->
+        <div class="slide" id="slide-8">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-paperclip text-danger me-2"></i>Artifacts — Salvando o Relatório de Cobertura</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <p class="mb-2 fw-bold">Adicione ao final do workflow:</p>
+                    <pre style="font-size:.9rem; margin:0;"><code class="language-yaml">      - name: Rodar testes com coverage
+        run: npm run coverage:ci
+
+      - name: Salvar relatório de cobertura
+        uses: actions/upload-artifact@v4
+        if: always()   # salva mesmo se testes falharem
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7</code></pre>
+                    <div class="alert alert-info mt-2 mb-0 fs-5">
+                        <i class="fas fa-info-circle me-2"></i>
+                        O relatório HTML fica disponível para download na aba <strong>Actions</strong> do GitHub por 7 dias.
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="fw-bold mb-2">O que é gerado em <code>coverage/</code>:</p>
+                    <div class="ci-box">
+<span class="dir">coverage/</span>
+├── <span class="file">lcov.info</span>       <span class="note">← para badges</span>
+├── <span class="dir">lcov-report/</span>
+│   ├── <span class="file">index.html</span>   <span class="note">← relatório visual</span>
+│   └── <span class="dir">src/</span>
+│       └── <span class="file">soma.js.html</span> <span class="note">← linha a linha</span>
+└── <span class="file">coverage-summary.json</span>
+                    </div>
+                    <div class="alert alert-success mt-2 mb-0 fs-5">
+                        <i class="fas fa-check me-2"></i>
+                        O HTML mostra <strong>quais linhas do código</strong> nunca foram executadas pelos testes — em vermelho.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Coverage threshold -->
+        <div class="slide" id="slide-9">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-chart-bar text-info me-2"></i>Coverage Threshold — CI Falha se Cobrir Pouco</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-5">
+                    <pre style="font-size:.9rem; margin:0;"><code class="language-javascript">// jest.config.js
+coverageThreshold: {
+  global: {
+    lines:      80,
+    functions:  80,
+    branches:   70,
+    statements: 80,
+  },
+  // Exigir 100% em arquivo crítico
+  './src/auth.js': {
+    lines:     100,
+    functions: 100,
+  }
+}</code></pre>
+                </div>
+                <div class="col-md-7">
+                    <p class="fw-bold mb-2">Saída no CI quando a cobertura cai:</p>
+                    <div class="ci-box mb-3">
+<span class="ci-info">PASS</span> tests/soma.test.js
+<span class="ci-fail">FAIL</span> Jest: "global" coverage threshold for lines (80%) not met: 62%
+
+<span class="ci-fail">●</span> Coverage for lines (62%) does not meet
+  global threshold (80%)
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-6"><div class="p-3 border border-success rounded-3 text-center"><span class="fs-4 fw-bold text-success">≥ 80%</span><p class="mb-0 text-muted">CI passa ✓</p></div></div>
+                        <div class="col-6"><div class="p-3 border border-danger rounded-3 text-center"><span class="fs-4 fw-bold text-danger">< 80%</span><p class="mb-0 text-muted">CI falha ✗</p></div></div>
+                    </div>
+                    <div class="alert alert-warning mt-3 mb-0 fs-5">
+                        <i class="fas fa-lightbulb me-2"></i>
+                        Comece com 60%, aumente gradualmente. Impor 100% logo cria testes vazios só para passar.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Matrix strategy -->
+        <div class="slide" id="slide-10">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-th text-primary me-2"></i>Matrix Strategy — Testar em Múltiplos Ambientes</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <pre style="font-size:.88rem; margin:0;"><code class="language-yaml">jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node: ['18', '20', '22']
+      fail-fast: false  # continua mesmo com falha
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test:ci</code></pre>
+                </div>
+                <div class="col-md-6">
+                    <p class="fw-bold mb-2">O que o GitHub executa:</p>
+                    <table class="table table-sm table-bordered text-center fs-5">
+                        <thead class="table-dark">
+                            <tr><th>OS</th><th>Node 18</th><th>Node 20</th><th>Node 22</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Ubuntu</td>
+                                <td><span class="pill-ok">✓ pass</span></td>
+                                <td><span class="pill-ok">✓ pass</span></td>
+                                <td><span class="pill-ok">✓ pass</span></td>
+                            </tr>
+                            <tr>
+                                <td>Windows</td>
+                                <td><span class="pill-ok">✓ pass</span></td>
+                                <td><span class="pill-fail">✗ fail</span></td>
+                                <td><span class="pill-ok">✓ pass</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="alert alert-info mb-0 fs-5">
+                        <i class="fas fa-info-circle me-2"></i>
+                        6 jobs em paralelo — descobre problemas específicos de SO ou versão do Node.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Branch protection -->
+        <div class="slide" id="slide-11">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-shield-alt text-dark me-2"></i>Branch Protection — CI como Porteiro</h2>
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <p class="fw-bold mb-2">Configurar no GitHub:</p>
+                    <div class="step-row"><span class="step-badge">1</span><div>Settings → Branches → Add rule</div></div>
+                    <div class="step-row"><span class="step-badge">2</span><div>Branch name: <code>main</code></div></div>
+                    <div class="step-row"><span class="step-badge">3</span><div>☑ <strong>Require status checks to pass</strong></div></div>
+                    <div class="step-row"><span class="step-badge">4</span><div>Buscar e selecionar: <code>test (ubuntu-latest)</code></div></div>
+                    <div class="step-row"><span class="step-badge">5</span><div>☑ <strong>Require branches to be up to date</strong></div></div>
+                    <div class="alert alert-success mt-2 mb-0 fs-5">
+                        <i class="fas fa-lock me-2"></i>
+                        A partir de agora: <strong>merge bloqueado</strong> se o CI falhar.
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <p class="fw-bold mb-2">O que o PR fica parecendo:</p>
+                    <div class="ci-box">
+<span class="ci-fail">✗</span> CI — Jest / test (ubuntu-latest) — <span class="ci-fail">failing</span>
+   Required status check
+
+<span class="ci-pass">✓</span> CI — Jest / test (windows-latest) — <span class="ci-pass">passing</span>
+
+<span class="ci-warn">⚠</span> Merging is blocked
+  The required status check "test (ubuntu-latest)"
+  is not passing because no recent commits match
+  the required pattern, or they failed.
+
+  <span class="ci-info">[Merge pull request]</span>  ← botão desabilitado
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Debugando falhas -->
+        <div class="slide" id="slide-12">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-bug text-danger me-2"></i>Debugando Falhas no CI — Lendo os Logs</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <p class="fw-bold mb-1">Falha de teste:</p>
+                    <div class="ci-box" style="font-size:.8rem;">
+<span class="ci-fail">FAIL</span> tests/soma.test.js
+  soma
+    <span class="ci-fail">✕</span> retorna 3 (4ms)
+
+  <span class="ci-fail">●</span> soma › retorna 3
+
+    expect(received).toBe(expected)
+
+    Expected: 3
+    Received: 2
+
+      3 | test('retorna 3', () => {
+    <span class="ci-fail">> 4 |</span>   expect(soma(1, 2)).toBe(3);
+      5 | });
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="fw-bold mb-1">Falha de threshold:</p>
+                    <div class="ci-box" style="font-size:.8rem; margin-bottom:12px;">
+<span class="ci-fail">FAIL</span> Jest: "global" coverage threshold
+  for branches (70%) not met: 45%
+                    </div>
+                    <p class="fw-bold mb-1">Dependência não instalada:</p>
+                    <div class="ci-box" style="font-size:.8rem;">
+<span class="ci-fail">Error:</span> Cannot find module 'dotenv'
+Require stack:
+- /home/runner/work/src/config.js
+
+<span class="ci-warn">→ Solução:</span> adicionar ao package.json
+  e commitar o package-lock.json
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-primary mt-3 mb-0 fs-5">
+                <i class="fas fa-route me-2"></i>
+                <strong>Fluxo de debug:</strong> Actions → job com falha → step com falha → expandir log → ler a mensagem de erro exata.
+            </div>
+        </div>
+
+        <!-- Slide 13: Secrets e variáveis de ambiente -->
+        <div class="slide" id="slide-13">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-key text-warning me-2"></i>Secrets — Variáveis de Ambiente no CI</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <p class="fw-bold mb-2">1. Cadastrar no GitHub:</p>
+                    <div class="step-row"><span class="step-badge">1</span><div>Settings → Secrets and variables → Actions</div></div>
+                    <div class="step-row"><span class="step-badge">2</span><div>New repository secret → <code>DB_URL</code></div></div>
+                    <div class="step-row"><span class="step-badge">3</span><div>Valor: <code>postgres://user:pass@host/db</code></div></div>
+                    <p class="fw-bold mb-2 mt-2">2. Usar no workflow:</p>
+                    <pre style="font-size:.9rem; margin:0;"><code class="language-yaml">      - name: Rodar testes
+        run: npm run test:ci
+        env:
+          DB_URL: ${{ secrets.DB_URL }}
+          NODE_ENV: test</code></pre>
+                </div>
+                <div class="col-md-6">
+                    <p class="fw-bold mb-2">3. Acessar no código:</p>
+                    <pre style="font-size:.9rem; margin:0;"><code class="language-javascript">// src/db.js
+const url = process.env.DB_URL;
+
+// tests/db.test.js
+beforeAll(async () => {
+  await db.connect(process.env.DB_URL);
+});
+
+afterAll(async () => {
+  await db.disconnect();
+});</code></pre>
+                    <div class="alert alert-danger mt-2 mb-0 fs-5">
+                        <i class="fas fa-ban me-2"></i>
+                        Nunca commite <code>.env</code> no repositório. Use <strong>Secrets</strong> no GitHub e <code>.env.example</code> para documentar.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Boas práticas -->
+        <div class="slide" id="slide-14">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-medal text-warning me-2"></i>Boas Práticas — Jest no CI</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 border border-success rounded-4 bg-white shadow-sm h-100">
+                        <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-circle me-2"></i>Faça isso</h5>
+                        <ul class="fs-5 mb-0">
+                            <li class="mb-2">Use <code>npm ci</code> no pipeline</li>
+                            <li class="mb-2">Sempre use <code>--ci</code> flag no Jest</li>
+                            <li class="mb-2">Cache do <code>node_modules</code> via <code>cache: 'npm'</code></li>
+                            <li class="mb-2">Salve artifacts mesmo em falha (<code>if: always()</code>)</li>
+                            <li class="mb-2">Defina thresholds realistas e aumente gradualmente</li>
+                            <li class="mb-2">Testes independentes — sem dependência de ordem</li>
+                            <li>Use <code>afterAll</code> para fechar conexões</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 border border-danger rounded-4 bg-white shadow-sm h-100">
+                        <h5 class="fw-bold text-danger mb-3"><i class="fas fa-times-circle me-2"></i>Não faça isso</h5>
+                        <ul class="fs-5 mb-0">
+                            <li class="mb-2">Não use <code>--watch</code> no CI (trava infinito)</li>
+                            <li class="mb-2">Não commite <code>node_modules/</code></li>
+                            <li class="mb-2">Não dependa de arquivos locais que não estão no repo</li>
+                            <li class="mb-2">Não escreva testes que dependem de fuso horário local</li>
+                            <li class="mb-2">Não ignore falhas com <code>test.skip</code> sem comentário</li>
+                            <li class="mb-2">Não use <code>--coverage</code> no watch (lento demais)</li>
+                            <li>Não commite credenciais — use Secrets</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Workflow completo final -->
+        <div class="slide" id="slide-15">
+            <h2 class="display-6 fw-bold mb-2 text-dark"><i class="fas fa-star text-warning me-2"></i>Workflow Completo — Tudo junto</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <pre style="font-size:.78rem; margin:0;"><code class="language-yaml">name: CI — Jest + Coverage
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Rodar Jest com coverage
+        run: npm run coverage:ci
+        env:
+          NODE_ENV: test</code></pre>
+                </div>
+                <div class="col-md-6">
+                    <pre style="font-size:.78rem; margin:0;"><code class="language-yaml">      - name: Salvar relatório
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+      - name: Comentar cobertura no PR
+        uses: ArtiomTr/jest-coverage-report-action@v2
+        if: github.event_name == 'pull_request'
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          coverage-file: coverage/report.json
+          base-coverage-file: coverage/report.json</code></pre>
+                    <div class="alert alert-success mt-2 mb-0 fs-5">
+                        <i class="fas fa-comment me-2"></i>
+                        A action <code>jest-coverage-report-action</code> posta um comentário automático no PR mostrando o diff de cobertura.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Atividade prática -->
+        <div class="slide" id="slide-16">
+            <h2 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-laptop-code text-primary me-2"></i>Atividade Prática</h2>
+            <p class="lead mb-3">Configure um repositório do zero com Jest + CI funcionando.</p>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="step-row"><span class="step-badge">1</span><div>Crie um repo no GitHub: <code>jest-ci-lab</code></div></div>
+                    <div class="step-row"><span class="step-badge">2</span><div>Crie <code>src/calculadora.js</code> com funções: <code>soma</code>, <code>subtrai</code>, <code>divide</code></div></div>
+                    <div class="step-row"><span class="step-badge">3</span><div>Crie <code>tests/calculadora.test.js</code> com ao menos 5 testes, incluindo um para divisão por zero</div></div>
+                    <div class="step-row"><span class="step-badge">4</span><div>Configure <code>jest.config.js</code> com threshold de <strong>80%</strong></div></div>
+                    <div class="step-row"><span class="step-badge">5</span><div>Crie <code>.github/workflows/ci.yml</code> com o workflow completo</div></div>
+                </div>
+                <div class="col-md-6">
+                    <div class="step-row"><span class="step-badge">6</span><div>Faça push e verifique o CI rodando na aba <strong>Actions</strong></div></div>
+                    <div class="step-row"><span class="step-badge">7</span><div>Configure Branch Protection em <code>main</code></div></div>
+                    <div class="step-row"><span class="step-badge">8</span><div>Crie uma branch <code>feature/bug</code>, escreva um teste que <strong>falha</strong> e abra um PR — veja o CI bloquear o merge</div></div>
+                    <div class="step-row"><span class="step-badge">9</span><div>Corrija o bug, faça push — veja o CI liberar o merge</div></div>
+                    <div class="alert alert-success mt-2 mb-0 fs-5">
+                        <i class="fas fa-trophy me-2"></i>
+                        <strong>Entrega:</strong> link do repositório com o CI verde e o histórico de Actions visível.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Resumo -->
+        <div class="slide" id="slide-17">
+            <h2 class="display-5 fw-bold mb-4 text-dark text-center">Resumo da Aula</h2>
+            <div class="row g-3 justify-content-center">
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm text-center h-100">
+                        <i class="fas fa-file-code fa-3x text-warning mb-3"></i>
+                        <h5 class="fw-bold">Workflow YAML</h5>
+                        <p class="text-muted mb-0">checkout → setup-node → npm ci → jest --ci --coverage → upload-artifact</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm text-center h-100">
+                        <i class="fas fa-chart-bar fa-3x text-info mb-3"></i>
+                        <h5 class="fw-bold">Coverage no CI</h5>
+                        <p class="text-muted mb-0">Threshold no jest.config.js + artifact HTML + comentário automático no PR</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-4 border rounded-4 bg-white shadow-sm text-center h-100">
+                        <i class="fas fa-shield-alt fa-3x text-dark mb-3"></i>
+                        <h5 class="fw-bold">Branch Protection</h5>
+                        <p class="text-muted mb-0">Status check obrigatório — merge bloqueado se CI falhar</p>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-primary mt-4 text-center fs-5 mb-0">
+                <i class="fas fa-quote-left me-2"></i>
+                CI não é luxo — é o mínimo que um time sério faz para não quebrar produção.
+                <i class="fas fa-quote-right ms-2"></i>
+            </div>
+        </div>
+
+    </div><!-- /slide-container -->
 
     <!-- Footer Navigation -->
     <footer class="slide-footer">
@@ -114,24 +714,26 @@
             <button id="nextBtn"><i class="fas fa-chevron-right"></i></button>
             <button id="fullscreenBtn"><i class="fas fa-expand"></i></button>
         </div>
-
         <div class="text-center text-muted small d-none d-md-block">
-            Qualidade de Software - Testes de Unidade (xUnit/Jest).
+            Qualidade de Software — Jest no GitHub Actions CI
         </div>
-
         <div class="d-flex align-items-center gap-3">
             <span id="slideCounter" class="text-muted small fw-medium"></span>
             <a href="material/material_aula07-testes-unidade-jest.html" class="btn btn-outline-primary btn-sm rounded-pill">
                 <i class="fas fa-book me-1"></i> Ver material escrito
             </a>
-            <a href="../../index.html">
+            <a href="../home_qualidade.html">
                 <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
                      alt="Senac" height="30" class="opacity-75">
             </a>
         </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
     <script src="../../js/standard_slides.js"></script>
-
 </body>
 </html>
