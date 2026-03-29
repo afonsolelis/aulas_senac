@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicações da Álgebra Booleana - Lógica de Programação</title>
+  <meta name="keywords" content="simplificação de expressões, circuitos lógicos, operadores bitwise, álgebra booleana, Python, portas lógicas, De Morgan">
+
+  <!-- Bootstrap & Font Awesome -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <!-- Project Styles -->
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+
+  <!-- Code Highlight -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+
+  <style>
+    .truth-table { font-size: 1.1rem; }
+    .truth-table th { background: #212529; color: #fff; text-align: center; padding: 8px 18px; }
+    .truth-table td { text-align: center; padding: 7px 18px; font-weight: 600; }
+    .td-0 { color: #dc3545; }
+    .td-1 { color: #198754; }
+    .gate-box { border: 2px solid #dee2e6; border-radius: 12px; padding: 18px; background: #f8f9fa; }
+    .step-badge { display: inline-block; width: 32px; height: 32px; line-height: 32px; border-radius: 50%; background: #0d6efd; color: #fff; font-weight: 700; text-align: center; margin-right: 10px; flex-shrink: 0; }
+    .step-row { display: flex; align-items: flex-start; margin-bottom: 14px; font-size: 1.15rem; }
+    .step-result { background: #d1e7dd; border-left: 4px solid #198754; padding: 10px 16px; border-radius: 6px; font-size: 1.1rem; margin-top: 10px; }
+    .bit-cell { font-family: monospace; font-size: 1.1rem; padding: 4px 10px; border-radius: 4px; display: inline-block; }
+    .bit-1 { background: #d1e7dd; color: #0f5132; }
+    .bit-0 { background: #f8d7da; color: #842029; }
+    .highlight-expr { background: #fff3cd; border-radius: 6px; padding: 2px 8px; font-family: monospace; font-size: 1.05em; }
+  </style>
+</head>
+
+<body class="slide-body">
+
+  <div class="slide-container">
+    <a href="../home_logica.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
+      <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
+
+    <!-- Slide 1: Título -->
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Lógica de Programação — Aula 07</h5>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aplicações da Álgebra Booleana</h1>
+        <p class="lead text-muted mb-4">Portas lógicas, simplificação de expressões e operadores bitwise em Python</p>
+        <div class="slide-keywords mt-3">
+          <span class="keyword">Portas Lógicas</span>
+          <span class="keyword">Simplificação</span>
+          <span class="keyword">De Morgan</span>
+          <span class="keyword">Bitwise</span>
+          <span class="keyword">Circuitos</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 2: Agenda -->
+    <div class="slide" id="slide-2">
+      <h2 class="display-5 fw-bold mb-4 text-dark">Agenda da Aula</h2>
+      <div class="col-10 mx-auto">
+        <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+          <li class="list-group-item bg-transparent text-dark border-bottom py-3">
+            <i class="fas fa-door-open text-primary me-3"></i> As 3 operações fundamentais (AND, OR, NOT)
+          </li>
+          <li class="list-group-item bg-transparent text-dark border-bottom py-3">
+            <i class="fas fa-microchip text-success me-3"></i> Portas derivadas: NAND, NOR, XOR
+          </li>
+          <li class="list-group-item bg-transparent text-dark border-bottom py-3">
+            <i class="fas fa-sitemap text-info me-3"></i> Propriedades e Leis de De Morgan
+          </li>
+          <li class="list-group-item bg-transparent text-dark border-bottom py-3">
+            <i class="fas fa-chalkboard-teacher text-warning me-3"></i> Simplificação passo a passo (3 exemplos)
+          </li>
+          <li class="list-group-item bg-transparent text-dark border-bottom py-3">
+            <i class="fas fa-code text-danger me-3"></i> Operadores bitwise em Python
+          </li>
+          <li class="list-group-item bg-transparent text-dark py-3">
+            <i class="fas fa-pencil-ruler text-secondary me-3"></i> Exercícios guiados + lista individual
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Slide 3: As 3 operações fundamentais -->
+    <div class="slide" id="slide-3">
+      <h3 class="display-6 fw-bold mb-3 text-dark">As 3 Operações Fundamentais</h3>
+      <p class="lead mb-4">Toda a lógica digital se baseia em apenas três operações.</p>
+      <div class="row g-3 justify-content-center">
+        <div class="col-md-4">
+          <div class="gate-box text-center h-100">
+            <h4 class="fw-bold text-primary mb-2"><i class="fas fa-times-circle me-2"></i>AND (E)</h4>
+            <p class="mb-2">Resultado é <strong>1</strong> somente se <strong>ambas</strong> as entradas forem 1.</p>
+            <code class="fs-5">A <strong>·</strong> B &nbsp;|&nbsp; A <strong>and</strong> B</code>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="gate-box text-center h-100">
+            <h4 class="fw-bold text-success mb-2"><i class="fas fa-plus-circle me-2"></i>OR (OU)</h4>
+            <p class="mb-2">Resultado é <strong>1</strong> se <strong>ao menos uma</strong> entrada for 1.</p>
+            <code class="fs-5">A <strong>+</strong> B &nbsp;|&nbsp; A <strong>or</strong> B</code>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="gate-box text-center h-100">
+            <h4 class="fw-bold text-danger mb-2"><i class="fas fa-ban me-2"></i>NOT (NÃO)</h4>
+            <p class="mb-2">Inverte o valor: <strong>1 vira 0</strong>, <strong>0 vira 1</strong>.</p>
+            <code class="fs-5"><strong>¬A</strong> &nbsp;|&nbsp; <strong>not</strong> A</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Porta AND com tabela verdade -->
+    <div class="slide" id="slide-4">
+      <h4 class="fw-bold mb-2 text-dark"><i class="fas fa-times-circle text-primary me-2"></i>Porta AND — Tabela Verdade</h4>
+      <p class="mb-2 text-muted">Saída <strong class="text-success">1</strong> só quando <em>ambas</em> as entradas são 1. (Tomada em série: as duas chaves precisam estar ligadas.)</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-3">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>B</th><th>A · B</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-0">0</td><td class="td-0">0</td></tr>
+              <tr><td class="td-0">0</td><td class="td-1">1</td><td class="td-0">0</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td><td class="td-0">0</td></tr>
+              <tr><td class="td-1">1</td><td class="td-1">1</td><td class="td-1">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">A = True
+B = False
+
+resultado = A and B   # False
+
+# Só retorna True quando AMBOS forem True
+print(True and True)   # True
+print(True and False)  # False
+print(False and False) # False</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Porta OR com tabela verdade -->
+    <div class="slide" id="slide-5">
+      <h4 class="fw-bold mb-2 text-dark"><i class="fas fa-plus-circle text-success me-2"></i>Porta OR — Tabela Verdade</h4>
+      <p class="mb-2 text-muted">Saída <strong class="text-success">1</strong> quando <em>ao menos uma</em> entrada é 1. (Tomada em paralelo: basta uma chave estar ligada.)</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-3">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>B</th><th>A + B</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-0">0</td><td class="td-0">0</td></tr>
+              <tr><td class="td-0">0</td><td class="td-1">1</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-1">1</td><td class="td-1">1</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">A = False
+B = True
+
+resultado = A or B    # True
+
+# Retorna False só quando AMBOS forem False
+print(True or True)   # True
+print(True or False)  # True
+print(False or False) # False</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Porta NOT com tabela verdade -->
+    <div class="slide" id="slide-6">
+      <h4 class="fw-bold mb-2 text-dark"><i class="fas fa-ban text-danger me-2"></i>Porta NOT — Tabela Verdade</h4>
+      <p class="mb-2 text-muted">Inverte o valor lógico. Uma entrada, uma saída — sempre o oposto. É o "negador".</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-2">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>¬A</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-10">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">A = True
+
+resultado = not A   # False
+
+# Inverte o valor
+print(not True)   # False
+print(not False)  # True
+
+# Aplicação prática: verificar se lista está vazia
+lista = []
+if not lista:
+    print("Lista vazia!")  # executa!</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Diagrama dos símbolos das portas -->
+    <div class="slide" id="slide-7">
+      <h3 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-microchip text-primary me-2"></i>Símbolos das Portas Lógicas</h3>
+      <p class="lead mb-3">Cada porta tem um símbolo padronizado usado em diagramas de circuitos.</p>
+      <div class="text-center">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/9f/Logic-gate-index.png"
+             alt="Portas Lógicas — índice de símbolos"
+             class="img-fluid rounded shadow-sm"
+             style="max-height: 320px;">
+      </div>
+      <p class="mt-3 text-muted text-center fs-5">Da esquerda para a direita: AND, OR, NOT, NAND, NOR, XOR, XNOR</p>
+    </div>
+
+    <!-- Slide 8: Porta NAND -->
+    <div class="slide" id="slide-8">
+      <h4 class="fw-bold mb-2 text-dark">Porta NAND — NOT + AND</h4>
+      <p class="mb-2 text-muted">AND com saída invertida. Resultado é <strong class="text-danger">0</strong> só quando as duas entradas são 1.</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-3">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>B</th><th>¬(A·B)</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-0">0</td><td class="td-1">1</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-1">1</td><td class="td-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">def nand(a, b):
+    return not (a and b)
+
+print(nand(True, True))   # False
+print(nand(True, False))  # True
+print(nand(False, False)) # True</code></pre>
+          <div class="alert alert-info mt-2 fs-5 mb-0">
+            <i class="fas fa-lightbulb me-2"></i>
+            NAND é a porta mais usada em chips físicos — qualquer circuito pode ser construído apenas com NANDs!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Porta NOR -->
+    <div class="slide" id="slide-9">
+      <h4 class="fw-bold mb-2 text-dark">Porta NOR — NOT + OR</h4>
+      <p class="mb-2 text-muted">OR com saída invertida. Resultado é <strong class="text-success">1</strong> só quando <em>ambas</em> as entradas são 0.</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-3">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>B</th><th>¬(A+B)</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-0">0</td><td class="td-1">1</td><td class="td-0">0</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td><td class="td-0">0</td></tr>
+              <tr><td class="td-1">1</td><td class="td-1">1</td><td class="td-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">def nor(a, b):
+    return not (a or b)
+
+print(nor(False, False)) # True
+print(nor(True, False))  # False
+print(nor(True, True))   # False</code></pre>
+          <div class="alert alert-warning mt-2 fs-5 mb-0">
+            <i class="fas fa-lightbulb me-2"></i>
+            NOR também é universal — assim como NAND, dá para montar qualquer circuito usando só portas NOR.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Porta XOR -->
+    <div class="slide" id="slide-10">
+      <h4 class="fw-bold mb-2 text-dark">Porta XOR — OU Exclusivo</h4>
+      <p class="mb-2 text-muted">Resultado é <strong class="text-success">1</strong> quando as entradas são <em>diferentes</em>. Se forem iguais, resultado é 0.</p>
+      <div class="row g-3 align-items-start">
+        <div class="col-md-3">
+          <table class="table table-bordered truth-table text-center mb-0">
+            <thead><tr><th>A</th><th>B</th><th>A ⊕ B</th></tr></thead>
+            <tbody>
+              <tr><td class="td-0">0</td><td class="td-0">0</td><td class="td-0">0</td></tr>
+              <tr><td class="td-0">0</td><td class="td-1">1</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-0">0</td><td class="td-1">1</td></tr>
+              <tr><td class="td-1">1</td><td class="td-1">1</td><td class="td-0">0</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-9">
+          <pre style="font-size:1.05rem; margin:0;"><code class="language-python">def xor(a, b):
+    return a != b  # True quando diferentes
+
+print(xor(True, False))  # True
+print(xor(True, True))   # False
+
+# Em Python com inteiros (bitwise):
+print(5 ^ 3)   # 6  →  0101 ^ 0011 = 0110</code></pre>
+          <div class="alert alert-success mt-2 fs-5 mb-0">
+            <i class="fas fa-key me-2"></i>
+            XOR é muito usado em criptografia — aplicar XOR duas vezes retorna o valor original!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: Propriedades da Álgebra Booleana -->
+    <div class="slide" id="slide-11">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Propriedades da Álgebra Booleana</h3>
+      <p class="lead mb-3">Estas regras permitem simplificar e reescrever expressões lógicas.</p>
+      <div class="row g-2">
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Comutativa:</strong> <code>A+B = B+A</code> &nbsp; <code>A·B = B·A</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Associativa:</strong> <code>A+(B+C) = (A+B)+C</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Distributiva:</strong> <code>A·(B+C) = A·B + A·C</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Identidade:</strong> <code>A+0 = A</code> &nbsp; <code>A·1 = A</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Nulidade:</strong> <code>A+1 = 1</code> &nbsp; <code>A·0 = 0</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Idempotência:</strong> <code>A+A = A</code> &nbsp; <code>A·A = A</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Complemento:</strong> <code>A+¬A = 1</code> &nbsp; <code>A·¬A = 0</code></div></div>
+        <div class="col-6"><div class="alert alert-light p-3 fs-5 mb-0"><strong>Absorção:</strong> <code>A+A·B = A</code> &nbsp; <code>A·(A+B) = A</code></div></div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Leis de De Morgan -->
+    <div class="slide" id="slide-12">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Leis de De Morgan</h3>
+      <p class="lead mb-4">As leis mais importantes para simplificar expressões com NOT.</p>
+      <div class="row g-4 justify-content-center">
+        <div class="col-md-5">
+          <div class="gate-box text-center">
+            <h5 class="fw-bold text-primary mb-3">1ª Lei</h5>
+            <p class="fs-3 mb-2"><code>¬(A · B) = ¬A + ¬B</code></p>
+            <p class="text-muted">NOT de um AND vira OR dos NOTs</p>
+            <pre class="mt-3 text-start"><code class="language-python">not (a and b) == (not a) or (not b)</code></pre>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="gate-box text-center">
+            <h5 class="fw-bold text-success mb-3">2ª Lei</h5>
+            <p class="fs-3 mb-2"><code>¬(A + B) = ¬A · ¬B</code></p>
+            <p class="text-muted">NOT de um OR vira AND dos NOTs</p>
+            <pre class="mt-3 text-start"><code class="language-python">not (a or b) == (not a) and (not b)</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-warning mt-3 text-center fs-5">
+        <i class="fas fa-lightbulb me-2"></i>
+        Macete: <strong>inverta o operador</strong> (AND ↔ OR) e <strong>distribua o NOT</strong> para cada variável.
+      </div>
+    </div>
+
+    <!-- Slide 13: Simplificação — método -->
+    <div class="slide" id="slide-13">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Como Simplificar Expressões — Método</h3>
+      <p class="lead mb-3">Siga esta ordem de prioridade para simplificar qualquer expressão:</p>
+      <div class="col-9 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div><strong>Aplique a Distributiva</strong> para expandir parênteses: <code>A·(B+C) = A·B + A·C</code></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div><strong>Aplique Idempotência</strong> para eliminar repetições: <code>A·A = A</code> e <code>A+A = A</code></div></div>
+        <div class="step-row"><span class="step-badge">3</span><div><strong>Aplique Absorção</strong> para eliminar termos: <code>A+A·B = A</code></div></div>
+        <div class="step-row"><span class="step-badge">4</span><div><strong>Aplique Complemento</strong> se houver A e ¬A: <code>A·¬A = 0</code> e <code>A+¬A = 1</code></div></div>
+        <div class="step-row"><span class="step-badge">5</span><div><strong>Aplique De Morgan</strong> para mover NOTs para dentro ou fora</div></div>
+        <div class="step-row"><span class="step-badge">6</span><div><strong>Repita</strong> os passos até não conseguir mais simplificar</div></div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Exemplo guiado 1 -->
+    <div class="slide" id="slide-14">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Exemplo Guiado 1 — Absorção</h3>
+      <p class="lead mb-3">Simplifique: <span class="highlight-expr">F = A + A·B</span></p>
+      <div class="col-9 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div>Expressão original: <code>F = A + A·B</code><br><small class="text-muted">Temos A sozinho e A multiplicado por B</small></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div>Coloque A em evidência usando Distributiva: <code>F = A·(1 + B)</code><br><small class="text-muted">A·1 + A·B = A·(1+B)</small></div></div>
+        <div class="step-row"><span class="step-badge">3</span><div>Aplique Nulidade: <code>1 + B = 1</code><br><small class="text-muted">Qualquer coisa OR 1 é sempre 1</small></div></div>
+        <div class="step-row"><span class="step-badge">4</span><div>Aplique Identidade: <code>A·1 = A</code></div></div>
+        <div class="step-result"><i class="fas fa-check-circle me-2"></i>Resultado: <strong>F = A</strong> &nbsp; — a lei da Absorção diretamente.</div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Exemplo guiado 2 -->
+    <div class="slide" id="slide-15">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Exemplo Guiado 2 — Distributiva + Idempotência</h3>
+      <p class="lead mb-3">Simplifique: <span class="highlight-expr">F = (A + B)·(A + C)</span></p>
+      <div class="col-9 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div>Distributiva (expandir): <code>F = A·A + A·C + B·A + B·C</code></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div>Idempotência <code>A·A = A</code>: <code>F = A + A·C + B·A + B·C</code></div></div>
+        <div class="step-row"><span class="step-badge">3</span><div>Absorção <code>A + A·C = A</code>: <code>F = A + B·A + B·C</code></div></div>
+        <div class="step-row"><span class="step-badge">4</span><div>Absorção novamente <code>A + B·A = A</code>: <code>F = A + B·C</code></div></div>
+        <div class="step-result"><i class="fas fa-check-circle me-2"></i>Resultado: <strong>F = A + B·C</strong></div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Exemplo guiado 3 — De Morgan -->
+    <div class="slide" id="slide-16">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Exemplo Guiado 3 — De Morgan</h3>
+      <p class="lead mb-3">Simplifique: <span class="highlight-expr">F = ¬(¬A · B) + ¬(A + ¬B)</span></p>
+      <div class="col-9 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div>Aplique 1ª lei de De Morgan ao primeiro termo: <code>¬(¬A · B) = A + ¬B</code></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div>Aplique 2ª lei de De Morgan ao segundo: <code>¬(A + ¬B) = ¬A · B</code></div></div>
+        <div class="step-row"><span class="step-badge">3</span><div>Substitua: <code>F = (A + ¬B) + (¬A · B)</code></div></div>
+        <div class="step-row"><span class="step-badge">4</span><div>Distributiva em <code>(¬A · B)</code> com <code>A</code>: <code>F = A + ¬B + ¬A·B</code><br>
+        Depois Absorção: <code>¬B + ¬A·B = ¬B + ¬A</code></div></div>
+        <div class="step-row"><span class="step-badge">5</span><div>Juntando: <code>F = A + ¬A + ¬B</code> → Complemento: <code>A + ¬A = 1</code></div></div>
+        <div class="step-result"><i class="fas fa-check-circle me-2"></i>Resultado: <strong>F = 1</strong> — sempre verdadeiro!</div>
+      </div>
+    </div>
+
+    <!-- Slide 17: O que são operadores bitwise -->
+    <div class="slide" id="slide-17">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Operadores Bitwise — O que são?</h3>
+      <p class="lead mb-3">Aplicam a lógica booleana <strong>bit a bit</strong> em números inteiros — não no valor como um todo.</p>
+      <div class="row justify-content-center g-3 mb-3">
+        <div class="col-md-5">
+          <div class="gate-box">
+            <h5 class="fw-bold mb-3 text-center">Número 5 em binário</h5>
+            <div class="text-center">
+              <span class="bit-cell bit-0 me-1">0</span><span class="bit-cell bit-1 me-1">1</span><span class="bit-cell bit-0 me-1">0</span><span class="bit-cell bit-1">1</span>
+            </div>
+            <p class="text-center mt-2 mb-0">bit 3 &nbsp; bit 2 &nbsp; bit 1 &nbsp; bit 0</p>
+            <p class="text-center text-muted">(4·0) + (4·1) + (2·0) + (1·1) = <strong>5</strong></p>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="gate-box">
+            <h5 class="fw-bold mb-3 text-center">Número 3 em binário</h5>
+            <div class="text-center">
+              <span class="bit-cell bit-0 me-1">0</span><span class="bit-cell bit-0 me-1">0</span><span class="bit-cell bit-1 me-1">1</span><span class="bit-cell bit-1">1</span>
+            </div>
+            <p class="text-center mt-2 mb-0">bit 3 &nbsp; bit 2 &nbsp; bit 1 &nbsp; bit 0</p>
+            <p class="text-center text-muted">(4·0) + (4·0) + (2·1) + (1·1) = <strong>3</strong></p>
+          </div>
+        </div>
+      </div>
+      <p class="text-center fs-5 text-muted">Os operadores bitwise comparam <strong>cada bit</strong> na mesma posição dos dois números.</p>
+    </div>
+
+    <!-- Slide 18: AND, OR, XOR, NOT bitwise -->
+    <div class="slide" id="slide-18">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Bitwise AND, OR, XOR, NOT</h3>
+      <p class="lead mb-3">Com <code>a = 5</code> (0101) e <code>b = 3</code> (0011):</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <pre><code class="language-python">a = 5   # 0101
+b = 3   # 0011
+
+# AND (&): 1 só se ambos forem 1
+a & b   # 0001 = 1
+
+# OR  (|): 1 se ao menos um for 1
+a | b   # 0111 = 7
+
+# XOR (^): 1 se forem diferentes
+a ^ b   # 0110 = 6
+
+# NOT (~): inverte todos os bits
+~a      # ...11111010 = -6</code></pre>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center">
+          <table class="table table-sm table-bordered truth-table text-center">
+            <thead><tr><th>Op</th><th>a (0101)</th><th>b (0011)</th><th>resultado</th></tr></thead>
+            <tbody>
+              <tr><td><code>&</code></td><td>0101</td><td>0011</td><td class="td-0">0001 = 1</td></tr>
+              <tr><td><code>|</code></td><td>0101</td><td>0011</td><td class="td-1">0111 = 7</td></tr>
+              <tr><td><code>^</code></td><td>0101</td><td>0011</td><td class="td-1">0110 = 6</td></tr>
+              <tr><td><code>~</code></td><td>0101</td><td>—</td><td class="td-0">-6</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-info fs-6 mb-0">
+            <i class="fas fa-info-circle me-1"></i><code>~a</code> em Python retorna <code>-(a+1)</code> por causa do complemento de dois.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Shift operators -->
+    <div class="slide" id="slide-19">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Deslocamento de Bits — Shift</h3>
+      <p class="lead mb-3">Deslocam todos os bits para a esquerda (<code>&lt;&lt;</code>) ou direita (<code>&gt;&gt;</code>) — equivale a multiplicar ou dividir por potência de 2.</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <pre><code class="language-python">n = 5   # 0000 0101
+
+# Shift LEFT (<<): multiplica por 2^k
+n << 1  # 0000 1010 = 10  (5 × 2)
+n << 2  # 0001 0100 = 20  (5 × 4)
+
+# Shift RIGHT (>>): divide por 2^k
+n >> 1  # 0000 0010 = 2   (5 ÷ 2)
+n >> 2  # 0000 0001 = 1   (5 ÷ 4)</code></pre>
+        </div>
+        <div class="col-md-6 d-flex flex-column justify-content-center gap-3">
+          <div class="alert alert-success fs-5">
+            <i class="fas fa-bolt me-2"></i><strong>Otimização:</strong> <code>n &lt;&lt; 1</code> é mais rápido que <code>n * 2</code> — processadores fazem shifts nativamente.
+          </div>
+          <div class="alert alert-warning fs-5">
+            <i class="fas fa-lightbulb me-2"></i>Verificar se um número é par: <code>n &amp; 1 == 0</code> — examina apenas o último bit!
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Bitwise na prática — permissões -->
+    <div class="slide" id="slide-20">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Bitwise na Prática — Sistema de Permissões</h3>
+      <p class="lead mb-3">Cada bit representa uma permissão diferente. É exatamente assim que o Linux controla arquivos.</p>
+      <div class="text-start w-85 mx-auto">
+        <pre><code class="language-python">LEITURA = 1   # bit 0: 001
+ESCRITA = 2   # bit 1: 010
+EXECUCAO = 4  # bit 2: 100
+
+# Dar permissão de leitura e execução (combinar com OR)
+permissoes = LEITURA | EXECUCAO   # 001 | 100 = 101 = 5
+
+# Verificar permissão (AND com a máscara)
+tem_leitura  = bool(permissoes & LEITURA)   # 101 & 001 = 001 → True
+tem_escrita  = bool(permissoes & ESCRITA)   # 101 & 010 = 000 → False
+tem_execucao = bool(permissoes & EXECUCAO)  # 101 & 100 = 100 → True
+
+# Remover uma permissão (AND com NOT da máscara)
+permissoes = permissoes & ~EXECUCAO   # remove execução: 101 & 011 = 001</code></pre>
+      </div>
+    </div>
+
+    <!-- Slide 21: Exercício guiado 1 -->
+    <div class="slide" id="slide-21">
+      <h3 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-pencil-ruler text-warning me-2"></i>Exercício Guiado 1 — Simplificação</h3>
+      <p class="lead mb-3">Resolva junto comigo: <span class="highlight-expr">F = A·B + A·¬B</span></p>
+      <div class="col-9 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div><strong>Observe</strong> que A aparece em ambos os termos. Coloque em evidência:<br><code>F = A·(B + ¬B)</code></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div><strong>Complemento:</strong> <code>B + ¬B = 1</code> — uma variável OU seu oposto é sempre verdadeiro.</div></div>
+        <div class="step-row"><span class="step-badge">3</span><div><strong>Identidade:</strong> <code>A · 1 = A</code></div></div>
+        <div class="step-result"><i class="fas fa-check-circle me-2"></i>Resultado: <strong>F = A</strong></div>
+        <div class="alert alert-info mt-3 fs-5">
+          <i class="fas fa-comment me-2"></i>Interpretação: não importa o valor de B — o resultado depende <em>só</em> de A.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Exercício guiado 2 — De Morgan -->
+    <div class="slide" id="slide-22">
+      <h3 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-pencil-ruler text-warning me-2"></i>Exercício Guiado 2 — De Morgan em Python</h3>
+      <p class="lead mb-3">Prove que <code>not (x > 5 and y < 3)</code> é igual a <code>(x <= 5) or (y >= 3)</code></p>
+      <div class="col-10 mx-auto">
+        <div class="step-row"><span class="step-badge">1</span><div>Identifique A = <code>x &gt; 5</code> e B = <code>y &lt; 3</code></div></div>
+        <div class="step-row"><span class="step-badge">2</span><div>Aplique a 1ª Lei: <code>¬(A · B) = ¬A + ¬B</code></div></div>
+        <div class="step-row"><span class="step-badge">3</span><div><code>¬(x &gt; 5)</code> → <code>x &lt;= 5</code> &nbsp;|&nbsp; <code>¬(y &lt; 3)</code> → <code>y &gt;= 3</code></div></div>
+        <pre class="mt-2"><code class="language-python">x, y = 4, 1
+print(not (x > 5 and y < 3))   # True
+print((x <= 5) or (y >= 3))    # True  ← mesmo resultado!
+
+x, y = 7, 1
+print(not (x > 5 and y < 3))   # False
+print((x <= 5) or (y >= 3))    # False ← idêntico!</code></pre>
+      </div>
+    </div>
+
+    <!-- Slide 23: Exercício guiado 3 — bitwise par/ímpar -->
+    <div class="slide" id="slide-23">
+      <h3 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-pencil-ruler text-warning me-2"></i>Exercício Guiado 3 — Par ou Ímpar com Bitwise</h3>
+      <p class="lead mb-3">Escreva uma função que usa bitwise para verificar se um número é par ou ímpar.</p>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <p class="fs-5 fw-bold">Raciocínio:</p>
+          <div class="step-row"><span class="step-badge">1</span><div>Números pares têm o <strong>bit 0 = 0</strong>: 2 = 010, 4 = 100, 6 = 110</div></div>
+          <div class="step-row"><span class="step-badge">2</span><div>Números ímpares têm o <strong>bit 0 = 1</strong>: 1 = 001, 3 = 011, 5 = 101</div></div>
+          <div class="step-row"><span class="step-badge">3</span><div>Faça AND com <code>1</code> (máscara 0001) para isolar o último bit</div></div>
+        </div>
+        <div class="col-md-6">
+          <pre><code class="language-python">def e_par(n):
+    return (n & 1) == 0
+
+def e_impar(n):
+    return (n & 1) == 1
+
+# Testes
+for i in range(7):
+    tipo = "par" if e_par(i) else "ímpar"
+    print(f"{i} = {bin(i):>6} → {tipo}")</code></pre>
+          <div class="step-result mt-2"><i class="fas fa-terminal me-2"></i>0=par, 1=ímpar, 2=par, 3=ímpar, 4=par...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 24: Exercício guiado 4 — ativar/verificar bit -->
+    <div class="slide" id="slide-24">
+      <h3 class="display-6 fw-bold mb-3 text-dark"><i class="fas fa-pencil-ruler text-warning me-2"></i>Exercício Guiado 4 — Manipular Bits Individualmente</h3>
+      <p class="lead mb-3">Aprenda a ativar, desativar e verificar um bit específico.</p>
+      <pre><code class="language-python">n = 0b00001010  # bits 1 e 3 ativos (decimal 10)
+
+# Verificar se o bit k está ativo
+def bit_ativo(n, k):
+    return bool(n & (1 << k))
+
+# Ativar o bit k (setar para 1)
+def ativar_bit(n, k):
+    return n | (1 << k)
+
+# Desativar o bit k (setar para 0)
+def desativar_bit(n, k):
+    return n & ~(1 << k)
+
+# Alternar o bit k (toggle)
+def alternar_bit(n, k):
+    return n ^ (1 << k)
+
+print(bit_ativo(n, 1))    # True  (bit 1 = 1)
+print(bit_ativo(n, 2))    # False (bit 2 = 0)
+print(bin(ativar_bit(n, 2)))   # 0b1110
+print(bin(desativar_bit(n, 1)))# 0b1000</code></pre>
+    </div>
+
+    <!-- Slide 25: Lista de exercícios individuais -->
+    <div class="slide" id="slide-25">
+      <h3 class="display-6 fw-bold mb-3 text-dark">Exercícios para Praticar</h3>
+      <div class="card shadow-sm">
+        <div class="card-body" style="height: 430px; overflow-y: auto;">
+          <div class="row">
+            <div class="col-md-6">
+              <p class="fw-bold text-primary mb-2">Álgebra Booleana</p>
+              <ol class="fs-5">
+                <li>Simplifique: <code>A + A·B</code></li>
+                <li>Simplifique: <code>A·(A + B)</code></li>
+                <li>Simplifique: <code>A·B + A·¬B + ¬A·B</code></li>
+                <li>De Morgan: <code>¬(A or B or C)</code></li>
+                <li>De Morgan: <code>¬(A and ¬B)</code></li>
+                <li>Monte a tabela verdade de <code>(A+B)·¬C</code></li>
+                <li>Simplifique: <code>(A+B)·(A+¬B)</code></li>
+                <li>Prove que <code>¬A·¬B + ¬A·B = ¬A</code></li>
+                <li>Simplifique: <code>A·B + ¬A·B + A·¬B</code></li>
+                <li>Monte o circuito lógico para <code>F = A·B + ¬A·C</code></li>
+              </ol>
+            </div>
+            <div class="col-md-6">
+              <p class="fw-bold text-success mb-2">Operadores Bitwise</p>
+              <ol class="fs-5" start="11">
+                <li>Calcule <code>12 & 10</code> e mostre os bits</li>
+                <li>Calcule <code>12 | 10</code> e mostre os bits</li>
+                <li>Calcule <code>12 ^ 10</code> e mostre os bits</li>
+                <li>Use shift para calcular <code>7 * 8</code> sem usar <code>*</code></li>
+                <li>Verifique se o bit 3 de <code>n=25</code> está ativo</li>
+                <li>Ative o bit 4 do número <code>n=5</code></li>
+                <li>Desative o bit 0 do número <code>n=7</code></li>
+                <li>Crie um sistema de flags com 4 permissões usando bits</li>
+                <li>Use XOR para "criptografar" e "descriptografar" a string <code>"AB"</code> com chave <code>42</code></li>
+                <li>Escreva <code>conta_bits_ativos(n)</code> sem converter para string</li>
+              </ol>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slide-container -->
+
+  <!-- Footer Navigation -->
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 25</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">
+      Lógica de Programação — Aula 07
+    </div>
+    <a href="material/material_aula_algebrabooleana.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material
+    </a>
+    <a href="../home_logica.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+  <script src="../../js/standard_slides.js"></script>
+</body>
+
+</html>

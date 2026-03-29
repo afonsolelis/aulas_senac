@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Material Completo - Aplicações da Álgebra Booleana</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+  <div class="container py-5">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
+        <p class="text-muted small mb-2">Lógica de Programação - Aula 07</p>
+        <h1 class="h3 fw-bold mb-3">Material de Apoio: Aplicações da Álgebra Booleana</h1>
+        <p class="text-secondary mb-4">Este material expande os conceitos da aula, com explicações detalhadas e exemplos práticos.</p>
+
+        <!-- Sumário -->
+        <div class="card bg-light border-primary border-2 mb-5">
+            <div class="card-header bg-primary text-white fw-bold">Sumário do Conteúdo</div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item bg-transparent"><a href="#simplificacao" class="text-decoration-none">1. Simplificação de Expressões Booleanas</a></li>
+                    <li class="list-group-item bg-transparent"><a href="#circuitos" class="text-decoration-none">2. Introdução aos Circuitos Lógicos</a></li>
+                    <li class="list-group-item bg-transparent"><a href="#bitwise" class="text-decoration-none">3. Operadores Bitwise em Python</a></li>
+                    <li class="list-group-item bg-transparent"><a href="#exercicios" class="text-decoration-none">4. Exercícios de Fixação</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 1. Simplificação -->
+        <section id="simplificacao" class="mb-5">
+            <h2 class="h4 fw-bold mb-3 border-bottom pb-2">1. Simplificação de Expressões Booleanas</h2>
+            <p>Simplificar uma expressão booleana significa reduzi-la a uma forma equivalente com menos termos ou operadores. Isso torna o código mais legível, eficiente e, no mundo do hardware, resulta em circuitos mais baratos e rápidos.</p>
+            <h5 class="fw-bold mt-4">Principais Propriedades</h5>
+            <ul>
+                <li><strong>Comutativa:</strong> A ordem dos operandos não importa. <code>A + B = B + A</code> e <code>A . B = B . A</code>.</li>
+                <li><strong>Associativa:</strong> O agrupamento dos operandos não importa. <code>A + (B + C) = (A + B) + C</code>.</li>
+                <li><strong>Distributiva:</strong> Um operador "se distribui" sobre outro. <code>A . (B + C) = A.B + A.C</code>.</li>
+                <li><strong>Identidade:</strong> Operar com o elemento neutro mantém o valor. <code>A + 0 = A</code> e <code>A . 1 = A</code>.</li>
+                <li><strong>Idempotência:</strong> Operar uma variável com ela mesma resulta nela mesma. <code>A + A = A</code> e <code>A . A = A</code>.</li>
+                <li><strong>Absorção:</strong> Uma expressão maior é "absorvida" por uma menor. <code>A + A.B = A</code> e <code>A . (A + B) = A</code>.</li>
+                <li><strong>Leis de De Morgan:</strong> Essenciais para simplificar negações. <code>!(A + B) = !A . !B</code> e <code>!(A . B) = !A + !B</code>.</li>
+            </ul>
+            <h5 class="fw-bold mt-4">Exemplo Prático de Simplificação</h5>
+            <p>Vamos simplificar a expressão <code>F = (A + B).(A + C)</code> passo a passo:</p>
+            <ol>
+                <li><strong>Aplicar a Propriedade Distributiva:</strong><br><code>F = A.A + A.C + B.A + B.C</code></li>
+                <li><strong>Aplicar a Idempotência (A.A = A):</strong><br><code>F = A + A.C + B.A + B.C</code></li>
+                <li><strong>Aplicar a Absorção (A + A.C = A):</strong><br><code>F = A + B.A + B.C</code></li>
+                <li><strong>Aplicar a Absorção novamente (A + B.A = A):</strong><br><code>F = A + B.C</code></li>
+            </ol>
+            <div class="alert alert-success"><strong>Conclusão:</strong> A expressão complexa <code>(A + B).(A + C)</code> é perfeitamente equivalente à expressão simples <code>A + B.C</code>.</div>
+        </section>
+
+        <!-- 2. Circuitos Lógicos -->
+        <section id="circuitos" class="mb-5">
+            <h2 class="h4 fw-bold mb-3 border-bottom pb-2">2. Introdução aos Circuitos Lógicos</h2>
+            <p>A Álgebra Booleana é a linguagem usada para projetar circuitos digitais, os blocos de construção de todo hardware moderno. Cada operador lógico corresponde a uma "porta" (gate) física.</p>
+            <div class="text-center my-4">
+                <img src="https://i.imgur.com/m8A2j3j.png" alt="Portas Lógicas" class="img-fluid border rounded p-2" style="max-width: 600px;">
+            </div>
+            <p>Quando você escreve <code>if (user.is_admin and user.is_active)</code>, o processador está, em um nível muito baixo, usando portas lógicas AND para avaliar essa condição.</p>
+        </section>
+
+        <!-- 3. Operadores Bitwise -->
+        <section id="bitwise" class="mb-5">
+            <h2 class="h4 fw-bold mb-3 border-bottom pb-2">3. Operadores Bitwise em Python</h2>
+            <p>Enquanto operadores lógicos (<code>and</code>, <code>or</code>) trabalham com valores booleanos (True/False), os operadores bitwise (<code>&</code>, <code>|</code>, <code>^</code>) trabalham diretamente nos bits de números inteiros.</p>
+            <h5 class="fw-bold mt-4">Exemplo:</h5>
+            <p>Se <code>a = 5</code> (binário <code>0101</code>) e <code>b = 3</code> (binário <code>0011</code>):</p>
+            <ul>
+                <li><code>a & b</code> (AND bit a bit) resulta em <code>1</code> (<code>0001</code>)</li>
+                <li><code>a | b</code> (OR bit a bit) resulta em <code>7</code> (<code>0111</code>)</li>
+                <li><code>a ^ b</code> (XOR bit a bit) resulta em <code>6</code> (<code>0110</code>)</li>
+            </ul>
+            <h5 class="fw-bold mt-4">Caso de Uso: Gerenciando Permissões</h5>
+            <p>Bitwise é extremamente eficiente para armazenar e verificar um conjunto de opções ou permissões. Cada permissão é uma potência de 2, representando um bit específico.</p>
+            <pre class="bg-dark text-white p-3 rounded"><code>
+PERM_LEITURA = 1  # 001
+PERM_ESCRITA = 2  # 010
+PERM_EXEC    = 4  # 100
+
+# Concedendo permissões de leitura e execução
+permissoes_usuario = PERM_LEITURA | PERM_EXEC  # Resultado: 5 (101)
+
+# Para verificar uma permissão, usamos o operador AND (&)
+pode_ler = (permissoes_usuario & PERM_LEITURA) > 0  # True
+pode_escrever = (permissoes_usuario & PERM_ESCRITA) > 0 # False
+            </code></pre>
+        </section>
+
+        <!-- 4. Exercícios -->
+        <section id="exercicios">
+            <h2 class="h4 fw-bold mb-3 border-bottom pb-2">4. Exercícios de Fixação</h2>
+            <div class="card">
+                <div class="card-body">
+                    <ol>
+                        <li>Simplifique a expressão: <code>A + A.B</code></li>
+                        <li>Simplifique a expressão: <code>A.(A + B)</code></li>
+                        <li>Use as Leis de De Morgan para simplificar: <code>not (A or B)</code></li>
+                        <li>Desenhe o circuito lógico para a expressão: <code>F = A.B + C</code></li>
+                        <li>Qual o resultado de <code>10 & 12</code> em bitwise? (10 = 1010, 12 = 1100)</li>
+                        <li>Qual o resultado de <code>10 | 12</code> em bitwise?</li>
+                        <li>Simplifique: <code>(A+B).(A+not B)</code></li>
+                        <li>Use De Morgan em: <code>not (A.B)</code></li>
+                        <li>Desenhe o circuito para: <code>F = (A+B).C</code></li>
+                        <li>Para que serve o operador bitwise XOR (<code>^</code>)? Dê um exemplo.</li>
+                        <li>Simplifique: <code>A + not A.B</code></li>
+                        <li>Simplifique: <code>A.B + A.B.C</code></li>
+                        <li>Desenhe o circuito para <code>F = not(A.B)</code>. Que porta é essa? (NAND)</li>
+                        <li>Como representar as permissões "Leitura" e "Escrita" juntas usando o exemplo bitwise?</li>
+                        <li>Qual o resultado de <code>not A or (A and B)</code>?</li>
+                        <li>Verifique se <code>A + (B.C)</code> é igual a <code>(A+B).(A+C)</code>.</li>
+                        <li>Desenhe o circuito para <code>F = A ^ B</code> (XOR).</li>
+                        <li>Em Python, como verificar se um número é par usando operadores bitwise? (Dica: <code>num & 1</code>)</li>
+                        <li>Simplifique a expressão <code>(A + not B).(B + C) + B</code>.</li>
+                        <li>Crie uma função em Python que recebe um inteiro e verifica se o 3º bit (da direita para a esquerda, valor 4) está ativo.</li>
+                    </ol>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-5">
+
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-danger btn-sm" href="../slide_algebrabooleana.html"><i class="fas fa-desktop me-1"></i> Ver slide da aula</a>
+          <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
