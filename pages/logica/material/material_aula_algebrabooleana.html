@@ -97,26 +97,150 @@ pode_escrever = (permissoes_usuario & PERM_ESCRITA) > 0 # False
             <div class="card">
                 <div class="card-body">
                     <ol>
-                        <li>Simplifique a expressão: <code>A + A.B</code></li>
-                        <li>Simplifique a expressão: <code>A.(A + B)</code></li>
-                        <li>Use as Leis de De Morgan para simplificar: <code>not (A or B)</code></li>
-                        <li>Desenhe o circuito lógico para a expressão: <code>F = A.B + C</code></li>
-                        <li>Qual o resultado de <code>10 & 12</code> em bitwise? (10 = 1010, 12 = 1100)</li>
-                        <li>Qual o resultado de <code>10 | 12</code> em bitwise?</li>
-                        <li>Simplifique: <code>(A+B).(A+not B)</code></li>
-                        <li>Use De Morgan em: <code>not (A.B)</code></li>
-                        <li>Desenhe o circuito para: <code>F = (A+B).C</code></li>
-                        <li>Para que serve o operador bitwise XOR (<code>^</code>)? Dê um exemplo.</li>
-                        <li>Simplifique: <code>A + not A.B</code></li>
-                        <li>Simplifique: <code>A.B + A.B.C</code></li>
-                        <li>Desenhe o circuito para <code>F = not(A.B)</code>. Que porta é essa? (NAND)</li>
-                        <li>Como representar as permissões "Leitura" e "Escrita" juntas usando o exemplo bitwise?</li>
-                        <li>Qual o resultado de <code>not A or (A and B)</code>?</li>
-                        <li>Verifique se <code>A + (B.C)</code> é igual a <code>(A+B).(A+C)</code>.</li>
-                        <li>Desenhe o circuito para <code>F = A ^ B</code> (XOR).</li>
-                        <li>Em Python, como verificar se um número é par usando operadores bitwise? (Dica: <code>num & 1</code>)</li>
-                        <li>Simplifique a expressão <code>(A + not B).(B + C) + B</code>.</li>
-                        <li>Crie uma função em Python que recebe um inteiro e verifica se o 3º bit (da direita para a esquerda, valor 4) está ativo.</li>
+                        <li class="mb-3">
+                            <div>Simplifique a expressão: <code>A + A.B</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Resultado: <code>A</code>, pela propriedade da absorção.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Simplifique a expressão: <code>A.(A + B)</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Resultado: <code>A</code>, também pela absorção.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Use as Leis de De Morgan para simplificar: <code>not (A or B)</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Fica <code>not A and not B</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Desenhe o circuito lógico para a expressão: <code>F = A.B + C</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Primeiro, uma porta AND para <code>A</code> e <code>B</code>. A saída dessa AND entra em uma porta OR junto com <code>C</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Qual o resultado de <code>10 & 12</code> em bitwise? (10 = 1010, 12 = 1100)</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2"><code>1010 & 1100 = 1000</code>, que em decimal é <code>8</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Qual o resultado de <code>10 | 12</code> em bitwise?</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2"><code>1010 | 1100 = 1110</code>, que em decimal é <code>14</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Simplifique: <code>(A+B).(A+not B)</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Usando a identidade <code>(X+Y).(X+Z)=X+Y.Z</code>, fica <code>A + B.not B</code>, ou seja, <code>A + 0</code>. Resultado: <code>A</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Use De Morgan em: <code>not (A.B)</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Fica <code>not A + not B</code> ou, em notação de programação, <code>not A or not B</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Desenhe o circuito para: <code>F = (A+B).C</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Primeiro, uma porta OR para <code>A</code> e <code>B</code>. Depois, a saída dela entra em uma porta AND junto com <code>C</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Para que serve o operador bitwise XOR (<code>^</code>)? Dê um exemplo.</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">O XOR retorna <code>1</code> quando os bits são diferentes. Exemplo: <code>5 ^ 3</code> equivale a <code>0101 ^ 0011 = 0110</code>, que resulta em <code>6</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Simplifique: <code>A + not A.B</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Aplicando a distributiva, <code>A + not A.B = (A + not A).(A + B) = 1.(A + B)</code>. Resultado: <code>A + B</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Simplifique: <code>A.B + A.B.C</code></div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Fatorando <code>A.B</code>, temos <code>A.B.(1 + C)</code>. Como <code>1 + C = 1</code>, sobra <code>A.B</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Desenhe o circuito para <code>F = not(A.B)</code>. Que porta é essa? (NAND)</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">É uma porta AND seguida de negação na saída. Esse circuito é uma porta <code>NAND</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Como representar as permissões "Leitura" e "Escrita" juntas usando o exemplo bitwise?</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Usando <code>PERM_LEITURA | PERM_ESCRITA</code>, ou seja, <code>1 | 2 = 3</code> (<code>011</code>).</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Qual o resultado de <code>not A or (A and B)</code>?</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Pela distributiva, <code>not A or (A and B) = (not A or A).(not A or B)</code>. Isso vira <code>1.(not A or B)</code>, então o resultado é <code>not A or B</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Verifique se <code>A + (B.C)</code> é igual a <code>(A+B).(A+C)</code>.</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Sim. Pela distributiva da álgebra booleana, <code>(A+B).(A+C)</code> simplifica para <code>A + B.C</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Desenhe o circuito para <code>F = A ^ B</code> (XOR).</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Use uma porta XOR com entradas <code>A</code> e <code>B</code>. A saída é <code>1</code> apenas quando as entradas forem diferentes.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Em Python, como verificar se um número é par usando operadores bitwise? (Dica: <code>num & 1</code>)</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Basta testar se o último bit é <code>0</code>: <code>num & 1 == 0</code>. Se for verdadeiro, o número é par.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Simplifique a expressão <code>(A + not B).(B + C) + B</code>.</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">Expandindo: <code>A.B + A.C + not B.B + not B.C + B</code>. Como <code>not B.B = 0</code>, fica <code>A.B + A.C + not B.C + B</code>. Pela absorção, <code>B + A.B = B</code> e <code>B + not B.C = B + C</code>. Resultado final: <code>B + C + A.C</code>, que simplifica para <code>B + C</code>.</div>
+                            </details>
+                        </li>
+                        <li class="mb-3">
+                            <div>Crie uma função em Python que recebe um inteiro e verifica se o 3º bit (da direita para a esquerda, valor 4) está ativo.</div>
+                            <details class="mt-2">
+                                <summary class="text-primary">Ver resposta</summary>
+                                <div class="mt-2">
+                                    Exemplo:
+                                    <pre class="bg-light border rounded p-2 mt-2 mb-0"><code>def terceiro_bit_ativo(num):
+  return (num & 4) != 0</code></pre>
+                                </div>
+                            </details>
+                        </li>
                     </ol>
                 </div>
             </div>
