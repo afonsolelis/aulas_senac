@@ -1,256 +1,992 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loops e Funções - Introdução à Lógica</title>
-  <meta name="keywords" content="loops, funções, while, for, Python, repetição, lógica de programação, DRY">
-  <!-- Bootstrap 5 CSS -->
+  <title>Loops e Funções em Python - Introdução à Lógica</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
-  <!-- Prism JS for Code Highlighting -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet" />
+  <style>
+    /* ─── Notebook ────────────��─────────────────────────────── */
+    .notebook {
+      border: 1px solid #444;
+      border-radius: 8px;
+      overflow: hidden;
+      text-align: left;
+      box-shadow: 0 4px 20px rgba(0,0,0,.25);
+      font-size: .84rem;
+    }
+    .nb-in {
+      background: #1e1e2e;
+      display: flex;
+      gap: .75rem;
+      padding: .7rem 1rem;
+      border-left: 4px solid #89b4fa;
+    }
+    .nb-label {
+      color: #89b4fa;
+      font-family: 'Courier New', monospace;
+      font-size: .75rem;
+      white-space: nowrap;
+      padding-top: 3px;
+      min-width: 52px;
+      text-align: right;
+      user-select: none;
+    }
+    .nb-code {
+      color: #cdd6f4;
+      font-family: 'Courier New', monospace;
+      font-size: .84rem;
+      line-height: 1.65;
+      white-space: pre;
+      flex: 1;
+      min-height: 1.65rem;
+    }
+    .nb-out {
+      background: #f8f9fa;
+      padding: .55rem 1rem .55rem 5rem;
+      font-family: 'Courier New', monospace;
+      font-size: .82rem;
+      color: #2d2d2d;
+      border-top: 1px solid #dee2e6;
+      white-space: pre;
+      display: none;
+      border-left: 4px solid #a6e3a1;
+    }
+    .nb-out.error { color: #f38ba8; border-left-color: #f38ba8; }
+
+    /* cursor piscando */
+    .nb-cursor {
+      display: inline-block;
+      width: 8px; height: 1.1em;
+      background: #89b4fa;
+      vertical-align: text-bottom;
+      animation: blink .7s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ─── Syntax highlight ──────────��───────────────────────── */
+    .sy-kw      { color: #ff79c6; font-weight: 600; }
+    .sy-builtin { color: #8be9fd; }
+    .sy-str     { color: #f1fa8c; }
+    .sy-num     { color: #bd93f9; }
+    .sy-comment { color: #6272a4; font-style: italic; }
+    .sy-fn      { color: #50fa7b; }
+    .sy-fstr    { color: #f1fa8c; }
+
+    /* ─── Utilitários ─────────────────��─────────────────────── */
+    .concept-card {
+      border-left: 4px solid;
+      border-radius: 0 12px 12px 0;
+      padding: .9rem 1rem;
+      background: #fff;
+      text-align: left;
+      height: 100%;
+    }
+    .cc-blue   { border-color: #0d6efd; }
+    .cc-green  { border-color: #198754; }
+    .cc-orange { border-color: #fd7e14; }
+    .cc-red    { border-color: #dc3545; }
+    .cc-purple { border-color: #6f42c1; }
+
+    .keyword-chip {
+      display: inline-block;
+      background: #1e1e2e;
+      color: #89b4fa;
+      border-radius: 6px;
+      padding: .25rem .65rem;
+      font-family: 'Courier New', monospace;
+      font-size: .85rem;
+      font-weight: 700;
+      margin: .15rem;
+    }
+
+    /* anatomy diagram */
+    .fn-anatomy {
+      background: #1e1e2e;
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'Courier New', monospace;
+      font-size: .9rem;
+      line-height: 1.9;
+      text-align: left;
+      position: relative;
+    }
+    .fn-badge {
+      position: absolute;
+      font-size: .62rem;
+      font-family: sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* problem slide */
+    .scary-code {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: .8rem;
+      text-align: left;
+      color: #856404;
+      line-height: 1.5;
+    }
+    .clean-code {
+      background: #d1e7dd;
+      border-left: 4px solid #198754;
+      border-radius: 0 8px 8px 0;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: .84rem;
+      text-align: left;
+      color: #0f5132;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 
 <body class="slide-body">
+<div class="slide-container">
 
-  <div class="slide-container">
+  <a href="../home_logica.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+    <i class="fas fa-arrow-left me-2"></i> Voltar
+  </a>
 
-    <!-- Back Button -->
-    <a href="../home_logica.html"
-      class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill z-index-10">
-      <i class="fas fa-arrow-left me-2"></i> Voltar
-    </a>
-
-    <!-- Slide 1: Capa -->
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
-          height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Loops e Funções</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Professor Afonso</h3>
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+  <!-- ══════════════════════════ SLIDE 1 – CAPA ══════════════════════════ -->
+  <div class="slide active" id="slide-1">
+    <div class="glass-cover text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+           alt="Senac Logo" height="70" class="mb-4">
+      <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Introdução à Lógica · Aula 08</h5>
+      <h1 class="display-4 fw-bold mb-3 text-black">
+        <i class="fab fa-python text-warning me-2"></i>Loops e Funções
+      </h1>
+      <p class="lead text-muted mb-4">Automatizando repetições e criando seus próprios comandos em Python</p>
+      <div class="mt-2">
+        <span class="keyword-chip">while</span>
+        <span class="keyword-chip">for</span>
+        <span class="keyword-chip">range()</span>
+        <span class="keyword-chip">break</span>
+        <span class="keyword-chip">continue</span>
+        <span class="keyword-chip">def</span>
+        <span class="keyword-chip">return</span>
       </div>
+      <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+      <h3 class="fw-normal text-dark">Professor Afonso</h3>
+      <span class="badge bg-info mt-3 px-3 py-2 rounded-pill">06 Abr · 2026.1</span>
     </div>
-
-    <!-- Slide 2: Agenda -->
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-5 text-dark">Agenda - Automatizando Tudo</h1>
-      <div class="row">
-        <div class="col-md-9 mx-auto">
-          <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-sync text-primary me-3"></i> O Poder da Repetição (Loops)
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-redo text-success me-3"></i> O comando <strong>While</strong> (Enquanto)
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-list-ol text-danger me-3"></i> O comando <strong>For</strong> (Para cada)
-            </li>
-            <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-3">
-              <i class="fas fa-cube text-warning me-3"></i> Funções (D.R.Y. - Don't Repeat Yourself)
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 3: Bart Simpson (Loops) -->
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-5 text-dark">Para que repetir?</h2>
-
-        <div class="row w-75 mx-auto">
-          <div class="col-md-12">
-            <div class="card bg-success text-white p-4 shadow-lg border-0">
-              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
-              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
-              <p class="fs-4 fst-italic">"Eu não vou desperdiçar giz."</p>
-              <p class="fs-4 fst-italic">...</p>
-            </div>
-            <div class="mt-4">
-              <pre><code class="language-python">
-# O jeito Programador (1 segundo)
-for i in range(100):
-    print("Eu não vou desperdiçar giz.")
-</code></pre>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 4: While -->
-    <div class="slide" id="slide-4">
-      <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark">While (Enquanto)</h2>
-        <p class="fs-4">Repete ENQUANTO a condição for verdadeira.</p>
-
-        <div class="row align-items-center">
-          <div class="col-md-6 text-start">
-            <pre><code class="language-python">
-bateria = 10
-
-while bateria > 0:
-    print(f"Bateria: {bateria}% - Jogando...")
-    bateria = bateria - 1
-
-print("Desligando...")
-</code></pre>
-          </div>
-          <div class="col-md-6">
-            <div class="alert alert-danger shadow-sm">
-              <h4 class="fw-bold"><i class="fas fa-skull-crossbones me-2"></i>Cuidado com o Loop Infinito!</h4>
-              <p>Se a bateria nunca diminuir, o programa nunca para (Dormammu, eu vim barganhar!).</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 5: For -->
-    <div class="slide" id="slide-5">
-      <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark">For (Para Cada)</h2>
-        <p class="fs-4">Percorre uma lista ou um intervalo definido.</p>
-
-        <div class="row align-items-center">
-          <div class="col-md-6 text-start">
-            <pre><code class="language-python">
-# Contar até 5
-for numero in range(1, 6):
-    print(numero)
-
-# Lista de Compras
-frutas = ["Maçã", "Banana", "Uva"]
-for item in frutas:
-    print(f"Comprei: {item}")
-</code></pre>
-          </div>
-          <div class="col-md-6">
-            <div class="card bg-light border-0 p-4">
-              <p class="lead">Perfeito para quando você sabe <strong>quantas vezes</strong> quer repetir ou tem uma
-                <strong>lista</strong> de itens.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Slide 6: Tabela Verdade Automática -->
-    <div class="slide" id="slide-6">
-      <div class="text-center slide-content">
-        <span class="badge bg-primary px-3 py-2 rounded-pill mb-3">Hack</span>
-        <h2 class="display-5 fw-bold mb-4 text-dark">Gerando Tabela Verdade</h2>
-        <p class="mb-4">E se usássemos Python para resolver Lógica?</p>
-
-        <div class="text-start mx-auto" style="max-width: 600px;">
-          <pre><code class="language-python">
-print("A  |  B  |  A and B")
-print("-" * 20)
-
-opcoes = [True, False]
-
-for a in opcoes:
-    for b in opcoes:
-        resultado = a and b
-        print(f"{a} | {b} | {resultado}")
-</code></pre>
-        </div>
-        <p class="text-muted mt-3 small">Isso testa todas as combinações (V-V, V-F, F-V, F-F)!</p>
-      </div>
-    </div>
-
-    <!-- Slide 7: Funções -->
-    <div class="slide" id="slide-7">
-      <div class="text-center slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark">Funções (Def)</h2>
-        <p class="fs-4 text-muted">Aprenda a criar seus próprios comandos.</p>
-
-        <div class="row justify-content-center">
-          <div class="col-md-8 text-start">
-            <pre><code class="language-python">
-# Definindo a função (Receita)
-def somar(numero1, numero2):
-    total = numero1 + numero2
-    return total
-
-# Usando a função
-resultado = somar(10, 50)
-print(resultado) # 60
-</code></pre>
-          </div>
-        </div>
-
-        <div class="row mt-4">
-          <div class="col-md-4 mx-auto">
-            <div class="card bg-white shadow-sm border-info border-top-0 border-end-0 border-bottom-0 border-5 p-3">
-              <strong>Vantagem:</strong> Organização e Reúso. Se precisar somar em 10 lugares diferentes, basta chamar a
-              função.
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- Slide 8: Encerramento -->
-    <div class="slide" id="slide-8">
-      <div class="text-center slide-content">
-        <h1 class="display-3 fw-bold mb-4 text-dark">Fim da Aula 08</h1>
-        <p class="lead mb-5">Loops e Funções são o coração da automação.</p>
-
-        <div class="d-flex justify-content-center gap-3">
-          <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar ao Menu</a>
-          <!-- Removed next button -->
-        </div>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Footer Navigation -->
-  <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+  <!-- ════════════════════════ SLIDE 2 – AGENDA ══════════════════════════ -->
+  <div class="slide" id="slide-2">
+    <div class="slide-content text-center">
+      <h1 class="display-4 fw-bold mb-4 text-dark">O que veremos hoje</h1>
+      <div class="row g-3">
+        <div class="col-md-4"><div class="concept-card cc-blue">
+          <i class="fas fa-exclamation-triangle text-warning mb-2 d-block fa-lg"></i>
+          <strong>O problema</strong>
+          <p class="small text-muted mt-1 mb-0">Por que repetir código na mão é uma péssima ideia</p>
+        </div></div>
+        <div class="col-md-4"><div class="concept-card cc-green">
+          <i class="fas fa-redo text-success mb-2 d-block fa-lg"></i>
+          <strong>while</strong>
+          <p class="small text-muted mt-1 mb-0">Repete enquanto uma condição for verdadeira</p>
+        </div></div>
+        <div class="col-md-4"><div class="concept-card cc-orange">
+          <i class="fas fa-list-ol text-warning mb-2 d-block fa-lg"></i>
+          <strong>for</strong>
+          <p class="small text-muted mt-1 mb-0">Percorre sequências: range, listas, strings</p>
+        </div></div>
+        <div class="col-md-4"><div class="concept-card cc-red">
+          <i class="fas fa-hand-paper text-danger mb-2 d-block fa-lg"></i>
+          <strong>break &amp; continue</strong>
+          <p class="small text-muted mt-1 mb-0">Controle fino dentro de qualquer loop</p>
+        </div></div>
+        <div class="col-md-4"><div class="concept-card cc-purple">
+          <i class="fas fa-cube text-purple mb-2 d-block fa-lg" style="color:#6f42c1"></i>
+          <strong>def / return</strong>
+          <p class="small text-muted mt-1 mb-0">Crie seus próprios comandos reutilizáveis</p>
+        </div></div>
+        <div class="col-md-4"><div class="concept-card cc-blue">
+          <i class="fas fa-link text-primary mb-2 d-block fa-lg"></i>
+          <strong>Funções + Loops</strong>
+          <p class="small text-muted mt-1 mb-0">Combinando os dois poderes</p>
+        </div></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
+  </div>
 
-    <div class="text-center text-muted small d-none d-md-block">
-      Introdução à Lógica - Aula 08
+  <!-- ════════════════════ SLIDE 3 – O PROBLEMA ══════���═══════════════════ -->
+  <div class="slide" id="slide-3">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">Por que precisamos de loops?</h2>
+      <p class="text-muted mb-4">Imagine que o professor manda escrever 100 vezes na lousa…</p>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-5">
+          <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>Sem loop (jeito manual)</h6>
+          <div class="scary-code">print("Eu não vou colar na prova.")
+print("Eu não vou colar na prova.")
+print("Eu não vou colar na prova.")
+print("Eu não vou colar na prova.")
+print("Eu não vou colar na prova.")
+print("Eu não vou colar na prova.")
+<span style="color:#856404;font-style:italic">... (mais 94 linhas iguais) ...</span>
+print("Eu não vou colar na prova.")</div>
+          <div class="badge bg-danger mt-2">98 linhas repetidas 😱</div>
+        </div>
+        <div class="col-md-2 d-flex align-items-center justify-content-center">
+          <i class="fas fa-arrow-right fa-2x text-muted"></i>
+        </div>
+        <div class="col-md-5">
+          <h6 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-1"></i>Com loop (jeito Python)</h6>
+          <div class="clean-code">for i in range(100):
+    print("Eu não vou colar na prova.")</div>
+          <div class="badge bg-success mt-2">2 linhas. Mesmo resultado. ✨</div>
+          <div class="alert alert-success mt-3 text-start small p-2">
+            <i class="fas fa-lightbulb me-1"></i>
+            <strong>DRY</strong> — <em>Don't Repeat Yourself</em>. Um dos princípios fundamentais da programação.
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 
-    <a href="material/material_aula08-loops-funcoes.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
+  <!-- ═════════════════════ SLIDE 4 – WHILE CONCEITO ════════��════════════ -->
+  <div class="slide" id="slide-4">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">while</span> — Enquanto</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [1]:</span>
+              <code class="nb-code" id="code-4">contagem = 5
 
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
-        height="30" class="opacity-75">
-    </a>
-  </footer>
+while contagem > 0:
+    print(f"Contagem: {contagem}")
+    contagem = contagem - 1
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+print("🚀 Lançamento!")</code>
+            </div>
+            <div class="nb-out" id="out-4">Contagem: 5
+Contagem: 4
+Contagem: 3
+Contagem: 2
+Contagem: 1
+🚀 Lançamento!</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-green mb-3">
+            <strong><i class="fas fa-question-circle text-success me-1"></i>Como funciona?</strong>
+            <p class="small text-muted mb-0 mt-1">O Python verifica a condição <em>antes</em> de cada repetição.
+            Se for <code>True</code>, executa o bloco. Se for <code>False</code>, para.</p>
+          </div>
+          <div class="concept-card cc-orange mb-3">
+            <strong><i class="fas fa-indent text-warning me-1"></i>Indentação obrigatória</strong>
+            <p class="small text-muted mb-0 mt-1">Tudo que está <strong>dentro do while</strong> precisa ter
+            4 espaços (ou 1 tab) de recuo. É assim que o Python sabe o que pertence ao loop.</p>
+          </div>
+          <div class="concept-card cc-blue">
+            <strong><i class="fas fa-sync text-primary me-1"></i>Padrão clássico</strong>
+            <p class="small text-muted mb-0 mt-1"><code>inicializa variável</code> →
+            <code>while condição</code> → <code>usa e modifica a variável</code></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <script src="../../js/standard_slides.js"></script>
+  <!-- ═══════════════════ SLIDE 5 – WHILE LOOP INFINITO ══════════════════ -->
+  <div class="slide" id="slide-5">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">⚠️ Cuidado: Loop Infinito</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook mb-3">
+            <div class="nb-in">
+              <span class="nb-label">In [2]:</span>
+              <code class="nb-code" id="code-5">bateria = 100
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+while bateria > 0:
+    print(f"Bateria: {bateria}%")
+    bateria -= 20  # -= é o mesmo que bateria = bateria - 20
 
+print("❌ Desligando...")</code>
+            </div>
+            <div class="nb-out" id="out-5">Bateria: 100%
+Bateria: 80%
+Bateria: 60%
+Bateria: 40%
+Bateria: 20%
+❌ Desligando...</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-red mb-3">
+            <strong><i class="fas fa-skull-crossbones text-danger me-1"></i>Loop infinito</strong>
+            <p class="small text-muted mt-1 mb-2">Se a condição <strong>nunca se tornar False</strong>,
+            o programa trava para sempre. Exemplo perigoso:</p>
+            <code style="font-size:.78rem;background:#fff3f3;padding:4px 8px;border-radius:4px;display:block">
+while True:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;print("Socorro!")  # nunca para!</code>
+          </div>
+          <div class="concept-card cc-orange mb-3">
+            <strong><i class="fas fa-lightbulb text-warning me-1"></i>Operadores de atribuição</strong>
+            <p class="small text-muted mt-1 mb-0">
+              <code>x -= 1</code> = <code>x = x - 1</code><br>
+              <code>x += 5</code> = <code>x = x + 5</code><br>
+              <code>x *= 2</code> = <code>x = x * 2</code>
+            </p>
+          </div>
+          <div class="alert alert-warning small text-start p-2 mb-0">
+            <i class="fas fa-keyboard me-1"></i>
+            No Colab/Terminal: <kbd>Ctrl + C</kbd> para interromper um loop infinito.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SLIDE 6 – FOR COM RANGE ═══════════════════════ -->
+  <div class="slide" id="slide-6">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">for</span> + <span class="keyword-chip">range()</span></h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [3]:</span>
+              <code class="nb-code" id="code-6"># range(inicio, fim, passo)
+# fim NÃO é incluído!
+
+for i in range(1, 6):
+    print(i, end=" ")
+
+print()  # pula linha
+
+for i in range(0, 11, 2):
+    print(i, end=" ")  # só pares</code>
+            </div>
+            <div class="nb-out" id="out-6">1 2 3 4 5
+0 2 4 6 8 10 </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-orange mb-3">
+            <strong><i class="fas fa-sliders-h text-warning me-1"></i>range() — 3 formas</strong>
+            <div class="mt-2" style="font-family:monospace;font-size:.82rem;line-height:1.9">
+              <code>range(5)</code> → 0, 1, 2, 3, 4<br>
+              <code>range(1, 6)</code> → 1, 2, 3, 4, 5<br>
+              <code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8
+            </div>
+          </div>
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-terminal text-primary me-1"></i><code>end=" "</code></strong>
+            <p class="small text-muted mt-1 mb-0">Por padrão, <code>print()</code> pula linha.
+            Com <code>end=" "</code> ele coloca um espaço no lugar da quebra de linha —
+            útil para imprimir tudo na mesma linha.</p>
+          </div>
+          <div class="concept-card cc-green">
+            <strong><i class="fas fa-check text-success me-1"></i>Use for quando...</strong>
+            <p class="small text-muted mt-1 mb-0">Você sabe <strong>quantas vezes</strong> quer repetir,
+            ou tem uma <strong>coleção</strong> de itens para percorrer.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SLIDE 7 – FOR COM LISTAS ══════════════════��═══ -->
+  <div class="slide" id="slide-7">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">for</span> percorrendo listas e strings</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [4]:</span>
+              <code class="nb-code" id="code-7">frutas = ["Maçã", "Banana", "Uva"]
+
+for fruta in frutas:
+    print(f"Tenho: {fruta}")
+
+print("---")
+
+# for também funciona em strings!
+for letra in "Python":
+    print(letra, end="-")</code>
+            </div>
+            <div class="nb-out" id="out-7">Tenho: Maçã
+Tenho: Banana
+Tenho: Uva
+---
+P-y-t-h-o-n-</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-orange mb-3">
+            <strong><i class="fas fa-list text-warning me-1"></i>Listas em Python</strong>
+            <p class="small text-muted mt-1 mb-0">Listas são criadas com colchetes <code>[]</code>.
+            Podem guardar qualquer tipo de dado: números, textos, misturados.</p>
+          </div>
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-font text-primary me-1"></i>f-strings</strong>
+            <p class="small text-muted mt-1 mb-0"><code>f"Tenho: {fruta}"</code> — o <code>f</code> antes das aspas
+            permite inserir variáveis entre <code>{chaves}</code> diretamente no texto.</p>
+          </div>
+          <div class="concept-card cc-green">
+            <strong><i class="fas fa-magic text-success me-1"></i>for em string</strong>
+            <p class="small text-muted mt-1 mb-0">Uma string é uma <em>sequência de caracteres</em>.
+            O <code>for</code> percorre letra por letra, como se fosse uma lista de letras.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SLIDE 8 – FOR ANINHADO ═══════════════════���═════ -->
+  <div class="slide" id="slide-8">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">For aninhado — Tabela Verdade automática</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [5]:</span>
+              <code class="nb-code" id="code-8">print("A       | B       | A and B")
+print("-" * 32)
+
+for a in [True, False]:
+    for b in [True, False]:
+        resultado = a and b
+        print(f"{str(a):7} | {str(b):7} | {resultado}")</code>
+            </div>
+            <div class="nb-out" id="out-8">A       | B       | A and B
+--------------------------------
+True    | True    | True
+True    | False   | False
+False   | True    | False
+False   | False   | False</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-layer-group text-primary me-1"></i>For aninhado</strong>
+            <p class="small text-muted mt-1 mb-0">Um <code>for</code> <em>dentro</em> de outro.
+            Para cada iteração do externo, o interno completa <strong>todos</strong> os seus ciclos.
+            2 opções × 2 opções = 4 combinações.</p>
+          </div>
+          <div class="concept-card cc-green mb-3">
+            <strong><i class="fas fa-align-left text-success me-1"></i>Formatação de strings</strong>
+            <p class="small text-muted mt-1 mb-0"><code>{str(a):7}</code> — o <code>:7</code>
+            define que o texto ocupa pelo menos 7 caracteres (preenche com espaços), alinhando as colunas.</p>
+          </div>
+          <div class="alert alert-info small text-start p-2 mb-0">
+            <i class="fas fa-brain me-1"></i>
+            Ligando com o que já vimos: usamos lógica booleana (<code>and</code>) dentro de um loop para
+            gerar tabelas verdade automaticamente!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SLIDE 9 – BREAK E CONTINUE ═══════════════════ -->
+  <div class="slide" id="slide-9">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">
+        <span class="keyword-chip">break</span> e <span class="keyword-chip">continue</span>
+      </h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [6]:</span>
+              <code class="nb-code" id="code-9"># break: PARA o loop imediatamente
+for i in range(10):
+    if i == 5:
+        break
+    print(i, end=" ")
+
+print("\n---")
+
+# continue: PULA esta iteração
+for i in range(10):
+    if i % 2 == 0:
+        continue
+    print(i, end=" ")</code>
+            </div>
+            <div class="nb-out" id="out-9">0 1 2 3 4
+---
+1 3 5 7 9 </div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-red mb-3">
+            <strong><i class="fas fa-stop-circle text-danger me-1"></i><code>break</code> — Para tudo</strong>
+            <p class="small text-muted mt-1 mb-0">Quando o Python encontra <code>break</code>,
+            ele <strong>sai imediatamente</strong> do loop — ignora o restante das iterações.
+            Útil para "encontrei o que queria, pode parar".</p>
+          </div>
+          <div class="concept-card cc-orange mb-3">
+            <strong><i class="fas fa-forward text-warning me-1"></i><code>continue</code> — Pula um</strong>
+            <p class="small text-muted mt-1 mb-0">Quando o Python encontra <code>continue</code>,
+            ele <strong>pula para a próxima iteração</strong> sem executar o que vem abaixo.
+            Útil para "não quero processar este item específico".</p>
+          </div>
+          <div class="concept-card cc-blue">
+            <strong><i class="fas fa-percent text-primary me-1"></i>Operador <code>%</code></strong>
+            <p class="small text-muted mt-1 mb-0"><code>i % 2 == 0</code> verifica se <code>i</code> é divisível
+            por 2 (resto zero = par). <code>10 % 3 = 1</code>, <code>9 % 3 = 0</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═════════════════��� SLIDE 10 – FUNÇÕES CONCEITO ═════════════════════ -->
+  <div class="slide" id="slide-10">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">Funções — criando seus próprios comandos</h2>
+      <div class="row g-4 align-items-center">
+        <div class="col-md-7">
+          <div class="fn-anatomy">
+            <div class="mb-1">
+              <span class="sy-kw">def</span>
+              <span class="sy-fn"> saudar</span>
+              <span style="color:#cdd6f4">(</span><span style="color:#ffb86c">nome</span><span style="color:#cdd6f4">):</span>
+              <span class="fn-badge bg-primary text-white" style="right:-2px;top:4px">← palavra-chave</span>
+            </div>
+            <div style="padding-left:2rem">
+              <span class="sy-comment"># corpo da função</span>
+              <br>
+              <span style="color:#cdd6f4">mensagem = </span><span class="sy-str">f"Olá, {nome}!"</span>
+            </div>
+            <div style="padding-left:2rem">
+              <span class="sy-kw">return</span>
+              <span style="color:#cdd6f4"> mensagem</span>
+              <span class="fn-badge bg-success text-white" style="right:-2px;top:4px">← devolve resultado</span>
+            </div>
+            <br>
+            <span class="sy-comment"># chamando a função</span><br>
+            <span style="color:#cdd6f4">resultado = </span>
+            <span class="sy-fn">saudar</span>
+            <span style="color:#cdd6f4">(</span><span class="sy-str">"Ana"</span><span style="color:#cdd6f4">)</span>
+            <br>
+            <span class="sy-builtin">print</span><span style="color:#cdd6f4">(resultado)</span>
+            <span class="sy-comment">  # Olá, Ana!</span>
+          </div>
+        </div>
+        <div class="col-md-5 text-start">
+          <div class="concept-card cc-purple mb-3">
+            <strong><i class="fas fa-cube me-1" style="color:#6f42c1"></i>Para que serve?</strong>
+            <p class="small text-muted mt-1 mb-0"><strong>DRY</strong>: escreve uma vez, usa em qualquer lugar.
+            Sem função, você copiaria o mesmo código 10 vezes.</p>
+          </div>
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-box-open text-primary me-1"></i>Parâmetros</strong>
+            <p class="small text-muted mt-1 mb-0">São as "entradas" da função — os dados que ela precisa
+            para fazer seu trabalho. <code>(nome)</code> é um parâmetro.</p>
+          </div>
+          <div class="concept-card cc-green">
+            <strong><i class="fas fa-sign-out-alt text-success me-1"></i><code>return</code></strong>
+            <p class="small text-muted mt-1 mb-0">Devolve um valor para quem chamou a função.
+            Se não tiver <code>return</code>, a função retorna <code>None</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SLIDE 11 – FUNÇÃO BÁSICA ══════════════════════ -->
+  <div class="slide" id="slide-11">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">Primeira função: sem parâmetros</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [7]:</span>
+              <code class="nb-code" id="code-11">def mostrar_boas_vindas():
+    print("╔═══════════���══════╗")
+    print("║  Bem-vindo!      ║")
+    print("╚══════════════════╝")
+
+# Definir não executa — só chegar aqui executa
+mostrar_boas_vindas()
+mostrar_boas_vindas()  # reutilizando!</code>
+            </div>
+            <div class="nb-out" id="out-11">╔══════════════���═══╗
+║  Bem-vindo!      ║
+╚══════════════════╝
+╔══════════════════╗
+║  Bem-vindo!      ║
+╚══════════════════╝</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-purple mb-3">
+            <strong><i class="fas fa-lightbulb me-1" style="color:#6f42c1"></i>Definir ≠ Executar</strong>
+            <p class="small text-muted mt-1 mb-0">O bloco <code>def</code> apenas <em>registra</em> a função
+            na memória. O código dentro só roda quando você <strong>chama</strong> a função pelo nome seguido de
+            <code>()</code>.</p>
+          </div>
+          <div class="concept-card cc-green mb-3">
+            <strong><i class="fas fa-recycle text-success me-1"></i>Reutilização</strong>
+            <p class="small text-muted mt-1 mb-0">Chamamos <code>mostrar_boas_vindas()</code> duas vezes.
+            Se precisássemos 100 vezes, seriam 100 chamadas de 1 linha — não 300 linhas de código repetido.</p>
+          </div>
+          <div class="concept-card cc-orange">
+            <strong><i class="fas fa-ruler-combined text-warning me-1"></i>Nomenclatura</strong>
+            <p class="small text-muted mt-1 mb-0">Use <code>snake_case</code>: palavras minúsculas separadas
+            por <code>_</code>. <code>calcular_media</code>, <code>eh_par</code>, <code>mostrar_menu</code>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SLIDE 12 – PARÂMETROS E RETURN ═════════════════ -->
+  <div class="slide" id="slide-12">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">Parâmetros e <span class="keyword-chip">return</span></h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [8]:</span>
+              <code class="nb-code" id="code-12">def calcular_media(n1, n2, n3):
+    soma = n1 + n2 + n3
+    media = soma / 3
+    return media
+
+# Testando com alunos diferentes
+media_ana = calcular_media(8, 7, 9)
+media_joao = calcular_media(5, 6, 4)
+
+print(f"Ana:  {media_ana:.1f}")
+print(f"João: {media_joao:.1f}")
+
+if media_ana >= 6:
+    print("Ana: Aprovada ✅")
+else:
+    print("Ana: Reprovada ❌")</code>
+            </div>
+            <div class="nb-out" id="out-12">Ana:  8.0
+João: 5.0
+Ana: Aprovada ✅</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-box text-primary me-1"></i>Múltiplos parâmetros</strong>
+            <p class="small text-muted mt-1 mb-0">Separados por vírgula. Quando você chama a funç��o,
+            passa os valores na mesma ordem: <code>calcular_media(8, 7, 9)</code> → <code>n1=8, n2=7, n3=9</code>.</p>
+          </div>
+          <div class="concept-card cc-green mb-3">
+            <strong><i class="fas fa-reply text-success me-1"></i>Usando o retorno</strong>
+            <p class="small text-muted mt-1 mb-0">O valor retornado pode ser guardado em uma variável
+            (<code>media_ana = calcular_media(...)</code>) ou usado diretamente
+            (<code>if calcular_media(...) >= 6</code>).</p>
+          </div>
+          <div class="concept-card cc-orange">
+            <strong><i class="fas fa-dot-circle text-warning me-1"></i><code>:.1f</code></strong>
+            <p class="small text-muted mt-1 mb-0">Dentro de f-string, <code>:.1f</code> formata o número
+            com 1 casa decimal. <code>:.2f</code> = 2 casas, <code>:d</code> = inteiro.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ SLIDE 13 – FUNÇÕES + LOOPS ═════════════════���═ -->
+  <div class="slide" id="slide-13">
+    <div class="slide-content text-center">
+      <h2 class="display-5 fw-bold mb-3 text-dark">Funções + Loops juntos 🚀</h2>
+      <div class="row g-4 align-items-start">
+        <div class="col-md-6">
+          <div class="notebook">
+            <div class="nb-in">
+              <span class="nb-label">In [9]:</span>
+              <code class="nb-code" id="code-13">def eh_par(numero):
+    return numero % 2 == 0
+
+def classificar(numero):
+    if numero % 2 == 0:
+        return "par"
+    return "ímpar"
+
+numeros = [1, 2, 3, 4, 5, 6]
+
+for n in numeros:
+    tipo = classificar(n)
+    icone = "✅" if eh_par(n) else "🔴"
+    print(f"{icone} {n} é {tipo}")</code>
+            </div>
+            <div class="nb-out" id="out-13">🔴 1 é ímpar
+✅ 2 é par
+🔴 3 é ímpar
+✅ 4 é par
+🔴 5 é ímpar
+✅ 6 é par</div>
+          </div>
+        </div>
+        <div class="col-md-6 text-start">
+          <div class="concept-card cc-purple mb-3">
+            <strong><i class="fas fa-layer-group me-1" style="color:#6f42c1"></i>Separação de responsabilidades</strong>
+            <p class="small text-muted mt-1 mb-0"><code>eh_par()</code> sabe verificar paridade.
+            <code>classificar()</code> sabe retornar o texto.
+            O <code>for</code> sabe iterar. Cada parte faz uma coisa só.</p>
+          </div>
+          <div class="concept-card cc-blue mb-3">
+            <strong><i class="fas fa-compress-alt text-primary me-1"></i>Expressão condicional inline</strong>
+            <p class="small text-muted mt-1 mb-0"><code>"✅" if eh_par(n) else "🔴"</code> é um
+            <strong>ternário</strong>: retorna o primeiro valor se verdadeiro, o segundo se falso —
+            tudo em uma linha.</p>
+          </div>
+          <div class="alert alert-success small text-start p-2 mb-0">
+            <i class="fas fa-star me-1"></i>
+            <strong>Boas práticas:</strong> funções pequenas, com nome claro, que fazem uma coisa só.
+            Código assim é fácil de testar e de reutilizar.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════���═══ SLIDE 14 – RESUMO VISUAL ═════════���═════════════ -->
+  <div class="slide" id="slide-14">
+    <div class="slide-content text-center">
+      <h1 class="display-5 fw-bold mb-4 text-dark">Resumo — Guia rápido</h1>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="concept-card cc-green h-100">
+            <h6 class="fw-bold text-success mb-2"><code>while</code> — use quando não sabe quantas vezes</h6>
+            <div style="background:#1e1e2e;border-radius:6px;padding:.5rem .75rem;font-family:monospace;font-size:.8rem;color:#cdd6f4">
+              <span class="sy-kw">while</span> condição:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;corpo<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;atualiza variável
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="concept-card cc-orange h-100">
+            <h6 class="fw-bold text-warning mb-2"><code>for</code> — use quando sabe o que percorrer</h6>
+            <div style="background:#1e1e2e;border-radius:6px;padding:.5rem .75rem;font-family:monospace;font-size:.8rem;color:#cdd6f4">
+              <span class="sy-kw">for</span> item <span class="sy-kw">in</span> sequência:<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;corpo<br>
+              <span class="sy-comment"># range, lista, string...</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="concept-card cc-red h-100">
+            <h6 class="fw-bold text-danger mb-2"><code>break</code> e <code>continue</code></h6>
+            <div style="background:#1e1e2e;border-radius:6px;padding:.5rem .75rem;font-family:monospace;font-size:.8rem;color:#cdd6f4">
+              <span class="sy-kw">break</span> <span class="sy-comment">     # sai do loop</span><br>
+              <span class="sy-kw">continue</span> <span class="sy-comment">  # pula esta iteração</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="concept-card cc-purple h-100">
+            <h6 class="fw-bold mb-2" style="color:#6f42c1"><code>def</code> / <code>return</code></h6>
+            <div style="background:#1e1e2e;border-radius:6px;padding:.5rem .75rem;font-family:monospace;font-size:.8rem;color:#cdd6f4">
+              <span class="sy-kw">def</span> <span class="sy-fn">nome</span>(p1, p2):<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;resultado = ...<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;<span class="sy-kw">return</span> resultado
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="alert alert-dark mt-3 mb-0 text-start fs-6">
+        <i class="fas fa-quote-left me-2 text-muted"></i>
+        "Loops evitam repetição de <em>execução</em>. Funções evitam repetição de <em>código</em>. Juntos, são a base de qualquer programa real."
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════���══════════ SLIDE 15 – EXERCÍCIOS ══════════════════════════ -->
+  <div class="slide" id="slide-15">
+    <div class="slide-content text-center">
+      <h1 class="display-4 fw-bold mb-3 text-dark">Hora de praticar! 💪</h1>
+      <p class="lead text-muted mb-4">20 exercícios progressivos no material escrito</p>
+      <div class="row g-3 mb-4">
+        <div class="col-md-3">
+          <div class="concept-card cc-green text-center">
+            <div class="fs-2 mb-1">🟢</div>
+            <strong>Nível 1</strong>
+            <p class="small text-muted mb-0 mt-1">Exercícios 1–5<br><code>while</code> básico</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="concept-card cc-orange text-center">
+            <div class="fs-2 mb-1">🟡</div>
+            <strong>Nível 2</strong>
+            <p class="small text-muted mb-0 mt-1">Exercícios 6–10<br><code>for</code> básico</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="concept-card cc-blue text-center">
+            <div class="fs-2 mb-1">🔵</div>
+            <strong>Nível 3</strong>
+            <p class="small text-muted mb-0 mt-1">Exercícios 11–15<br>funções + loops</p>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="concept-card cc-red text-center">
+            <div class="fs-2 mb-1">🔴</div>
+            <strong>Nível 4</strong>
+            <p class="small text-muted mb-0 mt-1">Exercícios 16–20<br>desafios</p>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center gap-3">
+        <a href="material/material_aula08-loops-funcoes.html" class="btn btn-primary btn-lg rounded-pill px-5">
+          <i class="fas fa-book me-2"></i>Ver os 20 exercícios
+        </a>
+        <a href="../home_logica.html" class="btn btn-outline-dark btn-lg rounded-pill px-4">
+          <i class="fas fa-home me-1"></i>Menu
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /slide-container -->
+
+<footer class="slide-footer">
+  <div class="slide-controls">
+    <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+    <div class="progress mx-3" style="width: 100px; height: 6px;">
+      <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+    </div>
+    <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 15</span>
+    <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+    <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+  </div>
+
+  <div class="text-center text-muted small d-none d-md-block">
+    Introdução à Lógica · Aula 08 · 06 Abr 2026
+  </div>
+
+  <a href="material/material_aula08-loops-funcoes.html" class="btn btn-outline-info btn-sm rounded-pill">
+    <i class="fas fa-book me-1"></i> Material + Exercícios
+  </a>
+
+  <a href="../../index.html">
+    <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+         alt="Senac" height="30" class="opacity-75">
+  </a>
+</footer>
+
+<script src="../../js/standard_slides.js"></script>
+<script>
+// ─── IDs dos slides que têm notebook ──────────��──────────────────────────────
+const NOTEBOOK_SLIDES = ['slide-4','slide-5','slide-6','slide-7',
+                         'slide-8','slide-9','slide-11','slide-12','slide-13'];
+const TYPING_SPEED = 16; // ms por caractere
+const typed = new Set();
+
+// ─── Guarda o código original e limpa o elemento ─────────────────────────────
+document.querySelectorAll('.nb-code').forEach(function(el) {
+  el.dataset.code = el.textContent.trim();
+  el.textContent = '';
+});
+
+// ─── Colorização de sintaxe Python ───────────────────────────────────────────
+function colorize(raw) {
+  // Escapa HTML
+  var h = raw
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+
+  // Comentários (# até fim da linha) — primeiro para não colorir dentro deles
+  h = h.replace(/(#[^\n]*)/g,'<span class="sy-comment">$1</span>');
+
+  // f-strings e strings normais (simples, sem multiline)
+  h = h.replace(/(f&quot;[^&\n]*?&quot;|f&#x27;[^&\n]*?&#x27;|&quot;[^&\n]*?&quot;|&#x27;[^&\n]*?&#x27;)/g,
+    '<span class="sy-str">$1</span>');
+
+  // Palavras-chave
+  h = h.replace(/\b(for|while|def|return|if|elif|else|in|True|False|None|break|continue|and|or|not|import|from|pass|class)\b/g,
+    '<span class="sy-kw">$1</span>');
+
+  // Built-ins
+  h = h.replace(/\b(print|input|len|range|int|str|float|list|dict|bool|type|abs|sum|min|max|sorted|enumerate|append)\b/g,
+    '<span class="sy-builtin">$1</span>');
+
+  // Números
+  h = h.replace(/\b(\d+\.?\d*)\b/g,'<span class="sy-num">$1</span>');
+
+  return h;
+}
+
+// ─── Animação de digitação ───────────────────────────────────────────────────
+function typeCode(slideId) {
+  if (typed.has(slideId)) return;
+  var slide = document.getElementById(slideId);
+  if (!slide) return;
+  var codeEl = slide.querySelector('.nb-code');
+  var outEl  = slide.querySelector('.nb-out');
+  if (!codeEl || !codeEl.dataset.code) return;
+
+  typed.add(slideId);
+  var raw = codeEl.dataset.code;
+  var i = 0;
+
+  // Cursor piscando
+  var cursor = document.createElement('span');
+  cursor.className = 'nb-cursor';
+  codeEl.appendChild(cursor);
+
+  function tick() {
+    if (i < raw.length) {
+      // Atualiza texto (antes do cursor)
+      codeEl.textContent = raw.substring(0, i + 1);
+      codeEl.appendChild(cursor);
+      i++;
+      setTimeout(tick, TYPING_SPEED);
+    } else {
+      // Digitação concluída: aplica colorização
+      if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+      codeEl.innerHTML = colorize(raw);
+      // Exibe output com fade-in
+      if (outEl) {
+        outEl.style.opacity = '0';
+        outEl.style.display = 'block';
+        requestAnimationFrame(function() {
+          outEl.style.transition = 'opacity .5s ease';
+          requestAnimationFrame(function() { outEl.style.opacity = '1'; });
+        });
+      }
+    }
+  }
+
+  setTimeout(tick, 350); // pequeno delay antes de começar
+}
+
+// ─── Dispara ao entrar em cada slide com notebook ────────────────────────────
+var observer = new MutationObserver(function() {
+  document.querySelectorAll('.slide').forEach(function(slide) {
+    if (slide.classList.contains('active') && NOTEBOOK_SLIDES.includes(slide.id)) {
+      typeCode(slide.id);
+    }
+  });
+});
+
+document.querySelectorAll('.slide').forEach(function(s) {
+  observer.observe(s, { attributes: true, attributeFilter: ['class'] });
+});
+</script>
 </body>
-
 </html>

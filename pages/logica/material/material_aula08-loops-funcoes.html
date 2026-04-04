@@ -4,45 +4,483 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 08 - Introdução à Lógica</title>
+  <title>Material - Aula 08 - Loops e Funções</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root { --logic-blue: #0d6efd; --logic-bg: #f0f7ff; }
+    body { background: #f8f9fa; }
+    .section-title {
+      border-left: 4px solid var(--logic-blue);
+      padding-left: 12px;
+      margin: 28px 0 14px;
+      font-size: 1.12rem;
+      font-weight: 700;
+    }
+    pre {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 10px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      font-size: .87rem;
+      line-height: 1.65;
+    }
+    .kw  { color: #ff79c6; font-weight: 600; }
+    .bi  { color: #8be9fd; }
+    .st  { color: #f1fa8c; }
+    .nm  { color: #bd93f9; }
+    .cm  { color: #6272a4; font-style: italic; }
+    .fn  { color: #50fa7b; }
+    .info-box {
+      background: var(--logic-bg);
+      border-left: 4px solid var(--logic-blue);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: .93rem;
+    }
+    .warn-box {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin: 14px 0;
+      font-size: .93rem;
+    }
+    /* Exercícios */
+    .ex-card {
+      border: 1px solid #dee2e6;
+      border-radius: 12px;
+      padding: 1rem 1.2rem;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+      height: 100%;
+    }
+    .ex-num {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: .82rem;
+      flex-shrink: 0;
+    }
+    .lvl-1 { background: #d1e7dd; color: #0f5132; }
+    .lvl-2 { background: #fff3cd; color: #856404; }
+    .lvl-3 { background: #cfe2ff; color: #084298; }
+    .lvl-4 { background: #f8d7da; color: #842029; }
+    .ex-badge {
+      font-size: .68rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+    .output-box {
+      background: #f8f9fa;
+      border-left: 3px solid #a6e3a1;
+      border-radius: 0 6px 6px 0;
+      padding: 8px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: .82rem;
+      color: #2d2d2d;
+      margin-top: 6px;
+      white-space: pre;
+    }
+  </style>
 </head>
-<body class="bg-light">
-  <div class="container py-5">
-    <div class="card border-0 shadow-sm">
-      <div class="card-body p-4 p-md-5">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
-        <p class="text-muted small mb-2">Introdução à Lógica</p>
-        <h1 class="h3 fw-bold mb-3">Aula 08 - Loops e Funções</h1>
-        <p class="text-secondary mb-2">Este material traduz os pontos centrais do slide em linguagem direta e curta.</p>
-        <p class="text-secondary mb-4">Use este resumo como guia de estudo antes dos exercícios e para revisão da aula.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
-        <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
-        </ul>
-        <h2 class="h5 fw-bold mb-2">Atividades envolvidas</h2>
-        <p class="text-secondary mb-2">Exposição dialogada, demonstração prática no Colab e resolução guiada de exercícios.</p>
-        <h2 class="h5 fw-bold mb-2">Observações da aula</h2>
-        <p class="text-secondary mb-4">Registrar presença, participação e principais dúvidas para acompanhamento da turma.</p>
+<body>
+<div class="container py-5" style="max-width: 860px;">
+  <div class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
 
-                <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
-        <ol class="text-secondary mb-4">
-          <li>Resuma em 5 linhas os pontos centrais de <strong>Aula 08 - Loops e Funções</strong>.</li>
-          <li>Explique 3 conceitos-chave da aula com exemplo prático.</li>
-          <li>Descreva 2 erros comuns e como evitar cada um.</li>
-          <li>Monte um mini-caso de aplicação real do conteúdo.</li>
-          <li>Liste 3 critérios para validar se a atividade foi bem executada.</li>
-        </ol>
+      <!-- Cabeçalho -->
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+           alt="Senac Logo" height="50" class="mb-2">
+      <p class="text-muted small mb-1">Introdução à Lógica · Redes de Computadores · 06 Abr 2026</p>
+      <h1 class="h3 fw-bold mb-1">Aula 08 — Loops e Funções em Python</h1>
+      <p class="text-secondary mb-4">
+        Loops automatizam tarefas repetitivas; funções organizam o código em blocos reutilizáveis.
+        Juntos, formam a base de qualquer programa real.
+      </p>
 
-<div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-danger btn-sm" href="../slide_logicadeprogramacaoloopsefuncoes.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
-          <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
-        </div>
+      <!-- 1. while -->
+      <h2 class="section-title">1. O loop <code>while</code></h2>
+      <p class="text-secondary">Repete o bloco de código <strong>enquanto</strong> a condição for <code>True</code>.
+      A condição é verificada <em>antes</em> de cada execução.</p>
+      <pre><code><span class="kw">while</span> condição:
+    <span class="cm"># corpo — executado enquanto condição for True</span>
+    atualiza_variável  <span class="cm"># FUNDAMENTAL para evitar loop infinito</span></code></pre>
+
+      <pre><code>contagem = <span class="nm">5</span>
+<span class="kw">while</span> contagem > <span class="nm">0</span>:
+    <span class="bi">print</span>(<span class="st">f"Contagem: {contagem}"</span>)
+    contagem -= <span class="nm">1</span>        <span class="cm"># mesmo que: contagem = contagem - 1</span>
+<span class="bi">print</span>(<span class="st">"🚀 Lançamento!"</span>)</code></pre>
+
+      <div class="warn-box text-secondary">
+        <i class="fas fa-skull-crossbones text-danger me-1"></i>
+        <strong>Loop infinito:</strong> se a variável nunca for atualizada, a condição nunca se torna
+        <code>False</code> e o programa trava. Use <kbd>Ctrl+C</kbd> para interromper no terminal/Colab.
       </div>
+
+      <!-- 2. for -->
+      <h2 class="section-title">2. O loop <code>for</code></h2>
+      <p class="text-secondary">Percorre cada item de uma <strong>sequência</strong>: <code>range()</code>,
+      lista, string, tupla, etc.</p>
+
+      <pre><code><span class="cm"># range(inicio, fim, passo) — fim NÃO é incluído</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">6</span>):
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)        <span class="cm"># → 1 2 3 4 5</span>
+
+<span class="cm"># lista</span>
+frutas = [<span class="st">"Maçã"</span>, <span class="st">"Banana"</span>, <span class="st">"Uva"</span>]
+<span class="kw">for</span> fruta <span class="kw">in</span> frutas:
+    <span class="bi">print</span>(<span class="st">f"Tenho: {fruta}"</span>)
+
+<span class="cm"># string (letra por letra)</span>
+<span class="kw">for</span> letra <span class="kw">in</span> <span class="st">"Python"</span>:
+    <span class="bi">print</span>(letra, end=<span class="st">"-"</span>)     <span class="cm"># → P-y-t-h-o-n-</span></code></pre>
+
+      <!-- 3. break e continue -->
+      <h2 class="section-title">3. <code>break</code> e <code>continue</code></h2>
+
+      <pre><code><span class="cm"># break — sai do loop imediatamente</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">10</span>):
+    <span class="kw">if</span> i == <span class="nm">5</span>:
+        <span class="kw">break</span>
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)          <span class="cm"># → 0 1 2 3 4</span>
+
+<span class="cm"># continue — pula esta iteração</span>
+<span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">10</span>):
+    <span class="kw">if</span> i % <span class="nm">2</span> == <span class="nm">0</span>:
+        <span class="kw">continue</span>
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)          <span class="cm"># → 1 3 5 7 9</span></code></pre>
+
+      <!-- 4. funções -->
+      <h2 class="section-title">4. Funções com <code>def</code></h2>
+      <p class="text-secondary">Funções encapsulam um trecho de código com nome, entradas (parâmetros) e saída (<code>return</code>).</p>
+
+      <pre><code><span class="kw">def</span> <span class="fn">calcular_media</span>(n1, n2, n3):
+    soma = n1 + n2 + n3
+    media = soma / <span class="nm">3</span>
+    <span class="kw">return</span> media
+
+<span class="cm"># Chamando a função</span>
+resultado = <span class="fn">calcular_media</span>(<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">9</span>)
+<span class="bi">print</span>(<span class="st">f"Média: {resultado:.1f}"</span>)   <span class="cm"># → Média: 8.0</span></code></pre>
+
+      <div class="info-box text-secondary">
+        <i class="fas fa-lightbulb text-warning me-1"></i>
+        <strong>DRY — Don't Repeat Yourself:</strong> sempre que perceber que está copiando o mesmo bloco
+        de código, é hora de criar uma função.
+      </div>
+
+      <!-- 5. funções + loops -->
+      <h2 class="section-title">5. Funções + Loops juntos</h2>
+      <pre><code><span class="kw">def</span> <span class="fn">eh_par</span>(n):
+    <span class="kw">return</span> n % <span class="nm">2</span> == <span class="nm">0</span>
+
+numeros = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>, <span class="nm">4</span>, <span class="nm">5</span>, <span class="nm">6</span>]
+<span class="kw">for</span> n <span class="kw">in</span> numeros:
+    icone = <span class="st">"✅"</span> <span class="kw">if</span> <span class="fn">eh_par</span>(n) <span class="kw">else</span> <span class="st">"🔴"</span>
+    <span class="bi">print</span>(<span class="st">f"{icone} {n}"</span>)</code></pre>
+
+      <hr class="my-5">
+
+      <!-- ══════════ EXERCÍCIOS ══════════ -->
+      <h2 class="h4 fw-bold mb-1"><i class="fas fa-dumbbell text-primary me-2"></i>20 Exercícios</h2>
+      <p class="text-secondary mb-4">Abra o <strong>Google Colab</strong> e resolva cada exercício em uma célula separada.</p>
+
+      <!-- Nível 1 -->
+      <h3 class="h6 fw-bold text-success mb-3">
+        <span class="badge bg-success me-2">Nível 1</span>while básico
+      </h3>
+      <div class="row g-3 mb-4">
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-1">1</span>
+            <div>
+              <strong>Contador simples</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>while</code> para imprimir os números de 1 a 10, um por linha.</p>
+              <div class="output-box">1
+2
+3
+...
+10</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-1">2</span>
+            <div>
+              <strong>Pares com while</strong>
+              <p class="small text-muted mb-1 mt-1">Imprima os números pares de 2 a 20 usando <code>while</code>.</p>
+              <div class="output-box">2 4 6 8 10 12 14 16 18 20 </div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-1">3</span>
+            <div>
+              <strong>Contagem regressiva</strong>
+              <p class="small text-muted mb-1 mt-1">Conte de 10 a 0 (inclusivo) usando <code>while</code>. Ao chegar em 0, imprima <code>"🚀 Fim!"</code>.</p>
+              <div class="output-box">10 9 8 ... 1 0
+🚀 Fim!</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-1">4</span>
+            <div>
+              <strong>Soma acumulada</strong>
+              <p class="small text-muted mb-1 mt-1">Some todos os números de 1 a 100 usando <code>while</code>. Imprima o resultado final.</p>
+              <div class="output-box">Soma: 5050</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-12"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-1">5</span>
+            <div>
+              <strong>Dobrar até ultrapassar</strong>
+              <p class="small text-muted mb-1 mt-1">Comece com <code>valor = 1</code>. Use <code>while</code> para dobrar o valor repetidamente até ele ultrapassar 1000. Imprima cada valor e quantas iterações foram necessárias.</p>
+              <div class="output-box">1 → 2 → 4 → 8 → 16 → 32 → 64 → 128 → 256 → 512 → 1024
+Iterações: 10</div>
+            </div>
+          </div>
+        </div></div>
+
+      </div>
+
+      <!-- Nível 2 -->
+      <h3 class="h6 fw-bold text-warning mb-3">
+        <span class="badge bg-warning text-dark me-2">Nível 2</span>for básico
+      </h3>
+      <div class="row g-3 mb-4">
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-2">6</span>
+            <div>
+              <strong>Tabuada do 7</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> e <code>range()</code> para imprimir a tabuada do 7 de 1 a 10.</p>
+              <div class="output-box">7 x 1 = 7
+7 x 2 = 14
+...
+7 x 10 = 70</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-2">7</span>
+            <div>
+              <strong>Saudações personalizadas</strong>
+              <p class="small text-muted mb-1 mt-1">Dada a lista <code>["Ana", "Bruno", "Carlos", "Diana"]</code>, use <code>for</code> para imprimir <code>"Olá, [nome]! Seja bem-vindo(a)."</code> para cada pessoa.</p>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-2">8</span>
+            <div>
+              <strong>Soma de lista</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> para somar os elementos de <code>[15, 30, 45, 60, 75]</code> sem usar a função <code>sum()</code>.</p>
+              <div class="output-box">Soma total: 225</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-2">9</span>
+            <div>
+              <strong>Letras numeradas</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> para imprimir cada letra da palavra <code>"LOGICA"</code> com seu número de posição.</p>
+              <div class="output-box">1: L
+2: O
+3: G
+4: I
+5: C
+6: A</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-12"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-2">10</span>
+            <div>
+              <strong>Ímpares com break</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> com <code>range(1, 50)</code> e <code>continue</code> para imprimir apenas os números ímpares. Quando o número ímpar for maior que 15, use <code>break</code> para parar.</p>
+              <div class="output-box">1 3 5 7 9 11 13 15 </div>
+            </div>
+          </div>
+        </div></div>
+
+      </div>
+
+      <!-- Nível 3 -->
+      <h3 class="h6 fw-bold text-primary mb-3">
+        <span class="badge bg-primary me-2">Nível 3</span>funções + loops
+      </h3>
+      <div class="row g-3 mb-4">
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-3">11</span>
+            <div>
+              <strong>Tabuada completa</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> aninhado para imprimir a tabuada de todos os números de 1 a 5.</p>
+              <div class="output-box">--- Tabuada do 1 ---
+1 x 1 = 1  ...  1 x 10 = 10
+--- Tabuada do 2 ---
+2 x 1 = 2  ...  2 x 10 = 20
+...</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-3">12</span>
+            <div>
+              <strong>Função média da turma</strong>
+              <p class="small text-muted mb-1 mt-1">Crie a função <code>calcular_media(notas)</code> que recebe uma lista de notas e retorna a média. Teste com <code>[7, 8, 6, 9, 5]</code>.</p>
+              <div class="output-box">Média da turma: 7.0</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-3">13</span>
+            <div>
+              <strong>Classificador de notas</strong>
+              <p class="small text-muted mb-1 mt-1">Crie a função <code>situacao(nota)</code> que retorna <code>"Aprovado"</code>, <code>"Recuperação"</code> ou <code>"Reprovado"</code>. Use-a em um <code>for</code> para uma lista de notas.</p>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-3">14</span>
+            <div>
+              <strong>Função conta pares</strong>
+              <p class="small text-muted mb-1 mt-1">Crie <code>contar_pares(lista)</code> que usa <code>for</code> internamente e retorna quantos números pares há na lista.</p>
+              <div class="output-box">contar_pares([1,2,3,4,5,6]) → 3</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-12"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-3">15</span>
+            <div>
+              <strong>Divisível por X e Y</strong>
+              <p class="small text-muted mb-1 mt-1">Use <code>for</code> com <code>range(1, 200)</code> e <code>break</code> para encontrar o primeiro número divisível tanto por 7 quanto por 11. Imprima o número e em qual iteração foi encontrado.</p>
+              <div class="output-box">Encontrado: 77 (na iteração 77)</div>
+            </div>
+          </div>
+        </div></div>
+
+      </div>
+
+      <!-- Nível 4 -->
+      <h3 class="h6 fw-bold text-danger mb-3">
+        <span class="badge bg-danger me-2">Nível 4</span>desafios
+      </h3>
+      <div class="row g-3 mb-4">
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-4">16</span>
+            <div>
+              <strong>Fatorial</strong>
+              <p class="small text-muted mb-1 mt-1">Crie a função <code>fatorial(n)</code> que calcula n! usando um loop <code>while</code> ou <code>for</code> (sem recursão). Teste com 5, 7 e 10.</p>
+              <div class="output-box">5! = 120
+7! = 5040
+10! = 3628800</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-4">17</span>
+            <div>
+              <strong>Filtrar lista</strong>
+              <p class="small text-muted mb-1 mt-1">Crie <code>filtrar_pares(lista)</code> que retorna uma <em>nova</em> lista contendo apenas os elementos pares. Use <code>append()</code> para construir a lista de retorno.</p>
+              <div class="output-box">filtrar_pares([1,2,3,4,5,6,7,8]) → [2,4,6,8]</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-4">18</span>
+            <div>
+              <strong>Fibonacci</strong>
+              <p class="small text-muted mb-1 mt-1">Use um loop <code>while</code> para gerar a sequência de Fibonacci enquanto o valor for menor que 100. (Fibonacci: cada número é a soma dos dois anteriores, começando em 0 e 1.)</p>
+              <div class="output-box">0 1 1 2 3 5 8 13 21 34 55 89 </div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-6"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-4">19</span>
+            <div>
+              <strong>Conta vogais</strong>
+              <p class="small text-muted mb-1 mt-1">Crie <code>conta_vogais(texto)</code> que percorre a string com <code>for</code> e conta quantas vogais (a,e,i,o,u — maiúsculas e minúsculas) há no texto.</p>
+              <div class="output-box">conta_vogais("Introducao a Logica") → 9</div>
+            </div>
+          </div>
+        </div></div>
+
+        <div class="col-md-12"><div class="ex-card">
+          <div class="d-flex align-items-start gap-2 mb-2">
+            <span class="ex-num lvl-4">20</span>
+            <div>
+              <strong>Gerador de tabuada</strong>
+              <p class="small text-muted mb-1 mt-1">Crie a função <code>tabuada(n)</code> que recebe um número e imprime sua tabuada completa de 1 a 10 formatada. Depois chame <code>tabuada(n)</code> para todos os múltiplos de 3 de 3 a 12 usando um <code>for</code>.</p>
+              <div class="output-box">═══ Tabuada do 3 ═══
+3 × 1  =  3
+3 × 2  =  6
+...
+3 × 10 = 30
+═══ Tabuada do 6 ═══
+...</div>
+            </div>
+          </div>
+        </div></div>
+
+      </div>
+
+      <!-- Rodapé -->
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-info btn-sm text-white" href="../slide_logicadeprogramacaoloopsefuncoes.html">
+          <i class="fas fa-desktop me-1"></i> Ver slide
+        </a>
+        <a class="btn btn-outline-secondary btn-sm" href="../../home_logica.html">
+          <i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma
+        </a>
+      </div>
+
     </div>
   </div>
+</div>
 </body>
 </html>
