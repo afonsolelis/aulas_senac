@@ -1,136 +1,1009 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VCR e chamadas de API seguras - Qualidade de Software</title>
-    <meta name="keywords" content="VCR, testes de API, mocks, chamadas HTTP, qualidade de software, testes automatizados">
-    <!-- Bootstrap 5 CSS -->
+    <title>VCR, API Seguras e TestContainers - Qualidade de Software</title>
+    <meta name="keywords" content="VCR, TestContainers, API, mocks, Docker, testes, segurança, secrets, qualidade">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../../css/slides.css">
+    <style>
+        /* ── Utilitários gerais ── */
+        .terminal-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.82rem;
+            line-height: 1.7;
+            text-align: left;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: normal;
+            overflow-wrap: anywhere;
+        }
+        .terminal-box .c-green  { color: #6a9955; }
+        .terminal-box .c-yellow { color: #dcdcaa; }
+        .terminal-box .c-blue   { color: #569cd6; }
+        .terminal-box .c-red    { color: #f44747; }
+        .terminal-box .c-orange { color: #ce9178; }
+
+        .flow-card {
+            border-left: 4px solid #0d6efd;
+            background: #f8f9fa;
+            border-radius: 0 10px 10px 0;
+            padding: 0.9rem 1.1rem;
+            text-align: left;
+            height: 100%;
+        }
+        .metric-card {
+            border: 1px solid #dee2e6;
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 8px 24px rgba(0,0,0,.06);
+            padding: 1.25rem;
+            height: 100%;
+            text-align: left;
+        }
+        .agenda-card {
+            border: 1px solid #e9ecef;
+            border-radius: 16px;
+            background: #fff;
+            padding: 1.1rem 1.25rem;
+            text-align: left;
+            box-shadow: 0 6px 20px rgba(0,0,0,.04);
+            height: 100%;
+        }
+        .keyword {
+            display: inline-block;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            color: #495057;
+            border-radius: 999px;
+            padding: .3rem .8rem;
+            font-size: .82rem;
+            font-weight: 600;
+            margin: .15rem;
+        }
+        .compare-table th { background: #212529; color: #fff; }
+        .compare-table td, .compare-table th { padding: .75rem; vertical-align: top; }
+
+        /* ── Animação: Chamada de API flaky ── */
+        .api-diagram {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            min-height: 130px;
+        }
+        .api-box {
+            border-radius: 14px;
+            padding: .9rem 1.4rem;
+            font-weight: 700;
+            font-size: .95rem;
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+        }
+        .api-box.test    { background: #e8f4fd; border: 2px solid #0d6efd; color: #0d6efd; }
+        .api-box.server  { background: #fff3cd; border: 2px solid #ffc107; color: #856404; }
+        .api-box.db      { background: #d1e7dd; border: 2px solid #198754; color: #0f5132; }
+        .api-box.cassete { background: #f8d7da; border: 2px solid #dc3545; color: #842029; }
+
+        .arrow-anim {
+            position: relative;
+            height: 4px;
+            width: 80px;
+            background: #adb5bd;
+            margin: 0 -2px;
+            flex-shrink: 0;
+        }
+        .arrow-anim::after {
+            content: '';
+            position: absolute;
+            right: -1px;
+            top: -5px;
+            border: 6px solid transparent;
+            border-left-color: #adb5bd;
+        }
+        .packet {
+            position: absolute;
+            top: -8px;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .6rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .packet.req  { background: #0d6efd; animation: travel 2s infinite ease-in-out; }
+        .packet.resp { background: #198754; animation: travel-back 2s infinite ease-in-out 1s; }
+        @keyframes travel {
+            0%   { left:0;   opacity:0; }
+            10%  { opacity:1; }
+            90%  { opacity:1; }
+            100% { left:calc(100% - 20px); opacity:0; }
+        }
+        @keyframes travel-back {
+            0%   { left:calc(100% - 20px); opacity:0; }
+            10%  { opacity:1; }
+            90%  { opacity:1; }
+            100% { left:0; opacity:0; }
+        }
+        .flaky-badge {
+            animation: pulse-danger 1.5s infinite;
+        }
+        @keyframes pulse-danger {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.15); box-shadow: 0 0 12px rgba(220,53,69,.6); }
+        }
+
+        /* ── Animação VCR: cassete ── */
+        .vcr-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .vcr-phase {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #f8f9fa;
+            border-radius: 14px;
+            padding: .9rem 1.2rem;
+            border: 2px solid transparent;
+            transition: border .3s, box-shadow .3s;
+        }
+        .vcr-phase.record  { border-color: #dc3545; }
+        .vcr-phase.replay  { border-color: #198754; }
+        .vcr-phase .phase-label {
+            font-weight: 800;
+            font-size: .75rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            padding: .3rem .7rem;
+            border-radius: 999px;
+            color: #fff;
+        }
+        .vcr-phase.record .phase-label { background: #dc3545; }
+        .vcr-phase.replay .phase-label { background: #198754; }
+        .vcr-phase .steps {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            flex-wrap: wrap;
+        }
+        .vcr-step {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: .4rem .8rem;
+            font-size: .82rem;
+            font-weight: 600;
+            color: #495057;
+        }
+        .vcr-arrow {
+            color: #adb5bd;
+            font-size: 1.1rem;
+        }
+        .tape-reel {
+            display: inline-block;
+            animation: spin-reel 3s linear infinite;
+        }
+        @keyframes spin-reel {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── Animação TestContainers ── */
+        .tc-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: .8rem;
+        }
+        .tc-step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: .7rem 1rem;
+            border-radius: 12px;
+            border: 2px solid #dee2e6;
+            background: #fff;
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity .5s ease, transform .5s ease, border-color .3s;
+        }
+        .tc-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .tc-step.active { border-color: #0d6efd; background: #e8f4fd; }
+        .tc-step.done   { border-color: #198754; background: #d1e7dd; }
+        .tc-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: .9rem;
+            color: #fff;
+        }
+        .tc-icon.blue  { background: #0d6efd; }
+        .tc-icon.green { background: #198754; }
+        .tc-icon.red   { background: #dc3545; }
+        .tc-icon.gray  { background: #6c757d; }
+
+        /* Docker pulse */
+        .docker-pulse {
+            animation: docker-beat 2s ease-in-out infinite;
+        }
+        @keyframes docker-beat {
+            0%, 100% { transform: scale(1); }
+            50%       { transform: scale(1.1); }
+        }
+
+        /* ── Secret leak warning ── */
+        @keyframes warning-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        .warning-shake { animation: warning-shake .6s ease; }
+
+        /* ── Highlight diff ── */
+        .diff-add { background: #d1e7dd; color: #0f5132; padding: 0 2px; border-radius: 3px; }
+        .diff-del { background: #f8d7da; color: #842029; padding: 0 2px; border-radius: 3px; text-decoration: line-through; }
+    </style>
 </head>
+
 <body class="slide-body">
 
-    <div class="slide-container">
+<div class="slide-container">
 
-        <!-- Back Button -->
-        <a href="../home_qualidade.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-            <i class="fas fa-arrow-left me-2"></i> Voltar
-        </a>
+    <a href="../home_qualidade.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+        <i class="fas fa-arrow-left me-2"></i> Voltar
+    </a>
 
-        <!-- Slide 1: Cover -->
-        <div class="slide active" id="slide-1">
-            <div class="glass-cover text-center">
-                <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-                     alt="Senac Logo" height="80" class="mb-4">
-                <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software</h5>
-                <h1 class="display-3 fw-bold mb-4 text-black">VCR e chamadas de API seguras</h1>
-                <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-                <h3 class="fw-normal text-dark">Professor Afonso</h3>
-                <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">2026.1</span>
+    <!-- ═══════════════════════════ SLIDE 1 – CAPA ════════════════════════════ -->
+    <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+                 alt="Senac Logo" height="70" class="mb-4">
+            <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software · Aula 08</h5>
+            <h1 class="display-4 fw-bold mb-3 text-black">
+                <i class="fas fa-tape text-danger me-2"></i>VCR, APIs Seguras
+                <br><span class="text-primary">&amp; TestContainers</span>
+            </h1>
+            <p class="lead text-muted mb-4">Testes estáveis sem depender de serviços externos instáveis</p>
+            <div class="slide-keywords mt-2">
+                <span class="keyword"><i class="fas fa-tape me-1 text-danger"></i>VCR</span>
+                <span class="keyword"><i class="fas fa-lock me-1 text-warning"></i>Secrets</span>
+                <span class="keyword"><i class="fab fa-docker me-1 text-primary"></i>TestContainers</span>
+                <span class="keyword"><i class="fas fa-network-wired me-1 text-success"></i>HTTP Mock</span>
+                <span class="keyword"><i class="fas fa-database me-1 text-info"></i>Integração</span>
             </div>
+            <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+            <h3 class="fw-normal text-dark">Professor Afonso</h3>
+            <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">07 Abr · 2026.1</span>
         </div>
-
-        <!-- Slide 2: Agenda -->
-        <div class="slide" id="slide-2">
-            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
-            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
-                <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle"><i class="fas fa-check text-success me-3"></i> VCR, mocks e segurança em chamadas de API</li>
-            </ul>
-        </div>
-
-        <!-- Slide 3: Content 1 -->
-        <div class="slide" id="slide-3">
-            <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Conceitos Iniciais</h2>
-                <p class="lead text-dark mb-5">Gravação/replay de requisições e proteção de credenciais.</p>
-                <div class="row g-4">
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-lightbulb fa-3x text-warning mb-3"></i>
-                        <h4 class="text-dark">VCR</h4>
-                        <p class="text-secondary small">Captura e reuso de requisições para testes consistentes.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-cogs fa-3x text-info mb-3"></i>
-                        <h4 class="text-dark">Mocks</h4>
-                        <p class="text-secondary small">Stubs e simulações para cenários controlados.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="p-4 border border-dark-subtle rounded-4 bg-white shadow-sm">
-                            <i class="fas fa-chart-line fa-3x text-success mb-3"></i>
-                        <h4 class="text-dark">Segurança</h4>
-                        <p class="text-secondary small">Secrets, tokens e ambientes isolados.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 4: Content 2 -->
-        <div class="slide" id="slide-4">
-             <div class="text-center slide-content">
-                <h2 class="display-5 fw-bold mb-4 text-dark">Aprofundamento</h2>
-                <p class="fs-4 text-secondary">Boas práticas de gravação, sanitização e versionamento.</p>
-                <div class="card border-0 shadow-lg mt-5 mx-auto" style="max-width: 800px;">
-                    <div class="card-body p-5">
-                         <blockquote class="blockquote mb-0">
-                          <p class="text-dark">"Teste confiável evita dependência externa instável."</p>
-                          <footer class="blockquote-footer mt-2">Princípio de testes</footer>
-                        </blockquote>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Conclusion -->
-        <div class="slide" id="slide-5">
-             <div class="text-center slide-content">
-                <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
-                <p class="lead text-dark mb-5">Obrigado pela atenção!</p>
-                <div class="d-flex justify-content-center gap-3">
-                    <a href="#" class="btn btn-dark btn-lg rounded-pill px-5">Recursos Extras</a>
-                    <a href="../home_qualidade.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
-                </div>
-            </div>
-        </div>
-
     </div>
 
-    <!-- Footer Navigation -->
-    <footer class="slide-footer">
-        <div class="slide-controls">
-            <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-            <div class="progress mx-3" style="width: 100px; height: 6px;">
-                <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+    <!-- ═══════════════════════════ SLIDE 2 – AGENDA ══════════════════════════ -->
+    <div class="slide" id="slide-2">
+        <div class="slide-content text-center">
+            <h1 class="display-4 fw-bold mb-4 text-dark">Agenda</h1>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-danger rounded-pill">1</span>
+                            <i class="fas fa-exclamation-triangle text-warning"></i>
+                        </div>
+                        <strong>O problema</strong>
+                        <p class="small text-muted mb-0 mt-1">Testes que dependem de API externa quebram de forma imprevisível</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-danger rounded-pill">2</span>
+                            <i class="fas fa-tape text-danger"></i>
+                        </div>
+                        <strong>VCR</strong>
+                        <p class="small text-muted mb-0 mt-1">Gravar e reproduzir chamadas HTTP para testes determinísticos</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-danger rounded-pill">3</span>
+                            <i class="fas fa-lock text-warning"></i>
+                        </div>
+                        <strong>APIs Seguras</strong>
+                        <p class="small text-muted mb-0 mt-1">Secrets, .env, variáveis de CI e sanitização de cassetes</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-primary rounded-pill">4</span>
+                            <i class="fab fa-docker text-primary"></i>
+                        </div>
+                        <strong>TestContainers</strong>
+                        <p class="small text-muted mb-0 mt-1">Sobe um banco/serviço real em Docker durante o teste</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-primary rounded-pill">5</span>
+                            <i class="fas fa-balance-scale text-info"></i>
+                        </div>
+                        <strong>VCR vs TestContainers</strong>
+                        <p class="small text-muted mb-0 mt-1">Quando usar cada abordagem — tradeoffs</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="agenda-card">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span class="badge bg-success rounded-pill">6</span>
+                            <i class="fas fa-code text-success"></i>
+                        </div>
+                        <strong>Código na prática</strong>
+                        <p class="small text-muted mb-0 mt-1">Exemplos JavaScript prontos para o projeto</p>
+                    </div>
+                </div>
             </div>
-            <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 1</span>
-            <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-            <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
         </div>
+    </div>
 
-        <div class="text-center text-muted small d-none d-md-block">
-            Qualidade de Software - VCR e chamadas de API seguras.
+    <!-- ═══════════════ SLIDE 3 – O PROBLEMA: API FLAKY ══════════════════════ -->
+    <div class="slide" id="slide-3">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-2 text-dark">O problema com APIs externas nos testes</h2>
+            <p class="text-muted mb-4">O teste chama a API real — e ela pode falhar por <em>n</em> razões alheias ao seu código</p>
+
+            <!-- Diagrama animado -->
+            <div class="api-diagram mb-4 justify-content-center flex-wrap gap-2">
+                <div class="api-box test"><i class="fas fa-vial me-1"></i> Teste</div>
+                <div class="arrow-anim" style="width:70px">
+                    <div class="packet req">→</div>
+                    <div class="packet resp">←</div>
+                </div>
+                <div class="api-box server"><i class="fas fa-globe me-1"></i> API Externa</div>
+                <div class="arrow-anim" style="width:70px">
+                    <div class="packet req">→</div>
+                    <div class="packet resp">←</div>
+                </div>
+                <div class="api-box db"><i class="fas fa-database me-1"></i> Banco Externo</div>
+            </div>
+
+            <div class="row g-3 mb-3">
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger bg-opacity-10 border border-danger-subtle rounded-3 flaky-badge">
+                        <i class="fas fa-wifi-slash text-danger mb-2 d-block fa-lg"></i>
+                        <small class="fw-bold text-danger">Sem internet no CI</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger bg-opacity-10 border border-danger-subtle rounded-3" style="animation: pulse-danger 1.5s infinite .4s">
+                        <i class="fas fa-tachometer-alt text-danger mb-2 d-block fa-lg"></i>
+                        <small class="fw-bold text-danger">Rate limit atingido</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger bg-opacity-10 border border-danger-subtle rounded-3" style="animation: pulse-danger 1.5s infinite .8s">
+                        <i class="fas fa-tools text-danger mb-2 d-block fa-lg"></i>
+                        <small class="fw-bold text-danger">API em manutenção</small>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="p-3 bg-danger bg-opacity-10 border border-danger-subtle rounded-3" style="animation: pulse-danger 1.5s infinite 1.2s">
+                        <i class="fas fa-dollar-sign text-danger mb-2 d-block fa-lg"></i>
+                        <small class="fw-bold text-danger">Custo por chamada</small>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-danger mb-0 fs-6 text-start">
+                <i class="fas fa-bug me-2"></i>
+                Testes <strong>flaky</strong> — que às vezes passam, às vezes falham sem mudança de código — destroem a confiança no pipeline.
+            </div>
         </div>
+    </div>
 
-        <a href="material/material_aula10-vcr-api-seguras.html" class="btn btn-outline-primary btn-sm rounded-pill">
-            <i class="fas fa-book me-1"></i> Ver material escrito
-        </a>
+    <!-- ═══════════════════ SLIDE 4 – O QUE É VCR ════════════════════════════ -->
+    <div class="slide" id="slide-4">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-3 text-dark">
+                <i class="fas fa-tape text-danger me-2"></i>O que é VCR?
+            </h2>
+            <p class="lead text-muted mb-4">Inspirado no vídeo-cassete: <strong>grava</strong> a resposta real uma vez, <strong>reproduz</strong> nas próximas execuções.</p>
 
-        <a href="../../index.html">
-            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-                alt="Senac" height="30" class="opacity-75">
-        </a>
-    </footer>
+            <div class="vcr-diagram text-start mx-auto" style="max-width:800px">
+                <div class="vcr-phase record">
+                    <span class="phase-label"><i class="fas fa-circle me-1"></i>Gravar</span>
+                    <div class="steps">
+                        <span class="vcr-step"><i class="fas fa-vial me-1 text-primary"></i>Teste roda</span>
+                        <i class="fas fa-arrow-right vcr-arrow"></i>
+                        <span class="vcr-step"><i class="fas fa-globe me-1 text-warning"></i>Chama API real</span>
+                        <i class="fas fa-arrow-right vcr-arrow"></i>
+                        <span class="vcr-step"><i class="fas fa-save me-1 text-danger"></i>Salva em cassete (.json/.yaml)</span>
+                    </div>
+                </div>
+                <div class="vcr-phase replay">
+                    <span class="phase-label"><i class="fas fa-play me-1"></i>Reproduzir</span>
+                    <div class="steps">
+                        <span class="vcr-step"><i class="fas fa-vial me-1 text-primary"></i>Teste roda</span>
+                        <i class="fas fa-arrow-right vcr-arrow"></i>
+                        <span class="vcr-step"><i class="fas fa-tape me-1 text-danger"></i>Lê cassete local</span>
+                        <i class="fas fa-arrow-right vcr-arrow"></i>
+                        <span class="vcr-step"><i class="fas fa-check-circle me-1 text-success"></i>Resposta instantânea</span>
+                    </div>
+                </div>
+            </div>
 
-    <script src="../../js/standard_slides.js"></script>
+            <div class="row g-3 mt-3">
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fas fa-bolt fa-2x text-warning mb-2 d-block"></i>
+                        <strong>Rápido</strong>
+                        <p class="small text-muted mb-0">Sem latência de rede no replay</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fas fa-shield-alt fa-2x text-success mb-2 d-block"></i>
+                        <strong>Determinístico</strong>
+                        <p class="small text-muted mb-0">Sempre a mesma resposta</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fas fa-wifi-slash fa-2x text-primary mb-2 d-block"></i>
+                        <strong>Offline-ready</strong>
+                        <p class="small text-muted mb-0">CI sem acesso à internet funciona</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <!-- ══════════════════ SLIDE 5 – VCR NO JAVA (WireMock) ════════════════ -->
+    <div class="slide" id="slide-5">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-4 text-dark">VCR em Java: WireMock</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <h5 class="fw-bold text-danger mb-2"><i class="fas fa-plug me-1"></i>Stub programático (JUnit 5)</h5>
+                    <div class="terminal-box">
+<span class="c-blue">import</span> com.github.tomakehurst.wiremock.junit5.*;
+<span class="c-blue">import</span> <span class="c-blue">static</span> com.github.tomakehurst.wiremock.client.WireMock.*;
+
+<span class="c-yellow">@WireMockTest</span>(httpPort = <span class="c-blue">8089</span>)
+<span class="c-blue">class</span> <span class="c-yellow">WeatherClientTest</span> {
+
+  <span class="c-yellow">@Test</span>
+  <span class="c-blue">void</span> <span class="c-yellow">retornaTemperatura</span>() <span class="c-blue">throws</span> Exception {
+    <span class="c-green">// "cassete" programático</span>
+    <span class="c-yellow">stubFor</span>(<span class="c-yellow">get</span>(<span class="c-orange">"/current?city=SP"</span>)
+      .<span class="c-yellow">willReturn</span>(<span class="c-yellow">okJson</span>(
+        <span class="c-orange">"{\"temp\":28,\"desc\":\"Ensolarado\"}"</span>
+      )));
+
+    WeatherClient client =
+      <span class="c-blue">new</span> <span class="c-yellow">WeatherClient</span>(<span class="c-orange">"http://localhost:8089"</span>);
+
+    WeatherData data = client.<span class="c-yellow">fetchWeather</span>(<span class="c-orange">"SP"</span>);
+    <span class="c-yellow">assertEquals</span>(<span class="c-blue">28</span>, data.<span class="c-yellow">getTemp</span>());
+  }
+}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h5 class="fw-bold text-primary mb-2"><i class="fas fa-file-code me-1"></i>Stub declarativo (arquivo JSON)</h5>
+                    <div class="terminal-box">
+<span class="c-green">// src/test/resources/mappings/weather-sp.json</span>
+{
+  <span class="c-yellow">"request"</span>: {
+    <span class="c-yellow">"method"</span>: <span class="c-orange">"GET"</span>,
+    <span class="c-yellow">"url"</span>: <span class="c-orange">"/current?city=SP"</span>
+  },
+  <span class="c-yellow">"response"</span>: {
+    <span class="c-yellow">"status"</span>: <span class="c-blue">200</span>,
+    <span class="c-yellow">"headers"</span>: {
+      <span class="c-yellow">"Content-Type"</span>: <span class="c-orange">"application/json"</span>
+    },
+    <span class="c-yellow">"bodyFileName"</span>: <span class="c-orange">"weather-sp-response.json"</span>
+  }
+}
+<span class="c-green">// WireMock carrega o arquivo automaticamente</span>
+<span class="c-green">// no @WireMockTest — funciona como "replay"</span>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-info mt-3 mb-0 text-start fs-6">
+                <i class="fas fa-lightbulb me-2"></i>
+                <strong>WireMock</strong> é o padrão de mercado para Java. Dependency: <code>com.github.tomakehurst:wiremock-jre8:3.x</code> (ou <code>wiremock</code> no Java 11+).
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════ SLIDE 6 – CASSETE E SANITIZAÇÃO ═════════════════ -->
+    <div class="slide" id="slide-6">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-3 text-dark">
+                <i class="fas fa-shield-alt text-warning me-2"></i>Sanitização do cassete — nunca vaze secrets
+            </h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <h6 class="text-danger fw-bold mb-2"><i class="fas fa-times-circle me-1"></i>Mapping perigoso (NUNCA commitar)</h6>
+                    <div class="terminal-box">
+<span class="c-green">// mappings/get-user.json — PERIGO</span>
+{
+  <span class="c-yellow">"request"</span>: {
+    <span class="c-yellow">"method"</span>: <span class="c-orange">"GET"</span>,
+    <span class="c-yellow">"url"</span>: <span class="c-orange">"/api/users/1"</span>,
+    <span class="c-yellow">"headers"</span>: {
+      <span class="c-yellow">"Authorization"</span>: {
+        <span class="c-yellow">"equalTo"</span>:
+          <span class="c-red">"Bearer sk-prod-SECRET123"</span>
+      }
+    }
+  },
+  <span class="c-yellow">"response"</span>: { <span class="c-yellow">"status"</span>: <span class="c-blue">200</span> }
+}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="text-success fw-bold mb-2"><i class="fas fa-check-circle me-1"></i>Mapping seguro (regex/placeholder)</h6>
+                    <div class="terminal-box">
+<span class="c-green">// mappings/get-user.json — SEGURO</span>
+{
+  <span class="c-yellow">"request"</span>: {
+    <span class="c-yellow">"method"</span>: <span class="c-orange">"GET"</span>,
+    <span class="c-yellow">"url"</span>: <span class="c-orange">"/api/users/1"</span>,
+    <span class="c-yellow">"headers"</span>: {
+      <span class="c-yellow">"Authorization"</span>: {
+        <span class="c-yellow">"matches"</span>: <span class="c-orange">"Bearer .*"</span>
+      }
+    }
+  },
+  <span class="c-yellow">"response"</span>: { <span class="c-yellow">"status"</span>: <span class="c-blue">200</span> }
+}
+<span class="c-green">// Token real nunca gravado</span>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-warning mt-3 mb-0 text-start fs-6">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Adicione <code>src/test/resources/mappings/</code> ao <code>.gitignore</code> enquanto gravar responses reais.
+                Mappings SÃO fixtures — trate como código.
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SLIDE 7 – SEGURANÇA: SECRETS E .ENV ══════════════ -->
+    <div class="slide" id="slide-7">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-3 text-dark">
+                <i class="fas fa-lock text-warning me-2"></i>Chamadas de API seguras: onde ficam os secrets?
+            </h2>
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <div class="mb-2 fs-3">🖥️</div>
+                        <h6 class="fw-bold text-dark">Desenvolvimento local</h6>
+                        <code class="small">.env</code> + <code class="small">.gitignore</code>
+                        <p class="small text-muted mt-2 mb-0">Carregado via <code>dotenv</code>. <strong>NUNCA</strong> comitado.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <div class="mb-2 fs-3">⚙️</div>
+                        <h6 class="fw-bold text-dark">CI/CD (GitHub Actions)</h6>
+                        <code class="small">Settings → Secrets</code>
+                        <p class="small text-muted mt-2 mb-0">Variáveis injetadas no runner via <code>$&#123;&#123; secrets.MY_KEY &#125;&#125;</code>.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <div class="mb-2 fs-3">☁️</div>
+                        <h6 class="fw-bold text-dark">Produção</h6>
+                        <code class="small">Vault / Key Manager</code>
+                        <p class="small text-muted mt-2 mb-0">AWS Secrets Manager, Azure Key Vault, HashiCorp Vault.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="terminal-box text-start mx-auto" style="max-width:750px">
+<span class="c-green"># application.properties (local — no .gitignore)</span>
+<span class="c-yellow">api.key</span>=${API_KEY}
+<span class="c-yellow">spring.datasource.url</span>=${DB_URL:jdbc:postgresql://localhost:5432/dev}
+
+<span class="c-green">// Spring Boot — injeta via @Value</span>
+<span class="c-yellow">@Value</span>(<span class="c-orange">"${api.key}"</span>)
+<span class="c-blue">private</span> String apiKey;
+
+<span class="c-green">// Ou via System.getenv() (sem Spring)</span>
+String apiKey = System.<span class="c-yellow">getenv</span>(<span class="c-orange">"API_KEY"</span>);
+HttpRequest req = HttpRequest.<span class="c-yellow">newBuilder</span>()
+  .<span class="c-yellow">header</span>(<span class="c-orange">"Authorization"</span>, <span class="c-orange">"Bearer "</span> + apiKey)
+  .<span class="c-yellow">build</span>();
+
+<span class="c-green"># GitHub Actions</span>
+<span class="c-yellow">env</span>:
+  <span class="c-yellow">API_KEY</span>: <span class="c-orange">${{ secrets.API_KEY }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SLIDE 8 – O QUE É TESTCONTAINERS ═════════════════ -->
+    <div class="slide" id="slide-8">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-3 text-dark">
+                <i class="fab fa-docker text-primary me-2 docker-pulse d-inline-block"></i>O que é TestContainers?
+            </h2>
+            <p class="lead text-muted mb-4">Em vez de <em>simular</em> o banco, você roda um banco <strong>real</strong> em Docker — e o destrói ao final do teste.</p>
+
+            <div class="tc-diagram text-start mx-auto mb-4" id="tc-anim" style="max-width:750px">
+                <div class="tc-step" id="tcs-1">
+                    <div class="tc-icon blue"><i class="fas fa-play"></i></div>
+                    <div><strong>1. Teste inicia</strong> <span class="text-muted small">— Jest/Vitest começa a rodar</span></div>
+                </div>
+                <div class="tc-step" id="tcs-2">
+                    <div class="tc-icon blue"><i class="fab fa-docker"></i></div>
+                    <div><strong>2. TestContainers faz <code>docker pull</code></strong> <span class="text-muted small">— baixa imagem se necessário</span></div>
+                </div>
+                <div class="tc-step" id="tcs-3">
+                    <div class="tc-icon blue"><i class="fas fa-rocket"></i></div>
+                    <div><strong>3. Container sobe</strong> <span class="text-muted small">— Postgres, Redis, MongoDB real</span></div>
+                </div>
+                <div class="tc-step" id="tcs-4">
+                    <div class="tc-icon green"><i class="fas fa-vial"></i></div>
+                    <div><strong>4. Testes rodam</strong> <span class="text-muted small">— contra o serviço real na porta aleatória</span></div>
+                </div>
+                <div class="tc-step" id="tcs-5">
+                    <div class="tc-icon red"><i class="fas fa-trash"></i></div>
+                    <div><strong>5. Container é destruído</strong> <span class="text-muted small">— sem rastros, sem estado residual</span></div>
+                </div>
+            </div>
+            <div class="alert alert-primary text-start fs-6 mb-0">
+                <i class="fas fa-star me-2"></i>
+                Diferente de mock, o TestContainers valida <strong>o comportamento real</strong> do driver, migrations e queries — não apenas que você chamou a função certa.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════ SLIDE 9 – CÓDIGO TESTCONTAINERS (JAVA) ══════════════ -->
+    <div class="slide" id="slide-9">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-4 text-dark">TestContainers em Java</h2>
+            <div class="row g-4 align-items-start">
+                <div class="col-md-6">
+                    <h6 class="fw-bold text-primary mb-2">Setup com JUnit 5 + @Testcontainers</h6>
+                    <div class="terminal-box">
+<span class="c-blue">import</span> org.testcontainers.containers.PostgreSQLContainer;
+<span class="c-blue">import</span> org.testcontainers.junit.jupiter.*;
+<span class="c-blue">import</span> java.sql.*;
+
+<span class="c-yellow">@Testcontainers</span>
+<span class="c-blue">class</span> <span class="c-yellow">UserRepositoryTest</span> {
+
+  <span class="c-yellow">@Container</span>
+  <span class="c-blue">static</span> PostgreSQLContainer&lt;?&gt; db =
+    <span class="c-blue">new</span> <span class="c-yellow">PostgreSQLContainer</span>&lt;&gt;(<span class="c-orange">"postgres:16"</span>)
+      .<span class="c-yellow">withDatabaseName</span>(<span class="c-orange">"testdb"</span>)
+      .<span class="c-yellow">withUsername</span>(<span class="c-orange">"test"</span>)
+      .<span class="c-yellow">withPassword</span>(<span class="c-orange">"test"</span>);
+
+  <span class="c-yellow">@BeforeAll</span>
+  <span class="c-blue">static void</span> <span class="c-yellow">setUp</span>() {
+    <span class="c-green">// roda Flyway/Liquibase</span>
+    <span class="c-yellow">runMigrations</span>(db.<span class="c-yellow">getJdbcUrl</span>(),
+      db.<span class="c-yellow">getUsername</span>(), db.<span class="c-yellow">getPassword</span>());
+  }
+}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6 class="fw-bold text-success mb-2">Teste usando o banco real</h6>
+                    <div class="terminal-box">
+<span class="c-yellow">@Test</span>
+<span class="c-blue">void</span> <span class="c-yellow">salvaEBuscaUsuario</span>() <span class="c-blue">throws</span> Exception {
+  UserRepository repo =
+    <span class="c-blue">new</span> <span class="c-yellow">UserRepository</span>(db.<span class="c-yellow">getJdbcUrl</span>(),
+      db.<span class="c-yellow">getUsername</span>(), db.<span class="c-yellow">getPassword</span>());
+
+  repo.<span class="c-yellow">save</span>(<span class="c-blue">new</span> <span class="c-yellow">User</span>(<span class="c-orange">"Ana"</span>, <span class="c-orange">"ana@ex.com"</span>));
+
+  User found =
+    repo.<span class="c-yellow">findByEmail</span>(<span class="c-orange">"ana@ex.com"</span>);
+
+  <span class="c-yellow">assertEquals</span>(<span class="c-orange">"Ana"</span>, found.<span class="c-yellow">getName</span>());
+}
+<span class="c-green">// Container sobe 1x por classe (static)</span>
+<span class="c-green">// e é destruído pelo JUnit ao final</span>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-success mt-3 mb-0 text-start fs-6">
+                <i class="fas fa-check-circle me-2"></i>
+                Maven: <code>org.testcontainers:postgresql:1.20.x</code> + <code>org.testcontainers:junit-jupiter:1.20.x</code>. Docker obrigatório no CI.
+            </div>
+        </div>
+    </div>
+
+    <!-- ════════════════════ SLIDE 10 – VCR vs TESTCONTAINERS ════════════════ -->
+    <div class="slide" id="slide-10">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-4 text-dark">Quando usar VCR e quando usar TestContainers?</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered compare-table bg-white shadow-sm">
+                    <thead>
+                        <tr>
+                            <th>Critério</th>
+                            <th><i class="fas fa-tape me-1"></i>VCR / HTTP Mock</th>
+                            <th><i class="fab fa-docker me-1"></i>TestContainers</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Alvo do teste</strong></td>
+                            <td>APIs HTTP externas (REST, GraphQL)</td>
+                            <td>Bancos, filas, cache (Postgres, Redis, Kafka…)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Velocidade</strong></td>
+                            <td><span class="badge bg-success">Muito rápido</span> — sem Docker</td>
+                            <td><span class="badge bg-warning text-dark">Mais lento</span> — pull + start</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Fidelidade</strong></td>
+                            <td>Alta para payload HTTP; baixa para lógica do serviço</td>
+                            <td><span class="badge bg-success">Alta</span> — serviço real</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Requer Docker</strong></td>
+                            <td>Não</td>
+                            <td>Sim</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ideal para</strong></td>
+                            <td>Testes de unidade/integração de chamadas HTTP</td>
+                            <td>Testes de integração com persistência</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Manutenção</strong></td>
+                            <td>Re-gravar cassete ao mudar o contrato</td>
+                            <td>Baixa — imagem oficial sempre fiel</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="alert alert-info mt-3 mb-0 text-start fs-6">
+                <i class="fas fa-lightbulb me-2"></i>
+                Na prática, use <strong>VCR/msw</strong> para testes de unidade rápidos e <strong>TestContainers</strong> para a suite de integração que valida o comportamento completo.
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SLIDE 11 – PIPELINE COMPLETA ════════════════════ -->
+    <div class="slide" id="slide-11">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-4 text-dark">Pipeline de qualidade completa</h2>
+            <div class="terminal-box mx-auto mb-4 text-start" style="max-width:900px">
+<span class="c-green">## .github/workflows/quality.yml</span>
+<span class="c-yellow">jobs</span>:
+  <span class="c-yellow">unit</span>:                          <span class="c-green"># rápido — sem Docker</span>
+    <span class="c-yellow">runs-on</span>: ubuntu-latest
+    <span class="c-yellow">steps</span>:
+      - <span class="c-yellow">uses</span>: actions/checkout@v4
+      - <span class="c-yellow">uses</span>: actions/setup-java@v4
+        <span class="c-yellow">with</span>: { java-version: <span class="c-orange">'21'</span>, distribution: temurin, cache: maven }
+      - <span class="c-yellow">run</span>: <span class="c-orange">mvn test -Dtest="**/*UnitTest"</span>
+      <span class="c-green"># WireMock intercepta HTTP — sem rede real</span>
+
+  <span class="c-yellow">integration</span>:                   <span class="c-green"># mais lento — com Docker</span>
+    <span class="c-yellow">runs-on</span>: ubuntu-latest       <span class="c-green"># ubuntu-latest já tem Docker</span>
+    <span class="c-yellow">steps</span>:
+      - <span class="c-yellow">uses</span>: actions/checkout@v4
+      - <span class="c-yellow">uses</span>: actions/setup-java@v4
+        <span class="c-yellow">with</span>: { java-version: <span class="c-orange">'21'</span>, distribution: temurin, cache: maven }
+      - <span class="c-yellow">run</span>: <span class="c-orange">mvn test -Dtest="**/*IntegrationTest"</span>
+      <span class="c-green"># @Testcontainers sobe Postgres/Redis via Docker</span>
+
+  <span class="c-yellow">sonar</span>:
+    <span class="c-yellow">needs</span>: [unit, integration]
+    <span class="c-yellow">steps</span>:
+      - <span class="c-yellow">uses</span>: SonarSource/sonarcloud-github-action@v2
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="flow-card"><strong>unit</strong> — roda em &lt;30s, bloqueia PR rápido</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="flow-card"><strong>integration</strong> — valida comportamento real com dados reais</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="flow-card"><strong>sonar</strong> — quality gate só abre quando ambos passam</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SLIDE 12 – ANTI-PATTERNS ═════════════════════════ -->
+    <div class="slide" id="slide-12">
+        <div class="slide-content text-center">
+            <h2 class="display-5 fw-bold mb-4 text-dark">Anti-patterns para evitar</h2>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="metric-card h-100">
+                        <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>Cassete com secret</h6>
+                        <p class="text-secondary small mb-0">Nunca comitar arquivo de cassete que contém token, senha ou chave de API. Use a etapa de sanitização obrigatoriamente.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="metric-card h-100">
+                        <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>Cassete eterno</h6>
+                        <p class="text-secondary small mb-0">Se a API mudou o contrato e você não regravou, o teste passa localmente mas falha em produção. Agende re-gravação periódica.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="metric-card h-100">
+                        <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>TestContainer em teste de unidade</h6>
+                        <p class="text-secondary small mb-0">Container em teste de unidade é lento demais. Reserve-o para a suite de integração.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="metric-card h-100">
+                        <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>Container compartilhado entre testes</h6>
+                        <p class="text-secondary small mb-0">Estado residual entre testes causa flakiness. Use <code>beforeEach</code> para limpar tabelas ou suba container por suite.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-dark mt-3 mb-0 text-start fs-6">
+                <i class="fas fa-book me-2"></i>
+                Regra de ouro: <em>"testes não devem depender de ordem de execução nem de estado externo persistente."</em>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ SLIDE 13 – RESUMO ═════════════════════════════════ -->
+    <div class="slide" id="slide-13">
+        <div class="slide-content text-center">
+            <h1 class="display-4 fw-bold mb-4 text-dark">Resumo da Aula</h1>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fas fa-tape fa-3x text-danger mb-3 d-block"></i>
+                        <h5 class="fw-bold text-dark">VCR</h5>
+                        <p class="text-secondary small mb-0">Grava chamadas HTTP reais e reproduz offline. Testes rápidos e determinísticos.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fas fa-lock fa-3x text-warning mb-3 d-block"></i>
+                        <h5 class="fw-bold text-dark">Secrets</h5>
+                        <p class="text-secondary small mb-0">.env local → CI Secrets → Vault em prod. Sanitize cassetes antes de commitar.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="metric-card text-center">
+                        <i class="fab fa-docker fa-3x text-primary mb-3 d-block docker-pulse"></i>
+                        <h5 class="fw-bold text-dark">TestContainers</h5>
+                        <p class="text-secondary small mb-0">Sobe serviço real em Docker por suite. Alta fidelidade sem infraestrutura permanente.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="alert alert-light border mt-4 fs-6 text-start">
+                <i class="fas fa-quote-left me-2 text-muted"></i>
+                VCR resolve a <em>instabilidade de rede</em>; TestContainers resolve a <em>fidelidade do serviço</em>; secrets bem guardados resolvem a <em>segurança</em>. Os três juntos formam uma suite de integração profissional.
+                <i class="fas fa-quote-right ms-2 text-muted"></i>
+            </div>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <a href="material/material_aula10-vcr-api-seguras.html" class="btn btn-primary rounded-pill px-4">
+                    <i class="fas fa-book me-1"></i> Material escrito
+                </a>
+                <a href="../home_qualidade.html" class="btn btn-outline-dark rounded-pill px-4">
+                    <i class="fas fa-arrow-left me-1"></i> Cronograma
+                </a>
+            </div>
+        </div>
+    </div>
+
+</div><!-- /slide-container -->
+
+<!-- ─── Footer ─── -->
+<footer class="slide-footer">
+    <div class="slide-controls">
+        <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px;">
+            <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+        </div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 13</span>
+        <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+        <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="text-center text-muted small d-none d-md-block">
+        Qualidade de Software · Aula 08 · 07 Abr 2026
+    </div>
+
+    <a href="material/material_aula10-vcr-api-seguras.html" class="btn btn-outline-primary btn-sm rounded-pill">
+        <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+
+    <a href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+             alt="Senac" height="30" class="opacity-75">
+    </a>
+</footer>
+
+<script src="../../js/standard_slides.js"></script>
+<script>
+    /* Remove whitespace inicial/final causado pela indentação HTML nos blocos de código */
+    document.querySelectorAll('.terminal-box').forEach(function(el) {
+        el.innerHTML = el.innerHTML.replace(/^\n[\s]*/, '').replace(/\n[\s]*$/, '');
+    });
+</script>
+<script>
+    /* ── Animação TestContainers (slide 8) ── */
+    function runTcAnimation() {
+        const steps = [1,2,3,4,5];
+        steps.forEach(i => {
+            const el = document.getElementById('tcs-' + i);
+            if (el) { el.classList.remove('visible','active','done'); }
+        });
+        steps.forEach((i, idx) => {
+            setTimeout(() => {
+                const el = document.getElementById('tcs-' + i);
+                if (!el) return;
+                el.classList.add('visible','active');
+                if (idx > 0) {
+                    const prev = document.getElementById('tcs-' + steps[idx-1]);
+                    if (prev) { prev.classList.remove('active'); prev.classList.add('done'); }
+                }
+                if (idx === steps.length - 1) {
+                    setTimeout(() => { el.classList.remove('active'); el.classList.add('done'); }, 800);
+                }
+            }, idx * 900);
+        });
+    }
+
+    /* Dispara a animação ao entrar no slide 8 */
+    const origShow = window.__slideShowHook || null;
+    document.addEventListener('slideChanged', (e) => {
+        if (e.detail && e.detail.index === 7) { // índice 0-based do slide 8
+            setTimeout(runTcAnimation, 400);
+        }
+    });
+
+    /* Patch standard_slides para emitir evento */
+    const _origShowSlide = window.showSlide;
+    if (typeof _origShowSlide === 'undefined') {
+        /* fallback: observa class changes */
+        const observer = new MutationObserver(() => {
+            const slides = document.querySelectorAll('.slide');
+            slides.forEach((s, idx) => {
+                if (s.classList.contains('active') && idx === 7) {
+                    setTimeout(runTcAnimation, 400);
+                }
+            });
+        });
+        document.querySelectorAll('.slide').forEach(s =>
+            observer.observe(s, { attributes: true, attributeFilter: ['class'] })
+        );
+    }
+</script>
 </body>
 </html>

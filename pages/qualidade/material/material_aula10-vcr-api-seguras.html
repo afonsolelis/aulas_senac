@@ -2,39 +2,387 @@
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Material - Aula 10 - Qualidade de Software</title>
+  <title>Material - Aula 08 - VCR, APIs Seguras e TestContainers</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root { --qa-blue: #114b74; --qa-bg: #f4f8fb; }
+    .section-title {
+      border-left: 4px solid var(--qa-blue);
+      padding-left: 12px;
+      margin: 28px 0 14px;
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+    .info-box {
+      background: var(--qa-bg);
+      border-left: 4px solid var(--qa-blue);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    .warn-box {
+      background: #fff8e1;
+      border-left: 4px solid #ffc107;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    .danger-box {
+      background: #fff0f0;
+      border-left: 4px solid #dc3545;
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 16px 0;
+    }
+    pre {
+      background: #0f1720;
+      color: #dbe7f1;
+      border-radius: 10px;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 0.88rem;
+      line-height: 1.65;
+    }
+    .badge-topic {
+      font-size: .75rem;
+      font-weight: 700;
+      padding: .4rem .8rem;
+      border-radius: 999px;
+    }
+    table { font-size: .92rem; }
+    thead th { background: #212529; color: #fff; }
+  </style>
 </head>
 <body class="bg-light">
-  <div class="container py-5">
+  <div class="container py-5" style="max-width:860px">
     <div class="card border-0 shadow-sm">
       <div class="card-body p-4 p-md-5">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-2">
-        <p class="text-muted small mb-2">Qualidade de Software</p>
-        <h1 class="h3 fw-bold mb-3">Aula 10 - VCR e chamadas de API seguras</h1>
-        <p class="text-secondary mb-2">Resumo do uso de gravação de requisições para testes estáveis.</p>
-        <p class="text-secondary mb-4">Ajuda a reduzir flutuação de testes dependentes de APIs externas.</p>
-        <h2 class="h5 fw-bold mb-3">Resumo rápido</h2>
-        <ul class="text-secondary mb-4">
-          <li>Conceitos principais vistos no slide.</li>
-          <li>Aplicação prática esperada em sala/laboratório.</li>
-          <li>Pontos de atenção para atividade ou avaliação.</li>
+
+        <!-- Cabeçalho -->
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+             alt="Senac Logo" height="50" class="mb-2">
+        <p class="text-muted small mb-1">Qualidade de Software · 07 Abr 2026</p>
+        <h1 class="h3 fw-bold mb-1">Aula 08 — VCR, Chamadas de API Seguras e TestContainers</h1>
+        <p class="text-secondary mb-4">
+          Testes automatizados que dependem de APIs externas são frágeis por natureza: a rede pode falhar, a API pode mudar, o rate limit pode estourar. Esta aula apresenta duas estratégias complementares — <strong>VCR</strong> para chamadas HTTP e <strong>TestContainers</strong> para serviços de infraestrutura — e explica como guardar credenciais em cada ambiente.
+        </p>
+
+        <!-- 1 -->
+        <h2 class="section-title">1. O problema dos testes dependentes de rede</h2>
+        <p class="text-secondary">
+          Testes que chamam APIs reais são chamados de <em>flaky</em> quando falham por razões externas ao código: servidor fora do ar, latência alta, mudança não planejada no contrato da API. No CI, isso é ainda pior porque o runner pode não ter acesso à internet.
+        </p>
+        <div class="danger-box text-secondary">
+          <strong>Regra prática:</strong> testes automatizados precisam ser <strong>determinísticos</strong> — a mesma entrada produz o mesmo resultado independentemente de horário, rede ou estado externo.
+        </div>
+
+        <!-- 2 -->
+        <h2 class="section-title">2. VCR — Video Cassette Recorder para HTTP</h2>
+        <p class="text-secondary">
+          O padrão VCR, inspirado no videocassete, funciona em dois modos:
+        </p>
+        <ul class="text-secondary">
+          <li><strong>Record:</strong> o teste faz a chamada real uma vez e salva a resposta num arquivo chamado <em>cassete</em> (JSON ou YAML).</li>
+          <li><strong>Replay:</strong> nas execuções seguintes, a biblioteca intercepta a chamada e devolve o cassete salvo sem tocar na rede.</li>
         </ul>
-                <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
-        <ol class="text-secondary mb-4">
-          <li>Resuma em 5 linhas os objetivos da aula: <strong>Aula 10 - VCR e chamadas de API seguras</strong>.</li>
-          <li>Liste 3 práticas recomendadas e explique quando usar cada uma.</li>
-          <li>Descreva 2 riscos comuns ao aplicar o conteúdo e como mitigar.</li>
-          <li>Crie um mini-cenário real e aplique o conteúdo da aula passo a passo.</li>
-          <li>Prepare 3 critérios de validação para verificar se a atividade foi bem executada.</li>
+        <p class="text-secondary">
+          O resultado é um teste <strong>rápido</strong>, <strong>offline</strong> e <strong>idêntico</strong> a cada execução.
+        </p>
+
+        <h3 class="h6 fw-bold mt-3">2.1 WireMock — stub programático com JUnit 5</h3>
+        <pre><code>import com.github.tomakehurst.wiremock.junit5.WireMockTest;
+import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+@WireMockTest(httpPort = 8089)
+class WeatherClientTest {
+
+    @Test
+    void retornaTemperaturaDeSP() throws Exception {
+        // "cassete" — define a resposta simulada
+        stubFor(get("/current?city=SP")
+            .willReturn(okJson(
+                "{\"temp\": 28, \"desc\": \"Ensolarado\"}"
+            )));
+
+        WeatherClient client =
+            new WeatherClient("http://localhost:8089");
+
+        WeatherData data = client.fetchWeather("SP");
+        assertEquals(28, data.getTemp());
+    }
+}</code></pre>
+
+        <h3 class="h6 fw-bold mt-3">2.2 WireMock — stub declarativo (arquivo JSON)</h3>
+        <pre><code>// src/test/resources/mappings/weather-sp.json
+// WireMock carrega automaticamente no @WireMockTest
+{
+  "request": {
+    "method": "GET",
+    "url": "/current?city=SP"
+  },
+  "response": {
+    "status": 200,
+    "headers": { "Content-Type": "application/json" },
+    "bodyFileName": "weather-sp-response.json"
+  }
+}
+
+// src/test/resources/__files/weather-sp-response.json
+{ "temp": 28, "desc": "Ensolarado" }</code></pre>
+
+        <div class="info-box text-secondary">
+          <strong>WireMock</strong> é o padrão de mercado para interceptação HTTP em Java. Dependency Maven:
+          <code>com.github.tomakehurst:wiremock:3.x</code> (scope <code>test</code>).
+          Para Spring Boot, existe também o starter <code>org.springframework.cloud:spring-cloud-contract-wiremock</code>.
+        </div>
+
+        <!-- 3 -->
+        <h2 class="section-title">3. Sanitização do cassete — nunca exponha secrets</h2>
+        <p class="text-secondary">
+          O cassete grava tudo que foi enviado na requisição, incluindo cabeçalhos de autenticação. Se você commitar esse arquivo, seu token vaza publicamente.
+        </p>
+        <pre><code>// Mapping PERIGOSO — nunca commitar com token real
+// mappings/get-user.json
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/users/1",
+    "headers": {
+      "Authorization": {
+        "equalTo": "Bearer sk-prod-SECRET123"  // PERIGO!
+      }
+    }
+  }
+}
+
+// Mapping SEGURO — usa regex, sem valor real
+{
+  "request": {
+    "method": "GET",
+    "url": "/api/users/1",
+    "headers": {
+      "Authorization": {
+        "matches": "Bearer .*"  // aceita qualquer token
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName": "user-1-response.json"
+  }
+}</code></pre>
+        <div class="warn-box text-secondary">
+          <strong>Boa prática:</strong> adicione <code>src/test/resources/mappings/</code> ao <code>.gitignore</code> enquanto gravar respostas reais. Só commite após confirmar que nenhum header ou body contém credencial.
+        </div>
+
+        <!-- 4 -->
+        <h2 class="section-title">4. Onde guardar secrets em cada ambiente</h2>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Ambiente</th>
+                <th>Onde guardar</th>
+                <th>Como acessar no código</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Desenvolvimento local</td>
+                <td><code>.env</code> (no <code>.gitignore</code>)</td>
+                <td><code>process.env.API_KEY</code> via <code>dotenv</code></td>
+              </tr>
+              <tr>
+                <td>CI/CD (GitHub Actions)</td>
+                <td>Settings → Secrets and Variables</td>
+                <td><code>${{ secrets.API_KEY }}</code> no workflow</td>
+              </tr>
+              <tr>
+                <td>Produção</td>
+                <td>AWS Secrets Manager / Azure Key Vault / Vault</td>
+                <td>SDK específico ou variável de ambiente injetada</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <pre><code># application.properties (local — NUNCA commitar, no .gitignore)
+api.key=${API_KEY}
+spring.datasource.url=${DB_URL:jdbc:postgresql://localhost:5432/dev}
+
+// Spring Boot — injeta via @Value
+@Value("${api.key}")
+private String apiKey;
+
+// Sem Spring — via System.getenv()
+String apiKey = System.getenv("API_KEY");
+HttpRequest request = HttpRequest.newBuilder()
+    .uri(URI.create(url))
+    .header("Authorization", "Bearer " + apiKey)
+    .build();</code></pre>
+
+        <!-- 5 -->
+        <h2 class="section-title">5. TestContainers — serviço real, sem infraestrutura permanente</h2>
+        <p class="text-secondary">
+          TestContainers é uma biblioteca que gerencia containers Docker durante a execução dos testes. Em vez de mockar o banco de dados, você sobe um <strong>Postgres real</strong>, roda as migrations, executa os testes e destrói o container ao final.
+        </p>
+
+        <h4 class="h6 fw-bold">Por que isso importa?</h4>
+        <ul class="text-secondary">
+          <li>Valida o comportamento real do driver de banco (tipos, constraints, índices).</li>
+          <li>Garante que as migrations funcionam na ordem correta.</li>
+          <li>Elimina a discrepância entre mock e produção (o mock passa, o prod falha).</li>
+        </ul>
+
+        <h3 class="h6 fw-bold mt-3">5.1 Setup com JUnit 5 + @Testcontainers</h3>
+        <pre><code>import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.junit.jupiter.api.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+@Testcontainers
+class UserRepositoryTest {
+
+    @Container
+    static PostgreSQLContainer&lt;?&gt; db =
+        new PostgreSQLContainer&lt;&gt;("postgres:16")
+            .withDatabaseName("testdb")
+            .withUsername("test")
+            .withPassword("test");
+
+    @BeforeAll
+    static void setUp() {
+        // roda Flyway ou Liquibase com a URL do container
+        runMigrations(db.getJdbcUrl(),
+            db.getUsername(), db.getPassword());
+    }
+}</code></pre>
+
+        <h3 class="h6 fw-bold mt-3">5.2 Teste usando o banco real</h3>
+        <pre><code>@Test
+void salvaEBuscaUsuario() {
+    UserRepository repo = new UserRepository(
+        db.getJdbcUrl(), db.getUsername(), db.getPassword());
+
+    repo.save(new User("Ana", "ana@example.com"));
+
+    User found = repo.findByEmail("ana@example.com");
+    assertEquals("Ana", found.getName());
+}
+// @Container static → container sobe 1x por classe
+// e é destruído automaticamente pelo JUnit ao final</code></pre>
+
+        <div class="info-box text-secondary">
+          <strong>Maven:</strong> <code>org.testcontainers:postgresql:1.20.x</code> + <code>org.testcontainers:junit-jupiter:1.20.x</code> (scope <code>test</code>).
+          O runner <code>ubuntu-latest</code> do GitHub Actions já inclui Docker — nenhuma configuração extra necessária.
+        </div>
+
+        <!-- 6 -->
+        <h2 class="section-title">6. VCR vs TestContainers — quando usar cada um</h2>
+        <div class="table-responsive mb-3">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Critério</th>
+                <th>VCR / HTTP Mock</th>
+                <th>TestContainers</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Alvo</td>
+                <td>APIs HTTP externas (REST, GraphQL)</td>
+                <td>Banco, fila, cache (Postgres, Redis, Kafka…)</td>
+              </tr>
+              <tr>
+                <td>Velocidade</td>
+                <td>Muito rápido — sem Docker</td>
+                <td>Mais lento — pull + start do container</td>
+              </tr>
+              <tr>
+                <td>Fidelidade</td>
+                <td>Alta para o payload HTTP</td>
+                <td>Alta — serviço real rodando</td>
+              </tr>
+              <tr>
+                <td>Requer Docker</td>
+                <td>Não</td>
+                <td>Sim</td>
+              </tr>
+              <tr>
+                <td>Manutenção</td>
+                <td>Re-gravar cassete ao mudar o contrato</td>
+                <td>Baixa — imagem oficial segue a spec</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="info-box text-secondary">
+          Use VCR/msw na suite de <strong>testes de unidade</strong> (rápidos, rodados em todo PR). Use TestContainers na suite de <strong>integração</strong> (rodada pelo menos em merge para main).
+        </div>
+
+        <!-- 7 -->
+        <h2 class="section-title">7. Pipeline completa no GitHub Actions</h2>
+        <pre><code>## .github/workflows/quality.yml
+jobs:
+  unit:                         # rápido — sem Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '21', distribution: temurin, cache: maven }
+      - run: mvn test -Dtest="**/*UnitTest"
+      # WireMock intercepta as chamadas HTTP — sem rede real
+
+  integration:                  # mais lento — com Docker
+    runs-on: ubuntu-latest      # ubuntu-latest já tem Docker instalado
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with: { java-version: '21', distribution: temurin, cache: maven }
+      - run: mvn test -Dtest="**/*IntegrationTest"
+      # @Testcontainers sobe Postgres/Redis automaticamente
+
+  sonar:
+    needs: [unit, integration]
+    steps:
+      - uses: SonarSource/sonarcloud-github-action@v2</code></pre>
+
+        <!-- 8 -->
+        <h2 class="section-title">8. Anti-patterns para evitar</h2>
+        <ul class="text-secondary">
+          <li><strong>Cassete com secret:</strong> sempre sanitize antes de commitar.</li>
+          <li><strong>Cassete eterno:</strong> se a API mudou o contrato, o teste passa e a prod falha. Programe re-gravações periódicas.</li>
+          <li><strong>TestContainer em teste de unidade:</strong> Docker em unit test é desproporcional e torna o feedback lento.</li>
+          <li><strong>Container compartilhado entre testes:</strong> estado residual causa flakiness. Limpe as tabelas no <code>afterEach</code> ou suba um container por suite.</li>
+          <li><strong>Hard-code de credencial no código:</strong> mesmo em teste, use variáveis de ambiente.</li>
+        </ul>
+
+        <!-- 9 -->
+        <h2 class="section-title">9. Exercícios de fixação</h2>
+        <ol class="text-secondary">
+          <li>Adicione a dependência <code>wiremock</code> ao <code>pom.xml</code>. Crie um teste anotado com <code>@WireMockTest</code> que intercepta uma chamada HTTP externa feita pelo seu projeto e valide dois cenários (sucesso e erro 404).</li>
+          <li>Identifique uma chamada HTTP no projeto que usa um token hard-coded. Mova-o para <code>application.properties</code> lendo de variável de ambiente e adapte o workflow do GitHub Actions para injetar o secret via <code>secrets.API_KEY</code>.</li>
+          <li>Adicione <code>org.testcontainers:postgresql</code> ao <code>pom.xml</code>. Escreva um teste de integração anotado com <code>@Testcontainers</code> que insere e busca um registro no PostgreSQL real.</li>
+          <li>Compare o tempo de execução dos testes unitários (WireMock) vs integração (TestContainers) no seu projeto e documente os resultados.</li>
+          <li>Crie um mapping WireMock em JSON para um endpoint que requer <code>Authorization</code>. Use <code>"matches": "Bearer .*"</code> para não gravar o token real e explique por que essa abordagem é segura.</li>
         </ol>
 
-<div class="d-flex flex-wrap gap-2">
-          <a class="btn btn-danger btn-sm" href="../slide_cdetestes.html"><i class="fas fa-desktop me-1"></i> Ver slide</a>
-          <a class="btn btn-outline-secondary btn-sm" href="../../home_qualidade.html"><i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma</a>
+        <!-- Rodapé -->
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a class="btn btn-danger btn-sm" href="../slide_cdetestes.html">
+            <i class="fas fa-desktop me-1"></i> Ver slide
+          </a>
+          <a class="btn btn-outline-secondary btn-sm" href="../../home_qualidade.html">
+            <i class="fas fa-arrow-left me-1"></i> Voltar ao cronograma
+          </a>
         </div>
+
       </div>
     </div>
   </div>
