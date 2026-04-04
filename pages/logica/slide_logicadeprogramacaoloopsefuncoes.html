@@ -23,8 +23,10 @@
       background: #1e1e2e;
       display: flex;
       gap: .75rem;
-      padding: .7rem 1rem;
+      padding: .5rem .85rem;
       border-left: 4px solid #89b4fa;
+      max-height: 42vh;
+      overflow-y: auto;
     }
     .nb-label {
       color: #89b4fa;
@@ -39,17 +41,17 @@
     .nb-code {
       color: #cdd6f4;
       font-family: 'Courier New', monospace;
-      font-size: .84rem;
-      line-height: 1.65;
+      font-size: .78rem;
+      line-height: 1.5;
       white-space: pre;
       flex: 1;
-      min-height: 1.65rem;
+      min-height: 1.5rem;
     }
     .nb-out {
       background: #f8f9fa;
-      padding: .55rem 1rem .55rem 5rem;
+      padding: .4rem .85rem .4rem 4.5rem;
       font-family: 'Courier New', monospace;
-      font-size: .82rem;
+      font-size: .76rem;
       color: #2d2d2d;
       border-top: 1px solid #dee2e6;
       white-space: pre;
@@ -137,6 +139,7 @@
       text-align: left;
       color: #856404;
       line-height: 1.5;
+      white-space: pre;
     }
     .clean-code {
       background: #d1e7dd;
@@ -148,6 +151,7 @@
       text-align: left;
       color: #0f5132;
       line-height: 1.6;
+      white-space: pre;
     }
   </style>
 </head>
@@ -931,7 +935,9 @@ function colorize(raw) {
   return h;
 }
 
-// ─── Animação de digitação ───────────────────────────────────────────────────
+// ─── Animação de digitação (estilo humano) ───────────────────────────────────
+var TYPO_CHARS = 'qwjxzvfgsbh';
+
 function typeCode(slideId) {
   if (typed.has(slideId)) return;
   var slide = document.getElementById(slideId);
@@ -942,37 +948,90 @@ function typeCode(slideId) {
 
   typed.add(slideId);
   var raw = codeEl.dataset.code;
-  var i = 0;
+  var pos = 0;             // posição atual no raw
+  var displayed = '';      // o que está na tela
+  var nextTypo = rndBetween(12, 22);  // próxima posição para errar
 
-  // Cursor piscando
   var cursor = document.createElement('span');
   cursor.className = 'nb-cursor';
-  codeEl.appendChild(cursor);
 
-  function tick() {
-    if (i < raw.length) {
-      // Atualiza texto (antes do cursor)
-      codeEl.textContent = raw.substring(0, i + 1);
-      codeEl.appendChild(cursor);
-      i++;
-      setTimeout(tick, TYPING_SPEED);
-    } else {
-      // Digitação concluída: aplica colorização
-      if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
-      codeEl.innerHTML = colorize(raw);
-      // Exibe output com fade-in
-      if (outEl) {
-        outEl.style.opacity = '0';
-        outEl.style.display = 'block';
-        requestAnimationFrame(function() {
-          outEl.style.transition = 'opacity .5s ease';
-          requestAnimationFrame(function() { outEl.style.opacity = '1'; });
-        });
-      }
+  function render() {
+    codeEl.textContent = displayed;
+    codeEl.appendChild(cursor);
+  }
+
+  function finish() {
+    if (cursor.parentNode) cursor.parentNode.removeChild(cursor);
+    codeEl.innerHTML = colorize(raw);
+    if (outEl) {
+      outEl.style.opacity = '0';
+      outEl.style.display = 'block';
+      requestAnimationFrame(function() {
+        outEl.style.transition = 'opacity .5s ease';
+        requestAnimationFrame(function() { outEl.style.opacity = '1'; });
+      });
     }
   }
 
-  setTimeout(tick, 350); // pequeno delay antes de começar
+  function rndBetween(a, b) { return a + Math.floor(Math.random() * (b - a)); }
+
+  function doTypo(afterCb) {
+    // digita 1-2 chars errados
+    var count = Math.random() < 0.35 ? 2 : 1;
+    var wrong = '';
+    for (var t = 0; t < count; t++) {
+      wrong += TYPO_CHARS[Math.floor(Math.random() * TYPO_CHARS.length)];
+    }
+    var save = displayed;
+    displayed += wrong;
+    render();
+
+    // pausa percebível (~120-200ms), depois apaga
+    setTimeout(function() {
+      var del = count;
+      function backspace() {
+        if (del > 0) {
+          displayed = displayed.slice(0, -1);
+          render();
+          del--;
+          setTimeout(backspace, rndBetween(50, 90));
+        } else {
+          displayed = save; // garante estado limpo
+          nextTypo = pos + rndBetween(12, 22);
+          setTimeout(afterCb, rndBetween(20, 40));
+        }
+      }
+      backspace();
+    }, rndBetween(120, 210));
+  }
+
+  function tick() {
+    if (pos >= raw.length) { finish(); return; }
+
+    var ch = raw[pos];
+    displayed += ch;
+    render();
+    pos++;
+
+    // decidir velocidade do próximo char
+    var delay = TYPING_SPEED + rndBetween(0, 10);
+    if (ch === '\n')       delay = rndBetween(60, 110);  // pausa na quebra de linha
+    else if (ch === ':')   delay = rndBetween(40, 70);   // pausa após ":"
+    else if (ch === '(')   delay = rndBetween(25, 45);
+
+    // introduzir erro?
+    var canTypo = pos === nextTypo
+                  && ch !== ' ' && ch !== '\n' && ch !== '(' && ch !== ')'
+                  && pos < raw.length - 6;
+
+    if (canTypo) {
+      setTimeout(function() { doTypo(tick); }, delay);
+    } else {
+      setTimeout(tick, delay);
+    }
+  }
+
+  setTimeout(tick, 400);
 }
 
 // ─── Dispara ao entrar em cada slide com notebook ────────────────────────────
