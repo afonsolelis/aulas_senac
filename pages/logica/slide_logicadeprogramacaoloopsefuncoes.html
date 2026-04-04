@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <style>
-    /* ─── Notebook ────────────��─────────────────────────────── */
+    /* Notebook */
     .notebook {
       border: 1px solid #444;
       border-radius: 8px;
@@ -25,8 +25,6 @@
       gap: .75rem;
       padding: .5rem .85rem;
       border-left: 4px solid #89b4fa;
-      max-height: 42vh;
-      overflow-y: auto;
     }
     .nb-label {
       color: #89b4fa;
@@ -41,17 +39,17 @@
     .nb-code {
       color: #cdd6f4;
       font-family: 'Courier New', monospace;
-      font-size: .78rem;
-      line-height: 1.5;
+      font-size: .82rem;
+      line-height: 1.55;
       white-space: pre;
       flex: 1;
-      min-height: 1.5rem;
+      min-height: 1.55rem;
     }
     .nb-out {
       background: #f8f9fa;
       padding: .4rem .85rem .4rem 4.5rem;
       font-family: 'Courier New', monospace;
-      font-size: .76rem;
+      font-size: .78rem;
       color: #2d2d2d;
       border-top: 1px solid #dee2e6;
       white-space: pre;
@@ -60,7 +58,6 @@
     }
     .nb-out.error { color: #f38ba8; border-left-color: #f38ba8; }
 
-    /* cursor piscando */
     .nb-cursor {
       display: inline-block;
       width: 8px; height: 1.1em;
@@ -70,20 +67,19 @@
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
 
-    /* ─── Syntax highlight ──────────��───────────────────────── */
+    /* Syntax highlight */
     .sy-kw      { color: #ff79c6; font-weight: 600; }
     .sy-builtin { color: #8be9fd; }
     .sy-str     { color: #f1fa8c; }
     .sy-num     { color: #bd93f9; }
     .sy-comment { color: #6272a4; font-style: italic; }
     .sy-fn      { color: #50fa7b; }
-    .sy-fstr    { color: #f1fa8c; }
 
-    /* ─── Utilitários ─────────────────��─────────────────────── */
+    /* Concept cards */
     .concept-card {
       border-left: 4px solid;
       border-radius: 0 12px 12px 0;
-      padding: .9rem 1rem;
+      padding: .7rem .9rem;
       background: #fff;
       text-align: left;
       height: 100%;
@@ -110,9 +106,9 @@
     .fn-anatomy {
       background: #1e1e2e;
       border-radius: 10px;
-      padding: 1.2rem 1.5rem;
+      padding: 1rem 1.25rem;
       font-family: 'Courier New', monospace;
-      font-size: .9rem;
+      font-size: .88rem;
       line-height: 1.9;
       text-align: left;
       position: relative;
@@ -128,7 +124,6 @@
       white-space: nowrap;
     }
 
-    /* problem slide */
     .scary-code {
       background: #fff3cd;
       border-left: 4px solid #ffc107;
@@ -163,7 +158,7 @@
     <i class="fas fa-arrow-left me-2"></i> Voltar
   </a>
 
-  <!-- ══════════════════════════ SLIDE 1 – CAPA ══════════════════════════ -->
+  <!-- SLIDE 1 – CAPA -->
   <div class="slide active" id="slide-1">
     <div class="glass-cover text-center">
       <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
@@ -188,7 +183,7 @@
     </div>
   </div>
 
-  <!-- ════════════════════════ SLIDE 2 – AGENDA ══════════════════════════ -->
+  <!-- SLIDE 2 – AGENDA -->
   <div class="slide" id="slide-2">
     <div class="slide-content text-center">
       <h1 class="display-4 fw-bold mb-4 text-dark">O que veremos hoje</h1>
@@ -214,7 +209,7 @@
           <p class="small text-muted mt-1 mb-0">Controle fino dentro de qualquer loop</p>
         </div></div>
         <div class="col-md-4"><div class="concept-card cc-purple">
-          <i class="fas fa-cube text-purple mb-2 d-block fa-lg" style="color:#6f42c1"></i>
+          <i class="fas fa-cube mb-2 d-block fa-lg" style="color:#6f42c1"></i>
           <strong>def / return</strong>
           <p class="small text-muted mt-1 mb-0">Crie seus próprios comandos reutilizáveis</p>
         </div></div>
@@ -227,11 +222,11 @@
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 3 – O PROBLEMA ══════���═══════════════════ -->
+  <!-- SLIDE 3 – O PROBLEMA -->
   <div class="slide" id="slide-3">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">Por que precisamos de loops?</h2>
-      <p class="text-muted mb-4">Imagine que o professor manda escrever 100 vezes na lousa…</p>
+      <p class="text-muted mb-3">Imagine que o professor manda escrever 100 vezes na lousa…</p>
       <div class="row g-4 align-items-start">
         <div class="col-md-5">
           <h6 class="fw-bold text-danger mb-2"><i class="fas fa-times-circle me-1"></i>Sem loop (jeito manual)</h6>
@@ -262,43 +257,45 @@ print("Eu não vou colar na prova.")</div>
     </div>
   </div>
 
-  <!-- ═════════════════════ SLIDE 4 – WHILE CONCEITO ════════��════════════ -->
+  <!-- SLIDE 4 – WHILE CONCEITO -->
   <div class="slide" id="slide-4">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">while</span> — Enquanto</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [1]:</span>
-              <code class="nb-code" id="code-4">contagem = 5
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [1]:</span>
+          <code class="nb-code" id="code-4">contagem = 5
 
 while contagem > 0:
     print(f"Contagem: {contagem}")
     contagem = contagem - 1
 
 print("🚀 Lançamento!")</code>
-            </div>
-            <div class="nb-out" id="out-4">Contagem: 5
+        </div>
+        <div class="nb-out" id="out-4">Contagem: 5
 Contagem: 4
 Contagem: 3
 Contagem: 2
 Contagem: 1
 🚀 Lançamento!</div>
-          </div>
-        </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-green mb-3">
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-question-circle text-success me-1"></i>Como funciona?</strong>
             <p class="small text-muted mb-0 mt-1">O Python verifica a condição <em>antes</em> de cada repetição.
             Se for <code>True</code>, executa o bloco. Se for <code>False</code>, para.</p>
           </div>
-          <div class="concept-card cc-orange mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-indent text-warning me-1"></i>Indentação obrigatória</strong>
             <p class="small text-muted mb-0 mt-1">Tudo que está <strong>dentro do while</strong> precisa ter
-            4 espaços (ou 1 tab) de recuo. É assim que o Python sabe o que pertence ao loop.</p>
+            4 espaços (ou 1 tab). É assim que o Python sabe o que pertence ao loop.</p>
           </div>
-          <div class="concept-card cc-blue">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
             <strong><i class="fas fa-sync text-primary me-1"></i>Padrão clássico</strong>
             <p class="small text-muted mb-0 mt-1"><code>inicializa variável</code> →
             <code>while condição</code> → <code>usa e modifica a variável</code></p>
@@ -308,41 +305,39 @@ Contagem: 1
     </div>
   </div>
 
-  <!-- ═══════════════════ SLIDE 5 – WHILE LOOP INFINITO ══════════════════ -->
+  <!-- SLIDE 5 – WHILE LOOP INFINITO -->
   <div class="slide" id="slide-5">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">⚠️ Cuidado: Loop Infinito</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook mb-3">
-            <div class="nb-in">
-              <span class="nb-label">In [2]:</span>
-              <code class="nb-code" id="code-5">bateria = 100
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [2]:</span>
+          <code class="nb-code" id="code-5">bateria = 100
 
 while bateria > 0:
     print(f"Bateria: {bateria}%")
     bateria -= 20  # -= é o mesmo que bateria = bateria - 20
 
 print("❌ Desligando...")</code>
-            </div>
-            <div class="nb-out" id="out-5">Bateria: 100%
+        </div>
+        <div class="nb-out" id="out-5">Bateria: 100%
 Bateria: 80%
 Bateria: 60%
 Bateria: 40%
 Bateria: 20%
 ❌ Desligando...</div>
-          </div>
-        </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-red mb-3">
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-red h-100">
             <strong><i class="fas fa-skull-crossbones text-danger me-1"></i>Loop infinito</strong>
             <p class="small text-muted mt-1 mb-2">Se a condição <strong>nunca se tornar False</strong>,
-            o programa trava para sempre. Exemplo perigoso:</p>
-            <code style="font-size:.78rem;background:#fff3f3;padding:4px 8px;border-radius:4px;display:block">
-while True:<br>
-&nbsp;&nbsp;&nbsp;&nbsp;print("Socorro!")  # nunca para!</code>
+            o programa trava. Exemplo perigoso:</p>
+            <code style="font-size:.78rem;background:#fff3f3;padding:4px 8px;border-radius:4px;display:block">while True:<br>&nbsp;&nbsp;&nbsp;&nbsp;print("Socorro!")&nbsp;&nbsp;<span style="color:#aaa"># nunca para!</span></code>
           </div>
-          <div class="concept-card cc-orange mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-lightbulb text-warning me-1"></i>Operadores de atribuição</strong>
             <p class="small text-muted mt-1 mb-0">
               <code>x -= 1</code> = <code>x = x - 1</code><br>
@@ -350,25 +345,26 @@ while True:<br>
               <code>x *= 2</code> = <code>x = x * 2</code>
             </p>
           </div>
-          <div class="alert alert-warning small text-start p-2 mb-0">
-            <i class="fas fa-keyboard me-1"></i>
-            No Colab/Terminal: <kbd>Ctrl + C</kbd> para interromper um loop infinito.
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
+            <strong><i class="fas fa-keyboard text-primary me-1"></i>Como parar</strong>
+            <p class="small text-muted mt-1 mb-0">No Colab/Terminal: <kbd>Ctrl + C</kbd> para interromper
+            um loop infinito que travou.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 6 – FOR COM RANGE ═══════════════════════ -->
+  <!-- SLIDE 6 – FOR COM RANGE -->
   <div class="slide" id="slide-6">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">for</span> + <span class="keyword-chip">range()</span></h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [3]:</span>
-              <code class="nb-code" id="code-6"># range(inicio, fim, passo)
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [3]:</span>
+          <code class="nb-code" id="code-6"># range(inicio, fim, passo)
 # fim NÃO é incluído!
 
 for i in range(1, 6):
@@ -378,13 +374,13 @@ print()  # pula linha
 
 for i in range(0, 11, 2):
     print(i, end=" ")  # só pares</code>
-            </div>
-            <div class="nb-out" id="out-6">1 2 3 4 5
-0 2 4 6 8 10 </div>
-          </div>
         </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-orange mb-3">
+        <div class="nb-out" id="out-6">1 2 3 4 5
+0 2 4 6 8 10 </div>
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-sliders-h text-warning me-1"></i>range() — 3 formas</strong>
             <div class="mt-2" style="font-family:monospace;font-size:.82rem;line-height:1.9">
               <code>range(5)</code> → 0, 1, 2, 3, 4<br>
@@ -392,13 +388,16 @@ for i in range(0, 11, 2):
               <code>range(0, 10, 2)</code> → 0, 2, 4, 6, 8
             </div>
           </div>
-          <div class="concept-card cc-blue mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
             <strong><i class="fas fa-terminal text-primary me-1"></i><code>end=" "</code></strong>
             <p class="small text-muted mt-1 mb-0">Por padrão, <code>print()</code> pula linha.
-            Com <code>end=" "</code> ele coloca um espaço no lugar da quebra de linha —
-            útil para imprimir tudo na mesma linha.</p>
+            Com <code>end=" "</code> ele coloca um espaço no lugar — útil para imprimir tudo na mesma linha.</p>
           </div>
-          <div class="concept-card cc-green">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-check text-success me-1"></i>Use for quando...</strong>
             <p class="small text-muted mt-1 mb-0">Você sabe <strong>quantas vezes</strong> quer repetir,
             ou tem uma <strong>coleção</strong> de itens para percorrer.</p>
@@ -408,16 +407,14 @@ for i in range(0, 11, 2):
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 7 – FOR COM LISTAS ══════════════════��═══ -->
+  <!-- SLIDE 7 – FOR COM LISTAS -->
   <div class="slide" id="slide-7">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark"><span class="keyword-chip">for</span> percorrendo listas e strings</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [4]:</span>
-              <code class="nb-code" id="code-7">frutas = ["Maçã", "Banana", "Uva"]
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [4]:</span>
+          <code class="nb-code" id="code-7">frutas = ["Maçã", "Banana", "Uva"]
 
 for fruta in frutas:
     print(f"Tenho: {fruta}")
@@ -427,26 +424,30 @@ print("---")
 # for também funciona em strings!
 for letra in "Python":
     print(letra, end="-")</code>
-            </div>
-            <div class="nb-out" id="out-7">Tenho: Maçã
+        </div>
+        <div class="nb-out" id="out-7">Tenho: Maçã
 Tenho: Banana
 Tenho: Uva
 ---
 P-y-t-h-o-n-</div>
-          </div>
-        </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-orange mb-3">
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-list text-warning me-1"></i>Listas em Python</strong>
             <p class="small text-muted mt-1 mb-0">Listas são criadas com colchetes <code>[]</code>.
             Podem guardar qualquer tipo de dado: números, textos, misturados.</p>
           </div>
-          <div class="concept-card cc-blue mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
             <strong><i class="fas fa-font text-primary me-1"></i>f-strings</strong>
             <p class="small text-muted mt-1 mb-0"><code>f"Tenho: {fruta}"</code> — o <code>f</code> antes das aspas
             permite inserir variáveis entre <code>{chaves}</code> diretamente no texto.</p>
           </div>
-          <div class="concept-card cc-green">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-magic text-success me-1"></i>for em string</strong>
             <p class="small text-muted mt-1 mb-0">Uma string é uma <em>sequência de caracteres</em>.
             O <code>for</code> percorre letra por letra, como se fosse uma lista de letras.</p>
@@ -456,65 +457,65 @@ P-y-t-h-o-n-</div>
     </div>
   </div>
 
-  <!-- ═══════════════════ SLIDE 8 – FOR ANINHADO ═══════════════════���═════ -->
+  <!-- SLIDE 8 – FOR ANINHADO -->
   <div class="slide" id="slide-8">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">For aninhado — Tabela Verdade automática</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [5]:</span>
-              <code class="nb-code" id="code-8">print("A       | B       | A and B")
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [5]:</span>
+          <code class="nb-code" id="code-8">print("A       | B       | A and B")
 print("-" * 32)
 
 for a in [True, False]:
     for b in [True, False]:
         resultado = a and b
         print(f"{str(a):7} | {str(b):7} | {resultado}")</code>
-            </div>
-            <div class="nb-out" id="out-8">A       | B       | A and B
+        </div>
+        <div class="nb-out" id="out-8">A       | B       | A and B
 --------------------------------
 True    | True    | True
 True    | False   | False
 False   | True    | False
 False   | False   | False</div>
-          </div>
-        </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-blue mb-3">
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
             <strong><i class="fas fa-layer-group text-primary me-1"></i>For aninhado</strong>
             <p class="small text-muted mt-1 mb-0">Um <code>for</code> <em>dentro</em> de outro.
             Para cada iteração do externo, o interno completa <strong>todos</strong> os seus ciclos.
-            2 opções × 2 opções = 4 combinações.</p>
+            2 × 2 = 4 combinações.</p>
           </div>
-          <div class="concept-card cc-green mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-align-left text-success me-1"></i>Formatação de strings</strong>
             <p class="small text-muted mt-1 mb-0"><code>{str(a):7}</code> — o <code>:7</code>
-            define que o texto ocupa pelo menos 7 caracteres (preenche com espaços), alinhando as colunas.</p>
+            define que o texto ocupa pelo menos 7 caracteres (preenche com espaços), alinhando colunas.</p>
           </div>
-          <div class="alert alert-info small text-start p-2 mb-0">
-            <i class="fas fa-brain me-1"></i>
-            Ligando com o que já vimos: usamos lógica booleana (<code>and</code>) dentro de um loop para
-            gerar tabelas verdade automaticamente!
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
+            <strong><i class="fas fa-brain text-warning me-1"></i>Conectando saberes</strong>
+            <p class="small text-muted mt-1 mb-0">Usamos lógica booleana (<code>and</code>) dentro
+            de um loop para gerar tabelas verdade automaticamente!</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 9 – BREAK E CONTINUE ═══════════════════ -->
+  <!-- SLIDE 9 – BREAK E CONTINUE -->
   <div class="slide" id="slide-9">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">
         <span class="keyword-chip">break</span> e <span class="keyword-chip">continue</span>
       </h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [6]:</span>
-              <code class="nb-code" id="code-9"># break: PARA o loop imediatamente
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [6]:</span>
+          <code class="nb-code" id="code-9"># break: PARA o loop imediatamente
 for i in range(10):
     if i == 5:
         break
@@ -527,26 +528,28 @@ for i in range(10):
     if i % 2 == 0:
         continue
     print(i, end=" ")</code>
-            </div>
-            <div class="nb-out" id="out-9">0 1 2 3 4
+        </div>
+        <div class="nb-out" id="out-9">0 1 2 3 4
 ---
 1 3 5 7 9 </div>
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-red h-100">
+            <strong><i class="fas fa-stop-circle text-danger me-1"></i><code>break</code> — Para tudo</strong>
+            <p class="small text-muted mt-1 mb-0">Sai <strong>imediatamente</strong> do loop. Útil para
+            "encontrei o que queria, pode parar".</p>
           </div>
         </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-red mb-3">
-            <strong><i class="fas fa-stop-circle text-danger me-1"></i><code>break</code> — Para tudo</strong>
-            <p class="small text-muted mt-1 mb-0">Quando o Python encontra <code>break</code>,
-            ele <strong>sai imediatamente</strong> do loop — ignora o restante das iterações.
-            Útil para "encontrei o que queria, pode parar".</p>
-          </div>
-          <div class="concept-card cc-orange mb-3">
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-forward text-warning me-1"></i><code>continue</code> — Pula um</strong>
-            <p class="small text-muted mt-1 mb-0">Quando o Python encontra <code>continue</code>,
-            ele <strong>pula para a próxima iteração</strong> sem executar o que vem abaixo.
-            Útil para "não quero processar este item específico".</p>
+            <p class="small text-muted mt-1 mb-0">Pula para a <strong>próxima iteração</strong> sem executar
+            o restante do bloco. Útil para "não quero processar este item".</p>
           </div>
-          <div class="concept-card cc-blue">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
             <strong><i class="fas fa-percent text-primary me-1"></i>Operador <code>%</code></strong>
             <p class="small text-muted mt-1 mb-0"><code>i % 2 == 0</code> verifica se <code>i</code> é divisível
             por 2 (resto zero = par). <code>10 % 3 = 1</code>, <code>9 % 3 = 0</code>.</p>
@@ -556,7 +559,7 @@ for i in range(10):
     </div>
   </div>
 
-  <!-- ═════════════════��� SLIDE 10 – FUNÇÕES CONCEITO ═════════════════════ -->
+  <!-- SLIDE 10 – FUNCOES CONCEITO -->
   <div class="slide" id="slide-10">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">Funções — criando seus próprios comandos</h2>
@@ -590,15 +593,15 @@ for i in range(10):
           </div>
         </div>
         <div class="col-md-5 text-start">
-          <div class="concept-card cc-purple mb-3">
+          <div class="concept-card cc-purple mb-2">
             <strong><i class="fas fa-cube me-1" style="color:#6f42c1"></i>Para que serve?</strong>
             <p class="small text-muted mt-1 mb-0"><strong>DRY</strong>: escreve uma vez, usa em qualquer lugar.
             Sem função, você copiaria o mesmo código 10 vezes.</p>
           </div>
-          <div class="concept-card cc-blue mb-3">
+          <div class="concept-card cc-blue mb-2">
             <strong><i class="fas fa-box-open text-primary me-1"></i>Parâmetros</strong>
-            <p class="small text-muted mt-1 mb-0">São as "entradas" da função — os dados que ela precisa
-            para fazer seu trabalho. <code>(nome)</code> é um parâmetro.</p>
+            <p class="small text-muted mt-1 mb-0">São as "entradas" da função — os dados que ela precisa.
+            <code>(nome)</code> é um parâmetro.</p>
           </div>
           <div class="concept-card cc-green">
             <strong><i class="fas fa-sign-out-alt text-success me-1"></i><code>return</code></strong>
@@ -610,64 +613,63 @@ for i in range(10):
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 11 – FUNÇÃO BÁSICA ══════════════════════ -->
+  <!-- SLIDE 11 – FUNCAO BASICA -->
   <div class="slide" id="slide-11">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">Primeira função: sem parâmetros</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [7]:</span>
-              <code class="nb-code" id="code-11">def mostrar_boas_vindas():
-    print("╔═══════════���══════╗")
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [7]:</span>
+          <code class="nb-code" id="code-11">def mostrar_boas_vindas():
+    print("╔══════════════════╗")
     print("║  Bem-vindo!      ║")
     print("╚══════════════════╝")
 
-# Definir não executa — só chegar aqui executa
+# Definir não executa — só chamar executa
 mostrar_boas_vindas()
 mostrar_boas_vindas()  # reutilizando!</code>
-            </div>
-            <div class="nb-out" id="out-11">╔══════════════���═══╗
+        </div>
+        <div class="nb-out" id="out-11">╔══════════════════╗
 ║  Bem-vindo!      ║
 ╚══════════════════╝
 ╔══════════════════╗
 ║  Bem-vindo!      ║
 ╚══════════════════╝</div>
-          </div>
-        </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-purple mb-3">
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-purple h-100">
             <strong><i class="fas fa-lightbulb me-1" style="color:#6f42c1"></i>Definir ≠ Executar</strong>
             <p class="small text-muted mt-1 mb-0">O bloco <code>def</code> apenas <em>registra</em> a função
-            na memória. O código dentro só roda quando você <strong>chama</strong> a função pelo nome seguido de
-            <code>()</code>.</p>
+            na memória. O código dentro só roda quando você <strong>chama</strong> a função com <code>()</code>.</p>
           </div>
-          <div class="concept-card cc-green mb-3">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-recycle text-success me-1"></i>Reutilização</strong>
             <p class="small text-muted mt-1 mb-0">Chamamos <code>mostrar_boas_vindas()</code> duas vezes.
-            Se precisássemos 100 vezes, seriam 100 chamadas de 1 linha — não 300 linhas de código repetido.</p>
+            Se precisássemos 100 vezes, seriam 100 chamadas de 1 linha.</p>
           </div>
-          <div class="concept-card cc-orange">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-ruler-combined text-warning me-1"></i>Nomenclatura</strong>
             <p class="small text-muted mt-1 mb-0">Use <code>snake_case</code>: palavras minúsculas separadas
-            por <code>_</code>. <code>calcular_media</code>, <code>eh_par</code>, <code>mostrar_menu</code>.</p>
+            por <code>_</code>. Ex: <code>calcular_media</code>, <code>eh_par</code>.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════════ SLIDE 12 – PARÂMETROS E RETURN ═════════════════ -->
+  <!-- SLIDE 12 – PARAMETROS E RETURN -->
   <div class="slide" id="slide-12">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">Parâmetros e <span class="keyword-chip">return</span></h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [8]:</span>
-              <code class="nb-code" id="code-12">def calcular_media(n1, n2, n3):
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [8]:</span>
+          <code class="nb-code" id="code-12">def calcular_media(n1, n2, n3):
     soma = n1 + n2 + n3
     media = soma / 3
     return media
@@ -683,25 +685,28 @@ if media_ana >= 6:
     print("Ana: Aprovada ✅")
 else:
     print("Ana: Reprovada ❌")</code>
-            </div>
-            <div class="nb-out" id="out-12">Ana:  8.0
+        </div>
+        <div class="nb-out" id="out-12">Ana:  8.0
 João: 5.0
 Ana: Aprovada ✅</div>
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
+            <strong><i class="fas fa-box text-primary me-1"></i>Múltiplos parâmetros</strong>
+            <p class="small text-muted mt-1 mb-0">Separados por vírgula. Você passa os valores na mesma ordem:
+            <code>calcular_media(8, 7, 9)</code> → <code>n1=8, n2=7, n3=9</code>.</p>
           </div>
         </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-blue mb-3">
-            <strong><i class="fas fa-box text-primary me-1"></i>Múltiplos parâmetros</strong>
-            <p class="small text-muted mt-1 mb-0">Separados por vírgula. Quando você chama a funç��o,
-            passa os valores na mesma ordem: <code>calcular_media(8, 7, 9)</code> → <code>n1=8, n2=7, n3=9</code>.</p>
-          </div>
-          <div class="concept-card cc-green mb-3">
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
             <strong><i class="fas fa-reply text-success me-1"></i>Usando o retorno</strong>
             <p class="small text-muted mt-1 mb-0">O valor retornado pode ser guardado em uma variável
-            (<code>media_ana = calcular_media(...)</code>) ou usado diretamente
-            (<code>if calcular_media(...) >= 6</code>).</p>
+            (<code>media_ana = ...</code>) ou usado diretamente em um <code>if</code>.</p>
           </div>
-          <div class="concept-card cc-orange">
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-orange h-100">
             <strong><i class="fas fa-dot-circle text-warning me-1"></i><code>:.1f</code></strong>
             <p class="small text-muted mt-1 mb-0">Dentro de f-string, <code>:.1f</code> formata o número
             com 1 casa decimal. <code>:.2f</code> = 2 casas, <code>:d</code> = inteiro.</p>
@@ -711,16 +716,14 @@ Ana: Aprovada ✅</div>
     </div>
   </div>
 
-  <!-- ════════════════════ SLIDE 13 – FUNÇÕES + LOOPS ═════════════════���═ -->
+  <!-- SLIDE 13 – FUNCOES + LOOPS -->
   <div class="slide" id="slide-13">
     <div class="slide-content text-center">
       <h2 class="display-5 fw-bold mb-3 text-dark">Funções + Loops juntos 🚀</h2>
-      <div class="row g-4 align-items-start">
-        <div class="col-md-6">
-          <div class="notebook">
-            <div class="nb-in">
-              <span class="nb-label">In [9]:</span>
-              <code class="nb-code" id="code-13">def eh_par(numero):
+      <div class="notebook mb-3">
+        <div class="nb-in">
+          <span class="nb-label">In [9]:</span>
+          <code class="nb-code" id="code-13">def eh_par(numero):
     return numero % 2 == 0
 
 def classificar(numero):
@@ -734,39 +737,41 @@ for n in numeros:
     tipo = classificar(n)
     icone = "✅" if eh_par(n) else "🔴"
     print(f"{icone} {n} é {tipo}")</code>
-            </div>
-            <div class="nb-out" id="out-13">🔴 1 é ímpar
+        </div>
+        <div class="nb-out" id="out-13">🔴 1 é ímpar
 ✅ 2 é par
 🔴 3 é ímpar
 ✅ 4 é par
 🔴 5 é ímpar
 ✅ 6 é par</div>
+      </div>
+      <div class="row g-2 text-start">
+        <div class="col-md-4">
+          <div class="concept-card cc-purple h-100">
+            <strong><i class="fas fa-layer-group me-1" style="color:#6f42c1"></i>Separação de responsabilidades</strong>
+            <p class="small text-muted mt-1 mb-0"><code>eh_par()</code> verifica paridade.
+            <code>classificar()</code> retorna o texto. O <code>for</code> itera. Cada parte faz uma coisa só.</p>
           </div>
         </div>
-        <div class="col-md-6 text-start">
-          <div class="concept-card cc-purple mb-3">
-            <strong><i class="fas fa-layer-group me-1" style="color:#6f42c1"></i>Separação de responsabilidades</strong>
-            <p class="small text-muted mt-1 mb-0"><code>eh_par()</code> sabe verificar paridade.
-            <code>classificar()</code> sabe retornar o texto.
-            O <code>for</code> sabe iterar. Cada parte faz uma coisa só.</p>
+        <div class="col-md-4">
+          <div class="concept-card cc-blue h-100">
+            <strong><i class="fas fa-compress-alt text-primary me-1"></i>Ternário inline</strong>
+            <p class="small text-muted mt-1 mb-0"><code>"✅" if eh_par(n) else "🔴"</code> — retorna o
+            primeiro valor se verdadeiro, o segundo se falso. Tudo em uma linha.</p>
           </div>
-          <div class="concept-card cc-blue mb-3">
-            <strong><i class="fas fa-compress-alt text-primary me-1"></i>Expressão condicional inline</strong>
-            <p class="small text-muted mt-1 mb-0"><code>"✅" if eh_par(n) else "🔴"</code> é um
-            <strong>ternário</strong>: retorna o primeiro valor se verdadeiro, o segundo se falso —
-            tudo em uma linha.</p>
-          </div>
-          <div class="alert alert-success small text-start p-2 mb-0">
-            <i class="fas fa-star me-1"></i>
-            <strong>Boas práticas:</strong> funções pequenas, com nome claro, que fazem uma coisa só.
-            Código assim é fácil de testar e de reutilizar.
+        </div>
+        <div class="col-md-4">
+          <div class="concept-card cc-green h-100">
+            <strong><i class="fas fa-star text-success me-1"></i>Boas práticas</strong>
+            <p class="small text-muted mt-1 mb-0">Funções pequenas, com nome claro, que fazem uma coisa só.
+            Código assim é fácil de testar e reutilizar.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ═══════════════���═══ SLIDE 14 – RESUMO VISUAL ═════════���═════════════ -->
+  <!-- SLIDE 14 – RESUMO VISUAL -->
   <div class="slide" id="slide-14">
     <div class="slide-content text-center">
       <h1 class="display-5 fw-bold mb-4 text-dark">Resumo — Guia rápido</h1>
@@ -818,7 +823,7 @@ for n in numeros:
     </div>
   </div>
 
-  <!-- ════════���══════════ SLIDE 15 – EXERCÍCIOS ══════════════════════════ -->
+  <!-- SLIDE 15 – EXERCICIOS -->
   <div class="slide" id="slide-15">
     <div class="slide-content text-center">
       <h1 class="display-4 fw-bold mb-3 text-dark">Hora de praticar! 💪</h1>
@@ -893,49 +898,38 @@ for n in numeros:
 
 <script src="../../js/standard_slides.js"></script>
 <script>
-// ─── IDs dos slides que têm notebook ──────────��──────────────────────────────
+// IDs dos slides que têm notebook animado
 const NOTEBOOK_SLIDES = ['slide-4','slide-5','slide-6','slide-7',
                          'slide-8','slide-9','slide-11','slide-12','slide-13'];
-const TYPING_SPEED = 16; // ms por caractere
+const TYPING_SPEED = 16;
 const typed = new Set();
 
-// ─── Guarda o código original e limpa o elemento ─────────────────────────────
+// Guarda o código original e limpa o elemento
 document.querySelectorAll('.nb-code').forEach(function(el) {
   el.dataset.code = el.textContent.trim();
   el.textContent = '';
 });
 
-// ─── Colorização de sintaxe Python ───────────────────────────────────────────
+// Colorização de sintaxe Python
 function colorize(raw) {
-  // Escapa HTML
   var h = raw
     .replace(/&/g,'&amp;')
     .replace(/</g,'&lt;')
     .replace(/>/g,'&gt;')
     .replace(/"/g,'&quot;');
 
-  // Comentários (# até fim da linha) — primeiro para não colorir dentro deles
   h = h.replace(/(#[^\n]*)/g,'<span class="sy-comment">$1</span>');
-
-  // f-strings e strings normais (simples, sem multiline)
   h = h.replace(/(f&quot;[^&\n]*?&quot;|f&#x27;[^&\n]*?&#x27;|&quot;[^&\n]*?&quot;|&#x27;[^&\n]*?&#x27;)/g,
     '<span class="sy-str">$1</span>');
-
-  // Palavras-chave
   h = h.replace(/\b(for|while|def|return|if|elif|else|in|True|False|None|break|continue|and|or|not|import|from|pass|class)\b/g,
     '<span class="sy-kw">$1</span>');
-
-  // Built-ins
   h = h.replace(/\b(print|input|len|range|int|str|float|list|dict|bool|type|abs|sum|min|max|sorted|enumerate|append)\b/g,
     '<span class="sy-builtin">$1</span>');
-
-  // Números
   h = h.replace(/\b(\d+\.?\d*)\b/g,'<span class="sy-num">$1</span>');
-
   return h;
 }
 
-// ─── Animação de digitação (estilo humano) ───────────────────────────────────
+// Animação de digitação estilo humano
 var TYPO_CHARS = 'qwjxzvfgsbh';
 
 function typeCode(slideId) {
@@ -948,9 +942,9 @@ function typeCode(slideId) {
 
   typed.add(slideId);
   var raw = codeEl.dataset.code;
-  var pos = 0;             // posição atual no raw
-  var displayed = '';      // o que está na tela
-  var nextTypo = rndBetween(12, 22);  // próxima posição para errar
+  var pos = 0;
+  var displayed = '';
+  var nextTypo = rndBetween(12, 22);
 
   var cursor = document.createElement('span');
   cursor.className = 'nb-cursor';
@@ -976,7 +970,6 @@ function typeCode(slideId) {
   function rndBetween(a, b) { return a + Math.floor(Math.random() * (b - a)); }
 
   function doTypo(afterCb) {
-    // digita 1-2 chars errados
     var count = Math.random() < 0.35 ? 2 : 1;
     var wrong = '';
     for (var t = 0; t < count; t++) {
@@ -986,7 +979,6 @@ function typeCode(slideId) {
     displayed += wrong;
     render();
 
-    // pausa percebível (~120-200ms), depois apaga
     setTimeout(function() {
       var del = count;
       function backspace() {
@@ -996,7 +988,7 @@ function typeCode(slideId) {
           del--;
           setTimeout(backspace, rndBetween(50, 90));
         } else {
-          displayed = save; // garante estado limpo
+          displayed = save;
           nextTypo = pos + rndBetween(12, 22);
           setTimeout(afterCb, rndBetween(20, 40));
         }
@@ -1013,13 +1005,11 @@ function typeCode(slideId) {
     render();
     pos++;
 
-    // decidir velocidade do próximo char
     var delay = TYPING_SPEED + rndBetween(0, 10);
-    if (ch === '\n')       delay = rndBetween(60, 110);  // pausa na quebra de linha
-    else if (ch === ':')   delay = rndBetween(40, 70);   // pausa após ":"
-    else if (ch === '(')   delay = rndBetween(25, 45);
+    if (ch === '\n')     delay = rndBetween(60, 110);
+    else if (ch === ':') delay = rndBetween(40, 70);
+    else if (ch === '(') delay = rndBetween(25, 45);
 
-    // introduzir erro?
     var canTypo = pos === nextTypo
                   && ch !== ' ' && ch !== '\n' && ch !== '(' && ch !== ')'
                   && pos < raw.length - 6;
@@ -1034,7 +1024,7 @@ function typeCode(slideId) {
   setTimeout(tick, 400);
 }
 
-// ─── Dispara ao entrar em cada slide com notebook ────────────────────────────
+// Dispara ao entrar em cada slide com notebook
 var observer = new MutationObserver(function() {
   document.querySelectorAll('.slide').forEach(function(slide) {
     if (slide.classList.contains('active') && NOTEBOOK_SLIDES.includes(slide.id)) {
