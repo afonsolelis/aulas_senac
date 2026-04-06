@@ -479,8 +479,206 @@ Iterações: 10</div>
         </a>
       </div>
 
+      <!-- ══════════ SOLUÇÕES DOS EXERCÍCIOS ══════════ -->
+      <hr class="my-5">
+      <div class="accordion" id="accordionSolucoes">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingSolucoes">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolucoes" aria-expanded="false" aria-controls="collapseSolucoes">
+              <i class="fas fa-key me-2"></i> Ver soluções dos exercícios (clique para expandir)
+            </button>
+          </h2>
+          <div id="collapseSolucoes" class="accordion-collapse collapse" aria-labelledby="headingSolucoes" data-bs-parent="#accordionSolucoes">
+            <div class="accordion-body">
+
+              <!-- Nível 1 -->
+              <h4 class="h6 fw-bold text-success mb-3"><i class="fas fa-check-circle me-1"></i> Nível 1</h4>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 1 — Contador simples</h5>
+              <pre><code>i = <span class="nm">1</span>
+<span class="kw">while</span> i &lt;= <span class="nm">10</span>:
+    <span class="bi">print</span>(i)
+    i += <span class="nm">1</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 2 — Pares com while</h5>
+              <pre><code>i = <span class="nm">2</span>
+<span class="kw">while</span> i &lt;= <span class="nm">20</span>:
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)
+    i += <span class="nm">2</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 3 — Contagem regressiva</h5>
+              <pre><code>i = <span class="nm">10</span>
+<span class="kw">while</span> i &gt;= <span class="nm">0</span>:
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)
+    i -= <span class="nm">1</span>
+<span class="bi">print</span>(<span class="st">"\n🚀 Fim!"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 4 — Soma acumulada</h5>
+              <pre><code>i = <span class="nm">1</span>
+soma = <span class="nm">0</span>
+<span class="kw">while</span> i &lt;= <span class="nm">100</span>:
+    soma += i
+    i += <span class="nm">1</span>
+<span class="bi">print</span>(<span class="st">f"Soma: {soma}"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 5 — Dobrar até ultrapassar</h5>
+              <pre><code>valor = <span class="nm">1</span>
+iteracoes = <span class="nm">0</span>
+<span class="bi">print</span>(valor, end=<span class="st">""</span>)
+<span class="kw">while</span> valor &lt;= <span class="nm">1000</span>:
+    valor *= <span class="nm">2</span>
+    iteracoes += <span class="nm">1</span>
+    <span class="bi">print</span>(<span class="st">f" → {valor}"</span>, end=<span class="st">""</span>)
+<span class="bi">print</span>(<span class="st">f"\nIterações: {iteracoes}"</span>)</code></pre>
+
+              <!-- Nível 2 -->
+              <h4 class="h6 fw-bold text-warning mb-3 mt-4"><i class="fas fa-check-circle me-1"></i> Nível 2</h4>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 6 — Tabuada do 7</h5>
+              <pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>):
+    <span class="bi">print</span>(<span class="st">f"7 x {i} = {7*i}"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 7 — Saudações personalizadas</h5>
+              <pre><code>nomes = [<span class="st">"Ana"</span>, <span class="st">"Bruno"</span>, <span class="st">"Carlos"</span>, <span class="st">"Diana"</span>]
+<span class="kw">for</span> nome <span class="kw">in</span> nomes:
+    <span class="bi">print</span>(<span class="st">f"Olá, {nome}! Seja bem-vindo(a)."</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 8 — Soma de lista</h5>
+              <pre><code>numeros = [<span class="nm">15</span>, <span class="nm">30</span>, <span class="nm">45</span>, <span class="nm">60</span>, <span class="nm">75</span>]
+soma = <span class="nm">0</span>
+<span class="kw">for</span> n <span class="kw">in</span> numeros:
+    soma += n
+<span class="bi">print</span>(<span class="st">f"Soma total: {soma}"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 9 — Letras numeradas</h5>
+              <pre><code>palavra = <span class="st">"LOGICA"</span>
+posicao = <span class="nm">1</span>
+<span class="kw">for</span> letra <span class="kw">in</span> palavra:
+    <span class="bi">print</span>(<span class="st">f"{posicao}: {letra}"</span>)
+    posicao += <span class="nm">1</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 10 — Ímpares com break</h5>
+              <pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">50</span>):
+    <span class="kw">if</span> i % <span class="nm">2</span> == <span class="nm">0</span>:
+        <span class="kw">continue</span>
+    <span class="kw">if</span> i &gt; <span class="nm">15</span>:
+        <span class="kw">break</span>
+    <span class="bi">print</span>(i, end=<span class="st">" "</span>)</code></pre>
+
+              <!-- Nível 3 -->
+              <h4 class="h6 fw-bold text-primary mb-3 mt-4"><i class="fas fa-check-circle me-1"></i> Nível 3</h4>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 11 — Tabuada completa</h5>
+              <pre><code><span class="kw">for</span> num <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">6</span>):
+    <span class="bi">print</span>(<span class="st">f"--- Tabuada do {num} ---"</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>):
+        <span class="bi">print</span>(<span class="st">f"{num} x {i} = {num*i}"</span>)
+    <span class="bi">print</span>()</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 12 — Função média da turma</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">calcular_media</span>(notas):
+    soma = <span class="nm">0</span>
+    <span class="kw">for</span> nota <span class="kw">in</span> notas:
+        soma += nota
+    <span class="kw">return</span> soma / <span class="bi">len</span>(notas)
+
+notas = [<span class="nm">7</span>, <span class="nm">8</span>, <span class="nm">6</span>, <span class="nm">9</span>, <span class="nm">5</span>]
+media = <span class="fn">calcular_media</span>(notas)
+<span class="bi">print</span>(<span class="st">f"Média da turma: {media}"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 13 — Classificador de notas</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">situacao</span>(nota):
+    <span class="kw">if</span> nota &gt;= <span class="nm">7</span>:
+        <span class="kw">return</span> <span class="st">"Aprovado"</span>
+    <span class="kw">elif</span> nota &gt;= <span class="nm">5</span>:
+        <span class="kw">return</span> <span class="st">"Recuperação"</span>
+    <span class="kw">else</span>:
+        <span class="kw">return</span> <span class="st">"Reprovado"</span>
+
+notas = [<span class="nm">7.5</span>, <span class="nm">4.0</span>, <span class="nm">6.5</span>, <span class="nm">8.0</span>, <span class="nm">3.5</span>]
+<span class="kw">for</span> nota <span class="kw">in</span> notas:
+    <span class="bi">print</span>(<span class="st">f"Nota {nota}: {situacao(nota)}"</span>)</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 14 — Função conta pares</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">contar_pares</span>(lista):
+    contador = <span class="nm">0</span>
+    <span class="kw">for</span> n <span class="kw">in</span> lista:
+        <span class="kw">if</span> n % <span class="nm">2</span> == <span class="nm">0</span>:
+            contador += <span class="nm">1</span>
+    <span class="kw">return</span> contador
+
+<span class="bi">print</span>(<span class="fn">contar_pares</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>]))  <span class="cm"># → 3</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 15 — Divisível por X e Y</h5>
+              <pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">200</span>):
+    <span class="kw">if</span> i % <span class="nm">7</span> == <span class="nm">0</span> <span class="kw">and</span> i % <span class="nm">11</span> == <span class="nm">0</span>:
+        <span class="bi">print</span>(<span class="st">f"Encontrado: {i} (na iteração {i})"</span>)
+        <span class="kw">break</span></code></pre>
+
+              <!-- Nível 4 -->
+              <h4 class="h6 fw-bold text-danger mb-3 mt-4"><i class="fas fa-check-circle me-1"></i> Nível 4</h4>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 16 — Fatorial</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">fatorial</span>(n):
+    resultado = <span class="nm">1</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, n + <span class="nm">1</span>):
+        resultado *= i
+    <span class="kw">return</span> resultado
+
+<span class="bi">print</span>(<span class="st">f"5! = {fatorial(5)}"</span>)   <span class="cm"># 120</span>
+<span class="bi">print</span>(<span class="st">f"7! = {fatorial(7)}"</span>)   <span class="cm"># 5040</span>
+<span class="bi">print</span>(<span class="st">f"10! = {fatorial(10)}"</span>) <span class="cm"># 3628800</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 17 — Filtrar lista</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">filtrar_pares</span>(lista):
+    pares = []
+    <span class="kw">for</span> n <span class="kw">in</span> lista:
+        <span class="kw">if</span> n % <span class="nm">2</span> == <span class="nm">0</span>:
+            pares.<span class="bi">append</span>(n)
+    <span class="kw">return</span> pares
+
+<span class="bi">print</span>(<span class="fn">filtrar_pares</span>([<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>,<span class="nm">4</span>,<span class="nm">5</span>,<span class="nm">6</span>,<span class="nm">7</span>,<span class="nm">8</span>]))  <span class="cm"># → [2,4,6,8]</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 18 — Fibonacci</h5>
+              <pre><code>a, b = <span class="nm">0</span>, <span class="nm">1</span>
+<span class="bi">print</span>(a, end=<span class="st">" "</span>)
+<span class="bi">print</span>(b, end=<span class="st">" "</span>)
+<span class="kw">while</span> <span class="nm">True</span>:
+    proximo = a + b
+    <span class="kw">if</span> proximo &gt;= <span class="nm">100</span>:
+        <span class="kw">break</span>
+    <span class="bi">print</span>(proximo, end=<span class="st">" "</span>)
+    a, b = b, proximo</code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 19 — Conta vogais</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">conta_vogais</span>(texto):
+    vogais = <span class="st">"aeiouAEIOU"</span>
+    contador = <span class="nm">0</span>
+    <span class="kw">for</span> letra <span class="kw">in</span> texto:
+        <span class="kw">if</span> letra <span class="kw">in</span> vogais:
+            contador += <span class="nm">1</span>
+    <span class="kw">return</span> contador
+
+<span class="bi">print</span>(<span class="fn">conta_vogais</span>(<span class="st">"Introducao a Logica"</span>))  <span class="cm"># → 9</span></code></pre>
+
+              <h5 class="h6 fw-bold mt-3">Exercício 20 — Gerador de tabuada</h5>
+              <pre><code><span class="kw">def</span> <span class="fn">tabuada</span>(n):
+    <span class="bi">print</span>(<span class="st">f"═══ Tabuada do {n} ═══"</span>)
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">1</span>, <span class="nm">11</span>):
+        <span class="bi">print</span>(<span class="st">f"{n} × {i:2} = {n*i}"</span>)
+    <span class="bi">print</span>()
+
+<span class="kw">for</span> num <span class="kw">in</span> <span class="bi">range</span>(<span class="nm">3</span>, <span class="nm">13</span>, <span class="nm">3</span>):
+    <span class="fn">tabuada</span>(num)</code></pre>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
