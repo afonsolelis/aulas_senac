@@ -14,9 +14,19 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+
+  <!-- anime.js v4 via CDN ESM -->
+  <script type="module">
+    import { animate, stagger, createTimeline, svg, utils, eases }
+      from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = { animate, stagger, createTimeline, svg, utils, eases };
+    if (document.body) document.body.classList.add('anime-ready');
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
 </head>
 
-<body class="slide-body">
+<body class="slide-body" data-disciplina="logica">
 
   <div class="slide-container">
 
@@ -27,7 +37,7 @@
     </a>
 
     <!-- Slide 1: Capa -->
-    <div class="slide active" id="slide-1">
+    <div class="slide active cover-bg" id="slide-1">
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
           height="80" class="mb-4">
@@ -657,6 +667,106 @@
   <script src="../../js/standard_slides.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ========================================================================
+       Camada anime.js v4 — partículas em covers e animações por-slide.
+       animMap: uma função por slide (índice 1-based). null = sem animação.
+       ======================================================================== -->
+  <script>
+  (function () {
+    function whenAnime(cb) {
+      if (window.__anime) { cb(window.__anime); return; }
+      window.addEventListener('anime-ready', function onReady() {
+        window.removeEventListener('anime-ready', onReady);
+        cb(window.__anime);
+      });
+    }
+    var A = function () { return window.__anime || null; };
+
+    // Lifecycle: mata animações pendentes ao trocar de slide
+    var _fx = [], _ts = [];
+    function track(fx) { if (fx) _fx.push(fx); return fx; }
+    function T(fn, d) { var id = setTimeout(fn, d); _ts.push(id); return id; }
+    function clearT() {
+      _ts.forEach(clearTimeout); _ts = [];
+      _fx.forEach(function (fx) { try { fx.pause && fx.pause(); fx.cancel && fx.cancel(); } catch (_) {} });
+      _fx = [];
+    }
+
+    // Partículas SVG em .cover-bg
+    function ensureParticles(slideEl) {
+      var existing = slideEl.querySelector('.cover-particles');
+      if (existing) return existing;
+      var svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svgEl.setAttribute('class', 'cover-particles');
+      svgEl.setAttribute('viewBox', '0 0 1200 800');
+      svgEl.setAttribute('preserveAspectRatio', 'xMidYMid slice');
+      for (var i = 0; i < 28; i++) {
+        var c = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        c.setAttribute('cx', Math.random() * 1200);
+        c.setAttribute('cy', Math.random() * 800);
+        c.setAttribute('r', (Math.random() * 2.4 + 0.6).toFixed(2));
+        c.style.opacity = (Math.random() * 0.45 + 0.15).toFixed(2);
+        svgEl.appendChild(c);
+      }
+      slideEl.insertBefore(svgEl, slideEl.firstChild);
+      return svgEl;
+    }
+    function animateParticles(slideEl) {
+      var lib = A(); if (!lib || !slideEl) return;
+      var svgEl = ensureParticles(slideEl);
+      var circles = svgEl.querySelectorAll('circle');
+      track(lib.animate(circles, {
+        translateX: function () { return (Math.random() * 80 - 40); },
+        translateY: function () { return (Math.random() * 80 - 40); },
+        opacity: [{ to: 0.8, duration: 2000 }, { to: 0.15, duration: 2000 }],
+        duration: 4000,
+        delay: lib.stagger(60),
+        loop: true,
+        alternate: true,
+        ease: 'inOutQuad'
+      }));
+    }
+
+    // === animMap — um índice por slide (1..N). null = sem animação extra. ===
+    function animCover() {
+      var lib = A(); if (!lib) return;
+      var slide = document.getElementById('slide-1');
+      animateParticles(slide);
+      var glass = slide.querySelector('.glass-cover');
+      if (!glass) return;
+      lib.utils.set(glass, { opacity: 0, translateY: 28, scale: 0.94 });
+      track(lib.animate(glass, {
+        opacity: [0, 1],
+        translateY: [28, 0],
+        scale: [0.94, 1],
+        duration: 680,
+        ease: 'outBack(1.6)'
+      }));
+    }
+
+    var totalSlides = document.querySelectorAll('.slide').length;
+    var animMap = new Array(totalSlides).fill(null);
+    animMap[0] = animCover; // slide 1 (cover) — única animação nova no pilot
+    window.animMap = animMap;
+
+    function runAnim(idx1) {
+      clearT();
+      var fn = animMap[idx1 - 1];
+      if (!fn) return;
+      whenAnime(function () { T(fn, 120); });
+    }
+
+    // Hook no standard_slides.js via evento slide-change
+    window.addEventListener('slide-change', function (e) {
+      runAnim(e.detail.index);
+    });
+
+    // Dispara para o slide inicial (standard_slides.js já chamou showSlide(1) antes desse script rodar,
+    // então emulamos manualmente)
+    whenAnime(function () { T(function () { runAnim(1); }, 60); });
+  })();
+  </script>
 
 </body>
 

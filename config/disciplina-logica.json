@@ -1,0 +1,20 @@
+{
+  "slug": "logica",
+  "name": "Introdução à Lógica",
+  "short_name": "Lógica",
+  "semestre": "2026.1",
+  "home": "pages/home_logica.html",
+  "slides_dir": "pages/logica",
+  "material_dir": "pages/logica/material",
+  "theme": {
+    "primary": "#1fa2ff",
+    "secondary": "#12d8fa",
+    "accent": "#a6ffcb",
+    "text_on_cover": "#ffffff",
+    "cover_gradient": "linear-gradient(135deg, #0c4a6e 0%, #1fa2ff 50%, #a6ffcb 100%)",
+    "badge_gradient": "linear-gradient(45deg, #1fa2ff, #12d8fa, #a6ffcb)",
+    "particles_color": "rgba(255,255,255,0.4)"
+  },
+  "font": "Outfit",
+  "particle_count": 28
+}

@@ -1,0 +1,101 @@
+/* ==========================================================================
+   base-styles.css — camada de modernização sobre style.css + slides.css
+   Aplicada apenas em slides que importam este arquivo explicitamente.
+   Não altera o comportamento de páginas legadas que não o importam.
+   ========================================================================== */
+
+:root {
+  /* Fallback (disciplina logica) — sobrescrito por [data-disciplina] abaixo */
+  --sl-primary: #1fa2ff;
+  --sl-secondary: #12d8fa;
+  --sl-accent: #a6ffcb;
+  --sl-cover-gradient: linear-gradient(135deg, #0c4a6e 0%, #1fa2ff 50%, #a6ffcb 100%);
+  --sl-particles: rgba(255, 255, 255, 0.4);
+  --sl-text-on-cover: #ffffff;
+}
+
+body[data-disciplina="logica"] {
+  --sl-primary: #1fa2ff;
+  --sl-secondary: #12d8fa;
+  --sl-accent: #a6ffcb;
+  --sl-cover-gradient: linear-gradient(135deg, #0c4a6e 0%, #1fa2ff 50%, #a6ffcb 100%);
+}
+
+body[data-disciplina="qualidade"] {
+  --sl-primary: #DD2476;
+  --sl-secondary: #FF512F;
+  --sl-accent: #ffb199;
+  --sl-cover-gradient: linear-gradient(135deg, #5b0f2d 0%, #DD2476 50%, #FF512F 100%);
+}
+
+body[data-disciplina="tcc"] {
+  --sl-primary: #833ab4;
+  --sl-secondary: #fd1d1d;
+  --sl-accent: #fcb045;
+  --sl-cover-gradient: linear-gradient(135deg, #2b0a4a 0%, #833ab4 45%, #fd1d1d 80%, #fcb045 100%);
+}
+
+/* ==========================================================================
+   Cover slide (primeiro e último slide)
+   ========================================================================== */
+
+.slide.cover-bg {
+  position: relative;
+  overflow: hidden;
+  background: var(--sl-cover-gradient);
+  color: var(--sl-text-on-cover);
+}
+
+.slide.cover-bg .glass-cover {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+}
+
+.slide.cover-bg .glass-cover h1,
+.slide.cover-bg .glass-cover h2,
+.slide.cover-bg .glass-cover h3,
+.slide.cover-bg .glass-cover h5,
+.slide.cover-bg .glass-cover p {
+  color: #fff !important;
+}
+
+.slide.cover-bg .glass-cover hr {
+  border-color: rgba(255, 255, 255, 0.5);
+  opacity: 0.8;
+}
+
+.cover-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  display: block;
+}
+
+.cover-particles circle {
+  fill: var(--sl-particles);
+}
+
+/* ==========================================================================
+   Reset: quando anime.js assume controle, desabilita transitions concorrentes
+   ========================================================================== */
+
+body.anime-ready .cover-particles circle {
+  transition: none !important;
+}
+
+/* ==========================================================================
+   Utilities para receitas de animação (opacity/transform inicial controlados por utils.set)
+   ========================================================================== */
+
+.anim-reveal {
+  /* Marcador semântico — o estado inicial é aplicado via utils.set() no JS */
+}

@@ -40,6 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (slideCounter) {
       slideCounter.textContent = `${currentSlide} / ${totalSlides}`;
     }
+
+    // Notifica listeners (usado pela camada de animações anime.js v4 — base-styles.css)
+    window.dispatchEvent(new CustomEvent('slide-change', {
+      detail: { index: currentSlide, slide: targetSlide, total: totalSlides }
+    }));
   }
 
   function nextSlide() {
@@ -97,6 +102,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (event.key === "ArrowLeft") prevSlide();
     if (event.key === "f" || event.key === "F") toggleFullscreen();
   });
+
+  // Expõe API de navegação (necessário para scripts/capture-slides.mjs e animMap por-slide)
+  window.showSlide = showSlide;
+  window.nextSlide = nextSlide;
+  window.previousSlide = prevSlide;
 
   // Init (Ensure correct start)
   showSlide(1);

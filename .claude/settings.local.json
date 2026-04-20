@@ -33,7 +33,11 @@
       "Bash(ls:*)",
       "Bash(curl:*)",
       "WebFetch(domain:commons.wikimedia.org)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(grep -o \"#[0-9A-Fa-f]\\\\{3,6\\\\}\" /c/Users/afons/Repos/aulas_senac/css/style.css /c/Users/afons/Repos/aulas_senac/css/slides.css)",
+      "Bash(npm install *)",
+      "Bash(npx playwright *)",
+      "Bash(node scripts/capture-slides.mjs pages/logica/slide_introducaoalogicaeferramentas.html .tmp/shots-logica-aula01 1280 720)"
     ]
   }
 }
