@@ -100,12 +100,7 @@ body {
   transform: scale(1.05);
 }
 
-footer {
-  background: #2d3436;
-  color: white;
-  padding: 2rem 0;
-  margin-top: 4rem;
-}
+/* Footer - usando classe Bootstrap bg-light */
 
 /* Accessibility - Focus Visible States */
 *:focus-visible {
