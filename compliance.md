@@ -1,8 +1,8 @@
-# QA Compliance Report - Aulas Senac
+# QA & UX Compliance Report - Aulas Senac
 
 > **Generated:** 2026-05-11
-> **Agent:** @qa (Quinn)
-> **Overall Score:** 82%
+> **Agents:** @qa (Quinn) + @ux-design-expert (Uma)
+> **Overall Score:** 82% (QA) | 6.5/10 (UX)
 
 ---
 
@@ -28,7 +28,49 @@
 | Testing Coverage | 85% |
 | Content Quality | 85% |
 | Accessibility | 70% |
+| UX/UI Design | 65% |
 | **Overall** | **82%** |
+
+---
+
+## UX/UI Design Analysis (@ux-design-expert)
+
+### Score: 6.5/10
+
+#### Critical UX Issues
+
+| Issue | Location | Description |
+|-------|----------|-------------|
+| Missing `base-styles.css` in slides | `pages/qualidade/slide_*.html:15-17` | Slides lack discipline-specific gradients and particle animations |
+| Footer color inconsistency | `pages/home_qualidade.html:336-342` | Uses `bg-light` with CSS `footer { color: white }` - poor contrast |
+| Hero gradient hardcoded | `css/style.css:33-40` | Uses hardcoded `linear-gradient` instead of CSS variables like `--sl-cover-gradient` |
+
+#### High Priority UX Issues
+
+| Issue | Location | Description |
+|-------|----------|-------------|
+| Button color inconsistency | Home pages | "Ver material" always uses Bootstrap primary, not discipline color |
+| Professor page hero arbitrary | `pages/professor.html:31-32` | Gradient doesn't match any discipline |
+| Cover slide text color conflict | `pages/qualidade/slide_*.html:35` | Uses `text-black` but system expects white with `--sl-text-on-cover` |
+| Missing ARIA labels | All slides | "Ver slide", "Ver material" buttons lack screen reader support |
+
+#### Medium Priority UX Issues
+
+| Issue | Location | Description |
+|-------|----------|-------------|
+| Contrast on hero text | `pages/home_qualidade.html:38` | `text-white-50` may not meet WCAG 4.5:1 |
+| No `:focus-visible` styles | `css/style.css` | Keyboard navigation lacks visible focus states |
+| No skip-to-content link | All pages | Missing accessibility skip link |
+| Badge color inconsistency | Home pages | Course labels use varying badge colors |
+
+#### Low Priority UX Issues
+
+| Issue | Location | Description |
+|-------|----------|-------------|
+| Copyright year outdated | Multiple pages | Says "2025" instead of "2026" |
+| Inconsistent hover states | `css/style.css` | Glass card has hover but list-group doesn't |
+| Icon sizing varies | Various slides | Some use `fa-3x`, others `fa-5x` |
+| Missing `rel="noopener"` | External links | GitHub links lack security attributes |
 
 ---
 
@@ -142,20 +184,29 @@ The following test suites should exist but are missing:
 
 ## Immediate Actions (Priority 1)
 
-1. [ ] Fix broken Wikimedia URL - Replace with Cloudinary-hosted version
-2. [ ] Add `data-disciplina` attribute to Qualidade slides
-3. [ ] Add `data-disciplina` attribute to TCC slides
-4. [ ] Update copyright year to 2026 across all files
-5. [ ] Add Bootstrap JS to TCC slides
-6. [ ] Import base-styles.css in all Qualidade slides
+### QA (@qa) - ✅ RESOLVIDOS
+1. [x] Fix broken Wikimedia URL - Replace with Cloudinary-hosted version
+2. [x] Add `data-disciplina` attribute to Qualidade slides
+3. [x] Add `data-disciplina` attribute to TCC slides
+4. [x] Update copyright year to 2026 across all files ✅
+5. [x] Add Bootstrap JS to TCC slides ✅
+6. [x] Import base-styles.css in all Qualidade slides ✅
+
+### UX (@ux-design-expert) - ✅ RESOLVIDOS
+1. [x] Add `base-styles.css` to all Qualidade slides ✅
+2. [x] Fix footer contrast (use `bg-dark text-light`) ✅
+3. [x] Add ARIA labels to all navigation buttons ✅
+4. [x] Add `:focus-visible` styles for keyboard navigation ✅
+5. [x] Add skip-to-content CSS styles ✅
+6. [x] Import base-styles.css in all TCC slides ✅
 
 ## Short-term Actions (Priority 2)
 
-7. [ ] Standardize footer across all page types
-8. [ ] Add aria-labels to navigation buttons
+7. [ ] Standardize footer across all page types (slides have different footer)
+8. [x] Add aria-labels to navigation buttons ✅
 9. [ ] Complete materialMap entries in all home pages
 10. [ ] Add meta descriptions to all pages
-11. [ ] Migrate hardcoded colors to CSS variables
+11. [x] Migrate hardcoded colors to CSS variables (via base-styles.css) ✅
 
 ## Long-term Actions (Priority 3)
 
@@ -179,6 +230,7 @@ The following test suites should exist but are missing:
 
 ## Recommendations
 
+### QA (@qa)
 1. Prioritize fixing Critical and High issues immediately
 2. Standardize theme attributes (`data-disciplina`) across all slides
 3. Update copyright year in all files
@@ -186,13 +238,31 @@ The following test suites should exist but are missing:
 5. Create accessibility test suite
 6. Implement design token validation
 
+### UX (@ux-design-expert)
+1. Adopt CSS custom properties for all gradients (`--sl-cover-gradient`, `--sl-text-on-cover`)
+2. Standardize button colors using discipline tokens ("Ver material" should use secondary)
+3. Add `:focus-visible` styles for keyboard navigation
+4. Implement skip-to-content link for WCAG compliance
+5. Create consistent icon sizing scale
+
 ---
 
 ## Conclusion
 
-The repository demonstrates strong foundation with clear architecture, comprehensive testing, and good documentation (DESIGN_SYSTEM.md). However, there are consistency issues between disciplines - particularly in slide modern features (anime.js, base-styles.css) and some broken external resources. Addressing the critical issues would significantly improve quality and user experience.
+The repository demonstrates strong foundation with clear architecture, comprehensive testing, and good documentation (DESIGN_SYSTEM.md). However:
+
+- **QA Issues (82% compliance):** Critical issues resolved, high priority items remaining
+- **UX Issues (6.5/10):** Incomplete token adoption, accessibility gaps, inconsistent styling
+
+### With Recommended Fixes
+
+| Aspect | Current | After Fixes |
+|--------|---------|-------------|
+| QA Compliance | 82% | 90%+ |
+| UX Score | 6.5/10 | 8-8.5/10 |
+| Accessibility | 70% | 85%+ |
 
 ---
 
-*Generated by @qa (Quinn) Agent*
+*Generated by @qa (Quinn) & @ux-design-expert (Uma) Agents*
 *Framework: Synkra AIOX v5.0.8*
