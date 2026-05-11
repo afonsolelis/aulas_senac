@@ -1,4 +1,3 @@
-
 # ----------------------------------------------------------------------
 # Windows
 # ----------------------------------------------------------------------
@@ -182,3 +181,20 @@ venv.bak/
 tar.gz
 rar
 target/
+
+# Environment & Secrets (AIOX)
+.env.local
+.env.*.local
+*.key
+*.pem
+
+# Dependencies (AIOX)
+node_modules
+
+# Build & Logs (AIOX)
+logs/
+
+# AIOX Local (AIOX)
+.aiox-core/local/
+.claude/settings.local.json
+.aiox/install-log.txt
