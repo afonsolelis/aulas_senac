@@ -110,6 +110,124 @@ body {
    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
+/* Clickable subject card (whole card is a link) */
+a.subject-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: inherit;
+}
+
+a.subject-card:hover,
+a.subject-card:focus-visible {
+  color: inherit;
+}
+
+/* ============================================================
+   Semester Hub (home / seletor de semestre)
+   Tema escuro distinto das páginas de disciplina (claras)
+   ============================================================ */
+.semester-hub {
+  min-height: 100vh;
+  background: radial-gradient(circle at 20% 0%, #1d3b6e 0%, #0a0f1f 65%);
+  color: #f1f5ff;
+  display: flex;
+  flex-direction: column;
+}
+
+.semester-hub__title {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.semester-hub__subtitle {
+  color: rgba(241, 245, 255, 0.6);
+}
+
+.semester-card {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #f1f5ff;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 2rem;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+
+.semester-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 6px;
+  background: var(--sem-accent, #4ECDC4);
+}
+
+.semester-card:hover,
+.semester-card:focus-visible {
+  color: #fff;
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.09);
+  box-shadow: 0 22px 55px rgba(0, 0, 0, 0.55);
+}
+
+.semester-card__period {
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.semester-card__tag {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: rgba(241, 245, 255, 0.55);
+}
+
+.semester-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0;
+  color: rgba(241, 245, 255, 0.8);
+  font-size: 0.95rem;
+}
+
+.semester-card__list li {
+  padding: 0.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.semester-card__list li:last-child {
+  border-bottom: none;
+}
+
+.semester-card__cta {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--sem-accent, #4ECDC4);
+}
+
+.semester-card:hover .semester-card__cta i {
+  transform: translateX(4px);
+}
+
+.semester-card__cta i {
+  transition: transform 0.3s ease;
+}
+
 /* Footer - usando classe Bootstrap bg-light */
 
 /* Accessibility - Focus Visible States */
