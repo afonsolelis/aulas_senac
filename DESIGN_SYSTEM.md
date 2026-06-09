@@ -11,11 +11,12 @@ Cada disciplina tem um arquivo `config/disciplina-<slug>.json` com tokens canôn
 | Disciplina | Slug | Primary | Secondary | Accent | Cover gradient |
 |---|---|---|---|---|---|
 | Introdução à Lógica | `logica` | `#1fa2ff` | `#12d8fa` | `#a6ffcb` | `#0c4a6e → #1fa2ff → #a6ffcb` |
-| Qualidade de Software | `qualidade` | `#DD2476` | `#FF512F` | `#ffb199` | `#5b0f2d → #DD2476 → #FF512F` |
+| Qualidade de Software (2026.1) | `qualidade` | `#DD2476` | `#FF512F` | `#ffb199` | `#5b0f2d → #DD2476 → #FF512F` |
+| Qualidade de Software (2026.2) | `qualidade2` | `#DD2476` | `#FF512F` | `#ffb199` | `#5b0f2d → #DD2476 → #FF512F` |
 | TCC1 | `tcc` | `#833ab4` | `#fd1d1d` | `#fcb045` | `#2b0a4a → #833ab4 → #fd1d1d → #fcb045` |
 | TCC2 (2026.2) | `tcc2` | `#833ab4` | `#fd1d1d` | `#fcb045` | `#2b0a4a → #833ab4 → #fd1d1d → #fcb045` |
 
-`tcc2` reusa a paleta de `tcc`: os decks de TCC2 usam `body.slide-body[data-disciplina="tcc"]` (campo `data_disciplina` em `config/disciplina-tcc2.json`).
+`tcc2`/`qualidade2` reusam as paletas de `tcc`/`qualidade`: os decks de 2026.2 usam `body.slide-body[data-disciplina="tcc"|"qualidade"]` (campo `data_disciplina` no config). Cada semestre tem sua própria pasta de slides — slides de 2026.2 não apontam para arquivos de 2026.1.
 
 Os mesmos valores são replicados em `css/base-styles.css` como `--sl-primary|secondary|accent|cover-gradient|particles|text-on-cover`, seletados por `body[data-disciplina="<slug>"]`.
 

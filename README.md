@@ -22,6 +22,7 @@ aulas_senac/
 │   ├── home_tcc2.html              # Cronograma — TCC2 (2026.2)
 │   ├── professor.html
 │   ├── qualidade/  logica/  tcc/   # slides + material/ de 2026.1
+│   ├── qualidade2/                 # slides + material/ de Qualidade (2026.2)
 │   └── tcc2/                       # slides + material/ de TCC2 (2026.2)
 ├── css/                            # style.css, slides.css, base-styles.css
 ├── js/standard_slides.js           # navegação prev/next/fullscreen/progress

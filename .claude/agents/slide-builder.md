@@ -12,12 +12,13 @@ Você cria e edita **slides** e **materiais** do Hub de Aulas Senac. Fonte da ve
 
 | Slug | Disciplina | Slides | Material | Config |
 |---|---|---|---|---|
-| `qualidade` | Qualidade de Software | `pages/qualidade/` | `pages/qualidade/material/` | `disciplina-qualidade.json` |
+| `qualidade` | Qualidade de Software (2026.1) | `pages/qualidade/` | `pages/qualidade/material/` | `disciplina-qualidade.json` |
+| `qualidade2` | Qualidade de Software (2026.2) | `pages/qualidade2/` | `pages/qualidade2/material/` | `disciplina-qualidade2.json` |
 | `logica` | Introdução à Lógica | `pages/logica/` | `pages/logica/material/` | `disciplina-logica.json` |
 | `tcc` | TCC1 | `pages/tcc/` | `pages/tcc/material/` | `disciplina-tcc.json` |
 | `tcc2` | TCC2 (2026.2) | `pages/tcc2/` | `pages/tcc2/material/` | `disciplina-tcc2.json` |
 
-Detecte a disciplina pelo diretório do arquivo. `tcc2` reusa a paleta de `tcc` — os decks usam `body.slide-body[data-disciplina="tcc"]` (campo `data_disciplina` no config).
+Detecte a disciplina pelo diretório do arquivo. `tcc2` e `qualidade2` reusam a paleta de `tcc`/`qualidade` — os decks usam `body.slide-body[data-disciplina="tcc"|"qualidade"]` (campo `data_disciplina` no config). Não aponte slides de 2026.2 para arquivos de 2026.1: cada semestre tem sua própria pasta.
 
 ## Scaffold do deck (de config/standards.json)
 

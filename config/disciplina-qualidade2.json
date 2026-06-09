@@ -1,0 +1,21 @@
+{
+  "slug": "qualidade2",
+  "name": "Qualidade de Software",
+  "short_name": "Qualidade",
+  "semestre": "2026.2",
+  "home": "pages/home_qualidade_2026_2.html",
+  "slides_dir": "pages/qualidade2",
+  "material_dir": "pages/qualidade2/material",
+  "data_disciplina": "qualidade",
+  "theme": {
+    "primary": "#DD2476",
+    "secondary": "#FF512F",
+    "accent": "#ffb199",
+    "text_on_cover": "#ffffff",
+    "cover_gradient": "linear-gradient(135deg, #5b0f2d 0%, #DD2476 50%, #FF512F 100%)",
+    "badge_gradient": "linear-gradient(45deg, #FF512F, #DD2476)",
+    "particles_color": "rgba(255,255,255,0.4)"
+  },
+  "font": "Outfit",
+  "particle_count": 28
+}

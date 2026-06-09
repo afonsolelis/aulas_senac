@@ -31,10 +31,18 @@
       "disciplinas": [
         {
           "name": "Qualidade de Software",
-          "slug": "qualidade",
+          "slug": "qualidade2",
+          "config": "config/disciplina-qualidade2.json",
           "home": "pages/home_qualidade_2026_2.html",
+          "slides_dir": "pages/qualidade2",
+          "material_dir": "pages/qualidade2/material",
           "status": "em-construcao",
-          "obs": "Reaproveita os tokens de config/disciplina-qualidade.json (slug qualidade). Slides/materiais ainda não criados."
+          "obs": "Conteúdo proprio de 2026.2 (placeholders) em pages/qualidade2/ — nao reaproveita slides de 2026.1. Paleta de qualidade (data_disciplina=qualidade).",
+          "marcos": {
+            "prova": { "semana": 38, "ref": "3a semana de setembro" },
+            "entrega_trabalho_final": { "semana": 46 },
+            "prova_oral": { "semana": 47, "ref": "meio de novembro" }
+          }
         },
         {
           "name": "TCC2",
