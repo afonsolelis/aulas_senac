@@ -12,14 +12,21 @@ Cada disciplina tem um arquivo `config/disciplina-<slug>.json` com tokens canôn
 |---|---|---|---|---|---|
 | Introdução à Lógica | `logica` | `#1fa2ff` | `#12d8fa` | `#a6ffcb` | `#0c4a6e → #1fa2ff → #a6ffcb` |
 | Qualidade de Software | `qualidade` | `#DD2476` | `#FF512F` | `#ffb199` | `#5b0f2d → #DD2476 → #FF512F` |
-| TCC | `tcc` | `#833ab4` | `#fd1d1d` | `#fcb045` | `#2b0a4a → #833ab4 → #fd1d1d → #fcb045` |
+| TCC1 | `tcc` | `#833ab4` | `#fd1d1d` | `#fcb045` | `#2b0a4a → #833ab4 → #fd1d1d → #fcb045` |
+| TCC2 (2026.2) | `tcc2` | `#833ab4` | `#fd1d1d` | `#fcb045` | `#2b0a4a → #833ab4 → #fd1d1d → #fcb045` |
+
+`tcc2` reusa a paleta de `tcc`: os decks de TCC2 usam `body.slide-body[data-disciplina="tcc"]` (campo `data_disciplina` em `config/disciplina-tcc2.json`).
 
 Os mesmos valores são replicados em `css/base-styles.css` como `--sl-primary|secondary|accent|cover-gradient|particles|text-on-cover`, seletados por `body[data-disciplina="<slug>"]`.
 
 Cor associada a cursos (badge/hero/home):
 - Qualidade → Bootstrap `text-danger` / `bg-quality` (gradiente laranja→rosa)
 - Lógica → Bootstrap `text-info` / `bg-logic` (gradiente azul→verde)
-- TCC → `bg-tcc` (roxo→vermelho→laranja)
+- TCC1 / TCC2 → `bg-tcc` (roxo→vermelho→laranja)
+
+### Seletor de semestre (`index.html`)
+
+O hub raiz usa um tema **escuro** próprio (`body.semester-hub`, fundo radial), distinto das páginas de disciplina (claras). Cards `.semester-card` são links clicáveis com barra de destaque via `--sem-accent` (2025.2 `#4ECDC4`, 2026.1 `#FF512F`, 2026.2 `#833ab4`). As homes de semestre (`pages/home_<ano>_<sem>.html`) usam cards de disciplina clicáveis `a.subject-card` (sem botão). Registro em `config/semestres.json`.
 
 ## 2. Tipografia
 
@@ -168,7 +175,8 @@ Font Awesome 6.0 via CDN. Padrões estabelecidos:
 
 ```
 config/
-  disciplina-<slug>.json   → tokens da disciplina (paleta, nome, paths)
+  disciplina-<slug>.json   → tokens da disciplina (paleta, nome, paths) — qualidade, logica, tcc, tcc2
+  semestres.json           → registro dos semestres, disciplinas, marcos e calendário
   standards.json           → IDs/classes estruturais dos slides
 css/
   style.css                → base do hub + cards de disciplina

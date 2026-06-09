@@ -1,0 +1,21 @@
+{
+  "slug": "tcc2",
+  "name": "Trabalho de Conclusão de Curso II",
+  "short_name": "TCC2",
+  "semestre": "2026.2",
+  "home": "pages/home_tcc2.html",
+  "slides_dir": "pages/tcc2",
+  "material_dir": "pages/tcc2/material",
+  "data_disciplina": "tcc",
+  "theme": {
+    "primary": "#833ab4",
+    "secondary": "#fd1d1d",
+    "accent": "#fcb045",
+    "text_on_cover": "#ffffff",
+    "cover_gradient": "linear-gradient(135deg, #2b0a4a 0%, #833ab4 45%, #fd1d1d 80%, #fcb045 100%)",
+    "badge_gradient": "linear-gradient(45deg, #833ab4, #fd1d1d, #fcb045)",
+    "particles_color": "rgba(255,255,255,0.4)"
+  },
+  "font": "Outfit",
+  "particle_count": 28
+}

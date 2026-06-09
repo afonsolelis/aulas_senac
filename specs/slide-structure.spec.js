@@ -30,6 +30,7 @@ const DISCIPLINE_HOME_MAP = {
   qualidade: 'home_qualidade.html',
   logica: 'home_logica.html',
   tcc: 'home_tcc.html',
+  tcc2: 'home_tcc2.html',
 };
 
 // ─────────────────────────────────────────────

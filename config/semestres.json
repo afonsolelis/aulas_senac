@@ -1,0 +1,56 @@
+{
+  "atual": "2026.1",
+  "index": "index.html",
+  "descricao": "Registro dos semestres do hub. O index.html é o seletor de semestre; cada semestre tem uma home (pages/home_<ano>_<sem>.html) que lista suas disciplinas. Tokens de cor por disciplina vivem em config/disciplina-<slug>.json.",
+  "semestres": [
+    {
+      "periodo": "2025.2",
+      "home": "pages/home_2025_2.html",
+      "accent": "#4ECDC4",
+      "disciplinas": [
+        { "name": "Testes de Software", "home": "pages/home_testes_2025_2.html", "status": "placeholder" },
+        { "name": "TCC2", "home": "pages/home_tcc2_2025_2.html", "status": "placeholder" },
+        { "name": "Lógica da Computação", "home": "pages/home_logica_2025_2.html", "status": "placeholder" }
+      ]
+    },
+    {
+      "periodo": "2026.1",
+      "home": "pages/home_2026_1.html",
+      "accent": "#FF512F",
+      "disciplinas": [
+        { "name": "Qualidade de Software", "slug": "qualidade", "home": "pages/home_qualidade.html", "status": "ativo" },
+        { "name": "Introdução à Lógica", "slug": "logica", "home": "pages/home_logica.html", "status": "ativo" },
+        { "name": "TCC1", "slug": "tcc", "home": "pages/home_tcc.html", "status": "ativo" }
+      ]
+    },
+    {
+      "periodo": "2026.2",
+      "home": "pages/home_2026_2.html",
+      "accent": "#833ab4",
+      "calendario": { "inicio": "2026-08-03", "fim": "2026-12-11", "semana_inicio": 32, "semana_fim": 50 },
+      "disciplinas": [
+        {
+          "name": "Qualidade de Software",
+          "slug": "qualidade",
+          "home": "pages/home_qualidade_2026_2.html",
+          "status": "em-construcao",
+          "obs": "Reaproveita os tokens de config/disciplina-qualidade.json (slug qualidade). Slides/materiais ainda não criados."
+        },
+        {
+          "name": "TCC2",
+          "slug": "tcc2",
+          "config": "config/disciplina-tcc2.json",
+          "home": "pages/home_tcc2.html",
+          "slides_dir": "pages/tcc2",
+          "material_dir": "pages/tcc2/material",
+          "status": "em-construcao",
+          "marcos": {
+            "entrega_parcial": { "semana": 38, "ref": "semana de 14 de setembro" },
+            "deposito": { "semana": 48 },
+            "apresentacao": { "semana": 50, "ref": "07 a 11 de dezembro" }
+          }
+        }
+      ]
+    }
+  ]
+}
