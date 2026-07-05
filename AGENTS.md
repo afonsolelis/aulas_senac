@@ -5,40 +5,44 @@ Este arquivo define as instrucoes do projeto para o Codex CLI.
 <!-- AIOX-MANAGED-START: core -->
 ## Core Rules
 
-1. Siga a Constitution em `.aiox-core/constitution.md`
-2. Priorize `CLI First -> Observability Second -> UI Third`
-3. Trabalhe por stories em `docs/stories/`
-4. Nao invente requisitos fora dos artefatos existentes
+> Este e um **site estatico** (HTML/CSS/JS puro, sem build/CI). Regras genericas do AIOX (CLI First, stories, `docs/stories/`) **nao se aplicam** aqui.
+
+1. Fonte da verdade do projeto: `CLAUDE.md` (guia operacional) + `DESIGN_SYSTEM.md` (visual) + `STANDARDS.md` (padroes).
+2. Prioridade real: **UI/conteudo** — nao ha camada CLI nem observabilidade.
+3. Mantenha conteudo (`pages/`), config (`config/*.json`) e testes em sincronia manual.
+4. Nao invente requisitos fora dos artefatos existentes.
+
 <!-- AIOX-MANAGED-END: core -->
 
 <!-- AIOX-MANAGED-START: quality -->
 ## Quality Gates
 
-- Rode `npm run lint`
-- Rode `npm run typecheck`
-- Rode `npm test`
-- Atualize checklist e file list da story antes de concluir
+Rodam **localmente** antes do commit (nao ha CI). `lint`/`typecheck`/`build` **nao existem** neste repo.
+
+- Rode `npm test` (Jest: estrutura de slides, homes, links internos, logo, `materialMap`)
+- Valide slides alterados: `npm run capture` (Playwright)
+- Garanta que card ↔ arquivo e slide ↔ material foram adicionados em sincronia
 <!-- AIOX-MANAGED-END: quality -->
 
 <!-- AIOX-MANAGED-START: codebase -->
 ## Project Map
 
-- Core framework: `.aiox-core/`
-- CLI entrypoints: `bin/`
-- Shared packages: `packages/`
-- Tests: `tests/`
-- Docs: `docs/`
+- Seletor de semestre: `index.html`
+- Paginas (homes, slides, materiais): `pages/`
+- Config/registro: `config/*.json` · assets externos: `sources.json`
+- Estilos: `css/` · navegacao de slides: `js/standard_slides.js`
+- Testes (Jest): `tests/` + `specs/` · captura visual: `scripts/capture-slides.mjs`
+- Docs: `README.md`, `CLAUDE.md`, `STANDARDS.md`, `DESIGN_SYSTEM.md`, `index.json`
+- Framework AIOX (vendorizado, personas genericas): `.aiox-core/` e `.github/agents/`
 <!-- AIOX-MANAGED-END: codebase -->
 
 <!-- AIOX-MANAGED-START: commands -->
 ## Common Commands
 
-- `npm run sync:ide`
-- `npm run sync:ide:check`
-- `npm run sync:skills:codex`
-- `npm run sync:skills:codex:global` (opcional; neste repo o padrao e local-first)
-- `npm run validate:structure`
-- `npm run validate:agents`
+- `python3 -m http.server 8000` (servir o site; sem build)
+- `npm install`
+- `npm test` / `npm run test:watch` / `npm run test:coverage`
+- `npm run capture` (validacao visual Playwright)
 <!-- AIOX-MANAGED-END: commands -->
 
 <!-- AIOX-MANAGED-START: shortcuts -->

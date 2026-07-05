@@ -27,7 +27,7 @@ aulas_senac/
 ├── css/                            # style.css, slides.css, base-styles.css
 ├── js/standard_slides.js           # navegação prev/next/fullscreen/progress
 ├── config/
-│   ├── disciplina-<slug>.json      # tokens por disciplina (qualidade, logica, tcc, tcc2)
+│   ├── disciplina-<slug>.json      # tokens por disciplina (qualidade, qualidade2, logica, tcc, tcc2)
 │   ├── semestres.json              # registro dos semestres e suas disciplinas
 │   └── standards.json              # padrão estrutural de slides
 ├── scripts/capture-slides.mjs      # validação visual (Playwright)

@@ -1,0 +1,992 @@
+{
+  "$schema": "https://json.schemastore.org/directory-tree",
+  "name": "aulas-senac",
+  "description": "Hub de Aulas Senac — site estático de cronogramas, slides e materiais das disciplinas",
+  "kind": "static-site",
+  "ci": "none (intencional — validação local via npm test + Playwright)",
+  "generatedBy": "scripts/gen-index (devops)",
+  "notes": [
+    ".git e node_modules são omitidos.",
+    ".aiox-core é framework AIOX vendorizado — incluído como nó resumido (dirCount/fileCount) em vez de expandido."
+  ],
+  "totals": {
+    "directories": 190,
+    "files": 1277
+  },
+  "tree": [
+    {
+      "name": ".aiox-core",
+      "type": "dir",
+      "collapsed": true,
+      "note": "Framework AIOX vendorizado (personas genéricas de dev, não acopladas às disciplinas)",
+      "dirCount": 164,
+      "fileCount": 1118
+    },
+    {
+      "name": ".claude",
+      "type": "dir",
+      "note": "Config do Claude Code: agents locais, hook de persona, settings",
+      "children": [
+        {
+          "name": "agents",
+          "type": "dir",
+          "children": [
+            {
+              "name": "home-builder.md",
+              "type": "file",
+              "size": 3639
+            },
+            {
+              "name": "slide-builder.md",
+              "type": "file",
+              "size": 4215
+            }
+          ]
+        },
+        {
+          "name": "persona-router.md",
+          "type": "file",
+          "size": 1602
+        },
+        {
+          "name": "settings.json",
+          "type": "file",
+          "size": 329
+        }
+      ]
+    },
+    {
+      "name": ".github",
+      "type": "dir",
+      "note": "Personas de agente AIOX (.github/agents) — sem workflows de CI",
+      "children": [
+        {
+          "name": "agents",
+          "type": "dir",
+          "children": [
+            {
+              "name": "aiox-master.agent.md",
+              "type": "file",
+              "size": 1654
+            },
+            {
+              "name": "analyst.agent.md",
+              "type": "file",
+              "size": 1926
+            },
+            {
+              "name": "architect.agent.md",
+              "type": "file",
+              "size": 2082
+            },
+            {
+              "name": "data-engineer.agent.md",
+              "type": "file",
+              "size": 2161
+            },
+            {
+              "name": "dev.agent.md",
+              "type": "file",
+              "size": 1355
+            },
+            {
+              "name": "devops.agent.md",
+              "type": "file",
+              "size": 2953
+            },
+            {
+              "name": "pm.agent.md",
+              "type": "file",
+              "size": 1862
+            },
+            {
+              "name": "po.agent.md",
+              "type": "file",
+              "size": 1850
+            },
+            {
+              "name": "qa.agent.md",
+              "type": "file",
+              "size": 1928
+            },
+            {
+              "name": "sm.agent.md",
+              "type": "file",
+              "size": 1691
+            },
+            {
+              "name": "squad-creator.agent.md",
+              "type": "file",
+              "size": 1315
+            },
+            {
+              "name": "ux-design-expert.agent.md",
+              "type": "file",
+              "size": 1133
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "assets",
+      "type": "dir",
+      "note": "Imagens e recursos estáticos locais",
+      "children": [
+        {
+          "name": "breakdown_topics_quality.png",
+          "type": "file",
+          "size": 121739
+        },
+        {
+          "name": "cap12.txt",
+          "type": "file",
+          "size": 65142
+        },
+        {
+          "name": "swebok-v4.pdf",
+          "type": "file",
+          "size": 6098983
+        },
+        {
+          "name": "use_case_diagram.png",
+          "type": "file",
+          "size": 16209
+        }
+      ]
+    },
+    {
+      "name": "config",
+      "type": "dir",
+      "note": "Registro de semestres, tokens por disciplina e padrão de slides",
+      "children": [
+        {
+          "name": "disciplina-logica.json",
+          "type": "file",
+          "size": 625
+        },
+        {
+          "name": "disciplina-qualidade.json",
+          "type": "file",
+          "size": 628
+        },
+        {
+          "name": "disciplina-qualidade2.json",
+          "type": "file",
+          "size": 673
+        },
+        {
+          "name": "disciplina-tcc.json",
+          "type": "file",
+          "size": 630
+        },
+        {
+          "name": "disciplina-tcc2.json",
+          "type": "file",
+          "size": 667
+        },
+        {
+          "name": "semestres.json",
+          "type": "file",
+          "size": 2811,
+          "note": "Registro dos semestres e suas disciplinas"
+        },
+        {
+          "name": "standards.json",
+          "type": "file",
+          "size": 1075,
+          "note": "Padrão estrutural dos slides"
+        }
+      ]
+    },
+    {
+      "name": "css",
+      "type": "dir",
+      "note": "Estilos: style.css, slides.css, base-styles.css",
+      "children": [
+        {
+          "name": "base-styles.css",
+          "type": "file",
+          "size": 3174
+        },
+        {
+          "name": "slides.css",
+          "type": "file",
+          "size": 2094
+        },
+        {
+          "name": "style.css",
+          "type": "file",
+          "size": 5739
+        }
+      ]
+    },
+    {
+      "name": "js",
+      "type": "dir",
+      "note": "standard_slides.js — navegação de slides (prev/next/fullscreen/progress)",
+      "children": [
+        {
+          "name": "standard_slides.js",
+          "type": "file",
+          "size": 3394
+        }
+      ]
+    },
+    {
+      "name": "lembretes",
+      "type": "dir",
+      "note": "Notas/lembretes de conteúdo",
+      "children": [
+        {
+          "name": "tcc2-aula01-roda-de-conversa.md",
+          "type": "file",
+          "size": 2499
+        }
+      ]
+    },
+    {
+      "name": "pages",
+      "type": "dir",
+      "note": "Homes por semestre + subpastas de disciplina (slides e materiais)",
+      "children": [
+        {
+          "name": "logica",
+          "type": "dir",
+          "children": [
+            {
+              "name": "material",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "material_aula_algebrabooleana.html",
+                  "type": "file",
+                  "size": 18727
+                },
+                {
+                  "name": "material_aula01-introducao-logica.html",
+                  "type": "file",
+                  "size": 21136
+                },
+                {
+                  "name": "material_aula02-introducao-python.html",
+                  "type": "file",
+                  "size": 27609
+                },
+                {
+                  "name": "material_aula03-fundamentos-logica.html",
+                  "type": "file",
+                  "size": 21881
+                },
+                {
+                  "name": "material_aula04-logica-proposicional.html",
+                  "type": "file",
+                  "size": 17532
+                },
+                {
+                  "name": "material_aula05-tabelas-verdade.html",
+                  "type": "file",
+                  "size": 33118
+                },
+                {
+                  "name": "material_aula06-avaliacao-1.html",
+                  "type": "file",
+                  "size": 2872
+                },
+                {
+                  "name": "material_aula07-algebra-booleana.html",
+                  "type": "file",
+                  "size": 2899
+                },
+                {
+                  "name": "material_aula08-loops-funcoes.html",
+                  "type": "file",
+                  "size": 34981
+                },
+                {
+                  "name": "material_aula09-avaliacao-2.html",
+                  "type": "file",
+                  "size": 2872
+                }
+              ]
+            },
+            {
+              "name": "slide_algebrabooleana.html",
+              "type": "file",
+              "size": 38858
+            },
+            {
+              "name": "slide_algebrabooleanaeportaslogicas.html",
+              "type": "file",
+              "size": 10995
+            },
+            {
+              "name": "slide_avaliacao1.html",
+              "type": "file",
+              "size": 7485
+            },
+            {
+              "name": "slide_avaliacao2.html",
+              "type": "file",
+              "size": 7118
+            },
+            {
+              "name": "slide_diretrizes-projeto-semestral.html",
+              "type": "file",
+              "size": 11115
+            },
+            {
+              "name": "slide_fundamentosdalogica.html",
+              "type": "file",
+              "size": 22219
+            },
+            {
+              "name": "slide_introducaoalogicaeferramentas.html",
+              "type": "file",
+              "size": 37929
+            },
+            {
+              "name": "slide_introducaoaopython.html",
+              "type": "file",
+              "size": 23513
+            },
+            {
+              "name": "slide_logicadeprogramacaoloopsefuncoes.html",
+              "type": "file",
+              "size": 42906
+            },
+            {
+              "name": "slide_logicaproposicional.html",
+              "type": "file",
+              "size": 18407
+            },
+            {
+              "name": "slide_tabelasverdade.html",
+              "type": "file",
+              "size": 27268
+            }
+          ]
+        },
+        {
+          "name": "qualidade",
+          "type": "dir",
+          "children": [
+            {
+              "name": "material",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "material_aula01-introducao-qualidade.html",
+                  "type": "file",
+                  "size": 2584
+                },
+                {
+                  "name": "material_aula02-planejamento.html",
+                  "type": "file",
+                  "size": 62828
+                },
+                {
+                  "name": "material_aula03-fundamentos-caixa-branca-preta.html",
+                  "type": "file",
+                  "size": 21358
+                },
+                {
+                  "name": "material_aula05-gestao-erros-bugs.html",
+                  "type": "file",
+                  "size": 43022
+                },
+                {
+                  "name": "material_aula06-introducao-github-actions.html",
+                  "type": "file",
+                  "size": 14196
+                },
+                {
+                  "name": "material_aula07-testes-unidade-jest.html",
+                  "type": "file",
+                  "size": 5204
+                },
+                {
+                  "name": "material_aula10-vcr-api-seguras.html",
+                  "type": "file",
+                  "size": 16839
+                },
+                {
+                  "name": "material_projeto-descricao.html",
+                  "type": "file",
+                  "size": 1106
+                }
+              ]
+            },
+            {
+              "name": "slide_cdetestes.html",
+              "type": "file",
+              "size": 52670
+            },
+            {
+              "name": "slide_ci-testes-automatizados.html",
+              "type": "file",
+              "size": 36350
+            },
+            {
+              "name": "slide_fundamentosdetestescaixabrancavscaixapreta.html",
+              "type": "file",
+              "size": 40352
+            },
+            {
+              "name": "slide_gestao-erros-bugs.html",
+              "type": "file",
+              "size": 47887
+            },
+            {
+              "name": "slide_introducaoaqualidadedesoftware.html",
+              "type": "file",
+              "size": 72112
+            },
+            {
+              "name": "slide_introducaoatestesautomatizados.html",
+              "type": "file",
+              "size": 7228
+            },
+            {
+              "name": "slide_jest.html",
+              "type": "file",
+              "size": 19976
+            },
+            {
+              "name": "slide_planejamentodetestesecasosdeteste.html",
+              "type": "file",
+              "size": 70225
+            },
+            {
+              "name": "slide_projeto_descricao.html",
+              "type": "file",
+              "size": 15994
+            }
+          ]
+        },
+        {
+          "name": "qualidade2",
+          "type": "dir",
+          "children": [
+            {
+              "name": "material",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "material_caixa-branca-preta.html",
+                  "type": "file",
+                  "size": 3376
+                },
+                {
+                  "name": "material_ci-github-actions.html",
+                  "type": "file",
+                  "size": 3384
+                },
+                {
+                  "name": "material_gestao-erros-bugs.html",
+                  "type": "file",
+                  "size": 3324
+                },
+                {
+                  "name": "material_introducao-qualidade.html",
+                  "type": "file",
+                  "size": 3369
+                },
+                {
+                  "name": "material_introducao-testes-automatizados.html",
+                  "type": "file",
+                  "size": 3374
+                },
+                {
+                  "name": "material_jest-sonarcloud.html",
+                  "type": "file",
+                  "size": 3370
+                },
+                {
+                  "name": "material_planejamento-casos-teste.html",
+                  "type": "file",
+                  "size": 3349
+                },
+                {
+                  "name": "material_tdd-bdd.html",
+                  "type": "file",
+                  "size": 3377
+                },
+                {
+                  "name": "material_testes-carga-jmeter.html",
+                  "type": "file",
+                  "size": 3377
+                },
+                {
+                  "name": "material_vcr-api-seguras.html",
+                  "type": "file",
+                  "size": 3340
+                }
+              ]
+            },
+            {
+              "name": "especificacao-projeto.html",
+              "type": "file",
+              "size": 3306
+            },
+            {
+              "name": "slide_caixa-branca-preta.html",
+              "type": "file",
+              "size": 4067
+            },
+            {
+              "name": "slide_ci-github-actions.html",
+              "type": "file",
+              "size": 4091
+            },
+            {
+              "name": "slide_gestao-erros-bugs.html",
+              "type": "file",
+              "size": 3956
+            },
+            {
+              "name": "slide_introducao-qualidade.html",
+              "type": "file",
+              "size": 4046
+            },
+            {
+              "name": "slide_introducao-testes-automatizados.html",
+              "type": "file",
+              "size": 4050
+            },
+            {
+              "name": "slide_jest-sonarcloud.html",
+              "type": "file",
+              "size": 4059
+            },
+            {
+              "name": "slide_planejamento-casos-teste.html",
+              "type": "file",
+              "size": 4004
+            },
+            {
+              "name": "slide_tdd-bdd.html",
+              "type": "file",
+              "size": 4080
+            },
+            {
+              "name": "slide_testes-carga-jmeter.html",
+              "type": "file",
+              "size": 4070
+            },
+            {
+              "name": "slide_vcr-api-seguras.html",
+              "type": "file",
+              "size": 4001
+            }
+          ]
+        },
+        {
+          "name": "tcc",
+          "type": "dir",
+          "children": [
+            {
+              "name": "material",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "material_aula01-latex-ambiente.html",
+                  "type": "file",
+                  "size": 24639
+                },
+                {
+                  "name": "material_aula02-tema-grupos.html",
+                  "type": "file",
+                  "size": 25933
+                },
+                {
+                  "name": "material_aula03-requirements.html",
+                  "type": "file",
+                  "size": 32990
+                },
+                {
+                  "name": "material_aula04-proposal.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula05-feasibility.html",
+                  "type": "file",
+                  "size": 17254
+                },
+                {
+                  "name": "material_aula06-bibliography.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula07-foundation.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula08-research.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula09-results.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula10-checkpoint.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula11-checkpoint-2.html",
+                  "type": "file",
+                  "size": 2455
+                },
+                {
+                  "name": "material_aula12-checkpoint-3.html",
+                  "type": "file",
+                  "size": 2435
+                },
+                {
+                  "name": "material_aula13-presentation-prep.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_aula14-defense.html",
+                  "type": "file",
+                  "size": 2897
+                },
+                {
+                  "name": "material_placeholder.html",
+                  "type": "file",
+                  "size": 2897
+                }
+              ]
+            },
+            {
+              "name": "slide_aula1-introducaoaolatex.html",
+              "type": "file",
+              "size": 23457
+            },
+            {
+              "name": "slide_aula2-formacaodegruposeescolhadotema.html",
+              "type": "file",
+              "size": 43685
+            },
+            {
+              "name": "slide_aula3-levantamentoderequisitos.html",
+              "type": "file",
+              "size": 71501
+            },
+            {
+              "name": "slide_aula4-entregaformaldapropostadeprojeto.html",
+              "type": "file",
+              "size": 7190
+            },
+            {
+              "name": "slide_aula5-estudodeviabilidadetecnica.html",
+              "type": "file",
+              "size": 33034
+            },
+            {
+              "name": "slide_aula6-revisaobibliografica.html",
+              "type": "file",
+              "size": 78090
+            },
+            {
+              "name": "slide_aula7-fundamentacaoteorica.html",
+              "type": "file",
+              "size": 55965
+            },
+            {
+              "name": "slide_aula8-execucaodapesquisa.html",
+              "type": "file",
+              "size": 55948
+            },
+            {
+              "name": "slide_aula9-analisedeResultados.html",
+              "type": "file",
+              "size": 20388
+            }
+          ]
+        },
+        {
+          "name": "tcc2",
+          "type": "dir",
+          "children": [
+            {
+              "name": "material",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "material_aula01-retomada-replanejamento.html",
+                  "type": "file",
+                  "size": 3455
+                },
+                {
+                  "name": "material_aula02-revisao-referencial-teorico.html",
+                  "type": "file",
+                  "size": 3447
+                },
+                {
+                  "name": "material_aula03-desenvolvimento-artefato.html",
+                  "type": "file",
+                  "size": 3429
+                },
+                {
+                  "name": "material_aula04-metodologia-coleta-dados.html",
+                  "type": "file",
+                  "size": 3435
+                },
+                {
+                  "name": "material_aula05-execucao-testes.html",
+                  "type": "file",
+                  "size": 3396
+                },
+                {
+                  "name": "material_aula06-escrita-resultados-parciais.html",
+                  "type": "file",
+                  "size": 3444
+                }
+              ]
+            },
+            {
+              "name": "slide_aula01-retomada-replanejamento.html",
+              "type": "file",
+              "size": 17841
+            },
+            {
+              "name": "slide_aula02-revisao-referencial-teorico.html",
+              "type": "file",
+              "size": 4320
+            },
+            {
+              "name": "slide_aula03-desenvolvimento-artefato.html",
+              "type": "file",
+              "size": 4283
+            },
+            {
+              "name": "slide_aula04-metodologia-coleta-dados.html",
+              "type": "file",
+              "size": 4289
+            },
+            {
+              "name": "slide_aula05-execucao-testes.html",
+              "type": "file",
+              "size": 4213
+            },
+            {
+              "name": "slide_aula06-escrita-resultados-parciais.html",
+              "type": "file",
+              "size": 4302
+            }
+          ]
+        },
+        {
+          "name": "home_2025_2.html",
+          "type": "file",
+          "size": 4952
+        },
+        {
+          "name": "home_2026_1.html",
+          "type": "file",
+          "size": 4875
+        },
+        {
+          "name": "home_2026_2.html",
+          "type": "file",
+          "size": 4223
+        },
+        {
+          "name": "home_logica_2025_2.html",
+          "type": "file",
+          "size": 3177
+        },
+        {
+          "name": "home_logica.html",
+          "type": "file",
+          "size": 18268
+        },
+        {
+          "name": "home_qualidade_2026_2.html",
+          "type": "file",
+          "size": 23252
+        },
+        {
+          "name": "home_qualidade.html",
+          "type": "file",
+          "size": 20604
+        },
+        {
+          "name": "home_tcc.html",
+          "type": "file",
+          "size": 24155
+        },
+        {
+          "name": "home_tcc2_2025_2.html",
+          "type": "file",
+          "size": 3124
+        },
+        {
+          "name": "home_tcc2.html",
+          "type": "file",
+          "size": 25211
+        },
+        {
+          "name": "home_testes_2025_2.html",
+          "type": "file",
+          "size": 3149
+        },
+        {
+          "name": "professor.html",
+          "type": "file",
+          "size": 3407
+        }
+      ]
+    },
+    {
+      "name": "scripts",
+      "type": "dir",
+      "note": "capture-slides.mjs — validação visual via Playwright",
+      "children": [
+        {
+          "name": "capture-slides.mjs",
+          "type": "file",
+          "size": 4994
+        }
+      ]
+    },
+    {
+      "name": "specs",
+      "type": "dir",
+      "note": "Jest — cloudinary, footer, estrutura de slides",
+      "children": [
+        {
+          "name": "cloudinary.spec.js",
+          "type": "file",
+          "size": 13167
+        },
+        {
+          "name": "footer-layout-standard.spec.js",
+          "type": "file",
+          "size": 2788
+        },
+        {
+          "name": "slide-structure.spec.js",
+          "type": "file",
+          "size": 9089
+        }
+      ]
+    },
+    {
+      "name": "tests",
+      "type": "dir",
+      "note": "Jest — estrutura, links, logo, consistência de homes",
+      "children": [
+        {
+          "name": "cassettes",
+          "type": "dir",
+          "children": [
+            {
+              "name": "senac-logo_750375635",
+              "type": "dir",
+              "children": [
+                {
+                  "name": "recording.har",
+                  "type": "file",
+                  "size": 22846
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "aulas.test.js",
+          "type": "file",
+          "size": 10360
+        },
+        {
+          "name": "external-links.test.js",
+          "type": "file",
+          "size": 2760
+        },
+        {
+          "name": "home-cards.test.js",
+          "type": "file",
+          "size": 3877
+        },
+        {
+          "name": "index.test.js",
+          "type": "file",
+          "size": 4065
+        },
+        {
+          "name": "links-internos.test.js",
+          "type": "file",
+          "size": 2781
+        },
+        {
+          "name": "logo-senac.test.js",
+          "type": "file",
+          "size": 3438
+        },
+        {
+          "name": "slides-footer.test.js",
+          "type": "file",
+          "size": 6262
+        }
+      ]
+    },
+    {
+      "name": ".env.example",
+      "type": "file",
+      "size": 2528,
+      "note": "Exemplo de variáveis de ambiente"
+    },
+    {
+      "name": ".gitignore",
+      "type": "file",
+      "size": 3685,
+      "note": "Regras de exclusão do git"
+    },
+    {
+      "name": "AGENTS.md",
+      "type": "file",
+      "size": 2767,
+      "note": "Instruções do Codex CLI (boilerplate AIOX)"
+    },
+    {
+      "name": "DESIGN_SYSTEM.md",
+      "type": "file",
+      "size": 10289,
+      "note": "Fonte da verdade do design (paletas, tipografia, cards, slides)"
+    },
+    {
+      "name": "index.html",
+      "type": "file",
+      "size": 4692,
+      "note": "Seletor de semestre (2025.2 / 2026.1 / 2026.2)"
+    },
+    {
+      "name": "package.json",
+      "type": "file",
+      "size": 702,
+      "note": "Scripts npm (jest, capture) e devDeps"
+    },
+    {
+      "name": "README.md",
+      "type": "file",
+      "size": 4558,
+      "note": "Visão geral e instruções do projeto"
+    },
+    {
+      "name": "sources.json",
+      "type": "file",
+      "size": 374,
+      "note": "URLs de assets externos (logos Senac, memes)"
+    }
+  ]
+}
