@@ -23,7 +23,7 @@
  *    - O arquivo .env.example deve existir na raiz
  *    - .env.example deve declarar as três variáveis obrigatórias:
  *        CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET
- *    - O arquivo .env real NÃO deve existir no repositório (está no .gitignore)
+ *    - O arquivo .env deve estar listado no .gitignore (para nunca ser commitado)
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * Como adicionar uma nova mídia
@@ -355,7 +355,9 @@ describe('Ambiente — .env.example e .env', () => {
     });
   });
 
-  test('.env real NÃO deve existir no repositório', () => {
-    expect(fs.existsSync(ENV_PATH)).toBe(false);
+  test('.env deve estar no .gitignore (nunca commitado, mesmo se existir localmente)', () => {
+    const gitignore = fs.readFileSync(path.join(ROOT, '.gitignore'), 'utf-8');
+    const rules = gitignore.split(/\r?\n/).map((l) => l.trim());
+    expect(rules).toContain('.env');
   });
 });

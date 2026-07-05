@@ -6,7 +6,11 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "capture": "node scripts/capture-slides.mjs"
+    "capture": "node scripts/capture-slides.mjs",
+    "discord:post": "node scripts/discord-post.js",
+    "discord:channel": "node scripts/discord-channel.js",
+    "discord:check": "node scripts/discord-check.js",
+    "discord:welcome": "node scripts/discord-welcome.js"
   },
   "devDependencies": {
     "@pollyjs/adapter-node-http": "^6.0.6",
