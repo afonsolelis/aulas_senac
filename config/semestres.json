@@ -38,6 +38,29 @@
           "material_dir": "pages/qualidade2/material",
           "status": "em-construcao",
           "obs": "Conteúdo proprio de 2026.2 (placeholders) em pages/qualidade2/ — nao reaproveita slides de 2026.1. Paleta de qualidade (data_disciplina=qualidade).",
+          "turmas": [
+            {
+              "sigla": "STADSCAS4NA",
+              "numero_aula": 5120,
+              "curso": "Análise e Desenvolvimento de Sistemas",
+              "campus": "CAS",
+              "modalidade": "Presencial"
+            },
+            {
+              "sigla": "STADSCAS4NB",
+              "numero_aula": 5126,
+              "curso": "Análise e Desenvolvimento de Sistemas",
+              "campus": "CAS",
+              "modalidade": "Presencial"
+            },
+            {
+              "sigla": "STADSCAS4ND",
+              "numero_aula": 5138,
+              "curso": "Análise e Desenvolvimento de Sistemas",
+              "campus": "CAS",
+              "modalidade": "Presencial"
+            }
+          ],
           "marcos": {
             "prova": { "semana": 38, "ref": "3a semana de setembro" },
             "entrega_trabalho_final": { "semana": 46 },
@@ -52,6 +75,15 @@
           "slides_dir": "pages/tcc2",
           "material_dir": "pages/tcc2/material",
           "status": "em-construcao",
+          "turmas": [
+            {
+              "sigla": "BCCCAS8NA",
+              "numero_aula": 4853,
+              "curso": "Ciência da Computação",
+              "campus": "CAS",
+              "modalidade": "Presencial"
+            }
+          ],
           "marcos": {
             "entrega_parcial": { "semana": 38, "ref": "semana de 14 de setembro" },
             "deposito": { "semana": 48 },
