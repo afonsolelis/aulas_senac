@@ -38,6 +38,17 @@ describe('Páginas das turmas de 2026.2', () => {
     expect(document.querySelector('h1').textContent).toContain(turma.sigla);
     expect(document.body.textContent).toContain(String(turma.numero_aula));
     expect(document.querySelector('table')).not.toBeNull();
-    expect(document.querySelector('tbody').textContent).toContain('ainda não cadastrada');
+    expect(document.querySelector('thead').textContent).toContain('Nome mascarado');
+    expect(document.querySelector('thead').textContent).toContain('Matrícula mascarada');
+    expect(document.body.textContent).toContain('Dados fictícios');
+    expect(document.querySelectorAll('tbody tr')).toHaveLength(3);
+    document.querySelectorAll('.nome-mascarado').forEach((nome) => {
+      expect(nome.textContent).toContain('*');
+    });
+    document.querySelectorAll('.matricula-mascarada').forEach((matricula) => {
+      expect(matricula.textContent).toMatch(/^\*+\d{3}$/);
+    });
+    expect(document.body.textContent).toContain('Dia da semana');
+    expect(document.body.textContent).toContain('19h–20h50 e 21h05–22h45');
   });
 });

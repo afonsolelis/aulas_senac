@@ -35,6 +35,7 @@ Navegação dos slides vem de `js/standard_slides.js` (prev/next/fullscreen/prog
 ## Config-driven (nada é lido em runtime — é documentação/dados)
 
 - **`config/semestres.json`** — registro-mestre: `atual`, `index`, e `semestres[]` com `{periodo, home, accent, calendario, disciplinas[]}`. Cada disciplina: `{name, slug, config, home, slides_dir, material_dir, status, turmas, marcos}`; `turmas[]` registra `{sigla, numero_aula, pagina, curso, campus, modalidade}` quando esses dados estiverem disponíveis. As páginas administrativas das turmas ficam em `pages/turmas/`. **Ninguém lê isso em runtime** — as homes são HTML escrito à mão; mantenha em sincronia manual.
+- **Privacidade das turmas** — antes de inserir alunos em qualquer arquivo, use `.codex/skills/proteger-dados-turmas/SKILL.md`. O site é público: nomes e matrículas devem estar mascarados com `*`; nunca versione dados pessoais completos.
 - **`config/disciplina-<slug>.json`** (5 arquivos: `qualidade`, `qualidade2`, `logica`, `tcc`, `tcc2`) — tokens de cor/tema por disciplina (`theme.primary/secondary/accent/cover_gradient/...`, `font`, `particle_count`).
 - **`config/standards.json`** — contrato estrutural dos slides (IDs/classes canônicos: `slide-container`, `slide`, `active`, `slide-footer`, `progressBar`, `prevBtn`, `nextBtn`, `fullscreenBtn`; snippets; paths de CSS/JS).
 - **`sources.json`** — catálogo de URLs de mídia externa (logos Senac no Cloudinary). **Não use imagem externa sem cadastrar aqui** (specs/cloudinary.spec.js exige rastreabilidade).

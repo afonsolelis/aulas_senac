@@ -67,3 +67,8 @@ Interprete os atalhos abaixo carregando o arquivo correspondente em `.aiox-core/
 - `@squad-creator`, `/squad-creator`, `/squad-creator.md` -> `.aiox-core/development/agents/squad-creator.md`
 - `@aiox-master`, `/aiox-master`, `/aiox-master.md` -> `.aiox-core/development/agents/aiox-master.md`
 <!-- AIOX-MANAGED-END: shortcuts -->
+
+## Project Skills
+
+- `proteger-dados-turmas` -> `.codex/skills/proteger-dados-turmas/SKILL.md`
+  - Use obrigatoriamente ao cadastrar, importar, editar ou revisar nomes, matrículas, listas de alunos ou outros dados pessoais nas páginas de turmas.
