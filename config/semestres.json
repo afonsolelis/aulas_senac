@@ -42,6 +42,7 @@
             {
               "sigla": "STADSCAS4NA",
               "numero_aula": 5120,
+              "pagina": "pages/turmas/turma_stadscas4na.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
               "modalidade": "Presencial"
@@ -49,6 +50,7 @@
             {
               "sigla": "STADSCAS4NB",
               "numero_aula": 5126,
+              "pagina": "pages/turmas/turma_stadscas4nb.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
               "modalidade": "Presencial"
@@ -56,6 +58,7 @@
             {
               "sigla": "STADSCAS4ND",
               "numero_aula": 5138,
+              "pagina": "pages/turmas/turma_stadscas4nd.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
               "modalidade": "Presencial"
@@ -79,6 +82,7 @@
             {
               "sigla": "BCCCAS8NA",
               "numero_aula": 4853,
+              "pagina": "pages/turmas/turma_bcccas8na.html",
               "curso": "Ciência da Computação",
               "campus": "CAS",
               "modalidade": "Presencial"
