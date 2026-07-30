@@ -1,4 +1,4 @@
 interface:
   display_name: "Proteger dados das turmas"
-  short_description: "Mascarar nomes e matrículas de alunos"
-  default_prompt: "Use $proteger-dados-turmas para cadastrar alunos sem expor dados pessoais completos."
+  short_description: "Mascarar matrículas nas listas de alunos"
+  default_prompt: "Use $proteger-dados-turmas para cadastrar alunos mantendo as matrículas mascaradas."

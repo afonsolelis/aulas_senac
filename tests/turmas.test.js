@@ -38,13 +38,12 @@ describe('Páginas das turmas de 2026.2', () => {
     expect(document.querySelector('h1').textContent).toContain(turma.sigla);
     expect(document.body.textContent).toContain(String(turma.numero_aula));
     expect(document.querySelector('table')).not.toBeNull();
-    expect(document.querySelector('thead').textContent).toContain('Nome mascarado');
-    expect(document.querySelector('thead').textContent).toContain('Matrícula mascarada');
+    expect(document.querySelector('thead').textContent).toContain('Nome');
+    expect(document.querySelector('thead').textContent).toContain('Matrícula');
+    expect(document.querySelector('thead').textContent).not.toContain('mascarada');
+    expect(document.querySelector('thead').textContent).not.toContain('Observações');
     expect(document.body.textContent).toContain('Dados fictícios');
     expect(document.querySelectorAll('tbody tr')).toHaveLength(3);
-    document.querySelectorAll('.nome-mascarado').forEach((nome) => {
-      expect(nome.textContent).toContain('*');
-    });
     document.querySelectorAll('.matricula-mascarada').forEach((matricula) => {
       expect(matricula.textContent).toMatch(/^\*+\d{3}$/);
     });
