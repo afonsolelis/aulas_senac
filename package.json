@@ -25,8 +25,8 @@
   "jest": {
     "testEnvironment": "node",
     "testMatch": [
-      "**/tests/**/*.test.js",
-      "**/specs/**/*.spec.js"
+      "<rootDir>/tests/**/*.test.js",
+      "<rootDir>/specs/**/*.spec.js"
     ]
   }
 }
