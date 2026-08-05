@@ -1,74 +1,95 @@
-# AGENTS.md - Synkra AIOX (Codex CLI)
+# AGENTS.md
 
-Este arquivo define as instrucoes do projeto para o Codex CLI.
+Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo para evitar erros e acelerar o aprendizado.
 
-<!-- AIOX-MANAGED-START: core -->
-## Core Rules
+## Projetos e fluxo de trabalho
 
-> Este e um **site estatico** (HTML/CSS/JS puro, sem build/CI). Regras genericas do AIOX (CLI First, stories, `docs/stories/`) **nao se aplicam** aqui.
+**Este é um site **estático** (HTML/CSS/JS puro, Bootstrap + CDN, sem build, sem framework, sem CI/CD).** O site é servido diretamente (`python3 -m http.server`) e toda validação roda localmente.
 
-1. Fonte da verdade do projeto: `CLAUDE.md` (guia operacional) + `DESIGN_SYSTEM.md` (visual) + `STANDARDS.md` (padroes).
-2. Prioridade real: **UI/conteudo** — nao ha camada CLI nem observabilidade.
-3. Mantenha conteudo (`pages/`), config (`config/*.json`) e testes em sincronia manual.
-4. Nao invente requisitos fora dos artefatos existentes.
+## Comandos essenciais
 
-<!-- AIOX-MANAGED-END: core -->
+- `python3 -m http.server 8000` – serve o site (http://localhost:8000)
+- `npm install` – instala devDependencies (Jest, Playwright, Polly, jsdom)
+- `npm test` – Jest: valida estrutura, homes, links, logo e `materialMap`
+- `npm run test:watch` – Jest em watch
+- `npm run test:coverage` – Jest com cobertura
+- `npm run capture` – validação visual (Playwright)
 
-<!-- AIOX-MANAGED-START: quality -->
-## Quality Gates
+## Arquitetura (navegação 4-níveis)
 
-Rodam **localmente** antes do commit (nao ha CI). `lint`/`typecheck`/`build` **nao existem** neste repo.
+1. **`index.html`** – seletor de semestre (hub, `body.semester-hub`)
+2. **`pages/home_<ano>_<sem>.html`** – home do semestre
+3. **`pages/home_<slug>.html`** – cronograma da disciplina (2026.1) ou nome dedicado (2026.2)
+4. **`pages/<slug>/slide_*.html`** e **`pages/<slug>/material/material_*.html`** – slides e materiais (links nos dois sentidos)
 
-- Rode `npm test` (Jest: estrutura de slides, homes, links internos, logo, `materialMap`)
-- Valide slides alterados: `npm run capture` (Playwright)
-- Garanta que card ↔ arquivo e slide ↔ material foram adicionados em sincronia
-<!-- AIOX-MANAGED-END: quality -->
+## Configuração e invariantes
 
-<!-- AIOX-MANAGED-START: codebase -->
-## Project Map
+**Config como documentação:** `config/*.json` é a fonte de registro — nada é lido em runtime. As páginas são HTML escrito à mão.
 
-- Seletor de semestre: `index.html`
-- Paginas (homes, slides, materiais): `pages/`
-- Config/registro: `config/*.json` · assets externos: `sources.json`
-- Estilos: `css/` · navegacao de slides: `js/standard_slides.js`
-- Testes (Jest): `tests/` + `specs/` · captura visual: `scripts/capture-slides.mjs`
-- Docs: `README.md`, `CLAUDE.md`, `STANDARDS.md`, `DESIGN_SYSTEM.md`, `index.json`
-- Framework AIOX (vendorizado, personas genericas): `.aiox-core/` e `.github/agents/`
-<!-- AIOX-MANAGED-END: codebase -->
+**Invariantes que quebram `npm test`:**
+- `index.html`: exatamente 3 cards `.semester-card` com hrefs fixos
+- Homes 2026.1: todo `a[href*="slide_"]` deve estar no objeto `materialMap` do `<script>` no fim da home
+- Homes 2026.2: sem `materialMap` — botões "Ver slide"/"Ver material" já estão no HTML
+- Todo `slide_*.html`: `footer.slide-footer` com **exatamente 4 filhos** (`.slide-controls` com `#slideCounter`, link "Ver material escrito" com href `material/`, logo Senac)
+- Cada disciplina nova: adicione em `DISCIPLINE_HOME_MAP` de `specs/slide-structure.spec.js`
+- Todo href relativo resolve no disco (adicione card e arquivo-alvo juntos)
+- Logo Senac obrigatório em toda página `.html` (`<img>` com `alt` contendo "senac")
 
-<!-- AIOX-MANAGED-START: commands -->
-## Common Commands
+## Pesquisas e fontes de verdade
 
-- `python3 -m http.server 8000` (servir o site; sem build)
-- `npm install`
-- `npm test` / `npm run test:watch` / `npm run test:coverage`
-- `npm run capture` (validacao visual Playwright)
-<!-- AIOX-MANAGED-END: commands -->
+**Fontes primárias (ler primeiro):**
+- `README*`, manifests raiz, package.json, config/*.json
+- build/test/lint/config (ex.: `scripts/capture-slides.mjs`, `js/standard_slides.js`)
+- CI/workflows (aqui não há CI/CD)
+- existing instruction files (`.claude/agents/*`, `CLAUDE.md`, `STANDARDS.md`, `DESIGN_SYSTEM.md`)
 
-<!-- AIOX-MANAGED-START: shortcuts -->
-## Agent Shortcuts
+**Fontes secundárias (se necessário):**
+- `pages/`, `css/`, `specs/`, `tests/` — leia para verificar arquitetura e fluxos reais de execution
 
-Preferencia de ativacao no Codex CLI:
-1. Use `/skills` e selecione `aiox-<agent-id>` vindo de `.codex/skills` (ex.: `aiox-architect`)
-2. Se preferir, use os atalhos abaixo (`@architect`, `/architect`, etc.)
+**Arquitetura de verdade:**
+- Site estático UI-only — sem CLI, sem observabilidade
+- Eventos estão em `sources.json` e `specs/cloudinary.spec.js` valida rastreabilidade
+- CSS na ordem: `css/style.css` → `css/slides.css` → `css/base-styles.css`
 
-Interprete os atalhos abaixo carregando o arquivo correspondente em `.aiox-core/development/agents/` (fallback: `.codex/agents/`), renderize o greeting via `generate-greeting.js` e assuma a persona ate `*exit`:
+## Como evitar falhas comuns
 
-- `@architect`, `/architect`, `/architect.md` -> `.aiox-core/development/agents/architect.md`
-- `@dev`, `/dev`, `/dev.md` -> `.aiox-core/development/agents/dev.md`
-- `@qa`, `/qa`, `/qa.md` -> `.aiox-core/development/agents/qa.md`
-- `@pm`, `/pm`, `/pm.md` -> `.aiox-core/development/agents/pm.md`
-- `@po`, `/po`, `/po.md` -> `.aiox-core/development/agents/po.md`
-- `@sm`, `/sm`, `/sm.md` -> `.aiox-core/development/agents/sm.md`
-- `@analyst`, `/analyst`, `/analyst.md` -> `.aiox-core/development/agents/analyst.md`
-- `@devops`, `/devops`, `/devops.md` -> `.aiox-core/development/agents/devops.md`
-- `@data-engineer`, `/data-engineer`, `/data-engineer.md` -> `.aiox-core/development/agents/data-engineer.md`
-- `@ux-design-expert`, `/ux-design-expert`, `/ux-design-expert.md` -> `.aiox-core/development/agents/ux-design-expert.md`
-- `@squad-creator`, `/squad-creator`, `/squad-creator.md` -> `.aiox-core/development/agents/squad-creator.md`
-- `@aiox-master`, `/aiox-master`, `/aiox-master.md` -> `.aiox-core/development/agents/aiox-master.md`
-<!-- AIOX-MANAGED-END: shortcuts -->
+- **Não invente `lint`/`typecheck`/`build`** — estes scripts não existem, use Jest + Playwright
+- **Navegação de slides**: use `js/standard_slides.js` (prev/next/fullscreen/progress, teclado ←/→/f)
+- **Paleta 2026.2**: herda via `data-disciplina` (`qualidade2`→`qualidade`, `tcc2`→`tcc`). Setar `data-disciplina="qualidade2"`/`"tcc2"` no `<body>` quebra o visual silenciosamente
+- **Logo Senac**: obrigatório em toda página `.html` → `tests/logo-senac.test.js`
+- **Cor de slide**: nunca hardcode fora da paleta do `config/disciplina-<slug>.json`
 
 ## Project Skills
 
 - `proteger-dados-turmas` -> `.codex/skills/proteger-dados-turmas/SKILL.md`
-  - Use obrigatoriamente ao cadastrar, importar, editar ou revisar nomes, matrículas, listas de alunos ou outros dados pessoais nas páginas de turmas.
+  - Use obrigatoriamente ao cadastrar, importar, editar ou revisar nomes, matrículas, listas de alunos ou outros dados pessoais nas páginas de turmas (`pages/turmas/`).
+
+## Agentes e atalhos
+
+**Agentes locais (preferir para conteúdo):**
+- **`slide-builder`** – cria/edita slides e materiais escritos, detecta disciplina pelo path, valida com Playwright
+- **`home-builder`** – edita `index.html` e `pages/home_*.html`, mantém variantes de card, marcos, `materialMap`, estrutura multi-semestre e testes consistentes
+
+**Hook de persona:** `.claude/settings.json` injeta `.claude/persona-router.md` a cada prompt (roteia para persona AIOX).
+
+**Executar persona:**
+1. Use `/skills` → `aiox-<agent-id>` (ex.: `aiox-architect`)
+2. OU use `@architect`, `/architect`, `/architect.md` → `.aiox-core/development/agents/architect.md`
+3. Outras personas: `@dev`, `/dev`, `/dev.md`, `@qa`, `/qa`, `/qa.md`, `@pm`, `/pm`, `/pm.md`, `@po`, `/po`, `/po.md`, `@sm`, `/sm`, `/sm.md`, `@analyst`, `/analyst`, `/analyst.md`, `@devops`, `/devops`, `/devops.md`, `@data-engineer`, `/data-engineer`, `/data-engineer.md`, `@ux-design-expert`, `/ux-design-expert`, `/ux-design-expert.md`, `@squad-creator`, `/squad-creator`, `/squad-creator.md`, `@aiox-master`, `/aiox-master`, `/aiox-master.md`
+
+## Testes
+
+**Runner:** Jest (package.json: `testMatch` = `tests/**/*.test.js` + `specs/**/*.spec.js`)
+
+**Críticos para alterações no cronograma:**
+- `tests/home-cards.test.js` – homes 2026.1 **hardcoded**; `materialMap` consistente (regex para no 1º `}`)
+- `tests/links-internos.test.js` – todo href interno resolve no disco
+- `tests/index.test.js` – exatamente 3 cards de semestre com hrefs fixos
+- `specs/slide-structure.spec.js` – 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório
+- `specs/footer-layout-standard.spec.js` – footer com **exatamente 4 filhos** e texto "Ver material escrito"
+
+**Dependentes de rede (flaky offline):** `aulas.test.js`, `external-links.test.js`, `logo-senac.test.js`, `cloudinary.spec.js`
+
+## Generação de índice
+
+`index.json` (raiz) mantém a árvore navegável (`.aiox-core` aparece resumido; `.git`/`node_modules` omitidos). Regenerar após mudanças estruturais grandes.
