@@ -9,6 +9,68 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../../css/style.css">
+  <style>
+    .chapter-card {
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      background-color: white;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .chapter-header {
+      color: white;
+      padding: 1.1rem 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .chapter-icon {
+      font-size: 1.6rem;
+      opacity: 0.95;
+    }
+
+    .info-box {
+      background-color: #f3ecfb;
+      border-left: 5px solid #833ab4;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .warning-box {
+      background-color: #fff4e6;
+      border-left: 5px solid #fcb045;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .example-box {
+      background-color: #edf7ed;
+      border-left: 5px solid #2a9d8f;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .danger-box {
+      background-color: #fdecea;
+      border-left: 5px solid #fd1d1d;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .section-subtitle {
+      color: #4b5563;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+  </style>
 </head>
 
 <body>
@@ -35,6 +97,7 @@
       <div class="d-flex align-items-center justify-content-between">
         <div>
           <span class="badge bg-white text-dark mb-1">Semana 37 &middot; 2026.2</span>
+          <span class="badge bg-danger text-white mb-1 ms-1">Semana 38: Entrega Parcial</span>
           <h1 class="h3 fw-bold text-white mb-0">Aula 06: Escrita dos Resultados Parciais</h1>
         </div>
       </div>
@@ -42,25 +105,305 @@
   </header>
 
   <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-warning mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">
-            O material escrito da aula <strong>Escrita dos Resultados Parciais</strong> será publicado em breve.
-            Esta é uma página placeholder.
+
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+            height="45" class="mb-3">
+          <p class="lead mb-2">"Resultado sem evidência é opinião. Evidência sem análise é apenas dado."</p>
+          <p class="text-secondary mb-0">
+            Este material apoia a escrita da seção de resultados parciais que você vai entregar na
+            <strong>Semana 38</strong>. Use-o como referência antes, durante e depois da dinâmica de escrita em sala.
           </p>
-          <a href="../slide_aula06-escrita-resultados-parciais.html" class="btn btn-outline-danger rounded-pill me-2">
-            <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
-          </a>
-          <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
-          </a>
+          <div class="mt-3">
+            <a href="../slide_aula06-escrita-resultados-parciais.html" class="btn btn-outline-danger rounded-pill me-2">
+              <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
+            </a>
+            <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
+              <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
+            </a>
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Capítulo 1 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #833ab4;">
+            <i class="fas fa-chart-line chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 1: O que a entrega parcial precisa demonstrar</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p class="section-subtitle">A entrega parcial não é um relatório de atividades.</p>
+            <p>Não interessa quantas horas você dedicou nem quantas tarefas marcou como concluídas. O que a banca e o orientador precisam ver é:</p>
+            <ul>
+              <li><strong>Progresso real do artefato</strong> — o que já existe, funciona e pode ser demonstrado.</li>
+              <li><strong>Evidências dos testes/execuções feitos até aqui</strong> — dados concretos, não a descrição do processo.</li>
+            </ul>
+
+            <div class="row g-3 mt-2">
+              <div class="col-md-6">
+                <h3 class="h6 text-danger fw-bold">Relatório de atividades (evite)</h3>
+                <ul class="mb-0">
+                  <li>Lista cronológica do que foi feito na semana.</li>
+                  <li>Descrição de esforço: "trabalhamos muito nisso".</li>
+                  <li>Narrativa sem números, sem evidência, sem análise.</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h3 class="h6 text-success fw-bold">Resultado parcial (produza isto)</h3>
+                <ul class="mb-0">
+                  <li>Afirmação verificável apoiada em dado concreto.</li>
+                  <li>Evidência anexada ou referenciada (print, log, tabela).</li>
+                  <li>Análise objetiva do que aquele dado significa.</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="info-box mb-0">
+              <strong>Pergunta de verificação:</strong> se eu apagar todos os verbos de esforço ("trabalhamos", "fizemos", "tentamos") do meu texto, ainda resta alguma coisa que prove algo? Se não restar nada, o parágrafo é relatório, não resultado.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 2 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #fd1d1d;">
+            <i class="fas fa-sitemap chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 2: Estrutura recomendada da seção de resultados</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>Cada resultado parcial relevante deve percorrer as quatro partes abaixo, nesta ordem. Repita a estrutura para cada teste/execução que você for reportar.</p>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Parte</th>
+                    <th>O que ela responde</th>
+                    <th>Erro típico se faltar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>1. Contexto</strong></td>
+                    <td>O que exatamente foi testado ou executado até aqui — cenário, entrada, condição.</td>
+                    <td>Leitor não sabe a que situação o resultado se refere.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>2. Dados / evidências</strong></td>
+                    <td>Tabelas, gráficos, prints, logs, métricas — o que comprova a afirmação.</td>
+                    <td>Afirmação sem prova; parece opinião do autor.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3. Análise objetiva</strong></td>
+                    <td>O que os dados significam em relação ao objetivo específico correspondente.</td>
+                    <td>Dado exposto, mas sem interpretação — o leitor tem que adivinhar.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>4. Limitações</strong></td>
+                    <td>O que ainda não foi testado, não pôde ser concluído, ou tem ressalva — e por quê.</td>
+                    <td>Parece que tudo foi perfeito, o que reduz a credibilidade do texto.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="example-box mb-0">
+              <strong>Modelo de parágrafo (esqueleto):</strong> "Para avaliar [objetivo específico], foi executado [contexto]. Os resultados obtidos foram [dados/evidência]. Isso indica que [análise objetiva]. Uma limitação observada foi [limitação], que será tratada em [próximo passo]."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 3 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #fcb045;">
+            <i class="fas fa-triangle-exclamation chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 3: Erros comuns de escrita</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <h3 class="h6 fw-bold">3.1 Só narrar o que foi feito, sem analisar</h3>
+            <p>Descrever a execução ("executamos o teste X e obtivemos o resultado Y") sem dizer o que esse resultado significa deixa o trabalho de interpretação para o leitor — que não vai fazê-lo por você.</p>
+
+            <h3 class="h6 fw-bold mt-3">3.2 Esconder resultados fracos ou inconclusivos</h3>
+            <p>Omitir um teste que não foi bem, ou que deu resultado ambíguo, é pior do que reportá-lo. Um resultado fraco discutido com honestidade demonstra rigor científico; um resultado escondido, quando descoberto, compromete a credibilidade de todo o trabalho.</p>
+
+            <h3 class="h6 fw-bold mt-3">3.3 Resultado sem ligação de volta com os objetivos específicos</h3>
+            <p>Todo resultado apresentado precisa amarrar explicitamente a qual objetivo específico ele responde. Resultado "solto", sem essa amarração, parece dado descontextualizado.</p>
+
+            <div class="row g-3 mt-3">
+              <div class="col-md-6">
+                <div class="danger-box h-100 mb-0">
+                  <strong>Parágrafo fraco</strong>
+                  <p class="mb-0 mt-2">"Fizemos os testes do módulo de autenticação essa semana. Rodou bem na maioria das vezes. Ainda temos que testar mais casos."</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="example-box h-100 mb-0">
+                  <strong>Parágrafo bem escrito</strong>
+                  <p class="mb-0 mt-2">"Para avaliar a robustez do módulo de autenticação (objetivo específico 2), foram executados 40 casos de teste automatizados, dos quais 36 passaram (90%). As 4 falhas ocorreram em cenários de token expirado, indicando tratamento incompleto dessa condição — ponto que será corrigido antes da entrega final."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 4 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #198754;">
+            <i class="fas fa-clipboard-check chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 4: Checklist de revisão final</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>Rode este checklist parágrafo por parágrafo antes de considerar a seção de resultados pronta:</p>
+            <ul class="fs-5">
+              <li class="mb-2"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Existe coerência clara entre <strong>objetivo → método → resultado</strong>?</li>
+              <li class="mb-2"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Toda afirmação está sustentada por uma <strong>evidência</strong> (dado, print, log, tabela)?</li>
+              <li class="mb-2"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>As <strong>limitações</strong> foram declaradas com transparência, e não escondidas?</li>
+              <li class="mb-0"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>O parágrafo responde "e daí?" — deixa claro <strong>o que este resultado prova</strong>?</li>
+            </ul>
+
+            <div class="warning-box mb-0">
+              <strong>Dica de revisão:</strong> leia cada parágrafo de resultado em voz alta perguntando "isso é fato comprovado ou impressão minha?". Se for impressão, volte ao dado que a sustenta — ou remova a afirmação.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 5: Dinâmica em sala -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #0d6efd;">
+            <i class="fas fa-stopwatch chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 5: Dinâmica em sala — Sprint de Escrita Cronometrada</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p class="section-subtitle">Duração total: 35 minutos.</p>
+            <p>Atividade prática para colocar a estrutura de resultados em prática imediatamente, com feedback de um colega.</p>
+
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Etapa</th>
+                    <th>Duração</th>
+                    <th>O que acontece</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>1. Escrita cronometrada</strong></td>
+                    <td>20 min</td>
+                    <td>Individual, ininterrupta: cada aluno escreve um parágrafo de resultados do próprio TCC2, usando o esqueleto contexto → dados → análise → limitações.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>2. Troca em dupla</strong></td>
+                    <td>5 min</td>
+                    <td>Duplas leem o parágrafo do colega e dão feedback rápido, item por item do checklist do Capítulo 4.</td>
+                  </tr>
+                  <tr>
+                    <td><strong>3. Rodada de ajuste</strong></td>
+                    <td>10 min</td>
+                    <td>Cada aluno reescreve o próprio parágrafo incorporando o feedback recebido, priorizando os itens do checklist que falharam.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 class="h6 fw-bold mt-3">Formação de duplas</h3>
+            <p class="mb-2">O professor forma as duplas (por sorteio ou por proximidade de tema de TCC), evitando que amigos próximos se avaliem apenas com elogios. Se o número de alunos for ímpar, forma-se um trio na etapa 2.</p>
+
+            <h3 class="h6 fw-bold mt-3">Regras da dinâmica</h3>
+            <ul>
+              <li>Na etapa 1, ninguém revisa enquanto escreve — o objetivo é produzir o parágrafo completo, mesmo imperfeito, sem parar para polir frase.</li>
+              <li>Na etapa 2, o feedback deve se basear no checklist (coerência, evidência, limitações, "e daí?") — não em opinião de estilo ou gosto pessoal.</li>
+              <li>O feedback é sempre construtivo: apontar o que falta, não apenas criticar o que está errado.</li>
+              <li>Celulares fora da mesa durante a etapa 1; o foco é escrita, não pesquisa.</li>
+            </ul>
+
+            <div class="info-box mb-0">
+              <strong>Notas de facilitação para o professor:</strong>
+              <ul class="mb-0 mt-2">
+                <li>Anuncie o tempo de cada etapa em voz alta e use um cronômetro visível (quadro, celular projetado, timer online).</li>
+                <li>Durante a etapa 1, circule pela sala sem interromper — apenas observe se alguém travou e ofereça um empurrão pontual ("de qual teste você tem dado?").</li>
+                <li>Durante a etapa 2, reforce que o papel do colega é aplicar o checklist, não reescrever o texto do outro.</li>
+                <li>Reserve os últimos minutos da aula para o debrief coletivo (pergunta abaixo) antes de encerrar.</li>
+              </ul>
+            </div>
+
+            <h3 class="h6 fw-bold mt-3">Pergunta de debrief (fechamento coletivo)</h3>
+            <div class="example-box mb-0">
+              "Qual item do checklist você <strong>não tinha percebido</strong> que estava faltando no seu parágrafo, antes do colega apontar?"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 6: Avisos da entrega -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #dc3545;">
+            <i class="fas fa-flag-checkered chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 6: Avisos práticos — Entrega Parcial (Semana 38)</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>O que precisa estar pronto para a entrega parcial da Semana 38:</p>
+            <ul class="fs-5">
+              <li class="mb-2">Seção de resultados parciais <strong>escrita e revisada</strong> com o checklist deste material.</li>
+              <li class="mb-2">Evidências (prints, logs, tabelas, gráficos) <strong>organizadas e referenciadas</strong> no texto.</li>
+              <li class="mb-2">Limitações reconhecidas e documentadas com honestidade.</li>
+              <li class="mb-0">Alinhamento com o orientador <strong>confirmado antes do envio</strong>.</li>
+            </ul>
+
+            <div class="warning-box mb-0">
+              <strong>Importante:</strong> o formato e o canal exatos de envio devem ser confirmados diretamente com o seu orientador — combine os detalhes específicos do seu grupo com antecedência.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <h2 class="h5 fw-bold mb-3 container">Exercícios de fixação</h2>
+  <ol class="text-secondary mb-4 container">
+    <li>Escreva um parágrafo de resultados do seu TCC2 usando o esqueleto contexto → dados → análise → limitações.</li>
+    <li>Aplique o checklist de revisão final no parágrafo que você escreveu e liste o que ainda falta ajustar.</li>
+    <li>Reescreva o "parágrafo fraco" do Capítulo 3 corrigindo os três erros comuns apontados.</li>
+    <li>Liste, para cada objetivo específico do seu projeto, qual evidência (já existente ou a produzir) vai sustentar o resultado correspondente.</li>
+    <li>Identifique uma limitação real do seu trabalho até agora e escreva um parágrafo curto reconhecendo-a com transparência.</li>
+  </ol>
 
   <footer class="bg-light text-dark py-4 mt-5">
     <div class="container text-center">

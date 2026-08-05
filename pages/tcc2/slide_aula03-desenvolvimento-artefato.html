@@ -6,9 +6,12 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 34 - TCC2: Desenvolvimento do Artefato</title>
-  <meta name="keywords" content="TCC2, desenvolvimento, implementação, artefato, prototipação">
+  <meta name="keywords" content="TCC2, desenvolvimento, implementação, artefato, MVP, escopo, versionamento, decisões técnicas, ADR">
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
@@ -20,7 +23,7 @@
 
     <!-- Back Button -->
     <a href="../home_tcc2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
     </a>
 
     <!-- Slide 1: Cover -->
@@ -29,9 +32,10 @@
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
           height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC2 - Ciência da Computação</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 03: Desenvolvimento do Artefato</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Trabalho de Conclusão de Curso II</h3>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 03: Desenvolvimento do Artefato</h1>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Da teoria à construção — colocando a mão na massa</h3>
+        <p class="text-muted mt-2 fs-5">Escopo sob controle, decisões documentadas e versionamento com rigor</p>
         <span class="badge bg-warning text-dark mt-3 px-3 py-2 rounded-pill">Semana 34 - 2026.2</span>
         <div class="slide-keywords d-none" aria-hidden="true">
           <span class="keyword">Desenvolvimento do Artefato</span>
@@ -41,22 +45,363 @@
 
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Retomada do que vimos até aqui</li>
-        <li class="mb-3">Desenvolvimento do Artefato</li>
-        <li class="mb-3">Próximos passos rumo à entrega</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-danger"><i class="fas fa-scissors me-2" aria-hidden="true"></i>Escopo sob controle</h5>
+                <p class="mb-0 text-secondary">Por que a "featurite" é o maior risco desta fase.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-layer-group me-2" aria-hidden="true"></i>Pensamento MVP</h5>
+                <p class="mb-0 text-secondary">O menor recorte que já responde à pergunta de pesquisa.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-secondary"><i class="fas fa-code-branch me-2" aria-hidden="true"></i>Documentação e versionamento</h5>
+                <p class="mb-0 text-secondary">Decisões técnicas e commits como rigor científico.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-dark"><i class="fas fa-bolt me-2" aria-hidden="true"></i>Dinâmica em sala</h5>
+                <p class="mb-0 text-secondary">Show &amp; Tell Relâmpago: 3 minutos por grupo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Slide 3: Placeholder -->
+    <!-- Slide 3: Do planejamento à construção -->
     <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-triangle-exclamation text-danger me-2" aria-hidden="true"></i>
+          Do Planejamento à Construção
+        </h2>
+
+        <div class="card border-danger shadow-lg mb-4">
+          <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-bug me-2" aria-hidden="true"></i>O risco desta fase: "featurite" (scope creep)</h5>
+          </div>
+          <div class="card-body">
+            <p class="fs-5 mb-0">
+              Faltam poucas semanas para a <strong>entrega parcial da Semana 38</strong>. É exatamente agora
+              que o instinto de "adicionar mais uma funcionalidade" mais aparece — e é o que mais atrasa a entrega.
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-sm h-100">
+              <div class="card-header bg-secondary text-white">
+                <h6 class="mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Sinais de alerta</h6>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>"Já que estou nessa tela, vou adicionar também..."</li>
+                  <li>Funcionalidade nova sem relação direta com um objetivo específico</li>
+                  <li>Retrabalho constante em partes já dadas como prontas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-sm h-100">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><i class="fas fa-shield-halved me-2" aria-hidden="true"></i>Como se proteger</h6>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Toda nova ideia passa pelo teste: "isto está no meu objetivo específico?"</li>
+                  <li>Se não estiver, vai para uma lista de <strong>trabalhos futuros</strong></li>
+                  <li>O escopo já foi negociado no replanejamento — agora é hora de construir, não de expandir</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-4 text-center mb-0">
+          <strong>Regra de ouro:</strong> nenhuma funcionalidade nova entra sem antes tirar (ou postergar) outra do escopo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Pensamento MVP -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-layer-group text-primary me-2" aria-hidden="true"></i>
+          Pensamento MVP
+        </h2>
+
+        <div class="card border-primary shadow-lg mb-4">
+          <div class="card-body">
+            <p class="fs-5 mb-0">
+              MVP aqui não é "produto mínimo viável" de mercado — é o
+              <strong>menor recorte do artefato que já permite responder à sua pergunta de pesquisa</strong>
+              e validar os objetivos específicos do TCC.
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2" aria-hidden="true"></i>Faz parte do MVP</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>O fluxo/funcionalidade que a metodologia depende para gerar evidência</li>
+                  <li>O mínimo de dados/entrada necessário para testar a solução</li>
+                  <li>Qualquer coisa citada diretamente num objetivo específico</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-clock me-2" aria-hidden="true"></i>Pode esperar (v2, "trabalhos futuros")</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Telas de conveniência, temas visuais, "polimento" de UI</li>
+                  <li>Autenticação/perfis avançados, se não forem exigidos pela pesquisa</li>
+                  <li>Casos de uso extras que ninguém pediu para validar</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 text-center mb-0">
+          <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+          Pergunta de corte: <strong>"se eu não construir isto, ainda consigo responder minha pergunta de pesquisa?"</strong>
+          Se a resposta for sim, isto não é MVP.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Documentando decisões técnicas -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-file-signature text-secondary me-2" aria-hidden="true"></i>
+          Documentar Decisões Técnicas Enquanto Desenvolve
+        </h2>
+
+        <div class="card border-secondary shadow-lg mb-4">
+          <div class="card-body">
+            <p class="fs-5 mb-0">
+              Toda escolha de arquitetura, biblioteca ou abordagem que você faz agora
+              é <strong>matéria-prima direta</strong> do capítulo de metodologia/artefato do TCC.
+              Se não registrar agora, vai esquecer o "porquê" na hora de escrever.
+            </p>
+          </div>
+        </div>
+
+        <div class="card border-dark shadow-sm">
+          <div class="card-header bg-dark text-white">
+            <h6 class="mb-0"><i class="fas fa-note-sticky me-2" aria-hidden="true"></i>Modelo mínimo de registro de decisão (ADR)</h6>
+          </div>
+          <div class="card-body">
+            <div class="row g-3">
+              <div class="col-md-3">
+                <span class="badge bg-secondary d-block py-2">Contexto</span>
+                <p class="small text-secondary mt-2 mb-0">Qual problema técnico eu precisava resolver?</p>
+              </div>
+              <div class="col-md-3">
+                <span class="badge bg-primary d-block py-2">Decisão</span>
+                <p class="small text-secondary mt-2 mb-0">O que foi escolhido, de forma objetiva.</p>
+              </div>
+              <div class="col-md-3">
+                <span class="badge bg-warning text-dark d-block py-2">Alternativas</span>
+                <p class="small text-secondary mt-2 mb-0">O que mais foi considerado e por que foi descartado.</p>
+              </div>
+              <div class="col-md-3">
+                <span class="badge bg-success d-block py-2">Consequências</span>
+                <p class="small text-secondary mt-2 mb-0">Ganhos, trade-offs e limitações assumidas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary mt-4 text-center mb-0">
+          Um arquivo simples (<code>decisoes.md</code>) com 4-6 registros como esse já vira esqueleto do capítulo de artefato.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Versionamento como rigor científico -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-code-branch text-primary me-2" aria-hidden="true"></i>
+          Versionamento: Rigor Científico, Não Só Boa Prática
+        </h2>
+
+        <div class="alert alert-info text-center mb-4">
+          Git bem usado é <strong>rastreabilidade</strong> — a mesma coisa que a banca vai cobrar da sua metodologia.
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-3 col-6">
+            <div class="card border-primary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-code-commit fa-2x text-primary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Commits atômicos</h6>
+                <p class="small text-secondary mb-0">Uma mudança, uma mensagem clara do "o quê" e "por quê".</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-success shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-code-fork fa-2x text-success mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Branches por frente</h6>
+                <p class="small text-secondary mb-0">Isola experimentos sem arriscar o que já funciona.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-warning shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-tag fa-2x text-warning mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Tags de marco</h6>
+                <p class="small text-secondary mb-0">Marque o commit que corresponde à entrega da Semana 38.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-secondary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-cloud-arrow-up fa-2x text-secondary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Backup remoto</h6>
+                <p class="small text-secondary mb-0">Push frequente: notebook perdido não pode ser sinônimo de TCC perdido.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-4 text-center mb-0">
+          Sem histórico de commits coerente, você não tem como provar <strong>como</strong> chegou ao artefato final —
+          e isso é justamente o que a metodologia precisa demonstrar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Dinâmica em sala -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-bolt text-warning me-2" aria-hidden="true"></i>
+          Dinâmica em Sala — Show &amp; Tell Relâmpago
+        </h2>
+
+        <div class="card border-warning shadow-lg mb-4">
+          <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="fas fa-stopwatch me-2" aria-hidden="true"></i>Formato: 3 minutos por grupo + 2 perguntas</h5>
+          </div>
+          <div class="card-body">
+            <p class="mb-0 fs-5">
+              Cada grupo mostra o <strong>estado atual do artefato</strong> ao vivo (tela compartilhada) e recebe
+              exatamente <strong>2 perguntas</strong> da turma ou do professor antes de passar a vez.
+            </p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-sm h-100">
+              <div class="card-header bg-primary text-white">
+                <h6 class="mb-0"><i class="fas fa-list-ol me-2" aria-hidden="true"></i>Rodízio e tempo</h6>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li><strong>1 min</strong> — o que já funciona (demo rápida)</li>
+                  <li><strong>1 min</strong> — o maior risco atual do artefato</li>
+                  <li><strong>1 min</strong> — 2 perguntas rápidas da turma/professor</li>
+                  <li>Ordem por rodízio fixo (lista de chamada), sem escolha de quem vai primeiro</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-sm h-100">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0"><i class="fas fa-gavel me-2" aria-hidden="true"></i>Regras de tempo</h6>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Tempo cronometrado no telão — quando acabar, a palavra passa</li>
+                  <li>Perguntas focam em <strong>"o que já funciona"</strong> e <strong>"o maior risco"</strong>, não em detalhe de código</li>
+                  <li>Sem slide de apresentação: só o artefato rodando</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-3 mb-0 text-center">
+          <i class="fas fa-hourglass-half me-1" aria-hidden="true"></i>
+          <strong>Duração total:</strong> ~3 min × nº de grupos, sem intervalo entre rodadas.
+        </div>
+
+        <div class="alert alert-secondary mt-3 mb-0 text-center">
+          <strong>Debrief final da turma:</strong> "qual risco apareceu em mais de um grupo — e o que podemos fazer sobre ele juntos?"
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Proximos passos -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Próximos Passos Rumo à Aula 04</h2>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <ol class="fs-5 mb-0">
+              <li class="mb-3">Continuar a construção do MVP com o escopo já negociado — sem novas features.</li>
+              <li class="mb-3">Manter o <code>decisoes.md</code> atualizado a cada decisão técnica relevante.</li>
+              <li class="mb-3">Commits frequentes e com mensagens claras — o histórico é parte da evidência do trabalho.</li>
+              <li class="mb-0">Na Aula 04: fechamento da <strong>metodologia</strong> e plano de <strong>coleta de dados</strong> para validar o artefato.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 text-center mb-0">
+          Chegar à Aula 04 com o MVP rodando é o que torna a metodologia concreta, e não teórica.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Encerramento -->
+    <div class="slide" id="slide-9">
       <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-warning mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Desenvolvimento do Artefato</strong></p>
+        <i class="fas fa-hammer fa-4x text-warning mb-4" aria-hidden="true"></i>
+        <h1 class="display-5 fw-bold mb-3 text-dark">Antes da próxima aula</h1>
+        <p class="fs-4 text-secondary mb-2">
+          Revise seu artefato e pergunte:
+        </p>
+        <p class="fs-3 fw-bold text-dark mb-0">
+          isto está no meu escopo do MVP, ou é featurite disfarçada de progresso?
+        </p>
       </div>
     </div>
 
@@ -69,7 +414,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 9</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
@@ -79,7 +424,7 @@
     </div>
 
     <a href="material/material_aula03-desenvolvimento-artefato.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
+      <i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito
     </a>
 
     <a href="../../index.html">
@@ -89,6 +434,10 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

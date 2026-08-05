@@ -6,9 +6,12 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 33 - TCC2: Revisão do Referencial Teórico</title>
-  <meta name="keywords" content="TCC2, referencial teórico, revisão bibliográfica, fundamentação">
+  <meta name="keywords" content="TCC2, referencial teórico, revisão bibliográfica, fundamentação, dinâmica em sala, checklist">
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
@@ -20,7 +23,7 @@
 
     <!-- Back Button -->
     <a href="../home_tcc2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
     </a>
 
     <!-- Slide 1: Cover -->
@@ -29,34 +32,275 @@
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
           height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC2 - Ciência da Computação</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 02: Revisão do Referencial Teórico</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Trabalho de Conclusão de Curso II</h3>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 02: Revisão do Referencial Teórico</h1>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Consolidar a fundamentação antes de seguir com o artefato</h3>
+        <p class="text-muted mt-2 fs-5">Menos resumo, mais análise crítica ligada ao seu problema</p>
         <span class="badge bg-warning text-dark mt-3 px-3 py-2 rounded-pill">Semana 33 - 2026.2</span>
         <div class="slide-keywords d-none" aria-hidden="true">
           <span class="keyword">Revisão do Referencial Teórico</span>
+          <span class="keyword">Fundamentação Teórica</span>
+          <span class="keyword">Dinâmica em Sala</span>
         </div>
       </div>
     </div>
 
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Retomada do que vimos até aqui</li>
-        <li class="mb-3">Revisão do Referencial Teórico</li>
-        <li class="mb-3">Próximos passos rumo à entrega</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-book-open me-2" aria-hidden="true"></i>O que é um bom referencial</h5>
+                <p class="mb-0 text-secondary">Características de uma fundamentação que sustenta o projeto.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-danger"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Erros comuns</h5>
+                <p class="mb-0 text-secondary">Os deslizes mais frequentes de quem escreveu no TCC1.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-dark"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Checklist de revisão</h5>
+                <p class="mb-0 text-secondary">Um roteiro prático para revisar seu próprio texto.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-success"><i class="fas fa-people-arrows me-2" aria-hidden="true"></i>Dinâmica em sala</h5>
+                <p class="mb-0 text-secondary">Troca de referencial em duplas, com feedback escrito.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Slide 3: Placeholder -->
+    <!-- Slide 3: O que caracteriza um bom referencial teórico -->
     <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">O que Caracteriza um Bom Referencial Teórico</h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-success shadow-lg h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-link fa-2x text-success mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-2">Conecta com o problema</h6>
+                <p class="small text-secondary mb-0">Cada seção existe para sustentar um ponto do seu problema ou objetivo — não é conteúdo avulso.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-primary shadow-lg h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-magnifying-glass-chart fa-2x text-primary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-2">Mostra a lacuna</h6>
+                <p class="small text-secondary mb-0">Situa o que já existe na literatura e aponta o que falta — é daí que nasce a justificativa do seu TCC.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-warning shadow-lg h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-brain fa-2x text-warning mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-2">Analisa, não só resume</h6>
+                <p class="small text-secondary mb-0">Compara autores, aponta convergências e divergências, posiciona o seu trabalho frente ao que foi lido.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 text-center mb-0">
+          <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+          Referencial teórico bom não é "lista de resumos" — é um <strong>argumento construído</strong> que leva a banca até o seu problema.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Erros comuns -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Erros Comuns no Referencial Teórico</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-clock-rotate-left me-2" aria-hidden="true"></i>Citações desatualizadas</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0 text-secondary">Fundamentar só em fontes antigas, sem checar se a área evoluiu — em Computação isso pesa muito na banca.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-unlink me-2" aria-hidden="true"></i>Referencial "solto"</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0 text-secondary">Capítulos que não se conectam com os objetivos específicos — parece um trabalho de outra pessoa.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-align-left me-2" aria-hidden="true"></i>Excesso de descrição</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0 text-secondary">Parágrafos que só parafraseiam o autor ("segundo X, Y disse...") sem dizer por que aquilo importa para o seu TCC.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-scale-unbalanced me-2" aria-hidden="true"></i>Falta de análise crítica</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0 text-secondary">Nenhum posicionamento do autor do TCC: só resumo de terceiros, sem comparação nem síntese.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Checklist prático de revisão -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Checklist Prático de Revisão</h2>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <ul class="fs-5 mb-0">
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Cada citação sustenta um ponto do <strong>problema</strong> ou dos <strong>objetivos específicos</strong>?</li>
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Há autores <strong>atuais e relevantes</strong> (últimos 5–8 anos) para o tema em Computação?</li>
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Existe <strong>síntese crítica</strong> — comparação entre autores — e não só resumo isolado?</li>
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>A <strong>lacuna</strong> que justifica seu TCC está explícita ao final do capítulo?</li>
+              <li class="mb-0"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Um leitor de fora entenderia <strong>por que</strong> cada seção está ali?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 text-center mb-0">
+          Se você respondeu "não" em algum item, é exatamente ali que a dinâmica de hoje vai ajudar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Dinamica em sala -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-people-arrows text-success me-2" aria-hidden="true"></i>
+          Dinâmica em Sala — Troca de Referencial em Duplas
+        </h2>
+
+        <div class="row g-4">
+          <div class="col-md-3 col-6">
+            <div class="card border-primary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-user-group fa-2x text-primary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Duplas (ou trios)</h6>
+                <p class="small text-secondary mb-0">Formadas por temas diferentes — quem lê de fora enxerga mais.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-warning shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-stopwatch fa-2x text-warning mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">15 minutos</h6>
+                <p class="small text-secondary mb-0">Leitura do referencial do colega + checklist aplicado.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-success shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-comment-dots fa-2x text-success mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">3 pontos escritos</h6>
+                <p class="small text-secondary mb-0">Feedback objetivo entregue por escrito ao autor.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-secondary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-people-group fa-2x text-secondary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">Rodada em grupo</h6>
+                <p class="small text-secondary mb-0">Comentários rápidos compartilhados com a turma toda.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-success shadow-lg mt-4">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="fas fa-clipboard-list me-2" aria-hidden="true"></i>Como funciona</h5>
+          </div>
+          <div class="card-body">
+            <ol class="mb-0">
+              <li class="mb-2">Formem duplas (ou trios, se a turma for ímpar) com colegas de <strong>temas diferentes</strong> do seu.</li>
+              <li class="mb-2">Troquem o referencial teórico impresso ou em tela — <strong>15 minutos</strong> para leitura + checklist do slide anterior.</li>
+              <li class="mb-2">Escrevam <strong>3 pontos de feedback</strong> objetivos: 1 ponto forte, 1 lacuna e 1 sugestão concreta de ajuste.</li>
+              <li class="mb-2">Devolvam o feedback escrito ao colega e expliquem verbalmente em 1 minuto o principal ponto.</li>
+              <li class="mb-0">Rodada rápida em grupo: cada dupla compartilha <strong>1 aprendizado</strong> que valeu para os dois lados.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 text-center mb-0">
+          <strong>Pergunta de debrief:</strong> qual feedback recebido você já sabe que vai aplicar no seu referencial ainda esta semana?
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Proximos passos -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Próximos Passos Rumo ao Artefato</h2>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <ol class="fs-5 mb-0">
+              <li class="mb-3">Incorporar o <strong>feedback da dupla</strong> e ajustar as seções mais frágeis do referencial.</li>
+              <li class="mb-3">Fechar a <strong>lacuna/justificativa</strong> que conecta a teoria ao problema do seu TCC.</li>
+              <li class="mb-0">Preparar o terreno para a <strong>Aula 03</strong>, quando entramos no desenvolvimento do artefato.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 text-center mb-0">
+          Um referencial sólido é o que sustenta as decisões técnicas que você vai defender na banca.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Encerramento -->
+    <div class="slide" id="slide-8">
       <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-warning mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Revisão do Referencial Teórico</strong></p>
+        <i class="fas fa-book-open fa-4x text-warning mb-4" aria-hidden="true"></i>
+        <h1 class="display-5 fw-bold mb-3 text-dark">Antes da próxima aula</h1>
+        <p class="fs-4 text-secondary mb-2">
+          Revise seu referencial teórico com o <strong>checklist de hoje</strong> e o feedback da dupla, e pergunte:
+        </p>
+        <p class="fs-3 fw-bold text-dark mb-0">
+          cada citação sustenta um ponto do meu problema, ou está apenas "ali"?
+        </p>
       </div>
     </div>
 
@@ -69,7 +313,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
@@ -79,7 +323,7 @@
     </div>
 
     <a href="material/material_aula02-revisao-referencial-teorico.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
+      <i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito
     </a>
 
     <a href="../../index.html">
@@ -89,6 +333,10 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

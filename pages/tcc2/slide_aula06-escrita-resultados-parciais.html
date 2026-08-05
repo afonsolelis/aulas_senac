@@ -6,9 +6,12 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 37 - TCC2: Escrita dos Resultados Parciais</title>
-  <meta name="keywords" content="TCC2, escrita científica, resultados parciais, análise">
+  <meta name="keywords" content="TCC2, escrita científica, resultados parciais, evidências, checklist de escrita, entrega parcial">
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
@@ -20,7 +23,7 @@
 
     <!-- Back Button -->
     <a href="../home_tcc2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
     </a>
 
     <!-- Slide 1: Cover -->
@@ -29,34 +32,321 @@
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
           height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC2 - Ciência da Computação</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 06: Escrita dos Resultados Parciais</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Trabalho de Conclusão de Curso II</h3>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 06: Escrita dos Resultados Parciais</h1>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Estruturar e redigir os resultados parciais para a entrega</h3>
+        <p class="text-muted mt-2 fs-5">Esta é a última aula antes do prazo da Semana 38</p>
         <span class="badge bg-warning text-dark mt-3 px-3 py-2 rounded-pill">Semana 37 - 2026.2</span>
+        <span class="badge bg-danger text-white mt-3 ms-2 px-3 py-2 rounded-pill">
+          <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i> Semana 38: Entrega Parcial
+        </span>
         <div class="slide-keywords d-none" aria-hidden="true">
           <span class="keyword">Escrita dos Resultados Parciais</span>
+          <span class="keyword">Evidências</span>
+          <span class="keyword">Checklist de Escrita</span>
+          <span class="keyword">Entrega Parcial</span>
         </div>
       </div>
     </div>
 
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Retomada do que vimos até aqui</li>
-        <li class="mb-3">Escrita dos Resultados Parciais</li>
-        <li class="mb-3">Próximos passos rumo à entrega</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-chart-line me-2" aria-hidden="true"></i>O que a entrega parcial exige</h5>
+                <p class="mb-0 text-secondary">Progresso real do artefato + evidências de testes e execução.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-secondary"><i class="fas fa-sitemap me-2" aria-hidden="true"></i>Estrutura da seção de resultados</h5>
+                <p class="mb-0 text-secondary">Contexto, dados, análise e limitações.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-dark"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Erros comuns e checklist</h5>
+                <p class="mb-0 text-secondary">O que evitar e como revisar antes de enviar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-success"><i class="fas fa-stopwatch me-2" aria-hidden="true"></i>Dinâmica: Sprint de Escrita</h5>
+                <p class="mb-0 text-secondary">Prática guiada em duplas, com feedback e ajuste.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-4 text-center mb-0">
+          <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i>
+          <strong>Atenção:</strong> a Semana 38 é a <strong>Entrega Parcial do TCC2</strong> — esta aula é a última antes do prazo.
+        </div>
+      </div>
     </div>
 
-    <!-- Slide 3: Placeholder -->
+    <!-- Slide 3: O que a entrega parcial precisa demonstrar -->
     <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">O Que a Entrega Parcial Precisa Demonstrar</h2>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-times-circle me-2" aria-hidden="true"></i>Não é um relatório de atividades</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li>Lista cronológica do que foi feito na semana</li>
+                  <li>Descrição de esforço ("trabalhamos muito nisso")</li>
+                  <li>Narrativa sem números, sem evidência, sem análise</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-check-circle me-2" aria-hidden="true"></i>É resultado, com evidência</h5>
+              </div>
+              <div class="card-body">
+                <ul class="mb-0">
+                  <li><strong>Progresso real</strong> do artefato construído até aqui</li>
+                  <li><strong>Evidências</strong> dos testes/execuções já realizados</li>
+                  <li>Dados que sustentam uma afirmação verificável</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 text-center mb-0">
+          <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+          A banca não quer saber quanto você trabalhou. Quer ver <strong>o que já pode ser demonstrado</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Estrutura recomendada -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Estrutura Recomendada da Seção de Resultados</h2>
+
+        <div class="row g-4">
+          <div class="col-md-3 col-6">
+            <div class="card border-primary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-crosshairs fa-2x text-primary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">1. Contexto</h6>
+                <p class="small text-secondary mb-0">O que exatamente foi testado ou executado até aqui.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-secondary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-table-cells fa-2x text-secondary mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">2. Dados / evidências</h6>
+                <p class="small text-secondary mb-0">Tabelas, gráficos, prints, logs — o que comprova o que foi feito.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-success shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-magnifying-glass fa-2x text-success mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">3. Análise objetiva</h6>
+                <p class="small text-secondary mb-0">O que os dados significam — não apenas "o que apareceu".</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-warning shadow-sm h-100 text-center">
+              <div class="card-body">
+                <i class="fas fa-shield-alt fa-2x text-warning mb-3" aria-hidden="true"></i>
+                <h6 class="fw-bold mb-1">4. Limitações</h6>
+                <p class="small text-secondary mb-0">O que ainda não foi testado ou não pôde ser concluído — e por quê.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary mt-4 text-center mb-0">
+          Essas quatro partes se repetem para cada resultado parcial relevante que você apresentar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Erros comuns -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Erros Comuns de Escrita</h2>
+
+        <div class="card border-danger shadow-sm mb-3">
+          <div class="card-body d-flex align-items-start">
+            <i class="fas fa-align-left fa-2x text-danger me-3" aria-hidden="true"></i>
+            <div>
+              <h6 class="fw-bold mb-1">Só narrar o que foi feito, sem analisar</h6>
+              <p class="mb-0 text-secondary">"Executamos o teste X e obtivemos o resultado Y" — e ponto. Falta responder: <strong>o que isso significa</strong> para o objetivo do trabalho?</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-danger shadow-sm mb-3">
+          <div class="card-body d-flex align-items-start">
+            <i class="fas fa-eye-slash fa-2x text-danger me-3" aria-hidden="true"></i>
+            <div>
+              <h6 class="fw-bold mb-1">Esconder resultados fracos ou inconclusivos</h6>
+              <p class="mb-0 text-secondary">Omitir um teste que não foi bem é pior do que mostrá-lo. Resultado fraco <strong>discutido com honestidade</strong> tem mais valor científico do que silêncio.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-danger shadow-sm">
+          <div class="card-body d-flex align-items-start">
+            <i class="fas fa-link-slash fa-2x text-danger me-3" aria-hidden="true"></i>
+            <div>
+              <h6 class="fw-bold mb-1">Resultado sem ligação com os objetivos específicos</h6>
+              <p class="mb-0 text-secondary">Se o leitor não consegue apontar <strong>qual objetivo específico</strong> aquele resultado responde, o parágrafo está incompleto.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Checklist de revisão -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Checklist de Revisão Antes de Entregar</h2>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <ul class="fs-5 mb-0">
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Existe coerência clara entre <strong>objetivo → método → resultado</strong>?</li>
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Toda afirmação está sustentada por uma <strong>evidência</strong> (dado, print, log, tabela)?</li>
+              <li class="mb-3"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>As <strong>limitações</strong> foram declaradas com transparência, e não escondidas?</li>
+              <li class="mb-0"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>O parágrafo responde "e daí?" — deixa claro <strong>o que este resultado prova</strong>?</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 text-center mb-0">
+          Passou nesses quatro pontos? Está pronto para entrar na entrega da Semana 38.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Dinâmica em sala -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+          <i class="fas fa-stopwatch text-success me-2" aria-hidden="true"></i>
+          Dinâmica em Sala: Sprint de Escrita Cronometrada
+        </h2>
+
+        <div class="row g-3">
+          <div class="col-md-4">
+            <div class="card border-primary shadow-sm h-100">
+              <div class="card-header bg-primary text-white"><strong>1. Escrita (20 min)</strong></div>
+              <div class="card-body">
+                <p class="mb-0 small">Sozinho, sem interrupção: escreva um parágrafo de resultados do seu próprio TCC2, usando a estrutura contexto → dados → análise → limitações.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-warning shadow-sm h-100">
+              <div class="card-header bg-warning text-dark"><strong>2. Troca em dupla (5 min)</strong></div>
+              <div class="card-body">
+                <p class="mb-0 small">Formem duplas. Cada um lê o parágrafo do colega e dá feedback rápido usando o checklist de revisão do slide anterior.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-success shadow-sm h-100">
+              <div class="card-header bg-success text-white"><strong>3. Ajuste (10 min)</strong></div>
+              <div class="card-body">
+                <p class="mb-0 small">Reescreva seu parágrafo incorporando o feedback recebido. Foque nos pontos do checklist que falharam.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-4 mt-3">
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-secondary mb-2"><i class="fas fa-list-ul me-2" aria-hidden="true"></i>Regras da dinâmica</h6>
+                <ul class="mb-0 small text-secondary">
+                  <li>Duração total: <strong>35 minutos</strong> (20 + 5 + 10)</li>
+                  <li>Duplas formadas pelo professor ou por proximidade de tema</li>
+                  <li>Na etapa 1, não se revisa enquanto escreve — só escreve</li>
+                  <li>Na etapa 2, o feedback usa o checklist, não opinião de estilo</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-dark shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-dark mb-2"><i class="fas fa-comments me-2" aria-hidden="true"></i>Pergunta de debrief</h6>
+                <p class="mb-0">
+                  "Qual item do checklist você <strong>não tinha percebido</strong> que estava faltando no seu parágrafo, antes do colega apontar?"
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Avisos práticos -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Avisos Práticos — Entrega Parcial (Semana 38)</h2>
+
+        <div class="card border-danger shadow-lg mb-4">
+          <div class="card-header bg-danger text-white">
+            <h5 class="mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>O que precisa estar pronto</h5>
+          </div>
+          <div class="card-body">
+            <ul class="fs-5 mb-0">
+              <li class="mb-2">Seção de resultados parciais <strong>escrita e revisada</strong> com o checklist desta aula</li>
+              <li class="mb-2">Evidências (prints, logs, tabelas, gráficos) <strong>organizadas e referenciadas</strong> no texto</li>
+              <li class="mb-2">Limitações reconhecidas e documentadas com honestidade</li>
+              <li class="mb-0">Alinhamento com o orientador <strong>confirmado antes do envio</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-warning text-center mb-0">
+          <i class="fas fa-circle-info me-1" aria-hidden="true"></i>
+          Formato e canal de envio: confirme com o seu orientador os detalhes específicos combinados para o seu grupo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Encerramento -->
+    <div class="slide" id="slide-9">
       <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-warning mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Escrita dos Resultados Parciais</strong></p>
+        <i class="fas fa-flag-checkered fa-4x text-warning mb-4" aria-hidden="true"></i>
+        <h1 class="display-5 fw-bold mb-3 text-dark">Antes da Entrega Parcial (Semana 38)</h1>
+        <p class="fs-4 text-secondary mb-2">
+          Releia seu parágrafo de resultados e pergunte:
+        </p>
+        <p class="fs-3 fw-bold text-dark mb-0">
+          a evidência que eu mostrei sustenta a afirmação que eu fiz?
+        </p>
       </div>
     </div>
 
@@ -69,7 +359,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 9</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
@@ -79,7 +369,7 @@
     </div>
 
     <a href="material/material_aula06-escrita-resultados-parciais.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
+      <i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito
     </a>
 
     <a href="../../index.html">
@@ -89,6 +379,10 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

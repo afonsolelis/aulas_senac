@@ -42,24 +42,365 @@
   </header>
 
   <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-warning mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">
-            O material escrito da aula <strong>Metodologia e Coleta de Dados</strong> será publicado em breve.
-            Esta é uma página placeholder.
+
+    <!-- Intro -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-flask fa-2x text-primary me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Do método no papel para a coleta em campo</h2>
+          </div>
+          <p class="text-secondary mb-3">
+            Você já escolheu o método do seu TCC2. Esta aula é sobre o passo seguinte: transformar essa escolha em
+            uma <strong>coleta de dados real</strong>, com instrumento definido, amostra coerente e critério claro
+            de quando parar. É esse conjunto de decisões que vai sustentar os resultados que você vai analisar
+            e defender na banca.
           </p>
-          <a href="../slide_aula04-metodologia-coleta-dados.html" class="btn btn-outline-danger rounded-pill me-2">
-            <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
-          </a>
-          <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
-          </a>
+          <div class="alert alert-secondary mb-0">
+            <strong>Como usar este material:</strong> leia os capítulos na ordem, use o checklist antes de sair
+            coletando dados e leve o roteiro da dinâmica para a atividade em sala.
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Capitulo 1 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-clipboard-check fa-2x text-primary me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 1 — Antes de Coletar: o Que Precisa Estar Decidido</h2>
+          </div>
+          <p class="text-secondary">
+            "Metodologia no papel" é a descrição do método no texto do TCC. "Coleta em campo" é o momento em que
+            você aplica esse método em pessoas, sistemas ou dados reais. Entre um e outro, três decisões
+            precisam estar fechadas — não "mais ou menos definidas".
+          </p>
+
+          <div class="row g-3 mt-2">
+            <div class="col-md-4">
+              <div class="alert alert-primary h-100 mb-0">
+                <strong><i class="fas fa-toolbox me-1" aria-hidden="true"></i> Instrumento</strong>
+                <p class="mb-0 mt-2 small">O que exatamente será usado para medir? Um questionário com quais perguntas?
+                Um roteiro de entrevista com quais tópicos? Um script que captura quais logs?</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-secondary h-100 mb-0">
+                <strong><i class="fas fa-users me-1" aria-hidden="true"></i> Amostra</strong>
+                <p class="mb-0 mt-2 small">Quem vai responder, ou de onde os dados vêm? Quantos participantes,
+                execuções ou registros são necessários para sustentar a conclusão pretendida?</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-success h-100 mb-0">
+                <strong><i class="fas fa-bullseye me-1" aria-hidden="true"></i> Critério de sucesso</strong>
+                <p class="mb-0 mt-2 small">O que conta como resposta válida? Quando você sabe que já coletou o
+                suficiente para responder sua pergunta de pesquisa?</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-3 mb-0">
+            <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i>
+            Se alguma dessas três respostas ainda é <strong>"depende"</strong>, o instrumento ainda não está pronto
+            para ir a campo — volte um passo e feche a decisão antes.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 2 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-toolbox fa-2x text-primary me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 2 — Instrumentos de Coleta em TCC de Computação</h2>
+          </div>
+          <p class="text-secondary">Cada instrumento responde melhor a um tipo de pergunta. Escolha pelo que você
+          precisa saber, não pelo que é mais rápido de aplicar.</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Instrumento</th>
+                  <th>Quando usar</th>
+                  <th>Cuidado principal</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Questionário</strong></td>
+                  <td>Percepção/opinião de várias pessoas, com respostas padronizadas e comparáveis.</td>
+                  <td>Perguntas ambíguas geram respostas incomparáveis.</td>
+                </tr>
+                <tr>
+                  <td><strong>Entrevista</strong></td>
+                  <td>Entendimento qualitativo em profundidade, com poucos participantes.</td>
+                  <td>Roteiro solto demais dificulta comparar respostas entre entrevistas.</td>
+                </tr>
+                <tr>
+                  <td><strong>Logs / métricas de sistema</strong></td>
+                  <td>Comportamento real de uso, capturado automaticamente pelo sistema.</td>
+                  <td>Log sem contexto (o quê, quando, em qual versão) perde valor de evidência.</td>
+                </tr>
+                <tr>
+                  <td><strong>Benchmark</strong></td>
+                  <td>Comparação de desempenho técnico entre soluções, versões ou configurações.</td>
+                  <td>Comparação injusta se o ambiente/condições não forem os mesmos para todos os casos.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-info mb-0">
+            <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+            É comum combinar instrumentos (ex.: benchmark + questionário de usabilidade). Se combinar, deixe claro
+            no texto qual instrumento responde qual parte do seu objetivo específico.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 3 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-scale-balanced fa-2x text-primary me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 3 — Cuidados Éticos e de Rigor</h2>
+          </div>
+
+          <h3 class="h6 fw-bold mt-2">3.1 Consentimento, quando a coleta envolve pessoas</h3>
+          <p class="text-secondary">
+            Sempre que o instrumento for aplicado em pessoas (questionário, entrevista, teste de usabilidade),
+            explique o objetivo da coleta, diga se as respostas serão anônimas/tratadas com sigilo e deixe claro
+            que a participação é voluntária. Não precisa ser um documento jurídico — precisa ser honesto e claro.
+          </p>
+
+          <div class="alert alert-secondary">
+            <strong><i class="fas fa-file-signature me-1" aria-hidden="true"></i> Termo de consentimento simplificado — modelo</strong>
+            <blockquote class="mb-0 mt-2 small border-start border-3 ps-3">
+              "Este questionário faz parte do meu Trabalho de Conclusão de Curso, sobre [tema]. Suas respostas
+              serão usadas apenas para fins acadêmicos, de forma anônima, e não serão associadas ao seu nome em
+              nenhum momento. Você pode interromper sua participação a qualquer momento, sem nenhum prejuízo.
+              Ao continuar, você concorda em participar voluntariamente."
+            </blockquote>
+          </div>
+
+          <h3 class="h6 fw-bold mt-3">3.2 Evitar viés na amostra</h3>
+          <p class="text-secondary mb-2">Amostra com viés é a que sistematicamente favorece um tipo de resposta. Sinais de alerta:</p>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-danger h-100 mb-0">
+                <strong>Sinais de viés</strong>
+                <ul class="mb-0 mt-2 small">
+                  <li>Coletar só com colegas, amigos ou pessoas próximas ao projeto.</li>
+                  <li>Divulgar apenas em grupos que já concordam com a proposta.</li>
+                  <li>Ignorar participantes que discordam ou não entendem a pergunta.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-success h-100 mb-0">
+                <strong>Boas práticas</strong>
+                <ul class="mb-0 mt-2 small">
+                  <li>Descrever o público-alvo real do problema antes de definir onde divulgar.</li>
+                  <li>Buscar diversidade de perfil (nível técnico, contexto de uso, experiência).</li>
+                  <li>Registrar quem respondeu, para poder discutir limitações da amostra depois.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <h3 class="h6 fw-bold mt-3">3.3 Documentar para ser reprodutível</h3>
+          <p class="text-secondary mb-2">Uma coleta é defensável na banca quando alguém de fora conseguiria refazer o processo. Registre:</p>
+          <ul class="text-secondary">
+            <li>Data e período em que a coleta foi realizada.</li>
+            <li>Versão do instrumento usada (principalmente se ele foi ajustado no meio do caminho).</li>
+            <li>Ambiente/condições (hardware, configuração, canal de divulgação, critérios de seleção).</li>
+            <li>Número de respostas/execuções obtidas e quantas foram descartadas, e por quê.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 4 -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-triangle-exclamation fa-2x text-danger me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 4 — Erros Comuns na Coleta de Dados</h2>
+          </div>
+
+          <div class="alert alert-danger">
+            <strong>1. Coletar sem plano de análise definido.</strong>
+            <p class="mb-0 mt-1 small">Sair juntando dados sem saber que teste, gráfico ou comparação vai fazer
+            depois. Resultado: um monte de dados que não respondem à pergunta de pesquisa, e retrabalho para
+            coletar de novo, de outro jeito.</p>
+          </div>
+          <div class="alert alert-danger">
+            <strong>2. Amostra pequena demais para a conclusão pretendida.</strong>
+            <p class="mb-0 mt-1 small">Concluir algo genérico ("os usuários preferem X") a partir de 3 ou 4
+            respostas. O tamanho da amostra precisa ser compatível com o alcance da afirmação que você quer fazer.</p>
+          </div>
+          <div class="alert alert-danger mb-0">
+            <strong>3. Instrumento não testado antes de usar em escala.</strong>
+            <p class="mb-0 mt-1 small">Aplicar direto para todo mundo sem pilotar antes com 1 ou 2 pessoas. Uma
+            pergunta ambígua ou mal interpretada, descoberta só depois de aplicada em escala, compromete toda a coleta.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 5: Dinamica -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-user-group fa-2x text-success me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 5 — Dinâmica em Sala: Piloteste em Pares</h2>
+          </div>
+          <p class="text-secondary">
+            Objetivo: cada aluno aplica o próprio instrumento de coleta (questionário, roteiro de entrevista etc.)
+            em um colega, recebe feedback imediato sobre clareza e viés das perguntas, e ajusta o instrumento
+            antes de aplicá-lo de verdade. Duração total sugerida: <strong>~24 minutos</strong>.
+          </p>
+
+          <h3 class="h6 fw-bold mt-3">Roteiro passo a passo (para o professor conduzir)</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Etapa</th>
+                  <th>Tempo</th>
+                  <th>O que acontece</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Formação das duplas</strong></td>
+                  <td>2 min</td>
+                  <td>Professor sorteia as duplas (aleatório) ou agrupa por afinidade de tema, para variar o
+                  tipo de feedback recebido.</td>
+                </tr>
+                <tr>
+                  <td><strong>Rodada 1</strong></td>
+                  <td>5 min</td>
+                  <td>Aluno A aplica seu instrumento (rascunho vale) no Aluno B, como se fosse a aplicação real.</td>
+                </tr>
+                <tr>
+                  <td><strong>Feedback 1</strong></td>
+                  <td>2 min</td>
+                  <td>B diz a A: o que ficou confuso, o que pareceu repetitivo, e se alguma pergunta pareceu
+                  levar a uma resposta específica (viés).</td>
+                </tr>
+                <tr>
+                  <td><strong>Rodada 2</strong></td>
+                  <td>5 min</td>
+                  <td>Inverte os papéis: B aplica o próprio instrumento em A.</td>
+                </tr>
+                <tr>
+                  <td><strong>Feedback 2</strong></td>
+                  <td>2 min</td>
+                  <td>A dá o mesmo tipo de feedback para B.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ajuste individual</strong></td>
+                  <td>5 min</td>
+                  <td>Cada aluno revisa o próprio instrumento com base no feedback recebido — sozinho.</td>
+                </tr>
+                <tr>
+                  <td><strong>Debrief coletivo</strong></td>
+                  <td>3 min</td>
+                  <td>Professor pede que 2 ou 3 alunos compartilhem a resposta da pergunta de debrief com a turma.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="h6 fw-bold mt-3">Regras da atividade</h3>
+          <ul class="text-secondary">
+            <li>Use o instrumento real, mesmo que ainda seja um rascunho — não vale só "descrever" o que ele faz.</li>
+            <li>Quem aplica <strong>não explica ou justifica</strong> a pergunta durante a aplicação: isso simula a
+            aplicação real, quando o autor não estará ao lado de cada respondente explicando.</li>
+            <li>Quem responde deve anotar literalmente qualquer dúvida ou hesitação, mesmo pequena — é justamente
+            esse tipo de sinal que se perde quando o instrumento é aplicado apenas pelo próprio autor.</li>
+          </ul>
+
+          <div class="alert alert-success mb-0">
+            <strong><i class="fas fa-comments me-1" aria-hidden="true"></i> Pergunta de debrief (para todos responderem, mesmo que em silêncio):</strong>
+            <p class="mb-0 mt-2">Qual pergunta do seu instrumento mudou de sentido quando você ouviu a resposta do colega?</p>
+          </div>
+
+          <div class="alert alert-secondary mt-3 mb-0">
+            <strong>Dica de facilitação:</strong> se a turma for ímpar, o professor forma um trio e conduz uma
+            rodada extra, ou entra como par de alguém — a atividade não perde o efeito com um ajuste pontual.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 6: Checklist -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-square-check fa-2x text-primary me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 6 — Checklist do Instrumento de Coleta</h2>
+          </div>
+          <p class="text-secondary">Passe por este checklist antes de aplicar o instrumento em escala.</p>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>O instrumento foi pilotado com pelo menos 1 pessoa antes de ir para a turma toda.</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Cada pergunta/campo se relaciona claramente com um objetivo específico do TCC2.</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>O tamanho de amostra planejado é compatível com a abrangência da conclusão desejada.</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Existe um plano de análise definido antes da coleta (o que farei com cada dado).</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>Se envolve pessoas, existe uma explicação de consentimento clara e voluntária.</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>O processo de coleta (data, versão, ambiente, critérios) está sendo documentado desde já.</li>
+            <li class="list-group-item bg-transparent"><i class="fas fa-square-check text-success me-2" aria-hidden="true"></i>A amostra planejada representa o público-alvo do problema, e não só quem está mais à mão.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 7: Entrega -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <div class="d-flex align-items-center mb-3">
+            <i class="fas fa-flag-checkered fa-2x text-success me-3" aria-hidden="true"></i>
+            <h2 class="h4 fw-bold mb-0">Capítulo 7 — Próximos Passos Rumo à Aula 05</h2>
+          </div>
+          <ol class="text-secondary">
+            <li class="mb-2">Ajustar o instrumento com base no feedback recebido no piloteste em pares.</li>
+            <li class="mb-2">Definir o cronograma de coleta: quantas respostas/execuções, em quanto tempo, por qual canal.</li>
+            <li class="mb-0">Aplicar em escala, registrando todo o processo, para chegar com dados prontos para a
+            execução e testes da Aula 05.</li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            A qualidade da coleta feita agora é o que vai sustentar a análise da próxima aula — dado sem registro
+            de como foi coletado não sustenta conclusão.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-10 mx-auto text-center">
+        <a href="../slide_aula04-metodologia-coleta-dados.html" class="btn btn-outline-danger rounded-pill me-2">
+          <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
+        </a>
+        <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
+          <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
+        </a>
+      </div>
+    </div>
+
   </div>
 
   <footer class="bg-light text-dark py-4 mt-5">

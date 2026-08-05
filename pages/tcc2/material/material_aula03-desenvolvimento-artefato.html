@@ -9,6 +9,95 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../../css/style.css">
+  <style>
+    :root {
+      --tcc-primary: #833ab4;
+      --tcc-secondary: #fd1d1d;
+      --tcc-accent: #fcb045;
+    }
+
+    .chapter-card {
+      border: none;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      background-color: #fff;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.06);
+    }
+
+    .chapter-header {
+      color: #fff;
+      padding: 1.2rem 1.5rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+
+    .chapter-icon {
+      font-size: 1.6rem;
+      opacity: 0.95;
+    }
+
+    .info-box {
+      background-color: #f2e9f9;
+      border-left: 5px solid var(--tcc-primary);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .warning-box {
+      background-color: #fff4e6;
+      border-left: 5px solid var(--tcc-accent);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .example-box {
+      background-color: #edf7ed;
+      border-left: 5px solid #2a9d8f;
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .danger-box {
+      background-color: #fdecea;
+      border-left: 5px solid var(--tcc-secondary);
+      padding: 1rem 1.25rem;
+      margin: 1rem 0;
+      border-radius: 8px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      font-weight: 600;
+      padding: 0.35rem 0.8rem;
+      margin: 0.15rem;
+      display: inline-block;
+      font-size: 0.85rem;
+    }
+
+    .section-subtitle {
+      color: #4b5563;
+      font-weight: 600;
+      margin-top: 0.5rem;
+    }
+
+    .table thead th {
+      white-space: nowrap;
+    }
+
+    .adr-field {
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      height: 100%;
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+    }
+  </style>
 </head>
 
 <body>
@@ -42,24 +131,501 @@
   </header>
 
   <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-warning mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">
-            O material escrito da aula <strong>Desenvolvimento do Artefato</strong> será publicado em breve.
-            Esta é uma página placeholder.
-          </p>
-          <a href="../slide_aula03-desenvolvimento-artefato.html" class="btn btn-outline-danger rounded-pill me-2">
-            <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
-          </a>
-          <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
-          </a>
+
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <p class="lead text-center mb-2">"O artefato que sobrevive ao TCC não é o mais completo — é o mais rastreável."</p>
+        <p class="text-secondary text-center mb-0">
+          Este material aprofunda a Aula 03: controle de escopo, pensamento MVP, documentação de decisões técnicas
+          e disciplina de versionamento como parte do rigor científico do trabalho.
+        </p>
+      </div>
+    </div>
+
+    <!-- Capítulo 0: Objetivos -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+              height="44">
+            <h2 class="h4 fw-bold mb-0">Objetivos da Aula e Como Usar Este Material</h2>
+          </div>
+          <p class="section-subtitle">Ao final da Aula 03, você deve conseguir:</p>
+          <ul>
+            <li>Reconhecer sinais de "featurite" e proteger o escopo já negociado no replanejamento.</li>
+            <li>Definir o recorte mínimo (MVP) do artefato que valida seus objetivos específicos.</li>
+            <li>Registrar decisões técnicas de forma que alimentem direto o capítulo de metodologia/artefato.</li>
+            <li>Aplicar disciplina de versionamento como evidência de rigor, não apenas boa prática de dev.</li>
+          </ul>
+          <div class="info-box mb-0">
+            <strong>Como usar este material:</strong> leia os capítulos na ordem, preencha o checklist de documentação
+            técnica e use o roteiro da dinâmica em sala (Capítulo 6) para preparar sua apresentação de 3 minutos.
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Capítulo 1: Escopo sob controle -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: var(--tcc-secondary);">
+            <i class="fas fa-scissors chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 1: Escopo Sob Controle</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>
+              Faltam poucas semanas para a <strong>entrega parcial da Semana 38</strong>. É justamente nesta fase de
+              construção que o maior risco não é técnico — é comportamental: a <strong>featurite</strong>
+              (scope creep), o hábito de ir adicionando "mais uma coisinha" ao artefato sem que isso esteja
+              amarrado a um objetivo específico.
+            </p>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <h3 class="h6 text-danger fw-bold">Sinais de alerta</h3>
+                <ul class="mb-0">
+                  <li>"Já que estou nessa tela, vou aproveitar e adicionar..."</li>
+                  <li>Funcionalidade nova sem relação direta com nenhum objetivo específico do projeto</li>
+                  <li>Retrabalho recorrente em partes que já haviam sido consideradas prontas</li>
+                  <li>Sensação de "sempre falta mais um pouco" para considerar o MVP completo</li>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h3 class="h6 text-success fw-bold">Como se proteger</h3>
+                <ul class="mb-0">
+                  <li>Toda ideia nova passa pelo teste: <em>"isto está em algum dos meus objetivos específicos?"</em></li>
+                  <li>Se a resposta for não, ela vai para uma lista separada de <strong>trabalhos futuros</strong></li>
+                  <li>O escopo foi negociado na Aula 01 (replanejamento) — esta fase é de execução, não de expansão</li>
+                  <li>Revise o escopo com o orientador antes de aceitar qualquer alteração relevante</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="danger-box mb-0">
+              <strong>Regra de ouro:</strong> nenhuma funcionalidade nova entra no artefato sem que outra seja
+              explicitamente removida ou postergada. Escopo é uma balança, não uma lista que só cresce.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 2: Pensamento MVP -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: var(--tcc-primary);">
+            <i class="fas fa-layer-group chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 2: Pensamento MVP Aplicado ao TCC</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>
+              No contexto do TCC, MVP não significa "o mínimo para vender" — significa
+              <strong>o menor recorte do artefato que já é suficiente para responder à pergunta de pesquisa</strong>
+              e gerar evidência para os objetivos específicos. Tudo que passa disso é ganho de robustez, não de validade científica.
+            </p>
+
+            <h3 class="h6 fw-bold mt-3">2.1 O que entra e o que espera</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Categoria</th>
+                    <th>Exemplos</th>
+                    <th>Decisão</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Núcleo de validação</td>
+                    <td>Fluxo/funcionalidade do qual a metodologia depende para gerar evidência</td>
+                    <td><span class="tag bg-success text-white">Faz parte do MVP</span></td>
+                  </tr>
+                  <tr>
+                    <td>Dado mínimo</td>
+                    <td>Menor volume/qualidade de dados de entrada para testar a solução</td>
+                    <td><span class="tag bg-success text-white">Faz parte do MVP</span></td>
+                  </tr>
+                  <tr>
+                    <td>Citado no objetivo</td>
+                    <td>Qualquer capacidade mencionada diretamente em um objetivo específico</td>
+                    <td><span class="tag bg-success text-white">Faz parte do MVP</span></td>
+                  </tr>
+                  <tr>
+                    <td>Conveniência</td>
+                    <td>Telas extras, temas visuais, atalhos de UX</td>
+                    <td><span class="tag bg-warning text-dark">Pode esperar</span></td>
+                  </tr>
+                  <tr>
+                    <td>Infraestrutura avançada</td>
+                    <td>Autenticação/perfis complexos não exigidos pela pesquisa</td>
+                    <td><span class="tag bg-warning text-dark">Pode esperar</span></td>
+                  </tr>
+                  <tr>
+                    <td>Caso de uso extra</td>
+                    <td>Funcionalidade que ninguém pediu para validar</td>
+                    <td><span class="tag bg-warning text-dark">Pode esperar</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 class="h6 fw-bold mt-3">2.2 Pergunta de corte</h3>
+            <div class="info-box">
+              <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+              <strong>"Se eu não construir isto, ainda consigo responder minha pergunta de pesquisa?"</strong>
+              Se a resposta for sim, o item não pertence ao MVP — mova-o para "trabalhos futuros".
+            </div>
+
+            <div class="example-box mb-0">
+              <strong>Exemplo prático:</strong> se o objetivo específico é "avaliar o desempenho do modelo de
+              classificação em [cenário]", o MVP precisa ter o pipeline de dados + modelo treinado + métrica de
+              avaliação funcionando ponta a ponta. Uma interface web bonita para exibir o resultado é secundária:
+              um relatório em terminal ou notebook já basta para gerar evidência.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 3: Documentando decisões técnicas -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #343a40;">
+            <i class="fas fa-file-signature chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 3: Documentar Decisões Técnicas (ADR)</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>
+              Toda escolha relevante de arquitetura, biblioteca, algoritmo ou abordagem feita durante o
+              desenvolvimento é <strong>matéria-prima direta</strong> do capítulo de metodologia/artefato do TCC.
+              Registrar o "porquê" no momento em que a decisão é tomada evita reconstrução de memória (e
+              justificativas frágeis) na hora de escrever a monografia.
+            </p>
+
+            <h3 class="h6 fw-bold mt-3">3.1 Template de registro (ADR simplificado)</h3>
+            <div class="row g-3">
+              <div class="col-md-3">
+                <div class="adr-field">
+                  <span class="badge bg-secondary mb-2">Contexto</span>
+                  <p class="small text-secondary mb-0">Qual problema técnico eu precisava resolver? Que restrições existiam?</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="adr-field">
+                  <span class="badge mb-2" style="background-color: var(--tcc-primary);">Decisão</span>
+                  <p class="small text-secondary mb-0">O que foi escolhido, de forma objetiva e verificável.</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="adr-field">
+                  <span class="badge bg-warning text-dark mb-2">Alternativas</span>
+                  <p class="small text-secondary mb-0">O que mais foi considerado e por que foi descartado.</p>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="adr-field">
+                  <span class="badge bg-success mb-2">Consequências</span>
+                  <p class="small text-secondary mb-0">Ganhos, trade-offs e limitações assumidas com a escolha.</p>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="h6 fw-bold mt-4">3.2 Exemplo de registro preenchido</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle">
+                <tbody>
+                  <tr>
+                    <td class="fw-bold" style="width: 18%;">ID / Data</td>
+                    <td>ADR-003 — 12/09/2026</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Contexto</td>
+                    <td>Precisávamos armazenar as respostas coletadas para análise posterior, com consultas simples e sem depender de infraestrutura de servidor dedicada.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Decisão</td>
+                    <td>Usar SQLite embutido na aplicação, com um schema único para as respostas.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Alternativas</td>
+                    <td>PostgreSQL (descartado: exigiria servidor dedicado, fora do escopo do MVP) e arquivo CSV puro (descartado: dificultaria consultas e validação de integridade).</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Consequências</td>
+                    <td>Ganho de simplicidade de setup e portabilidade do artefato; limitação assumida: não escala para uso concorrente de múltiplos usuários — aceitável para o volume de dados do experimento.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="info-box mb-0">
+              <strong>Prática recomendada:</strong> mantenha um arquivo <code>decisoes.md</code> no repositório do
+              projeto, com um registro como este a cada decisão relevante. Quatro a seis registros bem escritos já
+              formam o esqueleto da seção de "projeto do artefato" da monografia.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 4: Versionamento como rigor científico -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #0d6efd;">
+            <i class="fas fa-code-branch chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 4: Versionamento Como Rigor Científico</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>
+              Git bem utilizado cumpre no artefato o mesmo papel que o rigor metodológico cumpre no texto:
+              <strong>rastreabilidade</strong>. A banca pode (e deve) perguntar "como você chegou a essa versão do
+              artefato?" — e o histórico de commits é a resposta objetiva a essa pergunta.
+            </p>
+
+            <h3 class="h6 fw-bold mt-3">4.1 Práticas obrigatórias</h3>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="info-box h-100 mb-0">
+                  <strong><i class="fas fa-code-commit me-1" aria-hidden="true"></i>Commits atômicos</strong>
+                  <p class="mb-0 mt-2 small">Uma mudança por commit, com mensagem que explica o quê e o porquê
+                  (ex.: <code>fix: corrige normalização de dados de entrada do pipeline</code>).</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box h-100 mb-0">
+                  <strong><i class="fas fa-code-fork me-1" aria-hidden="true"></i>Branches por frente de trabalho</strong>
+                  <p class="mb-0 mt-2 small">Isole experimentos e funcionalidades em branches próprias; só integre
+                  à branch principal o que está funcional.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box h-100 mb-0">
+                  <strong><i class="fas fa-tag me-1" aria-hidden="true"></i>Tags de marco</strong>
+                  <p class="mb-0 mt-2 small">Marque com tag o commit correspondente a cada entrega do cronograma
+                  (ex.: <code>entrega-semana-38</code>), para localizar rapidamente o estado exato usado na avaliação.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="info-box h-100 mb-0">
+                  <strong><i class="fas fa-cloud-arrow-up me-1" aria-hidden="true"></i>Backup remoto</strong>
+                  <p class="mb-0 mt-2 small">Push frequente para um repositório remoto (GitHub/GitLab). Notebook
+                  perdido ou danificado não pode significar TCC perdido.</p>
+                </div>
+              </div>
+            </div>
+
+            <h3 class="h6 fw-bold mt-3">4.2 Checklist rápido de versionamento</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                  <tr>
+                    <th>Item</th>
+                    <th>Pergunta de verificação</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Frequência</td>
+                    <td>Fiz pelo menos um commit em cada sessão de trabalho no artefato?</td>
+                  </tr>
+                  <tr>
+                    <td>Mensagens</td>
+                    <td>Minhas mensagens de commit permitem entender a evolução do projeto sem abrir o código?</td>
+                  </tr>
+                  <tr>
+                    <td>Backup</td>
+                    <td>O repositório remoto reflete o mesmo estado do meu ambiente local?</td>
+                  </tr>
+                  <tr>
+                    <td>Marcos</td>
+                    <td>Existe uma tag/commit identificável para cada entrega do cronograma?</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="danger-box mb-0">
+              Sem histórico de commits coerente, não há como demonstrar <strong>como</strong> o artefato foi
+              construído — e essa é exatamente a evidência que a metodologia precisa apresentar.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 5: Checklist consolidado de documentação técnica -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #198754;">
+            <i class="fas fa-clipboard-check chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 5: Checklist de Documentação Técnica</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>Antes de considerar a semana de desenvolvimento encerrada, confirme:</p>
+            <ul>
+              <li>Escopo do MVP revisado e sem itens de "featurite" incorporados sem justificativa.</li>
+              <li>Pelo menos um novo registro em <code>decisoes.md</code> descrevendo uma escolha técnica relevante da semana.</li>
+              <li>Histórico de commits legível, com mensagens que contam a evolução do artefato.</li>
+              <li>Repositório com push atualizado (backup remoto garantido).</li>
+              <li>Lista de "trabalhos futuros" atualizada com tudo que foi adiado.</li>
+              <li>Maior risco atual do artefato identificado e nomeado (você vai precisar dele na dinâmica em sala).</li>
+            </ul>
+            <div class="example-box mb-0">
+              <strong>Critério de avaliação docente:</strong> coerência entre o que foi construído, o que foi
+              documentado como decisão e o que consta no histórico de versionamento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 6: Dinâmica em sala -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: var(--tcc-accent); color: #212529;">
+            <i class="fas fa-bolt chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0" style="color:#212529;">Capítulo 6: Dinâmica em Sala — Show &amp; Tell Relâmpago</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>
+              Atividade prática para checar o progresso real de todos os grupos numa única aula, com foco em
+              <strong>funcionamento</strong> e <strong>risco</strong> — não em estética de apresentação.
+            </p>
+
+            <h3 class="h6 fw-bold mt-3">6.1 Objetivo da dinâmica</h3>
+            <p class="mb-0">Dar visibilidade rápida do estado real de cada artefato, estimular feedback entre pares
+            e identificar riscos comuns antes que se tornem bloqueios na entrega da Semana 38.</p>
+
+            <h3 class="h6 fw-bold mt-4">6.2 Roteiro de facilitação (para o professor)</h3>
+            <div class="table-responsive">
+              <table class="table table-bordered table-hover align-middle">
+                <thead class="table-light">
+                  <tr>
+                    <th>Etapa</th>
+                    <th>Tempo</th>
+                    <th>Ação do professor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Abertura</td>
+                    <td>2 min</td>
+                    <td>Explicar formato, tempo por grupo e critério das perguntas ("o que já funciona" e "maior risco").</td>
+                  </tr>
+                  <tr>
+                    <td>Rodízio dos grupos</td>
+                    <td>3 min &times; nº de grupos</td>
+                    <td>Cronometrar no telão; interromper a demo no fim do tempo, mesmo que incompleta.</td>
+                  </tr>
+                  <tr>
+                    <td>Perguntas por grupo</td>
+                    <td>incluído nos 3 min</td>
+                    <td>Selecionar 2 perguntas (turma ou professor); recusar perguntas de código/implementação de detalhe.</td>
+                  </tr>
+                  <tr>
+                    <td>Debrief final</td>
+                    <td>5 min</td>
+                    <td>Perguntar à turma: "qual risco apareceu em mais de um grupo, e o que podemos fazer juntos?"</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3 class="h6 fw-bold mt-4">6.3 Estrutura da fala de cada grupo (3 minutos)</h3>
+            <ol>
+              <li><strong>1 minuto</strong> — demonstração ao vivo do que já funciona no artefato.</li>
+              <li><strong>1 minuto</strong> — descrição objetiva do maior risco atual (técnico, de dados, de tempo ou de escopo).</li>
+              <li><strong>1 minuto</strong> — resposta a até 2 perguntas da turma/professor.</li>
+            </ol>
+
+            <h3 class="h6 fw-bold mt-4">6.4 Regras de execução</h3>
+            <ul>
+              <li>Ordem de apresentação por rodízio fixo (lista de chamada) — sem escolha de quem começa.</li>
+              <li>Sem slides de apresentação: só o artefato rodando na tela.</li>
+              <li>Tempo é inegociável: quando o cronômetro zera, a palavra passa ao grupo seguinte.</li>
+              <li>Perguntas da turma devem ser curtas e focadas nos dois temas definidos (funciona / risco).</li>
+            </ul>
+
+            <div class="warning-box mb-0">
+              <strong>Pergunta de debrief final:</strong> "qual risco apareceu em mais de um grupo — e o que a turma
+              pode fazer coletivamente sobre ele antes da Semana 38?"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 7: Entrega da semana / próximos passos -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="chapter-card">
+          <div class="chapter-header" style="background-color: #6f42c1;">
+            <i class="fas fa-route chapter-icon" aria-hidden="true"></i>
+            <div>
+              <h2 class="h4 mb-0">Capítulo 7: Rumo à Aula 04 — Metodologia e Coleta de Dados</h2>
+            </div>
+          </div>
+          <div class="card-body p-4">
+            <p>Leve para a próxima aula:</p>
+            <ol>
+              <li>O MVP em construção, com o escopo já negociado — sem novas funcionalidades adicionadas fora dele.</li>
+              <li><code>decisoes.md</code> atualizado com pelo menos uma decisão técnica relevante da semana.</li>
+              <li>Histórico de commits coerente e com push atualizado no repositório remoto.</li>
+              <li>O maior risco atual do artefato, já nomeado e, se possível, com um plano inicial de mitigação.</li>
+            </ol>
+            <div class="info-box mb-0">
+              Na Aula 04, o foco passa da construção pura para o fechamento da <strong>metodologia</strong> e o
+              desenho do <strong>plano de coleta de dados</strong> que vai validar o artefato — chegar com o MVP
+              rodando torna essa etapa concreta em vez de teórica.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <h2 class="h5 fw-bold mb-3">Exercícios de fixação</h2>
+        <ol class="text-secondary mb-0">
+          <li>Liste 3 itens do seu artefato que hoje correm risco de ser "featurite" e decida: ficam ou vão para trabalhos futuros?</li>
+          <li>Escreva um registro de decisão técnica (ADR) real do seu projeto, usando o template do Capítulo 3.</li>
+          <li>Revise seu histórico de commits das últimas duas semanas: as mensagens contam a evolução do projeto?</li>
+          <li>Descreva, em uma frase, qual é o maior risco atual do seu artefato — você vai precisar dela na dinâmica em sala.</li>
+          <li>Aplique a pergunta de corte do Capítulo 2 a três funcionalidades do seu projeto e registre o resultado.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto text-center">
+        <a href="../slide_aula03-desenvolvimento-artefato.html" class="btn btn-outline-danger rounded-pill me-2">
+          <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
+        </a>
+        <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
+          <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
+        </a>
+      </div>
+    </div>
+
   </div>
 
   <footer class="bg-light text-dark py-4 mt-5">

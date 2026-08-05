@@ -27,39 +27,438 @@
     </div>
   </nav>
 
-  <header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height: 12vh;">
+  <header class="hero-section bg-tcc d-flex align-items-center py-5">
     <div class="container">
-      <a href="../../home_tcc2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
+      <a href="../../home_tcc2.html" class="btn btn-sm btn-outline-light rounded-pill mb-3">
         <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
       </a>
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <span class="badge bg-white text-dark mb-1">Semana 36 &middot; 2026.2</span>
-          <h1 class="h3 fw-bold text-white mb-0">Aula 05: Execução e Testes</h1>
+      <div class="row align-items-center gy-4">
+        <div class="col-lg-8">
+          <span class="badge bg-white text-dark mb-2">Semana 36 &middot; 2026.2</span>
+          <h1 class="display-6 fw-bold text-white mb-2">Aula 05: Execução e Testes</h1>
+          <p class="lead text-white-50 mb-3">
+            Material de apoio para rodar os experimentos que vão validar o artefato do TCC2 — com rigor,
+            evidência guardada e ameaças à validade sob controle.
+          </p>
+          <div>
+            <span class="badge bg-light text-dark me-1 mb-1">Testes funcionais</span>
+            <span class="badge bg-light text-dark me-1 mb-1">Benchmark</span>
+            <span class="badge bg-light text-dark me-1 mb-1">Baseline</span>
+            <span class="badge bg-light text-dark me-1 mb-1">Ameaças à validade</span>
+            <span class="badge bg-light text-dark me-1 mb-1">Bug Bash Cruzado</span>
+          </div>
+        </div>
+        <div class="col-lg-4 text-center d-none d-lg-block">
+          <i class="fas fa-vial fa-8x text-white-50" aria-hidden="true"></i>
         </div>
       </div>
     </div>
   </header>
 
   <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-warning mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">
-            O material escrito da aula <strong>Execução e Testes</strong> será publicado em breve.
-            Esta é uma página placeholder.
-          </p>
-          <a href="../slide_aula05-execucao-testes.html" class="btn btn-outline-danger rounded-pill me-2">
-            <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
-          </a>
-          <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
-          </a>
+
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto d-flex flex-wrap gap-2 justify-content-center">
+        <a href="../slide_aula05-execucao-testes.html" class="btn btn-outline-danger rounded-pill">
+          <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides desta aula
+        </a>
+        <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
+          <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
+        </a>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <p class="lead text-center mb-2">"Um resultado sem evidência é só uma opinião com número na frente."</p>
+        <p class="text-secondary text-center mb-0">
+          Use este material como referência para planejar, executar e documentar os testes do seu artefato — e para
+          se preparar para as perguntas de banca sobre ameaças à validade.
+        </p>
+      </div>
+    </div>
+
+    <!-- Capitulo 1: Objetivos -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-bullseye text-warning me-2" aria-hidden="true"></i> Objetivos da Aula e Como Usar Este Material</h3>
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="50" class="mb-3">
+          <p class="fw-semibold text-secondary">Ao final da Aula 05, você deve conseguir:</p>
+          <ul>
+            <li>Verificar se o artefato e os critérios de sucesso estão prontos para a execução dos testes.</li>
+            <li>Escolher o(s) tipo(s) de teste/validação coerente(s) com seus objetivos específicos.</li>
+            <li>Reconhecer ameaças à validade dos seus resultados e aplicar mitigação adequada.</li>
+            <li>Documentar a execução de forma reprodutível (logs, capturas, versão exata, condições).</li>
+          </ul>
+          <div class="alert alert-info mb-0">
+            <strong>Como usar este material:</strong> siga os capítulos na ordem, use o checklist de execução como
+            guia no dia do teste e leve o roteiro da dinâmica em sala já lido — a atividade é rápida e cronometrada.
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Capitulo 2: Da coleta a execucao -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-play text-primary me-2" aria-hidden="true"></i> Capítulo 1: Da Coleta de Dados à Execução dos Testes</h3>
+          <p>
+            Testar não é "rodar e ver o que acontece". Antes de executar qualquer experimento, dois pré-requisitos
+            precisam estar resolvidos: o <strong>artefato precisa estar estável</strong> no escopo que será avaliado,
+            e você precisa ter definido <strong>o que significa "deu certo"</strong> antes de olhar para o resultado.
+          </p>
+
+          <h4 class="h6 fw-bold mt-3">Pré-condições antes de apertar o play</h4>
+          <ul>
+            <li><strong>Escopo congelado:</strong> nada de alterar o artefato no meio de uma rodada de testes — isso invalida a comparação entre execuções.</li>
+            <li><strong>Critérios de sucesso explícitos:</strong> escreva antes de rodar o que conta como aprovado/reprovado, ou qual métrica prova o objetivo específico.</li>
+            <li><strong>Ambiente documentado:</strong> hardware, sistema, dependências e parâmetros usados na rodada.</li>
+            <li><strong>Roteiro de execução:</strong> passo a passo replicável de como o teste é disparado.</li>
+          </ul>
+
+          <div class="alert alert-danger mb-0">
+            <strong>Erro comum:</strong> começar a testar sem critério de sucesso definido. O resultado vira uma
+            descrição do que aconteceu, não uma resposta à sua pergunta de pesquisa.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 3: Tipos de teste -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-vial text-success me-2" aria-hidden="true"></i> Capítulo 2: Tipos de Teste e Validação em TCC de Computação</h3>
+          <p>Escolha o(s) tipo(s) de validação que respondem diretamente aos seus objetivos específicos — não é preciso usar todos.</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Tipo de teste</th>
+                  <th>Pergunta que responde</th>
+                  <th>Exemplo de evidência/métrica</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Funcional</strong></td>
+                  <td>O artefato faz o que promete, inclusive em casos de borda?</td>
+                  <td>Casos de teste passando/falhando, cobertura de cenários.</td>
+                </tr>
+                <tr>
+                  <td><strong>Desempenho / benchmark</strong></td>
+                  <td>Quão rápido, escalável ou eficiente é o artefato?</td>
+                  <td>Tempo de resposta, throughput, uso de memória/CPU sob carga.</td>
+                </tr>
+                <tr>
+                  <td><strong>Comparação com baseline</strong></td>
+                  <td>A solução proposta é melhor que a alternativa existente?</td>
+                  <td>Mesma métrica calculada para solução proposta e baseline, nas mesmas condições.</td>
+                </tr>
+                <tr>
+                  <td><strong>Avaliação por usuários</strong></td>
+                  <td>O artefato é usável e percebido como útil por quem usa?</td>
+                  <td>Questionário (ex.: SUS), entrevista curta, observação de uso guiado.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-info mb-0">
+            <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+            Combine tipos quando fizer sentido (ex.: funcional + benchmark), mas mantenha o vínculo claro com o
+            objetivo específico que cada teste valida.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 4: Ameacas a validade -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-shield-halved text-danger me-2" aria-hidden="true"></i> Capítulo 3: Ameaças à Validade x Mitigação</h3>
+          <p>
+            Ameaça à validade é qualquer fator que pode fazer você tirar uma conclusão errada dos seus dados.
+            Declarar essas ameaças e como foram tratadas é parte do rigor esperado num TCC — e é pergunta quase
+            garantida na banca.
+          </p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Ameaça</th>
+                  <th>O que é</th>
+                  <th>Como mitigar</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Amostra não representativa</strong></td>
+                  <td>Os dados de teste não refletem o cenário real do problema (poucos casos, todos parecidos, sem casos extremos).</td>
+                  <td>Diversificar e ampliar a amostra; justificar explicitamente os critérios de seleção usados.</td>
+                </tr>
+                <tr>
+                  <td><strong>Ambiente não controlado</strong></td>
+                  <td>Hardware, rede ou carga de outros processos varia entre execuções e contamina a medição.</td>
+                  <td>Isolar o ambiente de teste, repetir as execuções e documentar as condições exatas de cada rodada.</td>
+                </tr>
+                <tr>
+                  <td><strong>Baseline injusto</strong></td>
+                  <td>A alternativa de comparação está mal configurada, desatualizada ou testada em condição diferente.</td>
+                  <td>Usar a mesma configuração e dados para todas as abordagens comparadas; justificar a escolha do baseline.</td>
+                </tr>
+                <tr>
+                  <td><strong>Poucas repetições</strong></td>
+                  <td>O resultado observado pode ser fruto do acaso, não do efeito que você quer medir.</td>
+                  <td>Repetir o experimento múltiplas vezes e reportar média e variação (ex.: desvio padrão).</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-warning mb-0">
+            <strong>Boa prática:</strong> escreva as ameaças à validade no próprio relatório de resultados, junto da
+            mitigação aplicada. Isso demonstra maturidade metodológica mesmo quando o resultado não é perfeito.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 5: Documentar tudo -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-clipboard-list text-secondary me-2" aria-hidden="true"></i> Capítulo 4: Documentar Tudo Durante a Execução</h3>
+          <p>Evidência que não foi guardada no momento da execução, na prática, não existe mais. Guarde tudo enquanto o teste está rodando — não depois.</p>
+
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>O que documentar</th>
+                  <th>Por quê</th>
+                  <th>Como fazer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Logs de execução</strong></td>
+                  <td>Permite auditar exatamente o que aconteceu, não só o resumo que você lembra.</td>
+                  <td>Redirecionar saída para arquivo, versionar logs junto do experimento.</td>
+                </tr>
+                <tr>
+                  <td><strong>Capturas de tela/vídeo</strong></td>
+                  <td>Evidência visual de comportamento, falhas de UI e resultados difíceis de descrever em texto.</td>
+                  <td>Print/gravação no momento do teste, com data e contexto visível.</td>
+                </tr>
+                <tr>
+                  <td><strong>Versão exata testada</strong></td>
+                  <td>Sem isso, o resultado não é reprodutível — nem por você mesmo, semanas depois.</td>
+                  <td>Registrar commit/tag/hash do artefato usado em cada rodada.</td>
+                </tr>
+                <tr>
+                  <td><strong>Condições do experimento</strong></td>
+                  <td>Explica variações entre rodadas e sustenta a discussão de ameaças à validade.</td>
+                  <td>Anotar data, hardware, configuração e parâmetros usados.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-info mb-0">
+            Sem evidência registrada, o resultado não existe para a banca. <strong>"Confia" não é metodologia.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 6: Checklist de execucao -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-list-check text-dark me-2" aria-hidden="true"></i> Capítulo 5: Checklist de Execução de Testes</h3>
+          <p>Use este checklist como guia no dia da execução — antes, durante e depois de rodar os testes.</p>
+
+          <h4 class="h6 fw-bold mt-3">Antes de rodar</h4>
+          <ul>
+            <li>Escopo do artefato congelado para esta rodada.</li>
+            <li>Critérios de sucesso escritos e revisados.</li>
+            <li>Ambiente preparado e documentado (hardware, dependências, parâmetros).</li>
+            <li>Roteiro de execução testado ao menos uma vez em pequena escala.</li>
+          </ul>
+
+          <h4 class="h6 fw-bold mt-3">Durante a execução</h4>
+          <ul>
+            <li>Logs de execução sendo salvos em arquivo.</li>
+            <li>Capturas de tela/vídeo dos momentos relevantes (sucesso e falha).</li>
+            <li>Repetições suficientes registradas, não apenas uma rodada isolada.</li>
+            <li>Qualquer imprevisto anotado no momento em que aconteceu.</li>
+          </ul>
+
+          <h4 class="h6 fw-bold mt-3">Depois de rodar</h4>
+          <ul>
+            <li>Versão exata (commit/tag) do artefato testado registrada.</li>
+            <li>Resultados brutos organizados e salvos com nome/data identificável.</li>
+            <li>Ameaças à validade observadas nesta rodada anotadas.</li>
+            <li>Resultado comparado com o critério de sucesso definido — não com a impressão pessoal.</li>
+          </ul>
+
+          <div class="alert alert-success mb-0">
+            Se você respondeu "sim" para os itens acima, a sua execução está pronta para virar seção de resultados
+            na Aula 06.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 7: Dinamica em sala -->
+    <div class="row mb-4">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-bug text-danger me-2" aria-hidden="true"></i> Capítulo 6: Dinâmica em Sala — Bug Bash Cruzado</h3>
+          <p>
+            Atividade prática para encontrar falhas no artefato dos colegas antes que a banca as encontre.
+            Cada grupo testa o artefato de outro grupo por tempo cronometrado, tentando "quebrá-lo" e reportando
+            os achados em um formulário simples.
+          </p>
+
+          <h4 class="h6 fw-bold mt-3">Objetivo pedagógico</h4>
+          <ul>
+            <li>Expor os artefatos a um olhar externo antes da banca — mais barato corrigir agora do que na apresentação final.</li>
+            <li>Praticar a diferença entre "achar um bug" e "reportar um achado de forma útil e reproduzível".</li>
+          </ul>
+
+          <h4 class="h6 fw-bold mt-3">Formação de grupos</h4>
+          <ul>
+            <li>Trios (ou duplas, se a turma for pequena) — mantenha os mesmos grupos de projeto do TCC2.</li>
+            <li>Cada trio recebe o artefato (link, build ou acesso) de <strong>outro</strong> trio, nunca o próprio.</li>
+            <li>Sugestão de distribuição: cruzamento circular (grupo A testa B, B testa C, C testa A) para simplificar a logística.</li>
+          </ul>
+
+          <h4 class="h6 fw-bold mt-3">Roteiro com tempos (facilitação do professor)</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Tempo</th>
+                  <th>Etapa</th>
+                  <th>O que o professor faz</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2 min</td>
+                  <td>Explicação e formação dos trios</td>
+                  <td>Anuncia as regras, define o cruzamento de artefatos entre os grupos e distribui o formulário de registro.</td>
+                </tr>
+                <tr>
+                  <td>10 min</td>
+                  <td>Bug bash cruzado</td>
+                  <td>Cronometra visivelmente, circula entre os grupos e incentiva quem terminar cedo a tentar mais um caso extremo.</td>
+                </tr>
+                <tr>
+                  <td>5 min</td>
+                  <td>Registro dos achados</td>
+                  <td>Garante que cada achado relevante tenha ao menos uma linha no formulário antes do tempo acabar.</td>
+                </tr>
+                <tr>
+                  <td>8–10 min</td>
+                  <td>Debrief coletivo</td>
+                  <td>Pede que cada trio compartilhe o achado mais relevante; o grupo "dono" do artefato reage na hora.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h4 class="h6 fw-bold mt-3">Formulário de registro (por tentativa)</h4>
+          <div class="alert alert-info">
+            <strong>O que tentei fazer</strong> no artefato do colega &middot;
+            <strong>o que eu esperava</strong> que acontecesse &middot;
+            <strong>o que realmente aconteceu</strong>.
+            <br>Pode ser um formulário digital curto (ex.: Google Forms) ou papel/planilha compartilhada — o
+            importante é que cada achado saia registrado, não só comentado em voz alta.
+          </div>
+
+          <h4 class="h6 fw-bold mt-3">Regras da dinâmica</h4>
+          <ul>
+            <li>O objetivo é achar falhas no artefato, não julgar o grupo que o construiu.</li>
+            <li>Vale testar entradas inválidas, casos extremos, cliques fora de ordem e uso "por fora do manual".</li>
+            <li>Todo achado deve vir com contexto suficiente para o outro grupo conseguir reproduzir.</li>
+          </ul>
+
+          <h4 class="h6 fw-bold mt-3">Pergunta de debrief</h4>
+          <div class="alert alert-warning mb-3">
+            Para cada achado apresentado: <strong>isso era um bug real, uma limitação já conhecida pelo grupo, ou um
+            mal-entendido de uso?</strong> A resposta orienta o que precisa mesmo ser corrigido antes da entrega.
+          </div>
+
+          <h4 class="h6 fw-bold mt-3">Dicas de facilitação para o professor</h4>
+          <ul>
+            <li>Prepare o link/acesso aos artefatos com antecedência para não perder tempo de aula com logística.</li>
+            <li>Deixe o cronômetro visível (projetor ou timer sonoro) para manter o ritmo da atividade.</li>
+            <li>Se um artefato não estiver acessível, tenha um plano B (ex.: vídeo de demonstração gravado pelo grupo) para não travar o trio.</li>
+            <li>No debrief, colete rapidamente 1 achado por trio — não deixe a rodada se alongar demais em um único grupo.</li>
+          </ul>
+
+          <div class="alert alert-success mb-0">
+            Critério de sucesso da dinâmica: cada grupo sai da aula com pelo menos um achado documentado sobre o
+            próprio artefato, reportado por quem o testou de fora.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capitulo 8: Entrega da semana -->
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4 mb-4">
+          <h3 class="mb-4"><i class="fas fa-flag-checkered text-success me-2" aria-hidden="true"></i> Capítulo 7: Próximos Passos e Entrega da Semana</h3>
+          <p>Entregue um registro curto (1 a 2 páginas) da execução desta semana, contendo:</p>
+          <ol>
+            <li><strong>Testes executados:</strong> tipo(s) escolhido(s) e resultado resumido de cada um.</li>
+            <li><strong>Evidências coletadas:</strong> logs, capturas de tela e versão exata do artefato testado.</li>
+            <li><strong>Ameaças à validade identificadas</strong> nesta rodada e como foram mitigadas.</li>
+            <li><strong>Pelo menos um achado</strong> do Bug Bash Cruzado e o que foi (ou será) feito com ele.</li>
+          </ol>
+
+          <div class="alert alert-info">
+            <strong>Critério de avaliação docente:</strong> coerência entre o critério de sucesso definido, o teste
+            executado e a evidência apresentada.
+          </div>
+
+          <div class="alert alert-success mb-0">
+            <strong>Checklist final antes de enviar:</strong>
+            <ul class="mb-0 mt-2">
+              <li>Meus testes respondem diretamente aos meus objetivos específicos.</li>
+              <li>Tenho evidência guardada, não só memória do que aconteceu.</li>
+              <li>Consigo explicar as ameaças à validade dos meus resultados com transparência.</li>
+              <li>Estou pronto para começar a escrever os resultados parciais na Aula 06.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-lg-10 mx-auto">
+        <div class="glass-card p-4">
+          <h2 class="h5 fw-bold mb-3"><i class="fas fa-pen text-primary me-2" aria-hidden="true"></i>Exercícios de Fixação</h2>
+          <ol class="text-secondary mb-0">
+            <li class="mb-2">Liste os critérios de sucesso do seu experimento — escritos antes de rodar qualquer teste.</li>
+            <li class="mb-2">Escolha e justifique o(s) tipo(s) de teste/validação mais adequado(s) ao seu TCC.</li>
+            <li class="mb-2">Identifique 2 ameaças à validade que podem afetar o seu resultado e como você vai mitigá-las.</li>
+            <li class="mb-2">Monte a lista de evidências (logs, capturas, versão) que você vai guardar na sua próxima execução.</li>
+            <li class="mb-0">Depois do Bug Bash Cruzado, registre 1 achado recebido e classifique-o: bug real, limitação conhecida ou mal-entendido de uso.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer class="bg-light text-dark py-4 mt-5">

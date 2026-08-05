@@ -6,9 +6,12 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 35 - TCC2: Metodologia e Coleta de Dados</title>
-  <meta name="keywords" content="TCC2, metodologia, coleta de dados, pesquisa, instrumentos">
+  <meta name="keywords" content="TCC2, metodologia, coleta de dados, pesquisa, instrumentos, questionário, entrevista, benchmark">
+  <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
@@ -20,7 +23,7 @@
 
     <!-- Back Button -->
     <a href="../home_tcc2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
     </a>
 
     <!-- Slide 1: Cover -->
@@ -29,9 +32,10 @@
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
           height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">TCC2 - Ciência da Computação</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 04: Metodologia e Coleta de Dados</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <h3 class="fw-normal text-dark">Trabalho de Conclusão de Curso II</h3>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 04: Metodologia e Coleta de Dados</h1>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Do método no papel para a coleta em campo</h3>
+        <p class="text-muted mt-2 fs-5">Aplicar o instrumento certo, na amostra certa, para sustentar seus resultados</p>
         <span class="badge bg-warning text-dark mt-3 px-3 py-2 rounded-pill">Semana 35 - 2026.2</span>
         <div class="slide-keywords d-none" aria-hidden="true">
           <span class="keyword">Metodologia e Coleta de Dados</span>
@@ -41,22 +45,300 @@
 
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Retomada do que vimos até aqui</li>
-        <li class="mb-3">Metodologia e Coleta de Dados</li>
-        <li class="mb-3">Próximos passos rumo à entrega</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-primary"><i class="fas fa-clipboard-check me-2" aria-hidden="true"></i>Da metodologia à execução</h5>
+                <p class="mb-0 text-secondary">O que precisa estar decidido antes de sair coletando dados.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-secondary"><i class="fas fa-toolbox me-2" aria-hidden="true"></i>Instrumentos de coleta</h5>
+                <p class="mb-0 text-secondary">Questionário, entrevista, logs/métricas e benchmark — quando usar cada um.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-dark"><i class="fas fa-scale-balanced me-2" aria-hidden="true"></i>Rigor e ética</h5>
+                <p class="mb-0 text-secondary">Consentimento, viés de amostra e documentação reprodutível.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-body">
+                <h5 class="fw-bold text-success"><i class="fas fa-user-group me-2" aria-hidden="true"></i>Dinâmica: Piloteste em Pares</h5>
+                <p class="mb-0 text-secondary">Testar seu instrumento com um colega antes de aplicar de verdade.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Slide 3: Placeholder -->
+    <!-- Slide 3: Do papel para a execucao real -->
     <div class="slide" id="slide-3">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Antes de Coletar: o Que Precisa Estar Decidido</h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-primary shadow-lg h-100">
+              <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-toolbox me-2" aria-hidden="true"></i>Instrumento</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">O que exatamente vai medir e como? Questionário, roteiro de entrevista, script de coleta de logs?</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-secondary shadow-lg h-100">
+              <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-users me-2" aria-hidden="true"></i>Amostra</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">Quem vai responder ou de onde os dados vêm? Quantos participantes/execuções bastam para sustentar a conclusão?</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-success shadow-lg h-100">
+              <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-bullseye me-2" aria-hidden="true"></i>Critério de sucesso</h5>
+              </div>
+              <div class="card-body">
+                <p class="mb-0">O que conta como resposta válida ou resultado suficiente? Como você vai saber que coletou o bastante?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-4 text-center mb-0">
+          Se alguma dessas três respostas ainda é <strong>"depende"</strong>, ainda não é hora de sair coletando dados.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Tipos de instrumento -->
+    <div class="slide" id="slide-4">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Instrumentos de Coleta em TCC de Computação</h2>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <div class="card border-primary shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-primary mb-2"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Questionário</h6>
+                <p class="small text-secondary mb-0">Use quando precisa da <strong>percepção ou opinião</strong> de várias pessoas, com respostas padronizadas e fáceis de comparar.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-secondary shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-secondary mb-2"><i class="fas fa-comments me-2" aria-hidden="true"></i>Entrevista</h6>
+                <p class="small text-secondary mb-0">Use quando precisa <strong>aprofundar o entendimento</strong> qualitativo com poucos participantes, explorando o "porquê" das respostas.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-warning shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-dark mb-2"><i class="fas fa-chart-line me-2" aria-hidden="true"></i>Logs / métricas de sistema</h6>
+                <p class="small text-secondary mb-0">Use quando quer observar o <strong>comportamento real de uso</strong>, com dados quantitativos coletados automaticamente.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card border-success shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="fw-bold text-success mb-2"><i class="fas fa-gauge-high me-2" aria-hidden="true"></i>Benchmark</h6>
+                <p class="small text-secondary mb-0">Use quando quer <strong>comparar desempenho técnico</strong> entre soluções, versões ou configurações sob as mesmas condições.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-info mt-4 text-center mb-0">
+          <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+          O instrumento certo é o que responde <strong>sua pergunta de pesquisa</strong> — não o mais fácil de aplicar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Cuidados eticos e de rigor -->
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Cuidados Éticos e de Rigor</h2>
+
+        <div class="card border-danger shadow-lg mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-danger mb-2"><i class="fas fa-file-signature me-2" aria-hidden="true"></i>Consentimento, quando envolve pessoas</h6>
+            <p class="mb-0 text-secondary">Explique o objetivo da coleta, se as respostas são anônimas e que a pessoa pode desistir a qualquer momento — antes de aplicar o instrumento.</p>
+          </div>
+        </div>
+
+        <div class="card border-warning shadow-lg mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-dark mb-2"><i class="fas fa-scale-unbalanced me-2" aria-hidden="true"></i>Evitar viés na amostra</h6>
+            <p class="mb-0 text-secondary">Não colete só com quem concorda com você ou está mais próximo. Busque diversidade que represente de fato o público-alvo do problema.</p>
+          </div>
+        </div>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <h6 class="fw-bold text-secondary mb-2"><i class="fas fa-clipboard-list me-2" aria-hidden="true"></i>Documentar para ser reprodutível</h6>
+            <p class="mb-0 text-secondary">Registre data, versão do instrumento, ambiente/condições e critérios usados. A banca precisa entender como os dados nasceram.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Erros comuns -->
+    <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Erros Comuns na Coleta de Dados</h2>
+
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h6 class="mb-0"><i class="fas fa-database me-2" aria-hidden="true"></i>Coletar sem plano de análise</h6>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Sair juntando dados sem saber que análise vai fazer depois. Resultado: dados que não respondem à pergunta de pesquisa.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h6 class="mb-0"><i class="fas fa-compress me-2" aria-hidden="true"></i>Amostra pequena demais</h6>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Tirar conclusão ampla a partir de 3 ou 4 respostas. A amostra precisa ser compatível com o alcance da conclusão pretendida.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-danger shadow-lg h-100">
+              <div class="card-header bg-danger text-white">
+                <h6 class="mb-0"><i class="fas fa-vial-circle-check me-2" aria-hidden="true"></i>Instrumento não testado</h6>
+              </div>
+              <div class="card-body">
+                <p class="small mb-0">Aplicar direto em escala sem pilotar antes. Pergunta ambígua ou mal interpretada compromete toda a coleta.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-4 text-center mb-0">
+          Os três erros têm a mesma raiz: <strong>coletar antes de validar o plano</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Dinamica em sala -->
+    <div class="slide" id="slide-7">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark text-center">
+          <i class="fas fa-user-group text-success me-2" aria-hidden="true"></i>Dinâmica em Sala: Piloteste em Pares
+        </h2>
+        <p class="text-center text-secondary mb-4">Testar seu instrumento de coleta em um colega, ainda em sala, antes de aplicar de verdade.</p>
+
+        <div class="row g-3 mb-3">
+          <div class="col-md-3 col-6">
+            <div class="card border-primary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <span class="badge bg-primary mb-2">Duplas</span>
+                <p class="small mb-0">Professor sorteia as duplas (aleatório ou por afinidade de tema).</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-secondary shadow-sm h-100 text-center">
+              <div class="card-body">
+                <span class="badge bg-secondary mb-2">Rodada 1 — 5 min</span>
+                <p class="small mb-0">Aluno A aplica seu instrumento (rascunho vale) no Aluno B.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-warning shadow-sm h-100 text-center">
+              <div class="card-body">
+                <span class="badge bg-warning text-dark mb-2">Feedback — 2 min</span>
+                <p class="small mb-0">B diz a A o que ficou confuso, repetitivo ou tendencioso.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 col-6">
+            <div class="card border-success shadow-sm h-100 text-center">
+              <div class="card-body">
+                <span class="badge bg-success mb-2">Rodada 2 — 5 min + 2 min</span>
+                <p class="small mb-0">Inverte: B aplica em A e recebe feedback na sequência.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-secondary shadow-lg mb-3">
+          <div class="card-body">
+            <h6 class="fw-bold text-secondary mb-2"><i class="fas fa-list-ol me-2" aria-hidden="true"></i>Regras do piloteste</h6>
+            <ul class="mb-0 text-secondary">
+              <li>Use o instrumento real (mesmo em rascunho) — nada de "explicar" a pergunta enquanto aplica, simule o uso real.</li>
+              <li>Quem responde anota literalmente qualquer dúvida ou hesitação, mesmo pequena.</li>
+              <li>Depois das duas rodadas: <strong>5 minutos</strong> para cada um ajustar o próprio instrumento com base no feedback recebido.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-3 text-center mb-0">
+          <strong>Debrief coletivo (5 min):</strong> qual pergunta do seu instrumento mudou de sentido quando você ouviu a resposta do colega?
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Proximos passos -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Próximos Passos Rumo à Aula 05</h2>
+
+        <div class="card border-secondary shadow-lg">
+          <div class="card-body">
+            <ol class="fs-5 mb-0">
+              <li class="mb-3">Ajustar o <strong>instrumento</strong> com base no feedback do piloteste em pares.</li>
+              <li class="mb-3">Definir o <strong>cronograma de coleta</strong>: quantas respostas/execuções, em quanto tempo, por qual canal.</li>
+              <li class="mb-0">Aplicar em escala, <strong>registrando tudo</strong>, para chegar com dados prontos para a execução e testes da Aula 05.</li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="alert alert-success mt-4 text-center mb-0">
+          A qualidade da coleta feita agora é o que vai sustentar a análise da próxima aula.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Encerramento -->
+    <div class="slide" id="slide-9">
       <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-warning mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Metodologia e Coleta de Dados</strong></p>
+        <i class="fas fa-clipboard-list fa-4x text-warning mb-4" aria-hidden="true"></i>
+        <h1 class="display-5 fw-bold mb-3 text-dark">Antes da próxima aula</h1>
+        <p class="fs-4 text-secondary mb-2">
+          Aplique o seu <strong>instrumento revisado</strong> com respondentes/execuções reais e traga os dados coletados (mesmo brutos) para a Aula 05.
+        </p>
+        <p class="fs-3 fw-bold text-dark mb-0">
+          dado sem registro de como foi coletado não sustenta conclusão.
+        </p>
       </div>
     </div>
 
@@ -69,7 +351,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 9</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
@@ -79,7 +361,7 @@
     </div>
 
     <a href="material/material_aula04-metodologia-coleta-dados.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
+      <i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito
     </a>
 
     <a href="../../index.html">
@@ -89,6 +371,10 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 
 </html>

@@ -42,31 +42,328 @@
   </header>
 
   <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-warning mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">
-            O material escrito da aula <strong>Retomada e Replanejamento do Projeto</strong> será publicado em breve.
-            Esta é uma página placeholder.
+
+    <!-- Introdução -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <p class="lead text-center mb-2">
+          O TCC2 começa olhando para trás antes de seguir para frente: revisitar o que a banca do TCC1 apontou
+          é o que evita repetir os mesmos erros na entrega final.
+        </p>
+        <p class="text-secondary text-center mb-0">
+          Esta aula abre o semestre com uma <strong>Roda de Conversa</strong> sobre os pontos de melhoria do TCC1
+          e aprofunda o erro mais recorrente nas bancas: confundir <strong>objetivos específicos</strong> com
+          <strong>metodologia</strong>. Termina com o replanejamento do projeto de cada dupla/grupo.
+        </p>
+      </div>
+    </div>
+
+    <!-- Capítulo 1: Do TCC1 ao TCC2 -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-route text-danger me-2" aria-hidden="true"></i>1. Do TCC1 ao TCC2: onde paramos e para onde vamos</h2>
+          <p>
+            No TCC1, cada grupo definiu problema, objetivo geral, objetivos específicos e metodologia, e levou essa
+            proposta a uma banca de qualificação. O TCC2 não é um trabalho novo — é a <strong>continuidade</strong>
+            desse projeto: execução, coleta/análise de dados (ou construção do artefato), escrita dos resultados e
+            defesa final.
           </p>
-          <a href="../slide_aula01-retomada-replanejamento.html" class="btn btn-outline-danger rounded-pill me-2">
-            <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
-          </a>
-          <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill">
-            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
-          </a>
+          <p>
+            Antes de continuar, é preciso revisar o que a banca destacou como frágil na proposta. Ignorar essas
+            observações significa carregar o mesmo problema até a defesa final — só que agora sem chance de corrigir.
+          </p>
+          <div class="alert alert-warning mb-0">
+            <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i>
+            <strong>Aviso:</strong> replanejar não é reescrever o projeto do zero. É ajustar rota com base no que a
+            experiência do TCC1 (e a banca) já ensinou.
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Capítulo 2: Roda de Conversa -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-comments text-danger me-2" aria-hidden="true"></i>2. Roda de Conversa: por que começar assim</h2>
+          <p>
+            A <strong>Roda de Conversa</strong> é a dinâmica de abertura do semestre. Em vez de o professor listar
+            erros de forma expositiva, cada estudante relata sua própria experiência com a banca do TCC1: o que foi
+            elogiado, o que foi questionado, o que ficou sem resposta na hora.
+          </p>
+          <p class="mb-0">
+            A ideia é simples: erros que se repetem em vários grupos revelam um <strong>padrão da turma</strong>, não
+            um problema isolado de quem fala. Reconhecer esse padrão coletivamente é mais eficaz do que corrigir
+            cada projeto individualmente, sem contexto.
+          </p>
+          <div class="row g-3 mt-4">
+            <div class="col-md-6">
+              <div class="alert alert-success h-100 mb-0">
+                <i class="fas fa-hand-holding-heart me-1" aria-hidden="true"></i>
+                <strong>Regra de ouro:</strong> sem julgamento. Erro relatado aqui é matéria-prima de aprendizado, não
+                motivo de constrangimento.
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-info h-100 mb-0">
+                <i class="fas fa-lightbulb me-1" aria-hidden="true"></i>
+                <strong>Meta da dinâmica:</strong> sair da roda sabendo exatamente o que ajustar no próprio projeto —
+                não apontar culpados.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 3: O erro central -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>3. O erro central: objetivos específicos <span class="text-danger">não são</span> metodologia</h2>
+          <p>
+            Entre os pontos levantados nas bancas de TCC1, um se repetiu com muito mais frequência que os outros:
+            <strong>objetivos específicos escritos como se fossem etapas da metodologia</strong>. É o foco desta aula.
+          </p>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Conceito</th>
+                  <th>O que é</th>
+                  <th>Pergunta que responde</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong class="text-success">Objetivo específico</strong></td>
+                  <td>Desdobramento do objetivo geral, expresso como <strong>resultado</strong> ou
+                    <strong>capacidade a alcançar</strong>.</td>
+                  <td>"O que o trabalho vai <em>entregar</em>?"</td>
+                </tr>
+                <tr>
+                  <td><strong class="text-primary">Metodologia</strong></td>
+                  <td>O <strong>caminho</strong>: etapas, técnicas, instrumentos e ferramentas usadas para chegar lá.</td>
+                  <td>"<em>Como</em> eu vou fazer?"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="alert alert-danger mt-3 mb-0">
+            <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i>
+            <strong>Erro comum no TCC1:</strong> transformar cada objetivo específico num passo do "como fazer" —
+            quando o objetivo deveria descrever o que se pretende comprovar ou produzir.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 4: Errado x Certo -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-code-compare text-danger me-2" aria-hidden="true"></i>4. Exemplos: errado x certo</h2>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-danger h-100 mb-0">
+                <h6 class="fw-bold"><i class="fas fa-times-circle me-1" aria-hidden="true"></i> Errado — metodologia disfarçada</h6>
+                <ul class="mb-0">
+                  <li>"Realizar revisão bibliográfica sobre o tema"</li>
+                  <li>"Aplicar um questionário aos usuários"</li>
+                  <li>"Implementar o sistema utilizando React e Node"</li>
+                  <li>"Coletar os dados e fazer os testes"</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-success h-100 mb-0">
+                <h6 class="fw-bold"><i class="fas fa-check-circle me-1" aria-hidden="true"></i> Certo — resultado a alcançar</h6>
+                <ul class="mb-0">
+                  <li>"Identificar os requisitos essenciais para [o problema]"</li>
+                  <li>"Avaliar o desempenho da solução frente a [critério]"</li>
+                  <li>"Comparar a abordagem proposta com [alternativa existente]"</li>
+                  <li>"Validar a usabilidade da aplicação com usuários reais"</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-secondary text-center mt-3 mb-4">
+            O lado certo descreve <strong>entregas</strong>; o lado errado descreve <strong>tarefas do processo</strong>
+            — que pertencem ao capítulo de metodologia, não à lista de objetivos.
+          </p>
+
+          <h3 class="h6 fw-bold mt-2">Regra prática: teste do verbo</h3>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-success h-100 mb-2">
+                <strong>Verbos de resultado (objetivo):</strong>
+                <div class="mt-2">
+                  <span class="badge bg-success me-1 mb-1">identificar</span>
+                  <span class="badge bg-success me-1 mb-1">avaliar</span>
+                  <span class="badge bg-success me-1 mb-1">comparar</span>
+                  <span class="badge bg-success me-1 mb-1">validar</span>
+                  <span class="badge bg-success me-1 mb-1">propor</span>
+                  <span class="badge bg-success me-1 mb-1">mensurar</span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-danger h-100 mb-2">
+                <strong>Verbos de etapa (metodologia):</strong>
+                <div class="mt-2">
+                  <span class="badge bg-danger me-1 mb-1">realizar</span>
+                  <span class="badge bg-danger me-1 mb-1">aplicar</span>
+                  <span class="badge bg-danger me-1 mb-1">implementar usando X</span>
+                  <span class="badge bg-danger me-1 mb-1">coletar</span>
+                  <span class="badge bg-danger me-1 mb-1">fazer testes</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="alert alert-info mb-0">
+            <i class="fas fa-circle-question me-1" aria-hidden="true"></i>
+            <strong>Pergunta de bolso:</strong> na dúvida, pergunte de cada item da sua lista: isto é uma
+            <strong>entrega</strong> (objetivo) ou um <strong>passo</strong> (metodologia)?
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Capítulo 5: Replanejamento -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-flag-checkered text-danger me-2" aria-hidden="true"></i>5. Replanejamento e próximos passos</h2>
+          <p>Com o padrão de erro identificado na roda, cada grupo sai desta aula com uma tarefa de revisão do
+            próprio projeto:</p>
+          <ol class="fs-6">
+            <li class="mb-2">Revisar <strong>objetivos e escopo</strong> à luz do que foi discutido na roda de conversa.</li>
+            <li class="mb-2">Ajustar o que ficou como <strong>"metodologia disfarçada de objetivo"</strong>, aplicando o teste do verbo.</li>
+            <li class="mb-0">Alinhar o <strong>cronograma</strong> do TCC2 com o orientador, considerando os ajustes feitos.</li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            <i class="fas fa-check-circle me-1" aria-hidden="true"></i>
+            Replanejar não é recomeçar: é corrigir a rota com o que já se sabe sobre o próprio projeto.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Checklist antes da próxima aula -->
+    <div class="row mb-4">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-clipboard-check text-danger me-2" aria-hidden="true"></i>6. Antes da próxima aula</h2>
+          <div class="alert alert-info mb-0">
+            <strong>Checklist individual:</strong>
+            <ul class="mb-0 mt-2">
+              <li>Releia cada um dos seus objetivos específicos.</li>
+              <li>Para cada um, pergunte: <em>isto é uma entrega ou uma etapa do meu trabalho?</em></li>
+              <li>Reescreva os que passarem no lado errado do teste do verbo.</li>
+              <li>Leve as dúvidas remanescentes para a orientação.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dinâmica em sala -->
+    <div class="row mb-5">
+      <div class="col-lg-9 mx-auto">
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-people-arrows text-danger me-2" aria-hidden="true"></i>Dinâmica em sala: roteiro da Roda de Conversa</h2>
+          <p class="text-secondary">
+            Roteiro de facilitação para o professor conduzir a abertura da aula. Duração total sugerida:
+            <strong>25 a 30 minutos</strong>.
+          </p>
+
+          <div class="table-responsive mt-3">
+            <table class="table table-bordered table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>Etapa</th>
+                  <th>Tempo</th>
+                  <th>O que fazer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Abertura</strong></td>
+                  <td>2-3 min</td>
+                  <td>Explicar a proposta e as regras da roda (ver abaixo). Deixar claro que não é avaliação.</td>
+                </tr>
+                <tr>
+                  <td><strong>2. Formação do círculo</strong></td>
+                  <td>2 min</td>
+                  <td>Reorganizar as cadeiras/mesas em círculo (ou U, se o espaço não permitir). Se a turma for
+                    grande (mais de ~20), dividir em subgrupos de 5-6 pessoas, cada um em seu próprio círculo, com um
+                    monitor/representante por grupo.</td>
+                </tr>
+                <tr>
+                  <td><strong>3. Rodada de falas</strong></td>
+                  <td>12-15 min</td>
+                  <td>Cada pessoa (ou dupla/grupo de TCC) tem até <strong>1-2 minutos</strong> para relatar: o que a
+                    banca do TCC1 elogiou, o que foi questionado, o que ficou sem resposta. O professor (ou o
+                    monitor, em subgrupos) anota no quadro os pontos que se repetem entre falas.</td>
+                </tr>
+                <tr>
+                  <td><strong>4. Síntese dos padrões</strong></td>
+                  <td>5 min</td>
+                  <td>Com os pontos anotados, o professor nomeia os 2-3 padrões mais recorrentes (o esperado é que
+                    "objetivos específicos confundidos com metodologia" apareça aqui) e faz a ponte para o restante
+                    da aula.</td>
+                </tr>
+                <tr>
+                  <td><strong>5. Debrief individual</strong></td>
+                  <td>3-5 min</td>
+                  <td>Pergunta de encerramento, respondida em silêncio/por escrito por cada estudante (não em voz
+                    alta): <em>"Qual foi o padrão mais citado hoje e o que você vai ajustar no seu próprio
+                    projeto por causa dele?"</em></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="h6 fw-bold mt-4">Regras de participação</h3>
+          <ul>
+            <li>Fala uma pessoa por vez; sem interrupções durante o relato de cada colega.</li>
+            <li>Foco no <strong>fato</strong> (o que a banca disse) e não em opinião sobre o próprio desempenho.</li>
+            <li>Ninguém é obrigado a detalhar nota ou resultado — o relato é sobre o conteúdo do feedback.</li>
+            <li>Erro relatado é tratado como aprendizado da turma, nunca como motivo de piada ou constrangimento.</li>
+            <li>Quem preferir passar a vez pode fazê-lo; a participação verbal é incentivada, não obrigatória.</li>
+          </ul>
+
+          <div class="alert alert-warning mb-0">
+            <i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i>
+            <strong>Aviso para o facilitador:</strong> se um mesmo padrão de erro aparecer em 3 ou mais relatos, pare
+            a rodada de falas e registre isso explicitamente no quadro antes de continuar — é esse padrão que vai
+            guiar o conteúdo do restante da aula (objetivos x metodologia).
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <footer class="bg-light text-dark py-4 mt-5">
     <div class="container text-center">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
-        height="25" class="mb-2 opacity-75">
-      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+      <a href="../slide_aula01-retomada-replanejamento.html" class="btn btn-outline-danger rounded-pill me-2 mb-2">
+        <i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides
+      </a>
+      <a href="../../home_tcc2.html" class="btn btn-outline-secondary rounded-pill mb-2">
+        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2
+      </a>
+      <div class="mt-3">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+          height="25" class="mb-2 opacity-75">
+        <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+      </div>
     </div>
   </footer>
 
