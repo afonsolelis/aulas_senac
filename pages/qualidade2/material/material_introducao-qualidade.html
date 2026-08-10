@@ -6,6 +6,7 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Introdução à Qualidade de Software - Material</title>
+  <meta name="keywords" content="qualidade de software, ISO 25010, SQA, verificação, validação, custo da qualidade, shift-left, maturidade de software">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../../css/style.css">
@@ -36,20 +37,459 @@
           <span class="badge bg-white text-danger mb-1">Semana 32 &middot; 2026.2</span>
           <h1 class="h3 fw-bold text-white mb-0">Introdução à Qualidade de Software</h1>
         </div>
+        <p class="text-white-50 mb-0 small d-none d-md-block">Aula 01 &middot; Material escrito</p>
       </div>
     </div>
   </header>
 
   <div class="container py-5">
     <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-danger mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">O material escrito de <strong>Introdução à Qualidade de Software</strong> será publicado em breve. Esta é uma página placeholder.</p>
-          <a href="../slide_introducao-qualidade.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
-          <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
+      <div class="col-lg-9 mx-auto">
+
+        <!-- Objetivos -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivos de aprendizagem</h2>
+          <p class="text-secondary">Ao final desta aula você deve ser capaz de:</p>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2">Explicar o que é qualidade de software sem reduzir o conceito a "ter testes".</li>
+            <li class="mb-2">Distinguir <strong>QA</strong>, <strong>QC</strong> e <strong>teste</strong>, e dizer qual atua sobre processo e qual sobre produto.</li>
+            <li class="mb-2">Diferenciar <strong>verificação</strong> de <strong>validação</strong> e dar um exemplo de cada.</li>
+            <li class="mb-2">Usar as características da <strong>ISO/IEC 25010</strong> para classificar um problema de qualidade.</li>
+            <li class="mb-2">Justificar, com o argumento de custo, por que defeitos devem ser encontrados cedo.</li>
+            <li class="mb-2">Explicar por que software maduro tende a ser mais confiável que software novo — e o que é preciso fazer para que isso aconteça.</li>
+            <li class="mb-0">Ler um relatório de execução de testes e extrair dele um diagnóstico.</li>
+          </ul>
         </div>
+
+        <!-- 1. Por que qualidade importa -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-triangle-exclamation text-danger me-2" aria-hidden="true"></i>1. Por que isso importa</h2>
+          <p class="text-secondary">
+            Software com defeito não é uma inconveniência abstrata. O voo inaugural do <strong>Ariane 5</strong>, em 1996,
+            terminou em destruição 37 segundos após a decolagem porque um trecho de código reaproveitado do Ariane 4 tentou
+            converter um número de 64 bits em uma variável de 16 bits — em um foguete cuja trajetória gerava valores maiores
+            do que os do modelo anterior. O código estava "correto" no contexto antigo; ninguém revalidou o novo.
+          </p>
+          <p class="text-secondary">
+            Em 2012, a <strong>Knight Capital</strong> implantou uma nova versão em sete dos oito servidores de produção. No
+            oitavo, código antigo e desativado voltou a ser executado. A empresa perdeu cerca de US$ 440 milhões em 45 minutos
+            — mais do que valia. Não foi um bug de algoritmo: foi um processo de deploy sem verificação.
+          </p>
+          <p class="text-secondary">
+            Entre 2018 e 2019, dois <strong>Boeing 737 MAX</strong> caíram — Lion Air 610 e Ethiopian 302, 346 mortes ao todo.
+            O sistema MCAS empurrava o nariz da aeronave para baixo com base em <em>um único</em> sensor de ângulo de ataque,
+            embora o avião tivesse dois e nenhuma checagem cruzada existisse. Durante o desenvolvimento a autoridade do
+            sistema foi ampliada de 0,6° para 2,5° por acionamento sem que a análise de segurança fosse refeita, e o MCAS
+            sequer constava do manual: a maioria dos pilotos não sabia que ele existia.
+          </p>
+          <p class="text-secondary mb-0">
+            Em 2024, uma atualização de configuração da <strong>CrowdStrike</strong> derrubou cerca de 8,5 milhões de máquinas
+            Windows simultaneamente, parando aeroportos e hospitais. O arquivo defeituoso foi distribuído para todos os clientes
+            ao mesmo tempo, sem liberação gradual. O padrão se repete: o defeito técnico é a faísca, mas o
+            <strong>processo é o que decide se vira incêndio</strong>.
+          </p>
+        </div>
+
+        <!-- 2. O que é qualidade -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-book-open text-danger me-2" aria-hidden="true"></i>2. O que é qualidade de software</h2>
+          <blockquote class="border-start border-4 border-danger ps-3 my-4">
+            <p class="fs-5 text-dark mb-1">
+              Capacidade de um produto de software de satisfazer necessidades declaradas e implícitas quando usado sob condições especificadas.
+            </p>
+            <footer class="blockquote-footer mt-2 mb-0">ISO/IEC 25010</footer>
+          </blockquote>
+          <p class="text-secondary">Vale reparar em três palavras dessa definição:</p>
+          <ul class="text-secondary">
+            <li class="mb-2"><strong>Declaradas</strong> — o que está escrito no requisito. Dá para conferir objetivamente: ou atende, ou não atende.</li>
+            <li class="mb-2"><strong>Implícitas</strong> — o que ninguém escreveu porque parecia óbvio. "Obviamente a senha não aparece no log." Boa parte dos incidentes graves mora aqui.</li>
+            <li class="mb-0"><strong>Condições especificadas</strong> — qualidade é relativa ao contexto. Um sistema que responde em 2 s é excelente para um relatório mensal e inaceitável para um autocomplete.</li>
+          </ul>
+          <div class="alert alert-light border mt-4 mb-0">
+            <strong>Duas leituras complementares.</strong> <em>Conformidade</em> é atender ao que foi especificado — a visão do
+            engenheiro. <em>Fitness for use</em> é servir de verdade a quem usa — a visão do cliente. Um sistema pode ter 100%
+            de conformidade e zero utilidade. Você precisa das duas.
+          </div>
+        </div>
+
+        <!-- 3. QA, QC, Teste -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-layer-group text-danger me-2" aria-hidden="true"></i>3. QA, QC e Teste não são sinônimos</h2>
+          <p class="text-secondary">
+            No mercado esses três termos são usados de forma intercambiável, e isso atrapalha. Eles operam em níveis diferentes:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Termo</th>
+                  <th scope="col">Atua sobre</th>
+                  <th scope="col">Pergunta que responde</th>
+                  <th scope="col">Exemplos</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="text-primary">QA<br><small class="fw-normal text-muted">Quality Assurance</small></th>
+                  <td>Processo</td>
+                  <td>Estamos trabalhando de um jeito que tende a produzir software bom?</td>
+                  <td class="small">Definition of Done, política de code review, padrão de branch, treinamento</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="text-success">QC<br><small class="fw-normal text-muted">Quality Control</small></th>
+                  <td>Produto</td>
+                  <td>Este artefato está bom o suficiente para seguir adiante?</td>
+                  <td class="small">Revisões, inspeções, análise estática, critérios de aceite</td>
+                </tr>
+                <tr>
+                  <th scope="row" class="text-danger">Teste</th>
+                  <td>Evidência</td>
+                  <td>Executando o software, ele se comporta como esperado?</td>
+                  <td class="small">Testes de unidade, integração, E2E, carga</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary mb-0">
+            Repare na hierarquia: <strong>teste é uma técnica dentro de QC, e QC é uma parte de QA</strong>. Um time pode ter
+            cobertura de testes altíssima e ainda assim um processo ruim — se ninguém revisa código, se o deploy é manual e
+            improvisado, se não existe critério para dizer que algo está pronto.
+          </p>
+        </div>
+
+        <!-- 4. V&V -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-code-compare text-danger me-2" aria-hidden="true"></i>4. Verificação, Validação e SQA</h2>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 h-100 bg-white">
+                <h3 class="h6 fw-bold text-secondary">Verificação</h3>
+                <p class="fst-italic text-dark mb-2">"Are we building the product <u>right</u>?"</p>
+                <p class="small text-muted mb-0">O artefato produzido está coerente com a especificação da etapa anterior. Ex.: o código implementa o que o design descreve.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border rounded-3 p-3 h-100 bg-white">
+                <h3 class="h6 fw-bold text-success">Validação</h3>
+                <p class="fst-italic text-dark mb-2">"Are we building the <u>right</u> product?"</p>
+                <p class="small text-muted mb-0">O sistema resolve o problema real de quem vai usar. Ex.: o usuário consegue concluir a tarefa dele.</p>
+              </div>
+            </div>
+          </div>
+          <p class="text-secondary">
+            A distinção é prática, não acadêmica: é perfeitamente possível construir <em>a coisa errada</em> com excelência
+            técnica. Um formulário impecavelmente testado que pede uma informação que o cliente não tem passa em toda a
+            verificação e falha inteiramente na validação.
+          </p>
+          <p class="text-secondary mb-0">
+            O <strong>SQA</strong> (Software Quality Assurance, formalizado pela IEEE 730) é a função que garante que
+            verificação e validação de fato aconteceram — auditando tanto o processo quanto o produto. A norma insiste em um
+            ponto: SQA precisa de <strong>independência organizacional</strong>. Quem audita não pode responder à mesma pressão
+            de prazo de quem entrega, senão a auditoria vira carimbo.
+          </p>
+        </div>
+
+        <!-- 5. ISO 25010 -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-cubes text-danger me-2" aria-hidden="true"></i>5. ISO/IEC 25010: o vocabulário do não-funcional</h2>
+          <p class="text-secondary">
+            Dizer que um sistema "está ruim" não ajuda ninguém a consertá-lo. A ISO/IEC 25010 oferece um modelo com
+            <strong>nove características</strong> de qualidade do produto, cada uma desdobrada em subcaracterísticas. É o
+            vocabulário que vamos usar o semestre inteiro para transformar reclamação em requisito.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Característica</th>
+                  <th scope="col">Do que trata</th>
+                  <th scope="col">Reclamação típica</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Adequação Funcional</th>
+                  <td>Completude, correção e adequação ao propósito</td>
+                  <td class="small text-muted">"O cálculo está errado."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Eficiência de Performance</th>
+                  <td>Tempo de resposta, throughput, uso de recursos</td>
+                  <td class="small text-muted">"Trava quando tem muita gente."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Compatibilidade</th>
+                  <td>Coexistência e interoperabilidade</td>
+                  <td class="small text-muted">"Não conversa com o outro sistema."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Capacidade de Interação</th>
+                  <td>Aprendizado, operabilidade, acessibilidade</td>
+                  <td class="small text-muted">"Ninguém entende essa tela."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Confiabilidade</th>
+                  <td>Disponibilidade, tolerância a falhas, recuperação</td>
+                  <td class="small text-muted">"Cai toda semana."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Segurança</th>
+                  <td>Confidencialidade, integridade, autenticidade</td>
+                  <td class="small text-muted">"Dá para ver o dado de outro cliente."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Manutenibilidade</th>
+                  <td>Modularidade, reusabilidade, testabilidade</td>
+                  <td class="small text-muted">"Qualquer mudança quebra outra coisa."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Flexibilidade</th>
+                  <td>Adaptabilidade, instalabilidade, escalabilidade</td>
+                  <td class="small text-muted">"Não roda no ambiente novo."</td>
+                </tr>
+                <tr>
+                  <th scope="row">Safety</th>
+                  <td>Evitar dano a pessoas, bens e ambiente</td>
+                  <td class="small text-muted">"Se falhar, alguém se machuca."</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0">
+            <i class="fas fa-circle-info text-primary me-2" aria-hidden="true"></i>
+            <strong>Atenção com material antigo.</strong> A revisão de 2023 da norma reorganizou o modelo. Você vai encontrar
+            muito texto citando <em>oito</em> características, com "Usabilidade" e "Portabilidade". Na versão atual são
+            <em>nove</em>: Usabilidade virou <em>Capacidade de Interação</em>, Portabilidade virou <em>Flexibilidade</em>, e
+            <em>Safety</em> passou a ser uma característica própria. Os conceitos continuam válidos; os nomes mudaram.
+          </div>
+        </div>
+
+        <!-- 6. Custo -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-coins text-danger me-2" aria-hidden="true"></i>6. O custo da qualidade e o Shift-Left</h2>
+          <p class="text-secondary">
+            Existe uma crença persistente de que qualidade é um custo adicional que se corta quando o prazo aperta. O modelo de
+            <strong>Custo da Qualidade (CoSQ)</strong> mostra por que isso é ilusão. O custo total se divide em duas colunas:
+          </p>
+          <div class="row g-3 mb-4">
+            <div class="col-md-6">
+              <div class="border border-success rounded-3 p-3 h-100 bg-white">
+                <h3 class="h6 fw-bold text-success-emphasis">Conformidade — você escolhe pagar</h3>
+                <ul class="small text-muted mb-0">
+                  <li><strong>Prevenção:</strong> treinamento, padrões, automação de pipeline</li>
+                  <li><strong>Avaliação:</strong> testes, code review, análise estática, auditoria</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="border border-danger rounded-3 p-3 h-100 bg-white">
+                <h3 class="h6 fw-bold text-danger-emphasis">Não-conformidade — a conta chega sozinha</h3>
+                <ul class="small text-muted mb-0">
+                  <li><strong>Falha interna:</strong> retrabalho, atraso, hotfix antes do release</li>
+                  <li><strong>Falha externa:</strong> incidente em produção, suporte, multa, reputação</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="text-secondary">
+            Cortar a coluna da esquerda não elimina o custo — apenas o <strong>transfere</strong> para a direita, onde ele é
+            maior e você não controla mais quando ele aparece.
+          </p>
+          <p class="text-secondary mb-0">
+            Daí vem o <strong>Shift-Left</strong>: mover as atividades de qualidade para o início do ciclo. Barry Boehm popularizou
+            a ideia de que o custo de corrigir um defeito cresce por ordens de grandeza conforme a fase — algo em torno de 1x nos
+            requisitos, 10x na codificação, 100x ou mais em produção. Trate esses multiplicadores como <em>heurística</em>, não
+            como lei: os números variam bastante conforme o contexto e a metodologia do estudo. O que é consistentemente verdadeiro
+            é a <strong>direção da curva</strong> — e ela justifica revisar um requisito ambíguo hoje em vez de descobrir o mal-entendido
+            depois do deploy.
+          </p>
+        </div>
+
+        <!-- 7. Maturidade -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-hourglass-half text-danger me-2" aria-hidden="true"></i>7. Maturidade: o cerco que se fecha</h2>
+          <p class="text-secondary">
+            Existe uma intuição comum de que software novo é o software bom — está limpo, recém-escrito, ninguém mexeu ainda.
+            Na prática acontece o contrário: <strong>software novo é o mais perigoso</strong>. Ele tem muita superfície que
+            nunca foi percorrida. Cada caminho que ninguém executou é um lugar onde um defeito pode estar dormindo.
+          </p>
+          <p class="text-secondary">
+            Conforme o sistema envelhece em produção, usuários reais fazem coisas que nenhum teste previu: colam texto com
+            emoji no campo de CPF, clicam duas vezes no botão de pagamento, deixam a aba aberta por três dias e voltam.
+            Cada uma dessas situações <em>revela</em> um defeito que já estava lá. O software não ficou pior — ele ficou
+            <strong>mais conhecido</strong>.
+          </p>
+
+          <h3 class="h6 fw-bold mt-4">O ciclo</h3>
+          <ol class="text-secondary">
+            <li class="mb-2"><strong>Tempo de uso</strong> — o sistema encontra caminhos que ninguém tinha imaginado.</li>
+            <li class="mb-2"><strong>Falha revelada</strong> — um defeito preexistente finalmente se manifesta.</li>
+            <li class="mb-2"><strong>Ajuste + teste</strong> — a correção é feita <em>e</em> vira um teste de regressão.</li>
+            <li class="mb-0"><strong>Cerco menor</strong> — aquele defeito específico não volta mais. A área de incerteza diminuiu.</li>
+          </ol>
+
+          <p class="text-secondary">
+            Repetido centenas de vezes, esse ciclo produz o que a literatura chama de <em>crescimento de confiabilidade</em>
+            (<em>reliability growth</em>): a taxa de descoberta de novos defeitos cai com o tempo, enquanto a confiança
+            acumulada sobe. É por isso que uma biblioteca com dez anos de uso intenso costuma ser mais confiável que uma
+            equivalente lançada no mês passado — mesmo que o código da nova pareça mais elegante.
+          </p>
+
+          <div class="alert alert-danger border-0">
+            <strong><i class="fas fa-rotate-left me-2" aria-hidden="true"></i>O passo 3 é onde quase todo mundo falha.</strong>
+            Corrigir sem deixar um teste para trás significa que você vai resolver o mesmo bug de novo daqui a seis meses.
+            A suíte automatizada é a <strong>memória institucional</strong> de tudo o que já deu errado — sem ela, o
+            conhecimento vai embora junto com quem corrigiu, e o cerco reabre.
+          </div>
+
+          <p class="text-secondary">
+            E o cerco <strong>reabre mesmo</strong>, em parte, a cada mudança grande: um refactor amplo, a troca de um
+            framework, um módulo novo. Território novo volta a ser território não explorado. Maturidade não é uma linha reta
+            descendente — é uma escada com degraus para cima toda vez que o sistema muda de forma significativa.
+          </p>
+
+          <p class="text-secondary mb-0">
+            Por fim, um ponto que a disciplina inteira vai reforçar: <strong>o cerco nunca chega a zero</strong>. Testar
+            exaustivamente todas as combinações possíveis de entrada e estado é inviável em qualquer sistema real. Sempre
+            resta <em>risco residual</em>. Por isso a meta profissional não é "zero bugs" — é <strong>risco conhecido,
+            medido e sob controle</strong>. Quem promete software sem defeito está vendendo alguma coisa.
+          </p>
+        </div>
+
+        <!-- 8. Métricas -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-chart-line text-danger me-2" aria-hidden="true"></i>8. Métricas — e como não se enganar com elas</h2>
+          <ul class="text-secondary">
+            <li class="mb-2"><strong>Cobertura de testes</strong> — percentual de linhas ou branches executadas pela suíte. Cobertura alta não prova que os testes são bons; cobertura baixa prova que há código sem rede de proteção.</li>
+            <li class="mb-2"><strong>Densidade de defeitos</strong> — defeitos por mil linhas ou por módulo. Útil para descobrir <em>onde</em> concentrar esforço.</li>
+            <li class="mb-2"><strong>Eficiência de remoção de defeitos</strong> — defeitos encontrados antes do release dividido pelo total. Mede diretamente se o processo está segurando o que deveria.</li>
+            <li class="mb-0"><strong>Dívida técnica</strong> — estimativa de tempo para corrigir os problemas apontados por análise estática (duplicação, complexidade, code smells). Vamos medir isso com SonarCloud na semana 39.</li>
+          </ul>
+          <div class="alert alert-warning border-0 mb-0">
+            <strong><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Lei de Goodhart:</strong>
+            quando uma métrica vira meta, ela deixa de ser uma boa métrica. Se a nota depender de cobertura, alguém vai escrever
+            <code>expect(true).toBe(true)</code> até bater 100%. Métrica serve para <em>orientar conversa</em>, não para substituir julgamento.
+          </div>
+        </div>
+
+        <!-- 9. Glossário -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-spell-check text-danger me-2" aria-hidden="true"></i>9. Glossário: erro, defeito, falha</h2>
+          <p class="text-secondary">Três palavras que o senso comum trata como sinônimo e que na disciplina têm significados distintos:</p>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Termo</th>
+                  <th scope="col">Definição</th>
+                  <th scope="col">Exemplo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Erro <small class="fw-normal text-muted">(error / mistake)</small></th>
+                  <td>A ação humana equivocada</td>
+                  <td class="small text-muted">A pessoa desenvolvedora entendeu errado a regra de arredondamento</td>
+                </tr>
+                <tr>
+                  <th scope="row">Defeito <small class="fw-normal text-muted">(defect / bug)</small></th>
+                  <td>O resultado do erro, gravado no artefato</td>
+                  <td class="small text-muted">A linha de código que arredonda para baixo em vez de para cima</td>
+                </tr>
+                <tr>
+                  <th scope="row">Falha <small class="fw-normal text-muted">(failure)</small></th>
+                  <td>O comportamento incorreto observado em execução</td>
+                  <td class="small text-muted">A nota fiscal sai com R$ 0,01 a menos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary small mt-3 mb-0">
+            Um defeito só vira falha se o trecho for executado nas condições certas. Por isso existe código com defeito rodando
+            há anos em produção sem ninguém notar — até o dia em que a condição aparece.
+          </p>
+        </div>
+
+        <!-- 10. Atividade -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-tasks text-danger me-2" aria-hidden="true"></i>10. Atividade prática #1 — Diagnóstico de qualidade</h2>
+          <p class="text-secondary">
+            Antes de aprender a escrever testes, o exercício é aprender a <strong>enxergar</strong> o problema. Nesta atividade
+            você não vai corrigir nada nem escrever um teste sequer.
+          </p>
+          <h3 class="h6 fw-bold mt-4">Passos</h3>
+          <ol class="text-secondary">
+            <li class="mb-2">Clone o repositório da disciplina:
+              <div class="bg-dark text-white p-2 rounded-3 mt-2 mb-2">
+                <code class="text-info small">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+              </div>
+            </li>
+            <li class="mb-2">Siga o <code>README</code> do projeto para instalar as dependências e executar a suíte de testes.</li>
+            <li class="mb-2">Registre o resultado: o que passou, o que falhou, o que foi pulado (<em>skipped</em>) e — principalmente — o que <strong>não tem teste nenhum</strong>.</li>
+            <li class="mb-0">Leia o código procurando problemas que a suíte não pegou.</li>
+          </ol>
+
+          <h3 class="h6 fw-bold mt-4">Entregável</h3>
+          <p class="text-secondary">Um documento de 1 a 2 páginas contendo:</p>
+          <ul class="text-secondary">
+            <li class="mb-2">A saída da execução dos testes (print ou log).</li>
+            <li class="mb-2">No mínimo <strong>5 achados</strong>. Para cada um: <em>onde está</em>, <em>o que está errado</em> e <em>por que isso é um problema</em>.</li>
+            <li class="mb-2">A característica da ISO/IEC 25010 correspondente a cada achado.</li>
+            <li class="mb-0">Sua ordem de prioridade, com o critério que você usou para chegar nela.</li>
+          </ul>
+
+          <h3 class="h6 fw-bold mt-4">Critérios de avaliação</h3>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2"><strong>Precisão</strong> — o achado é real e está corretamente localizado no código.</li>
+            <li class="mb-2"><strong>Vocabulário</strong> — a classificação pela ISO 25010 é adequada.</li>
+            <li class="mb-2"><strong>Justificativa</strong> — você explica o impacto, não apenas o sintoma.</li>
+            <li class="mb-0"><strong>Priorização</strong> — o critério de ordenação é explícito e defensável.</li>
+          </ul>
+          <div class="alert alert-light border mt-4 mb-0">
+            <i class="fas fa-lightbulb text-warning me-2" aria-hidden="true"></i>
+            Cinco achados bem argumentados valem mais do que vinte listados sem análise. O objetivo é treinar o olhar, não encher lista.
+          </div>
+        </div>
+
+        <!-- 11. Exercícios -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-pen-to-square text-danger me-2" aria-hidden="true"></i>11. Exercícios de fixação</h2>
+          <ol class="text-secondary mb-0">
+            <li class="mb-3">Explique, com suas palavras e em no máximo cinco linhas, por que "temos 90% de cobertura de testes" não é o mesmo que "temos qualidade".</li>
+            <li class="mb-3">Dê um exemplo concreto, de um sistema que você já usou, de algo que passaria na <strong>verificação</strong> mas falharia na <strong>validação</strong>.</li>
+            <li class="mb-3">Classifique cada situação pela característica da ISO/IEC 25010: (a) o relatório demora 40 s para abrir; (b) o botão "salvar" fica escondido no rodapé; (c) o sistema aceita CPF inválido; (d) trocar a cor do tema exige alterar 12 arquivos.</li>
+            <li class="mb-3">Releia o caso da Knight Capital. Aponte <strong>duas</strong> práticas de QA (processo, não teste) que teriam evitado o prejuízo.</li>
+            <li class="mb-3">Diferencie erro, defeito e falha usando um exemplo próprio — inclua um caso de defeito que ainda não virou falha.</li>
+            <li class="mb-3">Uma pessoa da equipe propõe reescrever do zero um módulo antigo, cheio de remendos, porque "o código está feio". Usando o conceito de maturidade e cerco, apresente o principal risco técnico dessa decisão.</li>
+            <li class="mb-0">Sua equipe tem duas semanas e precisa escolher: escrever testes de unidade para o módulo de pagamento ou automatizar o deploy, hoje manual. Argumente a escolha usando o modelo de Custo da Qualidade.</li>
+          </ol>
+        </div>
+
+        <!-- 12. Leituras -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-book text-danger me-2" aria-hidden="true"></i>12. Para ir além</h2>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2"><a href="https://www.iso.org/standard/78176.html" target="_blank" rel="noopener noreferrer">ISO/IEC 25010</a> — a página oficial do modelo de qualidade do produto.</li>
+            <li class="mb-2"><a href="https://github.com/joaopauloaramuni/projeto-de-software/blob/main/SWEBOK/swebok-v4.pdf" target="_blank" rel="noopener noreferrer">SWEBOK v4 (PDF)</a> — capítulo de Software Quality, para a visão consolidada da área.</li>
+            <li class="mb-2"><a href="https://github.com/afonsolelis/qualidade_software" target="_blank" rel="noopener noreferrer">Repositório da disciplina</a> — código, exemplos e o projeto do semestre.</li>
+            <li class="mb-0">IEEE 730 (SQA) e IEEE 1012 (V&amp;V) — as normas citadas na aula, caso queira ver a formalização dos processos.</li>
+          </ul>
+        </div>
+
+        <!-- Próxima aula + navegação -->
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h5 fw-bold mb-3"><i class="fas fa-arrow-right text-danger me-2" aria-hidden="true"></i>Próxima aula</h2>
+          <p class="text-secondary">
+            <strong>Semana 33 — ATAM e Planejamento de Casos de Teste.</strong> Vamos sair do diagnóstico e entrar na construção:
+            o ATAM transforma um atributo vago da ISO 25010 em cenário mensurável, e o cenário vira caso de teste.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <a class="btn btn-danger btn-sm rounded-pill" href="../slide_introducao-qualidade.html"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
+            <a class="btn btn-outline-primary btn-sm rounded-pill" href="../especificacao-projeto.html"><i class="fas fa-project-diagram me-1" aria-hidden="true"></i> Especificação do projeto</a>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill" href="../../home_qualidade_2026_2.html"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar ao cronograma</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>

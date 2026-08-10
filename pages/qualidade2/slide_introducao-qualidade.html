@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 32 - Qualidade: Introdução à Qualidade de Software</title>
-  <meta name="keywords" content="qualidade de software, garantia da qualidade, processos, normas">
+  <meta name="keywords" content="qualidade de software, ISO 25010, SQA, verificação, validação, custo da qualidade, shift-left, maturidade de software, métricas">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -22,33 +22,1109 @@
       <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
     </a>
 
+    <!-- Slide 1: Capa -->
     <div class="slide active" id="slide-1">
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
         <h1 class="display-3 fw-bold mb-4 text-black">Aula 01: Introdução à Qualidade de Software</h1>
         <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
         <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 32 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Introdução à Qualidade de Software</span></div>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">qualidade de software</span>
+          <span class="keyword">ISO 25010</span>
+          <span class="keyword">SQA</span>
+          <span class="keyword">verificação e validação</span>
+          <span class="keyword">custo da qualidade</span>
+          <span class="keyword">shift-left</span>
+          <span class="keyword">maturidade de software</span>
+        </div>
       </div>
     </div>
 
+    <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Introdução à Qualidade de Software</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda de Hoje</h1>
+        <div class="row">
+          <div class="col-md-9 mx-auto">
+            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-triangle-exclamation text-danger me-3"></i> Por que qualidade importa (falhas reais)
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-book-open text-primary me-3"></i> O que é qualidade de software
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-layer-group text-success me-3"></i> QA, QC e Teste &middot; SQA vs V&amp;V
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-cubes text-info me-3"></i> ISO/IEC 25010: o modelo de qualidade do produto
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-coins text-warning me-3"></i> Custo da qualidade, Shift-Left e maturidade
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-chart-line text-secondary me-3"></i> Métricas que vamos usar
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-road text-dark me-3"></i> Roadmap do semestre, avaliação e projeto
+              </li>
+              <li class="list-group-item bg-transparent text-dark py-2">
+                <i class="fas fa-tasks text-danger me-3"></i> Prática #1: diagnóstico de qualidade
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- Slide 3: Por que qualidade importa -->
     <div class="slide" id="slide-3">
-      <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-danger mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Introdução à Qualidade de Software</strong></p>
+      <div class="text-center slide-content">
+        <span class="badge bg-danger text-white fs-5 mb-3 px-4 py-2 rounded-pill">Motivação</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Software quebra. E custa caro.</h2>
+        <p class="lead text-muted mb-5">Quatro casos. Todos passaram por alguma forma de teste.</p>
+
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-danger">
+              <i class="fas fa-rocket fa-3x text-danger mb-3"></i>
+              <h4 class="fw-bold mb-1">Ariane 5</h4>
+              <p class="text-muted mb-0">1996</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-warning">
+              <i class="fas fa-chart-line fa-3x text-warning mb-3"></i>
+              <h4 class="fw-bold mb-1">Knight Capital</h4>
+              <p class="text-muted mb-0">2012</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-primary">
+              <i class="fas fa-plane fa-3x text-primary mb-3"></i>
+              <h4 class="fw-bold mb-1">Boeing 737 MAX</h4>
+              <p class="text-muted mb-0">2018-2019</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-top border-4 border-dark">
+              <i class="fas fa-desktop fa-3x text-dark mb-3"></i>
+              <h4 class="fw-bold mb-1">CrowdStrike</h4>
+              <p class="text-muted mb-0">2024</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark mt-5 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          Nenhum foi "falta de programador bom". Todos foram <strong>falha de processo de qualidade</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: Caso Ariane 5 -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger text-white fs-6 mb-2 px-3 py-2 rounded-pill"><i class="fas fa-rocket me-2"></i>4 de junho de 1996 &middot; Kourou, Guiana Francesa</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Ariane 5 &mdash; Voo 501</h2>
+
+        <div class="row g-2 justify-content-center mb-3">
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-danger">37 s</div>
+              <small class="text-muted">de voo até a destruição</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-danger">64 &rarr; 16 bits</div>
+              <small class="text-muted">a conversão que estourou</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-danger">4 satélites</div>
+              <small class="text-muted">Cluster (ESA) perdidos</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-clock text-secondary me-2"></i>O que aconteceu</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">O sistema inercial de referência (SRI) parou de enviar dados de voo válidos.</li>
+                <li class="mb-1">Em vez disso, colocou um <strong>padrão de diagnóstico</strong> no barramento de dados.</li>
+                <li class="mb-1">O computador de bordo leu esse padrão <strong>como se fosse dado de voo</strong> e comandou deflexão extrema dos bicos.</li>
+                <li class="mb-1">Ângulo de ataque passou de 20°, os boosters se separaram do estágio central.</li>
+                <li class="mb-0">A autodestruição foi acionada. Carga: os 4 satélites Cluster da ESA.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-start border-4 border-danger">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bug text-danger me-2"></i>A causa raiz</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">Software do SRI <strong>reaproveitado do Ariane 4</strong>, sem revalidar a nova trajetória.</li>
+                <li class="mb-1">Conversão de <code>float</code> de 64 bits para inteiro com sinal de 16 bits na variável de <strong>velocidade horizontal</strong>. O Ariane 5 acelerava mais: o valor passou de 32.767 &rarr; <em>Operand Error</em>.</li>
+                <li class="mb-1">A proteção foi <strong>omitida de propósito</strong>: das 7 variáveis em risco, 4 foram protegidas e 3 não, por análise de margem feita para o foguete anterior.</li>
+                <li class="mb-1">SRI ativo e SRI reserva rodavam o <strong>mesmo software</strong> e falharam com milissegundos de diferença.</li>
+                <li class="mb-0">A função que estourou era de <strong>alinhamento pré-decolagem</strong> — inútil em voo, mantida ligada por herança do Ariane 4.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger border-0 shadow-sm mt-3 mb-0 py-2 d-inline-block">
+          <strong>Lição:</strong> reuso sem revalidar o novo contexto &middot; redundância com software idêntico não é redundância.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: Caso Knight Capital -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <span class="badge bg-warning text-dark fs-6 mb-2 px-3 py-2 rounded-pill"><i class="fas fa-chart-line me-2"></i>1º de agosto de 2012 &middot; Nova York</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Knight Capital Group</h2>
+
+        <div class="row g-2 justify-content-center mb-3">
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-warning">45 min</div>
+              <small class="text-muted">da abertura ao desastre</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-warning">7 de 8</div>
+              <small class="text-muted">servidores atualizados</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-warning">US$ 460 mi</div>
+              <small class="text-muted">perdidos (registro da SEC)</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-clock text-secondary me-2"></i>O que aconteceu</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">Deploy <strong>manual</strong> do roteador de ordens em 8 servidores. Um técnico copiou o código novo em apenas 7 — e <strong>ninguém conferiu</strong>.</li>
+                <li class="mb-1">Antes da abertura, o sistema disparou <strong>97 e-mails automáticos</strong> de erro. Não eram tratados como alerta; ninguém agiu.</li>
+                <li class="mb-1">9h30, abertura do mercado: o 8º servidor começou a emitir ordens erradas em rajada.</li>
+                <li class="mb-1">Em 45 minutos: <strong>~4 milhões de execuções</strong> em 154 ações, mais de 397 milhões de papéis negociados.</li>
+                <li class="mb-0">Tentando corrigir, a equipe <strong>removeu o código novo dos 7 servidores certos</strong> — e espalhou o problema.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-start border-4 border-warning">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bug text-danger me-2"></i>A causa raiz</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">O código novo <strong>reaproveitou uma flag</strong> que, anos antes, ativava uma função chamada <em>Power Peg</em>.</li>
+                <li class="mb-1">Power Peg era <strong>código morto desde 2003</strong> — nunca removido do repositório.</li>
+                <li class="mb-1">No 8º servidor (sem o código novo), a flag ligou o Power Peg de verdade.</li>
+                <li class="mb-1">Power Peg era uma rotina de teste que <strong>comprava na alta e vendia na baixa</strong> de propósito.</li>
+                <li class="mb-0">E não tinha trava de limite: a contagem cumulativa de posição havia sido <strong>movida para outro módulo em 2005</strong>, deixando a função antiga sem freio.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning border-0 shadow-sm mt-3 mb-0 py-2 d-inline-block">
+          <strong>Lição:</strong> código morto não é inofensivo &middot; deploy manual sem verificação &middot; alerta que ninguém lê não é alerta.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Caso Boeing 737 MAX -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-6 mb-2 px-3 py-2 rounded-pill"><i class="fas fa-plane me-2"></i>Outubro de 2018 e março de 2019</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Boeing 737 MAX &mdash; o sistema MCAS</h2>
+
+        <div class="row g-2 justify-content-center mb-3">
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-primary">346</div>
+              <small class="text-muted">mortes em 2 acidentes</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-primary">1 sensor</div>
+              <small class="text-muted">de 2 disponíveis era lido</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-primary">~20 meses</div>
+              <small class="text-muted">de frota mundial parada</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-clock text-secondary me-2"></i>O que aconteceu</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1"><strong>Lion Air 610</strong>, 29/out/2018: 189 mortes, minutos após decolar de Jacarta.</li>
+                <li class="mb-1"><strong>Ethiopian 302</strong>, 10/mar/2019: 157 mortes, com um padrão de falha quase idêntico.</li>
+                <li class="mb-1">Nos dois casos, o sistema empurrou o nariz da aeronave para baixo <strong>repetidamente</strong>, contra o comando dos pilotos.</li>
+                <li class="mb-1">Frota mundial parada de março/2019 até o fim de 2020.</li>
+                <li class="mb-0">Custo direto para a Boeing estimado em <strong>mais de US$ 20 bilhões</strong>.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-start border-4 border-primary">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bug text-danger me-2"></i>A causa raiz</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">O MCAS existia para compensar a mudança de comportamento causada pelos motores maiores, montados mais à frente e mais alto.</li>
+                <li class="mb-1"><strong>Lia um único sensor de ângulo de ataque</strong>, embora o avião tivesse dois. Sem checagem cruzada: sensor com defeito = comando errado.</li>
+                <li class="mb-1">Durante o desenvolvimento a autoridade do sistema foi <strong>ampliada de 0,6° para 2,5°</strong> por acionamento, e ele podia reagir várias vezes seguidas — <strong>sem refazer a análise de segurança</strong>.</li>
+                <li class="mb-1">O MCAS <strong>não estava no manual nem no treinamento</strong>: a maioria dos pilotos não sabia que ele existia.</li>
+                <li class="mb-0">O alerta de divergência entre sensores ficou preso por engano a um item <strong>opcional</strong> — inoperante na maior parte da frota.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-primary border-0 shadow-sm mt-3 mb-0 py-2 d-inline-block">
+          <strong>Lição:</strong> ponto único de falha &middot; mudar o projeto sem refazer a análise de risco &middot; esconder do operador o que o software faz.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Caso CrowdStrike -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-6 mb-2 px-3 py-2 rounded-pill"><i class="fas fa-desktop me-2"></i>19 de julho de 2024</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">CrowdStrike Falcon &mdash; a tela azul global</h2>
+
+        <div class="row g-2 justify-content-center mb-3">
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-dark">78 min</div>
+              <small class="text-muted">entre publicar e reverter</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-dark">8,5 milhões</div>
+              <small class="text-muted">de máquinas Windows</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="border rounded-3 bg-white p-2">
+              <div class="fs-4 fw-bold text-dark">20 vs 21</div>
+              <small class="text-muted">campos esperados vs enviados</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-clock text-secondary me-2"></i>O que aconteceu</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1"><strong>04h09 UTC:</strong> publicação de um arquivo de conteúdo de resposta rápida para o sensor Falcon no Windows.</li>
+                <li class="mb-1"><strong>05h27 UTC:</strong> o arquivo é revertido — mas quem já tinha recebido estava em <strong>tela azul e ciclo de reinício</strong>.</li>
+                <li class="mb-1">A correção <strong>não podia ser remota</strong>: exigia Modo de Segurança e apagar o arquivo à mão, máquina por máquina.</li>
+                <li class="mb-1">Em muitos casos era preciso a <strong>chave de recuperação do BitLocker</strong> — guardada em sistemas que também estavam fora do ar.</li>
+                <li class="mb-0">Mais de 5.000 voos cancelados; hospitais, bancos, emissoras e serviços de emergência afetados.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-start border-4 border-dark">
+              <h5 class="fw-bold text-dark mb-2"><i class="fas fa-bug text-danger me-2"></i>A causa raiz</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">O interpretador de conteúdo do sensor esperava <strong>20 campos de entrada</strong>. A atualização trouxe <strong>21</strong>.</li>
+                <li class="mb-1">O descompasso provocou uma <strong>leitura fora dos limites de memória</strong>.</li>
+                <li class="mb-1">Isso acontecia dentro de um <strong>driver em modo kernel</strong> — nesse nível não existe "erro tratado": o sistema operacional inteiro cai.</li>
+                <li class="mb-1">O validador de conteúdo <strong>tinha um defeito</strong> e deixou o arquivo passar.</li>
+                <li class="mb-0">Esse tipo de conteúdo ia para <strong>todos os clientes de uma vez</strong>: sem canário, sem implantação gradual, sem anel de teste.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark border-0 shadow-sm mt-3 mb-0 py-2 d-inline-block">
+          <strong>Lição:</strong> validador com defeito é pior que sem validador &middot; sem rollout gradual, o raio de alcance de um erro é 100% da base.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: O que é qualidade -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <span class="badge bg-secondary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Fundamentos</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">O que é Qualidade de Software?</h2>
+
+        <div class="row justify-content-center g-4">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg p-4 bg-white rounded-4 border-start border-5 border-primary">
+              <i class="fas fa-quote-left fa-3x text-primary mb-3 opacity-25"></i>
+              <figure class="mb-0">
+                <blockquote class="blockquote">
+                  <p class="fs-3 text-dark fw-normal mb-3">
+                    Capacidade de um produto de software de satisfazer <strong>necessidades declaradas e implícitas</strong> quando usado sob condições especificadas.
+                  </p>
+                </blockquote>
+                <figcaption class="blockquote-footer fs-5 mt-2 mb-0">
+                  <cite title="ISO/IEC 25010">ISO/IEC 25010</cite>
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 justify-content-center g-4">
+          <div class="col-md-4">
+            <div class="p-3 border border-dark-subtle rounded-4 bg-light shadow-sm h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-check-double text-success me-2"></i>Conformidade</h4>
+              <p class="text-muted mb-0">Atende aos <strong>requisitos</strong> declarados, funcionais e não-funcionais. Dá para verificar objetivamente.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border border-dark-subtle rounded-4 bg-light shadow-sm h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-heart text-danger me-2"></i>Valor</h4>
+              <p class="text-muted mb-0">Atende às <strong>expectativas reais</strong> de quem usa (<em>fitness for use</em>). Nem sempre está escrito em lugar nenhum.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border border-dark-subtle rounded-4 bg-light shadow-sm h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-clock text-primary me-2"></i>Sustentação</h4>
+              <p class="text-muted mb-0">Continua atendendo <strong>ao longo do tempo</strong>, mesmo depois de dezenas de mudanças. Qualidade não é foto, é filme.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: QA vs QC vs Teste -->
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Qualidade não é (só) testar</h2>
+        <p class="lead text-muted mb-5">Três coisas diferentes que costumam ser tratadas como sinônimos.</p>
+
+        <div class="row g-4 justify-content-center align-items-stretch">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-primary text-white py-3">
+                <h4 class="m-0 fw-bold"><i class="fas fa-sitemap me-2"></i>QA</h4>
+                <small class="opacity-75">Quality Assurance</small>
+              </div>
+              <div class="card-body bg-white p-4 text-start">
+                <p class="fw-bold text-primary mb-2">Foco: o processo</p>
+                <p class="small text-muted mb-3">"Estamos trabalhando de um jeito que <em>tende</em> a produzir software bom?"</p>
+                <ul class="small text-muted mb-0 ps-3">
+                  <li>Padrões de código e de branch</li>
+                  <li>Definition of Done</li>
+                  <li>Política de code review</li>
+                </ul>
+                <span class="badge bg-primary-subtle text-primary-emphasis mt-3">Preventivo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-success text-white py-3">
+                <h4 class="m-0 fw-bold"><i class="fas fa-clipboard-check me-2"></i>QC</h4>
+                <small class="opacity-75">Quality Control</small>
+              </div>
+              <div class="card-body bg-white p-4 text-start">
+                <p class="fw-bold text-success mb-2">Foco: o produto</p>
+                <p class="small text-muted mb-3">"Este artefato específico está bom o suficiente para seguir adiante?"</p>
+                <ul class="small text-muted mb-0 ps-3">
+                  <li>Inspeções e revisões</li>
+                  <li>Análise estática (SonarCloud)</li>
+                  <li>Critérios de aceite</li>
+                </ul>
+                <span class="badge bg-success-subtle text-success-emphasis mt-3">Detectivo</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-danger text-white py-3">
+                <h4 class="m-0 fw-bold"><i class="fas fa-vial me-2"></i>Teste</h4>
+                <small class="opacity-75">Testing</small>
+              </div>
+              <div class="card-body bg-white p-4 text-start">
+                <p class="fw-bold text-danger mb-2">Foco: a evidência</p>
+                <p class="small text-muted mb-3">"Executando o software, ele se comporta como esperado?"</p>
+                <ul class="small text-muted mb-0 ps-3">
+                  <li>Unidade, integração, E2E</li>
+                  <li>Carga e performance</li>
+                  <li>Uma <em>técnica</em> dentro do QC</li>
+                </ul>
+                <span class="badge bg-danger-subtle text-danger-emphasis mt-3">Dinâmico</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary mt-4 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-quote-right me-2"></i>
+          Teste <strong>revela</strong> defeitos. Só o processo <strong>evita</strong> que eles sejam criados.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Verificação vs Validação -->
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <span class="badge bg-success text-white fs-5 mb-3 px-4 py-2 rounded-pill">IEEE 1012 &middot; V&amp;V</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Verificação e Validação</h2>
+
+        <div class="row align-items-center justify-content-center g-5 mt-2">
+          <div class="col-md-5">
+            <div class="p-4 bg-white border border-secondary rounded-4 shadow-sm position-relative">
+              <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-secondary fs-6 px-3">Técnico</span>
+              <h3 class="fw-bold text-secondary mb-3 mt-2">Verificação</h3>
+              <p class="fs-4 fst-italic text-dark">"Are we building the product <span class="text-decoration-underline">right</span>?"</p>
+              <p class="small text-muted mt-3 mb-0">O artefato desta fase está coerente com o que foi especificado na fase anterior? O código reflete o design?</p>
+            </div>
+          </div>
+
+          <div class="col-md-1 d-none d-md-block">
+            <div class="vr" style="height: 150px; width: 2px;"></div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="p-4 bg-white border border-success rounded-4 shadow-sm position-relative">
+              <span class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-success fs-6 px-3">Usuário</span>
+              <h3 class="fw-bold text-success mb-3 mt-2">Validação</h3>
+              <p class="fs-4 fst-italic text-dark">"Are we building the <span class="text-decoration-underline">right</span> product?"</p>
+              <p class="small text-muted mt-3 mb-0">O sistema resolve o problema real de quem vai usar? Dá para construir a coisa errada com perfeição técnica.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mt-5">
+          <div class="col-md-9">
+            <div class="alert alert-light border shadow-sm mb-0 text-start">
+              <strong><i class="fas fa-shield-alt text-danger me-2"></i>E o SQA (IEEE 730)?</strong>
+              <span class="text-muted">É a função que <em>garante que V&amp;V realmente aconteceu</em> — auditando processo e produto. Para funcionar, precisa de independência: quem audita não pode estar sob a pressão de prazo de quem entrega.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: ISO 25010 -->
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-3 px-4 py-2 rounded-pill">ISO/IEC 25010</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Modelo de Qualidade do Produto</h2>
+        <p class="lead text-muted mb-4">O vocabulário para conversar sobre requisitos <strong>não-funcionais</strong> sem achismo.</p>
+
+        <div class="row g-2 justify-content-center">
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-cogs text-primary me-2"></i><span class="fw-bold small">Adequação Funcional</span></div>
+              <small class="text-muted">Completude, correção, adequação ao propósito.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-tachometer-alt text-success me-2"></i><span class="fw-bold small">Eficiência de Performance</span></div>
+              <small class="text-muted">Tempo de resposta, throughput, uso de recursos.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-puzzle-piece text-info me-2"></i><span class="fw-bold small">Compatibilidade</span></div>
+              <small class="text-muted">Coexistência e interoperabilidade.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-hand-pointer text-warning me-2"></i><span class="fw-bold small">Capacidade de Interação</span></div>
+              <small class="text-muted">Aprendizado, operabilidade, acessibilidade. <em>(era "Usabilidade")</em></small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-server text-secondary me-2"></i><span class="fw-bold small">Confiabilidade</span></div>
+              <small class="text-muted">Disponibilidade, tolerância a falhas, recuperação.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-shield-alt text-danger me-2"></i><span class="fw-bold small">Segurança (Security)</span></div>
+              <small class="text-muted">Confidencialidade, integridade, autenticidade.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-wrench text-dark me-2"></i><span class="fw-bold small">Manutenibilidade</span></div>
+              <small class="text-muted">Modularidade, reusabilidade, <strong>testabilidade</strong>.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-shuffle text-success me-2"></i><span class="fw-bold small">Flexibilidade</span></div>
+              <small class="text-muted">Adaptabilidade, instalabilidade, escalabilidade. <em>(era "Portabilidade")</em></small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="p-3 border rounded-3 bg-white shadow-sm h-100 text-start border-2 border-danger">
+              <div class="d-flex align-items-center mb-1"><i class="fas fa-helmet-safety text-danger me-2"></i><span class="fw-bold small">Safety</span></div>
+              <small class="text-muted">Evitar dano a pessoas, bens e ambiente. <em>(característica nova)</em></small>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-4 mb-0">
+          <i class="fas fa-circle-info me-1"></i>
+          A revisão de 2023 reorganizou o modelo: <strong>9 características</strong>, com <em>Usabilidade</em> &rarr; <em>Capacidade de Interação</em>, <em>Portabilidade</em> &rarr; <em>Flexibilidade</em> e a inclusão de <em>Safety</em>.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 12: Custo da Qualidade -->
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h2 class="display-4 fw-bold mb-3 text-dark">Custo da Qualidade (CoSQ)</h2>
+        <p class="lead text-muted mb-5">Qualidade não é gasto extra. É escolher <em>onde</em> o dinheiro vai sair.</p>
+
+        <div class="row g-4 justify-content-center align-items-stretch">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-success text-white py-3">
+                <h4 class="m-0 fw-bold"><i class="fas fa-shield-alt me-2"></i>Custo de Conformidade</h4>
+                <small class="opacity-75">Investimento — você escolhe pagar</small>
+              </div>
+              <div class="card-body bg-success-subtle p-4 text-start">
+                <h5 class="fw-bold text-success-emphasis"><i class="fas fa-hard-hat me-2"></i>Prevenção</h5>
+                <p class="small mb-3">Treinamento, padrões, automação de pipeline, planejamento de testes.</p>
+                <h5 class="fw-bold text-success-emphasis"><i class="fas fa-search me-2"></i>Avaliação</h5>
+                <p class="small mb-0">Testes, code review, análise estática, auditorias.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-center justify-content-center">
+            <i class="fas fa-less-than fa-2x text-muted"></i>
+          </div>
+
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-danger text-white py-3">
+                <h4 class="m-0 fw-bold"><i class="fas fa-dumpster-fire me-2"></i>Custo de Não-Conformidade</h4>
+                <small class="opacity-75">Perda — a conta chega sozinha</small>
+              </div>
+              <div class="card-body bg-danger-subtle p-4 text-start">
+                <h5 class="fw-bold text-danger-emphasis"><i class="fas fa-house-damage me-2"></i>Falha Interna</h5>
+                <p class="small mb-3">Retrabalho, correção antes do release, atraso de entrega, hotfix de madrugada.</p>
+                <h5 class="fw-bold text-danger-emphasis"><i class="fas fa-skull-crossbones me-2"></i>Falha Externa</h5>
+                <p class="small mb-0">Suporte, multas, churn, reputação, incidente em produção.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning mt-4 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-triangle-exclamation me-2"></i>
+          Cortar o custo de conformidade não elimina o custo — apenas <strong>transfere</strong> para a coluna da direita, com juros.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 13: Shift Left -->
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-5 mb-3 px-4 py-2 rounded-pill">Shift-Left</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Quanto mais tarde, mais caro</h2>
+        <p class="lead text-muted mb-4">O mesmo defeito muda de preço conforme a fase em que é encontrado.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-11">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4">
+              <svg viewBox="0 0 900 320" width="100%" height="300" role="img" aria-label="Curva de crescimento do custo de correção de defeitos por fase do projeto">
+                <defs>
+                  <linearGradient id="costGrad" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0%" stop-color="#198754" />
+                    <stop offset="55%" stop-color="#fd7e14" />
+                    <stop offset="100%" stop-color="#dc3545" />
+                  </linearGradient>
+                </defs>
+
+                <line x1="70" y1="270" x2="860" y2="270" stroke="#adb5bd" stroke-width="2" />
+                <line x1="70" y1="30" x2="70" y2="270" stroke="#adb5bd" stroke-width="2" />
+                <text x="30" y="150" text-anchor="middle" font-size="13" fill="#6c757d" font-family="Arial, sans-serif" transform="rotate(-90 30 150)">Custo de correção</text>
+
+                <path d="M70 262 C 260 258, 400 240, 520 195 S 760 90, 850 45" fill="none" stroke="url(#costGrad)" stroke-width="7" stroke-linecap="round" />
+
+                <circle cx="130" cy="261" r="9" fill="#198754" />
+                <text x="130" y="295" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif">Requisitos</text>
+                <text x="130" y="243" text-anchor="middle" font-size="13" fill="#198754" font-family="Arial, sans-serif" font-weight="bold">1x</text>
+
+                <circle cx="330" cy="248" r="9" fill="#198754" />
+                <text x="330" y="295" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif">Design</text>
+                <text x="330" y="230" text-anchor="middle" font-size="13" fill="#198754" font-family="Arial, sans-serif" font-weight="bold">~5x</text>
+
+                <circle cx="520" cy="195" r="9" fill="#fd7e14" />
+                <text x="520" y="295" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif">Codificação</text>
+                <text x="520" y="177" text-anchor="middle" font-size="13" fill="#fd7e14" font-family="Arial, sans-serif" font-weight="bold">~10x</text>
+
+                <circle cx="690" cy="128" r="9" fill="#fd7e14" />
+                <text x="690" y="295" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif">Testes / QA</text>
+                <text x="690" y="110" text-anchor="middle" font-size="13" fill="#fd7e14" font-family="Arial, sans-serif" font-weight="bold">~25x</text>
+
+                <circle cx="850" cy="45" r="9" fill="#dc3545" />
+                <text x="838" y="295" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif">Produção</text>
+                <text x="838" y="27" text-anchor="middle" font-size="13" fill="#dc3545" font-family="Arial, sans-serif" font-weight="bold">100x +</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-3 mb-0">
+          <i class="fas fa-circle-info me-1"></i>
+          Os multiplicadores são uma <strong>heurística</strong> (Boehm), não uma lei — os números variam muito por contexto. O que é consistente é a <strong>direção</strong> da curva.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 14: Maturidade de Software -->
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-3 px-4 py-2 rounded-pill">Maturidade</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Com o tempo, o cerco se fecha</h2>
+        <p class="lead text-muted mb-4">Software novo é território não explorado. Cada dia em produção percorre um caminho que ninguém tinha percorrido antes.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-11">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+              <svg viewBox="0 0 900 310" width="100%" height="250" role="img"
+                aria-label="Duas curvas ao longo do tempo: defeitos desconhecidos caindo e confiança acumulada subindo, com reaberturas a cada mudança grande">
+                <rect x="250" y="8" width="14" height="14" rx="3" fill="#dc3545" />
+                <text x="272" y="20" font-size="13" fill="#495057" font-family="Arial, sans-serif">Defeitos desconhecidos (risco)</text>
+                <rect x="530" y="8" width="14" height="14" rx="3" fill="#198754" />
+                <text x="552" y="20" font-size="13" fill="#495057" font-family="Arial, sans-serif">Confiança acumulada</text>
+
+                <line x1="70" y1="255" x2="865" y2="255" stroke="#adb5bd" stroke-width="2" />
+                <line x1="70" y1="45" x2="70" y2="255" stroke="#adb5bd" stroke-width="2" />
+                <text x="34" y="150" text-anchor="middle" font-size="12" fill="#6c757d" font-family="Arial, sans-serif" transform="rotate(-90 34 150)">Risco / Confiança</text>
+
+                <line x1="390" y1="55" x2="390" y2="255" stroke="#ced4da" stroke-width="1.5" stroke-dasharray="5 6" />
+                <line x1="650" y1="55" x2="650" y2="255" stroke="#ced4da" stroke-width="1.5" stroke-dasharray="5 6" />
+                <text x="390" y="273" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">mudança grande</text>
+                <text x="650" y="273" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">mudança grande</text>
+
+                <path d="M 85 65 C 165 103, 225 135, 295 151 C 335 160, 350 123, 390 133 C 445 146, 495 171, 555 181 C 595 188, 610 155, 650 165 C 705 178, 775 203, 855 213"
+                  fill="none" stroke="#dc3545" stroke-width="6" stroke-linecap="round" />
+                <path d="M 85 241 C 195 228, 295 203, 395 178 C 515 148, 645 113, 855 81"
+                  fill="none" stroke="#198754" stroke-width="6" stroke-linecap="round" />
+
+                <text x="125" y="298" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif" font-weight="bold">Software novo</text>
+                <text x="810" y="298" text-anchor="middle" font-size="13" fill="#1f2937" font-family="Arial, sans-serif" font-weight="bold">Software maduro</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-3 mb-0">
+          <i class="fas fa-circle-info me-1"></i>
+          Repare nas subidas da curva vermelha: <strong>toda mudança grande reabre parte do cerco</strong>. Maturidade não é linha reta.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 15: O ciclo que fecha o cerco -->
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">O ciclo que fecha o cerco</h2>
+        <p class="lead text-muted mb-4">O cerco não fecha sozinho com a passagem do tempo. Ele fecha quando cada falha vira conhecimento <em>gravado em código</em>.</p>
+
+        <div class="row g-3 justify-content-center align-items-stretch mb-4">
+          <div class="col-md-2">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-hourglass-half fa-2x text-secondary mb-2"></i>
+              <h6 class="fw-bold mb-1">Tempo de uso</h6>
+              <small class="text-muted">Caminhos reais que nenhum teste previu</small>
+            </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-center justify-content-center"><i class="fas fa-arrow-right text-muted"></i></div>
+          <div class="col-md-2">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-bug fa-2x text-danger mb-2"></i>
+              <h6 class="fw-bold mb-1">Falha revelada</h6>
+              <small class="text-muted">Um defeito que já existia aparece</small>
+            </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-center justify-content-center"><i class="fas fa-arrow-right text-muted"></i></div>
+          <div class="col-md-2">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-success">
+              <i class="fas fa-vial fa-2x text-success mb-2"></i>
+              <h6 class="fw-bold mb-1">Ajuste <u>+ teste</u></h6>
+              <small class="text-muted">A correção vira teste de regressão</small>
+            </div>
+          </div>
+          <div class="col-md-1 d-flex align-items-center justify-content-center"><i class="fas fa-arrow-right text-muted"></i></div>
+          <div class="col-md-2">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-compress fa-2x text-primary mb-2"></i>
+              <h6 class="fw-bold mb-1">Cerco menor</h6>
+              <small class="text-muted">Aquele bug não volta mais</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 justify-content-center">
+          <div class="col-md-5">
+            <div class="alert alert-danger border-0 shadow-sm mb-0 text-start h-100">
+              <h6 class="fw-bold mb-2"><i class="fas fa-rotate-left me-2"></i>Sem teste, o cerco reabre</h6>
+              <p class="small mb-0">Corrigir sem deixar um teste para trás é resolver o mesmo bug duas vezes. A suíte automatizada é a <strong>memória</strong> de tudo que já deu errado — é ela que impede o retrocesso a cada release.</p>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="alert alert-secondary border-0 shadow-sm mb-0 text-start h-100">
+              <h6 class="fw-bold mb-2"><i class="fas fa-infinity me-2"></i>O cerco nunca chega a zero</h6>
+              <p class="small mb-0">Sempre resta <strong>risco residual</strong>. Testar exaustivamente todas as combinações é impossível na prática — por isso a meta não é "zero bugs", e sim <strong>risco conhecido e sob controle</strong>.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Métricas -->
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <span class="badge bg-info text-dark fs-5 mb-3 px-4 py-2 rounded-pill">Medição</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Métricas que vamos usar</h2>
+        <p class="lead text-muted mb-5">"Não dá para melhorar o que você não mede" — mas medir a coisa errada é pior que não medir.</p>
+
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <i class="fas fa-percent fa-2x text-primary mb-3"></i>
+              <h5 class="fw-bold">Cobertura de testes</h5>
+              <p class="small text-muted mb-0">% de linhas/branches executadas pelos testes. Alta cobertura não garante qualidade; <strong>baixa cobertura garante risco</strong>.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <i class="fas fa-bug fa-2x text-danger mb-3"></i>
+              <h5 class="fw-bold">Densidade de defeitos</h5>
+              <p class="small text-muted mb-0">Defeitos por mil linhas ou por módulo. Serve para achar <em>onde</em> concentrar esforço de teste.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <i class="fas fa-filter fa-2x text-success mb-3"></i>
+              <h5 class="fw-bold">Eficiência de remoção</h5>
+              <p class="small text-muted mb-0">Defeitos achados antes do release &divide; total de defeitos. Mede se o processo está segurando o que deveria.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <i class="fas fa-gauge-high fa-2x text-warning mb-3"></i>
+              <h5 class="fw-bold">Dívida técnica</h5>
+              <p class="small text-muted mb-0">Tempo estimado para corrigir o que o SonarCloud aponta: duplicação, complexidade, code smells.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-4 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-triangle-exclamation me-2"></i>
+          <strong>Lei de Goodhart:</strong> quando uma métrica vira meta, ela deixa de ser uma boa métrica. Cobertura de 100% com <code>expect(true).toBe(true)</code> é fraude, não qualidade.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Roadmap do semestre -->
+    <div class="slide" id="slide-17">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-3 px-4 py-2 rounded-pill">2026.2</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Roadmap do Semestre</h2>
+
+        <div class="row g-2 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="list-group list-group-flush">
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-danger rounded-pill">S32</span> <span class="fw-semibold">Introdução à Qualidade de Software</span>
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S33</span> ATAM e Planejamento de Casos de Teste
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S34</span> Caixa Branca vs Caixa Preta
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S35</span> Introdução a Testes Automatizados
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S36</span> Gestão de Erros e Bugs
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S37</span> Testes em CI (GitHub Actions)
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="list-group list-group-flush">
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S39</span> Testes de Unidade: Jest + SonarCloud
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S40</span> VCR e Chamadas de API Seguras
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S41</span> TDD e BDD
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-secondary rounded-pill">S42</span> Testes de Carga com JMeter
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-info text-dark rounded-pill">S43-45</span> Projeto final e preparação
+              </div>
+              <div class="list-group-item bg-transparent d-flex align-items-center gap-3 py-2">
+                <span class="badge bg-info text-dark rounded-pill">S48-50</span> Feedback, revisão e encerramento
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted mt-3 mb-0"><i class="fas fa-arrow-trend-up me-2"></i>A sequência vai do <strong>conceito</strong> ao <strong>pipeline automatizado</strong>: cada aula acrescenta uma camada ao projeto.</p>
+      </div>
+    </div>
+
+    <!-- Slide 18: Avaliação -->
+    <div class="slide" id="slide-18">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-5 mb-4 px-4 py-2 rounded-pill">Avaliação</span>
+        <h2 class="display-4 fw-bold mb-5 text-dark">Os três marcos do semestre</h2>
+
+        <div class="row g-4 justify-content-center align-items-stretch">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="bg-danger text-white p-4">
+                <i class="fas fa-file-signature fa-3x mb-3"></i>
+                <h4 class="fw-bold mb-1">Prova Escrita</h4>
+                <span class="badge bg-white text-danger">Semana 38</span>
+              </div>
+              <div class="card-body p-4">
+                <p class="text-muted mb-0">3ª semana de setembro. Cobre os fundamentos das aulas 01 a 06: conceitos, técnicas de teste e gestão de defeitos.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="bg-primary text-white p-4">
+                <i class="fas fa-upload fa-3x mb-3"></i>
+                <h4 class="fw-bold mb-1">Trabalho Final</h4>
+                <span class="badge bg-white text-primary">Semana 46</span>
+              </div>
+              <div class="card-body p-4">
+                <p class="text-muted mb-0">Entrega do projeto com suíte de testes, pipeline de CI e relatório de qualidade. Construído ao longo de todo o semestre.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="bg-success text-white p-4">
+                <i class="fas fa-microphone-lines fa-3x mb-3"></i>
+                <h4 class="fw-bold mb-1">Prova Oral</h4>
+                <span class="badge bg-white text-success">Semana 47</span>
+              </div>
+              <div class="card-body p-4">
+                <p class="text-muted mb-0">Meio de novembro. Arguição do trabalho final: você defende as decisões de qualidade que tomou.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-light border shadow-sm mt-4 d-inline-block">
+          <i class="fas fa-circle-info text-primary me-2"></i>
+          Os pesos de cada marco e o formulário de entrega serão combinados em sala e publicados no cronograma da disciplina.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Projeto e repositório -->
+    <div class="slide" id="slide-19">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-4 px-4 py-2 rounded-pill">Repositório da Disciplina</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Onde o trabalho acontece</h2>
+        <p class="lead text-muted mb-5">Todo código, exemplo e atividade da disciplina vive neste repositório.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+            <a href="https://github.com/afonsolelis/qualidade_software" target="_blank" rel="noopener noreferrer"
+              class="card border-0 shadow-lg text-decoration-none hover-scale p-0 overflow-hidden">
+              <div class="bg-dark text-white p-5 text-center">
+                <i class="fab fa-github fa-5x mb-4 text-white-50"></i>
+                <h3 class="fw-bold text-white">afonsolelis/qualidade_software</h3>
+                <p class="text-white-50 mb-0 mt-2">Repositório oficial com códigos, exemplos e o projeto da disciplina.</p>
+              </div>
+              <div class="bg-white p-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div class="d-flex gap-4 flex-wrap">
+                  <span class="text-muted small"><i class="fas fa-code-branch text-success me-1"></i> Clone o repo</span>
+                  <span class="text-muted small"><i class="fas fa-file-alt text-info me-1"></i> Leia o README</span>
+                  <span class="text-muted small"><i class="fas fa-star text-warning me-1"></i> Dê uma estrela</span>
+                </div>
+                <span class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                  <i class="fas fa-external-link-alt me-1"></i> Acessar
+                </span>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-8">
+            <div class="bg-dark text-white p-3 rounded-3 position-relative text-start">
+              <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)" aria-label="Copiar comando">
+                <i class="fas fa-copy text-white-50"></i>
+              </button>
+              <code class="text-info small">git clone https://github.com/afonsolelis/qualidade_software.git</code>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Atividade prática -->
+    <div class="slide" id="slide-20">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-3 mb-4 px-5 py-3 rounded-pill">Atividade Prática #1</span>
+        <h1 class="display-4 fw-bold mb-3 text-dark">Diagnóstico de Qualidade</h1>
+        <p class="lead text-muted mb-4">Antes de aprender a testar, aprenda a <strong>enxergar</strong> o problema.</p>
+
+        <div class="row g-4 text-start justify-content-center">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h4 class="fw-bold text-primary mb-3"><i class="fas fa-bullseye me-2"></i>Objetivo</h4>
+              <p class="text-muted">Rodar o projeto localmente e produzir um <strong>relatório de qualidade</strong> — sem escrever nenhum teste ainda.</p>
+              <hr>
+              <h5 class="fw-bold text-dark mb-2">Passos</h5>
+              <ol class="text-muted small mb-0">
+                <li class="mb-2">Clone o repositório da disciplina.</li>
+                <li class="mb-2">Siga o <code>README</code> para instalar dependências e rodar a suíte de testes.</li>
+                <li class="mb-2">Registre o que falhou, o que foi pulado e o que nem existe.</li>
+                <li class="mb-0">Leia o código procurando problemas que os testes <em>não</em> pegaram.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="col-md-5">
+            <div class="card h-100 border-0 bg-dark text-white p-4 rounded-4">
+              <h4 class="fw-bold mb-3"><i class="fas fa-tags text-warning me-2"></i>Classifique cada achado</h4>
+              <p class="small text-white-50 mb-3">Use o vocabulário da ISO/IEC 25010 — é exatamente para isso que ele serve.</p>
+              <ul class="list-unstyled mb-0">
+                <li class="mb-2"><span class="badge bg-primary me-2">Adequação Funcional</span> faz a coisa errada</li>
+                <li class="mb-2"><span class="badge bg-success me-2">Performance</span> lento ou desperdiça recurso</li>
+                <li class="mb-2"><span class="badge bg-danger me-2">Segurança</span> expõe dado ou credencial</li>
+                <li class="mb-2"><span class="badge bg-warning text-dark me-2">Manutenibilidade</span> difícil de mudar ou testar</li>
+                <li class="mb-0"><span class="badge bg-info text-dark me-2">Interação</span> confuso para quem usa</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 21: Entrega da atividade -->
+    <div class="slide" id="slide-21">
+      <div class="text-center slide-content">
+        <span class="badge bg-warning text-dark fs-5 mb-4 px-4 py-2 rounded-pill">Mão na Massa</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Entregável e critérios</h2>
+
+        <div class="row g-4 text-start justify-content-center">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-file-lines text-primary me-2"></i>O que entregar</h4>
+              <p class="text-muted small">Um documento curto (1 a 2 páginas) contendo:</p>
+              <ul class="text-muted">
+                <li class="mb-2">Saída da execução dos testes (print ou log).</li>
+                <li class="mb-2"><strong>Mínimo 5 achados</strong>, cada um com: onde está, o que está errado, por que é um problema.</li>
+                <li class="mb-2">A característica da ISO 25010 de cada achado.</li>
+                <li class="mb-0">Sua ordem de prioridade — e o critério que você usou para priorizar.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check text-success me-2"></i>Como será avaliado</h4>
+              <ul class="list-unstyled text-muted mb-0">
+                <li class="mb-3"><i class="fas fa-check text-success me-2"></i><strong>Precisão</strong> — o achado é real e está bem localizado?</li>
+                <li class="mb-3"><i class="fas fa-check text-success me-2"></i><strong>Vocabulário</strong> — a classificação ISO faz sentido?</li>
+                <li class="mb-3"><i class="fas fa-check text-success me-2"></i><strong>Justificativa</strong> — você explica o impacto, não só o sintoma?</li>
+                <li class="mb-0"><i class="fas fa-check text-success me-2"></i><strong>Priorização</strong> — o critério é defensável?</li>
+              </ul>
+              <hr>
+              <p class="small text-muted mb-0"><i class="fas fa-lightbulb text-warning me-2"></i>Cinco achados bem argumentados valem mais que vinte listados sem análise.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Resumo -->
+    <div class="slide" id="slide-22">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-5 text-dark">O que aprendemos hoje</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 text-start h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-check-circle text-success me-2"></i>Conceitos</h4>
+              <ul class="list-unstyled fs-5 mb-0">
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Qualidade = requisitos <strong>+</strong> expectativas, sustentados no tempo</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>QA (processo) &ne; QC (produto) &ne; Teste (evidência)</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Verificação: certo <em>como</em>. Validação: a coisa <em>certa</em></li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>ISO/IEC 25010 dá o vocabulário do não-funcional</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Defeito adiado é defeito mais caro</li>
+                <li class="mb-0"><i class="fas fa-chevron-right text-muted me-2 small"></i>Maturidade fecha o cerco — se cada falha virar teste</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-dark text-white rounded-4 text-start h-100">
+              <h4 class="fw-bold mb-3"><i class="fas fa-arrow-right text-warning me-2"></i>Próximos passos</h4>
+              <ul class="list-unstyled fs-5 mb-0">
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Clonar o repositório e rodar o projeto</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Entregar o relatório de diagnóstico</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Ler o material escrito desta aula</li>
+                <li class="mb-0"><i class="fas fa-chevron-right text-white-50 me-2 small"></i><strong>Semana 33:</strong> ATAM e Planejamento de Casos de Teste</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23: Encerramento -->
+    <div class="slide" id="slide-23">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+        <p class="lead text-dark mb-5">Bom semestre — vamos construir software que a gente confia.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="https://github.com/afonsolelis/qualidade_software" target="_blank" rel="noopener noreferrer"
+            class="btn btn-dark btn-lg rounded-pill px-5">
+            <i class="fab fa-github me-2"></i>Projeto no GitHub
+          </a>
+          <a href="material/material_introducao-qualidade.html" class="btn btn-danger btn-lg rounded-pill px-5">
+            <i class="fas fa-book me-2"></i>Material escrito
+          </a>
+          <a href="../home_qualidade_2026_2.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+        </div>
       </div>
     </div>
 
@@ -60,7 +1136,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 23</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
@@ -74,6 +1150,17 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+  <script>
+    function copyToClipboard(button) {
+      const codeBlock = button.nextElementSibling;
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const icon = button.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-check text-success';
+        setTimeout(() => { icon.className = originalClass; }, 2000);
+      }).catch(err => console.error('Erro ao copiar: ', err));
+    }
+  </script>
 </body>
 
 </html>

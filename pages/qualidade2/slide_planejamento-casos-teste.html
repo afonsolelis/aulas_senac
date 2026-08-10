@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 33 - Qualidade: Planejamento e Casos de Teste</title>
-  <meta name="keywords" content="qualidade de software, plano de testes, casos de teste, cobertura">
+  <title>Semana 33 - Qualidade: ATAM e Planejamento de Casos de Teste</title>
+  <meta name="keywords" content="ATAM, atributos de qualidade, utility tree, cenário de qualidade, ponto de tradeoff, caso de teste, plano de teste, rastreabilidade">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -22,33 +22,884 @@
       <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
     </a>
 
+    <!-- Slide 1: Capa -->
     <div class="slide active" id="slide-1">
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 02: Planejamento e Casos de Teste</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 02: Do atributo de qualidade ao caso de teste</h1>
+        <p class="fs-4 text-secondary mb-3">ATAM e planejamento de testes</p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
         <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 33 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Planejamento e Casos de Teste</span></div>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">ATAM</span>
+          <span class="keyword">utility tree</span>
+          <span class="keyword">cenário de atributo de qualidade</span>
+          <span class="keyword">ponto de tradeoff</span>
+          <span class="keyword">caso de teste</span>
+          <span class="keyword">rastreabilidade</span>
+        </div>
       </div>
     </div>
 
+    <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Planejamento e Casos de Teste</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda de Hoje</h1>
+        <div class="row">
+          <div class="col-md-9 mx-auto">
+            <ul class="list-group list-group-flush fs-4 text-start bg-transparent">
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-triangle-exclamation text-danger me-3"></i> O problema: "tem que ser rápido" não é testável
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-sitemap text-primary me-3"></i> ATAM: avaliar qualidade antes de construir
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-network-wired text-success me-3"></i> Utility tree e priorização
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-list-ol text-info me-3"></i> Cenário de atributo de qualidade em 6 partes
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-balance-scale text-warning me-3"></i> Riscos, sensibilidade e pontos de tradeoff
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-arrow-right-arrow-left text-secondary me-3"></i> A ponte: do cenário ao caso de teste
+              </li>
+              <li class="list-group-item bg-transparent text-dark border-bottom border-dark-subtle py-2">
+                <i class="fas fa-table text-dark me-3"></i> Plano de teste e rastreabilidade
+              </li>
+              <li class="list-group-item bg-transparent text-dark py-2">
+                <i class="fas fa-tasks text-danger me-3"></i> Prática #2: da árvore ao caso de teste
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- Slide 3: O problema -->
     <div class="slide" id="slide-3">
-      <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-danger mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Planejamento e Casos de Teste</strong></p>
+      <div class="text-center slide-content">
+        <span class="badge bg-danger text-white fs-5 mb-3 px-4 py-2 rounded-pill">O problema</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Na aula passada você ganhou o vocabulário.<br>Ele ainda não dá para testar.</h2>
+
+        <div class="row g-4 justify-content-center align-items-center">
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-danger-subtle rounded-4 h-100">
+              <h4 class="fw-bold text-danger-emphasis mb-3"><i class="fas fa-times-circle me-2"></i>O que o cliente diz</h4>
+              <ul class="list-unstyled fs-5 text-start mb-0">
+                <li class="mb-2">"O sistema tem que ser <strong>rápido</strong>."</li>
+                <li class="mb-2">"Tem que ser <strong>seguro</strong>."</li>
+                <li class="mb-2">"Tem que ser <strong>fácil de manter</strong>."</li>
+                <li class="mb-0">"Não pode <strong>cair</strong>."</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-center justify-content-center">
+            <i class="fas fa-question fa-3x text-muted"></i>
+          </div>
+
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-vial text-primary me-2"></i>O que um teste precisa</h4>
+              <ul class="list-unstyled fs-5 text-start mb-0">
+                <li class="mb-2">Uma condição inicial <strong>concreta</strong></li>
+                <li class="mb-2">Um estímulo <strong>reproduzível</strong></li>
+                <li class="mb-2">Um resultado esperado <strong>mensurável</strong></li>
+                <li class="mb-0">Um critério de <strong>passa / não passa</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark mt-4 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          "Rápido" não tem critério de passa/não passa. Falta um método para <strong>atravessar essa ponte</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: ATAM - o que é -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-5 mb-3 px-4 py-2 rounded-pill">A ponte</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">ATAM</h2>
+        <p class="fs-4 text-secondary mb-4"><em>Architecture Tradeoff Analysis Method</em></p>
+
+        <div class="row justify-content-center g-4">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-lg p-4 bg-white rounded-4 border-start border-5 border-primary text-start">
+              <p class="fs-5 text-dark mb-0">
+                Método criado no <strong>SEI</strong> (Software Engineering Institute) da Carnegie Mellon, por
+                <strong>Kazman, Klein e Clements</strong>, consolidado no relatório técnico CMU/SEI-2000-TR-004.
+                Serve para <strong>avaliar uma arquitetura em relação aos seus atributos de qualidade</strong> —
+                e faz isso antes de o sistema estar construído.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 justify-content-center mt-3">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-search fa-2x text-danger mb-2"></i>
+              <h5 class="fw-bold mb-1">Encontra riscos</h5>
+              <small class="text-muted">Não prova que a arquitetura está certa. Revela onde ela pode falhar.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-users fa-2x text-success mb-2"></i>
+              <h5 class="fw-bold mb-1">Reúne stakeholders</h5>
+              <small class="text-muted">Arquiteto, negócio, operação e teste na mesma sala, discutindo o mesmo cenário.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <i class="fas fa-coins fa-2x text-warning mb-2"></i>
+              <h5 class="fw-bold mb-1">Barato</h5>
+              <small class="text-muted">Acontece no papel. Lembra da curva de custo da aula passada?</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 5: As etapas -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Como o ATAM acontece</h2>
+        <p class="lead text-muted mb-4">Nove passos, em duas rodadas — a segunda com um grupo maior de stakeholders.</p>
+
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-primary text-white py-2">
+                <h5 class="m-0 fw-bold">Fase 1 &middot; núcleo técnico</h5>
+              </div>
+              <div class="card-body bg-white p-3">
+                <ol class="small text-muted mb-0 ps-3">
+                  <li class="mb-1">Apresentar o método</li>
+                  <li class="mb-1">Apresentar os <strong>direcionadores de negócio</strong></li>
+                  <li class="mb-1">Apresentar a arquitetura</li>
+                  <li class="mb-1">Identificar as abordagens arquiteturais</li>
+                  <li class="mb-1">Construir a <strong>utility tree</strong></li>
+                  <li class="mb-0">Analisar as abordagens</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+              <div class="card-header bg-success text-white py-2">
+                <h5 class="m-0 fw-bold">Fase 2 &middot; stakeholders</h5>
+              </div>
+              <div class="card-body bg-white p-3">
+                <ol class="small text-muted mb-0 ps-3" start="7">
+                  <li class="mb-1">Levantar e <strong>priorizar cenários</strong> em grupo</li>
+                  <li class="mb-1">Analisar as abordagens de novo, à luz dos novos cenários</li>
+                  <li class="mb-0">Apresentar os resultados</li>
+                </ol>
+                <hr class="my-2">
+                <p class="small text-muted mb-0">A fase 2 existe porque o arquiteto sozinho <strong>não enxerga todos os cenários</strong>. Quem opera o sistema de madrugada enxerga outros.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-light border shadow-sm mt-3 mb-0 py-2 d-inline-block">
+          <i class="fas fa-circle-info text-primary me-2"></i>
+          Nesta disciplina vamos usar uma versão enxuta: <strong>utility tree &rarr; cenários &rarr; casos de teste</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Utility tree estrutura -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <span class="badge bg-success text-white fs-5 mb-3 px-4 py-2 rounded-pill">Instrumento 1</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Utility Tree</h2>
+        <p class="lead text-muted mb-3">Decompõe "qualidade" até chegar em algo concreto o bastante para medir.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-11">
+            <div class="card border-0 shadow-sm p-3 bg-white rounded-4">
+              <svg viewBox="0 0 900 250" width="100%" height="230" role="img"
+                aria-label="Árvore de utilidade: raiz Utilidade, ramos de atributos de qualidade, refinamentos e cenários folha">
+                <rect x="20" y="100" width="120" height="50" rx="10" fill="#212529" />
+                <text x="80" y="122" text-anchor="middle" font-size="15" fill="#ffffff" font-family="Arial, sans-serif" font-weight="bold">Utilidade</text>
+                <text x="80" y="140" text-anchor="middle" font-size="11" fill="#adb5bd" font-family="Arial, sans-serif">(raiz)</text>
+
+                <path d="M140 125 C 180 125, 180 60, 220 60" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M140 125 C 180 125, 180 125, 220 125" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M140 125 C 180 125, 180 190, 220 190" fill="none" stroke="#adb5bd" stroke-width="2" />
+
+                <rect x="220" y="38" width="150" height="44" rx="9" fill="#0d6efd" />
+                <text x="295" y="65" text-anchor="middle" font-size="14" fill="#ffffff" font-family="Arial, sans-serif">Performance</text>
+                <rect x="220" y="103" width="150" height="44" rx="9" fill="#198754" />
+                <text x="295" y="130" text-anchor="middle" font-size="14" fill="#ffffff" font-family="Arial, sans-serif">Segurança</text>
+                <rect x="220" y="168" width="150" height="44" rx="9" fill="#6f42c1" />
+                <text x="295" y="195" text-anchor="middle" font-size="14" fill="#ffffff" font-family="Arial, sans-serif">Manutenibilidade</text>
+
+                <path d="M370 60 L 420 60" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M370 125 L 420 125" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M370 190 L 420 190" fill="none" stroke="#adb5bd" stroke-width="2" />
+
+                <rect x="420" y="40" width="140" height="40" rx="8" fill="#e7f1ff" stroke="#0d6efd" />
+                <text x="490" y="65" text-anchor="middle" font-size="12" fill="#0a58ca" font-family="Arial, sans-serif">Tempo de resposta</text>
+                <rect x="420" y="105" width="140" height="40" rx="8" fill="#e8f5ee" stroke="#198754" />
+                <text x="490" y="130" text-anchor="middle" font-size="12" fill="#146c43" font-family="Arial, sans-serif">Autenticação</text>
+                <rect x="420" y="170" width="140" height="40" rx="8" fill="#f0e9fb" stroke="#6f42c1" />
+                <text x="490" y="195" text-anchor="middle" font-size="12" fill="#59359a" font-family="Arial, sans-serif">Trocar componente</text>
+
+                <path d="M560 60 L 610 60" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M560 125 L 610 125" fill="none" stroke="#adb5bd" stroke-width="2" />
+                <path d="M560 190 L 610 190" fill="none" stroke="#adb5bd" stroke-width="2" />
+
+                <rect x="610" y="38" width="265" height="44" rx="8" fill="#ffffff" stroke="#495057" stroke-width="2" />
+                <text x="742" y="64" text-anchor="middle" font-size="13" fill="#212529" font-family="Arial, sans-serif" font-style="italic">cenário mensurável</text>
+                <rect x="610" y="103" width="265" height="44" rx="8" fill="#ffffff" stroke="#495057" stroke-width="2" />
+                <text x="742" y="129" text-anchor="middle" font-size="13" fill="#212529" font-family="Arial, sans-serif" font-style="italic">cenário mensurável</text>
+                <rect x="610" y="168" width="265" height="44" rx="8" fill="#ffffff" stroke="#495057" stroke-width="2" />
+                <text x="742" y="194" text-anchor="middle" font-size="13" fill="#212529" font-family="Arial, sans-serif" font-style="italic">cenário mensurável</text>
+
+                <text x="80" y="235" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">raiz</text>
+                <text x="295" y="235" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">atributo (ISO 25010)</text>
+                <text x="490" y="235" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">refinamento</text>
+                <text x="742" y="235" text-anchor="middle" font-size="11" fill="#6c757d" font-family="Arial, sans-serif">folha = o que vira teste</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <p class="small text-muted mt-2 mb-0">
+          <i class="fas fa-circle-info me-1"></i>
+          Os atributos do segundo nível são exatamente os da <strong>ISO/IEC 25010</strong> que vimos na aula passada.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 7: Utility tree exemplo -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <span class="badge bg-secondary text-white fs-6 mb-2 px-3 py-2 rounded-pill">Exemplo: sistema de matrícula online</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Uma árvore de verdade</h2>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle mb-2 bg-white">
+            <thead class="table-dark">
+              <tr>
+                <th style="width:16%">Atributo</th>
+                <th style="width:18%">Refinamento</th>
+                <th>Cenário (folha)</th>
+                <th style="width:10%">(I, D)</th>
+              </tr>
+            </thead>
+            <tbody class="small">
+              <tr class="table-danger">
+                <td class="fw-bold">Performance</td>
+                <td>Tempo de resposta</td>
+                <td class="text-start">No pico da matrícula, com 2.000 alunos simultâneos, 95% das confirmações respondem em menos de 2 s.</td>
+                <td class="fw-bold text-center">(A, A)</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Confiabilidade</td>
+                <td>Recuperação</td>
+                <td class="text-start">Se o banco cair durante a matrícula, o sistema volta em até 5 min sem perder matrícula confirmada.</td>
+                <td class="fw-bold text-center">(A, A)</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Segurança</td>
+                <td>Confidencialidade</td>
+                <td class="text-start">Um aluno autenticado que altere o ID na URL não consegue ver a matrícula de outro aluno.</td>
+                <td class="fw-bold text-center">(A, M)</td>
+              </tr>
+              <tr>
+                <td class="fw-bold">Manutenibilidade</td>
+                <td>Modularidade</td>
+                <td class="text-start">Trocar o gateway de pagamento afeta no máximo 1 módulo e leva menos de 5 dias.</td>
+                <td class="fw-bold text-center">(M, A)</td>
+              </tr>
+              <tr class="text-muted">
+                <td class="fw-bold">Interação</td>
+                <td>Aprendizado</td>
+                <td class="text-start">Um aluno novo conclui a matrícula sem ajuda em menos de 10 minutos.</td>
+                <td class="fw-bold text-center">(M, B)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p class="small text-muted mb-0">
+          <strong>(I, D)</strong> = <strong>I</strong>mportância para o negócio &middot; <strong>D</strong>ificuldade de alcançar. A/M/B.
+          Comece pelos <strong class="text-danger">(A, A)</strong> — é onde mora o risco.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 8: Priorização -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Por que priorizar assim</h2>
+        <p class="lead text-muted mb-4">Você não tem tempo de testar tudo com a mesma profundidade. Nunca terá.</p>
+
+        <div class="row g-3 justify-content-center">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-danger text-white rounded-4">
+              <div class="fs-2 fw-bold">(A, A)</div>
+              <h6 class="fw-bold">Importante e difícil</h6>
+              <small class="text-white-50">Onde o projeto morre. Teste primeiro, teste mais fundo, prototipe se preciso.</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-warning rounded-4">
+              <div class="fs-2 fw-bold">(A, B)</div>
+              <h6 class="fw-bold">Importante e fácil</h6>
+              <small class="text-dark-emphasis">Garanta com teste automatizado e siga em frente. Barato de proteger.</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-light rounded-4">
+              <div class="fs-2 fw-bold">(B, A)</div>
+              <h6 class="fw-bold">Pouco importante e difícil</h6>
+              <small class="text-muted">Candidato a <strong>não fazer</strong>. Questione o requisito antes de gastar.</small>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-light rounded-4">
+              <div class="fs-2 fw-bold">(B, B)</div>
+              <h6 class="fw-bold">Pouco importante e fácil</h6>
+              <small class="text-muted">Faça quando sobrar tempo. Não estruture o projeto em volta disso.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark mt-4 d-inline-block border-0 shadow-sm">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          Priorizar é assumir publicamente <strong>o que você não vai testar a fundo</strong> — e por quê.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Cenário em 6 partes -->
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <span class="badge bg-info text-dark fs-5 mb-3 px-4 py-2 rounded-pill">Instrumento 2</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Cenário de atributo de qualidade</h2>
+        <p class="lead text-muted mb-4">Seis partes. Se faltar uma, o cenário não é testável.</p>
+
+        <div class="row g-2 justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start">
+              <span class="badge bg-secondary mb-2 align-self-start">1</span>
+              <h5 class="fw-bold mb-1">Fonte do estímulo</h5>
+              <small class="text-muted">Quem ou o que provoca? Usuário, outro sistema, falha de hardware.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start">
+              <span class="badge bg-secondary mb-2 align-self-start">2</span>
+              <h5 class="fw-bold mb-1">Estímulo</h5>
+              <small class="text-muted">O que exatamente chega ao sistema? Uma requisição, um pico, uma queda.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start">
+              <span class="badge bg-secondary mb-2 align-self-start">3</span>
+              <h5 class="fw-bold mb-1">Ambiente</h5>
+              <small class="text-muted">Em que condição? Operação normal, pico, modo degradado.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start">
+              <span class="badge bg-secondary mb-2 align-self-start">4</span>
+              <h5 class="fw-bold mb-1">Artefato</h5>
+              <small class="text-muted">Que parte do sistema é atingida? A API, o banco, a tela.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start border-top border-4 border-danger">
+              <span class="badge bg-danger mb-2 align-self-start">5</span>
+              <h5 class="fw-bold mb-1">Resposta</h5>
+              <small class="text-muted">O que o sistema deve fazer? Processar, rejeitar, registrar, recuperar.</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 text-start border-top border-4 border-danger">
+              <span class="badge bg-danger mb-2 align-self-start">6</span>
+              <h5 class="fw-bold mb-1">Medida da resposta</h5>
+              <small class="text-muted"><strong>O número.</strong> Em quanto tempo, com que taxa, dentro de que limite.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-danger mt-3 mb-0 py-2 d-inline-block border-0 shadow-sm">
+          A parte <strong>6</strong> é a que separa um requisito de um teste. Sem número, não há passa/não passa.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: De vago a cenário -->
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">De vago para testável</h2>
+
+        <div class="row g-4 justify-content-center align-items-stretch">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4">
+              <h5 class="fw-bold text-danger-emphasis mb-3"><i class="fas fa-times-circle me-2"></i>Antes</h5>
+              <p class="fs-4 fst-italic text-dark mb-3">"O sistema de matrícula tem que ser rápido."</p>
+              <hr>
+              <ul class="small text-muted text-start mb-0">
+                <li>Rápido quando? Sempre? No pico?</li>
+                <li>Rápido para quem?</li>
+                <li>Quanto é rápido?</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-center justify-content-center">
+            <i class="fas fa-arrow-right fa-2x text-muted"></i>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 border-start border-4 border-success text-start">
+              <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-circle me-2"></i>Depois</h5>
+              <table class="table table-sm mb-0">
+                <tbody class="small">
+                  <tr><td class="fw-bold text-secondary" style="width:38%">Fonte</td><td>2.000 alunos simultâneos</td></tr>
+                  <tr><td class="fw-bold text-secondary">Estímulo</td><td>Confirmam matrícula ao mesmo tempo</td></tr>
+                  <tr><td class="fw-bold text-secondary">Ambiente</td><td>Primeiro dia do período, horário de pico</td></tr>
+                  <tr><td class="fw-bold text-secondary">Artefato</td><td>API de confirmação de matrícula</td></tr>
+                  <tr class="table-success"><td class="fw-bold">Resposta</td><td>Processa e confirma a matrícula</td></tr>
+                  <tr class="table-success"><td class="fw-bold">Medida</td><td><strong>95% em menos de 2 s; nenhuma acima de 5 s</strong></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted mt-3 mb-0"><i class="fas fa-circle-info me-1"></i> Agora dá para escrever um teste — e dá para <strong>discordar do número</strong> antes de construir.</p>
+      </div>
+    </div>
+
+    <!-- Slide 11: Os 4 resultados -->
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">O que o ATAM entrega</h2>
+        <p class="lead text-muted mb-4">Quatro achados — e os dois últimos são os mais valiosos.</p>
+
+        <div class="row g-3 justify-content-center">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger text-start">
+              <h5 class="fw-bold"><i class="fas fa-triangle-exclamation text-danger me-2"></i>Risco</h5>
+              <small class="text-muted">Decisão arquitetural que pode dar errado diante de um atributo de qualidade.</small>
+              <p class="small fst-italic text-secondary mt-2 mb-0">"Sessão só na memória de um nó: se o nó cair, o aluno perde a matrícula."</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-success text-start">
+              <h5 class="fw-bold"><i class="fas fa-check text-success me-2"></i>Não-risco</h5>
+              <small class="text-muted">Decisão que está adequada — <strong>desde que a premissa continue verdadeira</strong>.</small>
+              <p class="small fst-italic text-secondary mt-2 mb-0">"Cache de 5 min resolve, <em>se</em> o catálogo mudar só 1x por dia."</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-warning text-start">
+              <h5 class="fw-bold"><i class="fas fa-sliders text-warning me-2"></i>Ponto de sensibilidade</h5>
+              <small class="text-muted">Um parâmetro que, se mudar, <strong>move muito</strong> um atributo de qualidade.</small>
+              <p class="small fst-italic text-secondary mt-2 mb-0">"O tamanho do pool de conexões dita o tempo de resposta no pico."</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-primary text-start">
+              <h5 class="fw-bold"><i class="fas fa-balance-scale text-primary me-2"></i>Ponto de tradeoff</h5>
+              <small class="text-muted">Sensível a <strong>dois ou mais</strong> atributos ao mesmo tempo: melhorar um piora o outro.</small>
+              <p class="small fst-italic text-secondary mt-2 mb-0">É o achado mais importante do método.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-secondary mt-3 mb-0 py-2 d-inline-block border-0 shadow-sm">
+          Um <strong>não-risco</strong> mal documentado vira risco silencioso: a premissa muda e ninguém percebe.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Exemplo de tradeoff -->
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-5 mb-3 px-4 py-2 rounded-pill">Ponto de tradeoff</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Não existe almoço grátis</h2>
+
+        <div class="row justify-content-center align-items-center g-3">
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 bg-success text-white rounded-4">
+              <i class="fas fa-shield-alt fa-2x mb-2"></i>
+              <h4 class="fw-bold mb-1">Segurança</h4>
+              <p class="small mb-0">Criptografar tudo, validar token a cada chamada, auditar cada acesso.</p>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="d-flex flex-column align-items-center">
+              <i class="fas fa-arrows-left-right fa-2x text-danger mb-2"></i>
+              <span class="badge bg-danger px-3 py-2">conflito</span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card border-0 shadow-sm p-4 bg-primary text-white rounded-4">
+              <i class="fas fa-tachometer-alt fa-2x mb-2"></i>
+              <h4 class="fw-bold mb-1">Performance</h4>
+              <p class="small mb-0">Cachear agressivamente, minimizar validações, responder em menos de 2 s.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center mt-4">
+          <div class="col-md-9">
+            <div class="alert alert-light border shadow-sm text-start mb-0">
+              <p class="mb-2"><strong>O parâmetro sensível aos dois:</strong> por quanto tempo o token de sessão fica válido em cache.</p>
+              <ul class="small text-muted mb-0">
+                <li class="mb-1">Cache <strong>longo</strong> &rarr; rápido, mas um acesso revogado continua funcionando por mais tempo.</li>
+                <li class="mb-0">Cache <strong>curto</strong> &rarr; seguro, mas cada chamada bate no serviço de autenticação.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted mt-3 mb-0">
+          <i class="fas fa-lightbulb text-warning me-1"></i>
+          O ATAM não resolve o tradeoff. Ele obriga a <strong>decidir conscientemente</strong> — e a registrar a decisão.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 13: A ponte -->
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-5 mb-2 px-4 py-2 rounded-pill">O coração da aula</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Do cenário ao caso de teste</h2>
+        <p class="lead text-muted mb-3">Cada parte do cenário já é uma parte do caso de teste. É tradução direta.</p>
+
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle bg-white mb-2">
+            <thead class="table-dark">
+              <tr>
+                <th style="width:32%">Cenário de qualidade (ATAM)</th>
+                <th style="width:6%"></th>
+                <th style="width:30%">Caso de teste</th>
+                <th>O que você escreve</th>
+              </tr>
+            </thead>
+            <tbody class="small">
+              <tr>
+                <td class="fw-bold text-start">Ambiente + Artefato</td>
+                <td class="text-center"><i class="fas fa-arrow-right text-muted"></i></td>
+                <td class="fw-bold text-start text-primary">Pré-condições</td>
+                <td class="text-start text-muted">Ambiente de carga no ar, API publicada, 2.000 contas de teste criadas</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">Fonte + Estímulo</td>
+                <td class="text-center"><i class="fas fa-arrow-right text-muted"></i></td>
+                <td class="fw-bold text-start text-primary">Passos e dados de entrada</td>
+                <td class="text-start text-muted">Disparar 2.000 confirmações simultâneas com JMeter (semana 42)</td>
+              </tr>
+              <tr class="table-success">
+                <td class="fw-bold text-start">Resposta + Medida</td>
+                <td class="text-center"><i class="fas fa-arrow-right text-dark"></i></td>
+                <td class="fw-bold text-start">Resultado esperado</td>
+                <td class="text-start"><strong>p95 &lt; 2 s, máximo &lt; 5 s, 0 matrículas perdidas</strong></td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">Prioridade (I, D)</td>
+                <td class="text-center"><i class="fas fa-arrow-right text-muted"></i></td>
+                <td class="fw-bold text-start text-primary">Prioridade do teste</td>
+                <td class="text-start text-muted">(A, A) &rarr; teste crítico, roda em todo pipeline</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="alert alert-success border-0 shadow-sm py-2 mb-0 d-inline-block">
+          <i class="fas fa-check-circle me-2"></i>
+          Quem faz a utility tree direito <strong>já escreveu metade do plano de teste</strong> sem perceber.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Anatomia do caso de teste -->
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Anatomia de um caso de teste</h2>
+        <p class="lead text-muted mb-4">Um caso de teste que outra pessoa não consegue executar sozinha está incompleto.</p>
+
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold mb-2"><i class="fas fa-clipboard-list text-primary me-2"></i>Campos obrigatórios</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1"><strong>ID</strong> — identificador estável, usado na rastreabilidade</li>
+                <li class="mb-1"><strong>Título</strong> — o que está sendo verificado, em uma linha</li>
+                <li class="mb-1"><strong>Pré-condições</strong> — o estado exigido antes de começar</li>
+                <li class="mb-1"><strong>Dados de entrada</strong> — valores concretos, não "um CPF válido"</li>
+                <li class="mb-1"><strong>Passos</strong> — numerados e reproduzíveis</li>
+                <li class="mb-1"><strong>Resultado esperado</strong> — objetivo e mensurável</li>
+                <li class="mb-0"><strong>Rastreabilidade</strong> — o requisito ou cenário de origem</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-light rounded-4">
+              <h5 class="fw-bold mb-2"><i class="fas fa-triangle-exclamation text-danger me-2"></i>Erros clássicos</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-2"><strong>Resultado subjetivo</strong> — "a tela deve carregar rápido" não é resultado esperado.</li>
+                <li class="mb-2"><strong>Depender de outro teste</strong> — se o teste 7 só passa depois do 6, você tem um teste só, mais frágil.</li>
+                <li class="mb-2"><strong>Dado vago</strong> — "um usuário qualquer" não é reproduzível.</li>
+                <li class="mb-2"><strong>Verificar cinco coisas</strong> — quando falha, você não sabe qual delas quebrou.</li>
+                <li class="mb-0"><strong>Sem rastreabilidade</strong> — ninguém sabe se ainda faz sentido quando o requisito muda.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Rastreabilidade -->
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <span class="badge bg-warning text-dark fs-5 mb-3 px-4 py-2 rounded-pill">Matriz de rastreabilidade</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Ligar cada teste à sua origem</h2>
+        <p class="lead text-muted mb-4">Quando o requisito mudar — e ele vai mudar — você precisa saber o que revisar.</p>
+
+        <div class="row justify-content-center">
+          <div class="col-md-10">
+            <div class="table-responsive">
+              <table class="table table-bordered align-middle bg-white mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Cenário</th>
+                    <th>Atributo</th>
+                    <th>(I, D)</th>
+                    <th>Casos de teste</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody class="small">
+                  <tr>
+                    <td class="fw-bold">CEN-01 pico de matrícula</td>
+                    <td>Performance</td>
+                    <td class="text-danger fw-bold">(A, A)</td>
+                    <td>CT-014, CT-015, CT-016</td>
+                    <td><span class="badge bg-success">coberto</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">CEN-02 queda do banco</td>
+                    <td>Confiabilidade</td>
+                    <td class="text-danger fw-bold">(A, A)</td>
+                    <td>CT-021</td>
+                    <td><span class="badge bg-warning text-dark">parcial</span></td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">CEN-03 acesso a matrícula alheia</td>
+                    <td>Segurança</td>
+                    <td class="fw-bold">(A, M)</td>
+                    <td>CT-030, CT-031</td>
+                    <td><span class="badge bg-success">coberto</span></td>
+                  </tr>
+                  <tr class="table-danger">
+                    <td class="fw-bold">CEN-04 trocar gateway</td>
+                    <td>Manutenibilidade</td>
+                    <td class="fw-bold">(M, A)</td>
+                    <td>&mdash;</td>
+                    <td><span class="badge bg-danger">sem cobertura</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-muted mt-3 mb-0">
+          <i class="fas fa-lightbulb text-warning me-1"></i>
+          A linha vermelha é o valor da matriz: ela <strong>mostra o buraco</strong> antes que ele vire incidente.
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide 16: Plano de teste -->
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <span class="badge bg-secondary text-white fs-5 mb-3 px-4 py-2 rounded-pill">ISO/IEC/IEEE 29119-3</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">O plano de teste</h2>
+        <p class="lead text-muted mb-4">O documento que responde: o que testar, até onde, com que critério parar.</p>
+
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-primary mb-2">Escopo</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">Itens <strong>a testar</strong></li>
+                <li class="mb-1">Itens <strong>a não testar</strong> — e o porquê</li>
+                <li class="mb-0">Níveis: unidade, integração, sistema</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-success mb-2">Critérios</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">De <strong>entrada</strong>: quando começar a testar</li>
+                <li class="mb-1">De <strong>saída</strong>: quando parar</li>
+                <li class="mb-0">De <strong>suspensão</strong>: quando abortar e devolver</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-danger mb-2">Riscos e recursos</h5>
+              <ul class="small text-muted mb-0 ps-3">
+                <li class="mb-1">Riscos do produto e do projeto</li>
+                <li class="mb-1">Ambiente, dados e ferramentas</li>
+                <li class="mb-0">Responsáveis e cronograma</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-light border shadow-sm mt-3 mb-0 d-inline-block text-start">
+          <i class="fas fa-circle-info text-primary me-2"></i>
+          O campo <strong>"itens a não testar"</strong> é o mais adulto do documento: ele transforma uma omissão silenciosa
+          em uma <strong>decisão assinada</strong>. A norma 29119 substituiu a clássica IEEE 829.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Atividade prática -->
+    <div class="slide" id="slide-17">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-3 mb-3 px-5 py-3 rounded-pill">Atividade Prática #2</span>
+        <h1 class="display-5 fw-bold mb-3 text-dark">Da árvore ao caso de teste</h1>
+        <p class="lead text-muted mb-4">Em dupla, sobre o projeto da disciplina.</p>
+
+        <div class="row g-3 text-start justify-content-center">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-primary mb-2"><i class="fas fa-bullseye me-2"></i>Passos</h5>
+              <ol class="small text-muted mb-0 ps-3">
+                <li class="mb-1">Retomem os <strong>5 achados</strong> da atividade #1 e o atributo ISO de cada um.</li>
+                <li class="mb-1">Montem uma <strong>utility tree</strong> com pelo menos <strong>3 atributos</strong> e <strong>6 cenários</strong> folha.</li>
+                <li class="mb-1">Classifiquem cada cenário com <strong>(I, D)</strong> e justifiquem a nota.</li>
+                <li class="mb-1">Escrevam os <strong>3 cenários (A, A)</strong> nas 6 partes completas.</li>
+                <li class="mb-0">Traduzam cada um deles em <strong>pelo menos 1 caso de teste</strong> com todos os campos.</li>
+              </ol>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 bg-dark text-white p-3 rounded-4">
+              <h5 class="fw-bold mb-2"><i class="fas fa-triangle-exclamation text-warning me-2"></i>Aponte pelo menos um</h5>
+              <p class="small text-white-50 mb-2">Além da árvore, o grupo precisa identificar e justificar:</p>
+              <ul class="small mb-0 ps-3">
+                <li class="mb-2"><span class="badge bg-warning text-dark me-1">1</span> <strong>ponto de sensibilidade</strong> — qual parâmetro move mais um atributo</li>
+                <li class="mb-2"><span class="badge bg-primary me-1">1</span> <strong>ponto de tradeoff</strong> — onde melhorar um atributo piora outro</li>
+                <li class="mb-0"><span class="badge bg-success me-1">1</span> <strong>não-risco</strong> — com a premissa que precisa continuar verdadeira</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 18: Entregável -->
+    <div class="slide" id="slide-18">
+      <div class="text-center slide-content">
+        <span class="badge bg-warning text-dark fs-5 mb-3 px-4 py-2 rounded-pill">Mão na Massa</span>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Entregável e critérios</h2>
+
+        <div class="row g-4 text-start justify-content-center">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-file-lines text-primary me-2"></i>O que entregar</h4>
+              <ul class="text-muted mb-0">
+                <li class="mb-2">A <strong>utility tree</strong> em tabela: atributo, refinamento, cenário, (I, D).</li>
+                <li class="mb-2">Os <strong>3 cenários (A, A)</strong> detalhados nas 6 partes.</li>
+                <li class="mb-2">No mínimo <strong>3 casos de teste</strong> completos, com rastreabilidade ao cenário.</li>
+                <li class="mb-0">Um parágrafo para cada: sensibilidade, tradeoff e não-risco.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-clipboard-check text-success me-2"></i>Como será avaliado</h4>
+              <ul class="list-unstyled text-muted mb-0">
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Mensurabilidade</strong> — todo cenário tem número na medida da resposta?</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Coerência</strong> — a nota (I, D) se sustenta no argumento?</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Tradução</strong> — o caso de teste realmente verifica aquele cenário?</li>
+                <li class="mb-2"><i class="fas fa-check text-success me-2"></i><strong>Reprodutibilidade</strong> — outra dupla conseguiria executar?</li>
+                <li class="mb-0"><i class="fas fa-check text-success me-2"></i><strong>Tradeoff</strong> — o conflito apontado é real?</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-light border shadow-sm mt-3 mb-0 d-inline-block">
+          <i class="fas fa-lightbulb text-warning me-2"></i>
+          Um cenário sem número na medida da resposta <strong>não pontua</strong>. É a regra desta entrega.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Resumo -->
+    <div class="slide" id="slide-19">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">O que aprendemos hoje</h2>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4 text-start h-100">
+              <h4 class="fw-bold text-dark mb-3"><i class="fas fa-check-circle text-success me-2"></i>Conceitos</h4>
+              <ul class="list-unstyled fs-6 mb-0">
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>ATAM avalia arquitetura contra atributos de qualidade — e <strong>acha riscos</strong>, não certezas</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i><strong>Utility tree</strong>: atributo &rarr; refinamento &rarr; cenário, priorizado por (I, D)</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Cenário em <strong>6 partes</strong>; a medida da resposta é o que o torna testável</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-muted me-2 small"></i>Risco, não-risco, <strong>sensibilidade</strong> e <strong>tradeoff</strong></li>
+                <li class="mb-0"><i class="fas fa-chevron-right text-muted me-2 small"></i>Rastreabilidade mostra o que <strong>não</strong> está coberto</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card border-0 shadow-sm p-4 bg-dark text-white rounded-4 text-start h-100">
+              <h4 class="fw-bold mb-3"><i class="fas fa-arrow-right text-warning me-2"></i>Próximos passos</h4>
+              <ul class="list-unstyled fs-6 mb-0">
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Entregar a utility tree e os casos de teste da dupla</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Ler o material escrito desta aula</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Guardar os cenários (A, A): eles voltam na <strong>semana 42</strong>, no JMeter</li>
+                <li class="mb-0"><i class="fas fa-chevron-right text-white-50 me-2 small"></i><strong>Semana 34:</strong> Caixa Branca vs Caixa Preta — <em>como</em> derivar os casos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Encerramento -->
+    <div class="slide" id="slide-20">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+        <p class="lead text-dark mb-5">Se não dá para medir, não dá para testar.</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+          <a href="https://github.com/afonsolelis/qualidade_software" target="_blank" rel="noopener noreferrer"
+            class="btn btn-dark btn-lg rounded-pill px-5">
+            <i class="fab fa-github me-2"></i>Projeto no GitHub
+          </a>
+          <a href="material/material_planejamento-casos-teste.html" class="btn btn-danger btn-lg rounded-pill px-5">
+            <i class="fas fa-book me-2"></i>Material escrito
+          </a>
+          <a href="../home_qualidade_2026_2.html" class="btn btn-outline-dark btn-lg rounded-pill px-5">Voltar para Aulas</a>
+        </div>
       </div>
     </div>
 
@@ -60,11 +911,11 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 20</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Planejamento e Casos de Teste (Semana 33)</div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - ATAM e Planejamento de Casos de Teste (Semana 33)</div>
     <a href="material/material_planejamento-casos-teste.html" class="btn btn-outline-primary btn-sm rounded-pill">
       <i class="fas fa-book me-1"></i> Ver material escrito
     </a>

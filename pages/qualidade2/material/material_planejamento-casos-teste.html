@@ -5,7 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planejamento e Casos de Teste - Material</title>
+  <title>ATAM e Planejamento de Casos de Teste - Material</title>
+  <meta name="keywords" content="ATAM, utility tree, cenário de atributo de qualidade, ponto de tradeoff, caso de teste, plano de teste, rastreabilidade, ISO 29119">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../../css/style.css">
@@ -34,22 +35,455 @@
       <div class="d-flex align-items-center justify-content-between">
         <div>
           <span class="badge bg-white text-danger mb-1">Semana 33 &middot; 2026.2</span>
-          <h1 class="h3 fw-bold text-white mb-0">Planejamento e Casos de Teste</h1>
+          <h1 class="h3 fw-bold text-white mb-0">Do atributo de qualidade ao caso de teste</h1>
         </div>
+        <p class="text-white-50 mb-0 small d-none d-md-block">Aula 02 &middot; Material escrito</p>
       </div>
     </div>
   </header>
 
   <div class="container py-5">
     <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-danger mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">O material escrito de <strong>Planejamento e Casos de Teste</strong> será publicado em breve. Esta é uma página placeholder.</p>
-          <a href="../slide_planejamento-casos-teste.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
-          <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
+      <div class="col-lg-9 mx-auto">
+
+        <!-- Objetivos -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivos de aprendizagem</h2>
+          <p class="text-secondary">Ao final desta aula você deve ser capaz de:</p>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2">Explicar o que é o <strong>ATAM</strong>, para que serve e qual é o seu produto real.</li>
+            <li class="mb-2">Construir uma <strong>utility tree</strong> a partir dos atributos da ISO/IEC 25010.</li>
+            <li class="mb-2">Escrever um <strong>cenário de atributo de qualidade</strong> nas seis partes, com medida de resposta.</li>
+            <li class="mb-2">Distinguir risco, não-risco, <strong>ponto de sensibilidade</strong> e <strong>ponto de tradeoff</strong>.</li>
+            <li class="mb-2">Traduzir um cenário em <strong>casos de teste</strong> executáveis e rastreáveis.</li>
+            <li class="mb-0">Descrever o que um plano de teste precisa conter — inclusive o que <em>não</em> será testado.</li>
+          </ul>
         </div>
+
+        <!-- 1. O problema -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-triangle-exclamation text-danger me-2" aria-hidden="true"></i>1. O buraco entre o requisito e o teste</h2>
+          <p class="text-secondary">
+            Na aula passada você ganhou o vocabulário da ISO/IEC 25010: performance, confiabilidade, manutenibilidade,
+            segurança. Esse vocabulário resolve metade do problema — ele permite <em>nomear</em> o que está em jogo. Mas
+            ainda não permite testar.
+          </p>
+          <p class="text-secondary">
+            "O sistema tem que ser rápido" não tem critério de passa/não passa. Rápido para quem, em que condição, com
+            quantos usuários, e quanto é rápido? Duas pessoas podem concordar com a frase inteira e discordar
+            completamente sobre o que ela significa — e essa discordância só aparece no dia da entrega.
+          </p>
+          <p class="text-secondary mb-0">
+            Um teste, por definição, precisa de quatro coisas: uma <strong>condição inicial concreta</strong>, um
+            <strong>estímulo reproduzível</strong>, um <strong>resultado esperado mensurável</strong> e um critério
+            binário de aprovação. O que falta é um método para atravessar do primeiro mundo para o segundo. Esse método
+            é o ATAM.
+          </p>
+        </div>
+
+        <!-- 2. ATAM -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-sitemap text-danger me-2" aria-hidden="true"></i>2. O que é o ATAM</h2>
+          <p class="text-secondary">
+            <strong>ATAM</strong> significa <em>Architecture Tradeoff Analysis Method</em>. Foi criado no
+            <strong>SEI</strong> (Software Engineering Institute) da Carnegie Mellon por Rick Kazman, Mark Klein e Paul
+            Clements, e está consolidado no relatório técnico CMU/SEI-2000-TR-004. É um método para <strong>avaliar uma
+            arquitetura de software em relação aos seus atributos de qualidade</strong>, feito no papel, antes de o
+            sistema estar construído.
+          </p>
+          <div class="alert alert-light border">
+            <strong>Ponto que costuma ser mal entendido:</strong> o ATAM <em>não prova</em> que a arquitetura está
+            correta e não produz medições precisas. Ele é um método de <strong>identificação de riscos</strong>. O
+            resultado é uma lista do que pode dar errado e onde as decisões estão em conflito — não um selo de aprovação.
+          </div>
+
+          <h3 class="h6 fw-bold mt-4">As nove etapas</h3>
+          <p class="text-secondary">O método roda em duas rodadas. A primeira com o núcleo técnico e os tomadores de decisão:</p>
+          <ol class="text-secondary">
+            <li class="mb-1">Apresentar o método aos participantes.</li>
+            <li class="mb-1">Apresentar os <strong>direcionadores de negócio</strong> — o que o sistema precisa alcançar e por quê.</li>
+            <li class="mb-1">Apresentar a arquitetura.</li>
+            <li class="mb-1">Identificar as abordagens arquiteturais adotadas.</li>
+            <li class="mb-1">Construir a <strong>utility tree</strong> de atributos de qualidade.</li>
+            <li class="mb-0">Analisar as abordagens à luz dos cenários prioritários.</li>
+          </ol>
+          <p class="text-secondary">A segunda rodada abre para um grupo maior de stakeholders:</p>
+          <ol class="text-secondary" start="7">
+            <li class="mb-1">Levantar e <strong>priorizar cenários</strong> coletivamente.</li>
+            <li class="mb-1">Reanalisar as abordagens à luz dos cenários novos.</li>
+            <li class="mb-0">Apresentar os resultados.</li>
+          </ol>
+          <p class="text-secondary mb-0">
+            A segunda fase não é burocracia. Ela existe porque o arquiteto, sozinho, não enxerga todos os cenários — quem
+            opera o sistema de madrugada, quem atende o suporte e quem responde pelo orçamento enxergam outros. Nesta
+            disciplina vamos usar uma versão enxuta do método: <strong>utility tree &rarr; cenários &rarr; casos de teste</strong>.
+          </p>
+        </div>
+
+        <!-- 3. Utility tree -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-network-wired text-danger me-2" aria-hidden="true"></i>3. Utility tree</h2>
+          <p class="text-secondary">
+            A árvore de utilidade decompõe a palavra "qualidade" até chegar em algo concreto o suficiente para medir. Ela
+            tem quatro níveis:
+          </p>
+          <ul class="text-secondary">
+            <li class="mb-2"><strong>Raiz</strong> — "Utilidade", a qualidade geral do sistema.</li>
+            <li class="mb-2"><strong>Atributos</strong> — exatamente as características da ISO/IEC 25010: performance, segurança, manutenibilidade…</li>
+            <li class="mb-2"><strong>Refinamentos</strong> — recortes de cada atributo: dentro de performance, "tempo de resposta" e "throughput" são coisas diferentes.</li>
+            <li class="mb-0"><strong>Folhas</strong> — os <strong>cenários</strong>. É aqui que a árvore vira algo testável.</li>
+          </ul>
+          <p class="text-secondary">
+            Cada folha recebe um par de notas <strong>(I, D)</strong> — <strong>I</strong>mportância para o negócio e
+            <strong>D</strong>ificuldade de alcançar — normalmente em escala Alta/Média/Baixa.
+          </p>
+
+          <h3 class="h6 fw-bold mt-4">Exemplo: sistema de matrícula online</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Atributo</th>
+                  <th scope="col">Refinamento</th>
+                  <th scope="col">Cenário (folha)</th>
+                  <th scope="col">(I, D)</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr>
+                  <th scope="row">Performance</th>
+                  <td>Tempo de resposta</td>
+                  <td>No pico da matrícula, com 2.000 alunos simultâneos, 95% das confirmações respondem em menos de 2 s.</td>
+                  <td class="fw-bold text-danger">(A, A)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Confiabilidade</th>
+                  <td>Recuperação</td>
+                  <td>Se o banco cair durante a matrícula, o sistema volta em até 5 min sem perder matrícula já confirmada.</td>
+                  <td class="fw-bold text-danger">(A, A)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Segurança</th>
+                  <td>Confidencialidade</td>
+                  <td>Um aluno autenticado que altere o ID na URL não consegue ver a matrícula de outro aluno.</td>
+                  <td class="fw-bold">(A, M)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Manutenibilidade</th>
+                  <td>Modularidade</td>
+                  <td>Trocar o gateway de pagamento afeta no máximo 1 módulo e leva menos de 5 dias.</td>
+                  <td class="fw-bold">(M, A)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Interação</th>
+                  <td>Aprendizado</td>
+                  <td>Um aluno novo conclui a matrícula sem ajuda em menos de 10 minutos.</td>
+                  <td class="fw-bold">(M, B)</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3 class="h6 fw-bold mt-4">Por que priorizar por (I, D)</h3>
+          <p class="text-secondary">
+            Você nunca vai ter tempo de testar tudo com a mesma profundidade. A combinação de notas diz onde investir:
+          </p>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2"><strong>(A, A)</strong> — importante e difícil. É onde o projeto morre. Teste primeiro, teste fundo, prototipe se necessário.</li>
+            <li class="mb-2"><strong>(A, B)</strong> — importante e fácil. Proteja com teste automatizado e siga em frente; é barato garantir.</li>
+            <li class="mb-2"><strong>(B, A)</strong> — pouco importante e difícil. Forte candidato a <em>não fazer</em>. Antes de gastar, questione o requisito.</li>
+            <li class="mb-0"><strong>(B, B)</strong> — pouco importante e fácil. Faça quando sobrar tempo; não estruture o projeto em volta disso.</li>
+          </ul>
+        </div>
+
+        <!-- 4. Cenário -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-list-ol text-danger me-2" aria-hidden="true"></i>4. O cenário de atributo de qualidade</h2>
+          <p class="text-secondary">
+            Um cenário bem formado tem <strong>seis partes</strong>. Se faltar uma, ele não é testável:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col" style="width:4%">#</th>
+                  <th scope="col" style="width:24%">Parte</th>
+                  <th scope="col">Pergunta que responde</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr><td>1</td><th scope="row">Fonte do estímulo</th><td>Quem ou o que provoca? Usuário, outro sistema, falha de hardware.</td></tr>
+                <tr><td>2</td><th scope="row">Estímulo</th><td>O que exatamente chega ao sistema? Uma requisição, um pico, uma queda.</td></tr>
+                <tr><td>3</td><th scope="row">Ambiente</th><td>Em que condição o sistema está? Operação normal, pico, modo degradado.</td></tr>
+                <tr><td>4</td><th scope="row">Artefato</th><td>Que parte é atingida? A API, o banco, a tela, o sistema todo.</td></tr>
+                <tr class="table-warning"><td>5</td><th scope="row">Resposta</th><td>O que o sistema deve fazer? Processar, rejeitar, registrar, recuperar.</td></tr>
+                <tr class="table-warning"><td>6</td><th scope="row">Medida da resposta</th><td><strong>O número.</strong> Em quanto tempo, com que taxa, dentro de que limite.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger border-0">
+            <strong><i class="fas fa-circle-info me-2" aria-hidden="true"></i>A parte 6 é a que muda tudo.</strong>
+            É a medida da resposta que separa um requisito de um teste. Sem número, não existe critério de passa/não passa
+            — existe opinião.
+          </div>
+
+          <h3 class="h6 fw-bold mt-4">De vago para testável</h3>
+          <p class="text-secondary">Partindo de <em>"o sistema de matrícula tem que ser rápido"</em>:</p>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle mb-0">
+              <tbody class="small">
+                <tr><th scope="row" style="width:26%">Fonte</th><td>2.000 alunos simultâneos</td></tr>
+                <tr><th scope="row">Estímulo</th><td>Confirmam matrícula ao mesmo tempo</td></tr>
+                <tr><th scope="row">Ambiente</th><td>Primeiro dia do período letivo, horário de pico</td></tr>
+                <tr><th scope="row">Artefato</th><td>API de confirmação de matrícula</td></tr>
+                <tr class="table-success"><th scope="row">Resposta</th><td>Processa e confirma a matrícula</td></tr>
+                <tr class="table-success"><th scope="row">Medida da resposta</th><td><strong>95% em menos de 2 s; nenhuma requisição acima de 5 s</strong></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary small mt-3 mb-0">
+            Repare no ganho colateral: agora dá para <strong>discordar do número</strong>. Alguém pode dizer "2 s é caro
+            demais, 4 s resolve" — e essa conversa acontece antes de a arquitetura estar pronta, quando mudar ainda é barato.
+          </p>
+        </div>
+
+        <!-- 5. Os quatro achados -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-balance-scale text-danger me-2" aria-hidden="true"></i>5. O que o ATAM produz</h2>
+          <p class="text-secondary">A análise gera quatro tipos de achado. Os dois últimos são os mais valiosos:</p>
+
+          <h3 class="h6 fw-bold mt-4">Risco</h3>
+          <p class="text-secondary small">
+            Decisão arquitetural que pode levar a consequências indesejadas diante de um atributo de qualidade.
+            <em>Exemplo: "a sessão fica só na memória de um nó — se aquele nó cair, o aluno perde a matrícula em andamento."</em>
+          </p>
+
+          <h3 class="h6 fw-bold">Não-risco</h3>
+          <p class="text-secondary small">
+            Decisão que está adequada — <strong>desde que uma premissa continue verdadeira</strong>.
+            <em>Exemplo: "um cache de 5 minutos resolve, desde que o catálogo de disciplinas mude no máximo uma vez por dia."</em>
+            Um não-risco cuja premissa não foi registrada é um risco silencioso esperando a premissa mudar.
+          </p>
+
+          <h3 class="h6 fw-bold">Ponto de sensibilidade</h3>
+          <p class="text-secondary small">
+            Uma propriedade ou parâmetro que, ao mudar, <strong>move significativamente</strong> um atributo de qualidade.
+            <em>Exemplo: "o tamanho do pool de conexões dita o tempo de resposta no pico."</em>
+          </p>
+
+          <h3 class="h6 fw-bold">Ponto de tradeoff</h3>
+          <p class="text-secondary small mb-3">
+            Uma propriedade que é ponto de sensibilidade para <strong>dois ou mais</strong> atributos ao mesmo tempo:
+            melhorar um necessariamente piora o outro. É o achado mais importante do método, e o que dá nome a ele.
+          </p>
+
+          <div class="alert alert-light border">
+            <strong>Exemplo de tradeoff — segurança vs. performance.</strong> O parâmetro sensível aos dois é por quanto
+            tempo o token de sessão fica válido em cache.
+            <ul class="small mb-0 mt-2">
+              <li>Cache <strong>longo</strong>: rápido, mas um acesso revogado continua funcionando por mais tempo.</li>
+              <li>Cache <strong>curto</strong>: seguro, mas cada chamada bate no serviço de autenticação.</li>
+            </ul>
+          </div>
+          <p class="text-secondary mb-0">
+            O ATAM <strong>não resolve</strong> o tradeoff — não existe resposta certa universal. O que ele faz é obrigar
+            a equipe a decidir conscientemente e a registrar a decisão, em vez de descobrir o conflito em produção.
+          </p>
+        </div>
+
+        <!-- 6. A ponte -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-arrow-right-arrow-left text-danger me-2" aria-hidden="true"></i>6. Do cenário ao caso de teste</h2>
+          <p class="text-secondary">
+            Este é o coração da aula. Cada parte do cenário de qualidade já é, diretamente, uma parte do caso de teste:
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Cenário (ATAM)</th>
+                  <th scope="col">Vira</th>
+                  <th scope="col">O que você escreve</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr>
+                  <th scope="row">Ambiente + Artefato</th>
+                  <td class="fw-bold text-primary">Pré-condições</td>
+                  <td>Ambiente de carga no ar, API publicada, 2.000 contas de teste criadas</td>
+                </tr>
+                <tr>
+                  <th scope="row">Fonte + Estímulo</th>
+                  <td class="fw-bold text-primary">Passos e dados de entrada</td>
+                  <td>Disparar 2.000 confirmações simultâneas com JMeter</td>
+                </tr>
+                <tr class="table-success">
+                  <th scope="row">Resposta + Medida</th>
+                  <td class="fw-bold">Resultado esperado</td>
+                  <td><strong>p95 &lt; 2 s, máximo &lt; 5 s, 0 matrículas perdidas</strong></td>
+                </tr>
+                <tr>
+                  <th scope="row">Prioridade (I, D)</th>
+                  <td class="fw-bold text-primary">Prioridade do teste</td>
+                  <td>(A, A) &rarr; teste crítico, roda em todo pipeline</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary mb-0">
+            Quem constrói a utility tree com cuidado já escreveu metade do plano de teste sem perceber. É por isso que
+            esta aula vem antes de todas as aulas de técnica de teste: sem os cenários, você automatiza rápido a
+            verificação da coisa errada.
+          </p>
+        </div>
+
+        <!-- 7. Caso de teste -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-clipboard-list text-danger me-2" aria-hidden="true"></i>7. Anatomia de um caso de teste</h2>
+          <p class="text-secondary">
+            O critério prático é simples: <strong>outra pessoa consegue executar seu caso de teste sem te perguntar
+            nada?</strong> Se não, ele está incompleto. Campos obrigatórios:
+          </p>
+          <ul class="text-secondary">
+            <li class="mb-2"><strong>ID</strong> — identificador estável, usado na matriz de rastreabilidade.</li>
+            <li class="mb-2"><strong>Título</strong> — o que está sendo verificado, em uma linha.</li>
+            <li class="mb-2"><strong>Pré-condições</strong> — o estado exigido antes de começar.</li>
+            <li class="mb-2"><strong>Dados de entrada</strong> — valores concretos. "Um CPF válido" não serve; "111.444.777-35" serve.</li>
+            <li class="mb-2"><strong>Passos</strong> — numerados e reproduzíveis.</li>
+            <li class="mb-2"><strong>Resultado esperado</strong> — objetivo e mensurável.</li>
+            <li class="mb-0"><strong>Rastreabilidade</strong> — o requisito ou cenário que deu origem a ele.</li>
+          </ul>
+
+          <h3 class="h6 fw-bold mt-4">Cinco erros clássicos</h3>
+          <ol class="text-secondary mb-0">
+            <li class="mb-2"><strong>Resultado subjetivo.</strong> "A tela deve carregar rápido" não é resultado esperado — é sensação.</li>
+            <li class="mb-2"><strong>Depender de outro teste.</strong> Se o teste 7 só passa depois do 6, você não tem dois testes: tem um só, mais frágil e mais difícil de diagnosticar.</li>
+            <li class="mb-2"><strong>Dado vago.</strong> "Um usuário qualquer" não é reproduzível; quando falhar, ninguém saberá recriar a situação.</li>
+            <li class="mb-2"><strong>Verificar cinco coisas de uma vez.</strong> Quando falhar, você não sabe qual delas quebrou.</li>
+            <li class="mb-0"><strong>Sem rastreabilidade.</strong> O requisito muda e ninguém sabe se aquele teste ainda faz sentido — então ele fica lá, testando o passado.</li>
+          </ol>
+        </div>
+
+        <!-- 8. Rastreabilidade e plano -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-table text-danger me-2" aria-hidden="true"></i>8. Rastreabilidade e plano de teste</h2>
+          <p class="text-secondary">
+            A <strong>matriz de rastreabilidade</strong> liga cada cenário aos casos de teste que o cobrem. Ela não existe
+            para burocracia: existe para responder, quando um requisito muda, <em>o que precisa ser revisado</em> — e para
+            mostrar os buracos.
+          </p>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Cenário</th>
+                  <th scope="col">Atributo</th>
+                  <th scope="col">(I, D)</th>
+                  <th scope="col">Casos de teste</th>
+                  <th scope="col">Status</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr><th scope="row">CEN-01 pico de matrícula</th><td>Performance</td><td class="fw-bold text-danger">(A, A)</td><td>CT-014, CT-015, CT-016</td><td><span class="badge bg-success">coberto</span></td></tr>
+                <tr><th scope="row">CEN-02 queda do banco</th><td>Confiabilidade</td><td class="fw-bold text-danger">(A, A)</td><td>CT-021</td><td><span class="badge bg-warning text-dark">parcial</span></td></tr>
+                <tr><th scope="row">CEN-03 acesso a matrícula alheia</th><td>Segurança</td><td class="fw-bold">(A, M)</td><td>CT-030, CT-031</td><td><span class="badge bg-success">coberto</span></td></tr>
+                <tr class="table-danger"><th scope="row">CEN-04 trocar gateway</th><td>Manutenibilidade</td><td class="fw-bold">(M, A)</td><td>&mdash;</td><td><span class="badge bg-danger">sem cobertura</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-secondary">
+            A linha vermelha é todo o valor da matriz: ela mostra o buraco <strong>antes</strong> que ele vire incidente.
+          </p>
+
+          <h3 class="h6 fw-bold mt-4">O plano de teste</h3>
+          <p class="text-secondary">
+            A norma vigente é a <strong>ISO/IEC/IEEE 29119-3</strong>, que substituiu a clássica IEEE 829. Um plano de
+            teste responde:
+          </p>
+          <ul class="text-secondary">
+            <li class="mb-2"><strong>Escopo</strong> — itens a testar, itens <em>a não testar</em>, e os níveis envolvidos (unidade, integração, sistema).</li>
+            <li class="mb-2"><strong>Critérios</strong> — de entrada (quando começar), de saída (quando parar) e de suspensão (quando abortar e devolver).</li>
+            <li class="mb-0"><strong>Riscos e recursos</strong> — riscos de produto e de projeto, ambiente, dados, ferramentas, responsáveis e prazos.</li>
+          </ul>
+          <div class="alert alert-light border mb-0">
+            <i class="fas fa-lightbulb text-warning me-2" aria-hidden="true"></i>
+            O campo <strong>"itens a não testar"</strong> é o mais adulto do documento. Toda equipe deixa coisas de fora;
+            a diferença entre uma equipe profissional e uma amadora é que a primeira transforma essa omissão em uma
+            <strong>decisão registrada e assinada</strong>.
+          </div>
+        </div>
+
+        <!-- 9. Atividade -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-tasks text-danger me-2" aria-hidden="true"></i>9. Atividade prática #2 — Da árvore ao caso de teste</h2>
+          <p class="text-secondary">Em dupla, sobre o projeto da disciplina.</p>
+          <h3 class="h6 fw-bold mt-4">Passos</h3>
+          <ol class="text-secondary">
+            <li class="mb-2">Retomem os <strong>5 achados</strong> da atividade #1 e a característica ISO de cada um.</li>
+            <li class="mb-2">Montem uma <strong>utility tree</strong> com pelo menos <strong>3 atributos</strong> e <strong>6 cenários</strong> folha.</li>
+            <li class="mb-2">Classifiquem cada cenário com <strong>(I, D)</strong> e justifiquem a nota em uma linha.</li>
+            <li class="mb-2">Escrevam os <strong>3 cenários (A, A)</strong> completos, nas 6 partes.</li>
+            <li class="mb-0">Traduzam cada um em <strong>pelo menos 1 caso de teste</strong> com todos os campos obrigatórios.</li>
+          </ol>
+          <p class="text-secondary">Além da árvore, o grupo precisa identificar e justificar:</p>
+          <ul class="text-secondary">
+            <li class="mb-2">Um <strong>ponto de sensibilidade</strong> — qual parâmetro move mais um atributo.</li>
+            <li class="mb-2">Um <strong>ponto de tradeoff</strong> — onde melhorar um atributo piora outro.</li>
+            <li class="mb-0">Um <strong>não-risco</strong> — com a premissa que precisa continuar verdadeira.</li>
+          </ul>
+
+          <h3 class="h6 fw-bold mt-4">Critérios de avaliação</h3>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2"><strong>Mensurabilidade</strong> — todo cenário tem número na medida da resposta?</li>
+            <li class="mb-2"><strong>Coerência</strong> — a nota (I, D) se sustenta no argumento apresentado?</li>
+            <li class="mb-2"><strong>Tradução</strong> — o caso de teste realmente verifica aquele cenário?</li>
+            <li class="mb-2"><strong>Reprodutibilidade</strong> — outra dupla conseguiria executar sem perguntar nada?</li>
+            <li class="mb-0"><strong>Tradeoff</strong> — o conflito apontado é real, ou são dois atributos independentes?</li>
+          </ul>
+          <div class="alert alert-danger border-0 mt-4 mb-0">
+            <strong>Regra desta entrega:</strong> cenário sem número na medida da resposta não pontua.
+          </div>
+        </div>
+
+        <!-- 10. Exercícios -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-pen-to-square text-danger me-2" aria-hidden="true"></i>10. Exercícios de fixação</h2>
+          <ol class="text-secondary mb-0">
+            <li class="mb-3">Transforme cada frase em um cenário de 6 partes, inventando números defensáveis: (a) "o relatório não pode demorar"; (b) "o sistema precisa ser seguro"; (c) "tem que ser fácil trocar de banco de dados".</li>
+            <li class="mb-3">Explique a diferença entre <strong>ponto de sensibilidade</strong> e <strong>ponto de tradeoff</strong>, e dê um exemplo de cada em um sistema que você conhece.</li>
+            <li class="mb-3">Um colega afirma: "fizemos o ATAM e a arquitetura foi aprovada". O que há de errado nessa frase?</li>
+            <li class="mb-3">Um cenário recebeu nota <strong>(B, A)</strong>: pouco importante e muito difícil. Qual é a recomendação, e que pergunta você faria ao cliente antes de decidir?</li>
+            <li class="mb-3">Pegue um caso de teste qualquer do projeto da disciplina e aponte quais dos sete campos obrigatórios estão faltando.</li>
+            <li class="mb-0">Por que um <strong>não-risco</strong> mal documentado é mais perigoso que um risco conhecido? Responda em até cinco linhas.</li>
+          </ol>
+        </div>
+
+        <!-- 11. Leituras -->
+        <div class="glass-card p-4 p-md-5 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-book text-danger me-2" aria-hidden="true"></i>11. Para ir além</h2>
+          <ul class="text-secondary mb-0">
+            <li class="mb-2"><a href="https://insights.sei.cmu.edu/library/atam-method-for-architecture-evaluation/" target="_blank" rel="noopener noreferrer">ATAM: Method for Architecture Evaluation</a> — o relatório técnico CMU/SEI-2000-TR-004, fonte original do método.</li>
+            <li class="mb-2"><em>Software Architecture in Practice</em>, de Bass, Clements e Kazman — a referência sobre cenários de atributo de qualidade e táticas arquiteturais.</li>
+            <li class="mb-2">ISO/IEC/IEEE 29119 — a família de normas de teste de software que substituiu a IEEE 829.</li>
+            <li class="mb-0"><a href="https://github.com/afonsolelis/qualidade_software" target="_blank" rel="noopener noreferrer">Repositório da disciplina</a> — onde a atividade será aplicada.</li>
+          </ul>
+        </div>
+
+        <!-- Próxima aula -->
+        <div class="glass-card p-4 p-md-5">
+          <h2 class="h5 fw-bold mb-3"><i class="fas fa-arrow-right text-danger me-2" aria-hidden="true"></i>Próxima aula</h2>
+          <p class="text-secondary">
+            <strong>Semana 34 — Fundamentos: Caixa Branca vs Caixa Preta.</strong> Hoje decidimos <em>o que</em> testar e
+            com que prioridade. Na próxima aula entram as técnicas para decidir <em>quais casos</em> derivar — partição de
+            equivalência, valor limite e cobertura de código.
+          </p>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            <a class="btn btn-danger btn-sm rounded-pill" href="../slide_planejamento-casos-teste.html"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
+            <a class="btn btn-outline-primary btn-sm rounded-pill" href="material_introducao-qualidade.html"><i class="fas fa-backward me-1" aria-hidden="true"></i> Rever a Aula 01</a>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill" href="../../home_qualidade_2026_2.html"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar ao cronograma</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
