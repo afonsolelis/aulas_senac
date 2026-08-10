@@ -29,6 +29,8 @@ Cor associada a cursos (badge/hero/home):
 
 O hub raiz usa um tema **escuro** próprio (`body.semester-hub`, fundo radial), distinto das páginas de disciplina (claras). Cards `.semester-card` são links clicáveis com barra de destaque via `--sem-accent` (2025.2 `#4ECDC4`, 2026.1 `#FF512F`, 2026.2 `#833ab4`). As homes de semestre (`pages/home_<ano>_<sem>.html`) usam cards de disciplina clicáveis `a.subject-card` (sem botão). Registro em `config/semestres.json`.
 
+**QR de acesso rápido (`.hub-qr`)** — painel glass entre os cards e o footer do `index.html`, com o QR Code do GitHub Pages (`https://afonsolelis.github.io/aulas_senac/`). O QR é **SVG inline** (sem CDN, sem JS, funciona offline): versão 4, correção de erro Q, 33×33 módulos, quiet zone de 4 módulos embutida no `viewBox`. Módulos escuros (`#0a0f1f`) sobre fundo branco — nunca inverter, leitores falham. Para regerar (ex.: mudança de URL), use uma lib de QR (`segno`) e substitua só o `<path d="...">`; depois valide decodificando um screenshot do elemento `.hub-qr__code`.
+
 ## 2. Tipografia
 
 - **Fonte:** `Outfit` (Google Fonts, pesos 300/400/600/700).
