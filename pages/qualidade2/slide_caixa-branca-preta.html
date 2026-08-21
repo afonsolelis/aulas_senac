@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 34 - Qualidade: Fundamentos: Caixa Branca vs Caixa Preta</title>
-  <meta name="keywords" content="qualidade de software, caixa branca, caixa preta, técnicas de teste">
+  <title>Semana 34 - Qualidade: Caixa Branca vs Caixa Preta e o nascimento do Foot Fanatics</title>
+  <meta name="keywords" content="qualidade de software, caixa branca, caixa preta, caixa cinza, cobertura, foot fanatics, spring boot, aiox, personas">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -22,33 +22,801 @@
       <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
     </a>
 
+    <!-- Slide 1: Capa -->
     <div class="slide active" id="slide-1">
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 03: Fundamentos: Caixa Branca vs Caixa Preta</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 03: Caixa Branca vs Caixa Preta</h1>
+        <p class="fs-4 text-secondary mb-3">E o nascimento do <strong>Foot Fanatics</strong></p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
         <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 34 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Fundamentos: Caixa Branca vs Caixa Preta</span></div>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">caixa branca</span>
+          <span class="keyword">caixa preta</span>
+          <span class="keyword">caixa cinza</span>
+          <span class="keyword">cobertura de código</span>
+          <span class="keyword">Foot Fanatics</span>
+          <span class="keyword">Spring Boot</span>
+          <span class="keyword">personas</span>
+        </div>
       </div>
     </div>
 
+    <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Fundamentos: Caixa Branca vs Caixa Preta</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda de Hoje</h1>
+        <p class="lead text-muted text-center mb-4">Duas metades. A primeira te dá os olhos. A segunda te dá o software.</p>
+        <div class="row g-4">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <span class="badge bg-primary align-self-start mb-3 px-3 py-2 rounded-pill">Parte 1 &middot; Teoria</span>
+              <h4 class="fw-bold text-dark mb-3">Com que olhos você olha o software</h4>
+              <ul class="text-muted mb-0">
+                <li class="mb-2">A pergunta que separa tudo</li>
+                <li class="mb-2">Caixa preta: testar pelo contrato</li>
+                <li class="mb-2">Caixa branca: testar pelo caminho</li>
+                <li class="mb-2">Critérios de cobertura</li>
+                <li class="mb-2">Caixa cinza: o que a gente faz de verdade</li>
+                <li class="mb-0">A armadilha dos 100%</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <span class="badge bg-danger align-self-start mb-3 px-3 py-2 rounded-pill">Parte 2 &middot; Mão na massa</span>
+              <h4 class="fw-bold text-dark mb-3">Foot Fanatics: a infraestrutura</h4>
+              <ul class="text-muted mb-0">
+                <li class="mb-2">O case do semestre</li>
+                <li class="mb-2">Escopos iniciais</li>
+                <li class="mb-2">Instalar o AIOX</li>
+                <li class="mb-2">Instalar Java + Spring Boot</li>
+                <li class="mb-2">Documentação em esqueleto</li>
+                <li class="mb-0">Criar as personas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <!-- Slide 3: Onde paramos -->
     <div class="slide" id="slide-3">
-      <div class="text-center">
-        <i class="fas fa-person-digging fa-4x text-danger mb-4"></i>
-        <h1 class="display-5 fw-bold mb-3 text-dark">Slides em construção</h1>
-        <p class="fs-4 text-muted">O conteúdo desta aula será publicado em breve.</p>
-        <p class="fs-5 text-secondary"><strong>Fundamentos: Caixa Branca vs Caixa Preta</strong></p>
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Onde nós paramos</h2>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <span class="badge bg-secondary align-self-start mb-2">Semana 32</span>
+              <h5 class="fw-bold text-dark">O vocabulário</h5>
+              <p class="text-muted small mb-0">Atributos de qualidade, defeito, erro, falha. Aprendemos a <em>nomear</em>.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <span class="badge bg-secondary align-self-start mb-2">Semana 33</span>
+              <h5 class="fw-bold text-dark">O caso de teste</h5>
+              <p class="text-muted small mb-0">ATAM, utility tree, cenário de qualidade. Aprendemos a <em>especificar</em>.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4 border border-danger">
+              <span class="badge bg-danger align-self-start mb-2">Semana 34 &middot; hoje</span>
+              <h5 class="fw-bold text-dark">A técnica</h5>
+              <p class="text-muted small mb-0">Você já sabe <strong>o que</strong> testar. Falta saber <strong>de onde olhar</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2">
+          <i class="fas fa-lightbulb me-2"></i>
+          E hoje o caso de teste deixa de ser exercício: ele passa a ter um <strong>software com nome</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 4: A pergunta -->
+    <div class="slide" id="slide-4">
+      <div class="text-center slide-content">
+        <p class="lead text-muted mb-3">Toda técnica de teste nasce de uma única pergunta:</p>
+        <h1 class="display-3 fw-bold mb-4 text-dark">Você pode ver o código?</h1>
+        <div class="row g-4 justify-content-center">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-dark text-white rounded-4">
+              <i class="fas fa-eye-slash fa-3x mb-3 text-white-50"></i>
+              <h3 class="fw-bold mb-2">Não</h3>
+              <p class="mb-0 text-white-50">Você testa o <strong>contrato</strong>.<br>Caixa preta.</p>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white border rounded-4">
+              <i class="fas fa-eye fa-3x mb-3 text-primary"></i>
+              <h3 class="fw-bold mb-2 text-dark">Sim</h3>
+              <p class="mb-0 text-muted">Você testa o <strong>caminho</strong>.<br>Caixa branca.</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-secondary mt-4 mb-0">Não é sobre qual é melhor. É sobre <strong>qual defeito cada uma consegue enxergar</strong>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 5: Caixa Preta -->
+    <div class="slide" id="slide-5">
+      <div class="text-center slide-content">
+        <span class="badge bg-dark text-white fs-6 mb-2 px-4 py-2 rounded-pill">Caixa Preta &middot; black box</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Testar pelo contrato</h2>
+        <p class="lead text-muted mb-4">Você conhece a <strong>especificação</strong>. O código é opaco — e isso é proposital.</p>
+        <div class="row g-3 text-start justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-circle me-2"></i>Você tem</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">Entradas válidas e inválidas</li>
+                <li class="mb-2">Saídas esperadas</li>
+                <li class="mb-2">Requisitos e regras de negócio</li>
+                <li class="mb-0">O contrato da API</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-danger mb-3"><i class="fas fa-times-circle me-2"></i>Você não tem</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">O código-fonte</li>
+                <li class="mb-2">Os ramos do <code>if</code></li>
+                <li class="mb-2">A estrutura interna</li>
+                <li class="mb-0">Qualquer desculpa técnica</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-primary-subtle rounded-4">
+              <h5 class="fw-bold text-primary mb-3"><i class="fas fa-crosshairs me-2"></i>Pega bem</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">Requisito mal implementado</li>
+                <li class="mb-2">Regra de negócio errada</li>
+                <li class="mb-2">Validação ausente</li>
+                <li class="mb-0">Funcionalidade que <em>falta</em></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-secondary border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-user me-2"></i>
+          É o olhar de <strong>quem usa</strong> o sistema. Inclusive o olhar de quem ataca.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 6: Caixa Branca -->
+    <div class="slide" id="slide-6">
+      <div class="text-center slide-content">
+        <span class="badge bg-primary text-white fs-6 mb-2 px-4 py-2 rounded-pill">Caixa Branca &middot; white box</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Testar pelo caminho</h2>
+        <p class="lead text-muted mb-4">Você abre o código e pergunta: <strong>por quais linhas eu ainda não passei?</strong></p>
+        <div class="row g-3 text-start justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-circle me-2"></i>Você tem</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">O código-fonte</li>
+                <li class="mb-2">O fluxo de controle</li>
+                <li class="mb-2">Cada condição e ramo</li>
+                <li class="mb-0">Relatório de cobertura</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-danger mb-3"><i class="fas fa-times-circle me-2"></i>Você perde</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">A visão do usuário</li>
+                <li class="mb-2">O requisito que ninguém escreveu</li>
+                <li class="mb-2">A integração entre partes</li>
+                <li class="mb-0">O viés: você testa o que <em>escreveu</em></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-primary-subtle rounded-4">
+              <h5 class="fw-bold text-primary mb-3"><i class="fas fa-crosshairs me-2"></i>Pega bem</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">Ramo nunca executado</li>
+                <li class="mb-2">Código morto</li>
+                <li class="mb-2">Condição impossível</li>
+                <li class="mb-0">Erro de lógica fino</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-secondary border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-code me-2"></i>
+          É o olhar de <strong>quem escreve</strong> o sistema. Por isso é o olhar mais fácil de se enganar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 7: Comparativo -->
+    <div class="slide" id="slide-7">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Lado a lado</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle bg-white mb-3">
+            <thead class="table-dark">
+              <tr>
+                <th style="width:22%"></th>
+                <th style="width:39%">Caixa Preta</th>
+                <th style="width:39%">Caixa Branca</th>
+              </tr>
+            </thead>
+            <tbody class="small">
+              <tr>
+                <td class="fw-bold text-start">Base do teste</td>
+                <td class="text-start text-muted">Especificação, requisito, contrato</td>
+                <td class="text-start text-muted">Código-fonte, fluxo de controle</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">Quem costuma fazer</td>
+                <td class="text-start text-muted">QA, analista de teste, cliente</td>
+                <td class="text-start text-muted">A pessoa que desenvolve</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">Nível típico</td>
+                <td class="text-start text-muted">Sistema, aceitação, API</td>
+                <td class="text-start text-muted">Unidade, integração</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">Critério de parada</td>
+                <td class="text-start text-muted">Requisitos cobertos</td>
+                <td class="text-start text-muted">Cobertura de ramos atingida</td>
+              </tr>
+              <tr class="table-warning">
+                <td class="fw-bold text-start">Ponto cego</td>
+                <td class="text-start"><strong>Não sabe</strong> qual caminho não foi executado</td>
+                <td class="text-start"><strong>Não vê</strong> o requisito que ninguém implementou</td>
+              </tr>
+              <tr>
+                <td class="fw-bold text-start">No Foot Fanatics</td>
+                <td class="text-start text-muted"><code>POST /auth/login</code> devolve 401 com senha errada?</td>
+                <td class="text-start text-muted">O ramo "token expirado" do filtro chegou a rodar?</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm py-2 mb-0 d-inline-block">
+          <i class="fas fa-balance-scale me-2"></i>
+          Os pontos cegos são <strong>complementares</strong>. Por isso nenhuma equipe séria escolhe só uma.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 8: Cobertura -->
+    <div class="slide" id="slide-8">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-2 text-dark">Cobertura: três réguas diferentes</h2>
+        <p class="lead text-muted mb-3">O mesmo código, medido de três formas — com resultados bem diferentes.</p>
+
+        <div class="row justify-content-center mb-3">
+          <div class="col-md-9">
+            <div class="bg-dark text-white p-3 rounded-3 text-start">
+              <code class="text-info small">if (token != null &amp;&amp; !token.expirado()) { liberarAcesso(); }</code>
+            </div>
+          </div>
+        </div>
+
+        <div class="row g-3 text-start justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2">Comando <span class="text-muted small fw-normal">(linha)</span></h5>
+              <p class="text-muted small mb-2">Toda linha foi executada ao menos uma vez.</p>
+              <p class="small mb-0"><span class="badge bg-success">1 teste basta</span> Token válido &rarr; 100%.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2">Ramo <span class="text-muted small fw-normal">(decisão)</span></h5>
+              <p class="text-muted small mb-2">O <code>if</code> foi verdadeiro <em>e</em> falso.</p>
+              <p class="small mb-0"><span class="badge bg-warning text-dark">2 testes</span> Precisa do caso que <strong>não</strong> libera.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4 border border-danger">
+              <h5 class="fw-bold text-dark mb-2">Condição</h5>
+              <p class="text-muted small mb-2">Cada operando testado V e F isoladamente.</p>
+              <p class="small mb-0"><span class="badge bg-danger">3 testes</span> Token nulo <em>e</em> token expirado são bugs <strong>diferentes</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="alert alert-dark border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-exclamation-triangle me-2"></i>
+          Um relatório dizendo <strong>"100% de cobertura"</strong> sem dizer <strong>de quê</strong> não significa nada.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 9: Técnicas de caixa preta -->
+    <div class="slide" id="slide-9">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Caixa preta não é chutar entrada</h2>
+        <p class="lead text-muted mb-4">Existem técnicas com nome, e elas reduzem drasticamente o número de testes.</p>
+        <div class="row g-3 text-start justify-content-center">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-primary mb-2">Partição de equivalência</h5>
+              <p class="text-muted small mb-2">Entradas que o sistema trata do mesmo jeito formam uma classe. Teste <strong>uma</strong> por classe.</p>
+              <p class="small text-dark mb-0"><em>Plano de assinatura: free · premium · inválido.</em></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-primary mb-2">Valor limite</h5>
+              <p class="text-muted small mb-2">O defeito mora na fronteira. Teste no limite, logo antes e logo depois.</p>
+              <p class="small text-dark mb-0"><em>Sessão de 30 min: 29:59 · 30:00 · 30:01.</em></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-primary mb-2">Tabela de decisão</h5>
+              <p class="text-muted small mb-2">Quando várias condições se combinam, monte a tabela e cubra cada regra.</p>
+              <p class="small text-dark mb-0"><em>Logado? × Assinante? × Conteúdo pago? &rarr; libera ou 403.</em></p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-primary border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-compress-arrows-alt me-2"></i>
+          Bem aplicadas, transformam <strong>milhares</strong> de entradas possíveis em <strong>dezenas</strong> de testes que importam.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 10: Caixa cinza -->
+    <div class="slide" id="slide-10">
+      <div class="text-center slide-content">
+        <span class="badge bg-secondary text-white fs-6 mb-2 px-4 py-2 rounded-pill">Caixa Cinza &middot; grey box</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">O que a gente faz de verdade</h2>
+        <p class="lead text-muted mb-4">Teste de API é quase sempre caixa cinza: você chama pelo contrato, mas <strong>sabe o que tem atrás</strong>.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-10">
+            <div class="card border-0 shadow-sm p-4 bg-white rounded-4">
+              <p class="text-muted mb-3">No Foot Fanatics você vai fazer exatamente isto:</p>
+              <ul class="text-muted mb-0">
+                <li class="mb-2">Chamar <code>POST /auth/login</code> como um cliente qualquer — <strong>caixa preta</strong>.</li>
+                <li class="mb-2">Mas escolher os casos sabendo que existe um filtro de sessão com ramo de expiração — <strong>caixa branca</strong>.</li>
+                <li class="mb-2">E conferir no banco que a sessão foi mesmo invalidada — <strong>conhecimento interno</strong>.</li>
+                <li class="mb-0">O relatório de cobertura te diz o que <em>ainda</em> não foi tocado por nenhum desses testes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-secondary border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-layer-group me-2"></i>
+          Na prática você não escolhe uma caixa. Você escolhe <strong>o que quer enxergar</strong> naquele teste.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 11: A armadilha dos 100% -->
+    <div class="slide" id="slide-11">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">A armadilha dos 100%</h2>
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-9">
+            <div class="alert alert-danger border-0 shadow-sm py-3 mb-0">
+              <p class="fs-4 fw-bold mb-1">Cobertura mede o que foi <strong>executado</strong>.</p>
+              <p class="fs-5 mb-0">Não mede o que foi <strong>verificado</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-danger mb-2"><i class="fas fa-skull-crossbones me-2"></i>O teste sem asserção</h5>
+              <p class="text-muted small mb-0">Chama o método, não verifica nada, passa sempre. E soma 100% de cobertura naquela linha. É o defeito mais comum em projeto com meta de cobertura.</p>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
+              <h5 class="fw-bold text-danger mb-2"><i class="fas fa-ghost me-2"></i>O requisito ausente</h5>
+              <p class="text-muted small mb-0">Se ninguém implementou "bloquear conta após 5 tentativas", não existe linha para cobrir. Cobertura: 100%. Sistema: vulnerável.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-quote-left me-2"></i>
+          Cobertura é bom para achar o que <strong>falta testar</strong>. É péssimo como <strong>nota</strong>.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 12: Transição -->
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-4 mb-4 px-5 py-3 rounded-pill">Parte 2 &middot; Mão na massa</span>
+        <h1 class="display-4 fw-bold mb-3 text-dark">Chega de exemplo genérico.</h1>
+        <p class="fs-3 text-secondary mb-4">A partir de hoje, todo conceito desta disciplina tem <strong>um endereço</strong>.</p>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h2 class="display-5 fw-bold text-danger mb-0">Foot Fanatics</h2>
+      </div>
+    </div>
+
+    <!-- Slide 13: O case -->
+    <div class="slide" id="slide-13">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">O case do semestre</h2>
+        <p class="lead text-muted mb-4">Uma API de conteúdo esportivo — mesma espinha dorsal do <code>remo-api</code> — <strong>com assinatura</strong>.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <h5 class="fw-bold text-secondary mb-3"><i class="fas fa-database me-2"></i>O que herdamos do remo-api</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">API REST de conteúdo de futebol</li>
+                <li class="mb-2">Clubes, jogos, resultados</li>
+                <li class="mb-2">Leitura pública, dados estruturados</li>
+                <li class="mb-0">Java + Spring Boot</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4 border border-danger">
+              <h5 class="fw-bold text-danger mb-3"><i class="fas fa-id-card me-2"></i>O que é novo aqui</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2"><strong>Conta</strong> — cadastro, credencial, perfil</li>
+                <li class="mb-2"><strong>Assinatura</strong> — plano free e premium</li>
+                <li class="mb-2"><strong>Sessão</strong> — login, token, expiração, logout</li>
+                <li class="mb-0"><strong>Acesso</strong> — conteúdo que só assinante vê</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-route me-2"></i>
+          E nós vamos <strong>codificar isso em todas as etapas</strong> — da semana 34 até a entrega final.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 14: Por que assinatura -->
+    <div class="slide" id="slide-14">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Por que assinatura, e não só CRUD</h2>
+        <p class="lead text-muted mb-4">Porque conta, acesso e sessão são o terreno mais rico que existe para <strong>qualidade</strong>.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-primary mb-2"><i class="fas fa-clock me-2"></i>Tem tempo</h6>
+              <p class="text-muted small mb-0">Token expira. Assinatura vence. Valor limite deixa de ser exercício e vira bug real.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-primary mb-2"><i class="fas fa-shield-halved me-2"></i>Tem risco</h6>
+              <p class="text-muted small mb-0">Falha de autorização não é bug de conforto: é vazamento. Caixa preta agressiva importa.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-primary mb-2"><i class="fas fa-code-branch me-2"></i>Tem ramo</h6>
+              <p class="text-muted small mb-0">Logado × assinante × conteúdo pago gera combinação real. Cobertura de ramo fica visível.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-primary mb-2"><i class="fas fa-bolt me-2"></i>Tem estado</h6>
+              <p class="text-muted small mb-0">Sessão é estado compartilhado. Concorrência, carga e JMeter ganham sentido.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-link me-2"></i>
+          Cada tema das próximas semanas tem um <strong>alvo concreto</strong> dentro deste sistema.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 15: Escopos iniciais -->
+    <div class="slide" id="slide-15">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-2 text-dark">Escopos iniciais</h2>
+        <p class="lead text-muted mb-4">Quatro. Nem um a mais. Hoje só <strong>definimos</strong> — não implementamos.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><span class="badge bg-danger me-2">E1</span>Identidade &amp; Conta</h5>
+              <p class="text-muted small mb-0">Cadastro, credencial, perfil, recuperação. É a porta de entrada — e a primeira superfície de ataque.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><span class="badge bg-danger me-2">E2</span>Sessão &amp; Acesso</h5>
+              <p class="text-muted small mb-0">Login, emissão de token, expiração, renovação, logout. Quem é você <em>agora</em>.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><span class="badge bg-danger me-2">E3</span>Assinatura</h5>
+              <p class="text-muted small mb-0">Planos free e premium, vigência, upgrade e cancelamento. O que você <em>pode</em>.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h5 class="fw-bold text-dark mb-2"><span class="badge bg-danger me-2">E4</span>Conteúdo</h5>
+              <p class="text-muted small mb-0">Clubes, jogos e matérias. Parte pública, parte só para assinante. O núcleo herdado do remo-api.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-warning border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-ban me-2"></i>
+          <strong>Fora do escopo:</strong> pagamento real, app mobile, notificação push, painel administrativo.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 16: Roteiro de hoje -->
+    <div class="slide" id="slide-16">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">O roteiro das próximas duas horas</h2>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger">
+              <span class="badge bg-danger align-self-start mb-2">Passo 1</span>
+              <h6 class="fw-bold text-dark mb-1">Instalar o AIOX</h6>
+              <p class="text-muted small mb-0">O framework de personas que vai nos acompanhar o semestre inteiro.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger">
+              <span class="badge bg-danger align-self-start mb-2">Passo 2</span>
+              <h6 class="fw-bold text-dark mb-1">Java + Spring Boot</h6>
+              <p class="text-muted small mb-0">Esqueleto que sobe, responde e roda <code>./mvnw test</code>.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger">
+              <span class="badge bg-danger align-self-start mb-2">Passo 3</span>
+              <h6 class="fw-bold text-dark mb-1">Docs em esqueleto</h6>
+              <p class="text-muted small mb-0">Os arquivos existem, com seções e <code>TODO</code>. Vazios de propósito.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-success">
+              <span class="badge bg-success align-self-start mb-2">Passo 4</span>
+              <h6 class="fw-bold text-dark mb-1">Criar as personas</h6>
+              <p class="text-muted small mb-0">A <strong>única</strong> seção que sai preenchida hoje.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-hand me-2"></i>
+          Nenhuma regra de negócio hoje. Nenhum endpoint de verdade. <strong>Só o terreno.</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 17: Passo 1 - AIOX -->
+    <div class="slide" id="slide-17">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Passo 1</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Instalar o AIOX</h2>
+        <div class="row justify-content-center mb-3">
+          <div class="col-md-9">
+            <div class="bg-dark text-white p-3 rounded-3 position-relative text-start">
+              <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)" aria-label="Copiar comando">
+                <i class="fas fa-copy text-white-50"></i>
+              </button>
+              <code class="text-info small">mkdir foot-fanatics &amp;&amp; cd foot-fanatics &amp;&amp; git init</code>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-9">
+            <div class="bg-dark text-white p-3 rounded-3 position-relative text-start">
+              <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 border-0" onclick="copyToClipboard(this)" aria-label="Copiar comando">
+                <i class="fas fa-copy text-white-50"></i>
+              </button>
+              <code class="text-info small">npx aiox-core@latest install</code>
+            </div>
+          </div>
+        </div>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2">O que o instalador pergunta</h6>
+              <p class="text-muted small mb-0">Quais squads instalar. Para hoje, o squad de <strong>development</strong> já basta.</p>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2">O que aparece depois</h6>
+              <p class="text-muted small mb-0">A pasta <code>.aiox-core/</code> com os agentes: <code>pm</code>, <code>po</code>, <code>architect</code>, <code>dev</code>, <code>qa</code>, <code>devops</code>.</p>
+            </div>
+          </div>
+        </div>
+        <p class="text-secondary small mt-3 mb-0">Requisito: Node.js instalado. Confira com <code>node --version</code>.</p>
+      </div>
+    </div>
+
+    <!-- Slide 18: Passo 2 - Java + Spring Boot -->
+    <div class="slide" id="slide-18">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Passo 2</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Java + Spring Boot</h2>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2"><i class="fas fa-mug-hot me-2 text-danger"></i>Java 21 (LTS)</h6>
+              <div class="bg-dark text-white p-2 rounded-3 mb-2">
+                <code class="text-info" style="font-size:0.75rem">curl -s "https://get.sdkman.io" | bash</code>
+              </div>
+              <div class="bg-dark text-white p-2 rounded-3 mb-2">
+                <code class="text-info" style="font-size:0.75rem">sdk list java</code>
+              </div>
+              <div class="bg-dark text-white p-2 rounded-3 mb-2">
+                <code class="text-info" style="font-size:0.75rem">sdk install java 21.0.5-tem</code>
+              </div>
+              <p class="text-muted small mb-0">Use a versão 21 que aparecer no <code>sdk list</code> da sua máquina. Confira com <code>java -version</code>.</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2"><i class="fas fa-leaf me-2 text-success"></i>Projeto em start.spring.io</h6>
+              <ul class="text-muted small mb-2">
+                <li>Maven &middot; Java 21 &middot; Spring Boot 3.x estável</li>
+                <li>Group <code>br.senac</code> &middot; Artifact <code>foot-fanatics</code></li>
+              </ul>
+              <p class="fw-bold text-dark small mb-1">Dependências:</p>
+              <p class="text-muted small mb-2">Spring Web &middot; Spring Security &middot; Spring Data JPA &middot; Validation &middot; PostgreSQL Driver &middot; Testcontainers</p>
+              <div class="bg-dark text-white p-2 rounded-3">
+                <code class="text-info" style="font-size:0.75rem">./mvnw test &amp;&amp; ./mvnw spring-boot:run</code>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-check me-2"></i>
+          Critério do passo 2: a suíte roda verde <strong>com zero teste seu</strong>. Esse é o marco zero da cobertura.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 19: Passo 3 - Documentação esqueleto -->
+    <div class="slide" id="slide-19">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Passo 3</span>
+        <h2 class="display-5 fw-bold mb-2 text-dark">Documentação em esqueleto</h2>
+        <p class="lead text-muted mb-4">Criar o arquivo e as seções. <strong>Não</strong> preencher.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1"><code>docs/prd.md</code></h6>
+              <p class="text-muted small mb-0">Visão, problema, <strong>personas</strong>, escopos E1–E4, fora de escopo, métricas.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1"><code>docs/arquitetura.md</code></h6>
+              <p class="text-muted small mb-0">Stack, camadas, modelo de dados, decisões (ADR). Tudo <code>TODO</code> hoje.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1"><code>docs/plano-de-teste.md</code></h6>
+              <p class="text-muted small mb-0">Estratégia, níveis, critérios de entrada e saída, metas de cobertura.</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1"><code>README.md</code></h6>
+              <p class="text-muted small mb-0">Como subir, como rodar os testes. Este pode nascer preenchido.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-warning border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-pen-ruler me-2"></i>
+          Documento com seção vazia é <strong>honesto</strong>. Documento com seção inventada é dívida.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 20: Passo 4 - Personas -->
+    <div class="slide" id="slide-20">
+      <div class="text-center slide-content">
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Passo 4 &middot; o entregável de hoje</span>
+        <h2 class="display-5 fw-bold mb-2 text-dark">Criar as personas</h2>
+        <p class="lead text-muted mb-4">A única seção do PRD que sai desta aula <strong>preenchida</strong>.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-secondary">
+              <h5 class="fw-bold text-dark mb-1">Torcedor casual</h5>
+              <p class="badge bg-secondary mb-2">plano free</p>
+              <p class="text-muted small mb-0">Quer resultado e escalação rápido, no celular, sem criar conta se puder evitar. <strong>Testa:</strong> o limite entre público e pago.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger">
+              <h5 class="fw-bold text-dark mb-1">Torcedor assinante</h5>
+              <p class="badge bg-danger mb-2">plano premium</p>
+              <p class="text-muted small mb-0">Paga por análise, estatística e conteúdo exclusivo. Usa em vários dispositivos. <strong>Testa:</strong> sessão, renovação e vigência.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-primary">
+              <h5 class="fw-bold text-dark mb-1">Editor de conteúdo</h5>
+              <p class="badge bg-primary mb-2">operação</p>
+              <p class="text-muted small mb-0">Publica matérias e marca o que é exclusivo. <strong>Testa:</strong> autorização — o que acontece se ele acessar sem permissão.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-user-check me-2"></i>
+          Cada persona escrita com <strong>objetivo, contexto e frustração</strong>. Sem isso ela não gera caso de teste.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 21: Definition of Done -->
+    <div class="slide" id="slide-21">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Fim da aula: o que precisa existir</h2>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-success-subtle rounded-4 border border-success">
+              <h5 class="fw-bold text-success mb-3"><i class="fas fa-check-double me-2"></i>Pronto</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">Repositório <code>foot-fanatics</code> com commit inicial</li>
+                <li class="mb-2"><code>.aiox-core/</code> instalado</li>
+                <li class="mb-2"><code>./mvnw test</code> roda verde</li>
+                <li class="mb-2">Quatro documentos criados, com seções e <code>TODO</code></li>
+                <li class="mb-0">Três personas escritas no <code>prd.md</code></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4 border border-danger">
+              <h5 class="fw-bold text-danger mb-3"><i class="fas fa-ban me-2"></i>Não é para hoje</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">Nenhuma entidade JPA</li>
+                <li class="mb-2">Nenhum endpoint de negócio</li>
+                <li class="mb-2">Nenhuma regra de assinatura</li>
+                <li class="mb-2">Nenhum teste escrito por você</li>
+                <li class="mb-0">Nenhuma decisão de arquitetura fechada</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-seedling me-2"></i>
+          Hoje a gente prepara o terreno. Semana 35 os <strong>testes automatizados</strong> chegam — e já têm onde morar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Fechamento -->
+    <div class="slide" id="slide-22">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
+        <div class="row g-3 justify-content-center text-start mb-4">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1">Levou daqui</h6>
+              <p class="text-muted small mb-0">Caixa preta vê o requisito. Caixa branca vê o caminho. Cobertura mostra o que falta — nunca o que está certo.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-1">Construiu hoje</h6>
+              <p class="text-muted small mb-0">O terreno do Foot Fanatics: AIOX, Spring Boot rodando, docs em esqueleto e as personas.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4">
+              <h6 class="fw-bold text-dark mb-1">Semana 35</h6>
+              <p class="text-muted small mb-0">Introdução a testes automatizados — o primeiro teste do Foot Fanatics.</p>
+            </div>
+          </div>
+        </div>
+        <p class="fs-5 text-secondary mb-0">Material escrito com o passo a passo completo no rodapé desta apresentação.</p>
       </div>
     </div>
 
@@ -60,11 +828,11 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 22</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Fundamentos: Caixa Branca vs Caixa Preta (Semana 34)</div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Caixa Branca vs Caixa Preta e o nascimento do Foot Fanatics (Semana 34)</div>
     <a href="material/material_caixa-branca-preta.html" class="btn btn-outline-primary btn-sm rounded-pill">
       <i class="fas fa-book me-1"></i> Ver material escrito
     </a>
@@ -74,6 +842,17 @@
   </footer>
 
   <script src="../../js/standard_slides.js"></script>
+  <script>
+    function copyToClipboard(button) {
+      const codeBlock = button.nextElementSibling;
+      navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+        const icon = button.querySelector('i');
+        const originalClass = icon.className;
+        icon.className = 'fas fa-check text-success';
+        setTimeout(() => { icon.className = originalClass; }, 2000);
+      }).catch(err => console.error('Erro ao copiar: ', err));
+    }
+  </script>
 </body>
 
 </html>

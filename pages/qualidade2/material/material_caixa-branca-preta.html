@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fundamentos: Caixa Branca vs Caixa Preta - Material</title>
+  <title>Caixa Branca vs Caixa Preta e o nascimento do Foot Fanatics - Material</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../../css/style.css">
@@ -33,8 +33,8 @@
       </a>
       <div class="d-flex align-items-center justify-content-between">
         <div>
-          <span class="badge bg-white text-danger mb-1">Semana 34 &middot; 2026.2</span>
-          <h1 class="h3 fw-bold text-white mb-0">Fundamentos: Caixa Branca vs Caixa Preta</h1>
+          <span class="badge bg-white text-danger mb-1">Semana 34 &middot; 2026.2 &middot; Aula 03</span>
+          <h1 class="h3 fw-bold text-white mb-0">Caixa Branca vs Caixa Preta e o nascimento do Foot Fanatics</h1>
         </div>
       </div>
     </div>
@@ -42,14 +42,336 @@
 
   <div class="container py-5">
     <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-danger mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">O material escrito de <strong>Fundamentos: Caixa Branca vs Caixa Preta</strong> será publicado em breve. Esta é uma página placeholder.</p>
+      <div class="col-lg-9 mx-auto">
+
+        <!-- Resumo -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h4 fw-bold mb-3"><i class="fas fa-compass text-danger me-2" aria-hidden="true"></i>O que esta aula entrega</h2>
+          <p class="text-muted">Duas metades independentes e complementares. A primeira fecha o bloco de fundamentos de técnica de teste. A segunda dá início ao <strong>case que nos acompanha até a entrega final</strong>: o Foot Fanatics.</p>
+          <div class="row g-3 mt-2">
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-white h-100">
+                <span class="badge bg-primary mb-2">Parte 1</span>
+                <p class="mb-0 small text-muted">Caixa preta, caixa branca, caixa cinza, critérios de cobertura e as técnicas clássicas de projeto de teste.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border rounded-3 bg-white h-100">
+                <span class="badge bg-danger mb-2">Parte 2</span>
+                <p class="mb-0 small text-muted">Bootstrap da infraestrutura do Foot Fanatics: AIOX, Spring Boot, documentação em esqueleto e as personas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PARTE 1 -->
+        <div class="glass-card p-4 mb-4">
+          <span class="badge bg-primary mb-2">Parte 1 &middot; Teoria</span>
+          <h2 class="h4 fw-bold mb-3">Com que olhos você olha o software</h2>
+
+          <p class="text-muted">Toda técnica de teste responde a uma pergunta anterior: <strong>você pode ver o código?</strong> A resposta muda o que você consegue enxergar — e o que continua invisível.</p>
+
+          <h3 class="h5 fw-bold mt-4 mb-2">Caixa preta</h3>
+          <p class="text-muted mb-2">A base do teste é a <strong>especificação</strong>. Você conhece entradas, saídas e regras de negócio; o código é opaco por escolha. É o olhar de quem usa o sistema — e também de quem ataca.</p>
+          <ul class="text-muted">
+            <li>Acha bem: requisito mal implementado, regra de negócio errada, validação ausente, funcionalidade que simplesmente <em>falta</em>.</li>
+            <li>Não acha: o caminho de código que nunca foi executado por nenhum teste.</li>
+          </ul>
+
+          <h3 class="h5 fw-bold mt-4 mb-2">Caixa branca</h3>
+          <p class="text-muted mb-2">A base do teste é o <strong>código</strong>. Você olha o fluxo de controle e pergunta por quais ramos ainda não passou. É o olhar de quem escreve — e por isso o mais fácil de se enganar: você tende a testar o que implementou, não o que foi pedido.</p>
+          <ul class="text-muted">
+            <li>Acha bem: ramo nunca executado, código morto, condição impossível, erro fino de lógica.</li>
+            <li>Não acha: o requisito que ninguém escreveu — não existe linha para cobrir.</li>
+          </ul>
+
+          <h3 class="h5 fw-bold mt-4 mb-2">Caixa cinza</h3>
+          <p class="text-muted">É o que se pratica em teste de API: você chama pelo contrato, como um cliente externo, mas escolhe os casos sabendo o que existe atrás. É o modo em que o Foot Fanatics será testado na maior parte do semestre.</p>
+
+          <h3 class="h5 fw-bold mt-4 mb-3">Critérios de cobertura</h3>
+          <p class="text-muted mb-3">O mesmo trecho de código, medido por três réguas diferentes:</p>
+          <div class="bg-dark text-white p-3 rounded-3 mb-3">
+            <code class="text-info small">if (token != null &amp;&amp; !token.expirado()) { liberarAcesso(); }</code>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Critério</th>
+                  <th>Exige</th>
+                  <th>Testes mínimos</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr>
+                  <td class="fw-bold">Comando (linha)</td>
+                  <td class="text-muted">Cada linha executada ao menos uma vez</td>
+                  <td class="text-muted">1 &mdash; só o caminho feliz</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">Ramo (decisão)</td>
+                  <td class="text-muted">A decisão avaliada como verdadeira e como falsa</td>
+                  <td class="text-muted">2 &mdash; inclui o caso que nega acesso</td>
+                </tr>
+                <tr class="table-warning">
+                  <td class="fw-bold">Condição</td>
+                  <td>Cada operando avaliado V e F isoladamente</td>
+                  <td><strong>3</strong> &mdash; token nulo e token expirado são bugs distintos</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger border-0 mt-3">
+            <strong>Cobertura mede o que foi executado, não o que foi verificado.</strong> Um teste sem asserção soma cobertura e não protege nada. Use cobertura para descobrir o que <em>falta</em> testar — nunca como nota.
+          </div>
+
+          <h3 class="h5 fw-bold mt-4 mb-2">Técnicas de projeto de teste em caixa preta</h3>
+          <ul class="text-muted mb-0">
+            <li class="mb-2"><strong>Partição de equivalência</strong> — entradas tratadas do mesmo jeito formam uma classe; teste uma por classe. Ex.: plano <em>free</em>, <em>premium</em>, inválido.</li>
+            <li class="mb-2"><strong>Análise de valor limite</strong> — o defeito mora na fronteira; teste no limite, logo antes e logo depois. Ex.: sessão de 30 min em 29:59, 30:00 e 30:01.</li>
+            <li class="mb-0"><strong>Tabela de decisão</strong> — quando condições se combinam, monte a tabela e cubra cada regra. Ex.: <em>logado?</em> × <em>assinante?</em> × <em>conteúdo pago?</em>.</li>
+          </ul>
+        </div>
+
+        <!-- PARTE 2 -->
+        <div class="glass-card p-4 mb-4">
+          <span class="badge bg-danger mb-2">Parte 2 &middot; Mão na massa</span>
+          <h2 class="h4 fw-bold mb-3">Foot Fanatics: o case do semestre</h2>
+
+          <p class="text-muted">Uma API REST de conteúdo esportivo com a mesma espinha dorsal do <code>remo-api</code> — clubes, jogos, resultados, matérias — com uma diferença que muda tudo para a disciplina de qualidade: <strong>ela tem assinatura</strong>. Isso significa conta, controle de acesso e gestão de sessão.</p>
+
+          <div class="alert alert-secondary border-0">
+            <strong>Por que assinatura?</strong> Porque introduz <em>tempo</em> (token expira, plano vence), <em>risco</em> (falha de autorização é vazamento, não desconforto), <em>ramificação</em> (logado × assinante × conteúdo pago) e <em>estado compartilhado</em> (sessão sob concorrência). Cada tema das próximas semanas ganha um alvo concreto.
+          </div>
+
+          <h3 class="h5 fw-bold mt-4 mb-3">Escopos iniciais</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th style="width:12%">Escopo</th>
+                  <th style="width:28%">Nome</th>
+                  <th>Do que trata</th>
+                </tr>
+              </thead>
+              <tbody class="small">
+                <tr>
+                  <td class="fw-bold">E1</td>
+                  <td class="fw-bold">Identidade &amp; Conta</td>
+                  <td class="text-muted">Cadastro, credencial, perfil, recuperação de acesso.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">E2</td>
+                  <td class="fw-bold">Sessão &amp; Acesso</td>
+                  <td class="text-muted">Login, emissão de token, expiração, renovação, logout.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">E3</td>
+                  <td class="fw-bold">Assinatura</td>
+                  <td class="text-muted">Planos free e premium, vigência, upgrade, cancelamento.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">E4</td>
+                  <td class="fw-bold">Conteúdo</td>
+                  <td class="text-muted">Clubes, jogos e matérias; parte pública, parte exclusiva de assinante.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted small"><strong>Fora do escopo:</strong> integração de pagamento real, aplicativo mobile, notificação push e painel administrativo.</p>
+        </div>
+
+        <!-- Passo 1 -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><span class="badge bg-danger me-2">Passo 1</span>Instalar o AIOX</h2>
+          <p class="text-muted">Pré-requisito: Node.js instalado (<code>node --version</code>).</p>
+          <div class="bg-dark text-white p-3 rounded-3 mb-2">
+            <code class="text-info small">mkdir foot-fanatics &amp;&amp; cd foot-fanatics &amp;&amp; git init</code>
+          </div>
+          <div class="bg-dark text-white p-3 rounded-3 mb-3">
+            <code class="text-info small">npx aiox-core@latest install</code>
+          </div>
+          <p class="text-muted mb-0">O instalador pergunta quais squads instalar — para hoje, o squad de <strong>development</strong> basta. Ao final você terá a pasta <code>.aiox-core/</code> com as personas do framework: <code>pm</code>, <code>po</code>, <code>architect</code>, <code>dev</code>, <code>qa</code>, <code>devops</code>, entre outras.</p>
+        </div>
+
+        <!-- Passo 2 -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><span class="badge bg-danger me-2">Passo 2</span>Java e Spring Boot</h2>
+
+          <h3 class="h6 fw-bold mt-3 mb-2">2.1 &mdash; Java 21 (LTS) via SDKMAN</h3>
+          <div class="bg-dark text-white p-3 rounded-3 mb-2">
+            <code class="text-info small">curl -s "https://get.sdkman.io" | bash</code>
+          </div>
+          <div class="bg-dark text-white p-3 rounded-3 mb-2">
+            <code class="text-info small">sdk list java</code>
+          </div>
+          <div class="bg-dark text-white p-3 rounded-3 mb-2">
+            <code class="text-info small">sdk install java 21.0.5-tem</code>
+          </div>
+          <p class="text-muted small">Use a versão 21 que aparecer no <code>sdk list java</code> da sua máquina — o identificador muda com o tempo. Confirme com <code>java -version</code>.</p>
+
+          <h3 class="h6 fw-bold mt-4 mb-2">2.2 &mdash; Gerar o projeto</h3>
+          <p class="text-muted mb-2">Em <a href="https://start.spring.io" target="_blank" rel="noopener noreferrer">start.spring.io</a>:</p>
+          <ul class="text-muted small">
+            <li>Projeto <strong>Maven</strong>, linguagem <strong>Java</strong>, versão <strong>21</strong></li>
+            <li>Spring Boot: a versão <strong>3.x estável</strong> sugerida pelo próprio Initializr (evite as marcadas como SNAPSHOT ou M/RC)</li>
+            <li>Group <code>br.senac</code> &middot; Artifact <code>foot-fanatics</code></li>
+            <li>Dependências: <strong>Spring Web</strong>, <strong>Spring Security</strong>, <strong>Spring Data JPA</strong>, <strong>Validation</strong>, <strong>PostgreSQL Driver</strong>, <strong>Testcontainers</strong></li>
+          </ul>
+
+          <h3 class="h6 fw-bold mt-4 mb-2">2.3 &mdash; Verificar</h3>
+          <div class="bg-dark text-white p-3 rounded-3 mb-3">
+            <code class="text-info small">./mvnw test &amp;&amp; ./mvnw spring-boot:run</code>
+          </div>
+          <div class="alert alert-success border-0 mb-0">
+            <strong>Critério de aceite do passo 2:</strong> a suíte roda verde com <em>zero</em> teste escrito por você. Esse é o marco zero da cobertura — a partir dele todo número tem significado.
+          </div>
+        </div>
+
+        <!-- Passo 3 -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><span class="badge bg-danger me-2">Passo 3</span>Documentação em esqueleto</h2>
+          <p class="text-muted">Criar arquivo e seções. <strong>Não preencher</strong> — exceto onde indicado no passo 4. Documento com seção vazia é honesto; documento com seção inventada é dívida técnica disfarçada.</p>
+
+          <div class="bg-dark text-white p-3 rounded-3 mb-3">
+            <code class="text-info small">mkdir docs &amp;&amp; touch docs/prd.md docs/arquitetura.md docs/plano-de-teste.md</code>
+          </div>
+
+          <h3 class="h6 fw-bold mt-4 mb-2"><code>docs/prd.md</code></h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark"># Foot Fanatics &mdash; PRD
+
+## 1. Visão do produto
+TODO
+
+## 2. Problema
+TODO
+
+## 3. Personas
+(ver passo 4 &mdash; única seção preenchida hoje)
+
+## 4. Escopos
+- E1 Identidade &amp; Conta
+- E2 Sessão &amp; Acesso
+- E3 Assinatura
+- E4 Conteúdo
+
+## 5. Fora de escopo
+- Pagamento real, mobile, push, painel administrativo
+
+## 6. Métricas de sucesso
+TODO</pre>
+
+          <h3 class="h6 fw-bold mt-4 mb-2"><code>docs/arquitetura.md</code></h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark"># Foot Fanatics &mdash; Arquitetura
+
+## 1. Stack
+Java 21 &middot; Spring Boot 3.x &middot; PostgreSQL &middot; Maven
+
+## 2. Camadas
+TODO
+
+## 3. Modelo de dados
+TODO
+
+## 4. Autenticação e sessão
+TODO
+
+## 5. Decisões (ADR)
+TODO</pre>
+
+          <h3 class="h6 fw-bold mt-4 mb-2"><code>docs/plano-de-teste.md</code></h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark"># Foot Fanatics &mdash; Plano de Teste
+
+## 1. Estratégia
+TODO
+
+## 2. Níveis de teste
+TODO
+
+## 3. Critérios de entrada e saída
+TODO
+
+## 4. Metas de cobertura
+TODO
+
+## 5. Ambiente de teste
+TODO</pre>
+
+          <p class="text-muted small mt-3 mb-0">O <code>README.md</code> pode nascer preenchido: como subir o projeto e como rodar os testes.</p>
+        </div>
+
+        <!-- Passo 4 -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><span class="badge bg-success me-2">Passo 4</span>Criar as personas</h2>
+          <p class="text-muted">A única seção do PRD que sai desta aula preenchida. Uma persona sem <strong>objetivo, contexto e frustração</strong> não gera caso de teste — ela vira enfeite.</p>
+
+          <pre class="bg-light border rounded-3 p-3 small text-dark">## 3. Personas
+
+### 3.1 Torcedor casual &mdash; plano free
+- Objetivo: saber resultado e escalação em poucos segundos.
+- Contexto: celular, conexão instável, geralmente no intervalo do jogo.
+- Frustração: ser obrigado a criar conta para ver o placar.
+- Relevância para qualidade: define a fronteira entre conteúdo público e pago.
+
+### 3.2 Torcedor assinante &mdash; plano premium
+- Objetivo: acessar análise, estatística e conteúdo exclusivo.
+- Contexto: usa em mais de um dispositivo, sessões longas.
+- Frustração: ser deslogado no meio da leitura; pagar e receber 403.
+- Relevância para qualidade: exercita sessão, expiração, renovação e vigência do plano.
+
+### 3.3 Editor de conteúdo &mdash; operação
+- Objetivo: publicar matérias e marcar o que é exclusivo de assinante.
+- Contexto: uso diário, volume alto, prazo curto.
+- Frustração: publicar por engano como público algo que era exclusivo.
+- Relevância para qualidade: exercita autorização &mdash; o que acontece quando acessa o que não deveria.</pre>
+
+          <div class="alert alert-primary border-0 mt-3 mb-0">
+            Repare que cada persona já aponta para um <strong>tipo de teste</strong>. Não é coincidência: na semana 33 aprendemos a ir do atributo de qualidade ao caso de teste. A persona é a origem dessa cadeia.
+          </div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><i class="fas fa-clipboard-check text-success me-2" aria-hidden="true"></i>Checklist de fim de aula</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="p-3 border border-success rounded-3 bg-white h-100">
+                <h3 class="h6 fw-bold text-success mb-2">Precisa existir</h3>
+                <ul class="text-muted small mb-0">
+                  <li>Repositório <code>foot-fanatics</code> com commit inicial</li>
+                  <li><code>.aiox-core/</code> instalado</li>
+                  <li><code>./mvnw test</code> rodando verde</li>
+                  <li><code>docs/prd.md</code>, <code>docs/arquitetura.md</code>, <code>docs/plano-de-teste.md</code> e <code>README.md</code> criados</li>
+                  <li>Três personas escritas no PRD</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="p-3 border border-danger rounded-3 bg-white h-100">
+                <h3 class="h6 fw-bold text-danger mb-2">Não é para hoje</h3>
+                <ul class="text-muted small mb-0">
+                  <li>Entidades JPA</li>
+                  <li>Endpoints de negócio</li>
+                  <li>Regras de assinatura</li>
+                  <li>Testes escritos por você</li>
+                  <li>Decisões de arquitetura fechadas</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Próxima aula -->
+        <div class="glass-card p-4 mb-4">
+          <h2 class="h5 fw-bold mb-3"><i class="fas fa-forward text-danger me-2" aria-hidden="true"></i>Para a semana 35</h2>
+          <p class="text-muted mb-0">Introdução a testes automatizados — e o primeiro teste do Foot Fanatics. Chegue com o projeto subindo e a suíte verde: a aula começa de onde esta parou.</p>
+        </div>
+
+        <div class="text-center">
           <a href="../slide_caixa-branca-preta.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
           <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
         </div>
+
       </div>
     </div>
   </div>
