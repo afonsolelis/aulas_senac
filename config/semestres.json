@@ -45,7 +45,12 @@
               "pagina": "pages/turmas/turma_stadscas4na.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
-              "modalidade": "Presencial"
+              "modalidade": "Presencial",
+              "dia_semana": "Segunda-feira",
+              "horarios": [
+                { "inicio": "19h10", "fim": "20h50", "sala": "F275" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "F275" }
+              ]
             },
             {
               "sigla": "STADSCAS4NB",
@@ -53,7 +58,12 @@
               "pagina": "pages/turmas/turma_stadscas4nb.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
-              "modalidade": "Presencial"
+              "modalidade": "Presencial",
+              "dia_semana": "Quinta-feira",
+              "horarios": [
+                { "inicio": "19h10", "fim": "20h50", "sala": "C241" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "J479" }
+              ]
             },
             {
               "sigla": "STADSCAS4ND",
@@ -61,7 +71,12 @@
               "pagina": "pages/turmas/turma_stadscas4nd.html",
               "curso": "Análise e Desenvolvimento de Sistemas",
               "campus": "CAS",
-              "modalidade": "Presencial"
+              "modalidade": "Presencial",
+              "dia_semana": "Sexta-feira",
+              "horarios": [
+                { "inicio": "19h10", "fim": "20h50", "sala": "C237" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "C149" }
+              ]
             }
           ],
           "marcos": {
@@ -85,7 +100,12 @@
               "pagina": "pages/turmas/turma_bcccas8na.html",
               "curso": "Ciência da Computação",
               "campus": "CAS",
-              "modalidade": "Presencial"
+              "modalidade": "Presencial",
+              "dia_semana": "Terça-feira",
+              "horarios": [
+                { "inicio": "19h10", "fim": "20h50", "sala": "Lab. A113" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "Lab. C150" }
+              ]
             }
           ],
           "marcos": {

@@ -47,6 +47,23 @@ describe('Páginas das turmas de 2026.2', () => {
       expect(matricula.textContent).toMatch(/^\*+\d{3}$/);
     });
     expect(document.body.textContent).toContain('Dia da semana');
-    expect(document.body.textContent).toContain('19h–20h50 e 21h05–22h45');
+  });
+
+  test.each(turmas)('$sigla exibe dia, horários e salas conforme config/semestres.json', (turma) => {
+    expect(turma.dia_semana).toBeTruthy();
+    expect(Array.isArray(turma.horarios)).toBe(true);
+    expect(turma.horarios).toHaveLength(2);
+
+    const html = fs.readFileSync(path.join(rootDir, turma.pagina), 'utf-8');
+    const dom = new JSDOM(html);
+    const texto = dom.window.document.body.textContent;
+
+    expect(texto).toContain(turma.dia_semana);
+    expect(texto).not.toContain('A definir');
+
+    for (const { inicio, fim, sala } of turma.horarios) {
+      expect(sala).toBeTruthy();
+      expect(texto).toContain(`${inicio}–${fim} · ${sala}`);
+    }
   });
 });
