@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 36 - Qualidade: Arquitetura sem Tecnologia e ATAM Inicial</title>
+  <meta name="keywords" content="qualidade de software, arquitetura, ATAM, utility tree, pontos de sensibilidade, tradeoff, Foot Fanatics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+
+  <div class="slide-container">
+
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 05: Arquitetura sem Tecnologia</h1>
+        <p class="fs-4 text-secondary mb-3">Foot Fanatics &middot; e a análise ATAM inicial</p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 36 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">arquitetura</span>
+          <span class="keyword">ATAM</span>
+          <span class="keyword">utility tree</span>
+          <span class="keyword">ponto de sensibilidade</span>
+          <span class="keyword">tradeoff</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <ul class="fs-4 text-secondary">
+          <li class="mb-3">Arquitetura é decisão, não é framework</li>
+          <li class="mb-3">Componentes, responsabilidades e fluxos — sem citar tecnologia</li>
+          <li class="mb-3">Da lista de RNF à <strong>utility tree</strong></li>
+          <li class="mb-3">ATAM inicial: cenários, pontos de sensibilidade e tradeoffs</li>
+          <li class="mb-0">Registrar tudo em <code>docs/arquitetura.md</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Desenhar a arquitetura antes de escolher a ferramenta</h2>
+        <div class="row justify-content-center text-start">
+          <div class="col-md-10">
+            <ol class="list-group list-group-numbered">
+              <li class="list-group-item">Desenhar o <strong>diagrama de contexto</strong> e o de <strong>componentes</strong> do Foot Fanatics — só caixas, responsabilidades e fluxos.</li>
+              <li class="list-group-item"><strong>Regra da aula:</strong> nenhuma tecnologia pode ser citada. Nada de banco, framework ou fila com nome próprio.</li>
+              <li class="list-group-item">Montar a <strong>utility tree</strong> a partir dos RNF escritos na semana 35, priorizando cada folha por <em>(importância, dificuldade)</em>.</li>
+              <li class="list-group-item">Rodar o <strong>ATAM inicial</strong>: escrever os cenários de atributo de qualidade das folhas (A, A).</li>
+              <li class="list-group-item">Listar os <strong>pontos de sensibilidade</strong> e os <strong>tradeoffs</strong> encontrados — eles são a pauta da próxima aula.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-flag-checkered me-2"></i>
+          <strong>Fim da aula:</strong> <code>arquitetura.md</code> com diagramas sem tecnologia, utility tree e pontos sensíveis listados.
+        </div>
+        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Arquitetura sem Tecnologia e ATAM Inicial (Semana 36)</div>
+    <a href="material/material_arquitetura-atam.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+</body>
+
+</html>

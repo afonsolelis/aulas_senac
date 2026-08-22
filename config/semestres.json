@@ -41,7 +41,19 @@
           "case": {
             "nome": "Foot Fanatics",
             "descricao": "API de conteúdo esportivo com assinatura (conta, acesso e gestão de sessão). Mesma espinha dorsal do remo-api, acrescida de assinatura. É o projeto avaliado e o fio condutor de todas as aulas praticas.",
-            "stack": ["Java 21 (LTS)", "Spring Boot 3.x", "Maven", "PostgreSQL", "JUnit 5", "JaCoCo", "Testcontainers", "WireMock", "SonarCloud", "JMeter"],
+            "stack": ["Java 21 (LTS)", "Spring Boot 3.x", "Maven", "PostgreSQL", "Docker / Docker Compose", "JUnit 5", "JaCoCo", "Testcontainers", "VCR (record & replay, via WireMock)", "GitHub Actions", "SonarCloud"],
+            "percurso": [
+              { "semana": 34, "tema": "Caixa branca vs caixa preta", "entrega": "Infra: AIOX, Spring Boot, docs em esqueleto e personas" },
+              { "semana": 35, "tema": "Elicitação de requisitos com IA", "entrega": "RF e RNF a partir das personas, RNF medíveis" },
+              { "semana": 36, "tema": "Arquitetura sem tecnologia e ATAM inicial", "entrega": "Diagramas sem tecnologia, utility tree, pontos sensíveis" },
+              { "semana": 37, "tema": "Tecnologias, táticas arquiteturais e pontos sensíveis", "entrega": "ADRs ligando ponto sensível a tática e a tecnologia" },
+              { "semana": 38, "tema": "Prova escrita", "entrega": null },
+              { "semana": 39, "tema": "Infraestrutura com Docker", "entrega": "docker compose sobe o ambiente inteiro, sem lógica" },
+              { "semana": 40, "tema": "Testes na casca vazia: Testcontainers e VCR", "entrega": "Suíte completa e vermelha: unitário parametrizado, integração e e2e" },
+              { "semana": 41, "tema": "Implementação da lógica e primeiro pipeline", "entrega": "Suíte verde e GitHub Actions rodando em PR" },
+              { "semana": 42, "tema": "RTM completo e eixos de RNF no SonarCloud", "entrega": "RTM fim a fim e eixos de RNF mapeados" },
+              { "semana": 43, "tema": "Laboratório: projeto dos alunos", "entrega": "Cada grupo aplica o percurso no próprio projeto" }
+            ],
             "especificacao": "pages/qualidade2/especificacao-projeto.html",
             "inicio": { "semana": 34, "aula": 3 },
             "escopos": [

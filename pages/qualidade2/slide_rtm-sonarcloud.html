@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 42 - Qualidade: RTM Completo e Eixos de RNF no SonarCloud</title>
+  <meta name="keywords" content="qualidade de software, RTM, rastreabilidade, SonarCloud, requisitos não funcionais, análise estática, Foot Fanatics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+
+  <div class="slide-container">
+
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 10: RTM Completo e Eixos de RNF</h1>
+        <p class="fs-4 text-secondary mb-3">Foot Fanatics &middot; rastreabilidade fim a fim no SonarCloud</p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 42 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">RTM</span>
+          <span class="keyword">rastreabilidade</span>
+          <span class="keyword">SonarCloud</span>
+          <span class="keyword">requisitos não funcionais</span>
+          <span class="keyword">análise estática</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <ul class="fs-4 text-secondary">
+          <li class="mb-3">Rastreabilidade fim a fim: requisito &rarr; risco &rarr; teste &rarr; evidência</li>
+          <li class="mb-3">Montar a <strong>RTM</strong> completa do Foot Fanatics</li>
+          <li class="mb-3">SonarCloud no pipeline</li>
+          <li class="mb-3">Quais <strong>eixos de RNF</strong> a análise estática realmente mede</li>
+          <li class="mb-0">E o que ela <strong>não</strong> mede — e quem cobre essa lacuna</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Fechar a rastreabilidade do Foot Fanatics</h2>
+        <div class="row justify-content-center text-start">
+          <div class="col-md-10">
+            <ol class="list-group list-group-numbered">
+              <li class="list-group-item">Montar a <strong>RTM completa</strong> em <code>RTM.md</code>: cada <code>RF</code> e <code>RNF</code> ligado ao risco, ao teste que o cobre e à evidência de execução.</li>
+              <li class="list-group-item">Integrar o <strong>SonarCloud</strong> ao pipeline construído na semana 41.</li>
+              <li class="list-group-item">Identificar quais <strong>eixos de RNF</strong> o Sonar está medindo: confiabilidade, manutenibilidade, segurança, cobertura e duplicação.</li>
+              <li class="list-group-item">Mapear cada eixo do Sonar de volta para os <code>RNF</code> escritos na semana 35 — quem não tem eixo, não está sendo medido.</li>
+              <li class="list-group-item">Listar o que o Sonar <strong>não alcança</strong> (desempenho sob carga, autorização, concorrência) e apontar qual teste cobre cada lacuna.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-flag-checkered me-2"></i>
+          <strong>Fim da aula:</strong> <code>RTM.md</code> completo e SonarCloud no pipeline com os eixos de RNF mapeados. A partir daqui, laboratório.
+        </div>
+        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - RTM Completo e Eixos de RNF no SonarCloud (Semana 42)</div>
+    <a href="material/material_rtm-sonarcloud.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+</body>
+
+</html>

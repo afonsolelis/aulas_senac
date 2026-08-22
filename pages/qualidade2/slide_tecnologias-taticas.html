@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 37 - Qualidade: Tecnologias, Táticas Arquiteturais e Pontos Sensíveis</title>
+  <meta name="keywords" content="qualidade de software, táticas arquiteturais, pontos de sensibilidade, ADR, escolha de tecnologia, Foot Fanatics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+
+  <div class="slide-container">
+
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 06: Tecnologias e Táticas Arquiteturais</h1>
+        <p class="fs-4 text-secondary mb-3">Foot Fanatics &middot; cada escolha justificada por um ponto sensível</p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 37 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">tática arquitetural</span>
+          <span class="keyword">ponto de sensibilidade</span>
+          <span class="keyword">escolha de tecnologia</span>
+          <span class="keyword">ADR</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <ul class="fs-4 text-secondary">
+          <li class="mb-3">O que é uma <strong>tática arquitetural</strong></li>
+          <li class="mb-3">A ordem que não se inverte: ponto sensível &rarr; tática &rarr; tecnologia</li>
+          <li class="mb-3">Escolher ferramenta sem tática é currículo, não arquitetura</li>
+          <li class="mb-3">ADR: registrar contexto, opções, decisão e consequência</li>
+          <li class="mb-0">Fechar a stack do Foot Fanatics com justificativa rastreável</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Conciliar tecnologia com tática arquitetural</h2>
+        <div class="row justify-content-center text-start">
+          <div class="col-md-10">
+            <ol class="list-group list-group-numbered">
+              <li class="list-group-item">Retomar a lista de <strong>pontos de sensibilidade</strong> produzida no ATAM da semana 36.</li>
+              <li class="list-group-item">Para cada ponto, escolher primeiro a <strong>tática</strong>. Ex.: ponto sensível <em>"sessão sob concorrência"</em> &rarr; tática <em>"token de curta duração com renovação controlada"</em>.</li>
+              <li class="list-group-item">Só então escolher a <strong>tecnologia</strong> que implementa aquela tática — e nenhuma tecnologia entra sem tática que a justifique.</li>
+              <li class="list-group-item">Escrever um <strong>ADR</strong> por decisão: contexto, opções consideradas, decisão e consequência aceita.</li>
+              <li class="list-group-item">Fechar a stack do Foot Fanatics e marcar, para cada tradeoff, o que foi <strong>sacrificado</strong> conscientemente.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-flag-checkered me-2"></i>
+          <strong>Fim da aula:</strong> ADRs ligando <code>ponto sensível → tática → tecnologia</code>, com a stack fechada.
+        </div>
+        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+      </div>
+    </div>
+
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;">
+        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+      </div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Tecnologias, Táticas Arquiteturais e Pontos Sensíveis (Semana 37)</div>
+    <a href="material/material_tecnologias-taticas.html" class="btn btn-outline-primary btn-sm rounded-pill">
+      <i class="fas fa-book me-1"></i> Ver material escrito
+    </a>
+    <a href="../../index.html">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
+    </a>
+  </footer>
+
+  <script src="../../js/standard_slides.js"></script>
+</body>
+
+</html>
