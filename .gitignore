@@ -198,3 +198,6 @@ logs/
 .aiox-core/local/
 .claude/settings.local.json
 .aiox/install-log.txt
+
+# Claude Code worktrees (nunca versionar)
+.claude/worktrees/

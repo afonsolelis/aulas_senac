@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 33 - Qualidade: ATAM e Planejamento de Casos de Teste</title>
+  <title>Semana 34 - Qualidade: ATAM e Planejamento de Casos de Teste</title>
   <meta name="keywords" content="ATAM, atributos de qualidade, utility tree, cenário de qualidade, ponto de tradeoff, caso de teste, plano de teste, rastreabilidade">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -31,7 +31,7 @@
         <p class="fs-4 text-secondary mb-3">ATAM e planejamento de testes</p>
         <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
         <h3 class="fw-normal text-dark">Professor Afonso</h3>
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 33 - 2026.2</span>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 34 - 2026.2</span>
         <div class="slide-keywords d-none" aria-hidden="true">
           <span class="keyword">ATAM</span>
           <span class="keyword">utility tree</span>
@@ -874,10 +874,10 @@
             <div class="card border-0 shadow-sm p-4 bg-dark text-white rounded-4 text-start h-100">
               <h4 class="fw-bold mb-3"><i class="fas fa-arrow-right text-warning me-2"></i>Próximos passos</h4>
               <ul class="list-unstyled fs-6 mb-0">
-                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Entregar a utility tree e os casos de teste da dupla</li>
+                <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Entregar a utility tree, os casos de teste e as <strong>três personas</strong></li>
                 <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Ler o material escrito desta aula</li>
                 <li class="mb-2"><i class="fas fa-chevron-right text-white-50 me-2 small"></i>Guardar os cenários (A, A): eles voltam na <strong>semana 42</strong>, no JMeter</li>
-                <li class="mb-0"><i class="fas fa-chevron-right text-white-50 me-2 small"></i><strong>Semana 34:</strong> Caixa Branca vs Caixa Preta — <em>como</em> derivar os casos</li>
+                <li class="mb-0"><i class="fas fa-chevron-right text-white-50 me-2 small"></i><strong>Semana 35:</strong> Elicitação de requisitos com IA — RF e RNF do Foot Fanatics</li>
               </ul>
             </div>
           </div>
@@ -885,8 +885,90 @@
       </div>
     </div>
 
-    <!-- Slide 20: Encerramento -->
+    <!-- Slide 20: Transição para o case -->
     <div class="slide" id="slide-20">
+      <div class="text-center slide-content">
+        <span class="badge bg-danger fs-4 mb-4 px-5 py-3 rounded-pill">A partir de agora</span>
+        <h1 class="display-4 fw-bold mb-3 text-dark">Chega de exemplo genérico.</h1>
+        <p class="fs-3 text-secondary mb-4">Todo conceito desta disciplina passa a ter <strong>um endereço</strong>.</p>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <h2 class="display-5 fw-bold text-danger mb-0">Foot Fanatics</h2>
+      </div>
+    </div>
+
+    <!-- Slide 21: O case -->
+    <div class="slide" id="slide-21">
+      <div class="text-center slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark">O case do semestre</h2>
+        <p class="lead text-muted mb-4">Uma API de conteúdo esportivo — mesma espinha dorsal do <code>remo-api</code> — <strong>com assinatura</strong>.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-light rounded-4">
+              <h5 class="fw-bold text-secondary mb-3"><i class="fas fa-database me-2"></i>O que herdamos do remo-api</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2">API REST de conteúdo de futebol</li>
+                <li class="mb-2">Clubes, jogos, resultados</li>
+                <li class="mb-0">Leitura pública, dados estruturados</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4 border border-danger">
+              <h5 class="fw-bold text-danger mb-3"><i class="fas fa-id-card me-2"></i>O que é novo aqui</h5>
+              <ul class="text-muted small mb-0">
+                <li class="mb-2"><strong>Conta</strong> — cadastro, credencial, perfil</li>
+                <li class="mb-2"><strong>Assinatura</strong> — plano free e premium</li>
+                <li class="mb-2"><strong>Sessão</strong> — login, token, expiração, logout</li>
+                <li class="mb-0"><strong>Acesso</strong> — conteúdo que só assinante vê</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-4 d-inline-block py-2 mb-0">
+          <i class="fas fa-clock me-2"></i>
+          Assinatura traz <strong>tempo, risco, ramificação e estado</strong> — exatamente o terreno de um cenário de qualidade.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 22: Prática — as personas -->
+    <div class="slide" id="slide-22">
+      <div class="text-center slide-content">
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Criar as personas do Foot Fanatics</h2>
+        <p class="lead text-muted mb-3">É daqui que sai todo cenário de qualidade das próximas semanas.</p>
+        <div class="row g-3 justify-content-center text-start">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-secondary">
+              <h5 class="fw-bold text-dark mb-1">Torcedor casual</h5>
+              <p class="badge bg-secondary mb-2">plano free</p>
+              <p class="text-muted small mb-0">Quer resultado e escalação rápido, no celular. <strong>Gera cenário de:</strong> fronteira entre público e pago.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-danger">
+              <h5 class="fw-bold text-dark mb-1">Torcedor assinante</h5>
+              <p class="badge bg-danger mb-2">plano premium</p>
+              <p class="text-muted small mb-0">Paga por análise e conteúdo exclusivo, em vários dispositivos. <strong>Gera cenário de:</strong> sessão, expiração e vigência.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4 border-top border-4 border-primary">
+              <h5 class="fw-bold text-dark mb-1">Editor de conteúdo</h5>
+              <p class="badge bg-primary mb-2">operação</p>
+              <p class="text-muted small mb-0">Publica matérias e marca o que é exclusivo. <strong>Gera cenário de:</strong> autorização e acesso indevido.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
+          <i class="fas fa-flag-checkered me-2"></i>
+          <strong>Fim da aula:</strong> as três personas escritas com <strong>objetivo, contexto e frustração</strong>. Sem isso, não viram caso de teste.
+        </div>
+      </div>
+    </div>
+
+    <!-- Slide 23: Encerramento -->
+    <div class="slide" id="slide-23">
       <div class="text-center slide-content">
         <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
         <p class="lead text-dark mb-5">Se não dá para medir, não dá para testar.</p>
@@ -911,11 +993,11 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 20</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 23</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - ATAM e Planejamento de Casos de Teste (Semana 33)</div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - ATAM e Planejamento de Casos de Teste (Semana 34)</div>
     <a href="material/material_planejamento-casos-teste.html" class="btn btn-outline-primary btn-sm rounded-pill">
       <i class="fas fa-book me-1"></i> Ver material escrito
     </a>
