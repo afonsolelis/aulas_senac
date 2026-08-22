@@ -45,22 +45,23 @@
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Uma funcionalidade nova do Foot Fanatics guiada por teste</h2>
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">RTM completo e eixos de RNF no SonarCloud</h2>
+        <p class="lead text-muted mb-3">Fechar a rastreabilidade: do requisito até a evidência de que ele foi testado.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Escolher uma funcionalidade de <strong>E3 (Assinatura)</strong> que ainda não existe.</li>
-              <li class="list-group-item">Escrever o cenário em <strong>Dado / Quando / Então</strong> antes de qualquer código.</li>
-              <li class="list-group-item">Traduzir o cenário no teste — e vê-lo falhar (<strong>vermelho</strong>).</li>
-              <li class="list-group-item">Implementar o mínimo para passar (<strong>verde</strong>), depois refatorar sem quebrar.</li>
-              <li class="list-group-item">Guardar as evidências do ciclo: é isso que a avaliação pede como prova da técnica.</li>
+              <li class="list-group-item">Montar a <strong>RTM completa</strong> em <code>RTM.md</code>: cada <code>RF</code> e <code>RNF</code> ligado ao risco, ao teste que o cobre e à evidência de execução.</li>
+              <li class="list-group-item">Integrar o <strong>SonarCloud</strong> ao pipeline construído na aula passada.</li>
+              <li class="list-group-item">Identificar quais <strong>eixos de RNF</strong> o Sonar está medindo: confiabilidade, manutenibilidade, segurança, cobertura e duplicação.</li>
+              <li class="list-group-item">Mapear cada eixo de volta para os <code>RNF</code> escritos lá na elicitação — quem não tem eixo, não está sendo medido.</li>
+              <li class="list-group-item">Listar o que o Sonar <strong>não alcança</strong> (carga, autorização, concorrência) e apontar qual teste cobre cada lacuna.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> uma funcionalidade nova com o ciclo vermelho-verde-refatora documentado.
+          <strong>Fim da aula:</strong> <code>RTM.md</code> completo e SonarCloud no pipeline com os eixos de RNF mapeados.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>

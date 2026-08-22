@@ -45,22 +45,23 @@
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Isolar a API esportiva externa nos testes</h2>
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Implementação da lógica e primeiro pipeline</h2>
+        <p class="lead text-muted mb-3">Fazer o vermelho virar verde — sem mexer em um teste sequer.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Identificar toda chamada do Foot Fanatics a serviço externo.</li>
-              <li class="list-group-item">Gravar a resposta real uma vez (<strong>record</strong>) e passar a reproduzi-la nos testes (<strong>replay</strong>).</li>
-              <li class="list-group-item">Fazer a suíte rodar <strong>sem rede</strong> — se depende da internet, não serve para CI.</li>
-              <li class="list-group-item">Simular os casos ruins: timeout, 500 e resposta malformada.</li>
-              <li class="list-group-item">Garantir que nenhuma credencial real vá para o repositório.</li>
+              <li class="list-group-item">Implementar a lógica dos escopos <strong>E1 a E4</strong> até a suíte da aula passada ficar verde.</li>
+              <li class="list-group-item"><strong>Regra da aula:</strong> nenhum teste novo e nenhum teste alterado. A suíte é o contrato; mudou o teste, mudou o requisito.</li>
+              <li class="list-group-item">Anotar cada teste que passa de vermelho para verde — esse é o registro real de progresso.</li>
+              <li class="list-group-item">Configurar o <strong>GitHub Actions</strong> para rodar a suíte completa em todo <em>pull request</em>.</li>
+              <li class="list-group-item">Fazer o pipeline <strong>falhar de propósito</strong> e conferir que o PR fica bloqueado.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> suíte rodando offline, com os cenários de falha da API externa cobertos.
+          <strong>Fim da aula:</strong> suíte verde e primeiro pipeline rodando em pull request.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>

@@ -45,22 +45,23 @@
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Registrar e triar os defeitos do Foot Fanatics</h2>
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Tecnologias e táticas arquiteturais</h2>
+        <p class="lead text-muted mb-3">Cada tecnologia entra justificada por um ponto sensível — nunca por gosto.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Caçar defeitos no que já foi implementado — cada um vira uma <em>issue</em> no repositório.</li>
-              <li class="list-group-item">Escrever cada defeito com <strong>passos para reproduzir, resultado esperado e resultado obtido</strong>. Sem isso não é bug, é reclamação.</li>
-              <li class="list-group-item">Classificar por <strong>severidade</strong> e <strong>prioridade</strong> — e explicar por que os dois não são a mesma coisa.</li>
-              <li class="list-group-item">Escrever o teste automatizado que <em>falha</em> por causa do defeito, antes de corrigir.</li>
-              <li class="list-group-item">Corrigir e confirmar que o teste passa — o teste fica na suíte como regressão.</li>
+              <li class="list-group-item">Retomar a lista de <strong>pontos de sensibilidade</strong> produzida no ATAM da aula passada.</li>
+              <li class="list-group-item">Para cada ponto, escolher primeiro a <strong>tática</strong>. Ex.: <em>sessão sob concorrência</em> &rarr; <em>token de curta duração com renovação controlada</em>.</li>
+              <li class="list-group-item">Só então escolher a <strong>tecnologia</strong> que implementa a tática. Nenhuma tecnologia entra sem tática que a justifique.</li>
+              <li class="list-group-item">Escrever um <strong>ADR</strong> por decisão: contexto, opções consideradas, decisão e consequência aceita.</li>
+              <li class="list-group-item">Fechar a stack e marcar, para cada tradeoff, o que foi <strong>sacrificado</strong> conscientemente.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> defeitos registrados, priorizados e cada um com seu teste de regressão.
+          <strong>Fim da aula:</strong> ADRs ligando ponto sensível &rarr; tática &rarr; tecnologia, com a stack fechada.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>

@@ -67,13 +67,13 @@
           <div class="col-md-6">
             <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
               <span class="badge bg-danger align-self-start mb-3 px-3 py-2 rounded-pill">Parte 2 &middot; Mão na massa</span>
-              <h4 class="fw-bold text-dark mb-3">Foot Fanatics: a infraestrutura</h4>
+              <h4 class="fw-bold text-dark mb-3">Foot Fanatics: elicitação de requisitos</h4>
               <ul class="text-muted mb-0">
-                <li class="mb-2">Instalar o AIOX</li>
-                <li class="mb-2">Instalar Java + Spring Boot</li>
-                <li class="mb-2">Suíte verde com zero teste seu</li>
-                <li class="mb-2">Documentação em esqueleto</li>
-                <li class="mb-0">Registrar personas e escopos no PRD</li>
+                <li class="mb-2">Das personas aos candidatos a requisito</li>
+                <li class="mb-2">A IA como parceira de elicitação</li>
+                <li class="mb-2">Requisito funcional × não funcional</li>
+                <li class="mb-2">RNF só existe se for <strong>medível</strong></li>
+                <li class="mb-0">Amarrar cada requisito ao escopo E1–E4</li>
               </ul>
             </div>
           </div>
@@ -433,23 +433,24 @@
     <div class="slide" id="slide-12">
       <div class="text-center slide-content">
         <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Montar a infraestrutura do Foot Fanatics</h2>
-        <p class="lead text-muted mb-3">As personas já estão escritas. Agora o case ganha um repositório onde morar.</p>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Elicitação de requisitos com IA</h2>
+        <p class="lead text-muted mb-3">As personas já existem. Agora elas viram requisito — e requisito que dá para testar.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Criar o repositório <code>foot-fanatics</code> e instalar o AIOX: <code>npx aiox-core@latest install</code>.</li>
-              <li class="list-group-item">Instalar <strong>Java 21 (LTS)</strong> e gerar o projeto em <code>start.spring.io</code> — Maven, Spring Web, Security, Data JPA e Validation.</li>
-              <li class="list-group-item">Rodar <code>./mvnw test</code> e confirmar que a suíte fica <strong>verde com zero teste seu</strong>. Esse é o marco zero da cobertura.</li>
-              <li class="list-group-item">Criar as documentações em <strong>esqueleto</strong>: <code>prd.md</code>, <code>arquitetura.md</code> e <code>plano-de-teste.md</code> — só as seções, com <code>TODO</code>.</li>
-              <li class="list-group-item">Levar as <strong>personas da aula passada</strong> para a seção correspondente do <code>prd.md</code>, e registrar os escopos E1 a E4.</li>
+              <li class="list-group-item">Partir das <strong>três personas</strong> escritas na aula do ATAM e, para cada uma, levantar candidatos a requisito com apoio de <strong>IA</strong>. A IA gera volume; a turma decide o que entra.</li>
+              <li class="list-group-item">Separar cada item em <strong>RF</strong> (o que o sistema faz) e <strong>RNF</strong> (com que qualidade faz).</li>
+              <li class="list-group-item">Reescrever todo RNF de forma <strong>medível</strong>: &quot;rápido&quot; não é requisito; <code>p95 &lt; 2s</code> é.</li>
+              <li class="list-group-item">Amarrar cada requisito ao escopo que o originou — <code>E1</code> Conta, <code>E2</code> Sessão, <code>E3</code> Assinatura, <code>E4</code> Conteúdo.</li>
+              <li class="list-group-item">Numerar tudo (<code>RF-01</code>, <code>RNF-01</code>) e registrar no <code>docs/prd.md</code>.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> repositório de pé, suíte verde e documentos criados. Nenhuma regra de negócio ainda.
+          <strong>Fim da aula:</strong> RF e RNF numerados, medíveis e ligados ao escopo que os originou.
         </div>
+        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>
     </div>
 

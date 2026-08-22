@@ -45,22 +45,23 @@
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Cobertura e análise estática do Foot Fanatics</h2>
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Testes na casca vazia</h2>
+        <p class="lead text-muted mb-3">A suíte inteira escrita antes da lógica existir. Ela vai falhar — e é esse o ponto.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Escrever testes <strong>parametrizados</strong> com JUnit 5 a partir das classes de equivalência e valores limite.</li>
-              <li class="list-group-item">Ligar o <strong>JaCoCo</strong> e gerar o primeiro relatório de cobertura de linha e de ramo.</li>
-              <li class="list-group-item">Achar os ramos não cobertos — em especial os de <strong>expiração de token</strong> e <strong>vigência de plano</strong>.</li>
-              <li class="list-group-item">Integrar o <strong>SonarCloud</strong> ao pipeline e ler o que ele aponta.</li>
-              <li class="list-group-item">Discutir cada alerta: o que é dívida real e o que é ruído.</li>
+              <li class="list-group-item">A aplicação continua <strong>sem lógica</strong>: só a casca. Todo teste escrito hoje nasce vermelho.</li>
+              <li class="list-group-item">Escrever os <strong>unitários parametrizados</strong> a partir das classes de equivalência e dos valores limite dos RNF.</li>
+              <li class="list-group-item">Escrever os <strong>testes de integração</strong> com <strong>Testcontainers</strong> — banco de verdade, subindo em container no próprio teste.</li>
+              <li class="list-group-item">Escrever os <strong>end-to-end</strong> contra a API, no ambiente que o compose levanta.</li>
+              <li class="list-group-item">Usar <strong>VCR</strong> (record &amp; replay) para a API esportiva externa: grava a resposta uma vez, reproduz no CI sem depender da rede.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> relatório de cobertura e SonarCloud no pipeline, com os ramos descobertos nomeados.
+          <strong>Fim da aula:</strong> suíte completa escrita e <strong>vermelha</strong>, cobrindo os RF do PRD.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>

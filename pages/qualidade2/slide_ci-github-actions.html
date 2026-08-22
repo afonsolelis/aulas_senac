@@ -45,22 +45,23 @@
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
-        <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Pipeline do Foot Fanatics no GitHub Actions</h2>
+        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Infraestrutura em Docker</h2>
+        <p class="lead text-muted mb-3">A arquitetura das aulas anteriores vira ambiente que sobe com um comando.</p>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Criar o workflow que roda a suíte completa a cada <em>pull request</em>.</li>
-              <li class="list-group-item">Garantir que o pipeline sobe o ambiente do zero — nada pode depender da máquina de ninguém.</li>
-              <li class="list-group-item">Fazer o pipeline <strong>falhar de propósito</strong> e conferir que o PR fica bloqueado.</li>
-              <li class="list-group-item">Configurar a proteção do branch: sem suíte verde, não faz merge.</li>
-              <li class="list-group-item">Documentar no <code>README.md</code> como ler o resultado do pipeline.</li>
+              <li class="list-group-item">Traduzir o <strong>diagrama de componentes</strong> em serviços do <code>docker-compose.yml</code>.</li>
+              <li class="list-group-item">Escrever o <strong>Dockerfile</strong> da aplicação — build reprodutível, sem depender da máquina de ninguém.</li>
+              <li class="list-group-item">Subir banco e dependências em container, com as tecnologias decididas nos ADRs.</li>
+              <li class="list-group-item">Garantir que <code>docker compose up</code> levanta <strong>o ambiente inteiro do zero</strong>, em máquina limpa.</li>
+              <li class="list-group-item">Conferir que cada decisão de infra aponta para uma <strong>tática</strong> da aula anterior.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> pipeline rodando em pull request e barrando merge quando a suíte quebra.
+          <strong>Fim da aula:</strong> <code>docker compose up</code> sobe o ambiente completo — ainda sem nenhuma regra de negócio.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>
