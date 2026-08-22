@@ -145,13 +145,13 @@
           <h2 class="h3 fw-bold mb-4" id="qualidade-heading"><i class="fas fa-vials text-danger me-2" aria-hidden="true"></i>Estratégia obrigatória de qualidade</h2>
           <div class="row g-3 mb-4">
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes automatizados</h3><p class="small text-muted mb-0">Unitários com JUnit 5, parametrizados, integração, API em caixa-preta e end-to-end.</p></div></div></div>
-            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Ambiente realista</h3><p class="small text-muted mb-0">Banco containerizado com Testcontainers e VCR (record &amp; replay, via WireMock) para integrações externas.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Ambiente realista</h3><p class="small text-muted mb-0">Banco containerizado com Testcontainers e WireMock para integrações externas.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Concorrência</h3><p class="small text-muted mb-0">Teste automatizado comprovando que renovações simultâneas geram uma única sessão válida.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">TDD ou BDD</h3><p class="small text-muted mb-0">Ao menos uma funcionalidade nova desenvolvida com evidências da técnica.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">CI e análise estática</h3><p class="small text-muted mb-0">GitHub Actions em pull requests, cobertura por JaCoCo e projeto integrado ao SonarCloud.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Não funcionais</h3><p class="small text-muted mb-0">JMeter, autorização, validação de entrada e tratamento seguro de erros.</p></div></div></div>
           </div>
-          <div class="alert alert-warning mb-0"><strong>Uso de mocks:</strong> permitido em testes unitários isolados. Persistência e integrações críticas devem ser verificadas com ambiente real, Testcontainers ou VCR.</div>
+          <div class="alert alert-warning mb-0"><strong>Uso de mocks:</strong> permitido em testes unitários isolados. Persistência e integrações críticas devem ser verificadas com ambiente real, Testcontainers ou WireMock.</div>
         </section>
 
         <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="metas-heading">
@@ -214,11 +214,11 @@
           <h2 class="h3 fw-bold mb-4" id="roteiro-heading"><i class="fas fa-route text-danger me-2" aria-hidden="true"></i>Evolução durante o semestre</h2>
           <div class="row g-2 text-center align-items-stretch mb-4">
             <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">1</span><p class="small mb-0">Infra, escopos e personas</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">2</span><p class="small mb-0">Requisitos com IA: RF e RNF</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">3</span><p class="small mb-0">Arquitetura e ATAM</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">4</span><p class="small mb-0">Táticas, tecnologias e Docker</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">5</span><p class="small mb-0">Testes na casca vazia e implementação</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">6</span><p class="small mb-0">RTM, SonarCloud e entrega</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">2</span><p class="small mb-0">Primeiros testes e RTM</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">3</span><p class="small mb-0">Bugs e pipeline de CI</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">4</span><p class="small mb-0">JUnit, JaCoCo e SonarCloud</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">5</span><p class="small mb-0">TDD/BDD, WireMock e carga</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">6</span><p class="small mb-0">Auditoria e entrega</p></div></div>
           </div>
 
           <h3 class="h5 fw-bold mb-3">Incremento por semana</h3>
@@ -228,19 +228,17 @@
                 <tr><th style="width:12%">Semana</th><th style="width:38%">Tema da aula</th><th>O que nasce no Foot Fanatics</th></tr>
               </thead>
               <tbody class="small">
-                <tr><td class="fw-bold">32</td><td>Aula 01 &middot; Setup do Codespaces</td><td class="text-muted">Ambiente de pé para todo mundo: Codespaces, git e Discord</td></tr>
-                <tr><td class="fw-bold">34</td><td>Aula 02 &middot; ATAM e planejamento de casos de teste</td><td class="text-muted">Nasce o Foot Fanatics e as <strong>três personas</strong></td></tr>
-                <tr><td class="fw-bold">35</td><td>Aula 03 &middot; Elicitação de requisitos com IA</td><td class="text-muted">RF e RNF levantados a partir das personas; RNF escritos de forma medível</td></tr>
-                <tr><td class="fw-bold">36</td><td>Aula 04 &middot; Arquitetura sem tecnologia e ATAM inicial</td><td class="text-muted">Diagramas sem tecnologia, utility tree, pontos de sensibilidade e tradeoffs</td></tr>
-                <tr><td class="fw-bold">37</td><td>Aula 05 &middot; Tecnologias, táticas arquiteturais e pontos sensíveis</td><td class="text-muted">ADRs ligando ponto sensível &rarr; tática &rarr; tecnologia; stack fechada</td></tr>
+                <tr><td class="fw-bold">34</td><td>Caixa branca vs caixa preta</td><td class="text-muted">Infra: AIOX, Spring Boot, docs em esqueleto e personas</td></tr>
+                <tr><td class="fw-bold">35</td><td>Introdução a testes automatizados</td><td class="text-muted">E1 &mdash; primeiro teste de cadastro de conta</td></tr>
+                <tr><td class="fw-bold">36</td><td>Gestão de erros e bugs</td><td class="text-muted">Registro e triagem dos primeiros defeitos de E1</td></tr>
+                <tr><td class="fw-bold">37</td><td>Testes automatizados em CI</td><td class="text-muted">Pipeline no GitHub Actions rodando a suíte</td></tr>
                 <tr class="table-danger"><td class="fw-bold">38</td><td colspan="2">Prova escrita</td></tr>
-                <tr><td class="fw-bold">39</td><td>Aula 06 &middot; Infraestrutura com Docker</td><td class="text-muted"><code>docker compose up</code> sobe o ambiente inteiro, ainda sem lógica</td></tr>
-                <tr><td class="fw-bold">40</td><td>Aula 07 &middot; Caixa branca vs caixa preta</td><td class="text-muted">Técnica e critério de cobertura definidos para cada requisito, no plano de teste</td></tr>
-                <tr><td class="fw-bold">41</td><td>Aula 08 &middot; Testes na casca vazia: Testcontainers e VCR</td><td class="text-muted">Suíte completa e vermelha: unitário parametrizado, integração e end-to-end</td></tr>
-                <tr><td class="fw-bold">42</td><td>Aula 09 &middot; Implementação da lógica e primeiro pipeline</td><td class="text-muted">E1 a E4 implementados até o verde; GitHub Actions rodando em PR</td></tr>
-                <tr><td class="fw-bold">43</td><td>Aula 10 &middot; RTM completo e eixos de RNF no SonarCloud</td><td class="text-muted">RTM fim a fim e eixos de RNF mapeados na análise estática</td></tr>
-                <tr class="table-info"><td class="fw-bold">44</td><td>Aula 11 &middot; Laboratório: projeto dos alunos</td><td class="text-muted">Cada grupo aplica o mesmo percurso no próprio projeto, com mentoria</td></tr>
-                <tr><td class="fw-bold">45</td><td>Aula 12 &middot; Preparação para a prova oral</td><td class="text-muted">Ensaios, RTM fechada e relatório de qualidade</td></tr>
+                <tr><td class="fw-bold">39</td><td>Testes de unidade com JUnit 5 + JaCoCo + SonarCloud</td><td class="text-muted">E2 &mdash; sessão, expiração e cobertura de ramo do filtro</td></tr>
+                <tr><td class="fw-bold">40</td><td>WireMock/Testcontainers e chamadas de API seguras</td><td class="text-muted">Integração com API esportiva externa isolada em teste</td></tr>
+                <tr><td class="fw-bold">41</td><td>TDD e BDD</td><td class="text-muted">E3 &mdash; regras de vigência da assinatura guiadas por teste</td></tr>
+                <tr><td class="fw-bold">42</td><td>Testes de carga com JMeter</td><td class="text-muted">Renovação concorrente de sessão sob carga</td></tr>
+                <tr><td class="fw-bold">43-44</td><td>Desenvolvimento do projeto final</td><td class="text-muted">E4 &mdash; conteúdo público e exclusivo, autorização por plano</td></tr>
+                <tr><td class="fw-bold">45</td><td>Preparação para a prova oral</td><td class="text-muted">RTM fechada e relatório de qualidade</td></tr>
                 <tr class="table-primary"><td class="fw-bold">46</td><td colspan="2">Entrega do trabalho final</td></tr>
                 <tr class="table-success"><td class="fw-bold">47</td><td colspan="2">Prova oral</td></tr>
               </tbody>

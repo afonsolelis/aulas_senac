@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 32 - Qualidade: Setup do Codespaces</title>
-  <meta name="keywords" content="qualidade de software, github codespaces, ambiente de desenvolvimento, setup, git">
+  <title>Semana 41 - Qualidade: TDD e BDD: Desenvolvimento Guiado por Testes</title>
+  <meta name="keywords" content="qualidade de software, TDD, BDD, red-green-refactor, given when then">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -26,50 +26,41 @@
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-4 fw-bold mb-3 text-black">Aula 01: Setup do Codespaces</h1>
-        <p class="fs-4 text-secondary mb-3">Todo mundo com o mesmo ambiente, funcionando</p>
-        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 32 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true">
-          <span class="keyword">GitHub Codespaces</span>
-          <span class="keyword">ambiente de desenvolvimento</span>
-          <span class="keyword">setup</span>
-          <span class="keyword">git</span>
-        </div>
+        <h1 class="display-3 fw-bold mb-4 text-black">Aula 09: TDD e BDD: Desenvolvimento Guiado por Testes</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 41 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">TDD e BDD: Desenvolvimento Guiado por Testes</span></div>
       </div>
     </div>
 
     <div class="slide" id="slide-2">
-      <div class="slide-content">
-        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
-        <ul class="fs-4 text-secondary">
-          <li class="mb-3">Por que ambiente padronizado é assunto de qualidade</li>
-          <li class="mb-3">O que é o GitHub Codespaces</li>
-          <li class="mb-3">Criar a conta e abrir o primeiro Codespace</li>
-          <li class="mb-3">Git e GitHub: o básico que vamos usar o semestre inteiro</li>
-          <li class="mb-0">Deixar todo mundo com o ambiente rodando</li>
-        </ul>
-      </div>
+      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
+      <ul class="fs-4 text-secondary">
+        <li class="mb-3">Contexto e motivação</li>
+        <li class="mb-3">TDD e BDD: Desenvolvimento Guiado por Testes</li>
+        <li class="mb-3">Aplicação no projeto da disciplina</li>
+      </ul>
+      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
     </div>
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
         <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Ambiente de pé para todo mundo</h2>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Uma funcionalidade nova do Foot Fanatics guiada por teste</h2>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Criar/entrar na conta do <strong>GitHub</strong> e ativar o <strong>GitHub Student Developer Pack</strong>, se ainda não tiver.</li>
-              <li class="list-group-item">Abrir um <strong>Codespace</strong> e conferir que o terminal responde.</li>
-              <li class="list-group-item">Configurar <code>git config user.name</code> e <code>user.email</code> dentro do Codespace.</li>
-              <li class="list-group-item">Fazer um <em>commit</em> e um <em>push</em> de teste — só para confirmar que o fluxo funciona ponta a ponta.</li>
-              <li class="list-group-item">Entrar no <strong>servidor do Discord</strong> da turma.</li>
+              <li class="list-group-item">Escolher uma funcionalidade de <strong>E3 (Assinatura)</strong> que ainda não existe.</li>
+              <li class="list-group-item">Escrever o cenário em <strong>Dado / Quando / Então</strong> antes de qualquer código.</li>
+              <li class="list-group-item">Traduzir o cenário no teste — e vê-lo falhar (<strong>vermelho</strong>).</li>
+              <li class="list-group-item">Implementar o mínimo para passar (<strong>verde</strong>), depois refatorar sem quebrar.</li>
+              <li class="list-group-item">Guardar as evidências do ciclo: é isso que a avaliação pede como prova da técnica.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> ninguém sai da sala sem um Codespace abrindo e um push funcionando.
+          <strong>Fim da aula:</strong> uma funcionalidade nova com o ciclo vermelho-verde-refatora documentado.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>
@@ -87,8 +78,8 @@
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Setup do Codespaces (Semana 32)</div>
-    <a href="material/material_setup-codespaces.html" class="btn btn-outline-primary btn-sm rounded-pill">
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - TDD e BDD: Desenvolvimento Guiado por Testes (Semana 41)</div>
+    <a href="material/material_tdd-bdd.html" class="btn btn-outline-primary btn-sm rounded-pill">
       <i class="fas fa-book me-1"></i> Ver material escrito
     </a>
     <a href="../../index.html">

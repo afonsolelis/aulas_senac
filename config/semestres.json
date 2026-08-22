@@ -8,21 +8,9 @@
       "home": "pages/home_2025_2.html",
       "accent": "#4ECDC4",
       "disciplinas": [
-        {
-          "name": "Testes de Software",
-          "home": "pages/home_testes_2025_2.html",
-          "status": "placeholder"
-        },
-        {
-          "name": "TCC2",
-          "home": "pages/home_tcc2_2025_2.html",
-          "status": "placeholder"
-        },
-        {
-          "name": "Lógica da Computação",
-          "home": "pages/home_logica_2025_2.html",
-          "status": "placeholder"
-        }
+        { "name": "Testes de Software", "home": "pages/home_testes_2025_2.html", "status": "placeholder" },
+        { "name": "TCC2", "home": "pages/home_tcc2_2025_2.html", "status": "placeholder" },
+        { "name": "Lógica da Computação", "home": "pages/home_logica_2025_2.html", "status": "placeholder" }
       ]
     },
     {
@@ -30,36 +18,16 @@
       "home": "pages/home_2026_1.html",
       "accent": "#FF512F",
       "disciplinas": [
-        {
-          "name": "Qualidade de Software",
-          "slug": "qualidade",
-          "home": "pages/home_qualidade.html",
-          "status": "ativo"
-        },
-        {
-          "name": "Introdução à Lógica",
-          "slug": "logica",
-          "home": "pages/home_logica.html",
-          "status": "ativo"
-        },
-        {
-          "name": "TCC1",
-          "slug": "tcc",
-          "home": "pages/home_tcc.html",
-          "status": "ativo"
-        }
+        { "name": "Qualidade de Software", "slug": "qualidade", "home": "pages/home_qualidade.html", "status": "ativo" },
+        { "name": "Introdução à Lógica", "slug": "logica", "home": "pages/home_logica.html", "status": "ativo" },
+        { "name": "TCC1", "slug": "tcc", "home": "pages/home_tcc.html", "status": "ativo" }
       ]
     },
     {
       "periodo": "2026.2",
       "home": "pages/home_2026_2.html",
       "accent": "#833ab4",
-      "calendario": {
-        "inicio": "2026-08-03",
-        "fim": "2026-12-11",
-        "semana_inicio": 32,
-        "semana_fim": 50
-      },
+      "calendario": { "inicio": "2026-08-03", "fim": "2026-12-11", "semana_inicio": 32, "semana_fim": 50 },
       "disciplinas": [
         {
           "name": "Qualidade de Software",
@@ -73,127 +41,17 @@
           "case": {
             "nome": "Foot Fanatics",
             "descricao": "API de conteúdo esportivo com assinatura (conta, acesso e gestão de sessão). Mesma espinha dorsal do remo-api, acrescida de assinatura. É o projeto avaliado e o fio condutor de todas as aulas praticas.",
-            "stack": [
-              "Java 21 (LTS)",
-              "Spring Boot 3.x",
-              "Maven",
-              "PostgreSQL",
-              "Docker / Docker Compose",
-              "JUnit 5",
-              "JaCoCo",
-              "Testcontainers",
-              "VCR (record & replay, via WireMock)",
-              "GitHub Actions",
-              "SonarCloud"
-            ],
-            "percurso": [
-              {
-                "semana": 32,
-                "aula": 1,
-                "tema": "Setup do Codespaces",
-                "entrega": "Ambiente de pe: Codespaces, git e Discord"
-              },
-              {
-                "semana": 34,
-                "aula": 2,
-                "tema": "ATAM e planejamento de casos de teste",
-                "entrega": "Nasce o Foot Fanatics e as tres personas"
-              },
-              {
-                "semana": 35,
-                "aula": 3,
-                "tema": "Elicitacao de requisitos com IA",
-                "entrega": "RF e RNF a partir das personas, RNF mediveis"
-              },
-              {
-                "semana": 36,
-                "aula": 4,
-                "tema": "Arquitetura sem tecnologia e ATAM inicial",
-                "entrega": "Diagramas sem tecnologia, utility tree, pontos sensiveis"
-              },
-              {
-                "semana": 37,
-                "aula": 5,
-                "tema": "Tecnologias, taticas arquiteturais e pontos sensiveis",
-                "entrega": "ADRs ligando ponto sensivel a tatica e a tecnologia"
-              },
-              {
-                "semana": 38,
-                "aula": null,
-                "tema": "Prova escrita",
-                "entrega": null
-              },
-              {
-                "semana": 39,
-                "aula": 6,
-                "tema": "Infraestrutura com Docker",
-                "entrega": "docker compose sobe o ambiente inteiro, sem logica"
-              },
-              {
-                "semana": 40,
-                "aula": 7,
-                "tema": "Caixa branca vs caixa preta",
-                "entrega": "Tecnica e criterio de cobertura por requisito, no plano de teste"
-              },
-              {
-                "semana": 41,
-                "aula": 8,
-                "tema": "Testes na casca vazia: Testcontainers e VCR",
-                "entrega": "Suite completa e vermelha: unitario parametrizado, integracao e e2e"
-              },
-              {
-                "semana": 42,
-                "aula": 9,
-                "tema": "Implementacao da logica e primeiro pipeline",
-                "entrega": "Suite verde e GitHub Actions rodando em PR"
-              },
-              {
-                "semana": 43,
-                "aula": 10,
-                "tema": "RTM completo e eixos de RNF no SonarCloud",
-                "entrega": "RTM fim a fim e eixos de RNF mapeados"
-              },
-              {
-                "semana": 44,
-                "aula": 11,
-                "tema": "Laboratorio: projeto dos alunos",
-                "entrega": "Cada grupo aplica o percurso no proprio projeto"
-              }
-            ],
+            "stack": ["Java 21 (LTS)", "Spring Boot 3.x", "Maven", "PostgreSQL", "JUnit 5", "JaCoCo", "Testcontainers", "WireMock", "SonarCloud", "JMeter"],
             "especificacao": "pages/qualidade2/especificacao-projeto.html",
-            "inicio": {
-              "semana": 34,
-              "aula": 2
-            },
+            "inicio": { "semana": 34, "aula": 3 },
             "escopos": [
-              {
-                "id": "E1",
-                "nome": "Identidade & Conta"
-              },
-              {
-                "id": "E2",
-                "nome": "Sessão & Acesso"
-              },
-              {
-                "id": "E3",
-                "nome": "Assinatura"
-              },
-              {
-                "id": "E4",
-                "nome": "Conteúdo"
-              }
+              { "id": "E1", "nome": "Identidade & Conta" },
+              { "id": "E2", "nome": "Sessão & Acesso" },
+              { "id": "E3", "nome": "Assinatura" },
+              { "id": "E4", "nome": "Conteúdo" }
             ],
-            "personas": [
-              "Torcedor casual (free)",
-              "Torcedor assinante (premium)",
-              "Editor de conteúdo (operação)"
-            ],
-            "fora_de_escopo": [
-              "pagamento real",
-              "aplicativo mobile",
-              "notificação push",
-              "painel administrativo"
-            ]
+            "personas": ["Torcedor casual (free)", "Torcedor assinante (premium)", "Editor de conteúdo (operação)"],
+            "fora_de_escopo": ["pagamento real", "aplicativo mobile", "notificação push", "painel administrativo"]
           },
           "turmas": [
             {
@@ -205,16 +63,8 @@
               "modalidade": "Presencial",
               "dia_semana": "Segunda-feira",
               "horarios": [
-                {
-                  "inicio": "19h10",
-                  "fim": "20h50",
-                  "sala": "F275"
-                },
-                {
-                  "inicio": "21h05",
-                  "fim": "22h45",
-                  "sala": "F275"
-                }
+                { "inicio": "19h10", "fim": "20h50", "sala": "F275" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "F275" }
               ]
             },
             {
@@ -226,16 +76,8 @@
               "modalidade": "Presencial",
               "dia_semana": "Quinta-feira",
               "horarios": [
-                {
-                  "inicio": "19h10",
-                  "fim": "20h50",
-                  "sala": "C241"
-                },
-                {
-                  "inicio": "21h05",
-                  "fim": "22h45",
-                  "sala": "J479"
-                }
+                { "inicio": "19h10", "fim": "20h50", "sala": "C241" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "J479" }
               ]
             },
             {
@@ -247,31 +89,15 @@
               "modalidade": "Presencial",
               "dia_semana": "Sexta-feira",
               "horarios": [
-                {
-                  "inicio": "19h10",
-                  "fim": "20h50",
-                  "sala": "C237"
-                },
-                {
-                  "inicio": "21h05",
-                  "fim": "22h45",
-                  "sala": "C149"
-                }
+                { "inicio": "19h10", "fim": "20h50", "sala": "C237" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "C149" }
               ]
             }
           ],
           "marcos": {
-            "prova": {
-              "semana": 38,
-              "ref": "3a semana de setembro"
-            },
-            "entrega_trabalho_final": {
-              "semana": 46
-            },
-            "prova_oral": {
-              "semana": 47,
-              "ref": "meio de novembro"
-            }
+            "prova": { "semana": 38, "ref": "3a semana de setembro" },
+            "entrega_trabalho_final": { "semana": 46 },
+            "prova_oral": { "semana": 47, "ref": "meio de novembro" }
           }
         },
         {
@@ -292,31 +118,15 @@
               "modalidade": "Presencial",
               "dia_semana": "Terça-feira",
               "horarios": [
-                {
-                  "inicio": "19h10",
-                  "fim": "20h50",
-                  "sala": "Lab. A113"
-                },
-                {
-                  "inicio": "21h05",
-                  "fim": "22h45",
-                  "sala": "Lab. C150"
-                }
+                { "inicio": "19h10", "fim": "20h50", "sala": "Lab. A113" },
+                { "inicio": "21h05", "fim": "22h45", "sala": "Lab. C150" }
               ]
             }
           ],
           "marcos": {
-            "entrega_parcial": {
-              "semana": 38,
-              "ref": "semana de 14 de setembro"
-            },
-            "deposito": {
-              "semana": 48
-            },
-            "apresentacao": {
-              "semana": 50,
-              "ref": "07 a 11 de dezembro"
-            }
+            "entrega_parcial": { "semana": 38, "ref": "semana de 14 de setembro" },
+            "deposito": { "semana": 48 },
+            "apresentacao": { "semana": 50, "ref": "07 a 11 de dezembro" }
           }
         }
       ]

@@ -5,8 +5,8 @@
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 37 - Qualidade: Tecnologias, Táticas Arquiteturais e Pontos Sensíveis</title>
-  <meta name="keywords" content="qualidade de software, táticas arquiteturais, pontos de sensibilidade, ADR, escolha de tecnologia, Foot Fanatics">
+  <title>Semana 36 - Qualidade: Gestão de Erros e Bugs</title>
+  <meta name="keywords" content="qualidade de software, bugs, defeitos, rastreamento, triagem">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -26,50 +26,41 @@
       <div class="glass-cover text-center">
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-4 fw-bold mb-3 text-black">Aula 05: Tecnologias e Táticas Arquiteturais</h1>
-        <p class="fs-4 text-secondary mb-3">Foot Fanatics &middot; cada escolha justificada por um ponto sensível</p>
-        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 37 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true">
-          <span class="keyword">tática arquitetural</span>
-          <span class="keyword">ponto de sensibilidade</span>
-          <span class="keyword">escolha de tecnologia</span>
-          <span class="keyword">ADR</span>
-        </div>
+        <h1 class="display-3 fw-bold mb-4 text-black">Aula 05: Gestão de Erros e Bugs</h1>
+        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 36 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Gestão de Erros e Bugs</span></div>
       </div>
     </div>
 
     <div class="slide" id="slide-2">
-      <div class="slide-content">
-        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
-        <ul class="fs-4 text-secondary">
-          <li class="mb-3">O que é uma <strong>tática arquitetural</strong></li>
-          <li class="mb-3">A ordem que não se inverte: ponto sensível &rarr; tática &rarr; tecnologia</li>
-          <li class="mb-3">Escolher ferramenta sem tática é currículo, não arquitetura</li>
-          <li class="mb-3">ADR: registrar contexto, opções, decisão e consequência</li>
-          <li class="mb-0">Fechar a stack do Foot Fanatics com justificativa rastreável</li>
-        </ul>
-      </div>
+      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
+      <ul class="fs-4 text-secondary">
+        <li class="mb-3">Contexto e motivação</li>
+        <li class="mb-3">Gestão de Erros e Bugs</li>
+        <li class="mb-3">Aplicação no projeto da disciplina</li>
+      </ul>
+      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
     </div>
 
     <div class="slide" id="slide-3">
       <div class="text-center slide-content">
         <span class="badge bg-danger fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala</span>
-        <h2 class="display-6 fw-bold mb-3 text-dark">Conciliar tecnologia com tática arquitetural</h2>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Registrar e triar os defeitos do Foot Fanatics</h2>
         <div class="row justify-content-center text-start">
           <div class="col-md-10">
             <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Retomar a lista de <strong>pontos de sensibilidade</strong> produzida no ATAM da semana 36.</li>
-              <li class="list-group-item">Para cada ponto, escolher primeiro a <strong>tática</strong>. Ex.: ponto sensível <em>"sessão sob concorrência"</em> &rarr; tática <em>"token de curta duração com renovação controlada"</em>.</li>
-              <li class="list-group-item">Só então escolher a <strong>tecnologia</strong> que implementa aquela tática — e nenhuma tecnologia entra sem tática que a justifique.</li>
-              <li class="list-group-item">Escrever um <strong>ADR</strong> por decisão: contexto, opções consideradas, decisão e consequência aceita.</li>
-              <li class="list-group-item">Fechar a stack do Foot Fanatics e marcar, para cada tradeoff, o que foi <strong>sacrificado</strong> conscientemente.</li>
+              <li class="list-group-item">Caçar defeitos no que já foi implementado — cada um vira uma <em>issue</em> no repositório.</li>
+              <li class="list-group-item">Escrever cada defeito com <strong>passos para reproduzir, resultado esperado e resultado obtido</strong>. Sem isso não é bug, é reclamação.</li>
+              <li class="list-group-item">Classificar por <strong>severidade</strong> e <strong>prioridade</strong> — e explicar por que os dois não são a mesma coisa.</li>
+              <li class="list-group-item">Escrever o teste automatizado que <em>falha</em> por causa do defeito, antes de corrigir.</li>
+              <li class="list-group-item">Corrigir e confirmar que o teste passa — o teste fica na suíte como regressão.</li>
             </ol>
           </div>
         </div>
         <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
           <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> ADRs ligando <code>ponto sensível → tática → tecnologia</code>, com a stack fechada.
+          <strong>Fim da aula:</strong> defeitos registrados, priorizados e cada um com seu teste de regressão.
         </div>
         <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
       </div>
@@ -87,8 +78,8 @@
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Tecnologias, Táticas Arquiteturais e Pontos Sensíveis (Semana 37)</div>
-    <a href="material/material_tecnologias-taticas.html" class="btn btn-outline-primary btn-sm rounded-pill">
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Gestão de Erros e Bugs (Semana 36)</div>
+    <a href="material/material_gestao-erros-bugs.html" class="btn btn-outline-primary btn-sm rounded-pill">
       <i class="fas fa-book me-1"></i> Ver material escrito
     </a>
     <a href="../../index.html">
