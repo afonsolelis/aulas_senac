@@ -1,94 +1,73 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Semana 39 - Qualidade: JUnit 5, JaCoCo e SonarCloud</title><meta name="keywords" content="qualidade de software, JUnit 5, testes parametrizados, JaCoCo, cobertura de branches, SonarCloud, quality gate, Foot Fanatics"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/slides.css"><link rel="stylesheet" href="../../css/base-styles.css"><script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script></head>
+<body class="slide-body" data-disciplina="qualidade"><div class="slide-container"><a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial</a>
+  <div class="slide active cover-bg" id="slide-1"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="90" cy="115" r="8"></circle><circle cx="205" cy="570" r="5"></circle><circle cx="545" cy="600" r="7"></circle><circle cx="895" cy="565" r="10"></circle><circle cx="1070" cy="135" r="7"></circle></svg><div class="glass-cover text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="65" class="mb-3"><h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5><h1 class="display-4 fw-bold mb-3 text-black">Aula 07: JUnit 5 + JaCoCo + SonarCloud</h1><p class="fs-4 text-secondary mb-3">Testar profundamente e medir sem se enganar</p><hr class="border-secondary w-25 mx-auto my-3 opacity-100"><h3 class="fw-normal text-dark">Professor Afonso</h3><span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 39 - 2026.2</span><div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">JUnit 5</span><span class="keyword">testes parametrizados</span><span class="keyword">JaCoCo</span><span class="keyword">cobertura de branches</span><span class="keyword">SonarCloud</span><span class="keyword">quality gate</span><span class="keyword">Foot Fanatics</span></div></div></div>
+  <div class="slide" id="slide-2"><div class="slide-content"><h1 class="display-4 fw-bold mb-3 text-dark text-center">Agenda de Hoje</h1><div class="row g-3"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-primary align-self-start mb-3">JUnit 5</span><ul class="small text-muted mb-0"><li>Organização e lifecycle</li><li>Parametrização</li><li>Tempo determinístico</li></ul></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-danger align-self-start mb-3">JaCoCo</span><ul class="small text-muted mb-0"><li>Linha × branch</li><li>Relatório</li><li>Gate 80% / 70%</li></ul></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-dark align-self-start mb-3">SonarCloud</span><ul class="small text-muted mb-0"><li>Análise estática</li><li>Novo código</li><li>Quality Gate na CI</li></ul></div></div></div></div></div>
+  <div class="slide" id="slide-3"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Objetivo: proteger E2 — Sessão &amp; Acesso</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-hourglass-half fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Tempo</h5><p class="small text-muted mb-0">Token expira exatamente no limite definido.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-code-branch fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Ramos</h5><p class="small text-muted mb-0">Ausente, inválido, expirado, revogado e válido.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-shield-halved fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Gate</h5><p class="small text-muted mb-0">Nenhuma mudança entra sem testes e análise.</p></div></div></div><div class="alert alert-dark border-0 mt-4 mb-0"><strong>Resultado:</strong> cobertura explica o que foi executado; o teste explica se o comportamento está certo.</div></div></div>
+  <div class="slide" id="slide-4"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">JUnit Jupiter: linguagem de teste</h2><div class="row g-3"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Estrutura</h5><ul class="small text-muted mb-0"><li><code>@Test</code> define caso</li><li><code>@BeforeEach</code> recria contexto</li><li><code>@Nested</code> organiza cenários</li><li><code>@DisplayName</code> comunica intenção</li></ul></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Oráculos</h5><ul class="small text-muted mb-0"><li><code>assertEquals</code> compara valor</li><li><code>assertThrows</code> observa falha</li><li><code>assertAll</code> agrupa propriedades</li><li><code>assertTimeout</code> limita execução</li></ul></div></div></div><div class="alert alert-warning border-0 mt-4 mb-0">Lifecycle não é depósito de dados invisíveis. Setup grande e compartilhado esconde o motivo do cenário.</div></div></div>
+  <div class="slide" id="slide-5"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">Organize por comportamento</h2><div class="bg-dark text-white p-3 rounded-3"><pre class="mb-0 small text-info"><code>@Nested
+@DisplayName("token expirado")
+class TokenExpirado {
+  @Test
+  void negaAcessoMesmoComAssinaturaAtiva() {
+    var agora = Instant.parse("2026-09-21T10:00:00Z");
+    var token = tokenComExpiracao(agora.minusSeconds(1));
 
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 39 - Qualidade: Testes de Unidade com JUnit 5 + JaCoCo + SonarCloud</title>
-  <meta name="keywords" content="qualidade de software, junit 5, jacoco, testes de unidade, sonarcloud, cobertura">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css">
-  <link rel="stylesheet" href="../../css/base-styles.css">
-</head>
+    var decisao = autorizador.avaliar(token, assinaturaAtiva(), agora);
 
-<body class="slide-body" data-disciplina="qualidade">
+    assertEquals(MotivoNegacao.TOKEN_EXPIRADO, decisao.motivo());
+  }
+}</code></pre></div><p class="text-muted text-center mt-3 mb-0">O nome da classe dá contexto; o método revela a regra; o tempo é dado de entrada, não ambiente.</p></div></div>
+  <div class="slide" id="slide-6"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">Parametrize classes de equivalência e limites</h2><div class="bg-dark text-white p-3 rounded-3"><pre class="mb-0 small text-info"><code>@ParameterizedTest(name = "expira em {0}s → válido? {1}")
+@CsvSource({
+  "-1, false",
+  " 0, false",
+  " 1, true"
+})
+void respeitaLimiteDeExpiracao(long deslocamento, boolean esperado) {
+  var agora = Instant.parse("2026-09-21T10:00:00Z");
+  var token = tokenComExpiracao(agora.plusSeconds(deslocamento));
 
-  <div class="slide-container">
-
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
-
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 07: Testes de Unidade com JUnit 5 + JaCoCo + SonarCloud</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 39 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Testes de Unidade com JUnit 5 + JaCoCo + SonarCloud</span></div>
-      </div>
-    </div>
-
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Testes de Unidade com JUnit 5 + JaCoCo + SonarCloud</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
-
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Testes na casca vazia</h2>
-        <p class="lead text-muted mb-3">A suíte inteira escrita antes da lógica existir. Ela vai falhar — e é esse o ponto.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">A aplicação continua <strong>sem lógica</strong>: só a casca. Todo teste escrito hoje nasce vermelho.</li>
-              <li class="list-group-item">Escrever os <strong>unitários parametrizados</strong> a partir das classes de equivalência e dos valores limite dos RNF.</li>
-              <li class="list-group-item">Escrever os <strong>testes de integração</strong> com <strong>Testcontainers</strong> — banco de verdade, subindo em container no próprio teste.</li>
-              <li class="list-group-item">Escrever os <strong>end-to-end</strong> contra a API, no ambiente que o compose levanta.</li>
-              <li class="list-group-item">Usar <strong>VCR</strong> (record &amp; replay) para a API esportiva externa: grava a resposta uma vez, reproduz no CI sem depender da rede.</li>
-            </ol>
-          </div>
-        </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> suíte completa escrita e <strong>vermelha</strong>, cobrindo os RF do PRD.
-        </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
-      </div>
-    </div>
-
-  </div>
-
-  <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
-    </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Testes de Unidade com JUnit 5 + JaCoCo + SonarCloud (Semana 39)</div>
-    <a href="material/material_junit-jacoco-sonarcloud.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
-  </footer>
-
-  <script src="../../js/standard_slides.js"></script>
-</body>
-
-</html>
+  assertEquals(esperado, validador.estaValido(token, agora));
+}</code></pre></div><div class="alert alert-primary border-0 mt-3 mb-0"><strong>Trinca de limite:</strong> imediatamente antes, exatamente no limite e imediatamente depois.</div></div></div>
+  <div class="slide" id="slide-7"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Tempo é uma dependência</h2><div class="row g-3 text-start"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle"><h5 class="fw-bold text-danger">Frágil</h5><div class="bg-dark p-2 rounded"><code class="text-info small">Instant.now(); Thread.sleep(1000);</code></div><p class="small text-muted mt-2 mb-0">Pode falhar por carga, fuso ou instante de execução.</p></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold text-success">Determinístico</h5><div class="bg-dark p-2 rounded"><code class="text-info small">Clock.fixed(instante, ZoneOffset.UTC)</code></div><p class="small text-muted mt-2 mb-0">Produção usa relógio do sistema; teste injeta relógio controlado.</p></div></div></div><div class="alert alert-dark border-0 mt-4 mb-0">No Foot Fanatics, tempo decide segurança. Se o teste não controla o relógio, ele não controla o cenário.</div></div></div>
+  <div class="slide" id="slide-8"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-2 text-dark">Cobertura responde “executou?”</h2><p class="lead text-muted mb-4">Ela não responde “testou certo?”.</p><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Linha</h5><p class="small text-muted mb-0">Percentual de linhas executáveis alcançadas.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Branch</h5><p class="small text-muted mb-0">Resultados verdadeiro/falso das decisões alcançados.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Complexidade</h5><p class="small text-muted mb-0">Sinal de caminhos independentes e custo de teste.</p></div></div></div><div class="alert alert-danger border-0 mt-4 mb-0">100% de linha pode deixar o ramo “token expirado” sem verificação. Cobertura guia perguntas; não certifica correção.</div></div></div>
+  <div class="slide" id="slide-9"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">JaCoCo: medir e falhar o build</h2><div class="row g-3"><div class="col-md-6"><div class="bg-dark text-white p-3 rounded-3 h-100"><pre class="mb-0 small text-info"><code>&lt;plugin&gt;
+  &lt;groupId&gt;org.jacoco&lt;/groupId&gt;
+  &lt;artifactId&gt;jacoco-maven-plugin&lt;/artifactId&gt;
+  &lt;version&gt;0.8.15&lt;/version&gt;
+  &lt;executions&gt;
+    &lt;execution&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;prepare-agent&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+    &lt;execution&gt;
+      &lt;id&gt;report-and-check&lt;/id&gt;
+      &lt;phase&gt;verify&lt;/phase&gt;
+      &lt;goals&gt;
+        &lt;goal&gt;report&lt;/goal&gt;
+        &lt;goal&gt;check&lt;/goal&gt;
+      &lt;/goals&gt;
+    &lt;/execution&gt;
+  &lt;/executions&gt;
+&lt;/plugin&gt;</code></pre></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Metas do projeto</h5><p><strong class="fs-3 text-danger">80%</strong> linhas</p><p><strong class="fs-3 text-danger">70%</strong> branches</p><p class="small text-muted mb-0">Configure regras no elemento <code>BUNDLE</code> e rode <code>./mvnw verify</code>. Versão estável do semestre: 0.8.15.</p></div></div></div></div></div>
+  <div class="slide" id="slide-10"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Leia o relatório, não só o total</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-danger align-self-start mb-2">Vermelho</span><p class="small text-muted mb-0">Instrução não executada. Pergunte se representa risco ou código morto.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-warning text-dark align-self-start mb-2">Amarelo</span><p class="small text-muted mb-0">Decisão parcialmente coberta. Falta pelo menos um resultado.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-success align-self-start mb-2">Verde</span><p class="small text-muted mb-0">Executado, mas ainda precisa de assert relevante.</p></div></div></div><div class="bg-dark text-white p-3 rounded-3 mt-4"><code class="text-info small">target/site/jacoco/index.html</code></div><p class="text-muted mt-2 mb-0 text-center">Priorize autorização, expiração e transições; não escreva teste trivial só para pintar DTO de verde.</p></div></div>
+  <div class="slide" id="slide-11"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">SonarCloud acrescenta outra lente</h2><div class="row g-3 text-start"><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><h5 class="fw-bold">Bugs</h5><p class="small text-muted mb-0">Padrões propensos a comportamento incorreto.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><h5 class="fw-bold">Vulnerabilidades</h5><p class="small text-muted mb-0">Riscos de segurança analisáveis.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><h5 class="fw-bold">Manutenibilidade</h5><p class="small text-muted mb-0">Dívida e complexidade que encarecem mudança.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><h5 class="fw-bold">Duplicação</h5><p class="small text-muted mb-0">Código repetido e chance de correção divergente.</p></div></div></div><div class="alert alert-warning border-0 mt-4 mb-0">Análise estática encontra padrões, não comprova regra de negócio. SonarCloud e testes são complementares.</div></div></div>
+  <div class="slide" id="slide-12"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">Análise na CI e Quality Gate</h2><div class="bg-dark text-white p-3 rounded-3"><pre class="mb-0 small text-info"><code>- uses: actions/checkout@v6
+  with:
+    fetch-depth: 0
+- uses: actions/setup-java@v5
+  with:
+    distribution: temurin
+    java-version: '21'
+    cache: maven
+- name: Testar e analisar
+  env:
+    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  run: ./mvnw -B verify \
+       org.sonarsource.scanner.maven:sonar-maven-plugin:sonar</code></pre></div><p class="text-muted mt-3 mb-0">Configure <code>sonar.organization</code> e <code>sonar.projectKey</code>; escolha análise pela CI no onboarding para não duplicar análise automática. Proteja o token.</p></div></div>
+  <div class="slide" id="slide-13"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Prática: blindar sessão e acesso</h2><ol class="list-group list-group-numbered"><li class="list-group-item">Implementar <code>ValidadorToken</code> com <code>Clock</code> injetável.</li><li class="list-group-item">Cobrir ausente, inválido, expirado, revogado e válido; parametrizar o limite temporal.</li><li class="list-group-item">Configurar JaCoCo com relatório e gates de 80% linhas / 70% branches.</li><li class="list-group-item">Abrir o HTML e eliminar lacunas de risco — não lacunas cosméticas.</li><li class="list-group-item">Importar no SonarCloud, configurar token e análise via CI.</li><li class="list-group-item">Abrir PR e corrigir o novo código até o Quality Gate passar.</li></ol></div></div>
+  <div class="slide" id="slide-14"><div class="text-center slide-content"><span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 07</span><h2 class="display-5 fw-bold mb-3 text-dark">E2 protegido por três evidências</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">JUnit</h5><p class="small text-muted mb-0">Cenários legíveis, limite temporal e relógio determinístico.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">JaCoCo</h5><p class="small text-muted mb-0">Relatório HTML/XML e build falhando abaixo de 80/70.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">SonarCloud</h5><p class="small text-muted mb-0">Análise no PR e Quality Gate aprovado no novo código.</p></div></div></div><div class="alert alert-success border-0 mt-4 mb-0">Atualize RTM: RF-E2 → riscos → testes → relatório JaCoCo → análise do PR.</div></div></div>
+  <div class="slide" id="slide-15"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-4 text-dark">Síntese</h2><div class="row g-3 text-start"><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>JUnit</strong> expressa comportamentos e limites.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>Clock</strong> torna tempo testável e determinístico.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>JaCoCo</strong> revela caminhos executados.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>SonarCloud</strong> avalia riscos estáticos e novo código.</div></div></div><p class="lead text-secondary mt-4 mb-0">Qualidade não é um número: é uma decisão sustentada por evidências diferentes.</p></div></div>
+  <div class="slide cover-bg" id="slide-16"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="115" cy="130" r="7"></circle><circle cx="285" cy="570" r="10"></circle><circle cx="650" cy="590" r="8"></circle><circle cx="840" cy="120" r="10"></circle><circle cx="1035" cy="555" r="6"></circle></svg><div class="glass-cover text-center"><i class="fas fa-chart-line fa-3x text-primary mb-3" aria-hidden="true"></i><h1 class="display-4 fw-bold text-dark">Dúvidas?</h1><p class="fs-4 text-secondary">Qual ramo crítico ainda ficaria invisível se olhássemos apenas a cobertura total?</p><span class="badge bg-danger px-4 py-2 rounded-pill">Meça para investigar. Teste para decidir.</span></div></div>
+</div><footer class="slide-footer"><div class="slide-controls"><button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button><div class="progress mx-3" style="width:100px;height:6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width:0%"></div></div><span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 16</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button></div><div class="text-center text-muted small d-none d-md-block">Qualidade - JUnit, JaCoCo e SonarCloud (Semana 39)</div><a href="material/material_junit-jacoco-sonarcloud.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a></footer><script src="../../js/standard_slides.js"></script></body></html>

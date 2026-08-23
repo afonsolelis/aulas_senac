@@ -11,7 +11,7 @@
   ],
   "totals": {
     "directories": 190,
-    "files": 1277
+    "files": 1291
   },
   "tree": [
     {
@@ -188,7 +188,7 @@
         {
           "name": "semestres.json",
           "type": "file",
-          "size": 2811,
+          "size": 6059,
           "note": "Registro dos semestres e suas disciplinas"
         },
         {
@@ -475,109 +475,179 @@
                 {
                   "name": "material_caixa-branca-preta.html",
                   "type": "file",
-                  "size": 3376
+                  "size": 20000
                 },
                 {
                   "name": "material_ci-github-actions.html",
                   "type": "file",
-                  "size": 3384
+                  "size": 12850
+                },
+                {
+                  "name": "material_encerramento.html",
+                  "type": "file",
+                  "size": 19508
+                },
+                {
+                  "name": "material_entrega-projeto-final.html",
+                  "type": "file",
+                  "size": 11033
+                },
+                {
+                  "name": "material_feedback-correcoes.html",
+                  "type": "file",
+                  "size": 10831
                 },
                 {
                   "name": "material_gestao-erros-bugs.html",
                   "type": "file",
-                  "size": 3324
+                  "size": 13063
                 },
                 {
                   "name": "material_introducao-qualidade.html",
                   "type": "file",
-                  "size": 3369
+                  "size": 34098
                 },
                 {
                   "name": "material_introducao-testes-automatizados.html",
                   "type": "file",
-                  "size": 3374
+                  "size": 13342
                 },
                 {
-                  "name": "material_jest-sonarcloud.html",
+                  "name": "material_junit-jacoco-sonarcloud.html",
                   "type": "file",
-                  "size": 3370
+                  "size": 15949
                 },
                 {
                   "name": "material_planejamento-casos-teste.html",
                   "type": "file",
-                  "size": 3349
+                  "size": 33243
+                },
+                {
+                  "name": "material_preparacao-prova-oral.html",
+                  "type": "file",
+                  "size": 10925
+                },
+                {
+                  "name": "material_projeto-autorizacao-rtm.html",
+                  "type": "file",
+                  "size": 11119
+                },
+                {
+                  "name": "material_projeto-conteudo.html",
+                  "type": "file",
+                  "size": 9591
+                },
+                {
+                  "name": "material_revisao-geral.html",
+                  "type": "file",
+                  "size": 18932
                 },
                 {
                   "name": "material_tdd-bdd.html",
                   "type": "file",
-                  "size": 3377
+                  "size": 10406
                 },
                 {
                   "name": "material_testes-carga-jmeter.html",
                   "type": "file",
-                  "size": 3377
+                  "size": 10486
                 },
                 {
-                  "name": "material_vcr-api-seguras.html",
+                  "name": "material_wiremock-api-seguras.html",
                   "type": "file",
-                  "size": 3340
+                  "size": 12495
                 }
               ]
             },
             {
               "name": "especificacao-projeto.html",
               "type": "file",
-              "size": 3306
+              "size": 23817
             },
             {
               "name": "slide_caixa-branca-preta.html",
               "type": "file",
-              "size": 4067
+              "size": 29317
             },
             {
               "name": "slide_ci-github-actions.html",
               "type": "file",
-              "size": 4091
+              "size": 18354
+            },
+            {
+              "name": "slide_encerramento.html",
+              "type": "file",
+              "size": 22666
+            },
+            {
+              "name": "slide_entrega-projeto-final.html",
+              "type": "file",
+              "size": 15936
+            },
+            {
+              "name": "slide_feedback-correcoes.html",
+              "type": "file",
+              "size": 12428
             },
             {
               "name": "slide_gestao-erros-bugs.html",
               "type": "file",
-              "size": 3956
+              "size": 19718
             },
             {
               "name": "slide_introducao-qualidade.html",
               "type": "file",
-              "size": 4046
+              "size": 73081
             },
             {
               "name": "slide_introducao-testes-automatizados.html",
               "type": "file",
-              "size": 4050
+              "size": 20156
             },
             {
-              "name": "slide_jest-sonarcloud.html",
+              "name": "slide_junit-jacoco-sonarcloud.html",
               "type": "file",
-              "size": 4059
+              "size": 18956
             },
             {
               "name": "slide_planejamento-casos-teste.html",
               "type": "file",
-              "size": 4004
+              "size": 59141
+            },
+            {
+              "name": "slide_preparacao-prova-oral.html",
+              "type": "file",
+              "size": 20017
+            },
+            {
+              "name": "slide_projeto-autorizacao-rtm.html",
+              "type": "file",
+              "size": 19820
+            },
+            {
+              "name": "slide_projeto-conteudo.html",
+              "type": "file",
+              "size": 19497
+            },
+            {
+              "name": "slide_revisao-geral.html",
+              "type": "file",
+              "size": 25634
             },
             {
               "name": "slide_tdd-bdd.html",
               "type": "file",
-              "size": 4080
+              "size": 20487
             },
             {
               "name": "slide_testes-carga-jmeter.html",
               "type": "file",
-              "size": 4070
+              "size": 20482
             },
             {
-              "name": "slide_vcr-api-seguras.html",
+              "name": "slide_wiremock-api-seguras.html",
               "type": "file",
-              "size": 4001
+              "size": 16152
             }
           ]
         },
@@ -813,7 +883,7 @@
         {
           "name": "home_qualidade_2026_2.html",
           "type": "file",
-          "size": 23252
+          "size": 30863
         },
         {
           "name": "home_qualidade.html",

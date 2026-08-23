@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 46 - Qualidade: Finalização e Entrega do Foot Fanatics</title>
+  <meta name="keywords" content="qualidade de software, foot fanatics, entrega, release candidate, evidências, RTM, relatório de qualidade, checklist">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">
+    import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = anime;
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+  <div class="slide-container">
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active" id="slide-1">
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3 text-black">Aula 14: Finalização e Entrega</h1>
+        <p class="fs-4 text-secondary mb-3">Foot Fanatics como <strong>release candidate verificável</strong></p>
+        <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
+        <h3 class="fw-normal text-dark">Professor Afonso</h3>
+        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 46 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">release candidate</span><span class="keyword">evidências</span>
+          <span class="keyword">RTM</span><span class="keyword">relatório de qualidade</span>
+          <span class="keyword">Foot Fanatics</span><span class="keyword">entrega</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda de Hoje</h1>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-3">Parte 1 &middot; Congelar</span><h4 class="fw-bold">Da versão funcional ao RC</h4><ul class="text-muted mb-0"><li>Escopo e Definition of Done</li><li>Quality gates locais</li><li>Tag e reprodutibilidade</li></ul></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-danger align-self-start mb-3">Parte 2 &middot; Provar</span><h4 class="fw-bold">Pacote de evidências</h4><ul class="text-muted mb-0"><li>RTM e relatório de qualidade</li><li>Riscos residuais</li><li>Checklist e submissão</li></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="text-center slide-content">
+        <p class="lead text-muted mb-2">Software que “roda na minha máquina” ainda não é uma entrega.</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Uma entrega precisa ser reproduzível, rastreável e defensável</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><i class="fas fa-rotate text-primary fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Reproduzível</h5><p class="small text-muted mb-0">Outra pessoa sobe a aplicação e executa a suíte usando apenas o README.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><i class="fas fa-link text-success fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Rastreável</h5><p class="small text-muted mb-0">Requisito, risco, teste, resultado e defeito permanecem ligados na RTM.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><i class="fas fa-shield-halved text-danger fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Defensável</h5><p class="small text-muted mb-0">O grupo explica por que as evidências sustentam a decisão de liberar.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <div class="slide-content text-center">
+        <span class="badge bg-dark fs-6 mb-2">Release Candidate</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Escopo congelado, qualidade em movimento</h2>
+        <p class="lead text-muted mb-4">Depois do corte, só entram correções que reduzem risco sem desestabilizar o produto.</p>
+        <div class="row g-3 text-start">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="text-success fw-bold">Pode entrar</h5><ul class="text-muted small mb-0"><li>Falha crítica ou alta reproduzida</li><li>Teste de regressão que demonstra a correção</li><li>Documentação necessária para executar</li><li>Ajuste explícito de segredo/configuração</li></ul></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="text-danger fw-bold">Não entra agora</h5><ul class="text-muted small mb-0"><li>Funcionalidade nova “rapidinha”</li><li>Refatoração ampla sem proteção</li><li>Troca de tecnologia</li><li>Melhoria sem relação com critério de aceite</li></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-3 text-dark text-center">Definition of Done da entrega</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><ul class="list-group shadow-sm"><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>Build limpo e suíte automatizada verde</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>Pipeline executado no commit entregue</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>JaCoCo e SonarCloud sem gate bloqueante</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>JMeter com cenário e limites documentados</li></ul></div>
+          <div class="col-md-6"><ul class="list-group shadow-sm"><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>RTM sem requisito órfão</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>ADRs e riscos residuais atualizados</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>README reproduzível do zero</li><li class="list-group-item"><i class="fas fa-check text-success me-2" aria-hidden="true"></i>Tag <code>v1.0.0-rc1</code> aponta para o commit</li></ul></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">A RTM fecha o argumento</h2>
+        <p class="lead text-muted mb-4">Cada linha responde: “o que prometemos, como verificamos e qual foi o resultado?”</p>
+        <div class="table-responsive shadow-sm rounded-3">
+          <table class="table table-bordered align-middle bg-white mb-0"><thead class="table-dark"><tr><th>Requisito</th><th>Risco</th><th>Teste</th><th>Pipeline</th><th>Estado</th></tr></thead><tbody><tr><td><code>RNF-SEG-03</code></td><td>Conteúdo premium exposto</td><td><code>CT-API-18</code></td><td><code>#148</code></td><td><span class="badge bg-success">Passou</span></td></tr><tr><td><code>RNF-PERF-02</code></td><td>p95 acima de 800 ms</td><td><code>CT-PERF-04</code></td><td>JMeter RC1</td><td><span class="badge bg-warning text-dark">Aceito</span></td></tr></tbody></table>
+        </div>
+        <p class="text-muted small mt-3 mb-0">“Aceito” exige justificativa, impacto, responsável e plano de acompanhamento.</p>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Relatório de qualidade: uma decisão, não um álbum</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">1</span><h6 class="fw-bold">Escopo</h6><p class="small text-muted mb-0">Versão, commit, ambiente e itens avaliados.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">2</span><h6 class="fw-bold">Resultados</h6><p class="small text-muted mb-0">Indicadores com fonte e data.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">3</span><h6 class="fw-bold">Riscos</h6><p class="small text-muted mb-0">Falhas abertas e risco residual.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">4</span><h6 class="fw-bold">Decisão</h6><p class="small text-muted mb-0">Liberar, liberar com ressalvas ou bloquear.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Pacote mínimo de evidências</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fab fa-github text-dark me-2" aria-hidden="true"></i>No repositório</h5><ul class="text-muted small mb-0"><li><code>README.md</code> e tag do RC</li><li><code>docs/rtm.md</code> e ADRs</li><li><code>docs/relatorio-qualidade.md</code></li><li>Testes, cenários JMeter e stubs WireMock</li></ul></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fas fa-chart-line text-danger me-2" aria-hidden="true"></i>Nos links do relatório</h5><ul class="text-muted small mb-0"><li>Execução do GitHub Actions</li><li>Painel do SonarCloud</li><li>Relatório JaCoCo</li><li>Resultado JMeter e issues conhecidas</li></ul></div></div>
+        </div>
+        <div class="alert alert-warning border-0 mt-3 mb-0"><strong>Screenshot sozinho não é evidência auditável.</strong> Registre o link, o commit, a data e a interpretação.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+      <div class="slide-content">
+        <span class="badge bg-danger mb-2">Prática guiada &middot; 60 min</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">War room do RC1</h2>
+        <ol class="list-group list-group-numbered shadow-sm">
+          <li class="list-group-item">Escolher o commit candidato e abrir a branch de estabilização.</li>
+          <li class="list-group-item">Executar build, testes, análise estática e carga sem alterar o escopo.</li>
+          <li class="list-group-item">Cruzar falhas com a RTM; classificar impacto e prioridade.</li>
+          <li class="list-group-item">Corrigir somente bloqueadores, sempre com teste de regressão.</li>
+          <li class="list-group-item">Gerar a tag <code>v1.0.0-rc1</code> e registrar as evidências.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Critérios de aceite da Aula 14</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Produto</h5><p class="small text-muted mb-0">RC identificável, executável e sem defeito bloqueante conhecido.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-success">Evidência</h5><p class="small text-muted mb-0">RTM e relatório apontam para execuções reais do mesmo commit.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Decisão</h5><p class="small text-muted mb-0">Riscos residuais estão explícitos e a recomendação de release é justificável.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-4 text-dark">Checklist antes de enviar</h2>
+        <div class="row g-3 text-start justify-content-center"><div class="col-md-9"><ul class="list-group shadow-sm"><li class="list-group-item">URL pública do repositório e integrantes identificados</li><li class="list-group-item">Tag/commit final imutável e pipeline verde</li><li class="list-group-item">README testado por alguém que não configurou o projeto</li><li class="list-group-item">RTM, relatório e riscos residuais versionados</li><li class="list-group-item">Links sem exigir permissão especial do professor</li></ul></div></div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+      <div class="text-center slide-content">
+        <h1 class="display-3 fw-bold mb-4 text-dark">A entrega é o argumento completo</h1>
+        <p class="lead text-muted mb-4">Código + teste + evidência + decisão. Se uma peça falta, a qualidade não pode ser verificada.</p>
+        <div class="alert alert-danger border-0 shadow-sm d-inline-block"><strong>Próxima etapa:</strong> defender as escolhas e os riscos na prova oral.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 12</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand" aria-hidden="true"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Finalização e Entrega do Foot Fanatics (Semana 46)</div>
+    <a href="material/material_entrega-projeto-final.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a>
+    <a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a>
+  </footer>
+  <script src="../../js/standard_slides.js"></script>
+  <script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
+</body>
+</html>

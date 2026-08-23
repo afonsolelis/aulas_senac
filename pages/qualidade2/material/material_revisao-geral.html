@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 16 - Revisão Integrada do Foot Fanatics</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../../css/style.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a>
+      <div class="d-flex align-items-center justify-content-between"><div><span class="badge bg-white text-danger mb-1">Semana 49 &middot; 2026.2 &middot; Aula 16</span><h1 class="h3 fw-bold text-white mb-0">Revisão Integrada do Foot Fanatics</h1></div></div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="row"><div class="col-lg-9 mx-auto">
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3"><i class="fas fa-route text-danger me-2" aria-hidden="true"></i>Objetivo da aula</h2>
+        <p class="text-muted mb-3">Reconstruir o argumento de qualidade desenvolvido durante o semestre e provar que suas partes permanecem coerentes. A revisão percorre <strong>modelo de qualidade, ATAM, técnicas de teste, JUnit, WireMock, TDD/BDD, integração contínua, análise estática, desempenho e rastreabilidade</strong>, sempre aplicados ao Foot Fanatics.</p>
+        <div class="alert alert-danger border-0 mb-0"><strong>Ideia central:</strong> nenhuma ferramenta demonstra qualidade sozinha. A conclusão nasce da ligação entre promessa, risco, teste, evidência e decisão.</div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">1. O mapa integrado da disciplina</h2>
+        <div class="table-responsive">
+          <table class="table table-bordered align-middle bg-white">
+            <thead class="table-dark"><tr><th>Etapa</th><th>Pergunta</th><th>Artefato</th><th>Falha típica</th></tr></thead>
+            <tbody class="small">
+              <tr><td class="fw-bold">Promessa</td><td>Qual qualidade importa?</td><td>RF/RNF mensurável</td><td>Adjetivo vago: “rápido”, “seguro”.</td></tr>
+              <tr><td class="fw-bold">Risco</td><td>Como a promessa pode falhar?</td><td>Cenário ATAM, utility tree</td><td>Prioridade sem impacto ou probabilidade.</td></tr>
+              <tr><td class="fw-bold">Experimento</td><td>Qual teste reduz a incerteza?</td><td>Caso, automação, plano de carga</td><td>Teste escolhido porque a ferramenta estava disponível.</td></tr>
+              <tr><td class="fw-bold">Evidência</td><td>Onde está o resultado reproduzível?</td><td>Pipeline, relatório, log, RTM</td><td>Screenshot sem commit, ambiente ou interpretação.</td></tr>
+              <tr><td class="fw-bold">Decisão</td><td>O risco residual é aceitável?</td><td>Relatório de qualidade</td><td>“Liberar” sem critério explícito.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">2. Modelo de qualidade, cenário ATAM e trade-off</h2>
+        <p class="text-muted">O modelo de qualidade fornece o vocabulário. ATAM ajuda a priorizar riscos arquiteturais e a expor trade-offs. Para sair da abstração, escreva o cenário com seis partes:</p>
+        <ol class="text-muted">
+          <li><strong>Fonte:</strong> quem ou o que gera o estímulo.</li>
+          <li><strong>Estímulo:</strong> evento que pressiona o sistema.</li>
+          <li><strong>Ambiente:</strong> condição em que ocorre, como produção ou pico.</li>
+          <li><strong>Artefato:</strong> parte do sistema atingida.</li>
+          <li><strong>Resposta:</strong> comportamento esperado.</li>
+          <li><strong>Medida:</strong> limite observável que decide sucesso ou falha.</li>
+        </ol>
+        <div class="bg-dark text-white p-3 rounded-3 mb-3"><code class="text-info small">Usuário free tenta abrir matéria premium durante pico de acesso → API nega em até 300 ms, retorna 403 e registra evento sem expor dados pessoais.</code></div>
+        <p class="text-muted mb-0">O cenário cruza segurança, desempenho e observabilidade. Uma resposta mais detalhada pode ajudar suporte, mas aumentar vazamento de informação; cache reduz latência, mas pode servir autorização obsoleta. Essa tensão é o <strong>trade-off</strong> que o teste precisa iluminar.</p>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">3. Técnicas de teste: escolha pelo defeito que deseja enxergar</h2>
+        <div class="row g-3 mb-3">
+          <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold">Caixa preta</h3><p class="small text-muted mb-0">Parte do contrato. Use equivalência, limite, decisão e transição de estados para verificar comportamento visível.</p></div></div>
+          <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold">Caixa branca</h3><p class="small text-muted mb-0">Parte da estrutura. Investigue linhas, ramos e condições ainda não exercitados.</p></div></div>
+          <div class="col-md-4"><div class="p-3 border border-danger rounded-3 bg-danger-subtle h-100"><h3 class="h6 fw-bold">Caixa cinza</h3><p class="small text-muted mb-0">Usa a interface pública com conhecimento do estado interno, comum em testes de API e integração.</p></div></div>
+        </div>
+        <h3 class="h5 fw-bold">Exemplo no Foot Fanatics</h3>
+        <ul class="text-muted">
+          <li><strong>Preta:</strong> combina usuário anônimo, free, premium e assinatura expirada com conteúdo público ou restrito.</li>
+          <li><strong>Branca:</strong> executa ramos de plano ausente, cancelado, expirado e válido no serviço de autorização.</li>
+          <li><strong>Cinza:</strong> prepara o estado da assinatura no banco, chama a API e verifica resposta e registro de auditoria.</li>
+        </ul>
+        <div class="alert alert-warning border-0 mb-0"><strong>Cobertura é mapa de passagem, não prova de correção.</strong> Use-a para encontrar lacunas; exija asserções relevantes e rastreabilidade ao requisito.</div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">4. JUnit: testes legíveis, isolados e confiáveis</h2>
+        <p class="text-muted">Um bom teste automatizado tem intenção visível no nome, controla seu próprio estado, produz o mesmo resultado em qualquer ordem e falha por uma razão útil. O arranjo <strong>Arrange–Act–Assert</strong> ajuda a separar preparação, ação e verificação.</p>
+        <pre class="bg-dark text-info p-3 rounded-3 small"><code>@Test
+void deveNegarMateriaPremiumParaPlanoFree() {
+    var usuario = UsuarioFixture.comPlanoFree();
+    var materia = MateriaFixture.premium();
+
+    var erro = assertThrows(AcessoNegadoException.class,
+        () -&gt; acesso.liberar(usuario, materia));
+
+    assertEquals("ASSINATURA_NECESSARIA", erro.getCodigo());
+}</code></pre>
+        <h3 class="h5 fw-bold mt-4">Pirâmide e níveis</h3>
+        <ul class="text-muted mb-0">
+          <li><strong>Unidade:</strong> regra isolada, feedback rápido, muitas combinações.</li>
+          <li><strong>Integração:</strong> banco, serialização, segurança e fronteiras reais relevantes.</li>
+          <li><strong>Contrato/API:</strong> status, headers, corpo e compatibilidade.</li>
+          <li><strong>Ponta a ponta:</strong> poucos fluxos críticos; custo e instabilidade maiores.</li>
+        </ul>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">5. WireMock e APIs seguras</h2>
+        <p class="text-muted">WireMock substitui uma fronteira HTTP por respostas determinísticas. Isso permite exercitar comportamentos difíceis de produzir no serviço real: timeout, erro intermitente, payload malformado e limitação de taxa.</p>
+        <div class="table-responsive"><table class="table table-bordered align-middle bg-white"><thead class="table-dark"><tr><th>Cenário</th><th>Stub</th><th>Comportamento esperado</th></tr></thead><tbody class="small"><tr><td>Sucesso</td><td><code>200</code> com JSON válido</td><td>Mapear resposta sem perder campos necessários.</td></tr><tr><td>Timeout</td><td>Atraso acima do limite</td><td>Encerrar, registrar métrica e devolver resposta segura.</td></tr><tr><td>Erro externo</td><td><code>503</code></td><td>Não duplicar operação; aplicar retry apenas se idempotente.</td></tr><tr><td>Payload inválido</td><td><code>200</code> malformado</td><td>Falhar de forma controlada sem vazar stack trace.</td></tr></tbody></table></div>
+        <div class="alert alert-secondary border-0 mb-0">O mock verifica como o Foot Fanatics reage à fronteira. Um teste de contrato ou sandbox ainda é necessário para validar se a suposição sobre o provedor continua correta.</div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">6. TDD, BDD e regressão</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold text-primary">TDD: Red–Green–Refactor</h3><ol class="small text-muted mb-0"><li>Escrever um teste pequeno que falha pela razão esperada.</li><li>Implementar o mínimo para passar.</li><li>Refatorar mantendo a suíte verde.</li></ol></div></div>
+          <div class="col-md-6"><div class="p-3 border border-danger rounded-3 bg-danger-subtle h-100"><h3 class="h6 fw-bold text-danger">BDD: Given–When–Then</h3><ol class="small text-muted mb-0"><li>Explicitar o contexto de negócio.</li><li>Descrever uma ação observável.</li><li>Definir resultado que importa à pessoa usuária.</li></ol></div></div>
+        </div>
+        <pre class="bg-light border rounded-3 p-3 small text-dark mt-3"><code>Cenário: assinatura expirada tenta abrir conteúdo premium
+Dado que a assinatura de Ana expirou
+Quando ela solicita uma matéria premium
+Então a API retorna 403
+E não inclui o conteúdo no corpo
+E registra o motivo sem dados sensíveis</code></pre>
+        <p class="text-muted mb-0">Ao corrigir um bug, primeiro crie um teste que reproduza a falha. Esse teste é a memória executável do incidente.</p>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">7. CI, JaCoCo e SonarCloud</h2>
+        <p class="text-muted">Integração contínua reduz o tempo entre introduzir um defeito e receber feedback. O pipeline precisa rodar sobre o commit que será avaliado e aplicar a mesma política a todos.</p>
+        <ol class="text-muted">
+          <li><strong>Build limpo:</strong> confirma dependências e compilação em ambiente novo.</li>
+          <li><strong>Testes:</strong> executa unidades e integrações com serviços controlados.</li>
+          <li><strong>JaCoCo:</strong> mostra linhas e ramos não exercitados; não substitui revisão das asserções.</li>
+          <li><strong>SonarCloud:</strong> sinaliza bugs, vulnerabilidades, hotspots e dívida técnica.</li>
+          <li><strong>Quality Gate:</strong> bloqueia quando um risco definido ultrapassa o limite.</li>
+        </ol>
+        <div class="alert alert-warning border-0 mb-0">Prefira política para <strong>código novo</strong> e limites com justificativa. Um gate impossível incentiva manipulação; um gate que nunca bloqueia é decoração.</div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">8. JMeter: cenário, percentis e interpretação</h2>
+        <p class="text-muted">Teste de carga começa com uma hipótese operacional. “Rodar 100 usuários” não basta: registre fluxo, distribuição de dados, aquecimento, ramp-up, duração, ambiente e versão.</p>
+        <div class="table-responsive"><table class="table table-bordered align-middle bg-white"><thead class="table-dark"><tr><th>Elemento</th><th>Exemplo Foot Fanatics</th></tr></thead><tbody class="small"><tr><td>Carga</td><td>50 usuários virtuais, ramp-up de 30 s, duração de 5 min.</td></tr><tr><td>Fluxo</td><td>Autenticar, listar matérias e abrir conteúdo permitido.</td></tr><tr><td>Critério</td><td>p95 abaixo de 800 ms, erro abaixo de 1%, sem vazamento de memória.</td></tr><tr><td>Evidência</td><td>JMX versionado, relatório HTML, ambiente, commit e observações.</td></tr></tbody></table></div>
+        <p class="text-muted mb-0">Leia <strong>p50, p90, p95 e p99</strong>, throughput, erros e recursos juntos. A média pode parecer saudável enquanto uma parcela relevante recebe respostas muito lentas.</p>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">9. RTM: a matriz que fecha o argumento</h2>
+        <p class="text-muted">A matriz de rastreabilidade não é um inventário burocrático. Ela permite auditar se toda promessa possui verificação e se toda decisão aponta para evidência da versão correta.</p>
+        <div class="table-responsive"><table class="table table-bordered align-middle bg-white"><thead class="table-dark"><tr><th>Requisito</th><th>Risco</th><th>Caso</th><th>Automação</th><th>Evidência</th><th>Estado</th></tr></thead><tbody class="small"><tr><td><code>RNF-SEG-03</code></td><td>Premium exposto</td><td><code>CT-API-18</code></td><td>JUnit/WireMock</td><td>Actions #148</td><td><span class="badge bg-success">Passou</span></td></tr><tr><td><code>RNF-PERF-02</code></td><td>p95 alto</td><td><code>CT-PERF-04</code></td><td>JMeter</td><td>Relatório RC1</td><td><span class="badge bg-warning text-dark">Ressalva</span></td></tr></tbody></table></div>
+        <ul class="text-muted mb-0"><li><strong>Requisito órfão:</strong> promessa sem caso de teste.</li><li><strong>Teste órfão:</strong> custo sem requisito ou risco explícito.</li><li><strong>Evidência órfã:</strong> arquivo ou gráfico sem commit, ambiente, data ou interpretação.</li></ul>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">10. Laboratório: auditoria cruzada</h2>
+        <p class="text-muted">Escolha um requisito de alto risco do Foot Fanatics e registre a revisão em <code>docs/revisao-integrada.md</code>.</p>
+        <ol class="list-group list-group-numbered mb-3">
+          <li class="list-group-item">Copie o RF/RNF e reescreva qualquer termo que não seja mensurável.</li>
+          <li class="list-group-item">Escreva o cenário ATAM e descreva o trade-off relevante.</li>
+          <li class="list-group-item">Selecione técnicas de caixa preta, branca/cinza e um teste não funcional quando aplicável.</li>
+          <li class="list-group-item">Ligue JUnit, WireMock, CI, análise estática ou JMeter apenas quando reduzirem uma incerteza explícita.</li>
+          <li class="list-group-item">Atualize a linha da RTM com evidência do mesmo commit.</li>
+          <li class="list-group-item">Peça a outro grupo para desafiar a cadeia e corrija os elos frágeis.</li>
+        </ol>
+        <h3 class="h5 fw-bold">Entregável</h3>
+        <p class="text-muted mb-0">Uma página versionada contendo requisito, cenário, risco, estratégia de teste, links de evidência, risco residual e recomendação de release.</p>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3"><i class="fas fa-clipboard-check text-success me-2" aria-hidden="true"></i>Critérios de aceite</h2>
+        <div class="row g-3">
+          <div class="col-md-6"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold text-success">Conteúdo</h3><ul class="small text-muted mb-0"><li>Requisito mensurável e cenário ATAM completo</li><li>Risco e trade-off explícitos</li><li>Técnicas escolhidas com justificativa</li><li>Oráculos e dados de teste definidos</li></ul></div></div>
+          <div class="col-md-6"><div class="p-3 border border-danger rounded-3 bg-danger-subtle h-100"><h3 class="h6 fw-bold text-danger">Evidência e decisão</h3><ul class="small text-muted mb-0"><li>Links identificam commit, ambiente e execução</li><li>RTM não deixa requisito, teste ou evidência órfãos</li><li>Risco residual está registrado</li><li>Recomendação decorre dos resultados</li></ul></div></div>
+        </div>
+      </section>
+
+      <section class="glass-card p-4 mb-4">
+        <h2 class="h4 fw-bold mb-3">Síntese para levar</h2>
+        <ul class="text-muted mb-0"><li>Qualidade começa com uma promessa mensurável, não com uma ferramenta.</li><li>ATAM conecta atributos a riscos e trade-offs arquiteturais.</li><li>Técnicas diferentes enxergam defeitos diferentes e precisam se complementar.</li><li>JUnit, WireMock, TDD/BDD, CI e JMeter são meios de produzir feedback e evidência.</li><li>A RTM permite reconstruir por que uma versão foi liberada, bloqueada ou aceita com ressalvas.</li></ul>
+      </section>
+
+      <div class="text-center"><a href="../slide_revisao-geral.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+    </div></div>
+  </main>
+
+  <footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

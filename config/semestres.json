@@ -1,5 +1,5 @@
 {
-  "atual": "2026.1",
+  "atual": "2026.2",
   "index": "index.html",
   "descricao": "Registro dos semestres do hub. O index.html é o seletor de semestre; cada semestre tem uma home (pages/home_<ano>_<sem>.html) que lista suas disciplinas. Tokens de cor por disciplina vivem em config/disciplina-<slug>.json.",
   "semestres": [
@@ -36,8 +36,8 @@
           "home": "pages/home_qualidade_2026_2.html",
           "slides_dir": "pages/qualidade2",
           "material_dir": "pages/qualidade2/material",
-          "status": "em-construcao",
-          "obs": "Conteúdo proprio de 2026.2 (placeholders) em pages/qualidade2/ — nao reaproveita slides de 2026.1. Paleta de qualidade (data_disciplina=qualidade).",
+          "status": "completo",
+          "obs": "Conteúdo próprio de 2026.2 em pages/qualidade2/, com 17 aulas completas e o Foot Fanatics como fio condutor. Não reaproveita slides de 2026.1. Paleta de qualidade (data_disciplina=qualidade).",
           "case": {
             "nome": "Foot Fanatics",
             "descricao": "API de conteúdo esportivo com assinatura (conta, acesso e gestão de sessão). Mesma espinha dorsal do remo-api, acrescida de assinatura. É o projeto avaliado e o fio condutor de todas as aulas praticas.",

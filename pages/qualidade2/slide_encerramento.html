@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 50 - Qualidade: Encerramento e Próximos Passos</title>
+  <meta name="keywords" content="qualidade de software, retrospectiva, métricas, ética, dívida técnica, backlog, portfólio, Foot Fanatics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">
+    import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = anime;
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+  <div class="slide-container">
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active cover-bg" id="slide-1">
+      <svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="90" cy="115" r="8"></circle><circle cx="205" cy="570" r="5"></circle>
+        <circle cx="370" cy="95" r="10"></circle><circle cx="545" cy="600" r="7"></circle>
+        <circle cx="730" cy="105" r="6"></circle><circle cx="895" cy="565" r="10"></circle>
+        <circle cx="1070" cy="135" r="7"></circle><circle cx="1140" cy="430" r="5"></circle>
+      </svg>
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3">Aula 17: Encerramento</h1>
+        <p class="fs-4 mb-3">Aprendizado, responsabilidade e <strong>próximos passos</strong></p>
+        <hr class="w-25 mx-auto my-3">
+        <h3 class="fw-normal">Professor Afonso</h3>
+        <span class="badge bg-light text-danger mt-3 px-3 py-2 rounded-pill">Semana 50 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">retrospectiva</span><span class="keyword">métricas</span>
+          <span class="keyword">ética</span><span class="keyword">responsabilidade</span>
+          <span class="keyword">dívida técnica</span><span class="keyword">backlog</span>
+          <span class="keyword">portfólio</span><span class="keyword">Foot Fanatics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-3 text-dark text-center">Agenda de Hoje</h1>
+        <p class="lead text-muted text-center mb-4">Encerrar o semestre sem encerrar o produto nem o aprendizado.</p>
+        <div class="row g-3">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-3">Parte 1 &middot; Aprender</span><h4 class="fw-bold">Retrospectiva</h4><ul class="small text-muted mb-0"><li>Linha de base e tendência</li><li>Métricas com contexto</li><li>Hipóteses e limites</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-3">Parte 2 &middot; Assumir</span><h4 class="fw-bold">Responsabilidade</h4><ul class="small text-muted mb-0"><li>Ética e transparência</li><li>Risco residual</li><li>Dívida e backlog</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-3">Parte 3 &middot; Projetar</span><h4 class="fw-bold">Continuidade</h4><ul class="small text-muted mb-0"><li>Portfólio verificável</li><li>Plano de 30 dias</li><li>Compromisso pessoal</li></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="slide-content text-center">
+        <p class="lead text-muted mb-2">Retrospectiva não pergunta apenas “deu certo?”.</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">O que mudou, por quê e o que faremos diferente?</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><i class="fas fa-camera-retro text-primary fa-2x mb-2" aria-hidden="true"></i><h6 class="fw-bold">Baseline</h6><p class="small text-muted mb-0">Como o projeto estava quando começamos a medir?</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><i class="fas fa-chart-line text-primary fa-2x mb-2" aria-hidden="true"></i><h6 class="fw-bold">Mudança</h6><p class="small text-muted mb-0">Qual tendência apareceu ao longo das versões?</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><i class="fas fa-microscope text-dark fa-2x mb-2" aria-hidden="true"></i><h6 class="fw-bold">Causa</h6><p class="small text-muted mb-0">Qual hipótese explica o resultado observado?</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><i class="fas fa-arrow-right text-danger fa-2x mb-2" aria-hidden="true"></i><h6 class="fw-bold">Ação</h6><p class="small text-muted mb-0">Qual experimento ou mudança vem agora?</p></div></div>
+        </div>
+        <div class="alert alert-dark border-0 mt-4 mb-0"><strong>Sem baseline, tendência e contexto, uma métrica é só um número procurando uma história.</strong></div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Painel de encerramento do Foot Fanatics</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">Produto</span><h6 class="fw-bold">Valor e aceite</h6><ul class="small text-muted mb-0"><li>RF/RNF aceitos</li><li>Fluxos críticos</li><li>Riscos residuais</li></ul></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">Código</span><h6 class="fw-bold">Saúde técnica</h6><ul class="small text-muted mb-0"><li>Cobertura útil</li><li>Dívida nova</li><li>Hotspots</li></ul></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-2">Fluxo</span><h6 class="fw-bold">Entrega</h6><ul class="small text-muted mb-0"><li>Lead time</li><li>Falhas de pipeline</li><li>Retrabalho</li></ul></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">Operação</span><h6 class="fw-bold">Comportamento</h6><ul class="small text-muted mb-0"><li>p95 e erro</li><li>Incidentes</li><li>Recuperação</li></ul></div></div>
+        </div>
+        <p class="text-muted small mt-3 mb-0">Um painel equilibrado evita otimizar cobertura enquanto o produto falha, ou otimizar velocidade enquanto a equipe acumula risco.</p>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <div class="slide-content text-center">
+        <span class="badge bg-primary mb-2">Leitura responsável</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Métrica não explica causa sozinha</h2>
+        <div class="table-responsive shadow-sm rounded-3">
+          <table class="table table-bordered align-middle bg-white mb-0 small"><thead class="table-dark"><tr><th>Sinal</th><th>Conclusão apressada</th><th>Pergunta melhor</th></tr></thead><tbody><tr><td>Cobertura subiu</td><td>“Qualidade melhorou.”</td><td>Quais riscos ganharam asserções relevantes?</td></tr><tr><td>p95 caiu</td><td>“O sistema escalou.”</td><td>Carga, dados e ambiente são comparáveis?</td></tr><tr><td>Defeitos caíram</td><td>“Há menos problemas.”</td><td>Mudou a detecção, o uso ou a classificação?</td></tr><tr><td>Pipeline verde</td><td>“Pode liberar.”</td><td>Os gates cobrem os riscos críticos desta versão?</td></tr></tbody></table>
+        </div>
+        <div class="alert alert-warning border-0 mt-3 mb-0"><strong>Boa retrospectiva separa:</strong> fato observado, interpretação, hipótese causal e ação proposta.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+      <div class="slide-content text-center">
+        <span class="badge bg-dark mb-2">Ética e responsabilidade profissional</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Qualidade protege pessoas, não dashboards</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Privacidade</h5><p class="small text-muted mb-0">Não copie dados reais para testes, relatórios ou logs. Minimize, anonimize e controle acesso.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Transparência</h5><p class="small text-muted mb-0">Não esconda teste ignorado, ambiente limitado, resultado inconclusivo ou risco residual.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Não discriminação</h5><p class="small text-muted mb-0">Inclua cenários de acessibilidade, diversidade de contexto e impactos desiguais.</p></div></div>
+        </div>
+        <div class="alert alert-danger border-0 shadow-sm mt-3 mb-0">Pressão por prazo não transforma risco conhecido em risco inexistente. Registre, comunique e escale de forma proporcional ao dano potencial.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Dívida técnica precisa de nome e juros</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Código</h6><p class="small text-muted mb-0">Duplicação, complexidade e regra espalhada.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Testes</h6><p class="small text-muted mb-0">Flakiness, lacunas críticas e suíte lenta.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Arquitetura</h6><p class="small text-muted mb-0">Acoplamento, fronteira frágil e trade-off vencido.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><h6 class="fw-bold text-danger">Operação</h6><p class="small text-muted mb-0">Observabilidade fraca, deploy manual e segredo mal gerido.</p></div></div>
+        </div>
+        <div class="bg-dark text-white p-3 rounded-3 text-start mt-3"><code class="text-info small">DÍVIDA-07 — Cache de autorização sem invalidação imediata<br>Juros: risco de acesso indevido + custo de investigação<br>Evidência: CT-CONC-03 falha em 2/100 execuções<br>Estratégia: correção + regressão + alerta | responsável | prazo</code></div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+      <div class="slide-content text-center">
+        <span class="badge bg-danger mb-2">Backlog de continuidade</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Priorize por risco, valor e custo de atraso</h2>
+        <div class="table-responsive shadow-sm rounded-3">
+          <table class="table table-bordered align-middle bg-white mb-0 small"><thead class="table-dark"><tr><th>Item</th><th>Impacto</th><th>Prob.</th><th>Esforço</th><th>Ação</th></tr></thead><tbody><tr><td>Falha intermitente de autorização</td><td><span class="badge bg-danger">Alto</span></td><td>Baixa</td><td>Médio</td><td>Corrigir antes de produção</td></tr><tr><td>Teste de contrato do provedor</td><td>Médio</td><td>Média</td><td>Baixo</td><td>Próxima iteração</td></tr><tr><td>Refatorar nomes internos</td><td>Baixo</td><td>Baixa</td><td>Médio</td><td>Reavaliar</td></tr></tbody></table>
+        </div>
+        <div class="alert alert-secondary border-0 mt-3 mb-0">Todo item deve conter problema, evidência, impacto, critério de aceite, responsável e próximo ponto de revisão.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+      <div class="slide-content text-center">
+        <span class="badge bg-primary mb-2">Portfólio verificável</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Mostre decisões, não apenas arquivos</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fab fa-github me-2" aria-hidden="true"></i>Repositório</h5><ul class="small text-muted mb-0"><li>README reproduzível</li><li>Histórico legível</li><li>Testes e pipeline</li><li>Sem segredos ou dados pessoais</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fas fa-book-open me-2" aria-hidden="true"></i>Case</h5><ul class="small text-muted mb-0"><li>Problema e contexto</li><li>Risco escolhido</li><li>Decisão e trade-off</li><li>Evidência e resultado</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold"><i class="fas fa-comments me-2" aria-hidden="true"></i>Narrativa</h5><ul class="small text-muted mb-0"><li>Minha contribuição</li><li>O que falhou</li><li>Como aprendemos</li><li>O próximo experimento</li></ul></div></div>
+        </div>
+        <p class="text-muted small mt-3 mb-0">Antes de publicar, remova chaves, e-mails, nomes de terceiros, dados reais e links privados.</p>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Qualidade é uma habilidade transversal</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">Desenvolvimento</h6><p class="small text-muted mb-0">Design testável, feedback rápido e regressão.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">QA</h6><p class="small text-muted mb-0">Estratégia baseada em risco e exploração.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-dark">DevOps/SRE</h6><p class="small text-muted mb-0">Pipeline, observabilidade, confiabilidade e resposta.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><h6 class="fw-bold text-danger">Produto</h6><p class="small text-muted mb-0">Critérios de aceite, impacto e decisão responsável.</p></div></div>
+        </div>
+        <div class="alert alert-dark border-0 mt-4 mb-0">A pergunta profissional não é “quem testa?”. É <strong>“como esta equipe aprende cedo o suficiente para evitar dano?”</strong></div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+      <div class="slide-content">
+        <span class="badge bg-success mb-2">Retrospectiva guiada &middot; 40 min</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Da evidência ao aprendizado</h2>
+        <ol class="list-group list-group-numbered shadow-sm">
+          <li class="list-group-item">Selecionem <strong>quatro indicadores</strong>: produto, código, fluxo e operação.</li>
+          <li class="list-group-item">Comparem baseline e versão final, registrando fonte e limite de comparação.</li>
+          <li class="list-group-item">Separem fato, interpretação e hipótese causal.</li>
+          <li class="list-group-item">Identifiquem uma prática a manter, uma a parar e uma a experimentar.</li>
+          <li class="list-group-item">Transformem os riscos e dívidas restantes em backlog priorizado.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+      <div class="slide-content text-center">
+        <span class="badge bg-danger mb-2">Entregável final da disciplina</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark"><code>docs/retrospectiva-final.md</code></h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Parte coletiva</h5><ul class="small text-muted mb-0"><li>Dashboard com fonte e tendência</li><li>Três aprendizados sustentados por evidência</li><li>Dívidas e backlog priorizados</li><li>Limites éticos e riscos residuais</li></ul></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Parte individual</h5><ul class="small text-muted mb-0"><li>Minha contribuição verificável</li><li>Uma decisão que consigo defender</li><li>Uma lacuna que assumo</li><li>Plano de aprendizado de 30 dias</li></ul></div></div>
+        </div>
+        <div class="alert alert-success border-0 mt-3 mb-0"><strong>Formato:</strong> texto curto, links auditáveis e linguagem profissional — sem dados pessoais de colegas ou usuários.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Critérios de aceite e saída</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">Honestidade</h6><p class="small text-muted mb-0">Resultados e limitações não são maquiados.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">Contexto</h6><p class="small text-muted mb-0">Métricas têm fonte, período, baseline e versão.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-dark">Ação</h6><p class="small text-muted mb-0">Dívidas viram backlog com responsável e aceite.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><h6 class="fw-bold text-danger">Continuidade</h6><p class="small text-muted mb-0">Portfólio e plano de 30 dias têm próximo passo concreto.</p></div></div>
+        </div>
+        <p class="lead text-muted mt-4 mb-0">Saída individual: escreva a primeira ação, a data e a evidência que provará que ela foi concluída.</p>
+      </div>
+    </div>
+
+    <div class="slide cover-bg" id="slide-14">
+      <svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="115" cy="130" r="7"></circle><circle cx="285" cy="570" r="10"></circle>
+        <circle cx="470" cy="105" r="6"></circle><circle cx="650" cy="590" r="8"></circle>
+        <circle cx="840" cy="120" r="10"></circle><circle cx="1035" cy="555" r="6"></circle>
+      </svg>
+      <div class="glass-cover text-center p-4">
+        <h1 class="display-3 fw-bold mb-3">Qualidade é responsabilidade compartilhada</h1>
+        <p class="fs-4 mb-4">Medir com contexto. Testar pelo risco. Comunicar limites. Melhorar sem esconder o custo.</p>
+        <div class="row g-2 text-start">
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Do semestre</strong><br><span class="small">fica o método</span></div></div>
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Do projeto</strong><br><span class="small">ficam as evidências</span></div></div>
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Da profissão</strong><br><span class="small">fica a responsabilidade</span></div></div>
+        </div>
+        <p class="fs-5 mt-4 mb-0">Obrigado pelo semestre. Agora façam o próximo sistema melhor — e saibam explicar por quê.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 14</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand" aria-hidden="true"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Encerramento e Próximos Passos (Semana 50)</div>
+    <a href="material/material_encerramento.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a>
+    <a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a>
+  </footer>
+  <script src="../../js/standard_slides.js"></script>
+  <script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
+</body>
+
+</html>

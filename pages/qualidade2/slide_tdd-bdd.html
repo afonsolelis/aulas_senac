@@ -1,94 +1,535 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 41 - Qualidade: TDD e BDD: Desenvolvimento Guiado por Testes</title>
-  <meta name="keywords" content="qualidade de software, TDD, BDD, red-green-refactor, given when then">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css">
-  <link rel="stylesheet" href="../../css/base-styles.css">
-</head>
-
-<body class="slide-body" data-disciplina="qualidade">
-
-  <div class="slide-container">
-
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
-
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 09: TDD e BDD: Desenvolvimento Guiado por Testes</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 41 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">TDD e BDD: Desenvolvimento Guiado por Testes</span></div>
-      </div>
-    </div>
-
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">TDD e BDD: Desenvolvimento Guiado por Testes</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
-
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">RTM completo e eixos de RNF no SonarCloud</h2>
-        <p class="lead text-muted mb-3">Fechar a rastreabilidade: do requisito até a evidência de que ele foi testado.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Montar a <strong>RTM completa</strong> em <code>RTM.md</code>: cada <code>RF</code> e <code>RNF</code> ligado ao risco, ao teste que o cobre e à evidência de execução.</li>
-              <li class="list-group-item">Integrar o <strong>SonarCloud</strong> ao pipeline construído na aula passada.</li>
-              <li class="list-group-item">Identificar quais <strong>eixos de RNF</strong> o Sonar está medindo: confiabilidade, manutenibilidade, segurança, cobertura e duplicação.</li>
-              <li class="list-group-item">Mapear cada eixo de volta para os <code>RNF</code> escritos lá na elicitação — quem não tem eixo, não está sendo medido.</li>
-              <li class="list-group-item">Listar o que o Sonar <strong>não alcança</strong> (carga, autorização, concorrência) e apontar qual teste cobre cada lacuna.</li>
-            </ol>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="TDD, BDD, red green refactor, given when then, assinatura, Foot Fanatics"
+    />
+    <title>Aula 09 - TDD e BDD</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a
+        href="../home_qualidade_2026_2.html"
+        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
+        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para
+        página inicial</a
+      >
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img
+            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+            alt="Senac Logo"
+            height="80"
+            class="mb-3"
+          />
+          <h5 class="text-uppercase text-secondary fw-bold">
+            Qualidade de Software · TADS
+          </h5>
+          <h1 class="display-4 fw-bold text-dark">Aula 09: TDD e BDD</h1>
+          <p class="fs-4 text-secondary">
+            Desenvolvimento guiado por exemplos verificáveis
+          </p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill"
+            >Semana 41 · Foot Fanatics E3</span
+          >
+          <div class="slide-keywords d-none" aria-hidden="true">
+            <span class="keyword">TDD</span><span class="keyword">BDD</span
+            ><span class="keyword">red-green-refactor</span>
           </div>
         </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> <code>RTM.md</code> completo e SonarCloud no pipeline com os eixos de RNF mapeados.
+      </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
+          <div class="row g-3 fs-5">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>TDD</strong
+                ><span class="text-muted"
+                  >Red → Green → Refactor em passos mínimos.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>BDD</strong
+                ><span class="text-muted"
+                  >Regra de negócio como exemplo Given–When–Then.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Tempo testável</strong
+                ><span class="text-muted"
+                  >Assinatura vigente sem depender do relógio real.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Prática</strong
+                ><span class="text-muted"
+                  >Implementar uma regra E3 com evidência do ciclo.</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+      </div>
+      <div class="slide" id="slide-3">
+        <div class="slide-content text-center">
+          <span class="badge bg-danger mb-3">Mudança de fluxo</span>
+          <h2 class="display-5 fw-bold">Não é “testar depois”</h2>
+          <p class="lead text-muted">
+            O teste chega antes para reduzir ambiguidade e orientar o design.
+          </p>
+          <div class="row g-3 text-start mt-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Antes</strong
+                ><small class="text-muted"
+                  >Escolha um comportamento pequeno e observável.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Durante</strong
+                ><small class="text-muted"
+                  >Escreva apenas o código que faz o exemplo passar.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Depois</strong
+                ><small class="text-muted"
+                  >Melhore o design sob a proteção da suíte.</small
+                >
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-dark mt-4">
+            Se o teste nunca ficou vermelho, você não provou que ele detecta a
+            ausência do comportamento.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            O microciclo do TDD
+          </h2>
+          <div class="row g-3 text-center">
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle">
+                <i
+                  class="fas fa-circle-xmark fa-2x text-danger mb-2"
+                  aria-hidden="true"
+                ></i>
+                <h3>Red</h3>
+                <p class="mb-0">Um teste pequeno falha pela razão esperada.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 bg-success-subtle">
+                <i
+                  class="fas fa-circle-check fa-2x text-success mb-2"
+                  aria-hidden="true"
+                ></i>
+                <h3>Green</h3>
+                <p class="mb-0">
+                  Implementação mínima torna toda a suíte verde.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 bg-warning-subtle">
+                <i
+                  class="fas fa-broom fa-2x text-warning mb-2"
+                  aria-hidden="true"
+                ></i>
+                <h3>Refactor</h3>
+                <p class="mb-0">
+                  Remova duplicação e melhore nomes sem mudar comportamento.
+                </p>
+              </div>
+            </div>
+          </div>
+          <p class="lead text-center text-muted mt-4">
+            Ciclo de minutos, commit de uma decisão por vez.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <span class="badge bg-primary mb-2">Exemplo E3</span>
+          <h2 class="display-5 fw-bold">
+            Primeiro teste: assinatura vencida não libera conteúdo
+          </h2>
+          <pre
+            class="bg-dark text-white rounded-3 p-3 mt-3"
+          ><code class="text-info">@Test
+void assinaturaVencidaNaoConcedeAcesso() {
+  Clock relogio = Clock.fixed(instant("2026-10-05T12:00:00Z"), UTC);
+  Assinatura assinatura = premiumAte("2026-10-05T11:59:59Z");
+
+  assertThat(assinatura.podeAcessarExclusivo(relogio)).isFalse();
+}</code></pre>
+          <div class="alert alert-warning mt-3 mb-0">
+            <strong>Design induzido:</strong> a regra recebe um
+            <code>Clock</code>. O domínio não consulta
+            <code>now()</code> escondido e o teste controla o tempo.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Um bom teste é FIRST
+          </h2>
+          <div class="row g-3">
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>F · Fast</strong
+                ><small class="text-muted">rápido</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>I · Independent</strong
+                ><small class="text-muted">isolado</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>R · Repeatable</strong
+                ><small class="text-muted">repetível</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>S · Self-validating</strong
+                ><small class="text-muted">passa/falha</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>T · Timely</strong
+                ><small class="text-muted">no momento certo</small>
+              </div>
+            </div>
+          </div>
+          <h4 class="mt-4">Nome conta a história</h4>
+          <p class="fs-5 text-muted">
+            <code>assinaturaVencidaNaoConcedeAcesso()</code> documenta condição
+            e resultado. <code>testarAssinatura()</code> não documenta nada.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-7">
+        <div class="slide-content">
+          <span class="badge bg-success mb-2">BDD</span>
+          <h2 class="display-5 fw-bold">Conversa antes da automação</h2>
+          <div class="card border-0 shadow-sm p-4 mt-3 fs-5">
+            <p>
+              <strong>Dado</strong> que Ana possui plano premium vencido às
+              11:59:59
+            </p>
+            <p>
+              <strong>Quando</strong> solicita uma matéria exclusiva às 12:00:00
+            </p>
+            <p class="mb-0">
+              <strong>Então</strong> o acesso é negado com 403 e nenhum conteúdo
+              exclusivo é retornado
+            </p>
+          </div>
+          <div class="row g-3 mt-3">
+            <div class="col-md-4">
+              <div class="alert alert-light border h-100">
+                <strong>Given</strong><br /><small>estado relevante</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-light border h-100">
+                <strong>When</strong><br /><small>evento único</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="alert alert-light border h-100">
+                <strong>Then</strong><br /><small>resultado observável</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            TDD e BDD se complementam
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white shadow-sm">
+              <thead class="table-dark">
+                <tr>
+                  <th></th>
+                  <th>TDD</th>
+                  <th>BDD</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Pergunta</strong></td>
+                  <td>Qual é o próximo comportamento mínimo?</td>
+                  <td>Qual exemplo esclarece a regra?</td>
+                </tr>
+                <tr>
+                  <td><strong>Escala</strong></td>
+                  <td>unidade/design</td>
+                  <td>negócio/aceite</td>
+                </tr>
+                <tr>
+                  <td><strong>Linguagem</strong></td>
+                  <td>código e asserção</td>
+                  <td>domínio e cenário</td>
+                </tr>
+                <tr>
+                  <td><strong>Evidência</strong></td>
+                  <td>histórico Red–Green–Refactor</td>
+                  <td>cenário ligado ao requisito</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-center text-muted">
+            O cenário BDD pode orientar vários microciclos TDD.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            Tabela de exemplos: vigência da assinatura
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Plano</th>
+                  <th>Vencimento</th>
+                  <th>Agora</th>
+                  <th>Exclusivo?</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>FREE</td>
+                  <td>—</td>
+                  <td>qualquer</td>
+                  <td class="text-danger fw-bold">não</td>
+                </tr>
+                <tr>
+                  <td>PREMIUM</td>
+                  <td>12:00:01</td>
+                  <td>12:00:00</td>
+                  <td class="text-success fw-bold">sim</td>
+                </tr>
+                <tr class="table-warning">
+                  <td>PREMIUM</td>
+                  <td>12:00:00</td>
+                  <td>12:00:00</td>
+                  <td class="text-danger fw-bold">não</td>
+                </tr>
+                <tr>
+                  <td>PREMIUM</td>
+                  <td>11:59:59</td>
+                  <td>12:00:00</td>
+                  <td class="text-danger fw-bold">não</td>
+                </tr>
+                <tr>
+                  <td>PREMIUM cancelado</td>
+                  <td>12:30:00</td>
+                  <td>12:00:00</td>
+                  <td>depende da regra documentada</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger mb-0">
+            A fronteira exata precisa estar no requisito. O teste não deve
+            inventar a política.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Armadilhas que quebram o ciclo
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Teste enorme</strong
+                ><small class="text-muted"
+                  >muitos motivos para falhar; escreva um exemplo por
+                  decisão.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Mock de tudo</strong
+                ><small class="text-muted"
+                  >acoplamento à implementação; prefira estado/resultado.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Green falso</strong
+                ><small class="text-muted"
+                  >teste passa antes da implementação ou sem asserção.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Refactor com regra nova</strong
+                ><small class="text-muted"
+                  >mistura mudança estrutural e comportamento.</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <span class="badge bg-success mb-2">Prática · evidência da aula</span>
+          <h2 class="display-5 fw-bold mb-3">
+            Implemente uma regra E3 guiada por teste
+          </h2>
+          <ol class="list-group list-group-numbered fs-5">
+            <li class="list-group-item">
+              Escolher uma regra de vigência ainda não implementada e escrever o
+              cenário BDD.
+            </li>
+            <li class="list-group-item">
+              Criar o primeiro teste e registrar a falha <strong>Red</strong>.
+            </li>
+            <li class="list-group-item">
+              Implementar o mínimo para <strong>Green</strong>.
+            </li>
+            <li class="list-group-item">
+              Refatorar nomes/duplicação com a suíte verde.
+            </li>
+            <li class="list-group-item">
+              Adicionar limites e negativos; ligar cenário, teste e execução na
+              RTM.
+            </li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            <strong>Entregável:</strong> PR com commits legíveis do ciclo,
+            cenário BDD, suíte verde e RTM atualizada.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-12">
+        <div class="glass-cover text-center">
+          <h1 class="display-4 fw-bold text-dark">
+            Exemplo primeiro, código depois
+          </h1>
+          <p class="fs-4 text-secondary">
+            TDD orienta o design. BDD alinha a regra. A evidência mostra o
+            caminho.
+          </p>
+          <div class="row g-3 text-start mt-3">
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Leve</strong
+                ><small class="text-muted"
+                  >Red–Green–Refactor em passos pequenos.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Construiu</strong
+                ><small class="text-muted"
+                  >Regra de vigência guiada por exemplos.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Próxima</strong
+                ><small class="text-muted"
+                  >Carga e renovação concorrente.</small
+                >
+              </div>
+            </div>
+          </div>
+          <h2 class="mt-4">Dúvidas?</h2>
+        </div>
       </div>
     </div>
-
-  </div>
-
-  <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled>
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="progress mx-3" style="width: 100px; height: 6px">
+          <div
+            id="progressBar"
+            class="progress-bar bg-dark"
+            role="progressbar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2"
+          >1 / 12</span
+        ><button id="nextBtn" class="ms-2">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
+        ><button id="fullscreenBtn" class="ms-2">
+          <i class="fas fa-expand" aria-hidden="true"></i>
+        </button>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
-    </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - TDD e BDD: Desenvolvimento Guiado por Testes (Semana 41)</div>
-    <a href="material/material_tdd-bdd.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
-  </footer>
-
-  <script src="../../js/standard_slides.js"></script>
-</body>
-
+      <div class="text-center text-muted small d-none d-md-block">
+        Qualidade · TDD e BDD · Semana 41
+      </div>
+      <a
+        href="material/material_tdd-bdd.html"
+        class="btn btn-outline-primary btn-sm rounded-pill"
+        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
+      ><a href="../../index.html"
+        ><img
+          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+          alt="Senac"
+          height="30"
+          class="opacity-75"
+      /></a>
+    </footer>
+    <script src="../../js/standard_slides.js"></script>
+  </body>
 </html>

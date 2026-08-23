@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Semana 49 - Qualidade: Revisão Integrada do Foot Fanatics</title>
+  <meta name="keywords" content="qualidade de software, revisão, ATAM, JUnit, WireMock, TDD, BDD, CI, JMeter, RTM, Foot Fanatics">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../../css/slides.css">
+  <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">
+    import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = anime;
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
+</head>
+
+<body class="slide-body" data-disciplina="qualidade">
+  <div class="slide-container">
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
+      <i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial
+    </a>
+
+    <div class="slide active cover-bg" id="slide-1">
+      <svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="95" cy="105" r="7"></circle><circle cx="220" cy="590" r="10"></circle>
+        <circle cx="390" cy="85" r="5"></circle><circle cx="550" cy="610" r="7"></circle>
+        <circle cx="730" cy="110" r="9"></circle><circle cx="875" cy="570" r="6"></circle>
+        <circle cx="1050" cy="125" r="11"></circle><circle cx="1135" cy="420" r="5"></circle>
+      </svg>
+      <div class="glass-cover text-center">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
+        <h5 class="text-uppercase tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
+        <h1 class="display-4 fw-bold mb-3">Aula 16: Revisão Integrada</h1>
+        <p class="fs-4 mb-3">Do atributo de qualidade à <strong>evidência de release</strong></p>
+        <hr class="w-25 mx-auto my-3">
+        <h3 class="fw-normal">Professor Afonso</h3>
+        <span class="badge bg-light text-danger mt-3 px-3 py-2 rounded-pill">Semana 49 - 2026.2</span>
+        <div class="slide-keywords d-none" aria-hidden="true">
+          <span class="keyword">modelo de qualidade</span><span class="keyword">ATAM</span>
+          <span class="keyword">JUnit</span><span class="keyword">WireMock</span>
+          <span class="keyword">TDD</span><span class="keyword">BDD</span>
+          <span class="keyword">CI</span><span class="keyword">JMeter</span>
+          <span class="keyword">RTM</span><span class="keyword">Foot Fanatics</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-2">
+      <div class="slide-content">
+        <h1 class="display-4 fw-bold mb-3 text-dark text-center">Agenda de Hoje</h1>
+        <p class="lead text-muted text-center mb-4">Revisar não é recitar ferramentas: é reconstruir o argumento de qualidade.</p>
+        <div class="row g-3">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-3">Parte 1 &middot; Intenção</span><h4 class="fw-bold">O que proteger</h4><ul class="text-muted small mb-0"><li>Modelo de qualidade</li><li>ATAM e risco</li><li>Requisitos testáveis</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-3">Parte 2 &middot; Evidência</span><h4 class="fw-bold">Como demonstrar</h4><ul class="text-muted small mb-0"><li>JUnit e WireMock</li><li>TDD/BDD e CI</li><li>JMeter e RTM</li></ul></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-3">Parte 3 &middot; Decisão</span><h4 class="fw-bold">O que concluir</h4><ul class="text-muted small mb-0"><li>Desafio integrado</li><li>Auditoria cruzada</li><li>Defesa de release</li></ul></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-3">
+      <div class="slide-content text-center">
+        <p class="lead text-muted mb-2">A disciplina inteira cabe em uma cadeia de perguntas.</p>
+        <h2 class="display-5 fw-bold mb-4 text-dark">Promessa → risco → teste → evidência → decisão</h2>
+        <div class="row g-2 text-start">
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">1</span><h6 class="fw-bold">Promessa</h6><p class="small text-muted mb-0">Qual atributo importa?</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">2</span><h6 class="fw-bold">Risco</h6><p class="small text-muted mb-0">Como pode falhar?</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-2">3</span><h6 class="fw-bold">Teste</h6><p class="small text-muted mb-0">Qual experimento reduz dúvida?</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-2">4</span><h6 class="fw-bold">Evidência</h6><p class="small text-muted mb-0">Onde está o resultado?</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">5</span><h6 class="fw-bold">Decisão</h6><p class="small text-muted mb-0">Liberar ou bloquear?</p></div></div>
+        </div>
+        <div class="alert alert-danger border-0 shadow-sm mt-4 d-inline-block mb-0"><strong>Atalho perigoso:</strong> começar pela ferramenta e procurar depois um problema que a justifique.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-4">
+      <div class="slide-content text-center">
+        <span class="badge bg-primary mb-2">Modelo de qualidade + ATAM</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">A qualidade começa antes do primeiro teste</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Atributo</h5><p class="small text-muted mb-0">Segurança, desempenho, confiabilidade, manutenibilidade e usabilidade dão nome à expectativa.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Cenário ATAM</h5><p class="small text-muted mb-0">Fonte + estímulo + ambiente + artefato + resposta + medida tornam a expectativa verificável.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Trade-off</h5><p class="small text-muted mb-0">Uma decisão melhora um atributo e pode prejudicar outro. O risco orienta a prioridade.</p></div></div>
+        </div>
+        <div class="bg-dark text-white p-3 rounded-3 text-start mt-3"><code class="text-info small">Usuário free tenta abrir matéria premium em produção → API nega em até 300 ms, registra o evento sem expor dados e retorna 403.</code></div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-5">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Do risco ao desenho do teste</h2>
+        <p class="lead text-muted mb-4">O mesmo requisito precisa de ângulos complementares.</p>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fas fa-box text-dark me-2" aria-hidden="true"></i>Caixa preta</h5><p class="small text-muted">Valida o contrato sem depender do código.</p><p class="small mb-0"><code>GET /materias/42</code> com usuário free → <code>403</code>.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold"><i class="fas fa-code text-primary me-2" aria-hidden="true"></i>Caixa branca</h5><p class="small text-muted">Percorre decisões internas de autorização.</p><p class="small mb-0">Cobrir plano nulo, expirado, free e premium.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold"><i class="fas fa-adjust text-danger me-2" aria-hidden="true"></i>Caixa cinza</h5><p class="small text-muted">Testa pela API conhecendo estado e arquitetura.</p><p class="small mb-0">Prepara assinatura expirada e verifica persistência.</p></div></div>
+        </div>
+        <div class="alert alert-warning border-0 mt-3 mb-0"><strong>Cobertura não é oráculo:</strong> linhas executadas sem asserção não demonstram comportamento correto.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-6">
+      <div class="slide-content text-center">
+        <span class="badge bg-dark mb-2">JUnit 5</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Teste automatizado é especificação executável</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Arrange</h5><p class="small text-muted mb-0">Crie o menor estado que representa o risco: usuário free e matéria premium.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Act</h5><p class="small text-muted mb-0">Execute uma única ação observável: solicitar a matéria.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Assert</h5><p class="small text-muted mb-0">Verifique status, corpo e efeito colateral relevante — não detalhe acidental.</p></div></div>
+        </div>
+        <div class="bg-dark text-white p-3 rounded-3 text-start mt-3"><code class="text-info small">@Test void deveNegarMateriaPremiumParaPlanoFree() {<br>&nbsp;&nbsp;assertThrows(AcessoNegadoException.class, () -&gt; servico.buscar(42L, usuarioFree));<br>}</code></div>
+        <p class="text-muted small mt-3 mb-0">Pirâmide: muitos testes de unidade rápidos, integrações suficientes e poucos fluxos ponta a ponta valiosos.</p>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-7">
+      <div class="slide-content text-center">
+        <span class="badge bg-primary mb-2">WireMock + segurança</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Controle a fronteira sem fingir que ela não existe</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold">Stub útil</h5><p class="small text-muted mb-0">Define resposta determinística do provedor externo para sucesso, timeout, erro e payload inválido.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold">Verificação útil</h5><p class="small text-muted mb-0">Confirma URL, método, headers necessários e ausência de segredo em query ou log.</p></div></div>
+          <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Teste que falta</h5><p class="small text-muted mb-0">Timeout deve produzir resposta segura, sem duplicar operação nem vazar detalhe interno.</p></div></div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-3 mb-0"><i class="fas fa-shield-halved me-2" aria-hidden="true"></i>Mock testa a reação do Foot Fanatics. Sandbox ou contrato testam se a suposição sobre o fornecedor continua verdadeira.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-8">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">TDD e BDD: ciclos com perguntas diferentes</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">TDD</span><h5 class="fw-bold">Red → Green → Refactor</h5><ul class="small text-muted mb-0"><li>Especifica uma unidade antes do código</li><li>Implementa o mínimo para passar</li><li>Melhora o design com proteção</li></ul></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">BDD</span><h5 class="fw-bold">Given → When → Then</h5><ul class="small text-muted mb-0"><li>Alinha regra de negócio em linguagem comum</li><li>Explicita contexto e comportamento</li><li>Pode virar aceite automatizado</li></ul></div></div>
+        </div>
+        <div class="bg-dark text-white p-3 rounded-3 text-start mt-3"><code class="text-info small">Dado que a assinatura expirou<br>Quando o torcedor solicita conteúdo premium<br>Então o acesso é negado e a renovação é sugerida sem expor dados internos</code></div>
+        <p class="text-muted small mt-3 mb-0">TDD ajuda a construir certo; BDD ajuda a confirmar que estamos construindo a regra certa.</p>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-9">
+      <div class="slide-content text-center">
+        <span class="badge bg-dark mb-2">CI + JaCoCo + SonarCloud</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">O pipeline transforma política em rotina</h2>
+        <div class="row g-2 text-start">
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">1</span><h6 class="fw-bold">Build</h6><p class="small text-muted mb-0">Compila em ambiente limpo.</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">2</span><h6 class="fw-bold">Testes</h6><p class="small text-muted mb-0">Executa suíte e integrações.</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-2">3</span><h6 class="fw-bold">Cobertura</h6><p class="small text-muted mb-0">JaCoCo revela lacunas.</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-dark align-self-start mb-2">4</span><h6 class="fw-bold">Análise</h6><p class="small text-muted mb-0">SonarCloud sinaliza dívida.</p></div></div>
+          <div class="col"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">5</span><h6 class="fw-bold">Gate</h6><p class="small text-muted mb-0">Bloqueia risco inaceitável.</p></div></div>
+        </div>
+        <div class="alert alert-warning border-0 mt-4 mb-0"><strong>Gate saudável:</strong> protege código novo, tem regra compreensível e bloqueia por risco — não por vaidade numérica.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-10">
+      <div class="slide-content text-center">
+        <span class="badge bg-primary mb-2">JMeter</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Desempenho também é hipótese testável</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Carga</h6><p class="small text-muted mb-0">50 usuários por 5 min, ramp-up de 30 s.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Operação</h6><p class="small text-muted mb-0">Listar matérias com autenticação realista.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold">Oráculo</h6><p class="small text-muted mb-0">p95 &lt; 800 ms e erro &lt; 1%.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><h6 class="fw-bold text-danger">Contexto</h6><p class="small text-muted mb-0">Ambiente, massa, versão e limites registrados.</p></div></div>
+        </div>
+        <div class="alert alert-danger border-0 shadow-sm mt-3 mb-0"><strong>Média esconde cauda.</strong> Leia percentis, throughput, erros e recursos em conjunto; um número isolado não explica o gargalo.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-11">
+      <div class="slide-content text-center">
+        <span class="badge bg-dark mb-2">RTM</span>
+        <h2 class="display-5 fw-bold mb-3 text-dark">Rastreabilidade costura o semestre</h2>
+        <div class="table-responsive shadow-sm rounded-3">
+          <table class="table table-bordered align-middle bg-white mb-0 small">
+            <thead class="table-dark"><tr><th>Promessa</th><th>Risco</th><th>Caso</th><th>Automação</th><th>Evidência</th><th>Decisão</th></tr></thead>
+            <tbody><tr><td><code>RNF-SEG-03</code></td><td>Premium exposto</td><td><code>CT-API-18</code></td><td>JUnit + WireMock</td><td>Actions #148</td><td><span class="badge bg-success">Liberar</span></td></tr><tr><td><code>RNF-PERF-02</code></td><td>p95 &gt; 800 ms</td><td><code>CT-PERF-04</code></td><td>JMeter</td><td>Relatório RC1</td><td><span class="badge bg-warning text-dark">Ressalva</span></td></tr></tbody>
+          </table>
+        </div>
+        <div class="row g-3 text-start mt-3">
+          <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><strong>Requisito órfão</strong><p class="small text-muted mb-0">Promessa sem teste.</p></div></div>
+          <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><strong>Teste órfão</strong><p class="small text-muted mb-0">Custo sem objetivo.</p></div></div>
+          <div class="col-md-4"><div class="p-3 border border-danger rounded-3 bg-danger-subtle h-100"><strong>Evidência órfã</strong><p class="small text-muted mb-0">Resultado sem versão ou interpretação.</p></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-12">
+      <div class="slide-content">
+        <span class="badge bg-danger mb-2">Desafio integrado &middot; Foot Fanatics</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Incidente: conteúdo premium ficou público</h2>
+        <p class="lead text-muted">Após uma mudança no cache, usuários free recebem <code>200</code> em 2% das requisições concorrentes.</p>
+        <div class="row g-3 text-start">
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Diagnostique</h5><ol class="small text-muted mb-0"><li>Escreva o cenário ATAM e classifique o risco.</li><li>Escolha testes caixa preta, branca e de carga.</li><li>Identifique o oráculo e os dados necessários.</li></ol></div></div>
+          <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Proteja</h5><ol class="small text-muted mb-0"><li>Esboce um teste JUnit de regressão.</li><li>Defina o cenário JMeter e o gate de CI.</li><li>Atualize RTM, risco e decisão de release.</li></ol></div></div>
+        </div>
+        <div class="alert alert-dark border-0 mt-3 mb-0"><strong>Regra:</strong> toda proposta precisa citar qual incerteza reduz e qual evidência produzirá.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-13">
+      <div class="slide-content">
+        <span class="badge bg-success mb-2">Prática em grupo &middot; 55 min</span>
+        <h2 class="display-6 fw-bold mb-3 text-dark">Auditoria cruzada do argumento de qualidade</h2>
+        <ol class="list-group list-group-numbered shadow-sm mb-3">
+          <li class="list-group-item">Cada grupo seleciona <strong>um requisito crítico</strong> do próprio Foot Fanatics.</li>
+          <li class="list-group-item">Reconstrói a cadeia: atributo, cenário ATAM, risco, casos e técnicas.</li>
+          <li class="list-group-item">Liga automação, pipeline, desempenho e evidências na RTM.</li>
+          <li class="list-group-item">Outro grupo tenta encontrar um elo fraco, órfão ou conclusão exagerada.</li>
+          <li class="list-group-item">O grupo corrige a documentação e registra a decisão de release.</li>
+        </ol>
+        <div class="alert alert-success border-0 mb-0"><strong>Entregável:</strong> uma página versionada em <code>docs/revisao-integrada.md</code>, com links auditáveis para a evidência.</div>
+      </div>
+    </div>
+
+    <div class="slide" id="slide-14">
+      <div class="slide-content text-center">
+        <h2 class="display-5 fw-bold mb-3 text-dark">Critérios de aceite da Aula 16</h2>
+        <div class="row g-3 text-start">
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">Coerência</h6><p class="small text-muted mb-0">Promessa, risco e teste descrevem o mesmo comportamento.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-primary">Cobertura</h6><p class="small text-muted mb-0">Há técnicas funcionais, estruturais e não funcionais justificadas.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><h6 class="fw-bold text-dark">Auditabilidade</h6><p class="small text-muted mb-0">Evidências apontam para versão, ambiente, resultado e fonte.</p></div></div>
+          <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><h6 class="fw-bold text-danger">Decisão</h6><p class="small text-muted mb-0">Release ou bloqueio decorre das evidências e explicita ressalvas.</p></div></div>
+        </div>
+        <p class="text-muted mt-4 mb-0">Se um colega não consegue refazer o raciocínio, a cadeia ainda não está pronta.</p>
+      </div>
+    </div>
+
+    <div class="slide cover-bg" id="slide-15">
+      <svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true">
+        <circle cx="110" cy="130" r="8"></circle><circle cx="275" cy="565" r="6"></circle>
+        <circle cx="455" cy="115" r="10"></circle><circle cx="640" cy="585" r="7"></circle>
+        <circle cx="815" cy="120" r="5"></circle><circle cx="1015" cy="560" r="9"></circle>
+      </svg>
+      <div class="glass-cover text-center">
+        <h1 class="display-3 fw-bold mb-3">Qualidade é um argumento</h1>
+        <p class="fs-4 mb-4">Ferramentas produzem sinais. Rastreabilidade transforma sinais em evidência. Responsabilidade transforma evidência em decisão.</p>
+        <div class="row g-2 text-start">
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Defina</strong><br><span class="small">a promessa mensurável</span></div></div>
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Demonstre</strong><br><span class="small">com teste reproduzível</span></div></div>
+          <div class="col-md-4"><div class="p-3 rounded-3 border border-light"><strong>Decida</strong><br><span class="small">com riscos explícitos</span></div></div>
+        </div>
+        <span class="badge bg-light text-danger mt-4 px-3 py-2 rounded-pill">Próxima aula: retrospectiva e próximos passos</span>
+      </div>
+    </div>
+  </div>
+
+  <footer class="slide-footer">
+    <div class="slide-controls">
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 15</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand" aria-hidden="true"></i></button>
+    </div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Revisão Integrada do Foot Fanatics (Semana 49)</div>
+    <a href="material/material_revisao-geral.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a>
+    <a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a>
+  </footer>
+  <script src="../../js/standard_slides.js"></script>
+  <script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
+</body>
+
+</html>

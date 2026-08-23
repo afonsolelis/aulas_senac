@@ -1,94 +1,530 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 42 - Qualidade: Testes de Carga e Performance com JMeter</title>
-  <meta name="keywords" content="qualidade de software, testes de carga, performance, jmeter, latência">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css">
-  <link rel="stylesheet" href="../../css/base-styles.css">
-</head>
-
-<body class="slide-body" data-disciplina="qualidade">
-
-  <div class="slide-container">
-
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
-
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 10: Testes de Carga e Performance com JMeter</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 42 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Testes de Carga e Performance com JMeter</span></div>
-      </div>
-    </div>
-
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Testes de Carga e Performance com JMeter</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
-
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Laboratório: o projeto é de vocês</h2>
-        <p class="lead text-muted mb-3">O percurso do Foot Fanatics terminou. A partir de agora cada grupo aplica o mesmo caminho no próprio projeto.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Cada grupo assume o <strong>seu</strong> projeto e refaz o percurso: personas &rarr; requisitos &rarr; arquitetura &rarr; táticas &rarr; infra &rarr; testes &rarr; implementação &rarr; RTM.</li>
-              <li class="list-group-item">Trazer para a aula o ponto onde o grupo <strong>travou</strong> — a mentoria é sob demanda, não expositiva.</li>
-              <li class="list-group-item">Manter o pipeline verde: nenhum merge sem suíte passando.</li>
-              <li class="list-group-item">Usar o Foot Fanatics como referência de <em>como fica pronto</em>, não como algo a copiar.</li>
-              <li class="list-group-item">Fechar cada aula com a RTM do grupo mais completa do que começou.</li>
-            </ol>
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="JMeter, carga, performance, latência, throughput, percentil, concorrência, Foot Fanatics"
+    />
+    <title>Aula 10 - Testes de Carga com JMeter</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a
+        href="../home_qualidade_2026_2.html"
+        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
+        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para
+        página inicial</a
+      >
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img
+            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+            alt="Senac Logo"
+            height="80"
+            class="mb-3"
+          />
+          <h5 class="text-uppercase text-secondary fw-bold">
+            Qualidade de Software · TADS
+          </h5>
+          <h1 class="display-4 fw-bold text-dark">
+            Aula 10: Carga e performance com JMeter
+          </h1>
+          <p class="fs-4 text-secondary">
+            Da sensação de “rápido” a um experimento reproduzível
+          </p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill"
+            >Semana 42 · Foot Fanatics</span
+          >
+          <div class="slide-keywords d-none" aria-hidden="true">
+            <span class="keyword">JMeter</span
+            ><span class="keyword">latência</span
+            ><span class="keyword">concorrência</span>
           </div>
         </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> laboratório aberto — o professor circula, cada grupo avança no próprio ritmo.
+      </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
+          <div class="row g-3 fs-5">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>1. Métricas</strong
+                ><span class="text-muted"
+                  >latência, throughput, erro e percentis.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>2. Modelo de carga</strong
+                ><span class="text-muted"
+                  >usuário, ritmo, rampa e duração.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>3. JMeter</strong
+                ><span class="text-muted"
+                  >plano, correlação, asserção e relatório.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>4. Laboratório</strong
+                ><span class="text-muted"
+                  >renovação concorrente de sessão.</span
+                >
+              </div>
+            </div>
+          </div>
         </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+      </div>
+      <div class="slide" id="slide-3">
+        <div class="slide-content text-center">
+          <span class="badge bg-danger mb-3">Pergunta de qualidade</span>
+          <h2 class="display-5 fw-bold">
+            “A API está rápida” não é um resultado
+          </h2>
+          <p class="lead text-muted">
+            Rápida para qual operação, com quantos usuários, por quanto tempo e
+            em qual ambiente?
+          </p>
+          <div class="alert alert-dark fs-5 mt-4">
+            Durante 10 min, com 100 sessões ativas e 20 renovações/s,
+            <strong>p95 &lt; 800 ms</strong>, erro &lt; 1% e nenhuma sessão
+            duplicada.
+          </div>
+          <p class="text-muted">
+            Isso é hipótese testável: contexto + carga + métrica + limite +
+            integridade.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            As quatro métricas essenciais
+          </h2>
+          <div class="row g-3 text-center">
+            <div class="col-md-3">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <i
+                  class="fas fa-stopwatch fa-2x text-danger mb-2"
+                  aria-hidden="true"
+                ></i
+                ><strong>Latência</strong
+                ><small class="text-muted">tempo por request</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <i
+                  class="fas fa-gauge-high fa-2x text-primary mb-2"
+                  aria-hidden="true"
+                ></i
+                ><strong>Throughput</strong
+                ><small class="text-muted">requisições por segundo</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <i
+                  class="fas fa-triangle-exclamation fa-2x text-warning mb-2"
+                  aria-hidden="true"
+                ></i
+                ><strong>Erros</strong
+                ><small class="text-muted">taxa e tipo</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <i
+                  class="fas fa-microchip fa-2x text-success mb-2"
+                  aria-hidden="true"
+                ></i
+                ><strong>Recursos</strong
+                ><small class="text-muted">CPU, memória, conexões</small>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-4 mb-0">
+            Tempo médio esconde caudas. Reporte ao menos
+            <strong>mediana, p95 e p99</strong>.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            Tipos de experimento
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white shadow-sm">
+              <thead class="table-dark">
+                <tr>
+                  <th>Teste</th>
+                  <th>Pergunta</th>
+                  <th>Forma</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Load</strong></td>
+                  <td>suporta a carga esperada?</td>
+                  <td>patamar nominal</td>
+                </tr>
+                <tr>
+                  <td><strong>Stress</strong></td>
+                  <td>onde quebra e como recupera?</td>
+                  <td>aumenta até o limite</td>
+                </tr>
+                <tr>
+                  <td><strong>Spike</strong></td>
+                  <td>reage a pico abrupto?</td>
+                  <td>salto de carga</td>
+                </tr>
+                <tr>
+                  <td><strong>Endurance</strong></td>
+                  <td>degrada com o tempo?</td>
+                  <td>carga longa</td>
+                </tr>
+                <tr>
+                  <td><strong>Volume</strong></td>
+                  <td>dados acumulados alteram resposta?</td>
+                  <td>massa grande</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-center text-muted">
+            Hoje: load test curto e concorrência na renovação.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Modelo de carga antes da ferramenta
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Perfis</strong
+                ><small class="text-muted"
+                  >free consulta público; premium consulta exclusivo; sessão
+                  renova.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Distribuição</strong
+                ><small class="text-muted"
+                  >70% leitura pública, 25% exclusiva, 5% renovação.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Ritmo</strong
+                ><small class="text-muted"
+                  >rampa, patamar, duração e think time.</small
+                >
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-light border mt-4">
+            Sem modelo, “100 threads” é só um número. A carga deve representar
+            uma história de uso e um RNF.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-7">
+        <div class="slide-content">
+          <span class="badge bg-primary mb-2">JMeter</span>
+          <h2 class="display-5 fw-bold mb-3">Anatomia do plano</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <ol class="list-group list-group-numbered">
+                <li class="list-group-item">
+                  <strong>Thread Group</strong>: usuários, rampa, loops
+                </li>
+                <li class="list-group-item">
+                  <strong>Config</strong>: base URL e defaults
+                </li>
+                <li class="list-group-item">
+                  <strong>HTTP Request</strong>: operação
+                </li>
+              </ol>
+            </div>
+            <div class="col-md-6">
+              <ol class="list-group list-group-numbered" start="4">
+                <li class="list-group-item">
+                  <strong>Extractor</strong>: token/id dinâmico
+                </li>
+                <li class="list-group-item">
+                  <strong>Assertion</strong>: status e conteúdo
+                </li>
+                <li class="list-group-item">
+                  <strong>Report</strong>: resultado agregado
+                </li>
+              </ol>
+            </div>
+          </div>
+          <pre
+            class="bg-dark text-white rounded-3 p-3 mt-3 mb-0"
+          ><code class="text-info">jmeter -n -t foot-fanatics.jmx \
+  -JbaseUrl=http://localhost:8080 \
+  -l resultados.jtl -e -o relatorio</code></pre>
+        </div>
+      </div>
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Correlação: cada usuário tem sua sessão
+          </h2>
+          <div
+            class="d-flex align-items-center justify-content-center gap-3 flex-wrap fs-5"
+          >
+            <div class="card border-0 shadow-sm p-3">
+              <strong>POST /login</strong>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Extrair token</strong
+              ><small class="text-muted">$.accessToken</small>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Authorization</strong
+              ><small class="text-muted">Bearer ${token}</small>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>POST /refresh</strong>
+            </div>
+          </div>
+          <ul class="fs-5 mt-4">
+            <li>dados de usuário não podem colidir;</li>
+            <li>token expira e precisa ser atualizado no fluxo;</li>
+            <li>asserção funcional continua obrigatória sob carga;</li>
+            <li>segredo não entra no arquivo de resultados.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            Experimento de renovação concorrente
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Fase</th>
+                  <th>Duração</th>
+                  <th>Carga</th>
+                  <th>Objetivo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Aquecimento</td>
+                  <td>2 min</td>
+                  <td>0 → 20 req/s</td>
+                  <td>JIT, pool e caches</td>
+                </tr>
+                <tr class="table-warning">
+                  <td>Patamar</td>
+                  <td>10 min</td>
+                  <td>20 req/s</td>
+                  <td>medir RNF</td>
+                </tr>
+                <tr>
+                  <td>Pico</td>
+                  <td>1 min</td>
+                  <td>40 req/s</td>
+                  <td>observar recuperação</td>
+                </tr>
+                <tr>
+                  <td>Descida</td>
+                  <td>2 min</td>
+                  <td>40 → 0</td>
+                  <td>encerrar sem fila presa</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger mb-0">
+            <strong>Invariante:</strong> duas renovações concorrentes do mesmo
+            refresh token não podem criar duas sessões válidas.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Ler resultado sem adivinhar
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>p95 subiu + CPU alta</strong
+                ><small class="text-muted"
+                  >capacidade computacional ou algoritmo.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>p95 subiu + pool cheio</strong
+                ><small class="text-muted"
+                  >conexão/banco é gargalo provável.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>erros crescem no pico</strong
+                ><small class="text-muted"
+                  >limite, timeout ou fila saturada.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>memória cresce sem voltar</strong
+                ><small class="text-muted"
+                  >investigar retenção; endurance confirma.</small
+                >
+              </div>
+            </div>
+          </div>
+          <p class="text-muted text-center mt-4">
+            Correlação sugere hipótese; perfil, logs e nova execução confirmam.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <span class="badge bg-success mb-2">Prática · evidência da aula</span>
+          <h2 class="display-5 fw-bold mb-3">Teste de carga reproduzível</h2>
+          <ol class="list-group list-group-numbered fs-5">
+            <li class="list-group-item">
+              Escrever RNF com operação, carga, duração e limites.
+            </li>
+            <li class="list-group-item">
+              Criar JMX parametrizado; autenticar e correlacionar token.
+            </li>
+            <li class="list-group-item">
+              Executar aquecimento + patamar; salvar JTL e relatório HTML.
+            </li>
+            <li class="list-group-item">
+              Verificar p95, erro e invariante de sessão única.
+            </li>
+            <li class="list-group-item">
+              Registrar ambiente, commit e conclusão na RTM/relatório.
+            </li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            <strong>Entregável:</strong> JMX versionado, comando de execução,
+            relatório e diagnóstico baseado em evidência.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-12">
+        <div class="glass-cover text-center">
+          <h1 class="display-4 fw-bold text-dark">
+            Performance é requisito + experimento
+          </h1>
+          <p class="fs-4 text-secondary">
+            Carga representativa, percentis, integridade e ambiente registrado.
+          </p>
+          <div class="row g-3 text-start mt-3">
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Leve</strong
+                ><small class="text-muted">média não basta; use p95/p99.</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Construiu</strong
+                ><small class="text-muted"
+                  >plano de renovação concorrente.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Próxima</strong
+                ><small class="text-muted"
+                  >E4: conteúdo público e exclusivo.</small
+                >
+              </div>
+            </div>
+          </div>
+          <h2 class="mt-4">Dúvidas?</h2>
+        </div>
       </div>
     </div>
-
-  </div>
-
-  <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled>
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="progress mx-3" style="width: 100px; height: 6px">
+          <div
+            id="progressBar"
+            class="progress-bar bg-dark"
+            role="progressbar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2"
+          >1 / 12</span
+        ><button id="nextBtn" class="ms-2">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
+        ><button id="fullscreenBtn" class="ms-2">
+          <i class="fas fa-expand" aria-hidden="true"></i>
+        </button>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
-    </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Testes de Carga e Performance com JMeter (Semana 42)</div>
-    <a href="material/material_testes-carga-jmeter.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
-  </footer>
-
-  <script src="../../js/standard_slides.js"></script>
-</body>
-
+      <div class="text-center text-muted small d-none d-md-block">
+        Qualidade · Carga com JMeter · Semana 42
+      </div>
+      <a
+        href="material/material_testes-carga-jmeter.html"
+        class="btn btn-outline-primary btn-sm rounded-pill"
+        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
+      ><a href="../../index.html"
+        ><img
+          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+          alt="Senac"
+          height="30"
+          class="opacity-75"
+      /></a>
+    </footer>
+    <script src="../../js/standard_slides.js"></script>
+  </body>
 </html>

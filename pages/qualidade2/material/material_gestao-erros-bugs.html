@@ -1,67 +1,31 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestão de Erros e Bugs - Material</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../../css/style.css">
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height: 40px;">
-        <span class="fw-bold text-dark">Hub de Aulas</span>
-      </a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
-    <div class="container">
-      <a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
-        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2
-      </a>
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <span class="badge bg-white text-danger mb-1">Semana 36 &middot; 2026.2</span>
-          <h1 class="h3 fw-bold text-white mb-0">Gestão de Erros e Bugs</h1>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-danger mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">O material escrito de <strong>Gestão de Erros e Bugs</strong> será publicado em breve. Esta é uma página placeholder.</p>
-          <a href="../slide_gestao-erros-bugs.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
-          <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer class="bg-light text-dark py-4 mt-5">
-    <div class="container text-center">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75">
-      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Gestão de Erros e Bugs - Material</title><meta name="description" content="Material completo da Aula 05: relato, triagem, ciclo de vida, causa raiz e regressão no Foot Fanatics."><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../../css/style.css"></head><body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></div></nav>
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div><span class="badge bg-white text-danger mb-1">Aula 05 &middot; Semana 36 &middot; 2026.2</span><h1 class="h3 fw-bold text-white mb-0">Gestão de Erros e Bugs</h1></div></div></header>
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Objetivos</h2><p class="lead text-muted">Defeitos não são apenas itens de backlog: são sinais sobre o sistema de desenvolvimento.</p><ul class="text-muted mb-0"><li>Descrever falhas de forma reproduzível e segura.</li><li>Separar impacto técnico (severidade) de decisão temporal (prioridade).</li><li>Conduzir triagem e ciclo de vida com estados e evidências explícitos.</li><li>Corrigir causa raiz, adicionar regressão e atualizar rastreabilidade.</li></ul></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">1. Vocabulário causal</h2><div class="table-responsive"><table class="table table-bordered"><thead class="table-dark"><tr><th>Termo</th><th>Significado</th><th>Exemplo</th></tr></thead><tbody><tr><td>Erro humano</td><td>Ação/decisão equivocada</td><td>Interpretar e-mail como sensível a maiúsculas</td></tr><tr><td>Defeito</td><td>Problema em artefato</td><td>Comparação sem normalização</td></tr><tr><td>Falha</td><td>Comportamento incorreto executado</td><td>Duas contas equivalentes são criadas</td></tr><tr><td>Incidente</td><td>Evento percebido e investigado</td><td>Usuário relata login inconsistente</td></tr></tbody></table></div><p class="text-muted mb-0">Um defeito pode permanecer latente; uma falha depende de condições que o ativam. Diferenciar os termos evita “corrigir” o relato sem investigar o mecanismo.</p></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">2. Anatomia de um relato reproduzível</h2><ol class="text-muted"><li><strong>Título:</strong> ação + condição + resultado observado.</li><li><strong>Contexto:</strong> versão/commit, ambiente, perfil e dados não sensíveis.</li><li><strong>Pré-condições:</strong> estado necessário antes de executar.</li><li><strong>Passos mínimos:</strong> numerados, sem ações irrelevantes.</li><li><strong>Esperado e obtido:</strong> lado a lado, ligados ao requisito.</li><li><strong>Evidência:</strong> resposta sanitizada, trecho de log com correlação, vídeo curto ou teste.</li><li><strong>Frequência, alcance e impacto:</strong> quantificáveis quando possível.</li></ol><div class="alert alert-danger mb-0"><strong>Proteção de dados:</strong> nunca anexe senha, token, credencial, matrícula ou dado pessoal real. Use contas e payloads sintéticos; remova segredos de logs.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">3. Exemplo completo</h2><h3 class="h5">Cadastro aceita e-mail duplicado com caixa e espaços diferentes</h3><p><span class="badge bg-danger">Severidade alta</span> <span class="badge bg-dark">Prioridade P1</span> <span class="badge bg-secondary">E1</span></p><dl class="row small"><dt class="col-sm-3">Ambiente</dt><dd class="col-sm-9">branch <code>main</code>, commit identificado, perfil anônimo</dd><dt class="col-sm-3">Pré-condição</dt><dd class="col-sm-9">conta <code>ana.teste@example.invalid</code> existente</dd><dt class="col-sm-3">Passos</dt><dd class="col-sm-9">enviar cadastro com <code> ANA.TESTE@EXAMPLE.INVALID </code></dd><dt class="col-sm-3">Obtido</dt><dd class="col-sm-9">HTTP 201 e nova conta</dd><dt class="col-sm-3">Esperado</dt><dd class="col-sm-9">HTTP 409, código <code>CONTA_EMAIL_DUPLICADO</code>, nenhuma gravação</dd></dl><p class="text-muted mb-0">O domínio <code>.invalid</code> é reservado para exemplos e evita confundir o material com dados reais.</p></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">4. Severidade e prioridade</h2><p class="text-muted"><strong>Severidade</strong> mede dano: confidencialidade, integridade, disponibilidade, fluxo bloqueado e alcance. <strong>Prioridade</strong> é uma decisão de negócio/planejamento: urgência, compromisso, exposição, contorno e custo de atraso.</p><div class="table-responsive"><table class="table table-striped"><thead><tr><th></th><th>Baixa prioridade</th><th>Alta prioridade</th></tr></thead><tbody><tr><th>Baixa severidade</th><td>Desalinhamento em tela administrativa rara</td><td>Grafia errada na campanha que começa hoje</td></tr><tr><th>Alta severidade</th><td>Falha crítica em recurso desligado e ainda não exposto</td><td>Conteúdo premium liberado para plano free</td></tr></tbody></table></div><p class="small text-muted mb-0">A classificação deve conter justificativa. Rótulo sem contexto vira disputa de opinião.</p></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">5. Triagem e ciclo de vida</h2><p class="text-muted">Triagem confirma o fato, remove duplicidade, classifica impacto, decide prioridade, identifica responsável e explicita o próximo passo. Produto, QA e desenvolvimento trazem perspectivas complementares.</p><div class="alert alert-light border"><code>Novo → Triado → Em correção → Em verificação → Fechado</code></div><ul class="text-muted"><li><strong>Duplicado:</strong> vincule ao issue canônico.</li><li><strong>Não reproduzível:</strong> liste o que falta; não encerre silenciosamente.</li><li><strong>Não será corrigido:</strong> registre risco aceito e quem decidiu.</li><li><strong>Reaberto:</strong> a evidência contradiz a correção; preserve histórico.</li></ul><div class="alert alert-warning mb-0">Quem desenvolve pode marcar “em verificação”; o fechamento exige comprovação no ambiente/versão definidos.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">6. Template para GitHub Issues</h2><pre class="bg-light border rounded p-3 small"><code>---
+name: Relato de defeito
+labels: [bug, needs-triage]
+---
+## Resumo observável
+## Ambiente / versão
+## Pré-condições
+## Passos mínimos para reproduzir
+## Resultado obtido
+## Resultado esperado / requisito
+## Evidências sanitizadas
+## Frequência, alcance e impacto
+## Severidade sugerida (com justificativa)
+## Critério de verificação</code></pre><p class="text-muted mb-0">O template melhora a entrada do fluxo, mas não substitui conversa. Campos sem informação devem dizer “não apurado” e gerar uma ação, não receber conteúdo inventado.</p></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">7. Causa raiz e 5 porquês</h2><p class="text-muted">Os 5 porquês não exigem exatamente cinco perguntas. A técnica força a equipe a atravessar o sintoma e chegar a uma condição controlável.</p><ol class="text-muted"><li>Duas contas foram criadas porque a busca tratou os e-mails como diferentes.</li><li>A busca tratou diferente porque não houve normalização.</li><li>A normalização estava apenas no controller e não no domínio.</li><li>A invariável não estava explícita no modelo nem no banco.</li><li>O caso de equivalência não apareceu na análise nem na RTM.</li></ol><h3 class="h5">Ações em camadas</h3><ul class="text-muted mb-0"><li>Normalização centralizada em tipo-valor <code>Email</code>.</li><li>Restrição única coerente na persistência.</li><li>Teste unitário de equivalência e teste de integração da restrição.</li><li>RTM e checklist de revisão atualizados.</li></ul></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">8. Fluxo de correção seguro</h2><ol class="list-group list-group-numbered"><li class="list-group-item"><strong>Reproduzir:</strong> transformar o relato em teste que falha no commit problemático.</li><li class="list-group-item"><strong>Localizar:</strong> reduzir hipótese com log, depuração e leitura do fluxo.</li><li class="list-group-item"><strong>Corrigir:</strong> preferir a menor mudança que remove a causa.</li><li class="list-group-item"><strong>Regredir:</strong> executar teste novo e suíte completa.</li><li class="list-group-item"><strong>Verificar:</strong> aplicar o critério de aceite no ambiente acordado.</li><li class="list-group-item"><strong>Aprender:</strong> atualizar RTM, documentação ou processo.</li></ol><div class="alert alert-success mt-3 mb-0"><strong>Fechamento:</strong> issue vinculada ao commit/PR, teste de regressão identificável e resultado verde reproduzível.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">9. Métricas úteis e armadilhas</h2><div class="row g-3"><div class="col-md-6"><ul class="text-muted mb-0"><li>Tempo de ciclo por severidade</li><li>Taxa de reabertura</li><li>Defeitos escapados por etapa</li><li>Recorrência por causa</li><li>Idade do backlog crítico</li></ul></div><div class="col-md-6"><div class="alert alert-danger mb-0"><strong>Não use:</strong> quantidade de bugs por pessoa como produtividade. Isso incentiva fragmentar, esconder ou disputar classificação e destrói colaboração.</div></div></div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Prática — Bug Clinic</h2><ol class="text-muted"><li>Localize ou semeie três falhas controladas de E1: normalização, política de senha e resposta com detalhe sensível.</li><li>Abra três issues usando dados sintéticos e o template.</li><li>Faça triagem: reproduzibilidade, componente, severidade, prioridade e justificativa.</li><li>Escolha uma; escreva teste de regressão vermelho, corrija e rode <code>./mvnw test</code>.</li><li>Feche com evidência e atualize <code>docs/RTM.md</code>.</li></ol><div class="alert alert-success"><h3 class="h5">Critérios de aceite</h3><ul class="mb-0"><li>Outra equipe reproduz cada relato sem explicação oral.</li><li>Severidade e prioridade têm justificativas distintas.</li><li>A causa raiz do defeito corrigido está registrada.</li><li>O teste falha antes, passa depois e a regressão permanece verde.</li></ul></div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Síntese e perguntas</h2><p class="text-muted">Um defeito bem gerenciado produz três resultados: restaura o comportamento, impede recorrência e ensina algo ao processo. Relato, triagem, causa raiz e regressão formam uma linha contínua de evidência.</p><ol class="text-muted mb-0"><li>Por que severidade crítica nem sempre implica prioridade imediata?</li><li>Qual informação torna o bug de e-mail reproduzível?</li><li>Por que apenas normalizar no controller é correção incompleta?</li><li>Que métrica revelaria verificações fracas?</li></ol></section>
+<div class="text-center"><a href="../slide_gestao-erros-bugs.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+</div></div></main><footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script></body></html>

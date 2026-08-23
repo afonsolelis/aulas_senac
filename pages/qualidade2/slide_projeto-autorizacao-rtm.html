@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="autorização, plano, RBAC, assinatura, RTM, matriz de rastreabilidade, Foot Fanatics"
+    />
+    <title>Aula 12 - Autorização por Plano e RTM</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a
+        href="../home_qualidade_2026_2.html"
+        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
+        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para
+        página inicial</a
+      >
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img
+            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+            alt="Senac Logo"
+            height="80"
+            class="mb-3"
+          />
+          <h5 class="text-uppercase text-secondary fw-bold">
+            Qualidade de Software · Projeto
+          </h5>
+          <h1 class="display-4 fw-bold text-dark">
+            Aula 12: Autorização por plano e RTM
+          </h1>
+          <p class="fs-4 text-secondary">
+            Negar por padrão, testar cada regra, provar a cobertura
+          </p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill"
+            >Semana 44 · Foot Fanatics E4</span
+          >
+          <div class="slide-keywords d-none" aria-hidden="true">
+            <span class="keyword">autorização</span
+            ><span class="keyword">plano</span><span class="keyword">RTM</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
+          <div class="row g-3 fs-5">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Decisão de acesso</strong
+                ><span class="text-muted"
+                  >identidade, papel, plano, vigência e recurso.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Defesa em profundidade</strong
+                ><span class="text-muted"
+                  >filtros, serviço, consulta e resposta.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Testes negativos</strong
+                ><span class="text-muted"
+                  >visitante, free, vencido e editor.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>RTM fechada</strong
+                ><span class="text-muted"
+                  >cobertura, evidência e lacunas zero.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-3">
+        <div class="slide-content text-center">
+          <span class="badge bg-danger mb-3">Autenticar ≠ autorizar</span>
+          <h2 class="display-5 fw-bold">
+            “Quem é?” vem antes de “pode fazer?”
+          </h2>
+          <div class="row g-4 mt-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <i
+                  class="fas fa-id-card fa-2x text-primary mb-2"
+                  aria-hidden="true"
+                ></i>
+                <h4>Autenticação</h4>
+                <p class="text-muted mb-0">
+                  Token válido identifica Ana e sua sessão.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <i
+                  class="fas fa-shield-halved fa-2x text-danger mb-2"
+                  aria-hidden="true"
+                ></i>
+                <h4>Autorização</h4>
+                <p class="text-muted mb-0">
+                  Política decide se Ana pode ler esta matéria agora.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-dark mt-4">
+            Token válido com assinatura vencida continua autenticado — mas não
+            autorizado ao exclusivo.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            Regra de decisão do Foot Fanatics
+          </h2>
+          <div class="card border-0 shadow-sm p-4 fs-5">
+            <p>
+              <strong>Permitir leitura</strong> quando o conteúdo está publicado
+              e:
+            </p>
+            <ul>
+              <li>é <code>PUBLICO</code>; ou</li>
+              <li>
+                é <code>EXCLUSIVO</code> e o usuário possui plano
+                <code>PREMIUM</code> ativo no instante da requisição.
+              </li>
+            </ul>
+            <p class="mb-0">
+              <strong>Negar por padrão</strong> qualquer combinação não
+              explicitamente permitida.
+            </p>
+          </div>
+          <div class="alert alert-warning mt-3">
+            Papel <code>EDITOR</code> autoriza publicar; não deve implicar
+            automaticamente assinatura premium.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">Tabela de decisão</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Publicada?</th>
+                  <th>Visibilidade</th>
+                  <th>Sessão</th>
+                  <th>Plano vigente</th>
+                  <th>Resultado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>não</td>
+                  <td>qualquer</td>
+                  <td>qualquer</td>
+                  <td>qualquer</td>
+                  <td class="text-danger fw-bold">negar</td>
+                </tr>
+                <tr>
+                  <td>sim</td>
+                  <td>público</td>
+                  <td>ausente</td>
+                  <td>—</td>
+                  <td class="text-success fw-bold">permitir</td>
+                </tr>
+                <tr>
+                  <td>sim</td>
+                  <td>exclusivo</td>
+                  <td>ausente</td>
+                  <td>—</td>
+                  <td class="text-danger fw-bold">negar</td>
+                </tr>
+                <tr>
+                  <td>sim</td>
+                  <td>exclusivo</td>
+                  <td>válida</td>
+                  <td>free</td>
+                  <td class="text-danger fw-bold">negar</td>
+                </tr>
+                <tr>
+                  <td>sim</td>
+                  <td>exclusivo</td>
+                  <td>válida</td>
+                  <td>premium vencido</td>
+                  <td class="text-danger fw-bold">negar</td>
+                </tr>
+                <tr class="table-success">
+                  <td>sim</td>
+                  <td>exclusivo</td>
+                  <td>válida</td>
+                  <td>premium ativo</td>
+                  <td class="fw-bold">permitir</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Política central e explícita
+          </h2>
+          <pre
+            class="bg-dark text-white rounded-3 p-3"
+          ><code class="text-info">boolean podeLer(Principal p, Conteudo c, Clock clock) {
+  if (!c.estaPublicado()) return false;
+  if (c.ehPublico()) return true;
+  return p != null
+      &amp;&amp; p.assinatura().plano() == PREMIUM
+      &amp;&amp; p.assinatura().estaVigente(clock);
+}</code></pre>
+          <div class="alert alert-light border mb-0">
+            Uma política única reduz divergência entre endpoints. Controller
+            traduz a decisão; domínio/caso de uso a executa; teste a especifica.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-7">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Defesa em profundidade
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-3">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <strong>Filtro</strong
+                ><small class="text-muted">valida token e sessão.</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <strong>Caso de uso</strong
+                ><small class="text-muted">aplica a política.</small>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <strong>Consulta</strong
+                ><small class="text-muted"
+                  >não carrega rascunho indevido.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="card h-100 border-0 shadow-sm p-3">
+                <strong>DTO</strong
+                ><small class="text-muted">não contém campo proibido.</small>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-danger mt-4 mb-0">
+            Nunca dependa só da anotação da rota se a mesma regra pode ser
+            chamada por outro caminho.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            Testes negativos primeiro
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-striped table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Ator/estado</th>
+                  <th>Recurso</th>
+                  <th>Esperado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>AUTH-01</td>
+                  <td>visitante</td>
+                  <td>público</td>
+                  <td>200</td>
+                </tr>
+                <tr>
+                  <td>AUTH-02</td>
+                  <td>visitante</td>
+                  <td>exclusivo</td>
+                  <td>nega sem corpo</td>
+                </tr>
+                <tr>
+                  <td>AUTH-03</td>
+                  <td>free</td>
+                  <td>exclusivo</td>
+                  <td>403</td>
+                </tr>
+                <tr>
+                  <td>AUTH-04</td>
+                  <td>premium vencido</td>
+                  <td>exclusivo</td>
+                  <td>403</td>
+                </tr>
+                <tr>
+                  <td>AUTH-05</td>
+                  <td>premium ativo</td>
+                  <td>exclusivo</td>
+                  <td>200</td>
+                </tr>
+                <tr>
+                  <td>AUTH-06</td>
+                  <td>premium ativo</td>
+                  <td>rascunho</td>
+                  <td>nega</td>
+                </tr>
+                <tr>
+                  <td>AUTH-07</td>
+                  <td>assinante</td>
+                  <td>publicação</td>
+                  <td>403</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <span class="badge bg-primary mb-2">RTM</span>
+          <h2 class="display-5 fw-bold">
+            Uma linha deve contar a cadeia inteira
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Requisito</th>
+                  <th>Risco</th>
+                  <th>Cenário</th>
+                  <th>Teste</th>
+                  <th>Execução</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>RF-E4-07</td>
+                  <td>vazamento premium</td>
+                  <td>premium vencido</td>
+                  <td>AUTH-04</td>
+                  <td>CI #184</td>
+                  <td class="text-success fw-bold">Passou</td>
+                </tr>
+                <tr>
+                  <td>RNF-SEG-02</td>
+                  <td>detalhe em erro</td>
+                  <td>acesso negado</td>
+                  <td>SEC-09</td>
+                  <td>CI #184</td>
+                  <td class="text-success fw-bold">Passou</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted">
+            Cobertura sem evidência é promessa. Evidência sem requisito é ruído.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Auditoria de lacunas
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Órfão</strong
+                ><small class="text-muted">requisito sem caso/teste.</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Fantasma</strong
+                ><small class="text-muted">teste sem requisito/riscos.</small>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Desatualizado</strong
+                ><small class="text-muted"
+                  >teste existe, evidência é de commit antigo.</small
+                >
+              </div>
+            </div>
+          </div>
+          <ul class="fs-5 mt-4">
+            <li>todos os RF/RNF em escopo têm teste;</li>
+            <li>riscos altos têm negativos e integração;</li>
+            <li>status deriva da última execução;</li>
+            <li>link abre e identifica commit/ambiente.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <span class="badge bg-success mb-2">Sprint · evidência da aula</span>
+          <h2 class="display-5 fw-bold mb-3">Feche autorização e RTM</h2>
+          <ol class="list-group list-group-numbered fs-5">
+            <li class="list-group-item">
+              Formalizar tabela de decisão e regra 403/404.
+            </li>
+            <li class="list-group-item">
+              Centralizar política por plano, vigência e estado.
+            </li>
+            <li class="list-group-item">
+              Automatizar AUTH-01 a AUTH-07, incluindo resposta sem corpo
+              proibido.
+            </li>
+            <li class="list-group-item">
+              Rodar suíte completa no pipeline e corrigir regressões.
+            </li>
+            <li class="list-group-item">
+              Auditar RF/RNF órfãos e fechar links/evidências da RTM.
+            </li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            <strong>Entregável:</strong> autorização negativa/positiva
+            demonstrável e RTM sem lacuna do escopo entregue.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-12">
+        <div class="glass-cover text-center">
+          <h1 class="display-4 fw-bold text-dark">
+            Negue por padrão. Prove cada permissão.
+          </h1>
+          <p class="fs-4 text-secondary">
+            Política central, negativos fortes e RTM navegável.
+          </p>
+          <div class="row g-3 text-start mt-3">
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Leve</strong
+                ><small class="text-muted"
+                  >autenticação não substitui autorização.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Entregue</strong
+                ><small class="text-muted"
+                  >matriz de acesso e RTM fechada.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Próxima</strong
+                ><small class="text-muted"
+                  >ensaio e relatório de qualidade.</small
+                >
+              </div>
+            </div>
+          </div>
+          <h2 class="mt-4">Dúvidas?</h2>
+        </div>
+      </div>
+    </div>
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled>
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="progress mx-3" style="width: 100px; height: 6px">
+          <div
+            id="progressBar"
+            class="progress-bar bg-dark"
+            role="progressbar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2"
+          >1 / 12</span
+        ><button id="nextBtn" class="ms-2">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
+        ><button id="fullscreenBtn" class="ms-2">
+          <i class="fas fa-expand" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">
+        Qualidade · Autorização e RTM · Semana 44
+      </div>
+      <a
+        href="material/material_projeto-autorizacao-rtm.html"
+        class="btn btn-outline-primary btn-sm rounded-pill"
+        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
+      ><a href="../../index.html"
+        ><img
+          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+          alt="Senac"
+          height="30"
+          class="opacity-75"
+      /></a>
+    </footer>
+    <script src="../../js/standard_slides.js"></script>
+  </body>
+</html>

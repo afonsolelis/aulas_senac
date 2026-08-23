@@ -1,94 +1,98 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 35 - Qualidade: Introdução a Testes Automatizados</title>
-  <meta name="keywords" content="qualidade de software, testes automatizados, automação, frameworks">
+  <meta name="keywords" content="qualidade de software, testes automatizados, JUnit 5, pirâmide de testes, AAA, Foot Fanatics, rastreabilidade">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css">
-  <link rel="stylesheet" href="../../css/base-styles.css">
+  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/slides.css"><link rel="stylesheet" href="../../css/base-styles.css"><script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
 </head>
-
 <body class="slide-body" data-disciplina="qualidade">
-
   <div class="slide-container">
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial</a>
+    <div class="slide active cover-bg" id="slide-1"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="90" cy="115" r="8"></circle><circle cx="205" cy="570" r="5"></circle><circle cx="545" cy="600" r="7"></circle><circle cx="895" cy="565" r="10"></circle><circle cx="1070" cy="135" r="7"></circle></svg><div class="glass-cover text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="65" class="mb-3">
+      <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5><h1 class="display-4 fw-bold mb-3 text-black">Aula 04: Introdução a Testes Automatizados</h1>
+      <p class="fs-4 text-secondary mb-3">O primeiro teste que protege o <strong>Foot Fanatics</strong></p><hr class="border-secondary w-25 mx-auto my-3 opacity-100"><h3 class="fw-normal text-dark">Professor Afonso</h3><span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 35 - 2026.2</span>
+      <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">testes automatizados</span><span class="keyword">JUnit 5</span><span class="keyword">pirâmide de testes</span><span class="keyword">AAA</span><span class="keyword">Foot Fanatics</span><span class="keyword">rastreabilidade</span></div>
+    </div></div>
+    <div class="slide" id="slide-2"><div class="slide-content"><h1 class="display-4 fw-bold mb-3 text-dark text-center">Agenda de Hoje</h1><div class="row g-3">
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-3">Fundamentos</span><ul class="text-muted mb-0"><li class="mb-2">Por que automatizar</li><li class="mb-2">Pirâmide e níveis de teste</li><li class="mb-2">Anatomia Arrange–Act–Assert</li><li class="mb-0">Testes rápidos, isolados e legíveis</li></ul></div></div>
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-danger align-self-start mb-3">Foot Fanatics</span><ul class="text-muted mb-0"><li class="mb-2">Primeira regra de E1</li><li class="mb-2">Primeiro teste com JUnit 5</li><li class="mb-2">Casos positivos e negativos</li><li class="mb-0">Evidência e primeira linha da RTM</li></ul></div></div>
+    </div></div></div>
+    <div class="slide" id="slide-3"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Ao final, você consegue...</h2><div class="row g-3 text-start">
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><i class="fas fa-bullseye fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Escolher</h5><p class="text-muted mb-0">o nível certo de teste para o risco que deseja reduzir.</p></div></div>
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><i class="fas fa-vial fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Escrever</h5><p class="text-muted mb-0">um teste unitário legível, determinístico e com falha útil.</p></div></div>
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><i class="fas fa-link fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Provar</h5><p class="text-muted mb-0">a ligação requisito → risco → teste → resultado.</p></div></div>
+    </div><div class="alert alert-dark border-0 mt-4 mb-0 d-inline-block"><strong>Meta concreta:</strong> proteger o cadastro de conta antes de continuar construindo.</div></div></div>
+    <div class="slide" id="slide-4"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-2 text-dark">Manual e automatizado são aliados</h2><p class="lead text-muted mb-4">Automação repete verificações conhecidas; pessoas investigam o desconhecido.</p><div class="row g-4 text-start">
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h4 class="fw-bold text-dark"><i class="fas fa-user-check text-primary me-2" aria-hidden="true"></i>Teste manual</h4><p class="text-muted">Excelente para exploração, usabilidade, descoberta e cenários que mudam muito.</p><span class="badge bg-secondary align-self-start">O que pode dar errado?</span></div></div>
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h4 class="fw-bold text-dark"><i class="fas fa-robot text-primary me-2" aria-hidden="true"></i>Teste automatizado</h4><p class="text-muted">Excelente para regressão, combinações repetíveis e feedback a cada mudança.</p><span class="badge bg-danger align-self-start">O que não pode quebrar de novo?</span></div></div>
+    </div><div class="alert alert-warning border-0 mt-4 mb-0"><strong>Automatizar não é testar.</strong> É transformar uma decisão de teste em verificação executável.</div></div></div>
+    <div class="slide" id="slide-5"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-2 text-dark">A pirâmide é uma estratégia de feedback</h2><p class="lead text-muted mb-3">Mais perto do código: rápido e isolado. Mais perto do usuário: realista e caro.</p><div class="row g-3 align-items-end justify-content-center text-start">
+      <div class="col-md-3"><div class="card border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger align-self-start mb-2">Poucos</span><h5 class="fw-bold">E2E</h5><p class="small text-muted mb-0">Fluxo completo; alta confiança, diagnóstico lento.</p></div></div>
+      <div class="col-md-4"><div class="card border-0 shadow-sm p-4 bg-light rounded-4"><span class="badge bg-secondary align-self-start mb-2">Alguns</span><h5 class="fw-bold">Integração / API</h5><p class="small text-muted mb-0">Componentes e infraestrutura colaborando.</p></div></div>
+      <div class="col-md-5"><div class="card border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-success align-self-start mb-2">Muitos</span><h5 class="fw-bold">Unidade</h5><p class="small text-muted mb-0">Uma regra em milissegundos e sem infraestrutura.</p></div></div>
+    </div><p class="text-secondary mt-4 mb-0"><strong>Foot Fanatics hoje:</strong> começamos na base, com a validação de cadastro de E1.</p></div></div>
+    <div class="slide" id="slide-6"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Um bom teste conta uma história curta</h2><div class="row g-3 text-start">
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><span class="badge bg-primary align-self-start mb-3">Arrange</span><h5 class="fw-bold">Preparar</h5><p class="text-muted mb-0">Dados, colaboradores e estado inicial explícitos.</p></div></div>
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><span class="badge bg-primary align-self-start mb-3">Act</span><h5 class="fw-bold">Agir</h5><p class="text-muted mb-0">Uma chamada representa o comportamento sob teste.</p></div></div>
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 rounded-4"><span class="badge bg-primary align-self-start mb-3">Assert</span><h5 class="fw-bold">Verificar</h5><p class="text-muted mb-0">Resultado observável e mensagem de falha relevante.</p></div></div>
+    </div><div class="bg-dark text-white p-3 rounded-3 text-start mt-4"><code class="text-info small">dado_emailNovo_quando_cadastrar_entao_salvaContaAtiva()</code></div><p class="small text-muted mt-2 mb-0">O nome descreve contexto, ação e resultado — não o método Java.</p></div></div>
+    <div class="slide" id="slide-7"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">O teste precisa ser confiável</h2><div class="row g-3 text-start">
+      <div class="col-md"><div class="card h-100 border-0 shadow-sm p-3"><strong class="text-primary">Rápido</strong><p class="small text-muted mb-0 mt-2">Executado sempre.</p></div></div><div class="col-md"><div class="card h-100 border-0 shadow-sm p-3"><strong class="text-primary">Isolado</strong><p class="small text-muted mb-0 mt-2">Sem contaminação.</p></div></div><div class="col-md"><div class="card h-100 border-0 shadow-sm p-3"><strong class="text-primary">Repetível</strong><p class="small text-muted mb-0 mt-2">Igual em qualquer máquina.</p></div></div><div class="col-md"><div class="card h-100 border-0 shadow-sm p-3"><strong class="text-primary">Autoavaliável</strong><p class="small text-muted mb-0 mt-2">Verde ou vermelho.</p></div></div><div class="col-md"><div class="card h-100 border-0 shadow-sm p-3"><strong class="text-primary">Oportuno</strong><p class="small text-muted mb-0 mt-2">Perto da regra.</p></div></div>
+    </div><div class="alert alert-danger border-0 mt-4 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Teste que depende da internet, do relógio real ou da ordem da suíte é um alarme com defeito.</div></div></div>
+    <div class="slide" id="slide-8"><div class="slide-content"><h2 class="display-5 fw-bold mb-2 text-dark text-center">Nossa primeira regra: cadastro</h2><p class="lead text-muted text-center mb-3">E1 — Identidade &amp; Conta</p><div class="row g-3">
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold text-success">Caminho feliz</h5><p class="text-muted">E-mail válido e ainda não cadastrado cria conta <code>ATIVA</code>; senha nunca é persistida em texto puro.</p><span class="badge bg-success align-self-start">Conta criada</span></div></div>
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold text-danger">Caminhos de proteção</h5><ul class="small text-muted mb-0"><li>E-mail duplicado → rejeitar</li><li>E-mail inválido → rejeitar</li><li>Senha fraca → rejeitar</li><li>Falha ao salvar → não fingir sucesso</li></ul></div></div>
+    </div><div class="alert alert-dark border-0 mt-4 mb-0"><strong>Oráculo:</strong> regra observável que decide se o teste passa. Sem oráculo claro, há execução — não há teste.</div></div></div>
+    <div class="slide" id="slide-9"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">Primeiro teste com JUnit 5</h2><div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 small text-info"><code>@Test
+void dadoEmailNovo_quandoCadastrar_entaoSalvaContaAtiva() {
+  var comando = new CadastroConta("ana@email.com", "Senha#123");
+  when(repositorio.existePorEmail(comando.email())).thenReturn(false);
 
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
+  var conta = servico.cadastrar(comando);
 
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 04: Introdução a Testes Automatizados</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 35 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Introdução a Testes Automatizados</span></div>
-      </div>
-    </div>
+  assertAll(
+    () -&gt; assertEquals(StatusConta.ATIVA, conta.getStatus()),
+    () -&gt; verify(repositorio).salvar(conta)
+  );
+}</code></pre></div><div class="alert alert-primary border-0 mt-3 mb-0"><strong>Leitura:</strong> contexto controlado, uma regra executada e estado + interação essencial observados.</div></div></div>
+    <div class="slide" id="slide-10"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Dublês isolam a regra</h2><div class="row g-3 text-start">
+      <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Stub</h5><p class="small text-muted mb-0">Entrega resposta preparada. O repositório diz que o e-mail não existe.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Mock</h5><p class="small text-muted mb-0">Verifica interação. A conta foi salva uma única vez.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Fake</h5><p class="small text-muted mb-0">Implementação simples e funcional. Repositório em memória.</p></div></div>
+    </div><div class="alert alert-warning border-0 mt-4 mb-0"><strong>Regra:</strong> simule fronteiras, não a classe testada. Mock demais testa coreografia, não comportamento.</div></div></div>
+    <div class="slide" id="slide-11"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">O teste negativo prova a proteção</h2><div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 small text-info"><code>@Test
+void dadoEmailExistente_quandoCadastrar_entaoRejeitaSemSalvar() {
+  var comando = new CadastroConta("ana@email.com", "Senha#123");
+  when(repositorio.existePorEmail(comando.email())).thenReturn(true);
 
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Introdução a Testes Automatizados</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
+  var erro = assertThrows(EmailJaCadastradoException.class,
+      () -&gt; servico.cadastrar(comando));
 
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Arquitetura sem tecnologia e ATAM inicial</h2>
-        <p class="lead text-muted mb-3">Primeiro decidir a forma. Tecnologia é assunto da próxima aula.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Desenhar o <strong>diagrama de contexto</strong> e o de <strong>componentes</strong> do Foot Fanatics — só caixas, responsabilidades e fluxos.</li>
-              <li class="list-group-item"><strong>Regra da aula:</strong> nenhuma tecnologia pode ser citada. Nada de banco, framework ou fila com nome próprio.</li>
-              <li class="list-group-item">Montar a <strong>utility tree</strong> a partir dos RNF levantados na aula passada, priorizando cada folha por <em>(importância, dificuldade)</em>.</li>
-              <li class="list-group-item">Rodar o <strong>ATAM inicial</strong>: escrever os cenários de atributo de qualidade das folhas (A, A).</li>
-              <li class="list-group-item">Listar os <strong>pontos de sensibilidade</strong> e os <strong>tradeoffs</strong> — eles são a pauta da próxima aula.</li>
-            </ol>
-          </div>
-        </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> arquitetura desenhada sem tecnologia, utility tree e pontos sensíveis listados.
-        </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
-      </div>
-    </div>
-
+  assertEquals("CONTA_EMAIL_DUPLICADO", erro.getCodigo());
+  verify(repositorio, never()).salvar(any());
+}</code></pre></div><p class="text-muted mt-3 mb-0 text-center">Verifique o código estável e o efeito que <strong>não</strong> pode ocorrer.</p></div></div>
+    <div class="slide" id="slide-12"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">O teste também é documentação</h2><div class="row g-3 text-start">
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle"><h5 class="fw-bold text-danger">Sinais ruins</h5><ul class="small text-muted mb-0"><li><code>testaCadastro1()</code></li><li>Vinte asserts desconectados</li><li>Dados mágicos sem contexto</li><li><code>Thread.sleep()</code></li><li>Teste passa sem a regra</li></ul></div></div>
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-light"><h5 class="fw-bold text-success">Sinais bons</h5><ul class="small text-muted mb-0"><li>Um comportamento por teste</li><li>Nome revela o cenário</li><li>Arrange mínimo</li><li>Falha explica a regressão</li><li>Mutação da regra faz falhar</li></ul></div></div>
+    </div><div class="alert alert-dark border-0 mt-4 mb-0">O leitor futuro é parte do requisito de legibilidade.</div></div></div>
+    <div class="slide" id="slide-13"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Prática guiada: primeiro cinto de segurança</h2><ol class="list-group list-group-numbered">
+      <li class="list-group-item"><strong>Criar:</strong> <code>CadastroContaService</code>, porta de repositório e erros de domínio.</li><li class="list-group-item"><strong>Escrever quatro testes:</strong> sucesso, e-mail duplicado, e-mail inválido e senha fraca.</li><li class="list-group-item"><strong>Executar:</strong> <code>./mvnw test</code>; remover uma validação e observar a falha.</li><li class="list-group-item"><strong>Registrar:</strong> criar <code>docs/RTM.md</code> e ligar <code>RF-E1-01</code> aos testes.</li><li class="list-group-item"><strong>Versionar:</strong> commit com código, testes e documentação.</li>
+    </ol></div></div>
+    <div class="slide" id="slide-14"><div class="text-center slide-content"><span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 04</span><h2 class="display-5 fw-bold mb-3 text-dark">Incremento E1 verificável</h2><div class="row g-3 text-start">
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Precisa existir</h5><ul class="small text-muted mb-0"><li>4 testes unitários verdes</li><li>Ao menos 1 teste negativo</li><li>Nomes contexto–ação–resultado</li><li><code>docs/RTM.md</code> com RF-E1-01</li></ul></div></div>
+      <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Critérios de aceite</h5><ul class="small text-muted mb-0"><li><code>./mvnw test</code> passa</li><li>Remover uma regra deixa teste vermelho</li><li>Sem rede, banco ou relógio real</li><li>Commit contém evidência legível</li></ul></div></div>
+    </div><div class="alert alert-success border-0 mt-4 mb-0"><strong>Definition of Done:</strong> regra implementada, protegida e rastreável.</div></div></div>
+    <div class="slide" id="slide-15"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-4 text-dark">Síntese: quatro ideias para levar</h2><div class="row g-3 text-start"><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded-3"><strong>1.</strong> Automatizar é tornar uma decisão repetível.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded-3"><strong>2.</strong> O risco determina o nível de teste.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded-3"><strong>3.</strong> AAA deixa contexto, ação e oráculo visíveis.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded-3"><strong>4.</strong> Teste só é evidência quando é rastreável.</div></div></div><p class="lead text-secondary mt-4 mb-0">Próxima aula: como transformar uma falha em um defeito bem gerenciado?</p></div></div>
+    <div class="slide cover-bg" id="slide-16"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="115" cy="130" r="7"></circle><circle cx="285" cy="570" r="10"></circle><circle cx="650" cy="590" r="8"></circle><circle cx="840" cy="120" r="10"></circle><circle cx="1035" cy="555" r="6"></circle></svg><div class="glass-cover text-center"><i class="fas fa-comments fa-3x text-primary mb-3" aria-hidden="true"></i><h1 class="display-4 fw-bold text-dark">Dúvidas?</h1><p class="fs-4 text-secondary">Qual regra do Foot Fanatics você ainda não saberia transformar em teste?</p><span class="badge bg-danger px-4 py-2 rounded-pill">Teste pequeno. Feedback rápido. Mudança segura.</span></div></div>
   </div>
-
   <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
-    </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Introdução a Testes Automatizados (Semana 35)</div>
-    <a href="material/material_introducao-testes-automatizados.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
-  </footer>
-
-  <script src="../../js/standard_slides.js"></script>
-</body>
-
-</html>
+    <div class="slide-controls"><button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button><div class="progress mx-3" style="width: 100px; height: 6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div><span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 16</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button></div>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade - Testes Automatizados (Semana 35)</div>
+    <a href="material/material_introducao-testes-automatizados.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a>
+    <a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a>
+  </footer><script src="../../js/standard_slides.js"></script>
+</body></html>

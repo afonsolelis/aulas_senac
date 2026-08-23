@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="keywords"
+      content="prova oral, ensaio, RTM, relatório de qualidade, evidência, Foot Fanatics"
+    />
+    <title>Aula 13 - Preparação para Prova Oral</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a
+        href="../home_qualidade_2026_2.html"
+        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
+        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para
+        página inicial</a
+      >
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img
+            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+            alt="Senac Logo"
+            height="80"
+            class="mb-3"
+          />
+          <h5 class="text-uppercase text-secondary fw-bold">
+            Qualidade de Software · Fechamento
+          </h5>
+          <h1 class="display-4 fw-bold text-dark">
+            Aula 13: Preparação para a prova oral
+          </h1>
+          <p class="fs-4 text-secondary">
+            Ensaio, RTM fechada e relatório de qualidade
+          </p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill"
+            >Semana 45 · Foot Fanatics</span
+          >
+          <div class="slide-keywords d-none" aria-hidden="true">
+            <span class="keyword">prova oral</span
+            ><span class="keyword">RTM</span
+            ><span class="keyword">relatório</span>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
+          <div class="row g-3 fs-5">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>1. Pacote final</strong
+                ><span class="text-muted"
+                  >produto, documentação e execução.</span
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>2. Argumento técnico</strong
+                ><span class="text-muted">afirmação, evidência e limite.</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>3. Ensaio oral</strong
+                ><span class="text-muted">demo, perguntas e recuperação.</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>4. Gate de prontidão</strong
+                ><span class="text-muted"
+                  >RTM, relatório e pipeline fechados.</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-3">
+        <div class="slide-content text-center">
+          <span class="badge bg-danger mb-3"
+            >A prova não é uma visita guiada ao código</span
+          >
+          <h2 class="display-5 fw-bold">É a defesa de decisões de qualidade</h2>
+          <p class="lead text-muted">
+            O grupo precisa ligar requisito, risco, arquitetura, teste,
+            resultado e limitação.
+          </p>
+          <div
+            class="d-flex align-items-center justify-content-center gap-2 flex-wrap mt-4"
+          >
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Afirmação</strong>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Evidência</strong>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Interpretação</strong>
+            </div>
+            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+            <div class="card border-0 shadow-sm p-3">
+              <strong>Limite</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Pacote de entrega verificável
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Repositório</strong
+                ><small class="text-muted"
+                  >código, tags, README e histórico.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Documentação</strong
+                ><small class="text-muted"
+                  >PRD, arquitetura, plano, RTM e relatório.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Evidências</strong
+                ><small class="text-muted"
+                  >CI, cobertura, análise, WireMock e JMeter.</small
+                >
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-4">
+            Todos os links devem abrir sem depender da máquina de um integrante.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <span class="badge bg-primary mb-2">Relatório de qualidade</span>
+          <h2 class="display-5 fw-bold mb-3">Curto, rastreável e honesto</h2>
+          <ol class="list-group list-group-numbered fs-5">
+            <li class="list-group-item">Escopo e versão avaliada</li>
+            <li class="list-group-item">Riscos prioritários e estratégia</li>
+            <li class="list-group-item">
+              Resultados funcionais, segurança e integração
+            </li>
+            <li class="list-group-item">
+              Cobertura/análise estática interpretadas
+            </li>
+            <li class="list-group-item">
+              Performance: ambiente, carga, p95/erros e invariante
+            </li>
+            <li class="list-group-item">
+              Defeitos conhecidos, limitações e conclusão
+            </li>
+          </ol>
+        </div>
+      </div>
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-3">
+            RTM: auditoria final
+          </h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Verificação</th>
+                  <th>Gate</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>RF/RNF em escopo sem caso</td>
+                  <td class="text-success fw-bold">zero</td>
+                </tr>
+                <tr>
+                  <td>riscos altos sem teste negativo</td>
+                  <td class="text-success fw-bold">zero</td>
+                </tr>
+                <tr>
+                  <td>casos sem automação/evidência</td>
+                  <td>justificativa explícita</td>
+                </tr>
+                <tr>
+                  <td>links quebrados</td>
+                  <td class="text-success fw-bold">zero</td>
+                </tr>
+                <tr>
+                  <td>evidência em commit diferente</td>
+                  <td class="text-success fw-bold">zero</td>
+                </tr>
+                <tr>
+                  <td>falhas conhecidas</td>
+                  <td>registradas e avaliadas</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted text-center">
+            RTM fechada não significa “tudo passou”; significa que nada
+            relevante está escondido.
+          </p>
+        </div>
+      </div>
+      <div class="slide" id="slide-7">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Roteiro da demonstração
+          </h2>
+          <div class="row g-3 text-center">
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <span class="badge bg-danger mb-2">1</span
+                ><strong>Contexto</strong
+                ><small class="text-muted">risco e regra</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <span class="badge bg-danger mb-2">2</span
+                ><strong>Permitido</strong
+                ><small class="text-muted">premium vigente</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <span class="badge bg-danger mb-2">3</span
+                ><strong>Negados</strong
+                ><small class="text-muted">free e vencido</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <span class="badge bg-danger mb-2">4</span
+                ><strong>Evidência</strong
+                ><small class="text-muted">teste e CI</small>
+              </div>
+            </div>
+            <div class="col-md">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <span class="badge bg-danger mb-2">5</span><strong>RTM</strong
+                ><small class="text-muted">cadeia completa</small>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-light border mt-4">
+            Demo curta, dados preparados e plano B por captura/log — sem fingir
+            resultado se o ambiente falhar.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Perguntas que o grupo precisa dominar
+          </h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Por que esta arquitetura?</strong
+                ><small class="text-muted"
+                  >tradeoff, risco e alternativa rejeitada.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>O que a cobertura não prova?</strong
+                ><small class="text-muted"
+                  >execução não garante correção/requisito.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Como testaram falha externa?</strong
+                ><small class="text-muted"
+                  >WireMock, timeout e erro seguro.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>O JMeter sustentou qual conclusão?</strong
+                ><small class="text-muted"
+                  >carga, ambiente, p95 e limite.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>Como impedem vazamento premium?</strong
+                ><small class="text-muted">política, DTO e negativos.</small>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <strong>O que falta?</strong
+                ><small class="text-muted"
+                  >limitação conhecida e próximo experimento.</small
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">
+            Quando a demo falhar
+          </h2>
+          <div class="row g-4">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 bg-danger-subtle">
+                <h4>Não faça</h4>
+                <ul class="text-muted mb-0">
+                  <li>alterar código ao vivo sem diagnóstico;</li>
+                  <li>culpar a máquina sem evidência;</li>
+                  <li>mostrar captura como se fosse execução atual;</li>
+                  <li>esconder a falha da conclusão.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 bg-success-subtle">
+                <h4>Faça</h4>
+                <ul class="text-muted mb-0">
+                  <li>declare o sintoma e o último estado verde;</li>
+                  <li>mostre pipeline/log/captura identificados;</li>
+                  <li>explique hipótese e verificação seguinte;</li>
+                  <li>registre a limitação com honestidade.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <span class="badge bg-primary mb-2">Rubrica do ensaio</span>
+          <h2 class="display-5 fw-bold mb-3">Feedback em quatro dimensões</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered bg-white">
+              <thead class="table-dark">
+                <tr>
+                  <th>Dimensão</th>
+                  <th>Pergunta</th>
+                  <th>Sinal forte</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Domínio</td>
+                  <td>explica regra e risco?</td>
+                  <td>usa exemplo e limite</td>
+                </tr>
+                <tr>
+                  <td>Evidência</td>
+                  <td>abre a prova?</td>
+                  <td>commit/CI identificados</td>
+                </tr>
+                <tr>
+                  <td>Rastreabilidade</td>
+                  <td>navega requisito → teste?</td>
+                  <td>RTM coerente</td>
+                </tr>
+                <tr>
+                  <td>Comunicação</td>
+                  <td>grupo responde sem contradição?</td>
+                  <td>todos dominam decisões</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <span class="badge bg-success mb-2">Prática · gate final</span>
+          <h2 class="display-5 fw-bold mb-3">
+            Dois ciclos de ensaio e correção
+          </h2>
+          <ol class="list-group list-group-numbered fs-5">
+            <li class="list-group-item">
+              Grupo A apresenta 8 minutos; Grupo B avalia pela rubrica.
+            </li>
+            <li class="list-group-item">
+              B faz três perguntas sorteadas e exige evidência.
+            </li>
+            <li class="list-group-item">
+              A registra lacunas, corrige RTM/relatório/roteiro.
+            </li>
+            <li class="list-group-item">Trocar papéis e repetir.</li>
+            <li class="list-group-item">
+              Rodar checklist final e congelar commit/tag de entrega.
+            </li>
+          </ol>
+          <div class="alert alert-success mt-3 mb-0">
+            <strong>Entregável:</strong> RTM fechada, relatório final, roteiro
+            ensaiado, links verificados e pacote executável.
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-12">
+        <div class="glass-cover text-center">
+          <h1 class="display-4 fw-bold text-dark">
+            Qualidade é uma afirmação sustentada
+          </h1>
+          <p class="fs-4 text-secondary">
+            Mostre o requisito, o risco, a evidência, a conclusão e o limite.
+          </p>
+          <div class="row g-3 text-start mt-3">
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Feche</strong
+                ><small class="text-muted"
+                  >RTM e relatório sem lacunas escondidas.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Ensaie</strong
+                ><small class="text-muted"
+                  >demo e perguntas com tempo real.</small
+                >
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 p-3 h-100">
+                <strong>Defenda</strong
+                ><small class="text-muted"
+                  >decisões com evidência e honestidade.</small
+                >
+              </div>
+            </div>
+          </div>
+          <h2 class="mt-4">Dúvidas?</h2>
+        </div>
+      </div>
+    </div>
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled>
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </button>
+        <div class="progress mx-3" style="width: 100px; height: 6px">
+          <div
+            id="progressBar"
+            class="progress-bar bg-dark"
+            role="progressbar"
+            style="width: 0%"
+          ></div>
+        </div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2"
+          >1 / 12</span
+        ><button id="nextBtn" class="ms-2">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
+        ><button id="fullscreenBtn" class="ms-2">
+          <i class="fas fa-expand" aria-hidden="true"></i>
+        </button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">
+        Qualidade · Preparação para prova oral · Semana 45
+      </div>
+      <a
+        href="material/material_preparacao-prova-oral.html"
+        class="btn btn-outline-primary btn-sm rounded-pill"
+        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
+      ><a href="../../index.html"
+        ><img
+          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
+          alt="Senac"
+          height="30"
+          class="opacity-75"
+      /></a>
+    </footer>
+    <script src="../../js/standard_slides.js"></script>
+  </body>
+</html>

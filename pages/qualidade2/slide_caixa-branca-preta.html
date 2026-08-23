@@ -12,6 +12,11 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">
+    import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = anime;
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
 </head>
 
 <body class="slide-body" data-disciplina="qualidade">
@@ -450,7 +455,7 @@
           <i class="fas fa-flag-checkered me-2"></i>
           <strong>Fim da aula:</strong> RF e RNF numerados, medíveis e ligados ao escopo que os originou.
         </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+        <p class="text-muted small mt-3 mb-0"><em>Use o material escrito para consultar o passo a passo detalhado e os critérios do entregável.</em></p>
       </div>
     </div>
 
@@ -515,6 +520,7 @@
       }).catch(err => console.error('Erro ao copiar: ', err));
     }
   </script>
+  <script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
 </body>
 
 </html>

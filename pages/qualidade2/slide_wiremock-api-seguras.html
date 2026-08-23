@@ -1,94 +1,183 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
   <meta charset="UTF-8">
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 40 - Qualidade: WireMock e Chamadas de API Seguras</title>
-  <meta name="keywords" content="qualidade de software, WireMock, Testcontainers, mock, API, testes de integração">
+  <meta name="keywords" content="WireMock, Testcontainers, API, resiliência, integração, contrato, Foot Fanatics">
+  <title>Aula 08 - WireMock e Chamadas de API Seguras</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
 </head>
-
 <body class="slide-body" data-disciplina="qualidade">
-
   <div class="slide-container">
-
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
+    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial</a>
 
     <div class="slide active" id="slide-1">
       <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 08: WireMock e Chamadas de API Seguras</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 40 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">WireMock e Chamadas de API Seguras</span></div>
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3">
+        <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · TADS</h5>
+        <h1 class="display-4 fw-bold text-dark">Aula 08: WireMock e APIs seguras</h1>
+        <p class="fs-4 text-secondary mb-2">Integração previsível, falha controlada e evidência reproduzível</p>
+        <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 40 · Foot Fanatics</span>
+        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">WireMock</span><span class="keyword">Testcontainers</span><span class="keyword">resiliência</span></div>
       </div>
     </div>
 
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">WireMock e Chamadas de API Seguras</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
-
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Implementação da lógica e primeiro pipeline</h2>
-        <p class="lead text-muted mb-3">Fazer o vermelho virar verde — sem mexer em um teste sequer.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Implementar a lógica dos escopos <strong>E1 a E4</strong> até a suíte da aula passada ficar verde.</li>
-              <li class="list-group-item"><strong>Regra da aula:</strong> nenhum teste novo e nenhum teste alterado. A suíte é o contrato; mudou o teste, mudou o requisito.</li>
-              <li class="list-group-item">Anotar cada teste que passa de vermelho para verde — esse é o registro real de progresso.</li>
-              <li class="list-group-item">Configurar o <strong>GitHub Actions</strong> para rodar a suíte completa em todo <em>pull request</em>.</li>
-              <li class="list-group-item">Fazer o pipeline <strong>falhar de propósito</strong> e conferir que o PR fica bloqueado.</li>
-            </ol>
-          </div>
-        </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> suíte verde e primeiro pipeline rodando em pull request.
-        </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
+    <div class="slide" id="slide-2"><div class="slide-content">
+      <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
+      <div class="row g-3 fs-5">
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><strong>1. Fronteira externa</strong><span class="text-muted">Por que uma API de terceiros torna o teste frágil.</span></div></div>
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><strong>2. Duas ferramentas</strong><span class="text-muted">WireMock simula HTTP; Testcontainers fornece infraestrutura real.</span></div></div>
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><strong>3. Segurança e resiliência</strong><span class="text-muted">Timeout, erro seguro, contrato e mínimo privilégio.</span></div></div>
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><strong>4. Laboratório</strong><span class="text-muted">Isolar o provedor esportivo do Foot Fanatics.</span></div></div>
       </div>
-    </div>
+    </div></div>
 
+    <div class="slide" id="slide-3"><div class="slide-content text-center">
+      <span class="badge bg-danger mb-3">O problema</span>
+      <h2 class="display-5 fw-bold">Teste que depende da internet não é determinístico</h2>
+      <p class="lead text-muted">Mudam a rede, os dados, o limite de requisições, a credencial e até o contrato.</p>
+      <div class="row g-3 mt-3 text-start">
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><i class="fas fa-cloud-bolt fa-2x text-danger mb-2" aria-hidden="true"></i><strong>Indisponibilidade</strong><small class="text-muted">A suíte falha sem defeito no nosso código.</small></div></div>
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><i class="fas fa-shuffle fa-2x text-warning mb-2" aria-hidden="true"></i><strong>Dados mutáveis</strong><small class="text-muted">O placar esperado deixa de existir.</small></div></div>
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><i class="fas fa-key fa-2x text-primary mb-2" aria-hidden="true"></i><strong>Segredo exposto</strong><small class="text-muted">Token real vaza em código ou log.</small></div></div>
+      </div>
+      <div class="alert alert-dark border-0 mt-4">Regra: um teste automatizado deve controlar <strong>entrada, tempo e resposta</strong>.</div>
+    </div></div>
+
+    <div class="slide" id="slide-4"><div class="slide-content">
+      <h2 class="display-5 fw-bold text-center mb-4">Dublês e ambientes: cada um em seu lugar</h2>
+      <div class="table-responsive"><table class="table table-bordered align-middle bg-white shadow-sm">
+        <thead class="table-dark"><tr><th>Recurso</th><th>Substitui</th><th>Valida bem</th><th>Limite</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mock de objeto</strong></td><td>Colaborador Java</td><td>Interação isolada</td><td>Não exercita HTTP</td></tr>
+          <tr class="table-warning"><td><strong>WireMock</strong></td><td>Servidor HTTP</td><td>Request, status, header, atraso e payload</td><td>Não é o provedor real</td></tr>
+          <tr><td><strong>Testcontainers</strong></td><td>Infraestrutura</td><td>PostgreSQL/serviço real em container</td><td>Mais lento</td></tr>
+          <tr><td><strong>Sandbox</strong></td><td>Produção externa</td><td>Compatibilidade ponta a ponta</td><td>Instável e custoso</td></tr>
+        </tbody>
+      </table></div>
+      <p class="text-center text-muted">A pirâmide saudável combina isolamento rápido com poucos testes reais de contrato.</p>
+    </div></div>
+
+    <div class="slide" id="slide-5"><div class="slide-content">
+      <span class="badge bg-primary mb-2">WireMock</span>
+      <h2 class="display-5 fw-bold mb-3">Arrange → Act → Assert, agora na fronteira HTTP</h2>
+      <div class="row g-3">
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><h4>1. Stub</h4><p class="text-muted mb-0">Defina método, caminho e resposta controlada.</p></div></div>
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><h4>2. Chamada</h4><p class="text-muted mb-0">Aponte o cliente para a porta dinâmica do servidor simulado.</p></div></div>
+        <div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-3"><h4>3. Verificação</h4><p class="text-muted mb-0">Asserte a saída e verifique o request enviado.</p></div></div>
+      </div>
+      <pre class="bg-dark text-white rounded-3 p-3 mt-4 mb-0"><code class="text-info">stubFor(get(urlEqualTo("/matches/42"))
+  .willReturn(okJson("{\"status\":\"FINISHED\"}")));
+
+assertThat(client.buscarJogo(42).status()).isEqualTo("FINISHED");
+verify(getRequestedFor(urlEqualTo("/matches/42")));</code></pre>
+    </div></div>
+
+    <div class="slide" id="slide-6"><div class="slide-content text-center">
+      <span class="badge bg-danger mb-3">Falhar com segurança</span>
+      <h2 class="display-5 fw-bold">A resposta externa nunca é confiável</h2>
+      <div class="row g-3 text-start mt-2">
+        <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><strong>Timeout</strong><small class="text-muted">Tempo finito de conexão e leitura.</small></div></div>
+        <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><strong>Validação</strong><small class="text-muted">Schema, tipo e domínio antes de persistir.</small></div></div>
+        <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><strong>Erro neutro</strong><small class="text-muted">Não devolver token, stack trace ou corpo externo.</small></div></div>
+        <div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><strong>Segredo</strong><small class="text-muted">Variável de ambiente; logs com mascaramento.</small></div></div>
+      </div>
+      <div class="alert alert-warning mt-4">Retry só para operação <strong>idempotente</strong>, falha transitória e com limite. Repetir cegamente multiplica incidentes.</div>
+    </div></div>
+
+    <div class="slide" id="slide-7"><div class="slide-content">
+      <h2 class="display-5 fw-bold text-center mb-4">Contrato observável</h2>
+      <div class="row g-3 text-center">
+        <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><span class="display-6 fw-bold text-success">2xx</span><small>Parsear e validar</small></div></div>
+        <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><span class="display-6 fw-bold text-warning">4xx</span><small>Não repetir; corrigir request/credencial</small></div></div>
+        <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><span class="display-6 fw-bold text-danger">5xx</span><small>Falha transitória; retry limitado</small></div></div>
+        <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><i class="fas fa-clock fa-2x text-primary mb-2" aria-hidden="true"></i><strong>Timeout</strong><small>Fallback ou 503 próprio</small></div></div>
+      </div>
+      <h4 class="mt-4">O teste deve capturar:</h4>
+      <ul class="fs-5"><li>método, URL, query e headers esperados;</li><li>status e schema mínimos;</li><li>comportamento para erro, atraso e corpo inválido;</li><li>ausência de segredo na resposta e nos logs.</li></ul>
+    </div></div>
+
+    <div class="slide" id="slide-8"><div class="slide-content">
+      <h2 class="display-5 fw-bold text-center mb-4">Foot Fanatics: fronteira do provedor esportivo</h2>
+      <div class="d-flex align-items-center justify-content-center gap-3 flex-wrap fs-5">
+        <div class="card border-0 shadow-sm p-3 text-center"><strong>Controller</strong><small class="text-muted">GET /api/jogos/{id}</small></div>
+        <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+        <div class="card border-0 shadow-sm p-3 text-center"><strong>JogoService</strong><small class="text-muted">regra e fallback</small></div>
+        <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+        <div class="card border-0 shadow-sm p-3 text-center"><strong>SportsProviderClient</strong><small class="text-muted">porta de saída</small></div>
+        <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
+        <div class="card border border-danger shadow-sm p-3 text-center"><strong>WireMock</strong><small class="text-muted">durante o teste</small></div>
+      </div>
+      <div class="alert alert-light border shadow-sm mt-4 mb-0"><strong>Decisão arquitetural:</strong> só o adapter HTTP conhece URL, token e DTO externo. O domínio conhece apenas <code>JogoExterno</code>.</div>
+    </div></div>
+
+    <div class="slide" id="slide-9"><div class="slide-content">
+      <h2 class="display-5 fw-bold text-center mb-3">Matriz mínima da integração</h2>
+      <div class="table-responsive"><table class="table table-striped table-bordered align-middle bg-white">
+        <thead class="table-dark"><tr><th>ID</th><th>Cenário WireMock</th><th>Esperado no Foot Fanatics</th></tr></thead>
+        <tbody>
+          <tr><td>INT-01</td><td>200 + JSON válido</td><td>200 e DTO interno mapeado</td></tr>
+          <tr><td>INT-02</td><td>404</td><td>404 sem detalhes do provedor</td></tr>
+          <tr><td>INT-03</td><td>500</td><td>503 controlado; correlação registrada</td></tr>
+          <tr><td>INT-04</td><td>atraso maior que timeout</td><td>interrupção rápida e 503</td></tr>
+          <tr><td>INT-05</td><td>200 + JSON malformado</td><td>erro controlado; nada persistido</td></tr>
+          <tr><td>INT-06</td><td>request recebido</td><td>header obrigatório presente; segredo ausente do log</td></tr>
+        </tbody>
+      </table></div>
+    </div></div>
+
+    <div class="slide" id="slide-10"><div class="slide-content">
+      <h2 class="display-5 fw-bold text-center mb-4">Quando usar Testcontainers junto</h2>
+      <div class="row g-4 align-items-stretch">
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h4><i class="fas fa-database text-primary me-2" aria-hidden="true"></i>PostgreSQL real</h4><p class="text-muted">Valida mapeamento JPA, constraint, transação e migração no mesmo banco usado em produção.</p><code>@Container PostgreSQLContainer&lt;?&gt; db</code></div></div>
+        <div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h4><i class="fas fa-server text-danger me-2" aria-hidden="true"></i>WireMock HTTP</h4><p class="text-muted">Controla respostas do provedor sem rede externa e sem credencial real.</p><code>@WireMockTest(httpPort = 0)</code></div></div>
+      </div>
+      <div class="alert alert-success mt-4">Um teste de integração pode exercitar a aplicação inteira: <strong>request → regra → banco real → HTTP simulado → resposta</strong>.</div>
+    </div></div>
+
+    <div class="slide" id="slide-11"><div class="slide-content">
+      <span class="badge bg-success mb-2">Prática · evidência da aula</span>
+      <h2 class="display-5 fw-bold mb-3">Isole uma integração do Foot Fanatics</h2>
+      <ol class="list-group list-group-numbered fs-5">
+        <li class="list-group-item">Criar a porta <code>SportsProvider</code> e o adapter HTTP.</li>
+        <li class="list-group-item">Configurar URL e token fora do código; usar porta dinâmica no teste.</li>
+        <li class="list-group-item">Automatizar os cenários INT-01 a INT-05 com WireMock.</li>
+        <li class="list-group-item">Verificar método, caminho e headers sem registrar segredo.</li>
+        <li class="list-group-item">Rodar no pipeline e anexar resultado à RTM.</li>
+      </ol>
+      <div class="alert alert-success mt-3 mb-0"><strong>Entregável:</strong> suíte reproduzível, evidência do pipeline e linha da RTM ligando requisito → teste → execução.</div>
+    </div></div>
+
+    <div class="slide" id="slide-12"><div class="glass-cover text-center">
+      <h1 class="display-4 fw-bold text-dark">Integração confiável é falha ensaiada</h1>
+      <p class="fs-4 text-secondary">WireMock controla HTTP. Testcontainers aproxima a infraestrutura. A RTM prova o resultado.</p>
+      <div class="row g-3 text-start mt-3">
+        <div class="col-md-4"><div class="card border-0 p-3 h-100"><strong>Leve</strong><small class="text-muted">Dependência externa não pode controlar sua suíte.</small></div></div>
+        <div class="col-md-4"><div class="card border-0 p-3 h-100"><strong>Construiu</strong><small class="text-muted">Integração isolada e matriz de falhas.</small></div></div>
+        <div class="col-md-4"><div class="card border-0 p-3 h-100"><strong>Próxima</strong><small class="text-muted">TDD e BDD nas regras de assinatura.</small></div></div>
+      </div>
+      <h2 class="mt-4">Dúvidas?</h2>
+    </div></div>
   </div>
 
   <footer class="slide-footer">
     <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
+      <button id="prevBtn" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+      <div class="progress mx-3" style="width: 100px; height: 6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 12</span>
+      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand" aria-hidden="true"></i></button>
     </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - WireMock e Chamadas de API Seguras (Semana 40)</div>
-    <a href="material/material_wiremock-api-seguras.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
+    <div class="text-center text-muted small d-none d-md-block">Qualidade · WireMock e APIs seguras · Semana 40</div>
+    <a href="material/material_wiremock-api-seguras.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a>
+    <a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a>
   </footer>
-
   <script src="../../js/standard_slides.js"></script>
 </body>
-
 </html>

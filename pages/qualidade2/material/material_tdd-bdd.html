@@ -1,67 +1,29 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TDD e BDD: Desenvolvimento Guiado por Testes - Material</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../../css/style.css">
-</head>
-
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
-    <div class="container">
-      <a class="navbar-brand d-flex align-items-center" href="../../../index.html">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height: 40px;">
-        <span class="fw-bold text-dark">Hub de Aulas</span>
-      </a>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
-    <div class="container">
-      <a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
-        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2
-      </a>
-      <div class="d-flex align-items-center justify-content-between">
-        <div>
-          <span class="badge bg-white text-danger mb-1">Semana 41 &middot; 2026.2</span>
-          <h1 class="h3 fw-bold text-white mb-0">TDD e BDD: Desenvolvimento Guiado por Testes</h1>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-md-8 mx-auto">
-        <div class="glass-card p-5 text-center">
-          <i class="fas fa-pen-ruler fa-3x text-danger mb-3" aria-hidden="true"></i>
-          <h2 class="h4 fw-bold mb-3">Material em construção</h2>
-          <p class="text-muted mb-4">O material escrito de <strong>TDD e BDD: Desenvolvimento Guiado por Testes</strong> será publicado em breve. Esta é uma página placeholder.</p>
-          <a href="../slide_tdd-bdd.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
-          <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <footer class="bg-light text-dark py-4 mt-5">
-    <div class="container text-center">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75">
-      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Aula 09 - TDD e BDD - Material</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../../css/style.css"></head><body>
+<nav class="navbar navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold">Hub de Aulas</span></a><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></div></nav>
+<header class="hero-section bg-quality py-3"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a><span class="badge bg-white text-danger d-block w-auto mb-1">Semana 41 · Aula 09</span><h1 class="h3 fw-bold text-white mb-0">TDD e BDD: desenvolvimento guiado por testes</h1></div></header>
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivos</h2><p class="text-muted">Explicar e praticar Red–Green–Refactor, transformar uma regra em cenário Given–When–Then, controlar o tempo com <code>Clock</code> e produzir evidência de uma funcionalidade E3 desenvolvida por TDD/BDD.</p><div class="alert alert-warning mb-0"><strong>Pré-requisito:</strong> requisitos E3 numerados, JUnit configurado, suíte verde e RTM iniciada.</div></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">1. TDD é um fluxo de design</h2><p class="text-muted">Test-Driven Development inverte a ordem habitual: primeiro descrevemos um comportamento executável, depois criamos a implementação mínima e, com a suíte verde, melhoramos a estrutura. O ganho não é “mais testes” por si só. É feedback rápido sobre entendimento, acoplamento e interface.</p><ol class="text-muted"><li><strong>Red:</strong> escreva um teste pequeno e veja-o falhar pela razão esperada.</li><li><strong>Green:</strong> implemente o mínimo, sem antecipar generalizações.</li><li><strong>Refactor:</strong> remova duplicação, melhore nomes e responsabilidades sem alterar o comportamento.</li></ol><div class="alert alert-danger mb-0">Se o teste passa antes da implementação, corrija o teste. Se a suíte quebra durante refactor, reverta o último passo e reduza o tamanho da mudança.</div></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">2. Escolhendo o primeiro exemplo</h2><p class="text-muted">Comece pelo caso mais simples que força uma decisão real. Para a assinatura do Foot Fanatics, o caminho “plano FREE não acessa conteúdo exclusivo” exige pouca infraestrutura. Depois avance para premium vigente, fronteira do vencimento, cancelamento e dados inválidos.</p><div class="table-responsive"><table class="table table-bordered"><thead class="table-dark"><tr><th>Ordem</th><th>Exemplo</th><th>Decisão forçada</th></tr></thead><tbody><tr><td>1</td><td>FREE + exclusivo</td><td>plano não autoriza</td></tr><tr><td>2</td><td>PREMIUM vigente</td><td>plano e tempo autorizam</td></tr><tr><td>3</td><td>vencimento = agora</td><td>limite temporal explícito</td></tr><tr><td>4</td><td>PREMIUM vencido</td><td>negação após limite</td></tr><tr><td>5</td><td>cancelado</td><td>política de cancelamento</td></tr></tbody></table></div></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">3. Controlando o relógio</h2><p class="text-muted">Código que chama <code>Instant.now()</code> dentro da regra cria dependência global e testes que podem falhar na virada do segundo. Injete <code>Clock</code> ou passe o instante explicitamente.</p><pre class="bg-dark text-white p-3 rounded-3"><code class="text-info">public boolean estaVigente(Clock clock) {
+  Instant agora = clock.instant();
+  return status == ATIVA &amp;&amp; agora.isBefore(vigenteAte);
+}</code></pre><pre class="bg-dark text-white p-3 rounded-3"><code class="text-info">@Test
+void noInstanteDoVencimentoJaEstaVencida() {
+  Clock clock = Clock.fixed(vigenteAte, ZoneOffset.UTC);
+  assertThat(assinatura.estaVigente(clock)).isFalse();
+}</code></pre><p class="text-muted mb-0">A escolha <code>isBefore</code>, e não “antes ou igual”, materializa uma política. Essa política deve aparecer no requisito e no cenário BDD.</p></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">4. BDD como descoberta colaborativa</h2><p class="text-muted">Behavior-Driven Development usa exemplos para alinhar negócio, desenvolvimento e teste. Given–When–Then não é decoração; cada parte tem uma função.</p><ul class="text-muted"><li><strong>Dado/Given:</strong> somente o estado relevante para a regra.</li><li><strong>Quando/When:</strong> um evento observável.</li><li><strong>Então/Then:</strong> resultado de negócio, sem detalhar classes internas.</li></ul><div class="border rounded-3 p-3 bg-white"><p><strong>Cenário:</strong> assinatura expirada bloqueia matéria exclusiva</p><p><strong>Dado</strong> que Ana tem plano premium vencido às 11:59:59</p><p><strong>Quando</strong> ela solicita uma matéria exclusiva às 12:00:00</p><p class="mb-0"><strong>Então</strong> recebe 403 e nenhum trecho exclusivo é devolvido</p></div><p class="text-muted mt-3 mb-0">Antes de automatizar, faça as “três perguntas”: há um exemplo que contradiz a regra? qual é a fronteira? qual resposta o cliente observa?</p></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">5. Do cenário ao código</h2><p class="text-muted">Um cenário de aceite pode demandar vários microciclos TDD. Primeiro modele a vigência no domínio; depois a política de acesso; por fim o endpoint e o código HTTP.</p><pre class="bg-dark text-white p-3 rounded-3"><code class="text-info">@ParameterizedTest
+@CsvSource({
+  "FREE,   2026-10-06T12:00:00Z, false",
+  "PREMIUM,2026-10-05T12:00:01Z, true",
+  "PREMIUM,2026-10-05T12:00:00Z, false",
+  "PREMIUM,2026-10-05T11:59:59Z, false"
+})
+void decideAcessoPorPlanoEVigencia(
+    Plano plano, Instant vigenteAte, boolean esperado) { ... }</code></pre><p class="text-muted mb-0">Teste parametrizado é bom quando a estrutura do comportamento é a mesma e só os dados mudam. Se cada linha requer explicação diferente, use testes nomeados separados.</p></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">6. Qualidade do teste</h2><div class="row g-3"><div class="col-md-6"><div class="p-3 border rounded h-100"><strong>FIRST</strong><p class="small text-muted mb-0">rápido, independente, repetível, autoavaliável e escrito em tempo oportuno.</p></div></div><div class="col-md-6"><div class="p-3 border rounded h-100"><strong>Uma razão para falhar</strong><p class="small text-muted mb-0">um teste expressa uma regra; fixture pequena e intenção visível.</p></div></div></div><h3 class="h6 fw-bold mt-4">Evite</h3><ul class="text-muted"><li>asserção sobre detalhes privados ou ordem incidental;</li><li>mockar o próprio objeto sob teste;</li><li>fixture global compartilhada e mutável;</li><li><code>Thread.sleep</code> para testar tempo;</li><li>testes sem asserção ou que aceitam vários resultados;</li><li>mudar o teste somente para fazê-lo passar sem revisar o requisito.</li></ul></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">7. Evidência do ciclo</h2><p class="text-muted">A avaliação precisa distinguir “há testes agora” de “a funcionalidade foi guiada por testes”. Use um histórico curto e legível.</p><ol class="text-muted"><li>Commit <code>test: cenário de assinatura vencida (red)</code> com execução falhando pelo motivo esperado.</li><li>Commit <code>feat: bloqueia acesso após vencimento (green)</code> com suíte verde.</li><li>Commit <code>refactor: extrai política de vigência</code> sem mudança de resultado.</li><li>PR descreve cenário, decisão de fronteira e links da execução.</li></ol><div class="alert alert-secondary mb-0">Não quebre deliberadamente a branch principal para provar o Red. Faça o ciclo em branch local e preserve a evidência no histórico/PR.</div></section>
+<section class="glass-card p-4 mb-4"><h2 class="h4 fw-bold">8. Prática e critérios</h2><p class="text-muted">Escolha uma regra E3 ainda incompleta: vigência, upgrade, cancelamento ou renovação. Escreva um cenário BDD, automatize limites e negativos e implemente em microciclos.</p><div class="table-responsive"><table class="table table-bordered"><thead class="table-dark"><tr><th>Critério</th><th>Evidência</th></tr></thead><tbody><tr><td>Cenário compreensível</td><td>Given–When–Then ligado ao requisito</td></tr><tr><td>Red real</td><td>falha pela razão esperada</td></tr><tr><td>Green mínimo</td><td>suíte completa passa</td></tr><tr><td>Refactor seguro</td><td>melhoria estrutural isolada</td></tr><tr><td>Fronteiras cobertas</td><td>antes, no instante e depois</td></tr><tr><td>Rastreabilidade</td><td>RTM aponta teste e pipeline</td></tr></tbody></table></div><div class="alert alert-success"><strong>Entregável:</strong> PR com cenário, commits do ciclo, testes, pipeline verde e RTM atualizada.</div><a href="../slide_tdd-bdd.html" class="btn btn-outline-danger rounded-pill"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a></section>
+</div></div></main><footer class="bg-light py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script></body></html>

@@ -12,6 +12,11 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
+  <script type="module">
+    import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm';
+    window.__anime = anime;
+    window.dispatchEvent(new CustomEvent('anime-ready'));
+  </script>
 </head>
 
 <body class="slide-body" data-disciplina="qualidade">
@@ -1186,6 +1191,7 @@
       }).catch(err => console.error('Erro ao copiar: ', err));
     }
   </script>
+  <script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
 </body>
 
 </html>

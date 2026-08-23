@@ -1,94 +1,47 @@
-<!DOCTYPE html>
-<html lang="pt-br">
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Semana 37 - Qualidade: Testes Automatizados em CI</title><meta name="keywords" content="qualidade de software, integração contínua, GitHub Actions, Maven, pipeline, quality gate, Foot Fanatics"><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/slides.css"><link rel="stylesheet" href="../../css/base-styles.css"><script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script></head>
+<body class="slide-body" data-disciplina="qualidade"><div class="slide-container"><a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar para página inicial</a>
+  <div class="slide active cover-bg" id="slide-1"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="90" cy="115" r="8"></circle><circle cx="205" cy="570" r="5"></circle><circle cx="545" cy="600" r="7"></circle><circle cx="895" cy="565" r="10"></circle><circle cx="1070" cy="135" r="7"></circle></svg><div class="glass-cover text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="65" class="mb-3"><h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5><h1 class="display-4 fw-bold mb-3 text-black">Aula 06: Testes Automatizados em CI</h1><p class="fs-4 text-secondary mb-3">GitHub Actions como guardião do <strong>Foot Fanatics</strong></p><hr class="border-secondary w-25 mx-auto my-3 opacity-100"><h3 class="fw-normal text-dark">Professor Afonso</h3><span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 37 - 2026.2</span><div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">integração contínua</span><span class="keyword">GitHub Actions</span><span class="keyword">Maven</span><span class="keyword">pipeline</span><span class="keyword">quality gate</span><span class="keyword">Foot Fanatics</span></div></div></div>
+  <div class="slide" id="slide-2"><div class="slide-content"><h1 class="display-4 fw-bold mb-3 text-dark text-center">Agenda de Hoje</h1><div class="row g-3"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-primary align-self-start mb-3">Entender</span><ul class="text-muted mb-0"><li class="mb-2">CI como prática de equipe</li><li class="mb-2">Workflow, evento, job e step</li><li class="mb-2">Feedback, isolamento e reprodutibilidade</li><li class="mb-0">Segurança e permissões mínimas</li></ul></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><span class="badge bg-danger align-self-start mb-3">Construir</span><ul class="text-muted mb-0"><li class="mb-2">Pipeline Maven + Java 21</li><li class="mb-2">Cache e artifacts de teste</li><li class="mb-2">Branch protection</li><li class="mb-0">Quebrar e recuperar o build</li></ul></div></div></div></div></div>
+  <div class="slide" id="slide-3"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Ao final, você consegue...</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-code-branch fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Modelar</h5><p class="text-muted mb-0">um workflow que verifica toda mudança relevante.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-gauge-high fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Otimizar</h5><p class="text-muted mb-0">feedback sem esconder falhas ou sacrificar evidência.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-lock fa-2x text-primary mb-3" aria-hidden="true"></i><h5 class="fw-bold">Proteger</h5><p class="text-muted mb-0">a branch principal com check obrigatório e acesso mínimo.</p></div></div></div></div></div>
+  <div class="slide" id="slide-4"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-2 text-dark">CI é integração frequente + feedback automático</h2><p class="lead text-muted mb-4">A ferramenta executa; a equipe pratica.</p><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Pequenos lotes</h5><p class="small text-muted mb-0">Mudanças curtas são mais fáceis de revisar, testar e reverter.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Branch saudável</h5><p class="small text-muted mb-0">Main permanece executável; vermelho é tratado imediatamente.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Mesmo contrato</h5><p class="small text-muted mb-0">Local e CI usam a mesma versão de Java e o mesmo comando Maven.</p></div></div></div><div class="alert alert-warning border-0 mt-4 mb-0"><strong>Não é CI:</strong> acumular uma semana de trabalho numa branch e apertar “Run workflow” antes da entrega.</div></div></div>
+  <div class="slide" id="slide-5"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Anatomia de um workflow</h2><div class="row g-3 text-start"><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><span class="badge bg-primary align-self-start">Evento</span><p class="small text-muted mt-2 mb-0"><code>push</code>, <code>pull_request</code> ou manual.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><span class="badge bg-primary align-self-start">Workflow</span><p class="small text-muted mt-2 mb-0">Arquivo YAML em <code>.github/workflows</code>.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><span class="badge bg-primary align-self-start">Job</span><p class="small text-muted mt-2 mb-0">Unidade executada em um runner limpo.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3"><span class="badge bg-primary align-self-start">Step</span><p class="small text-muted mt-2 mb-0">Action reutilizável ou comando de shell.</p></div></div></div><div class="alert alert-dark border-0 mt-4 mb-0"><strong>Estado não é compartilhado entre jobs.</strong> Para transportar relatório, publique artifact; para ordenar, use dependências.</div></div></div>
+  <div class="slide" id="slide-6"><div class="slide-content"><h2 class="display-6 fw-bold mb-3 text-dark text-center">Pipeline mínimo do Foot Fanatics</h2><div class="bg-dark text-white p-3 rounded-3"><pre class="mb-0 small text-info"><code>name: qualidade
+on:
+  pull_request:
+  push:
+    branches: [main]
 
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 37 - Qualidade: Testes Automatizados em CI (GitHub Actions)</title>
-  <meta name="keywords" content="qualidade de software, CI, integração contínua, github actions, pipeline">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css">
-  <link rel="stylesheet" href="../../css/slides.css">
-  <link rel="stylesheet" href="../../css/base-styles.css">
-</head>
+permissions:
+  contents: read
 
-<body class="slide-body" data-disciplina="qualidade">
-
-  <div class="slide-container">
-
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill">
-      <i class="fas fa-arrow-left me-2"></i> Voltar para página inicial
-    </a>
-
-    <div class="slide active" id="slide-1">
-      <div class="glass-cover text-center">
-        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
-        <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
-        <h1 class="display-3 fw-bold mb-4 text-black">Aula 06: Testes Automatizados em CI (GitHub Actions)</h1>
-        <hr class="border-secondary w-25 mx-auto my-4 opacity-100">
-        <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 37 - 2026.2</span>
-        <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Testes Automatizados em CI (GitHub Actions)</span></div>
-      </div>
-    </div>
-
-    <div class="slide" id="slide-2">
-      <h1 class="display-4 fw-bold mb-4 text-dark">Agenda da Aula</h1>
-      <ul class="fs-4 text-secondary">
-        <li class="mb-3">Contexto e motivação</li>
-        <li class="mb-3">Testes Automatizados em CI (GitHub Actions)</li>
-        <li class="mb-3">Aplicação no projeto da disciplina</li>
-      </ul>
-      <p class="text-muted mt-4"><em>Conteúdo detalhado em construção.</em></p>
-    </div>
-
-    <div class="slide" id="slide-3">
-      <div class="text-center slide-content">
-        <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
-        <h2 class="display-6 fw-bold mb-2 text-dark">Infraestrutura em Docker</h2>
-        <p class="lead text-muted mb-3">A arquitetura das aulas anteriores vira ambiente que sobe com um comando.</p>
-        <div class="row justify-content-center text-start">
-          <div class="col-md-10">
-            <ol class="list-group list-group-numbered">
-              <li class="list-group-item">Traduzir o <strong>diagrama de componentes</strong> em serviços do <code>docker-compose.yml</code>.</li>
-              <li class="list-group-item">Escrever o <strong>Dockerfile</strong> da aplicação — build reprodutível, sem depender da máquina de ninguém.</li>
-              <li class="list-group-item">Subir banco e dependências em container, com as tecnologias decididas nos ADRs.</li>
-              <li class="list-group-item">Garantir que <code>docker compose up</code> levanta <strong>o ambiente inteiro do zero</strong>, em máquina limpa.</li>
-              <li class="list-group-item">Conferir que cada decisão de infra aponta para uma <strong>tática</strong> da aula anterior.</li>
-            </ol>
-          </div>
-        </div>
-        <div class="alert alert-success border-0 shadow-sm mt-3 d-inline-block py-2 mb-0">
-          <i class="fas fa-flag-checkered me-2"></i>
-          <strong>Fim da aula:</strong> <code>docker compose up</code> sobe o ambiente completo — ainda sem nenhuma regra de negócio.
-        </div>
-        <p class="text-muted small mt-3 mb-0"><em>Slides completos em construção — este roteiro já é o combinado da prática.</em></p>
-      </div>
-    </div>
-
-  </div>
-
-  <footer class="slide-footer">
-    <div class="slide-controls">
-      <button id="prevBtn" disabled><i class="fas fa-chevron-left"></i></button>
-      <div class="progress mx-3" style="width: 100px; height: 6px;">
-        <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
-      </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 3</span>
-      <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
-      <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
-    </div>
-    <div class="text-center text-muted small d-none d-md-block">Qualidade - Testes Automatizados em CI (GitHub Actions) (Semana 37)</div>
-    <a href="material/material_ci-github-actions.html" class="btn btn-outline-primary btn-sm rounded-pill">
-      <i class="fas fa-book me-1"></i> Ver material escrito
-    </a>
-    <a href="../../index.html">
-      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75">
-    </a>
-  </footer>
-
-  <script src="../../js/standard_slides.js"></script>
-</body>
-
-</html>
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+      - run: ./mvnw -B verify</code></pre></div><p class="small text-muted text-center mt-3 mb-0">Use versões estáveis das actions e Java igual ao projeto. <code>-B</code> evita interação; <code>verify</code> percorre o ciclo até as verificações.</p></div></div>
+  <div class="slide" id="slide-7"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Por que <code>verify</code>?</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold"><code>test</code></h5><p class="small text-muted mb-0">Compila e executa testes unitários do Surefire.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold"><code>integration-test</code></h5><p class="small text-muted mb-0">Pode iniciar ambiente e executar testes do Failsafe.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle"><h5 class="fw-bold"><code>verify</code></h5><p class="small text-muted mb-0">Também aplica checks e gates ligados às fases posteriores.</p></div></div></div><div class="alert alert-primary border-0 mt-4 mb-0">O comando local documentado deve ser o comando da CI. “Na minha máquina passa” perde força quando a execução é equivalente.</div></div></div>
+  <div class="slide" id="slide-8"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Feedback rápido, sem atalhos</h2><div class="row g-3"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold text-success">Acelere com segurança</h5><ul class="small text-muted mb-0"><li>Cache de dependências pelo <code>pom.xml</code></li><li>Cancelamento de execução obsoleta</li><li>Jobs independentes em paralelo</li><li>Testes determinísticos</li></ul></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle"><h5 class="fw-bold text-danger">Não esconda custo</h5><ul class="small text-muted mb-0"><li>Pular testes lentos sem estratégia</li><li>Reutilizar workspace sujo</li><li>Usar <code>continue-on-error</code> no gate</li><li>Rerun até “dar verde”</li></ul></div></div></div><div class="bg-dark text-white p-3 rounded-3 mt-3"><code class="text-info small">concurrency: { group: ci-${{ github.ref }}, cancel-in-progress: true }</code></div></div></div>
+  <div class="slide" id="slide-9"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Falhou? Preserve evidência</h2><div class="bg-dark text-white p-3 rounded-3"><pre class="mb-0 small text-info"><code>- name: Publicar relatórios de teste
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: relatorios-${{ github.run_number }}
+    path: |
+      target/surefire-reports/
+      target/failsafe-reports/
+    if-no-files-found: warn
+    retention-days: 7</code></pre></div><p class="text-muted mt-3 mb-0"><code>always()</code> publica a evidência mesmo com teste vermelho. Artifact não corrige diagnóstico ruim, mas preserva XML, stack trace e contexto daquela execução.</p></div></div>
+  <div class="slide" id="slide-10"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Segurança por padrão</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-key text-primary fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Segredos</h5><p class="small text-muted mb-0">Nunca no YAML, log, artifact ou fork não confiável.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-user-shield text-primary fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Permissões</h5><p class="small text-muted mb-0"><code>contents: read</code>; conceda escrita somente ao job que precisa.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4"><i class="fas fa-box text-primary fa-2x mb-3" aria-hidden="true"></i><h5 class="fw-bold">Dependências</h5><p class="small text-muted mb-0">Actions estáveis, revisadas e atualizadas conscientemente.</p></div></div></div><div class="alert alert-danger border-0 mt-4 mb-0"><strong>Evite <code>pull_request_target</code></strong> para executar código de contribuição com segredos. O contexto privilegiado muda o modelo de ameaça.</div></div></div>
+  <div class="slide" id="slide-11"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">O check vira política</h2><div class="row g-3"><div class="col-md-7"><ol class="list-group list-group-numbered"><li class="list-group-item">Abrir pull request para <code>main</code>.</li><li class="list-group-item">Exigir o check <code>qualidade / test</code>.</li><li class="list-group-item">Exigir branch atualizada e revisão por par.</li><li class="list-group-item">Bloquear merge enquanto houver falha.</li><li class="list-group-item">Investigar o vermelho; não contornar o gate.</li></ol></div><div class="col-md-5"><div class="card h-100 border-0 shadow-sm p-4 bg-light"><h5 class="fw-bold">Contrato social</h5><p class="text-muted">Main verde pertence a todos. A prioridade ao quebrar é recuperar o fluxo, com reversão ou correção pequena.</p></div></div></div></div></div>
+  <div class="slide" id="slide-12"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-3 text-dark">Diagnóstico de pipeline</h2><div class="table-responsive"><table class="table table-bordered bg-white text-start small"><thead class="table-dark"><tr><th>Sintoma</th><th>Hipótese</th><th>Primeiro check</th></tr></thead><tbody><tr><td>Passa local, falha na CI</td><td>Versão/locale/estado implícito</td><td>Java, timezone e comando</td></tr><tr><td>Falha intermitente</td><td>ordem, tempo ou concorrência</td><td>seed, logs e isolamento</td></tr><tr><td>Dependência não baixa</td><td>rede/cache/repositório</td><td>log Maven sem expor credencial</td></tr><tr><td>Pipeline não dispara</td><td>evento/path/YAML</td><td>branch e indentação</td></tr></tbody></table></div><div class="alert alert-warning border-0 mb-0">Rerun confirma intermitência, não resolve. Abra defeito e trate a fonte de não determinismo.</div></div></div>
+  <div class="slide" id="slide-13"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Prática: primeiro gate do Foot Fanatics</h2><ol class="list-group list-group-numbered"><li class="list-group-item">Criar <code>.github/workflows/quality.yml</code> para PR e push em <code>main</code>.</li><li class="list-group-item">Configurar checkout, Java 21, cache Maven e <code>./mvnw -B verify</code>.</li><li class="list-group-item">Publicar relatórios com <code>if: always()</code> e retenção curta.</li><li class="list-group-item">Abrir PR, inserir falha proposital e capturar o check vermelho.</li><li class="list-group-item">Corrigir, obter verde e configurar proteção da branch.</li></ol></div></div>
+  <div class="slide" id="slide-14"><div class="text-center slide-content"><span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 06</span><h2 class="display-5 fw-bold mb-3 text-dark">CI como evidência</h2><div class="row g-3 text-start"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Precisa existir</h5><ul class="small text-muted mb-0"><li>Workflow versionado</li><li>Java 21 + Maven cache</li><li>Relatórios como artifact</li><li>Check obrigatório no PR</li></ul></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4"><h5 class="fw-bold">Evidências</h5><ul class="small text-muted mb-0"><li>Uma execução vermelha intencional</li><li>Correção seguida de verde</li><li>Link/ID do run no RTM/README</li><li>Nenhum segredo em log</li></ul></div></div></div></div></div>
+  <div class="slide" id="slide-15"><div class="text-center slide-content"><h2 class="display-5 fw-bold mb-4 text-dark">Síntese</h2><div class="row g-3 text-start"><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>CI é hábito:</strong> integração frequente e pequenos lotes.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>Workflow é código:</strong> versionado, revisado e testado.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>Vermelho é informação:</strong> preserve evidência e trate rápido.</div></div><div class="col-md-6"><div class="p-3 bg-white shadow-sm rounded"><strong>Gate é política:</strong> qualidade antes do merge.</div></div></div><p class="lead text-secondary mt-4 mb-0">Depois da prova: aprofundar JUnit e tornar cobertura/análise estática parte do gate.</p></div></div>
+  <div class="slide cover-bg" id="slide-16"><svg class="cover-particles" viewBox="0 0 1200 700" preserveAspectRatio="none" aria-hidden="true"><circle cx="115" cy="130" r="7"></circle><circle cx="285" cy="570" r="10"></circle><circle cx="650" cy="590" r="8"></circle><circle cx="840" cy="120" r="10"></circle><circle cx="1035" cy="555" r="6"></circle></svg><div class="glass-cover text-center"><i class="fas fa-gears fa-3x text-primary mb-3" aria-hidden="true"></i><h1 class="display-4 fw-bold text-dark">Dúvidas?</h1><p class="fs-4 text-secondary">Se o pipeline ficar vermelho às 17h, qual é a decisão responsável do time?</p><span class="badge bg-danger px-4 py-2 rounded-pill">Main verde é um ativo coletivo.</span></div></div>
+</div><footer class="slide-footer"><div class="slide-controls"><button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button><div class="progress mx-3" style="width:100px;height:6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width:0%"></div></div><span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 16</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button></div><div class="text-center text-muted small d-none d-md-block">Qualidade - CI com GitHub Actions (Semana 37)</div><a href="material/material_ci-github-actions.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a></footer><script src="../../js/standard_slides.js"></script></body></html>
