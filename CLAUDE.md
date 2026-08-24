@@ -46,11 +46,13 @@ Navegação dos slides vem de `js/standard_slides.js` (prev/next/fullscreen/prog
 
 ### Case Foot Fanatics (Qualidade 2026.2)
 
-A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor: **Foot Fanatics** — API de conteúdo esportivo (espinha dorsal do `remo-api`) **com assinatura**: conta, controle de acesso e gestão de sessão. Ele é ao mesmo tempo o que se codifica em aula e o **projeto avaliado** (substituiu "Reserva de Espaços e Equipamentos" em `pages/qualidade2/especificacao-projeto.html`).
+A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor **das aulas**: **Foot Fanatics** — API de conteúdo esportivo (espinha dorsal do `remo-api`) **com assinatura**: conta, controle de acesso e gestão de sessão. É o que se codifica ao vivo em aula.
+
+> ⚠️ **Foot Fanatics ≠ projeto avaliado.** O trabalho semestral das equipes é **"Organização de Recursos"** (alocação de salas, professores e materiais sem conflito), em `pages/qualidade2/especificacao-projeto.html`. Não troque o case dessa página pelo Foot Fanatics: a aula demonstra a técnica no Foot Fanatics, as equipes aplicam no projeto delas. No `config/semestres.json`, `case` é o case de aula e `projeto_avaliado` é o trabalho.
 
 - Stack: **Java 21 LTS + Spring Boot 3.x**, Maven, PostgreSQL, JUnit 5, JaCoCo, Testcontainers, WireMock, SonarCloud, JMeter. **Não use Jest/VCR** nas aulas de 2026.2 — foram migrados para o equivalente Java (aulas 07 e 08).
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
-- Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo). Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação.
+- Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
 ## Convenções de nomenclatura
 

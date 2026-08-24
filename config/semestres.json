@@ -40,9 +40,9 @@
           "obs": "Conteúdo próprio de 2026.2 em pages/qualidade2/, com 17 aulas completas e o Foot Fanatics como fio condutor. Não reaproveita slides de 2026.1. Paleta de qualidade (data_disciplina=qualidade).",
           "case": {
             "nome": "Foot Fanatics",
-            "descricao": "API de conteúdo esportivo com assinatura (conta, acesso e gestão de sessão). Mesma espinha dorsal do remo-api, acrescida de assinatura. É o projeto avaliado e o fio condutor de todas as aulas praticas.",
+            "descricao": "API de conteúdo esportivo com assinatura (conta, acesso e gestão de sessão). Mesma espinha dorsal do remo-api, acrescida de assinatura. É o case de demonstração das aulas praticas — NÃO é o projeto avaliado.",
             "stack": ["Java 21 (LTS)", "Spring Boot 3.x", "Maven", "PostgreSQL", "JUnit 5", "JaCoCo", "Testcontainers", "WireMock", "SonarCloud", "JMeter"],
-            "especificacao": "pages/qualidade2/especificacao-projeto.html",
+            "papel": "case de demonstração em aula",
             "inicio": { "semana": 34, "aula": 3 },
             "escopos": [
               { "id": "E1", "nome": "Identidade & Conta" },
@@ -52,6 +52,12 @@
             ],
             "personas": ["Torcedor casual (free)", "Torcedor assinante (premium)", "Editor de conteúdo (operação)"],
             "fora_de_escopo": ["pagamento real", "aplicativo mobile", "notificação push", "painel administrativo"]
+          },
+          "projeto_avaliado": {
+            "nome": "Organização de Recursos",
+            "descricao": "Sistema de alocação de salas, professores e materiais sem conflitos de horário. É o trabalho semestral desenvolvido pelas equipes e avaliado na entrega da semana 46 e na prova oral da semana 47.",
+            "especificacao": "pages/qualidade2/especificacao-projeto.html",
+            "entrega": { "semana": 46 }
           },
           "turmas": [
             {

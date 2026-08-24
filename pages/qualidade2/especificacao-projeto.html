@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Especificação do Projeto - Qualidade 2026.2</title>
-  <meta name="description" content="Especificação do projeto semestral de Qualidade de Software 2026.2: Foot Fanatics, uma API de conteúdo esportivo com assinatura, conta e gestão de sessão.">
+  <meta name="description" content="Especificação do projeto semestral de Qualidade de Software 2026.2: sistema de organização de recursos — salas, professores e materiais.">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -47,9 +47,9 @@
       <div class="col-lg-10 mx-auto">
         <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="projeto-heading">
           <div class="text-center mb-5">
-            <i class="fas fa-futbol fa-3x text-danger mb-3" aria-hidden="true"></i>
-            <h2 class="display-6 fw-bold" id="projeto-heading">Foot Fanatics</h2>
-            <p class="lead text-muted mb-3">Uma API de conteúdo esportivo com assinatura — onde errar em autorização é vazar conteúdo.</p>
+            <i class="fas fa-calendar-check fa-3x text-danger mb-3" aria-hidden="true"></i>
+            <h2 class="display-6 fw-bold" id="projeto-heading">Organização de Recursos</h2>
+            <p class="lead text-muted mb-3">Um sistema confiável para alocar salas, professores e materiais sem conflitos.</p>
             <div class="d-flex justify-content-center gap-2 flex-wrap">
               <span class="badge bg-danger rounded-pill">Projeto semestral</span>
               <span class="badge bg-dark rounded-pill">Equipes</span>
@@ -60,53 +60,45 @@
 
           <div class="alert alert-light border-start border-danger border-4 shadow-sm">
             <h3 class="h5 fw-bold"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivo</h3>
-            <p class="mb-0">Desenvolver e validar uma aplicação de conteúdo esportivo em que o acesso depende de <strong>conta, assinatura e sessão válida</strong>. O foco da avaliação não será apenas fazer o sistema funcionar, mas apresentar <strong>evidências objetivas de qualidade, segurança, rastreabilidade e desempenho</strong>.</p>
+            <p class="mb-0">Desenvolver e validar uma aplicação que organize a alocação de <strong>salas, professores e materiais</strong> sem conflitos de horário. O foco da avaliação não será apenas fazer o sistema funcionar, mas apresentar <strong>evidências objetivas de qualidade, segurança, rastreabilidade e desempenho</strong>.</p>
           </div>
 
           <div class="alert alert-secondary border-0 mb-0">
-            <h3 class="h6 fw-bold"><i class="fas fa-diagram-project me-2" aria-hidden="true"></i>De onde vem</h3>
-            <p class="small mb-0">O Foot Fanatics tem a mesma espinha dorsal do <code>remo-api</code> — clubes, jogos, resultados e matérias — com uma diferença que muda tudo para esta disciplina: <strong>ele tem assinatura</strong>. Isso introduz tempo (token expira, plano vence), risco (falha de autorização é vazamento), ramificação (logado × assinante × conteúdo pago) e estado compartilhado (sessão sob concorrência). Construído incrementalmente, aula a aula, desde a semana 34.</p>
+            <h3 class="h6 fw-bold"><i class="fas fa-circle-info me-2" aria-hidden="true"></i>Este projeto e o case das aulas</h3>
+            <p class="small mb-0">Nas aulas construímos, passo a passo, o <strong>Foot Fanatics</strong> — uma API de conteúdo esportivo com assinatura. Ele é o case de <em>demonstração</em>: serve para ver cada técnica funcionando em código ao vivo. <strong>O projeto avaliado do semestre é este aqui</strong>, o sistema de organização de recursos, desenvolvido pelas equipes. A cada semana, a técnica vista no Foot Fanatics deve ser aplicada ao seu próprio projeto.</p>
           </div>
         </section>
 
         <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="escopo-heading">
           <h2 class="h3 fw-bold mb-4" id="escopo-heading"><i class="fas fa-users-gear text-danger me-2" aria-hidden="true"></i>Escopo e perfis</h2>
           <div class="row g-3 mb-4">
-            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Torcedor casual</h3><span class="badge bg-secondary mb-2">plano free</span><p class="small text-muted mb-0">Consulta conteúdo público: clubes, jogos e resultados. Define a fronteira entre o que é aberto e o que é pago.</p></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Torcedor assinante</h3><span class="badge bg-danger mb-2">plano premium</span><p class="small text-muted mb-0">Acessa análises, estatísticas e conteúdo exclusivo em mais de um dispositivo. Exercita sessão, renovação e vigência.</p></div></div></div>
-            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Editor de conteúdo</h3><span class="badge bg-primary mb-2">operação</span><p class="small text-muted mb-0">Publica matérias e marca o que é exclusivo. Exercita autorização e o custo de um erro de marcação.</p></div></div></div>
-          </div>
-
-          <h3 class="h5 fw-bold mb-3">Escopos do produto</h3>
-          <div class="row g-3 mb-4">
-            <div class="col-md-3"><div class="p-3 border rounded-3 bg-white h-100"><span class="badge bg-danger mb-2">E1</span><h4 class="h6 fw-bold mb-1">Identidade &amp; Conta</h4><p class="small text-muted mb-0">Cadastro, credencial, perfil, recuperação.</p></div></div>
-            <div class="col-md-3"><div class="p-3 border rounded-3 bg-white h-100"><span class="badge bg-danger mb-2">E2</span><h4 class="h6 fw-bold mb-1">Sessão &amp; Acesso</h4><p class="small text-muted mb-0">Login, token, expiração, renovação, logout.</p></div></div>
-            <div class="col-md-3"><div class="p-3 border rounded-3 bg-white h-100"><span class="badge bg-danger mb-2">E3</span><h4 class="h6 fw-bold mb-1">Assinatura</h4><p class="small text-muted mb-0">Planos, vigência, upgrade, cancelamento.</p></div></div>
-            <div class="col-md-3"><div class="p-3 border rounded-3 bg-white h-100"><span class="badge bg-danger mb-2">E4</span><h4 class="h6 fw-bold mb-1">Conteúdo</h4><p class="small text-muted mb-0">Clubes, jogos e matérias; público e exclusivo.</p></div></div>
+            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Solicitante</h3><p class="small text-muted mb-0">Professor ou coordenador que consulta a disponibilidade e cria, altera ou cancela suas reservas.</p></div></div></div>
+            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Responsável</h3><p class="small text-muted mb-0">Aprova solicitações especiais, valida a alocação de docentes e acompanha retiradas e devoluções de material.</p></div></div></div>
+            <div class="col-md-4"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Administrador</h3><p class="small text-muted mb-0">Gerencia salas, professores, materiais, usuários, bloqueios e períodos de manutenção.</p></div></div></div>
           </div>
 
           <h3 class="h5 fw-bold mb-3">Requisitos funcionais obrigatórios</h3>
           <div class="row g-3">
             <div class="col-md-6">
               <ol class="list-group list-group-numbered h-100">
-                <li class="list-group-item">Cadastro de conta com validação de dados e senha armazenada com hash.</li>
-                <li class="list-group-item">Autenticação e autorização por perfil e por plano.</li>
-                <li class="list-group-item">Emissão de token de sessão com prazo de expiração explícito.</li>
-                <li class="list-group-item">Renovação de sessão e <em>logout</em> que invalida o token de fato.</li>
-                <li class="list-group-item">Contratação, upgrade e cancelamento de assinatura.</li>
-                <li class="list-group-item">Vigência do plano respeitada em toda decisão de acesso.</li>
-                <li class="list-group-item">Bloqueio de conta após tentativas sucessivas de login inválido.</li>
+                <li class="list-group-item">Autenticação e autorização por perfil.</li>
+                <li class="list-group-item">Cadastro e consulta de salas, professores e materiais.</li>
+                <li class="list-group-item">Pesquisa por tipo, capacidade, localização, competência e disponibilidade.</li>
+                <li class="list-group-item">Criação, alteração e cancelamento de reservas.</li>
+                <li class="list-group-item">Detecção de sobreposição de horários, inclusive na agenda do professor.</li>
+                <li class="list-group-item">Proteção contra dupla reserva em solicitações simultâneas.</li>
+                <li class="list-group-item">Aprovação obrigatória para recursos restritos.</li>
               </ol>
             </div>
             <div class="col-md-6">
               <ol class="list-group list-group-numbered h-100" start="8">
-                <li class="list-group-item">Catálogo de clubes, jogos e resultados em acesso público.</li>
-                <li class="list-group-item">Conteúdo exclusivo acessível somente a assinante com plano vigente.</li>
-                <li class="list-group-item">Publicação e marcação de conteúdo restrita ao perfil editor.</li>
-                <li class="list-group-item">Histórico auditável de acesso negado e de mudança de plano.</li>
-                <li class="list-group-item">Integração com API externa de dados esportivos (real ou simulada).</li>
-                <li class="list-group-item">Relatório de assinaturas ativas, expiradas e acessos negados.</li>
-                <li class="list-group-item">Documentação da API e mensagens de erro compreensíveis e seguras.</li>
+                <li class="list-group-item">Bloqueio de recursos em manutenção.</li>
+                <li class="list-group-item">Registro de retirada e devolução de materiais e equipamentos.</li>
+                <li class="list-group-item">Histórico auditável de mudanças.</li>
+                <li class="list-group-item">Notificação simulada ou integração com API externa.</li>
+                <li class="list-group-item">Relatório de utilização por recurso, carga horária alocada e conflitos evitados.</li>
+                <li class="list-group-item">Interface responsiva e mensagens de erro compreensíveis.</li>
+                <li class="list-group-item">Documentação de API ou dos fluxos públicos do sistema.</li>
               </ol>
             </div>
           </div>
@@ -119,22 +111,22 @@
               <div class="alert alert-warning h-100 mb-0">
                 <h3 class="h5 fw-bold">Tempo e concorrência</h3>
                 <ul class="mb-0">
-                  <li>Token expirado nunca libera acesso, mesmo que a assinatura esteja ativa.</li>
-                  <li>Assinatura vencida nunca libera conteúdo exclusivo, mesmo com token válido.</li>
-                  <li>Duas renovações simultâneas devem produzir uma única sessão válida.</li>
-                  <li>Cancelamento e <em>logout</em> têm efeito imediato em todas as sessões abertas.</li>
+                  <li>O término deve ser posterior ao início.</li>
+                  <li>Reservas do mesmo recurso não podem se sobrepor &mdash; sala, material ou professor.</li>
+                  <li>Duas solicitações simultâneas devem produzir uma única reserva aceita.</li>
+                  <li>Recursos em manutenção não podem ser reservados.</li>
                 </ul>
               </div>
             </div>
             <div class="col-md-6">
               <div class="alert alert-info h-100 mb-0">
                 <h3 class="h5 fw-bold">Estados e auditoria</h3>
-                <p class="small mb-2"><code>PENDENTE → ATIVA → RENOVADA → EXPIRADA</code></p>
+                <p class="small mb-2"><code>SOLICITADA → APROVADA → EM_USO → CONCLUÍDA</code></p>
                 <ul class="mb-0">
-                  <li>Estados alternativos: cancelada, suspensa e inadimplente.</li>
-                  <li>Somente o perfil editor publica ou marca conteúdo como exclusivo.</li>
-                  <li>Assinatura já vigente não pode ser apagada, apenas encerrada.</li>
-                  <li>Toda mudança de estado e todo acesso negado devem gerar auditoria.</li>
+                  <li>Estados alternativos: rejeitada, cancelada e não compareceu.</li>
+                  <li>Somente responsáveis aprovam recursos restritos.</li>
+                  <li>Reservas iniciadas não podem ser apagadas.</li>
+                  <li>Toda mudança de estado deve gerar auditoria.</li>
                 </ul>
               </div>
             </div>
@@ -146,7 +138,7 @@
           <div class="row g-3 mb-4">
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes automatizados</h3><p class="small text-muted mb-0">Unitários com JUnit 5, parametrizados, integração, API em caixa-preta e end-to-end.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Ambiente realista</h3><p class="small text-muted mb-0">Banco containerizado com Testcontainers e WireMock para integrações externas.</p></div></div></div>
-            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Concorrência</h3><p class="small text-muted mb-0">Teste automatizado comprovando que renovações simultâneas geram uma única sessão válida.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Concorrência</h3><p class="small text-muted mb-0">Teste automatizado comprovando a proteção contra dupla reserva.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">TDD ou BDD</h3><p class="small text-muted mb-0">Ao menos uma funcionalidade nova desenvolvida com evidências da técnica.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">CI e análise estática</h3><p class="small text-muted mb-0">GitHub Actions em pull requests, cobertura por JaCoCo e projeto integrado ao SonarCloud.</p></div></div></div>
             <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Não funcionais</h3><p class="small text-muted mb-0">JMeter, autorização, validação de entrada e tratamento seguro de erros.</p></div></div></div>
@@ -172,7 +164,7 @@
               <ul class="list-group list-group-flush">
                 <li class="list-group-item"><i class="fab fa-github text-danger me-2" aria-hidden="true"></i>Repositório com histórico de trabalho e revisão por pares.</li>
                 <li class="list-group-item"><i class="fas fa-play text-danger me-2" aria-hidden="true"></i>Aplicação executável e instruções de instalação.</li>
-                <li class="list-group-item"><i class="fas fa-book text-danger me-2" aria-hidden="true"></i><code>README.md</code> e documentação da API.</li>
+                <li class="list-group-item"><i class="fas fa-book text-danger me-2" aria-hidden="true"></i><code>README.md</code> e documentação dos fluxos ou da API.</li>
                 <li class="list-group-item"><i class="fas fa-link text-danger me-2" aria-hidden="true"></i><code>RTM.md</code> ligando requisito, risco, teste e evidência.</li>
                 <li class="list-group-item"><i class="fas fa-diagram-project text-danger me-2" aria-hidden="true"></i>Diagramas de contexto, componentes e sequências críticas.</li>
                 <li class="list-group-item"><i class="fas fa-flask text-danger me-2" aria-hidden="true"></i>Plano, suíte automatizada e relatório de testes.</li>
@@ -207,37 +199,38 @@
               </tbody>
             </table>
           </div>
-          <div class="alert alert-danger mb-0"><strong>Limitadores de nota:</strong> aplicação que não executa, pipeline ausente, falha de autorização ou conteúdo exclusivo acessível sem assinatura vigente.</div>
+          <div class="alert alert-danger mb-0"><strong>Limitadores de nota:</strong> aplicação que não executa, pipeline ausente, falha de autorização ou possibilidade de dupla reserva.</div>
         </section>
 
         <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="roteiro-heading">
           <h2 class="h3 fw-bold mb-4" id="roteiro-heading"><i class="fas fa-route text-danger me-2" aria-hidden="true"></i>Evolução durante o semestre</h2>
-          <div class="row g-2 text-center align-items-stretch mb-4">
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">1</span><p class="small mb-0">Infra, escopos e personas</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">2</span><p class="small mb-0">Primeiros testes e RTM</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">3</span><p class="small mb-0">Bugs e pipeline de CI</p></div></div>
-            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">4</span><p class="small mb-0">JUnit, JaCoCo e SonarCloud</p></div></div>
+          <div class="row g-2 text-center align-items-stretch">
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">1</span><p class="small mb-0">Diagnóstico inicial</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">2</span><p class="small mb-0">Requisitos, riscos e RTM</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">3</span><p class="small mb-0">Testes e integração</p></div></div>
+            <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">4</span><p class="small mb-0">CI e SonarCloud</p></div></div>
             <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">5</span><p class="small mb-0">TDD/BDD, WireMock e carga</p></div></div>
             <div class="col-md"><div class="p-3 bg-light rounded h-100"><span class="badge bg-danger mb-2">6</span><p class="small mb-0">Entrega, feedback e retrospectiva</p></div></div>
           </div>
 
-          <h3 class="h5 fw-bold mb-3">Incremento por semana</h3>
+          <h3 class="h5 fw-bold mb-3 mt-4">Incremento por semana</h3>
+          <p class="small text-muted">A técnica é demonstrada em aula no Foot Fanatics e aplicada, na mesma semana, ao seu projeto de organização de recursos.</p>
           <div class="table-responsive">
             <table class="table table-bordered align-middle bg-white mb-0">
               <thead class="table-dark">
-                <tr><th style="width:12%">Semana</th><th style="width:38%">Tema da aula</th><th>O que nasce no Foot Fanatics</th></tr>
+                <tr><th style="width:12%">Semana</th><th style="width:38%">Tema da aula</th><th>O que avança no seu projeto</th></tr>
               </thead>
               <tbody class="small">
-                <tr><td class="fw-bold">34</td><td>Caixa branca vs caixa preta</td><td class="text-muted">Infra: AIOX, Spring Boot, docs em esqueleto e personas</td></tr>
-                <tr><td class="fw-bold">35</td><td>Introdução a testes automatizados</td><td class="text-muted">E1 &mdash; primeiro teste de cadastro de conta</td></tr>
-                <tr><td class="fw-bold">36</td><td>Gestão de erros e bugs</td><td class="text-muted">Registro e triagem dos primeiros defeitos de E1</td></tr>
-                <tr><td class="fw-bold">37</td><td>Testes automatizados em CI</td><td class="text-muted">Pipeline no GitHub Actions rodando a suíte</td></tr>
+                <tr><td class="fw-bold">34</td><td>Caixa branca vs caixa preta</td><td class="text-muted">Repositório, ambiente, escopo e perfis definidos</td></tr>
+                <tr><td class="fw-bold">35</td><td>Introdução a testes automatizados</td><td class="text-muted">Primeiros testes do cadastro de salas, professores e materiais</td></tr>
+                <tr><td class="fw-bold">36</td><td>Gestão de erros e bugs</td><td class="text-muted">Registro e triagem dos primeiros defeitos encontrados</td></tr>
+                <tr><td class="fw-bold">37</td><td>Testes automatizados em CI</td><td class="text-muted">Pipeline no GitHub Actions rodando a suíte a cada pull request</td></tr>
                 <tr class="table-danger"><td class="fw-bold">38</td><td colspan="2">Prova escrita</td></tr>
-                <tr><td class="fw-bold">39</td><td>Testes de unidade com JUnit 5 + JaCoCo + SonarCloud</td><td class="text-muted">E2 &mdash; sessão, expiração e cobertura de ramo do filtro</td></tr>
-                <tr><td class="fw-bold">40</td><td>WireMock/Testcontainers e chamadas de API seguras</td><td class="text-muted">Integração com API esportiva externa isolada em teste</td></tr>
-                <tr><td class="fw-bold">41</td><td>TDD e BDD</td><td class="text-muted">E3 &mdash; regras de vigência da assinatura guiadas por teste</td></tr>
-                <tr><td class="fw-bold">42</td><td>Testes de carga com JMeter</td><td class="text-muted">Renovação concorrente de sessão sob carga</td></tr>
-                <tr><td class="fw-bold">43-44</td><td>Desenvolvimento do projeto final</td><td class="text-muted">E4 &mdash; conteúdo público e exclusivo, autorização por plano</td></tr>
+                <tr><td class="fw-bold">39</td><td>Testes de unidade com JUnit 5 + JaCoCo + SonarCloud</td><td class="text-muted">Cobertura de ramo nas regras de sobreposição de horário</td></tr>
+                <tr><td class="fw-bold">40</td><td>WireMock/Testcontainers e chamadas de API seguras</td><td class="text-muted">Banco em container e integração externa isolada em teste</td></tr>
+                <tr><td class="fw-bold">41</td><td>TDD e BDD</td><td class="text-muted">Regras de aprovação e bloqueio guiadas por teste</td></tr>
+                <tr><td class="fw-bold">42</td><td>Testes de carga com JMeter</td><td class="text-muted">Reservas simultâneas do mesmo recurso sob carga</td></tr>
+                <tr><td class="fw-bold">43-44</td><td>Desenvolvimento do projeto final</td><td class="text-muted">Relatórios, auditoria e fechamento dos requisitos</td></tr>
                 <tr><td class="fw-bold">45</td><td>Preparação para a prova oral</td><td class="text-muted">RTM fechada e relatório de qualidade</td></tr>
                 <tr class="table-primary"><td class="fw-bold">46</td><td>Finalização e entrega</td><td>Release candidate, pacote de evidências e decisão de qualidade</td></tr>
                 <tr class="table-success"><td class="fw-bold">47</td><td colspan="2">Prova oral</td></tr>
