@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 520" role="img" aria-labelledby="atam-title atam-desc">
+  <title id="atam-title">Fluxo conceitual do ATAM</title>
+  <desc id="atam-desc">Direcionadores de negócio e arquitetura de software alimentam atributos de qualidade e abordagens arquiteturais. Esses elementos geram cenários e decisões para análise. A análise identifica trade-offs, pontos de sensibilidade, não riscos e riscos. Os riscos são consolidados em temas que voltam a impactar o negócio e a arquitetura.</desc>
+  <defs>
+    <linearGradient id="analysis-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#DD2476"/>
+      <stop offset="1" stop-color="#FF512F"/>
+    </linearGradient>
+    <linearGradient id="output-gradient" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#DD2476"/>
+      <stop offset="1" stop-color="#FF512F"/>
+    </linearGradient>
+    <filter id="soft-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="5" stdDeviation="7" flood-color="#DD2476" flood-opacity="0.14"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#FF512F"/>
+    </marker>
+    <style>
+      .flow { fill: none; stroke: #FF512F; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; marker-end: url(#arrow); }
+      .node { fill: white; stroke: #DD2476; stroke-width: 2.5; filter: url(#soft-shadow); }
+      .node-architecture { fill: #ffb199; fill-opacity: .2; stroke: #FF512F; }
+      .label { fill: currentColor; font: 700 18px Outfit, Arial, sans-serif; text-anchor: middle; }
+      .hint { fill: currentColor; fill-opacity: .62; font: 500 13px Outfit, Arial, sans-serif; text-anchor: middle; }
+      .label-light { fill: white; font: 700 18px Outfit, Arial, sans-serif; text-anchor: middle; }
+      .hint-light { fill: white; fill-opacity: .82; font: 500 12px Outfit, Arial, sans-serif; text-anchor: middle; }
+      .caption { fill: currentColor; fill-opacity: .62; font: 600 13px Outfit, Arial, sans-serif; letter-spacing: .05em; text-transform: uppercase; }
+    </style>
+  </defs>
+
+  <text class="caption" x="70" y="38">ENTRADAS</text>
+  <text class="caption" x="300" y="38">LENTES</text>
+  <text class="caption" x="530" y="38">EVIDÊNCIAS</text>
+  <text class="caption" x="784" y="38">AVALIAÇÃO</text>
+
+  <g>
+    <rect class="node" x="70" y="64" width="180" height="78" rx="14"/>
+    <text class="label" x="160" y="94"><tspan x="160">Direcionadores</tspan><tspan x="160" dy="21">de negócio</tspan></text>
+    <text class="hint" x="160" y="132">por que mudar?</text>
+
+    <rect class="node node-architecture" x="70" y="172" width="180" height="78" rx="14"/>
+    <text class="label" x="160" y="202"><tspan x="160">Arquitetura</tspan><tspan x="160" dy="21">de software</tspan></text>
+    <text class="hint" x="160" y="240">como está estruturada?</text>
+
+    <rect class="node" x="300" y="64" width="180" height="78" rx="14"/>
+    <text class="label" x="390" y="94"><tspan x="390">Atributos</tspan><tspan x="390" dy="21">de qualidade</tspan></text>
+    <text class="hint" x="390" y="132">o que importa?</text>
+
+    <rect class="node node-architecture" x="300" y="172" width="180" height="78" rx="14"/>
+    <text class="label" x="390" y="202"><tspan x="390">Abordagens</tspan><tspan x="390" dy="21">arquiteturais</tspan></text>
+    <text class="hint" x="390" y="240">quais táticas?</text>
+
+    <rect class="node" x="530" y="64" width="180" height="78" rx="14"/>
+    <text class="label" x="620" y="94"><tspan x="620">Cenários</tspan><tspan x="620" dy="21">mensuráveis</tspan></text>
+    <text class="hint" x="620" y="132">como provar?</text>
+
+    <rect class="node node-architecture" x="530" y="172" width="180" height="78" rx="14"/>
+    <text class="label" x="620" y="202"><tspan x="620">Decisões</tspan><tspan x="620" dy="21">arquiteturais</tspan></text>
+    <text class="hint" x="620" y="240">o que escolhemos?</text>
+  </g>
+
+  <path class="flow" d="M250 103 H300"/>
+  <path class="flow" d="M480 103 H530"/>
+  <path class="flow" d="M710 103 H756 Q770 103 780 114"/>
+  <path class="flow" d="M250 211 H300"/>
+  <path class="flow" d="M480 211 H530"/>
+  <path class="flow" d="M710 211 H756 Q770 211 780 200"/>
+
+  <circle cx="850" cy="157" r="82" fill="url(#analysis-gradient)" filter="url(#soft-shadow)"/>
+  <circle cx="850" cy="157" r="69" fill="none" stroke="white" stroke-opacity=".34" stroke-width="2"/>
+  <text class="label-light" x="850" y="151">ANÁLISE</text>
+  <text class="hint-light" x="850" y="174">cenários × decisões</text>
+
+  <path d="M850 239 V268 H1020 V477" fill="none" stroke="#FF512F" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <g filter="url(#soft-shadow)">
+    <rect x="700" y="286" width="290" height="42" rx="12" fill="url(#output-gradient)"/>
+    <rect x="700" y="340" width="290" height="42" rx="12" fill="url(#output-gradient)"/>
+    <rect x="700" y="394" width="290" height="42" rx="12" fill="url(#output-gradient)"/>
+    <rect x="700" y="448" width="290" height="42" rx="12" fill="url(#output-gradient)"/>
+  </g>
+  <text class="label-light" x="845" y="313">Trade-offs</text>
+  <text class="label-light" x="845" y="367">Pontos de sensibilidade</text>
+  <text class="label-light" x="845" y="421">Não riscos</text>
+  <text class="label-light" x="845" y="475">Riscos</text>
+  <path class="flow" d="M1020 307 H990"/>
+  <path class="flow" d="M1020 361 H990"/>
+  <path class="flow" d="M1020 415 H990"/>
+  <path class="flow" d="M1020 469 H990"/>
+
+  <rect x="280" y="440" width="220" height="62" rx="16" fill="#ffb199" stroke="#DD2476" stroke-width="2.5" filter="url(#soft-shadow)"/>
+  <text class="label" x="390" y="467">Temas de risco</text>
+  <text class="hint" x="390" y="488">padrões que exigem ação</text>
+  <path class="flow" d="M700 469 H500"/>
+  <text class="hint" x="600" y="454">consolidados em</text>
+
+  <path class="flow" d="M280 471 H48 V103 H70"/>
+  <path class="flow" d="M48 211 H70"/>
+  <text class="caption" x="29" y="330" transform="rotate(-90 29 330)">IMPACTAM</text>
+</svg>
