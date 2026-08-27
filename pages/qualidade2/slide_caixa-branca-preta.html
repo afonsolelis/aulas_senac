@@ -6,7 +6,7 @@
   <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Semana 34 - Qualidade: Caixa Branca vs Caixa Preta e o nascimento do Foot Fanatics</title>
-  <meta name="keywords" content="qualidade de software, caixa branca, caixa preta, caixa cinza, cobertura, foot fanatics, spring boot, aiox, personas">
+  <meta name="keywords" content="qualidade de software, caixa branca, caixa preta, caixa cinza, cobertura de codigo, pytest, python, particao de equivalencia, valor limite, tabela de decisao, foot fanatics">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <link rel="stylesheet" href="../../css/style.css">
@@ -33,7 +33,7 @@
         <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4">
         <h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5>
         <h1 class="display-4 fw-bold mb-3 text-black">Aula 03: Caixa Branca vs Caixa Preta</h1>
-        <p class="fs-4 text-secondary mb-3">E o nascimento do <strong>Foot Fanatics</strong></p>
+        <p class="fs-4 text-secondary mb-3">Da teoria ao <code>pytest</code> &mdash; e o nascimento do <strong>Foot Fanatics</strong></p>
         <hr class="border-secondary w-25 mx-auto my-3 opacity-100">
         <h3 class="fw-normal text-dark">Professor Afonso</h3>
         <span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 34 - 2026.2</span>
@@ -42,9 +42,10 @@
           <span class="keyword">caixa preta</span>
           <span class="keyword">caixa cinza</span>
           <span class="keyword">cobertura de código</span>
+          <span class="keyword">pytest</span>
+          <span class="keyword">valor limite</span>
+          <span class="keyword">tabela de decisão</span>
           <span class="keyword">Foot Fanatics</span>
-          <span class="keyword">Spring Boot</span>
-          <span class="keyword">personas</span>
         </div>
       </div>
     </div>
@@ -59,13 +60,14 @@
             <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4">
               <span class="badge bg-primary align-self-start mb-3 px-3 py-2 rounded-pill">Parte 1 &middot; Teoria</span>
               <h4 class="fw-bold text-dark mb-3">Com que olhos você olha o software</h4>
+              <p class="small text-muted mb-2"><i class="fas fa-code me-1"></i> Toda técnica sai da teoria e vira teste executável.</p>
               <ul class="text-muted mb-0">
                 <li class="mb-2">A pergunta que separa tudo</li>
-                <li class="mb-2">Caixa preta: testar pelo contrato</li>
-                <li class="mb-2">Caixa branca: testar pelo caminho</li>
-                <li class="mb-2">Critérios de cobertura</li>
+                <li class="mb-2">Caixa preta e caixa branca <strong>rodando em pytest</strong></li>
+                <li class="mb-2">Comando × ramo × condição no relatório de cobertura</li>
+                <li class="mb-2">Partição, valor limite e tabela de decisão em código</li>
                 <li class="mb-2">Caixa cinza: o que a gente faz de verdade</li>
-                <li class="mb-0">A armadilha dos 100%</li>
+                <li class="mb-0">A armadilha dos 100% e o teste de mutação na unha</li>
               </ul>
             </div>
           </div>
@@ -193,8 +195,47 @@
       </div>
     </div>
 
-    <!-- Slide 6: Caixa Branca -->
+    <!-- Slide 6: Caixa preta em codigo -->
     <div class="slide" id="slide-6">
+      <div class="slide-content">
+        <span class="badge bg-dark fs-6 mb-2 px-4 py-2 rounded-pill">Caixa preta &middot; em c&oacute;digo</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Tudo o que voc&ecirc; recebeu foi o contrato</h2>
+        <p class="text-muted mb-3">Foot Fanatics &middot; <code>E2 Sess&atilde;o &amp; Acesso</code>. Nenhuma linha de implementa&ccedil;&atilde;o &agrave; vista.</p>
+        <div class="row g-3 align-items-start">
+          <div class="col-lg-5">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code><span class="text-secondary"># acesso.py &mdash; a especificacao</span>
+<span class="text-secondary">#</span>
+<span class="text-secondary"># pode_assistir(sessao, conteudo) -&gt; str</span>
+<span class="text-secondary">#   "LIBERADO"</span>
+<span class="text-secondary">#       sessao valida e plano compativel</span>
+<span class="text-secondary">#   "SESSAO_INVALIDA"</span>
+<span class="text-secondary">#       sem sessao ou sessao expirada</span>
+<span class="text-secondary">#   "ASSINATURA_NECESSARIA"</span>
+<span class="text-secondary">#       conteudo premium e plano free</span></code></pre></div>
+            <p class="small text-muted mt-2 mb-0"><i class="fas fa-lock me-1"></i> O c&oacute;digo existe, mas voc&ecirc; n&atilde;o abre.</p>
+          </div>
+          <div class="col-lg-7">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code><span class="text-secondary"># test_acesso.py</span>
+def test_assinante_ve_conteudo_premium():
+    s = Sessao(plano="premium", idade_s=10)
+    assert pode_assistir(s, Conteudo(premium=True)) == "LIBERADO"
+
+def test_free_nao_ve_conteudo_premium():
+    s = Sessao(plano="free", idade_s=10)
+    assert pode_assistir(s, Conteudo(premium=True)) == "ASSINATURA_NECESSARIA"
+
+def test_sem_sessao_nao_ve_nada():
+    assert pode_assistir(None, Conteudo(premium=False)) == "SESSAO_INVALIDA"</code></pre></div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-3 py-2 mb-0 d-inline-block">
+          <i class="fas fa-check-circle me-2"></i>
+          3 testes, 3 requisitos cobertos, tudo verde. E voc&ecirc; <strong>n&atilde;o faz ideia</strong> de quanto do c&oacute;digo rodou.
+        </div>
+      </div>
+    </div>
+    <!-- Slide 7: Caixa Branca -->
+    <div class="slide" id="slide-7">
       <div class="text-center slide-content">
         <span class="badge bg-primary text-white fs-6 mb-2 px-4 py-2 rounded-pill">Caixa Branca &middot; white box</span>
         <h2 class="display-5 fw-bold mb-3 text-dark">Testar pelo caminho</h2>
@@ -241,8 +282,41 @@
       </div>
     </div>
 
-    <!-- Slide 7: Comparativo -->
-    <div class="slide" id="slide-7">
+    <!-- Slide 8: Caixa branca em codigo -->
+    <div class="slide" id="slide-8">
+      <div class="slide-content">
+        <span class="badge bg-primary fs-6 mb-2 px-4 py-2 rounded-pill">Caixa branca &middot; o c&oacute;digo aparece</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Os mesmos 3 testes, agora com o fonte aberto</h2>
+        <div class="row g-3 align-items-start">
+          <div class="col-lg-7">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code>def pode_assistir(sessao, conteudo):
+    if sessao is None or sessao.idade_s &gt; 1800:
+        return "SESSAO_INVALIDA"                    <span class="text-warning">#1 v/f ok</span>
+    if conteudo.premium and sessao.plano != "premium":
+        return "ASSINATURA_NECESSARIA"              <span class="text-warning">#2 v/f ok</span>
+    <span class="text-danger">if sessao.renovacoes &gt; 3:</span>
+        <span class="text-danger">return "SESSAO_INVALIDA"</span>                    <span class="text-danger">#3 NUNCA rodou</span>
+    return "LIBERADO"</code></pre></div>
+          </div>
+          <div class="col-lg-5">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.78rem; line-height:1.45"><code>$ pytest --cov=acesso --cov-branch
+
+<span class="text-success">3 passed in 0.04s</span>
+
+Name        Stmts Miss Branch BrPart Cover
+acesso.py       8    1      6      1  <span class="text-warning">86%</span>
+Missing: <span class="text-danger">line 7, branch 6-&gt;7</span></code></pre></div>
+            <p class="small text-muted mt-2 mb-0">O relat&oacute;rio aponta o dedo para a linha que nenhum teste tocou.</p>
+          </div>
+        </div>
+        <div class="alert alert-warning border-0 shadow-sm mt-3 py-2 mb-0 d-inline-block">
+          <i class="fas fa-eye me-2"></i>
+          A regra de <strong>renova&ccedil;&atilde;o</strong> n&atilde;o estava na especifica&ccedil;&atilde;o. Caixa preta nunca a acharia &mdash; e caixa branca ainda pergunta: <strong>ela deveria existir?</strong>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 9: Comparativo -->
+    <div class="slide" id="slide-9">
       <div class="text-center slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark">Lado a lado</h2>
         <div class="table-responsive">
@@ -295,8 +369,8 @@
       </div>
     </div>
 
-    <!-- Slide 8: Cobertura -->
-    <div class="slide" id="slide-8">
+    <!-- Slide 10: Cobertura -->
+    <div class="slide" id="slide-10">
       <div class="text-center slide-content">
         <h2 class="display-5 fw-bold mb-2 text-dark">Cobertura: três réguas diferentes</h2>
         <p class="lead text-muted mb-3">O mesmo código, medido de três formas — com resultados bem diferentes.</p>
@@ -340,8 +414,49 @@
       </div>
     </div>
 
-    <!-- Slide 9: Técnicas de caixa preta -->
-    <div class="slide" id="slide-9">
+    <!-- Slide 11: Cobertura em codigo -->
+    <div class="slide" id="slide-11">
+      <div class="slide-content">
+        <h2 class="display-6 fw-bold mb-2 text-dark">As tr&ecirc;s r&eacute;guas, com o pytest na m&atilde;o</h2>
+        <p class="text-muted mb-3">Uma linha de c&oacute;digo. Tr&ecirc;s su&iacute;tes diferentes. Tr&ecirc;s n&uacute;meros diferentes.</p>
+        <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code>def liberar(token):
+    if token is not None and not token.expirado:   <span class="text-secondary"># 2 condicoes, 1 decisao</span>
+        conceder_acesso()</code></pre></div>
+        <div class="row g-3 mt-1 text-start">
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2"><span class="badge bg-success me-1">1</span> Comando</h6>
+              <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.72rem; line-height:1.45"><code><span class="text-secondary"># token valido</span>
+liberar(Token(expirado=False))</code></pre></div>
+              <p class="small text-muted mb-0 mt-2"><code>--cov</code>: <strong>100%</strong>. E o acesso indevido nunca foi testado.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
+              <h6 class="fw-bold text-dark mb-2"><span class="badge bg-warning text-dark me-1">2</span> Ramo</h6>
+              <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.72rem; line-height:1.45"><code>liberar(Token(expirado=False))
+<span class="text-warning">liberar(Token(expirado=True))</span></code></pre></div>
+              <p class="small text-muted mb-0 mt-2"><code>--cov-branch</code>: agora o <code>if</code> foi V <em>e</em> F.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4 border border-danger">
+              <h6 class="fw-bold text-dark mb-2"><span class="badge bg-danger me-1">3</span> Condi&ccedil;&atilde;o</h6>
+              <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.72rem; line-height:1.45"><code>liberar(Token(expirado=False))
+liberar(Token(expirado=True))
+<span class="text-danger">liberar(None)</span></code></pre></div>
+              <p class="small text-muted mb-0 mt-2">Token nulo e token expirado s&atilde;o <strong>bugs diferentes</strong>.</p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-3 py-2 mb-0 d-inline-block">
+          <i class="fas fa-ruler-combined me-2"></i>
+          <code>pytest --cov</code> mede comando. <code>--cov-branch</code> mede ramo. <strong>Nenhum dos dois</strong> mede condi&ccedil;&atilde;o.
+        </div>
+      </div>
+    </div>
+    <!-- Slide 12: Técnicas de caixa preta -->
+    <div class="slide" id="slide-12">
       <div class="text-center slide-content">
         <h2 class="display-5 fw-bold mb-3 text-dark">Caixa preta não é chutar entrada</h2>
         <p class="lead text-muted mb-4">Existem técnicas com nome, e elas reduzem drasticamente o número de testes.</p>
@@ -375,8 +490,108 @@
       </div>
     </div>
 
-    <!-- Slide 10: Caixa cinza -->
-    <div class="slide" id="slide-10">
+    <!-- Slide 13: Particao de equivalencia em codigo -->
+    <div class="slide" id="slide-13">
+      <div class="slide-content">
+        <span class="badge bg-primary fs-6 mb-2 px-4 py-2 rounded-pill">T&eacute;cnica 1 &middot; Parti&ccedil;&atilde;o de equival&ecirc;ncia</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">Um representante por classe</h2>
+        <p class="text-muted mb-3">Se o sistema trata dois valores do mesmo jeito, testar os dois &eacute; desperd&iacute;cio.</p>
+        <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code>import pytest
+
+@pytest.mark.parametrize("plano, esperado", [
+    ("free",    "ASSINATURA_NECESSARIA"),   <span class="text-secondary"># classe 1: sem direito</span>
+    ("premium", "LIBERADO"),                <span class="text-secondary"># classe 2: com direito</span>
+    ("pirata",  "PLANO_INVALIDO"),          <span class="text-secondary"># classe 3: entrada invalida</span>
+])
+def test_plano_decide_acesso_a_conteudo_premium(plano, esperado):
+    sessao = Sessao(plano=plano, idade_s=10)
+    assert pode_assistir(sessao, Conteudo(premium=True)) == esperado</code></pre></div>
+        <div class="row g-3 mt-1 text-start justify-content-center">
+          <div class="col-md-5">
+            <div class="alert alert-secondary border-0 shadow-sm py-2 mb-0 small">
+              <strong>3 testes</strong> cobrem <strong>qualquer</strong> string de plano que exista hoje ou amanh&atilde;.
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="alert alert-warning border-0 shadow-sm py-2 mb-0 small">
+              A classe <strong>inv&aacute;lida</strong> &eacute; a que mais gente esquece &mdash; e a que o atacante usa.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 14: Valor limite em codigo -->
+    <div class="slide" id="slide-14">
+      <div class="slide-content">
+        <span class="badge bg-primary fs-6 mb-2 px-4 py-2 rounded-pill">T&eacute;cnica 2 &middot; An&aacute;lise de valor limite</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">O defeito mora na fronteira</h2>
+        <p class="text-muted mb-3">Regra: a sess&atilde;o vale <strong>30 minutos</strong>. Aos 1800s ela <strong>ainda</strong> vale.</p>
+        <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.82rem; line-height:1.45"><code>@pytest.mark.parametrize("idade_s, esperado", [
+    (1799, "LIBERADO"),           <span class="text-secondary"># logo antes do limite</span>
+    (1800, "LIBERADO"),           <span class="text-warning"># NO limite &mdash; o caso que pega o bug</span>
+    (1801, "SESSAO_INVALIDA"),    <span class="text-secondary"># logo depois</span>
+])
+def test_fronteira_de_expiracao_da_sessao(idade_s, esperado):
+    sessao = Sessao(plano="premium", idade_s=idade_s)
+    assert pode_assistir(sessao, Conteudo(premium=False)) == esperado</code></pre></div>
+        <div class="row g-3 mt-2 text-start justify-content-center">
+          <div class="col-md-6">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.76rem; line-height:1.45"><code><span class="text-danger">- if sessao.idade_s &gt;= 1800:   # errado</span>
+<span class="text-success">+ if sessao.idade_s &gt;  1800:   # certo</span></code></pre></div>
+          </div>
+          <div class="col-md-5">
+            <div class="alert alert-danger border-0 shadow-sm py-2 mb-0 small">
+              O caso <code>1799</code> passa nas duas vers&otilde;es. O caso <code>1801</code> tamb&eacute;m.
+              <strong>S&oacute; o 1800</strong> denuncia o <code>&gt;=</code>.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 15: Tabela de decisao em codigo -->
+    <div class="slide" id="slide-15">
+      <div class="slide-content">
+        <span class="badge bg-primary fs-6 mb-2 px-4 py-2 rounded-pill">T&eacute;cnica 3 &middot; Tabela de decis&atilde;o</span>
+        <h2 class="display-6 fw-bold mb-2 text-dark">3 condi&ccedil;&otilde;es, 8 combina&ccedil;&otilde;es, <span class="text-danger">4 regras</span></h2>
+        <div class="row g-3 align-items-center">
+          <div class="col-lg-5">
+            <table class="table table-bordered table-sm bg-white small mb-2">
+              <thead class="table-dark">
+                <tr><th>logado</th><th>assinante</th><th>premium</th><th>resultado</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>N</td><td class="text-muted">&mdash;</td><td class="text-muted">&mdash;</td><td>SESSAO_INVALIDA</td></tr>
+                <tr><td>S</td><td class="text-muted">&mdash;</td><td>N</td><td>LIBERADO</td></tr>
+                <tr class="table-warning"><td>S</td><td>N</td><td>S</td><td>ASSINATURA_NECESSARIA</td></tr>
+                <tr><td>S</td><td>S</td><td>S</td><td>LIBERADO</td></tr>
+              </tbody>
+            </table>
+            <p class="small text-muted mb-0">O <code>&mdash;</code> &eacute; um <em>don't care</em>: colapsa duas combina&ccedil;&otilde;es numa regra s&oacute;.</p>
+          </div>
+          <div class="col-lg-7">
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.76rem; line-height:1.45"><code>REGRAS = [
+    <span class="text-secondary"># logado, assinante, premium, esperado</span>
+    (False, False, False, "SESSAO_INVALIDA"),
+    (True,  False, False, "LIBERADO"),
+    (True,  False, True,  "ASSINATURA_NECESSARIA"),
+    (True,  True,  True,  "LIBERADO"),
+]
+
+@pytest.mark.parametrize("logado, assinante, premium, esperado", REGRAS)
+def test_matriz_de_acesso(logado, assinante, premium, esperado):
+    sessao = Sessao(plano="premium" if assinante else "free",
+                    idade_s=10) if logado else None
+    assert pode_assistir(sessao, Conteudo(premium=premium)) == esperado</code></pre></div>
+          </div>
+        </div>
+        <div class="alert alert-primary border-0 shadow-sm mt-2 py-2 mb-0 d-inline-block">
+          <i class="fas fa-table me-2"></i>
+          A tabela vira a lista de casos. A lista vira <code>parametrize</code>. O <code>parametrize</code> vira evid&ecirc;ncia.
+        </div>
+      </div>
+    </div>
+    <!-- Slide 16: Caixa cinza -->
+    <div class="slide" id="slide-16">
       <div class="text-center slide-content">
         <span class="badge bg-secondary text-white fs-6 mb-2 px-4 py-2 rounded-pill">Caixa Cinza &middot; grey box</span>
         <h2 class="display-5 fw-bold mb-3 text-dark">O que a gente faz de verdade</h2>
@@ -401,8 +616,8 @@
       </div>
     </div>
 
-    <!-- Slide 11: A armadilha dos 100% -->
-    <div class="slide" id="slide-11">
+    <!-- Slide 17: A armadilha dos 100% -->
+    <div class="slide" id="slide-17">
       <div class="text-center slide-content">
         <h2 class="display-5 fw-bold mb-3 text-dark">A armadilha dos 100%</h2>
         <div class="row justify-content-center mb-4">
@@ -434,8 +649,72 @@
       </div>
     </div>
 
-    <!-- Slide 12: Prática em sala -->
-    <div class="slide" id="slide-12">
+    <!-- Slide 18: Teste sem assercao e mutacao -->
+    <div class="slide" id="slide-18">
+      <div class="slide-content">
+        <h2 class="display-6 fw-bold mb-2 text-dark">Como provar que o teste <em>protege</em> alguma coisa</h2>
+        <p class="text-muted mb-3">A cobertura n&atilde;o responde isso. Quebrar a regra de prop&oacute;sito, responde.</p>
+        <div class="row g-3 align-items-start">
+          <div class="col-lg-6">
+            <h6 class="fw-bold text-danger text-start mb-2"><i class="fas fa-skull-crossbones me-2"></i>O teste que soma 100% e n&atilde;o protege nada</h6>
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.78rem; line-height:1.45"><code>def test_pode_assistir():
+    sessao = Sessao(plano="free", idade_s=10)
+    <span class="text-danger">pode_assistir(sessao, Conteudo(premium=True))</span>
+    <span class="text-secondary"># fim. nenhum assert.</span>
+
+<span class="text-success">1 passed</span> &middot; acesso.py <span class="text-warning">100%</span></code></pre></div>
+          </div>
+          <div class="col-lg-6">
+            <h6 class="fw-bold text-success text-start mb-2"><i class="fas fa-vial me-2"></i>O teste de muta&ccedil;&atilde;o na unha</h6>
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.78rem; line-height:1.45"><code><span class="text-secondary"># sabote a regra e rode a suite</span>
+<span class="text-danger">- if conteudo.premium and sessao.plano != "premium":</span>
+<span class="text-success">+ if False:</span>
+
+<span class="text-success">1 passed</span>  &rarr; o teste era <span class="text-danger">decoracao</span>
+<span class="text-danger">1 failed</span>  &rarr; o teste era <span class="text-success">protecao</span></code></pre></div>
+          </div>
+        </div>
+        <div class="alert alert-dark border-0 shadow-sm mt-3 py-2 mb-0 d-inline-block">
+          <i class="fas fa-hand-point-right me-2"></i>
+          Regra da casa para o semestre inteiro: <strong>apague a regra, rode a su&iacute;te.</strong> Se n&atilde;o ficar vermelha, o teste n&atilde;o existe.
+        </div>
+      </div>
+    </div>
+    <!-- Slide 19: Ponte pytest para JUnit -->
+    <div class="slide" id="slide-19">
+      <div class="slide-content">
+        <h2 class="display-6 fw-bold mb-2 text-dark">Por que Python aqui, se o Foot Fanatics &eacute; Java?</h2>
+        <p class="text-muted mb-3">Hoje a t&eacute;cnica &eacute; o assunto. A sintaxe s&oacute; atrapalharia. Na semana 35 o mesmo racioc&iacute;nio vira JUnit.</p>
+        <div class="row g-3 align-items-start">
+          <div class="col-lg-7">
+            <table class="table table-bordered table-sm bg-white small align-middle mb-0">
+              <thead class="table-dark">
+                <tr><th style="width:34%">Conceito</th><th style="width:33%">Hoje &middot; pytest</th><th style="width:33%">S35+ &middot; JUnit 5</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="fw-bold text-start">Caso de teste</td><td class="text-start"><code>def test_x()</code></td><td class="text-start"><code>@Test void x()</code></td></tr>
+                <tr><td class="fw-bold text-start">Verifica&ccedil;&atilde;o</td><td class="text-start"><code>assert a == b</code></td><td class="text-start"><code>assertEquals(a, b)</code></td></tr>
+                <tr><td class="fw-bold text-start">Erro esperado</td><td class="text-start"><code>pytest.raises(E)</code></td><td class="text-start"><code>assertThrows(E.class, ..)</code></td></tr>
+                <tr><td class="fw-bold text-start">V&aacute;rios casos</td><td class="text-start"><code>@parametrize</code></td><td class="text-start"><code>@ParameterizedTest</code></td></tr>
+                <tr class="table-warning"><td class="fw-bold text-start">Cobertura de ramo</td><td class="text-start"><code>pytest --cov-branch</code></td><td class="text-start"><code>JaCoCo (BRANCH)</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-lg-5">
+            <h6 class="fw-bold text-dark text-start mb-2">Rodando em 30 segundos</h6>
+            <div class="bg-dark text-white p-3 rounded-3 text-start"><pre class="mb-0 text-info" style="font-size:.78rem; line-height:1.45"><code>python3 -m venv .venv
+source .venv/bin/activate
+pip install pytest pytest-cov
+
+pytest --cov=acesso --cov-branch \
+       --cov-report=term-missing</code></pre></div>
+            <p class="small text-muted mt-2 mb-0"><code>term-missing</code> lista <strong>linha e ramo</strong> que ningu&eacute;m tocou. &Eacute; o mapa do que falta testar.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Slide 20: Prática em sala -->
+    <div class="slide" id="slide-20">
       <div class="text-center slide-content">
         <span class="badge bg-success fs-6 mb-2 px-4 py-2 rounded-pill">Prática em sala &middot; entregável de hoje</span>
         <h2 class="display-6 fw-bold mb-2 text-dark">Elicitação de requisitos com IA</h2>
@@ -459,8 +738,8 @@
       </div>
     </div>
 
-    <!-- Slide 13: Fechamento -->
-    <div class="slide" id="slide-13">
+    <!-- Slide 21: Fechamento -->
+    <div class="slide" id="slide-21">
       <div class="text-center slide-content">
         <h1 class="display-3 fw-bold mb-4 text-dark">Dúvidas?</h1>
         <div class="row g-3 justify-content-center text-start mb-4">
@@ -473,7 +752,7 @@
           <div class="col-md-4">
             <div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4">
               <h6 class="fw-bold text-dark mb-1">Construiu hoje</h6>
-              <p class="text-muted small mb-0">O terreno do Foot Fanatics: AIOX, Spring Boot rodando e as documentações em esqueleto.</p>
+              <p class="text-muted small mb-0">A técnica virou código: partição, valor limite e tabela de decisão em <code>pytest</code>, e os primeiros requisitos testáveis do Foot Fanatics.</p>
             </div>
           </div>
           <div class="col-md-4">
@@ -495,7 +774,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 13</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 21</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>

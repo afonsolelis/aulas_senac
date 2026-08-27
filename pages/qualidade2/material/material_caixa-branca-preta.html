@@ -52,7 +52,7 @@
             <div class="col-md-6">
               <div class="p-3 border rounded-3 bg-white h-100">
                 <span class="badge bg-primary mb-2">Parte 1</span>
-                <p class="mb-0 small text-muted">Caixa preta, caixa branca, caixa cinza, critérios de cobertura e as técnicas clássicas de projeto de teste.</p>
+                <p class="mb-0 small text-muted">Caixa preta, caixa branca, caixa cinza, critérios de cobertura e as técnicas clássicas de projeto de teste — cada uma demonstrada em <code>pytest</code>, com o código completo no laboratório.</p>
               </div>
             </div>
             <div class="col-md-6">
@@ -131,6 +131,111 @@
             <li class="mb-2"><strong>Análise de valor limite</strong> — o defeito mora na fronteira; teste no limite, logo antes e logo depois. Ex.: sessão de 30 min em 29:59, 30:00 e 30:01.</li>
             <li class="mb-0"><strong>Tabela de decisão</strong> — quando condições se combinam, monte a tabela e cubra cada regra. Ex.: <em>logado?</em> × <em>assinante?</em> × <em>conteúdo pago?</em>.</li>
           </ul>
+        </div>
+
+        <!-- LABORATORIO -->
+        <div class="glass-card p-4 mb-4">
+          <span class="badge bg-dark mb-2">Laborat&oacute;rio &middot; c&oacute;digo completo</span>
+          <h2 class="h4 fw-bold mb-3">As t&eacute;cnicas rodando em Python</h2>
+          <p class="text-muted">Os slides mostram fragmentos; aqui est&aacute; o arquivo inteiro, pronto para copiar e executar. A linguagem &eacute; Python porque hoje o assunto &eacute; a <strong>t&eacute;cnica</strong> &mdash; a sintaxe n&atilde;o pode roubar a aten&ccedil;&atilde;o. A partir da semana 35 o mesmo racioc&iacute;nio vira JUnit 5 no Foot Fanatics.</p>
+
+          <h3 class="h6 fw-bold mt-4 mb-2">Preparar o ambiente</h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark">python3 -m venv .venv &amp;&amp; source .venv/bin/activate
+pip install pytest pytest-cov</pre>
+
+          <h3 class="h6 fw-bold mt-4 mb-2"><code>acesso.py</code> &mdash; a regra sob teste</h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark">from dataclasses import dataclass
+
+PLANOS = ("free", "premium")
+LIMITE_SESSAO_S = 1800  # 30 minutos
+
+@dataclass
+class Sessao:
+    plano: str
+    idade_s: int
+    renovacoes: int = 0
+
+@dataclass
+class Conteudo:
+    premium: bool
+
+def pode_assistir(sessao, conteudo):
+    if sessao is None or sessao.idade_s &gt; LIMITE_SESSAO_S:
+        return "SESSAO_INVALIDA"
+    if sessao.plano not in PLANOS:
+        return "PLANO_INVALIDO"
+    if conteudo.premium and sessao.plano != "premium":
+        return "ASSINATURA_NECESSARIA"
+    if sessao.renovacoes &gt; 3:
+        return "SESSAO_INVALIDA"
+    return "LIBERADO"</pre>
+          <p class="text-muted small mb-0">Repare no &uacute;ltimo <code>if</code>: ele n&atilde;o est&aacute; em nenhum requisito. Nenhum teste de caixa preta chega at&eacute; ele &mdash; s&oacute; o relat&oacute;rio de cobertura denuncia sua exist&ecirc;ncia. Achar c&oacute;digo assim &eacute; exatamente o que a caixa branca faz bem.</p>
+
+          <h3 class="h6 fw-bold mt-4 mb-2"><code>test_acesso.py</code> &mdash; as tr&ecirc;s t&eacute;cnicas</h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark">import pytest
+from acesso import Sessao, Conteudo, pode_assistir
+
+def sessao(plano="premium", idade_s=10, renovacoes=0):
+    return Sessao(plano=plano, idade_s=idade_s, renovacoes=renovacoes)
+
+# --- 1. Particao de equivalencia -------------------------------------
+@pytest.mark.parametrize("plano, esperado", [
+    ("free",    "ASSINATURA_NECESSARIA"),   # classe: sem direito
+    ("premium", "LIBERADO"),                # classe: com direito
+    ("pirata",  "PLANO_INVALIDO"),          # classe: entrada invalida
+])
+def test_plano_decide_acesso_a_conteudo_premium(plano, esperado):
+    assert pode_assistir(sessao(plano=plano), Conteudo(premium=True)) == esperado
+
+# --- 2. Analise de valor limite --------------------------------------
+@pytest.mark.parametrize("idade_s, esperado", [
+    (1799, "LIBERADO"),           # logo antes do limite
+    (1800, "LIBERADO"),           # NO limite: ainda vale
+    (1801, "SESSAO_INVALIDA"),    # logo depois
+])
+def test_fronteira_de_expiracao_da_sessao(idade_s, esperado):
+    assert pode_assistir(sessao(idade_s=idade_s), Conteudo(premium=False)) == esperado
+
+# --- 3. Tabela de decisao --------------------------------------------
+REGRAS = [
+    # logado, assinante, premium, esperado
+    (False, False, False, "SESSAO_INVALIDA"),
+    (True,  False, False, "LIBERADO"),
+    (True,  False, True,  "ASSINATURA_NECESSARIA"),
+    (True,  True,  True,  "LIBERADO"),
+]
+
+@pytest.mark.parametrize("logado, assinante, premium, esperado", REGRAS)
+def test_matriz_de_acesso(logado, assinante, premium, esperado):
+    s = sessao(plano="premium" if assinante else "free") if logado else None
+    assert pode_assistir(s, Conteudo(premium=premium)) == esperado</pre>
+
+          <h3 class="h6 fw-bold mt-4 mb-2">Medir</h3>
+          <pre class="bg-light border rounded-3 p-3 small text-dark">pytest --cov=acesso --cov-branch --cov-report=term-missing</pre>
+          <div class="table-responsive">
+            <table class="table table-bordered table-sm align-middle small mb-2">
+              <thead class="table-dark">
+                <tr><th>Crit&eacute;rio</th><th>Como pedir</th><th>O que ainda escapa</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Comando (linha)</td><td><code>--cov</code></td><td>o ramo que nega o acesso</td></tr>
+                <tr><td>Ramo (decis&atilde;o)</td><td><code>--cov-branch</code></td><td>qual dos dois operandos causou o desvio</td></tr>
+                <tr><td>Condi&ccedil;&atilde;o</td><td class="text-muted">nenhuma ferramenta padr&atilde;o d&aacute; de gra&ccedil;a</td><td>&eacute; decis&atilde;o sua de projeto de teste</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted small">O <code>term-missing</code> lista linha <em>e</em> ramo n&atilde;o executados. Rode a su&iacute;te completa e confira: a linha de <code>renovacoes</code> aparece como <strong>missing</strong>.</p>
+
+          <h3 class="h6 fw-bold mt-4 mb-2">Provar que o teste protege &mdash; muta&ccedil;&atilde;o na unha</h3>
+          <p class="text-muted mb-2">Cobertura alta n&atilde;o significa prote&ccedil;&atilde;o. Fa&ccedil;a o experimento, um de cada vez, e volte atr&aacute;s depois:</p>
+          <ol class="text-muted">
+            <li class="mb-2">Troque <code>&gt; LIMITE_SESSAO_S</code> por <code>&gt;= LIMITE_SESSAO_S</code>. Deve falhar <strong>apenas</strong> o caso <code>1800</code> &mdash; &eacute; a an&aacute;lise de valor limite fazendo o trabalho dela.</li>
+            <li class="mb-2">Troque a condi&ccedil;&atilde;o de conte&uacute;do premium por <code>if False:</code>. Deve falhar o caso <code>free + premium</code>.</li>
+            <li class="mb-0">Escreva um teste que chama <code>pode_assistir</code> e <strong>n&atilde;o tem nenhum <code>assert</code></strong>. Ele passa, soma cobertura e n&atilde;o falha em nenhuma das muta&ccedil;&otilde;es acima. &Eacute; o defeito mais comum em projeto com meta de cobertura.</li>
+          </ol>
+          <div class="alert alert-dark border-0 mt-3 mb-0">
+            <strong>Regra da casa para o semestre:</strong> apague a regra, rode a su&iacute;te. Se n&atilde;o ficar vermelha, aquele teste n&atilde;o est&aacute; protegendo nada.
+          </div>
         </div>
 
         <!-- PARTE 2 -->
