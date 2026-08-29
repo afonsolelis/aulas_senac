@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+ <title id="title">C4 nível 2: contêineres do Foot Fanatics</title>
+<desc id="desc">Aplicação web, API, banco de dados, pipeline batch, armazenamento analítico e registro de modelos, com fluxos online e diário separados.</desc>
+ <defs>
+<filter id="s">
+<feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#5b0f2d" flood-opacity=".15"/>
+</filter>
+<marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+<path d="M0 0L8 4 0 8z" fill="#8b3659"/>
+</marker>
+</defs>
+ <rect width="1200" height="520" rx="24" fill="#fff8f5"/>
+<g font-family="Outfit,Arial,sans-serif">
+<text x="34" y="38" font-size="18" font-weight="700" fill="#5b0f2d">CONTAINER · onde rodam as responsabilidades online e batch?</text>
+ <rect x="174" y="62" width="990" height="400" rx="24" fill="none" stroke="#DD2476" stroke-width="3"/>
+<text x="195" y="91" font-size="15" font-weight="800" fill="#DD2476">Foot Fanatics · fronteira do sistema</text>
+ <g filter="url(#s)">
+<rect x="24" y="190" width="125" height="82" rx="16" fill="white" stroke="#DD2476" stroke-width="2"/>
+<text x="86" y="222" text-anchor="middle" font-size="15" font-weight="800" fill="#5b0f2d">Personas</text>
+<text x="86" y="246" text-anchor="middle" font-size="12" fill="#5b0f2d">navegador</text>
+ <rect x="205" y="125" width="190" height="120" rx="17" fill="#FF512F"/>
+<text x="300" y="159" text-anchor="middle" font-size="17" font-weight="800" fill="white">Aplicação Web</text>
+<text x="300" y="182" text-anchor="middle" font-size="12" fill="white">experiência das personas</text>
+<text x="300" y="216" text-anchor="middle" font-size="12" fill="white">[proposta tecnológica]</text>
+ <rect x="465" y="125" width="215" height="120" rx="17" fill="#DD2476"/>
+<text x="572" y="158" text-anchor="middle" font-size="17" font-weight="800" fill="white">API da aplicação</text>
+<text x="572" y="182" text-anchor="middle" font-size="12" fill="white">E1 · E2 · E3 · E4</text>
+<text x="572" y="214" text-anchor="middle" font-size="12" fill="white">Java 21 + Spring Boot</text>
+ <path d="M755 140h160v92c0 25-160 25-160 0z" fill="#5b0f2d"/>
+<ellipse cx="835" cy="140" rx="80" ry="17" fill="#8b3659"/>
+<text x="835" y="181" text-anchor="middle" font-size="16" font-weight="800" fill="white">PostgreSQL</text>
+<text x="835" y="205" text-anchor="middle" font-size="12" fill="white">contas, sessões,</text>
+<text x="835" y="222" text-anchor="middle" font-size="12" fill="white">assinaturas, conteúdo</text>
+<rect x="965" y="137" width="165" height="96" rx="17" fill="white" stroke="#FF512F" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="1047" y="168" text-anchor="middle" font-size="14" font-weight="800" fill="#5b0f2d">Integração conteúdo</text>
+<text x="1047" y="191" text-anchor="middle" font-size="12" fill="#5b0f2d">origem a confirmar</text>
+<text x="1047" y="214" text-anchor="middle" font-size="11" fill="#DD2476">HIPÓTESE</text>
+ <rect x="255" y="312" width="250" height="112" rx="17" fill="#DD2476" stroke="#5b0f2d" stroke-dasharray="8 5"/>
+<text x="380" y="345" text-anchor="middle" font-size="17" font-weight="800" fill="white">Pipeline de treinamento</text>
+<text x="380" y="370" text-anchor="middle" font-size="12" fill="white">cron · seleção incremental · gates</text>
+<text x="380" y="400" text-anchor="middle" font-size="12" fill="white">PROPOSTA DIDÁTICA</text>
+ <path d="M585 320h190v86c0 24-190 24-190 0z" fill="#FF512F"/>
+<ellipse cx="680" cy="320" rx="95" ry="16" fill="#ff8064"/>
+<text x="680" y="359" text-anchor="middle" font-size="15" font-weight="800" fill="white">Dados analíticos</text>
+<text x="680" y="384" text-anchor="middle" font-size="12" fill="white">novos + checkpoint</text>
+ <rect x="855" y="312" width="230" height="112" rx="17" fill="white" stroke="#DD2476" stroke-width="2" stroke-dasharray="8 5"/>
+<text x="970" y="347" text-anchor="middle" font-size="16" font-weight="800" fill="#5b0f2d">Registro de modelos</text>
+<text x="970" y="373" text-anchor="middle" font-size="12" fill="#5b0f2d">candidato · vigente · rollback</text>
+<text x="970" y="400" text-anchor="middle" font-size="12" fill="#DD2476">PROPOSTA DIDÁTICA</text>
+</g>
+ <g fill="none" stroke="#8b3659" stroke-width="2.5" marker-end="url(#a)">
+<path d="M150 230h47"/>
+<path d="M395 185h62"/>
+<path d="M680 185h67"/>
+<path d="M958 185h-36" stroke-dasharray="8 5"/>
+<path d="M830 250v36H500v20" stroke-dasharray="8 5"/>
+<path d="M505 368h72" stroke-dasharray="8 5"/>
+<path d="M783 368h64" stroke-dasharray="8 5"/>
+<path d="M970 305v-48H690" stroke-dasharray="8 5"/>
+</g>
+ <text x="430" y="116" font-size="12" font-weight="800" fill="#8b3659">ONLINE</text>
+<text x="255" y="295" font-size="12" font-weight="800" fill="#DD2476">BATCH DIÁRIO · FIM DO DIA · SOMENTE DADOS NOVOS</text>
+<text x="600" y="493" text-anchor="middle" font-size="13" fill="#5b0f2d">Tecnologias além da stack registrada são alternativas demonstrativas, não requisitos confirmados.</text>
+</g>
+</svg>

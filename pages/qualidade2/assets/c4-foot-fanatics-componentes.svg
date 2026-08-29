@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+ <title id="title">C4 nível 3: componentes do pipeline de treinamento</title>
+<desc id="desc">Zoom no contêiner pipeline de treinamento: agenda, coordenação, seleção incremental, validação de dados, treinador, avaliador, publicação e observabilidade.</desc>
+<defs>
+<filter id="s">
+<feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#5b0f2d" flood-opacity=".14"/>
+</filter>
+<marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+<path d="M0 0L8 4 0 8z" fill="#8b3659"/>
+</marker>
+</defs>
+ <rect width="1200" height="520" rx="24" fill="#fff8f5"/>
+<g font-family="Outfit,Arial,sans-serif">
+<text x="34" y="38" font-size="18" font-weight="700" fill="#5b0f2d">COMPONENT · como o Pipeline de Treinamento divide responsabilidades?</text>
+<rect x="34" y="60" width="1132" height="400" rx="24" fill="none" stroke="#DD2476" stroke-width="3" stroke-dasharray="9 5"/>
+<text x="58" y="89" font-size="14" font-weight="800" fill="#DD2476">Pipeline de treinamento [contêiner focal · proposta didática]</text>
+ <g filter="url(#s)" font-size="13">
+<g fill="white" stroke="#DD2476" stroke-width="2">
+<rect x="64" y="120" width="180" height="80" rx="15"/>
+<rect x="286" y="120" width="180" height="80" rx="15"/>
+<rect x="508" y="120" width="180" height="80" rx="15"/>
+<rect x="730" y="120" width="180" height="80" rx="15"/>
+<rect x="952" y="120" width="180" height="80" rx="15"/>
+</g>
+<g fill="#5b0f2d" text-anchor="middle">
+<text x="154" y="151" font-size="16" font-weight="800">Agendador</text>
+<text x="154" y="176">dispara no fim do dia</text>
+<text x="376" y="151" font-size="16" font-weight="800">Coordenador</text>
+<text x="376" y="176">lock, retry, estado</text>
+<text x="598" y="151" font-size="16" font-weight="800">Seletor incremental</text>
+<text x="598" y="176">watermark → dados novos</text>
+<text x="820" y="151" font-size="16" font-weight="800">Validador de dados</text>
+<text x="820" y="176">qualidade e linhagem</text>
+<text x="1042" y="151" font-size="16" font-weight="800">Treinador</text>
+<text x="1042" y="176">gera candidato</text>
+</g>
+ <g>
+<rect x="245" y="278" width="205" height="88" rx="15" fill="#FF512F"/>
+<rect x="498" y="278" width="205" height="88" rx="15" fill="#DD2476"/>
+<rect x="751" y="278" width="205" height="88" rx="15" fill="#5b0f2d"/>
+<text x="347" y="310" text-anchor="middle" font-size="16" font-weight="800" fill="white">Avaliador</text>
+<text x="347" y="337" text-anchor="middle" fill="white">compara candidato × vigente</text>
+<text x="600" y="310" text-anchor="middle" font-size="16" font-weight="800" fill="white">Publicador</text>
+<text x="600" y="337" text-anchor="middle" fill="white">promove ou preserva vigente</text>
+<text x="853" y="310" text-anchor="middle" font-size="16" font-weight="800" fill="white">Observabilidade</text>
+<text x="853" y="337" text-anchor="middle" fill="white">métricas, logs e alertas</text>
+</g>
+</g>
+ <g fill="none" stroke="#8b3659" stroke-width="2.5" marker-end="url(#a)">
+<path d="M244 160h34"/>
+<path d="M466 160h34"/>
+<path d="M688 160h34"/>
+<path d="M910 160h34"/>
+<path d="M1042 205v35H347v30"/>
+<path d="M450 322h40"/>
+<path d="M703 322h40"/>
+<path d="M853 270v-38H376v-24" stroke-dasharray="7 5"/>
+</g>
+ <rect x="77" y="397" width="1020" height="40" rx="12" fill="#ffe4db"/>
+<text x="587" y="422" text-anchor="middle" font-size="13" fill="#5b0f2d">Invariantes: reexecução idempotente · checkpoint só avança após sucesso · modelo vigente permanece disponível em falhas.</text>
+</g>
+</svg>

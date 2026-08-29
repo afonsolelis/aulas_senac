@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+  <title id="title">C4 nível 1: contexto do sistema Foot Fanatics</title>
+  <desc id="desc">Três personas usam o Foot Fanatics, que oferece conta, sessão, assinatura e conteúdo. Uma fonte de dados esportivos fornece conteúdo. O cron diário e o treinamento são destacados como proposta didática.</desc>
+  <defs>
+<filter id="s" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#5b0f2d" flood-opacity=".16"/>
+</filter>
+<marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+<path d="M0 0L9 4.5 0 9z" fill="#8b3659"/>
+</marker>
+</defs>
+  <rect width="1200" height="520" rx="24" fill="#fff8f5"/>
+  <g font-family="Outfit,Arial,sans-serif">
+<text x="34" y="38" font-size="18" font-weight="700" fill="#5b0f2d">SYSTEM CONTEXT · quem usa e o que cerca o sistema?</text>
+    <g filter="url(#s)">
+<rect x="390" y="105" width="420" height="250" rx="26" fill="#DD2476"/>
+<text x="600" y="160" text-anchor="middle" font-size="28" font-weight="800" fill="white">Foot Fanatics</text>
+<text x="600" y="190" text-anchor="middle" font-size="16" fill="white">Sistema de conteúdo esportivo por assinatura</text>
+<path d="M440 215H760" stroke="#ffb199"/>
+<text x="600" y="248" text-anchor="middle" font-size="16" font-weight="700" fill="white">E1 Conta · E2 Sessão/Acesso</text>
+<text x="600" y="278" text-anchor="middle" font-size="16" font-weight="700" fill="white">E3 Assinatura · E4 Conteúdo</text>
+<rect x="452" y="305" width="296" height="28" rx="14" fill="#5b0f2d"/>
+<text x="600" y="325" text-anchor="middle" font-size="13" fill="white">case demonstrativo — não é o projeto avaliado</text>
+</g>
+    <g fill="none" stroke="#8b3659" stroke-width="2.5" marker-end="url(#a)">
+<path d="M286 135H380"/>
+<path d="M286 240H380"/>
+<path d="M286 345H380"/>
+<path d="M820 190H923" stroke-dasharray="8 6"/>
+<path d="M810 310H925" stroke-dasharray="8 6"/>
+</g>
+    <g filter="url(#s)">
+<g fill="white" stroke="#DD2476" stroke-width="2">
+<rect x="40" y="92" width="245" height="82" rx="16"/>
+<rect x="40" y="197" width="245" height="82" rx="16"/>
+<rect x="40" y="302" width="245" height="82" rx="16"/>
+</g>
+<g fill="#5b0f2d">
+<text x="60" y="123" font-size="17" font-weight="800">Torcedor casual</text>
+<text x="60" y="148" font-size="14">consulta conteúdo free</text>
+<text x="60" y="228" font-size="17" font-weight="800">Torcedor assinante</text>
+<text x="60" y="253" font-size="14">acessa conteúdo premium</text>
+<text x="60" y="333" font-size="17" font-weight="800">Editor de conteúdo</text>
+<text x="60" y="358" font-size="14">publica e organiza conteúdo</text>
+</g>
+</g>
+    <g filter="url(#s)">
+<rect x="930" y="145" width="230" height="92" rx="16" fill="white" stroke="#FF512F" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="1045" y="177" text-anchor="middle" font-size="16" font-weight="800" fill="#5b0f2d">Integração de conteúdo</text>
+<text x="1045" y="202" text-anchor="middle" font-size="13" fill="#5b0f2d">origem a confirmar</text>
+<text x="1045" y="222" text-anchor="middle" font-size="11" fill="#DD2476">HIPÓTESE</text>
+<rect x="930" y="275" width="230" height="100" rx="16" fill="white" stroke="#FF512F" stroke-width="2" stroke-dasharray="8 6"/>
+<text x="1045" y="310" text-anchor="middle" font-size="16" font-weight="800" fill="#5b0f2d">Treino diário</text>
+<text x="1045" y="334" text-anchor="middle" font-size="13" fill="#5b0f2d">somente dados novos</text>
+<text x="1045" y="357" text-anchor="middle" font-size="12" fill="#DD2476">PROPOSTA DIDÁTICA</text>
+</g>
+    <rect x="34" y="447" width="1132" height="46" rx="13" fill="#ffe4db"/>
+<text x="600" y="476" text-anchor="middle" font-size="14" fill="#5b0f2d">Linha contínua = relação do case · linha tracejada = hipótese ou restrição explorada na aula</text>
+  </g>
+</svg>

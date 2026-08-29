@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" role="img" aria-labelledby="title desc">
+ <title id="title">C4 nível 4: código do componente seletor incremental</title>
+<desc id="desc">Zoom demonstrativo em classes e interfaces do seletor incremental: caso de uso, portas de leitura e checkpoint, lote de treinamento e implementação baseada em watermark.</desc>
+<defs>
+<filter id="s">
+<feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#5b0f2d" flood-opacity=".14"/>
+</filter>
+<marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+<path d="M0 0L8 4 0 8z" fill="#8b3659"/>
+</marker>
+</defs>
+ <rect width="1200" height="520" rx="24" fill="#fff8f5"/>
+<g font-family="Outfit,Arial,sans-serif">
+<text x="34" y="38" font-size="18" font-weight="700" fill="#5b0f2d">CODE · quais tipos sustentam o Seletor incremental?</text>
+<rect x="42" y="64" width="1116" height="388" rx="24" fill="none" stroke="#DD2476" stroke-width="3"/>
+<text x="64" y="92" font-size="14" font-weight="800" fill="#DD2476">Seletor incremental [componente focal · desenho demonstrativo, sem implementação]</text>
+ <g filter="url(#s)">
+<g>
+<rect x="82" y="132" width="285" height="128" rx="15" fill="white" stroke="#DD2476" stroke-width="2"/>
+<rect x="82" y="132" width="285" height="37" rx="15" fill="#DD2476"/>
+<text x="224" y="157" text-anchor="middle" font-size="15" font-weight="800" fill="white">«interface» SelecionarDadosNovos</text>
+<text x="104" y="197" font-size="13" fill="#5b0f2d">+ selecionar(instante): LoteTreino</text>
+<text x="104" y="224" font-size="13" fill="#5b0f2d">Responsável pelo caso de uso</text>
+</g>
+ <g>
+<rect x="458" y="116" width="310" height="160" rx="15" fill="#FF512F"/>
+<rect x="458" y="116" width="310" height="39" rx="15" fill="#5b0f2d"/>
+<text x="613" y="142" text-anchor="middle" font-size="16" font-weight="800" fill="white">SeletorPorWatermark</text>
+<text x="480" y="184" font-size="13" fill="white">- fonte: FonteDadosNovos</text>
+<text x="480" y="210" font-size="13" fill="white">- checkpoints: CheckpointStore</text>
+<text x="480" y="242" font-size="13" fill="white">+ selecionar(instante): LoteTreino</text>
+</g>
+ <g>
+<rect x="850" y="110" width="265" height="102" rx="15" fill="white" stroke="#DD2476" stroke-width="2"/>
+<rect x="850" y="110" width="265" height="36" rx="15" fill="#DD2476"/>
+<text x="982" y="135" text-anchor="middle" font-size="15" font-weight="800" fill="white">«porta» FonteDadosNovos</text>
+<text x="872" y="175" font-size="13" fill="#5b0f2d">+ buscar(desde, até): Dados</text>
+ <rect x="850" y="250" width="265" height="126" rx="15" fill="white" stroke="#DD2476" stroke-width="2"/>
+<rect x="850" y="250" width="265" height="36" rx="15" fill="#DD2476"/>
+<text x="982" y="275" text-anchor="middle" font-size="15" font-weight="800" fill="white">«porta» CheckpointStore</text>
+<text x="872" y="314" font-size="13" fill="#5b0f2d">+ atual(): Watermark</text>
+<text x="872" y="340" font-size="13" fill="#5b0f2d">+ confirmar(novo): void</text>
+</g>
+ <g>
+<rect x="220" y="320" width="330" height="96" rx="15" fill="#5b0f2d"/>
+<text x="385" y="352" text-anchor="middle" font-size="16" font-weight="800" fill="white">LoteTreino</text>
+<text x="385" y="379" text-anchor="middle" font-size="13" fill="white">dados · watermarkInicial · watermarkFinal</text>
+<text x="385" y="401" text-anchor="middle" font-size="12" fill="#ffb199">objeto imutável proposto</text>
+</g>
+</g>
+ <g fill="none" stroke="#8b3659" stroke-width="2.5" marker-end="url(#a)">
+<path d="M450 194H375" stroke-dasharray="7 5"/>
+<path d="M770 177h72"/>
+<path d="M770 225h45v87h27"/>
+<path d="M560 276v54h-4"/>
+</g>
+<g font-size="12" fill="#5b0f2d">
+<text x="386" y="184">implementa</text>
+<text x="781" y="165">usa</text>
+<text x="788" y="299">lê/confirma</text>
+<text x="570" y="310">produz</text>
+</g>
+ <rect x="80" y="466" width="1040" height="34" rx="10" fill="#ffe4db"/>
+<text x="600" y="488" text-anchor="middle" font-size="12.5" fill="#5b0f2d">Regra proposta: confirmar o novo watermark somente depois que o pipeline concluir com sucesso — decisão a validar em ADR/ATAM.</text>
+</g>
+</svg>
