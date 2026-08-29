@@ -15,6 +15,90 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
+  <style>
+    .lesson-kicker {
+      color: var(--sl-primary);
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .lesson-title {
+      font-size: clamp(1.8rem, 3.2vw, 2.75rem);
+      line-height: 1.08;
+    }
+
+    .concept-card {
+      border: 0;
+      border-top: 5px solid var(--sl-primary);
+      border-radius: 1rem;
+      box-shadow: 0 .75rem 2rem color-mix(in srgb, var(--sl-primary) 18%, transparent);
+    }
+
+    .step-number {
+      align-items: center;
+      background: var(--sl-cover-gradient);
+      border-radius: 50%;
+      color: var(--sl-text-on-cover);
+      display: inline-flex;
+      flex: 0 0 2.5rem;
+      font-weight: 700;
+      height: 2.5rem;
+      justify-content: center;
+    }
+
+    .evidence-flow {
+      background: color-mix(in srgb, var(--sl-primary) 7%, white);
+      border: 1px solid color-mix(in srgb, var(--sl-primary) 22%, white);
+      border-radius: 1rem;
+    }
+
+    .evidence-flow strong {
+      color: var(--sl-primary);
+    }
+
+    .compact-table {
+      font-size: .92rem;
+      line-height: 1.22;
+    }
+
+    .compact-table th {
+      background: color-mix(in srgb, var(--sl-primary) 10%, white);
+      color: var(--sl-primary);
+    }
+
+    .slide .alert {
+      border: 0;
+      border-left: 5px solid var(--sl-secondary);
+      border-radius: .75rem;
+    }
+
+    .slide .text-primary,
+    .slide .text-danger,
+    .slide .text-success,
+    .slide .text-info,
+    .slide .text-warning {
+      color: var(--sl-primary) !important;
+    }
+
+    .slide .border-primary,
+    .slide .border-danger,
+    .slide .border-success,
+    .slide .border-info,
+    .slide .border-warning {
+      border-color: color-mix(in srgb, var(--sl-primary) 55%, white) !important;
+    }
+
+    .slide .bg-primary,
+    .slide .bg-danger,
+    .slide .bg-success,
+    .slide .bg-info,
+    .slide .bg-warning {
+      background: var(--sl-cover-gradient) !important;
+      color: var(--sl-text-on-cover) !important;
+    }
+  </style>
 </head>
 
 <body class="slide-body" data-disciplina="tcc">
@@ -46,10 +130,11 @@
     <!-- Slide 2: Agenda -->
     <div class="slide" id="slide-2">
       <div class="slide-content">
-        <h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda da Aula</h1>
+        <p class="lesson-kicker text-center mb-2">Percurso da aula</p>
+        <h1 class="lesson-title fw-bold mb-4 text-dark text-center">Do plano à evidência defensável</h1>
         <div class="row g-4">
           <div class="col-md-6">
-            <div class="card border-primary shadow-lg h-100">
+            <div class="card concept-card h-100">
               <div class="card-body">
                 <h5 class="fw-bold text-primary"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Antes de testar</h5>
                 <p class="mb-0 text-secondary">O que precisa estar pronto no artefato e nos critérios de sucesso.</p>
@@ -57,7 +142,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="card border-secondary shadow-lg h-100">
+            <div class="card concept-card h-100">
               <div class="card-body">
                 <h5 class="fw-bold text-secondary"><i class="fas fa-vial me-2" aria-hidden="true"></i>Tipos de teste</h5>
                 <p class="mb-0 text-secondary">Funcional, desempenho, baseline e avaliação por usuários.</p>
@@ -65,7 +150,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="card border-warning shadow-lg h-100">
+            <div class="card concept-card h-100">
               <div class="card-body">
                 <h5 class="fw-bold text-dark"><i class="fas fa-shield-halved me-2" aria-hidden="true"></i>Ameaças à validade</h5>
                 <p class="mb-0 text-secondary">O que pode invalidar seu resultado — e como mitigar.</p>
@@ -73,7 +158,7 @@
             </div>
           </div>
           <div class="col-md-6">
-            <div class="card border-danger shadow-lg h-100">
+            <div class="card concept-card h-100">
               <div class="card-body">
                 <h5 class="fw-bold text-danger"><i class="fas fa-bug me-2" aria-hidden="true"></i>Dinâmica: Bug Bash Cruzado</h5>
                 <p class="mb-0 text-secondary">Trocar artefatos entre grupos e caçar falhas juntos.</p>
@@ -87,17 +172,17 @@
     <!-- Slide 3: Da coleta a execucao -->
     <div class="slide" id="slide-3">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Da Coleta de Dados à Execução dos Testes</h2>
+        <p class="lesson-kicker text-center mb-2">Decisão antes da execução</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">O teste começa antes do botão “executar”</h2>
 
         <div class="card border-warning shadow-lg mb-4">
           <div class="card-header bg-warning text-dark">
             <h5 class="mb-0"><i class="fas fa-play me-2" aria-hidden="true"></i>Antes de apertar o play</h5>
           </div>
           <div class="card-body">
-            <p class="fs-5 mb-0">
-              Testar não é só "rodar e ver o que acontece". Antes de executar, o artefato precisa estar
-              <strong>estável o suficiente</strong> no escopo que será avaliado, e você precisa saber
-              <strong>exatamente o que significa "deu certo"</strong>.
+            <p class="fs-5 mb-0 text-center">
+              Um teste útil conecta <strong>objetivo</strong>, <strong>critério de sucesso</strong>,
+              <strong>procedimento</strong> e <strong>evidência</strong> — nessa ordem.
             </p>
           </div>
         </div>
@@ -105,12 +190,12 @@
         <div class="card border-secondary shadow-sm">
           <div class="card-body">
             <h6 class="fw-bold text-secondary mb-3"><i class="fas fa-clipboard-check me-2" aria-hidden="true"></i>Checklist de pré-condições</h6>
-            <ul class="mb-0 text-secondary fs-5">
-              <li class="mb-2">Escopo do artefato <strong>congelado</strong> para essa rodada de testes (nada de mexer no meio do experimento).</li>
-              <li class="mb-2"><strong>Critérios de sucesso</strong> definidos antes de rodar — não depois de ver o resultado.</li>
-              <li class="mb-2">Ambiente de teste preparado, configurado e <strong>documentado</strong>.</li>
-              <li class="mb-0">Dados e roteiro de execução prontos e revisados.</li>
-            </ul>
+            <div class="row g-3">
+              <div class="col-md-6 d-flex gap-3"><span class="step-number">1</span><p class="mb-0 text-secondary"><strong>Congele o escopo</strong><br>Defina a versão que entra na rodada.</p></div>
+              <div class="col-md-6 d-flex gap-3"><span class="step-number">2</span><p class="mb-0 text-secondary"><strong>Fixe o critério</strong><br>Escreva antes o que conta como sucesso.</p></div>
+              <div class="col-md-6 d-flex gap-3"><span class="step-number">3</span><p class="mb-0 text-secondary"><strong>Controle o contexto</strong><br>Prepare ambiente, dados e parâmetros.</p></div>
+              <div class="col-md-6 d-flex gap-3"><span class="step-number">4</span><p class="mb-0 text-secondary"><strong>Ensaie o roteiro</strong><br>Garanta que outra pessoa consiga repetir.</p></div>
+            </div>
           </div>
         </div>
 
@@ -123,7 +208,8 @@
     <!-- Slide 4: Tipos de teste -->
     <div class="slide" id="slide-4">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Tipos de Teste e Validação em TCC de Computação</h2>
+        <p class="lesson-kicker text-center mb-2">Escolha pela pergunta</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">Qual evidência responde ao seu objetivo?</h2>
 
         <div class="row g-4">
           <div class="col-md-6">
@@ -132,7 +218,8 @@
                 <h5 class="mb-0"><i class="fas fa-check-double me-2" aria-hidden="true"></i>Testes funcionais</h5>
               </div>
               <div class="card-body">
-                <p class="mb-0">O artefato faz o que promete? Cobrir casos de uso principais, casos de borda e entradas inválidas.</p>
+                <p class="mb-2"><strong>Pergunta:</strong> o artefato faz o que promete?</p>
+                <p class="small text-secondary mb-0"><strong>Evidência:</strong> casos principais, bordas e entradas inválidas.</p>
               </div>
             </div>
           </div>
@@ -142,7 +229,8 @@
                 <h5 class="mb-0"><i class="fas fa-gauge-high me-2" aria-hidden="true"></i>Desempenho / benchmark</h5>
               </div>
               <div class="card-body">
-                <p class="mb-0">Métricas quantitativas — tempo de resposta, throughput, uso de memória — sob carga controlada.</p>
+                <p class="mb-2"><strong>Pergunta:</strong> ele atende ao nível esperado de eficiência?</p>
+                <p class="small text-secondary mb-0"><strong>Evidência:</strong> tempo, throughput ou recursos sob carga controlada.</p>
               </div>
             </div>
           </div>
@@ -152,7 +240,8 @@
                 <h5 class="mb-0"><i class="fas fa-scale-balanced me-2" aria-hidden="true"></i>Comparação com baseline</h5>
               </div>
               <div class="card-body">
-                <p class="mb-0">Sua solução frente a uma alternativa existente (ou abordagem ingênua), nas mesmas condições.</p>
+                <p class="mb-2"><strong>Pergunta:</strong> a proposta melhora uma alternativa relevante?</p>
+                <p class="small text-secondary mb-0"><strong>Evidência:</strong> mesma métrica, dados e ambiente para ambos.</p>
               </div>
             </div>
           </div>
@@ -162,7 +251,8 @@
                 <h5 class="mb-0"><i class="fas fa-user-check me-2" aria-hidden="true"></i>Avaliação por usuários</h5>
               </div>
               <div class="card-body">
-                <p class="mb-0">Usabilidade e percepção reais — questionários, entrevistas ou testes de uso guiados.</p>
+                <p class="mb-2"><strong>Pergunta:</strong> pessoas conseguem usar e perceber valor?</p>
+                <p class="small text-secondary mb-0"><strong>Evidência:</strong> tarefas observadas, escala validada ou entrevista.</p>
               </div>
             </div>
           </div>
@@ -178,13 +268,14 @@
     <!-- Slide 5: Ameacas a validade -->
     <div class="slide" id="slide-5">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+        <p class="lesson-kicker text-center mb-2">Rigor não é perfeição</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">
           <i class="fas fa-shield-halved text-warning me-2" aria-hidden="true"></i>
           Ameaças à Validade: o Que Pode Invalidar Seu Resultado
         </h2>
 
         <div class="table-responsive">
-          <table class="table table-bordered table-hover align-middle">
+          <table class="table table-bordered table-hover align-middle compact-table">
             <thead class="table-light">
               <tr>
                 <th>Ameaça</th>
@@ -226,7 +317,8 @@
     <!-- Slide 6: Documentar tudo -->
     <div class="slide" id="slide-6">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Documentar Tudo Durante a Execução</h2>
+        <p class="lesson-kicker text-center mb-2">Rastreabilidade</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">Uma evidência precisa contar sua própria história</h2>
 
         <div class="row g-4">
           <div class="col-md-3 col-6">
@@ -267,8 +359,9 @@
           </div>
         </div>
 
-        <div class="alert alert-info mt-4 text-center mb-0">
-          Sem evidência registrada, o resultado não existe para a banca. <strong>"Confia" não é metodologia.</strong>
+        <div class="evidence-flow p-3 mt-4 text-center fs-5">
+          <strong>versão</strong> + <strong>ambiente</strong> + <strong>procedimento</strong> + <strong>saída bruta</strong>
+          = resultado auditável
         </div>
       </div>
     </div>
@@ -276,7 +369,8 @@
     <!-- Slide 7: Dinamica em sala -->
     <div class="slide" id="slide-7">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">
+        <p class="lesson-kicker text-center mb-2">Prática guiada</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">
           <i class="fas fa-bug text-danger me-2" aria-hidden="true"></i>
           Dinâmica em Sala — Bug Bash Cruzado
         </h2>
@@ -340,14 +434,15 @@
     <!-- Slide 8: Proximos passos -->
     <div class="slide" id="slide-8">
       <div class="slide-content">
-        <h2 class="display-5 fw-bold mb-4 text-dark text-center">Próximos Passos Rumo à Aula 06</h2>
+        <p class="lesson-kicker text-center mb-2">Entrega de saída</p>
+        <h2 class="lesson-title fw-bold mb-4 text-dark text-center">Saia da aula com um pacote reprodutível</h2>
 
         <div class="card border-secondary shadow-lg">
           <div class="card-body">
             <ol class="fs-5 mb-0">
-              <li class="mb-3">Rodar os testes definidos, seguindo o <strong>roteiro de execução</strong> preparado.</li>
-              <li class="mb-3">Registrar <strong>logs, capturas de tela e a versão exata</strong> do artefato testado.</li>
-              <li class="mb-0">Organizar os <strong>resultados brutos</strong> para começar a escrita na Aula 06.</li>
+              <li class="mb-3"><strong>Roteiro:</strong> passos, dados, parâmetros e critério de sucesso.</li>
+              <li class="mb-3"><strong>Evidências:</strong> logs, capturas e identificação da versão testada.</li>
+              <li class="mb-0"><strong>Registro curto:</strong> resultado observado, desvios e ameaças à validade.</li>
             </ol>
           </div>
         </div>
