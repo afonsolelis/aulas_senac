@@ -1,0 +1,4 @@
+interface:
+  display_name: "Escrita Afonso"
+  short_description: "Escrita acadêmica e didática na voz de Afonso"
+  default_prompt: "Use $escrita-afonso para redigir ou revisar este conteúdo preservando minha voz autoral."
