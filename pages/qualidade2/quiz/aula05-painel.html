@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 05 - Painel do professor - Qualidade de Software 2026.2</title>
+  <meta name="description" content="Painel projetado do quiz da Aula 05: abre perguntas, revela respostas e mostra o placar da turma.">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Paleta da disciplina — config/disciplina-qualidade2.json */
+    :root {
+      --primary: #DD2476;
+      --secondary: #FF512F;
+      --accent: #ffb199;
+      --ink: #2b0716;
+      --paper: #ffffff;
+      --line: rgba(255,255,255,.20);
+      --muted: rgba(255,255,255,.62);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Outfit', system-ui, sans-serif;
+      background: radial-gradient(1200px 700px at 15% -10%, #5b0f2d 0%, #2b0716 60%, #1a0410 100%);
+      color: var(--paper); min-height: 100vh; display: flex; flex-direction: column;
+    }
+    header {
+      display: flex; justify-content: space-between; align-items: center; gap: 18px;
+      padding: 12px 26px; border-bottom: 1px solid var(--line); flex: 0 0 auto;
+    }
+    .marca { display: flex; align-items: center; gap: 12px; }
+    .marca img { height: 30px; }
+    .titulo { font-size: .95rem; font-weight: 700; }
+    .titulo small { display: block; font-size: .66rem; font-weight: 600; letter-spacing: .1em;
+                    text-transform: uppercase; color: var(--accent); }
+    .medidores { display: flex; gap: 26px; align-items: center; }
+    .medidor { text-align: right; }
+    .medidor .n { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+    .medidor .r { font-size: .62rem; font-weight: 600; letter-spacing: .09em;
+                  text-transform: uppercase; color: var(--muted); }
+
+    main { flex: 1 1 auto; padding: 26px; display: flex; flex-direction: column; gap: 20px; overflow: auto; }
+    [data-tela] { display: none; flex: 1 1 auto; gap: 26px; }
+    [data-tela].ativa { display: flex; }
+
+    /* Lobby projetado */
+    .lobby { align-items: center; }
+    .qr-bloco { background: var(--paper); padding: 22px; border-radius: 20px; flex: 0 0 auto; }
+    .qr-bloco canvas, .qr-bloco img, .qr-bloco table { display: block; }
+    .lobby-texto { flex: 1 1 auto; display: flex; flex-direction: column; gap: 14px; }
+    .lobby-texto h1 { font-size: 2rem; margin: 0; font-weight: 700; line-height: 1.15; }
+    .url-caixa {
+      background: rgba(255,255,255,.10); border: 1px solid var(--line);
+      border-radius: 13px; padding: 15px 18px; font-size: 1.15rem; font-weight: 700;
+      word-break: break-all; color: var(--accent);
+    }
+    .nomes { display: flex; flex-wrap: wrap; gap: 8px; max-height: 34vh; overflow: auto; }
+    .chip { background: rgba(221,36,118,.35); border-radius: 999px;
+            padding: 7px 14px; font-size: .85rem; font-weight: 600; }
+
+    /* Pergunta projetada */
+    .pergunta { flex-direction: column; }
+    .trilha { height: 10px; border-radius: 999px; background: rgba(255,255,255,.14);
+              overflow: hidden; margin-bottom: 18px; }
+    .trilha > i { display: block; height: 100%; width: 100%; border-radius: 999px;
+                  background: linear-gradient(45deg, var(--secondary), var(--primary));
+                  transition: width .25s linear; }
+    .pergunta h1 { font-size: 2rem; line-height: 1.3; margin: 0 0 6px; font-weight: 700; }
+    .grade-alt { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .op {
+      display: flex; align-items: center; gap: 14px; padding: 18px 20px; border-radius: 15px;
+      background: rgba(255,255,255,.08); border: 2px solid var(--line);
+      font-size: 1.05rem; font-weight: 400; line-height: 1.35;
+    }
+    .op .letra { flex: 0 0 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
+                 background: rgba(255,81,47,.45); font-weight: 700; }
+    .op .n { margin-left: auto; font-variant-numeric: tabular-nums; font-weight: 700;
+             font-size: 1.3rem; color: var(--accent); }
+    .op.certa { border-color: var(--accent); background: rgba(221,36,118,.30); }
+    .op.certa .letra { background: linear-gradient(45deg, var(--secondary), var(--primary)); color: #fff; }
+    .revelado .op:not(.certa) { opacity: .45; }
+
+    .explicacao {
+      background: rgba(255,255,255,.08); border-left: 4px solid var(--primary);
+      border-radius: 0 12px 12px 0; padding: 15px 18px; font-size: 1rem; line-height: 1.55; font-weight: 400;
+    }
+    .duas-colunas { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; align-items: start; }
+
+    /* Ranking projetado */
+    .ranking { display: flex; flex-direction: column; gap: 7px; }
+    .linha { display: grid; grid-template-columns: 46px 1fr auto; gap: 14px; align-items: center;
+             padding: 12px 16px; border-radius: 11px; background: rgba(255,255,255,.08);
+             font-size: 1.05rem; font-weight: 600; }
+    .linha .pos { font-size: 1.15rem; font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .linha .pts { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--accent); }
+    .linha.p1 { background: rgba(221,36,118,.38); font-size: 1.2rem; }
+    .linha.p2 { background: rgba(221,36,118,.26); }
+    .linha.p3 { background: rgba(221,36,118,.16); }
+    h2 { font-size: 1rem; margin: 0 0 12px; font-weight: 700; letter-spacing: .05em;
+         text-transform: uppercase; color: var(--accent); }
+
+    /* Controles */
+    footer {
+      flex: 0 0 auto; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+      padding: 14px 26px; border-top: 1px solid var(--line); background: rgba(0,0,0,.28);
+    }
+    button {
+      font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 11px;
+      padding: 13px 20px; font-size: .92rem; color: #fff;
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+    }
+    button.secundario { background: rgba(255,255,255,.14); }
+    button.perigo { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+    button:disabled { opacity: .35; cursor: default; }
+    footer .direita { margin-left: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .estado-txt { font-size: .78rem; font-weight: 600; color: var(--muted); }
+    a.link { color: var(--accent); font-size: .76rem; font-weight: 700; text-decoration: none;
+             padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.08); white-space: nowrap; }
+    a.link:hover { background: rgba(221,36,118,.30); }
+
+    /* Autenticação */
+    .auth { max-width: 460px; margin: 8vh auto; flex-direction: column; gap: 14px; }
+    .auth h1 { font-size: 1.4rem; margin: 0; }
+    .auth p { color: var(--muted); line-height: 1.55; margin: 0; font-size: .9rem; }
+    input {
+      width: 100%; padding: 14px 16px; font: inherit; font-size: 1rem; font-weight: 600;
+      border: 2px solid var(--line); border-radius: 12px;
+      background: rgba(255,255,255,.08); color: var(--paper);
+    }
+    input:focus { outline: none; border-color: var(--primary); }
+    .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
+    @media (max-width: 900px) {
+      .duas-colunas, .grade-alt { grid-template-columns: 1fr; }
+      [data-tela].lobby { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="marca">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac">
+      <div class="titulo">
+        <small>Qualidade de Software &middot; Aula 05 &middot; Painel do professor</small>
+        <span id="cab-titulo">Retomada: Arquitetura e ATAM</span>
+      </div>
+    </div>
+    <div class="medidores">
+      <div class="medidor"><div class="n" id="m-jogadores">0</div><div class="r">na sala</div></div>
+      <div class="medidor"><div class="n" id="m-respostas">0</div><div class="r">responderam</div></div>
+      <div class="medidor"><div class="n" id="m-pergunta">&mdash;</div><div class="r">pergunta</div></div>
+      <div class="medidor"><div class="n" id="m-tempo">&mdash;</div><div class="r">segundos</div></div>
+    </div>
+  </header>
+
+  <main>
+    <section data-tela="auth" class="auth ativa">
+      <h1>Painel do professor</h1>
+      <p>Informe o token da sessão. Ele fica guardado neste navegador; não é preciso digitar de novo.</p>
+      <input id="token" type="password" placeholder="token da sessão" autocomplete="off">
+      <p class="aviso" id="aviso-auth" role="alert"></p>
+      <button id="btn-auth" type="button">Abrir painel</button>
+    </section>
+
+    <section data-tela="lobby" class="lobby">
+      <div class="qr-bloco"><div id="qr"></div></div>
+      <div class="lobby-texto">
+        <h1>Aponte a câmera para entrar</h1>
+        <div class="url-caixa" id="url-quiz"></div>
+        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 40 segundos de cronômetro.</p>
+        <div class="nomes" id="nomes"></div>
+      </div>
+    </section>
+
+    <section data-tela="pergunta" class="pergunta">
+      <div class="trilha"><i id="barra-tempo"></i></div>
+      <h1 id="enunciado"></h1>
+      <div class="grade-alt" id="alternativas"></div>
+    </section>
+
+    <section data-tela="revelacao" class="pergunta">
+      <div class="duas-colunas">
+        <div>
+          <h2>Pergunta <span id="rev-ordem"></span></h2>
+          <div class="grade-alt revelado" id="rev-alternativas" style="grid-template-columns:1fr"></div>
+          <div class="explicacao" id="rev-explicacao" style="margin-top:16px"></div>
+        </div>
+        <div>
+          <h2>Placar acumulado</h2>
+          <div class="ranking" id="rev-ranking"></div>
+        </div>
+      </div>
+    </section>
+
+    <section data-tela="final" class="pergunta">
+      <h1 style="margin-bottom:18px">Placar geral &mdash; <span id="fim-titulo"></span></h1>
+      <div class="ranking" id="fim-ranking"></div>
+    </section>
+  </main>
+
+  <footer>
+    <button id="btn-abrir"    type="button">Abrir pergunta</button>
+    <button id="btn-revelar"  type="button" class="secundario">Revelar resposta</button>
+    <button id="btn-reabrir"  type="button" class="secundario">Reabrir</button>
+    <button id="btn-encerrar" type="button" class="secundario">Encerrar sessão</button>
+    <div class="direita">
+      <span class="estado-txt" id="estado-txt"></span>
+      <a class="link" href="aula05-relatorio.html">Relatório</a>
+      <a class="link" href="../material/material_introducao-testes-automatizados.html">Material da Aula 04</a>
+      <a class="link" href="../slide_introducao-testes-automatizados.html">Slides da Aula 04</a>
+      <a class="link" href="../../home_qualidade_2026_2.html">Voltar ao cronograma</a>
+      <button id="btn-reiniciar" type="button" class="perigo">Reiniciar</button>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SLUG = new URLSearchParams(location.search).get('sala') || 'atam-q2-a05';
+  const CHAVE_TOKEN = 'quiz-host:' + SLUG;
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const el = (id) => document.getElementById(id);
+  const LETRAS = ['A', 'B', 'C', 'D', 'E'];
+
+  let token = localStorage.getItem(CHAVE_TOKEN) || new URLSearchParams(location.search).get('token') || '';
+  let ultimo = null;
+  let laco = null;
+  let cronometro = null;
+  let chaveCronometro = null;
+  let offsetRelogio = 0;   // relógio do servidor menos o desta máquina
+
+  /* O cronômetro projetado usa o mesmo relógio do servidor que o celular do
+     aluno, para que a contagem na parede e a do aparelho não divirjam. */
+  function pararCronometro() {
+    if (cronometro) { clearInterval(cronometro); cronometro = null; }
+  }
+
+  function iniciarCronometro(abertaEm, segundos, chave) {
+    if (chaveCronometro === chave) return;   // a leitura periódica não reinicia a contagem
+    pararCronometro();
+    chaveCronometro = chave;
+    const inicio = new Date(abertaEm).getTime();
+    const tick = () => {
+      const restante = Math.max(0, segundos - (Date.now() + offsetRelogio - inicio) / 1000);
+      el('m-tempo').textContent = Math.ceil(restante);
+      el('barra-tempo').style.width = (restante / segundos * 100) + '%';
+      if (restante <= 0) { pararCronometro(); el('m-tempo').textContent = '0'; }
+    };
+    tick();
+    cronometro = setInterval(tick, 200);
+  }
+
+  function mostrar(tela) {
+    document.querySelectorAll('[data-tela]').forEach((s) => s.classList.toggle('ativa', s.dataset.tela === tela));
+  }
+
+  /* A URL do aluno é derivada da URL deste painel, e pode ser sobrescrita
+     por ?base= quando o professor projeta a partir de um endereço local. */
+  function urlDoQuiz() {
+    const base = new URLSearchParams(location.search).get('base');
+    if (base) return base;
+    const u = new URL('aula05-quiz.html', location.href);
+    if (SLUG !== 'atam-q2-a05') u.searchParams.set('sala', SLUG);
+    return u.href;
+  }
+
+  function desenharQR() {
+    const url = urlDoQuiz();
+    el('url-quiz').textContent = url.replace(/^https?:\/\//, '');
+    const alvo = el('qr');
+    if (alvo.dataset.pronto === url) return;
+    alvo.innerHTML = '';
+    if (typeof QRCode === 'undefined') {
+      alvo.innerHTML = '<p style="color:#2b0716;font-weight:600;max-width:260px">'
+        + 'Não foi possível gerar o código. Projete o endereço ao lado.</p>';
+      return;
+    }
+    new QRCode(alvo, { text: url, width: 300, height: 300, correctLevel: QRCode.CorrectLevel.M });
+    alvo.dataset.pronto = url;
+  }
+
+  async function chamar(acao) {
+    const { data, error } = await db.rpc('quiz_host', { p_slug: SLUG, p_token: token, p_acao: acao });
+    if (error) throw error;
+    return data;
+  }
+
+  async function autenticar() {
+    token = el('token').value.trim();
+    el('aviso-auth').textContent = '';
+    try {
+      const d = await chamar('ver');
+      if (!d.ok) { el('aviso-auth').textContent = d.erro; return; }
+      localStorage.setItem(CHAVE_TOKEN, token);
+      aplicar(d);
+      if (!laco) laco = setInterval(atualizar, 2000);
+    } catch (e) {
+      el('aviso-auth').textContent = 'Falha de rede ao verificar o token.';
+      console.error(e);
+    }
+  }
+
+  async function agir(acao) {
+    document.querySelectorAll('footer button').forEach((b) => { b.disabled = true; });
+    try { aplicar(await chamar(acao)); }
+    catch (e) { console.error(e); }
+    finally { atualizarBotoes(ultimo); }
+  }
+
+  async function atualizar() {
+    try { const d = await chamar('ver'); if (d.ok) aplicar(d); }
+    catch (e) { el('estado-txt').textContent = 'Sem conexão — tentando de novo.'; }
+  }
+
+  function linhaRanking(alvo, linhas) {
+    alvo.innerHTML = '';
+    if (!linhas.length) { alvo.innerHTML = '<p class="estado-txt">Nenhuma resposta ainda.</p>'; return; }
+    linhas.forEach((r, i) => {
+      const d = document.createElement('div');
+      d.className = 'linha' + (i < 3 ? ` p${i + 1}` : '');
+      d.innerHTML = '<span class="pos"></span><span class="nome"></span><span class="pts"></span>';
+      d.children[0].textContent = ['🥇', '🥈', '🥉'][i] || (i + 1);
+      d.children[1].textContent = r.nome;
+      d.children[2].textContent = `${r.pontos} pt · ${r.acertos} ✓`;
+      alvo.appendChild(d);
+    });
+  }
+
+  /* A leitura periódica não pode recriar a grade projetada — isso pisca na
+     tela da sala. Só a contagem por alternativa é atualizada no lugar. */
+  function opcoes(alvo, p, distribuicao, revelar, chave) {
+    if (alvo.dataset.chave !== chave) {
+      alvo.dataset.chave = chave;
+      alvo.innerHTML = '';
+      p.alternativas.forEach((texto, i) => {
+        const d = document.createElement('div');
+        d.className = 'op' + (revelar && i === p.correta ? ' certa' : '');
+        d.innerHTML = '<span class="letra"></span><span class="txt"></span><span class="n"></span>';
+        d.children[0].textContent = LETRAS[i];
+        d.children[1].textContent = texto;
+        alvo.appendChild(d);
+      });
+    }
+    [...alvo.children].forEach((d, i) => {
+      d.lastElementChild.textContent = revelar ? (distribuicao[String(i)] || 0) : '';
+    });
+  }
+
+  function aplicar(d) {
+    ultimo = d;
+    if (d.servidor_agora) offsetRelogio = new Date(d.servidor_agora).getTime() - Date.now();
+    el('cab-titulo').textContent = d.titulo;
+    el('m-jogadores').textContent = d.jogadores;
+    el('m-respostas').textContent = d.respostas || 0;
+    el('m-pergunta').textContent = d.ordem ? `${d.ordem}/${d.total}` : '—';
+    el('estado-txt').textContent = {
+      lobby: 'Sala aberta para inscrição.', pergunta: 'Pergunta em curso.',
+      revelacao: 'Resposta revelada.', encerrado: 'Sessão encerrada.',
+    }[d.estado] || '';
+
+    if (d.estado !== 'pergunta') { pararCronometro(); chaveCronometro = null; el('m-tempo').textContent = '—'; }
+
+    if (d.estado === 'lobby') {
+      desenharQR();
+      const alvo = el('nomes');
+      alvo.innerHTML = '';
+      (d.nomes || []).forEach((n) => {
+        const c = document.createElement('span');
+        c.className = 'chip'; c.textContent = n; alvo.appendChild(c);
+      });
+      mostrar('lobby');
+    } else if (d.estado === 'pergunta') {
+      el('enunciado').textContent = d.pergunta.enunciado;
+      opcoes(el('alternativas'), d.pergunta, d.distribuicao || {}, false, 'p' + d.ordem);
+      iniciarCronometro(d.aberta_em, d.pergunta.segundos, d.ordem + '|' + d.aberta_em);
+      mostrar('pergunta');
+    } else if (d.estado === 'revelacao') {
+      el('rev-ordem').textContent = `${d.ordem} de ${d.total}`;
+      opcoes(el('rev-alternativas'), d.pergunta, d.distribuicao || {}, true, 'r' + d.ordem);
+      el('rev-explicacao').textContent = d.pergunta.explicacao || '';
+      linhaRanking(el('rev-ranking'), d.ranking || []);
+      mostrar('revelacao');
+    } else if (d.estado === 'encerrado') {
+      el('fim-titulo').textContent = d.titulo;
+      linhaRanking(el('fim-ranking'), d.ranking || []);
+      mostrar('final');
+    }
+    atualizarBotoes(d);
+  }
+
+  function atualizarBotoes(d) {
+    if (!d) return;
+    const ultima = d.ordem >= d.total;
+    el('btn-abrir').disabled    = !(d.estado === 'lobby' || (d.estado === 'revelacao' && !ultima));
+    el('btn-abrir').textContent =
+      d.estado === 'lobby'     ? 'Abrir pergunta 1' :
+      d.estado === 'encerrado' ? 'Sessão encerrada' :
+      `Abrir pergunta ${d.ordem + 1}`;
+    el('btn-revelar').disabled  = d.estado !== 'pergunta';
+    el('btn-reabrir').disabled  = !(d.estado === 'revelacao' || d.estado === 'pergunta');
+    el('btn-encerrar').disabled = d.estado === 'encerrado' || d.estado === 'lobby';
+    el('btn-reiniciar').disabled = false;
+  }
+
+  el('btn-auth').addEventListener('click', autenticar);
+  el('token').addEventListener('keydown', (e) => { if (e.key === 'Enter') autenticar(); });
+  el('btn-abrir').addEventListener('click', () => agir('abrir'));
+  el('btn-revelar').addEventListener('click', () => agir('revelar'));
+  el('btn-reabrir').addEventListener('click', () => agir('reabrir'));
+  el('btn-encerrar').addEventListener('click', () => agir('encerrar'));
+  el('btn-reiniciar').addEventListener('click', () => {
+    if (confirm('Isso apaga todos os jogadores e respostas desta sala. Confirmar?')) agir('reiniciar');
+  });
+
+  if (token) { el('token').value = token; autenticar(); }
+  </script>
+</body>
+</html>

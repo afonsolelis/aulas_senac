@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aula 05 - Relatório do quiz - Qualidade de Software 2026.2</title>
+  <meta name="description" content="Relatório do quiz da Aula 05 por tema, questão e estudante, para orientar a retomada da Aula 04.">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Paleta da disciplina — config/disciplina-qualidade2.json */
+    :root {
+      --primary: #DD2476;
+      --secondary: #FF512F;
+      --accent: #ffb199;
+      --ink: #2b0716;
+      --paper: #ffffff;
+      --line: rgba(255,255,255,.18);
+      --muted: rgba(255,255,255,.60);
+      --bom: #4ecdc4;
+      --atencao: #e8a33d;
+      --ruim: #ff6f61;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: 'Outfit', system-ui, sans-serif;
+           background: radial-gradient(1200px 700px at 15% -10%, #5b0f2d 0%, #2b0716 60%, #1a0410 100%);
+           color: var(--paper); min-height: 100vh; display: flex; flex-direction: column; }
+    header { display: flex; justify-content: space-between; align-items: center; gap: 18px;
+             padding: 12px 26px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+    .marca { display: flex; align-items: center; gap: 12px; }
+    .marca img { height: 30px; }
+    .titulo { font-size: .95rem; font-weight: 700; }
+    .titulo small { display: block; font-size: .64rem; font-weight: 600; letter-spacing: .1em;
+                    text-transform: uppercase; color: var(--accent); }
+    .medidores { display: flex; gap: 24px; }
+    .medidor { text-align: right; }
+    .medidor .n { font-size: 1.45rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
+    .medidor .r { font-size: .62rem; font-weight: 600; letter-spacing: .09em;
+                  text-transform: uppercase; color: var(--muted); }
+    main { flex: 1 1 auto; padding: 22px 26px 40px; }
+    h2 { font-size: .92rem; margin: 0 0 4px; font-weight: 700; letter-spacing: .05em;
+         text-transform: uppercase; color: var(--accent); }
+    .legenda { font-size: .8rem; color: var(--muted); margin: 0 0 16px; line-height: 1.5; }
+
+    .abas { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .aba { font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; border: none;
+           padding: 10px 18px; border-radius: 10px; color: var(--paper); background: rgba(255,255,255,.10); }
+    .aba[aria-selected="true"] { background: linear-gradient(45deg, var(--secondary), var(--primary)); }
+    [data-painel] { display: none; }
+    [data-painel].ativo { display: block; }
+    [data-conteudo] { display: none; }
+    [data-conteudo].ativo { display: block; }
+
+    /* Barras de desempenho */
+    .item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+    .item-cab { display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+    .item-cab .nome { font-weight: 700; font-size: 1rem; }
+    .item-cab .meta { font-size: .74rem; color: var(--muted); font-weight: 600; }
+    .item-cab .pct { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; font-size: 1.15rem; }
+    .barra { height: 10px; border-radius: 999px; background: rgba(255,255,255,.12); overflow: hidden; }
+    .barra > i { display: block; height: 100%; border-radius: 999px; }
+    .bom   { color: var(--bom); }      .bom   .barra > i { background: var(--bom); }
+    .medio { color: var(--atencao); }  .medio .barra > i { background: var(--atencao); }
+    .ruim  { color: var(--ruim); }     .ruim  .barra > i { background: var(--ruim); }
+
+    /* Questões */
+    .q-enunciado { font-size: .92rem; line-height: 1.5; color: rgba(255,255,255,.88); margin: 8px 0 12px; }
+    .alts { display: flex; flex-direction: column; gap: 5px; }
+    .alt-linha { display: grid; grid-template-columns: 26px 1fr 74px; gap: 10px; align-items: center; font-size: .84rem; }
+    .alt-linha .l { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
+                    font-weight: 700; font-size: .76rem; background: rgba(255,255,255,.12); }
+    .alt-linha.certa .l { background: var(--bom); color: var(--ink); }
+    .alt-linha.lider .l { background: var(--ruim); color: var(--ink); }
+    .alt-barra { height: 22px; border-radius: 6px; background: rgba(255,255,255,.07);
+                 position: relative; overflow: hidden; }
+    .alt-barra > i { display: block; height: 100%; background: rgba(255,255,255,.20); }
+    .alt-linha.certa .alt-barra > i { background: rgba(78,205,196,.45); }
+    .alt-linha.lider .alt-barra > i { background: rgba(255,111,97,.40); }
+    .alt-barra span { position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+                      font-size: .8rem; font-weight: 400; white-space: nowrap; overflow: hidden;
+                      text-overflow: ellipsis; max-width: calc(100% - 18px); }
+    .alt-linha .n { text-align: right; font-variant-numeric: tabular-nums; font-weight: 700; font-size: .84rem; }
+    .diagnostico { margin-top: 10px; font-size: .82rem; line-height: 1.5; padding: 10px 13px;
+                   border-radius: 9px; border-left: 3px solid var(--ruim); background: rgba(255,111,97,.14); }
+    .tempos { font-size: .74rem; color: var(--muted); font-weight: 600; margin-top: 8px; }
+
+    /* Tabela de estudantes */
+    table { width: 100%; border-collapse: collapse; font-size: .87rem; }
+    th { text-align: left; font-size: .64rem; letter-spacing: .08em; text-transform: uppercase;
+         color: var(--muted); padding: 9px 10px; border-bottom: 1px solid var(--line); }
+    td { padding: 11px 10px; border-bottom: 1px solid rgba(255,255,255,.08); }
+    td.num { font-variant-numeric: tabular-nums; font-weight: 700; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; }
+    .tag { font-size: .7rem; font-weight: 600; padding: 4px 9px; border-radius: 999px; background: rgba(255,111,97,.22); }
+    .tag.ok { background: rgba(78,205,196,.22); }
+
+    footer { padding: 14px 26px; border-top: 1px solid var(--line); display: flex; gap: 10px;
+             align-items: center; flex-wrap: wrap; background: rgba(0,0,0,.28); }
+    button.acao { font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 10px;
+                  padding: 11px 18px; font-size: .85rem; color: #fff;
+                  background: linear-gradient(45deg, var(--secondary), var(--primary)); }
+    a.link { color: var(--accent); font-size: .76rem; font-weight: 700; text-decoration: none;
+             padding: 8px 10px; border-radius: 8px; background: rgba(255,255,255,.08); white-space: nowrap; }
+    footer .direita { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+    .auth { max-width: 440px; margin: 8vh auto; display: flex; flex-direction: column; gap: 14px; }
+    .auth p { color: var(--muted); line-height: 1.55; margin: 0; font-size: .9rem; }
+    input { width: 100%; padding: 14px 16px; font: inherit; font-size: 1rem; font-weight: 600;
+            border: 2px solid var(--line); border-radius: 12px;
+            background: rgba(255,255,255,.08); color: var(--paper); }
+    input:focus { outline: none; border-color: var(--primary); }
+    .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
+    .vazio { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="marca">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac">
+      <div class="titulo">
+        <small>Qualidade de Software &middot; Aula 05 &middot; Relatório do quiz</small>
+        <span id="cab">Retomada: Arquitetura e ATAM</span>
+      </div>
+    </div>
+    <div class="medidores">
+      <div class="medidor"><div class="n" id="m-alunos">&mdash;</div><div class="r">estudantes</div></div>
+      <div class="medidor"><div class="n" id="m-media">&mdash;</div><div class="r">acerto médio</div></div>
+      <div class="medidor"><div class="n" id="m-questoes">&mdash;</div><div class="r">questões</div></div>
+    </div>
+  </header>
+
+  <main>
+    <section data-painel="auth" class="ativo">
+      <div class="auth">
+        <h1 style="font-size:1.35rem;margin:0">Relatório do quiz</h1>
+        <p>Informe o token da sessão. O relatório reflete as respostas registradas até agora e deixa de existir quando a sala é reiniciada.</p>
+        <input id="token" type="password" placeholder="token da sessão" autocomplete="off">
+        <p class="aviso" id="aviso" role="alert"></p>
+        <button class="acao" id="btn-auth" type="button">Abrir relatório</button>
+      </div>
+    </section>
+
+    <section data-painel="dados">
+      <div class="abas" role="tablist">
+        <button class="aba" role="tab" aria-selected="true"  data-aba="temas">Temas a reforçar</button>
+        <button class="aba" role="tab" aria-selected="false" data-aba="questoes">Questão a questão</button>
+        <button class="aba" role="tab" aria-selected="false" data-aba="alunos">Por estudante</button>
+      </div>
+
+      <div data-conteudo="temas" class="ativo">
+        <h2>Temas por dificuldade</h2>
+        <p class="legenda">Percentual de acerto por assunto, do mais difícil ao mais dominado. Os primeiros da lista são os que merecem retomada antes da atividade seguinte.</p>
+        <div id="lista-temas"></div>
+      </div>
+
+      <div data-conteudo="questoes">
+        <h2>Questão a questão</h2>
+        <p class="legenda">Ordenadas da menos acertada à mais acertada. A alternativa em verde é a correta; a destacada em vermelho é o distrator que mais atraiu a turma — é ele que revela a concepção a corrigir.</p>
+        <div id="lista-questoes"></div>
+      </div>
+
+      <div data-conteudo="alunos">
+        <h2>Desempenho individual</h2>
+        <p class="legenda">Cada linha traz as questões erradas e os temas correspondentes, para orientar o estudo de quem ficou abaixo da turma.</p>
+        <div id="tabela-alunos"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <button class="acao" id="btn-atualizar" type="button">Atualizar</button>
+    <button class="acao" id="btn-csv" type="button" style="background:rgba(255,255,255,.14)">Baixar CSV</button>
+    <div class="direita">
+      <a class="link" href="aula05-painel.html">Painel</a>
+      <a class="link" href="../material/material_introducao-testes-automatizados.html">Material da Aula 04</a>
+      <a class="link" href="../slide_introducao-testes-automatizados.html">Slides da Aula 04</a>
+      <a class="link" href="../../home_qualidade_2026_2.html">Voltar ao cronograma</a>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SLUG = new URLSearchParams(location.search).get('sala') || 'atam-q2-a05';
+  const CHAVE_TOKEN = 'quiz-host:' + SLUG;   // o mesmo token do painel
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const el = (id) => document.getElementById(id);
+  const LETRAS = ['A', 'B', 'C', 'D', 'E'];
+  let token = localStorage.getItem(CHAVE_TOKEN) || '';
+  let dados = null;
+
+  const faixa = (t) => t === null ? 'medio' : t < 50 ? 'ruim' : t < 75 ? 'medio' : 'bom';
+
+  async function carregar() {
+    el('aviso').textContent = '';
+    try {
+      const { data, error } = await db.rpc('quiz_relatorio', { p_slug: SLUG, p_token: token });
+      if (error) throw error;
+      if (!data.ok) { el('aviso').textContent = data.erro; return; }
+      localStorage.setItem(CHAVE_TOKEN, token);
+      dados = data;
+      desenhar(data);
+      document.querySelectorAll('[data-painel]').forEach((s) =>
+        s.classList.toggle('ativo', s.dataset.painel === 'dados'));
+    } catch (e) {
+      el('aviso').textContent = 'Falha de rede ao buscar o relatório.';
+      console.error(e);
+    }
+  }
+
+  function desenhar(d) {
+    el('cab').textContent = d.titulo;
+    el('m-alunos').textContent = d.jogadores;
+    el('m-questoes').textContent = d.total;
+
+    const respondidas = d.questoes.reduce((s, q) => s + q.respostas, 0);
+    const acertadas   = d.questoes.reduce((s, q) => s + q.acertos, 0);
+    el('m-media').textContent = respondidas ? Math.round(100 * acertadas / respondidas) + '%' : '—';
+
+    desenharTemas(d.temas);
+    desenharQuestoes(d.questoes);
+    desenharAlunos(d.alunos, d.total);
+  }
+
+  function desenharTemas(temas) {
+    const alvo = el('lista-temas');
+    alvo.innerHTML = '';
+    if (!temas.length) { alvo.innerHTML = '<p class="vazio">Nenhuma resposta registrada ainda.</p>'; return; }
+    temas.forEach((t) => {
+      const pct = t.taxa === null ? 0 : t.taxa;
+      const d = document.createElement('div');
+      d.className = 'item ' + faixa(t.taxa);
+      d.innerHTML = `<div class="item-cab">
+          <span class="nome"></span>
+          <span class="meta"></span>
+          <span class="pct"></span>
+        </div><div class="barra"><i style="width:${pct}%"></i></div>`;
+      d.querySelector('.nome').textContent = t.tema || '(sem tema)';
+      d.querySelector('.meta').textContent =
+        `${t.secao || ''} · questão ${t.questoes.join(', ')} · ${t.acertos} de ${t.respostas}`;
+      d.querySelector('.pct').textContent = t.taxa === null ? '—' : t.taxa + '%';
+      alvo.appendChild(d);
+    });
+  }
+
+  function desenharQuestoes(questoes) {
+    const alvo = el('lista-questoes');
+    alvo.innerHTML = '';
+    if (!questoes.length) { alvo.innerHTML = '<p class="vazio">Nenhuma resposta registrada ainda.</p>'; return; }
+    questoes.forEach((q) => {
+      const total = Object.values(q.distribuicao).reduce((a, b) => a + b, 0);
+      // O distrator que mais atraiu: a alternativa errada mais escolhida.
+      let lider = null, maior = 0;
+      Object.entries(q.distribuicao).forEach(([i, n]) => {
+        if (Number(i) !== q.correta && n > maior) { maior = n; lider = Number(i); }
+      });
+
+      const d = document.createElement('div');
+      d.className = 'item ' + faixa(q.taxa);
+      d.innerHTML = `<div class="item-cab">
+          <span class="nome"></span><span class="meta"></span><span class="pct"></span>
+        </div>
+        <p class="q-enunciado"></p>
+        <div class="alts"></div>
+        <div class="tempos"></div>`;
+      d.querySelector('.nome').textContent = `Questão ${q.ordem} — ${q.tema || ''}`;
+      d.querySelector('.meta').textContent =
+        `${q.secao || ''} · ${q.acertos} de ${q.respostas}` +
+        (q.sem_resposta > 0 ? ` · ${q.sem_resposta} sem resposta` : '');
+      d.querySelector('.pct').textContent = q.taxa === null ? '—' : q.taxa + '%';
+      d.querySelector('.q-enunciado').textContent = q.enunciado;
+
+      const alts = d.querySelector('.alts');
+      q.alternativas.forEach((texto, i) => {
+        const n = q.distribuicao[String(i)] || 0;
+        const pct = total ? (100 * n / total) : 0;
+        const linha = document.createElement('div');
+        linha.className = 'alt-linha' + (i === q.correta ? ' certa' : (i === lider && maior > 0 ? ' lider' : ''));
+        linha.innerHTML = `<span class="l"></span>
+          <span class="alt-barra"><i style="width:${pct}%"></i><span></span></span>
+          <span class="n"></span>`;
+        linha.querySelector('.l').textContent = LETRAS[i];
+        linha.querySelector('.alt-barra span').textContent = texto;
+        linha.querySelector('.n').textContent = `${n} · ${Math.round(pct)}%`;
+        alts.appendChild(linha);
+      });
+
+      if (lider !== null && maior > 0 && q.taxa !== null && q.taxa < 75) {
+        const dg = document.createElement('div');
+        dg.className = 'diagnostico';
+        dg.textContent = `${maior} de ${total} escolheram a alternativa ${LETRAS[lider]}. `
+          + `Retomar ${q.tema || 'o tema'} pela ${q.secao || 'seção correspondente'} do material da Aula 04, `
+          + `contrastando essa leitura com a correta (${LETRAS[q.correta]}).`;
+        d.appendChild(dg);
+      }
+      const t = d.querySelector('.tempos');
+      const fmt = (v) => v === null ? '—' : v + 's';
+      t.textContent = `Tempo médio: ${fmt(q.segundos_acerto)} entre quem acertou, ${fmt(q.segundos_erro)} entre quem errou.`;
+      alvo.appendChild(d);
+    });
+  }
+
+  function desenharAlunos(alunos, total) {
+    const alvo = el('tabela-alunos');
+    alvo.innerHTML = '';
+    if (!alunos.length) { alvo.innerHTML = '<p class="vazio">Nenhum estudante registrado.</p>'; return; }
+    const t = document.createElement('table');
+    t.innerHTML = `<thead><tr>
+      <th>Estudante</th><th>Acertos</th><th>Pontos</th><th>Errou as questões</th><th>Temas a reforçar</th>
+    </tr></thead><tbody></tbody>`;
+    const tb = t.querySelector('tbody');
+    alunos.forEach((a) => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td class="nome"></td><td class="num"></td><td class="num"></td>
+                      <td class="num"></td><td><div class="tags"></div></td>`;
+      tr.children[0].textContent = a.nome;
+      tr.children[1].textContent = `${a.acertos}/${total}`;
+      tr.children[2].textContent = a.pontos;
+      tr.children[3].textContent = a.erros.length ? a.erros.join(', ') : '—';
+      const tags = tr.children[4].firstElementChild;
+      if (!a.temas_a_reforcar.length) {
+        const s = document.createElement('span');
+        s.className = 'tag ok'; s.textContent = 'nenhum';
+        tags.appendChild(s);
+      } else a.temas_a_reforcar.forEach((tm) => {
+        const s = document.createElement('span');
+        s.className = 'tag'; s.textContent = tm;
+        tags.appendChild(s);
+      });
+      tb.appendChild(tr);
+    });
+    alvo.appendChild(t);
+  }
+
+  /* Exportação, para guardar o resultado antes de reiniciar a sala. */
+  function baixarCsv() {
+    if (!dados) return;
+    const linhas = [['tipo','identificacao','acertos','respostas','taxa','detalhe']];
+    dados.temas.forEach((t) =>
+      linhas.push(['tema', t.tema || '', t.acertos, t.respostas, t.taxa ?? '', t.secao || '']));
+    dados.questoes.forEach((q) =>
+      linhas.push(['questao', `Q${q.ordem} ${q.tema || ''}`, q.acertos, q.respostas, q.taxa ?? '',
+                   `correta ${LETRAS[q.correta]}`]));
+    dados.alunos.forEach((a) =>
+      linhas.push(['estudante', a.nome, a.acertos, a.respondidas, '',
+                   `errou ${a.erros.join(' ')} | reforcar: ${a.temas_a_reforcar.join('; ')}`]));
+    const csv = linhas.map((l) => l.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `relatorio-quiz-${SLUG}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  document.querySelectorAll('.aba').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('.aba').forEach((o) => o.setAttribute('aria-selected', String(o === b)));
+    document.querySelectorAll('[data-conteudo]').forEach((c) =>
+      c.classList.toggle('ativo', c.dataset.conteudo === b.dataset.aba));
+  }));
+  el('btn-auth').addEventListener('click', () => { token = el('token').value.trim(); carregar(); });
+  el('token').addEventListener('keydown', (e) => { if (e.key === 'Enter') el('btn-auth').click(); });
+  el('btn-atualizar').addEventListener('click', carregar);
+  el('btn-csv').addEventListener('click', baixarCsv);
+
+  if (token) carregar();
+  </script>
+</body>
+</html>

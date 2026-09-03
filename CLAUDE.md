@@ -54,6 +54,22 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
+## Quiz ao vivo (Supabase) — única parte com backend
+
+`pages/<slug>/quiz/` guarda quizzes projetados em aula: `<aula>-quiz.html` (celular do aluno),
+`<aula>-painel.html` (projetado, com QR, cronômetro e placar) e `<aula>-relatorio.html`
+(por tema, questão e estudante). São páginas estáticas: falam por RPC com um projeto
+Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HTML — é
+pública por desenho, quem limita o alcance é a RLS.
+
+- SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-seed-<aula>.sql`),
+  rodado **à mão** no SQL Editor. Ver `supabase/README.md`.
+- **Nunca versione o token do professor** — o repositório é público e o token abre, revela
+  e reinicia a sessão. Ele é digitado no SQL Editor e guardado no navegador do professor.
+- Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
+  respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
+- Sessões cadastradas: `atam-q2-a05` (Qualidade 2026.2, Aula 05, retomada da Aula 04).
+
 ## Convenções de nomenclatura
 
 - Slide body: `<body class="slide-body" data-disciplina="<slug-de-paleta>">`.
