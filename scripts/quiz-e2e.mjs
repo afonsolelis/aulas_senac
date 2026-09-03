@@ -9,8 +9,9 @@
  *
  * Sem `base`, roda nos arquivos locais (file://) — o mesmo código das páginas,
  * falando com o Supabase de verdade. Percorre lobby → pergunta → resposta →
- * revelação → encerramento → relatório e, no fim, DESCARTA a sala: a validação
- * não deixa jogador de teste no placar da turma nem na série histórica
+ * revelação (disparada sozinha pelo painel) → encerramento → relatório e, no
+ * fim, DESCARTA a sala: a validação não deixa jogador de teste no placar da
+ * turma nem na série histórica
  * (descartar zera sem arquivar; reiniciar, o que o professor usa, arquiva).
  *
  * A alternativa correta não é chumbada aqui: ela é lida pelo painel do professor
@@ -92,14 +93,17 @@ ok(`aluno: pergunta chegou em ${Date.now() - t0} ms`);
 const total = await prof.textContent('#m-pergunta');
 const alts = await aluno.$$eval('.alt', (e) => e.length);
 if (alts < 2) falha('aluno: pergunta veio com ' + alts + ' alternativas'); else ok(`aluno: ${alts} alternativas (${total})`);
-for (const [pagina, id, quem] of [[aluno, '#segundos', 'aluno'], [prof, '#m-tempo', 'painel']]) {
-  const s = Number(await pagina.textContent(id));
-  if (!(s > 0 && s <= 60)) falha(`${quem}: cronômetro fora da faixa (${s})`); else ok(`${quem}: cronômetro em ${s}s`);
-}
-await shot(aluno, 'aluno-pergunta');
 
 // o gabarito vem do painel do professor, então o teste serve para qualquer sala
 const visao = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'ver' });
+const limite = visao.pergunta.segundos;
+for (const [pagina, id, quem] of [[aluno, '#segundos', 'aluno'], [prof, '#m-tempo', 'painel']]) {
+  const s = Number(await pagina.textContent(id));
+  if (!(s > 0 && s <= limite)) falha(`${quem}: cronômetro fora da faixa (${s} de ${limite})`);
+  else ok(`${quem}: cronômetro em ${s}s de ${limite}s`);
+}
+await shot(aluno, 'aluno-pergunta');
+
 const correta = visao.pergunta.correta;
 await aluno.click('.alt >> nth=' + correta);
 await aluno.waitForSelector('[data-tela="respondido"].ativa', { timeout: 20000 });
@@ -107,7 +111,11 @@ await prof.waitForFunction(() => document.getElementById('m-respostas').textCont
   .then(() => ok('painel: contador de respostas subiu'))
   .catch(() => falha('painel: contador de respostas não subiu'));
 
-await prof.click('#btn-revelar');
+// Ninguém clica em "Revelar": respondida por todos, a pergunta se fecha
+// sozinha na leitura seguinte do painel. É esse avanço que se valida aqui.
+await prof.waitForSelector('[data-tela="revelacao"].ativa', { timeout: 20000 })
+  .then(() => ok('painel: revelou sozinho depois que todos responderam'))
+  .catch(() => falha('painel: NÃO revelou sozinho com todos respondidos'));
 await aluno.waitForSelector('[data-tela="revelacao"].ativa', { timeout: 20000 });
 const veredito = await aluno.textContent('#veredito-titulo');
 if (veredito !== 'Resposta correta') falha(`aluno: respondeu o gabarito e recebeu "${veredito}"`);
@@ -126,10 +134,9 @@ for (let i = 2; i <= n; i++) {
   if (!v.pergunta || !v.pergunta.enunciado) falha('pergunta ' + i + ' sem enunciado');
   if (!v.pergunta.explicacao) falha('pergunta ' + i + ' sem explicação no gabarito');
   await rpc('quiz_responder', { p_player: jogador, p_escolha: (v.pergunta.correta + 1) % v.pergunta.alternativas.length });
-  await prof.click('#btn-revelar');
   await prof.waitForSelector('[data-tela="revelacao"].ativa', { timeout: 20000 });
 }
-ok(`painel: as ${n} perguntas abriram e revelaram em sequência`);
+ok(`painel: as ${n} perguntas abriram e revelaram sozinhas em sequência`);
 
 await prof.click('#btn-encerrar');
 await aluno.waitForSelector('[data-tela="final"].ativa', { timeout: 20000 });

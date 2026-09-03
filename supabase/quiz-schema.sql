@@ -53,7 +53,7 @@ create table quiz_questions (
   ordem        int    not null,
   enunciado    text   not null,
   alternativas jsonb  not null,
-  segundos     int    not null default 40,
+  segundos     int    not null default 90,
   tema         text,          -- assunto avaliado, usado no relatório
   secao        text,          -- seção do material de leitura correspondente
   unique (session_slug, ordem)

@@ -2,7 +2,7 @@
 -- Qualidade de Software 2026.2 — Aula 05 (Semana 36)
 -- Quiz de retomada da Aula 04: "Arquitetura e ATAM com IA Agêntica".
 --
--- Oito questões, 40 segundos cada, extraídas do slide e do material da
+-- Oito questões, 90 segundos cada, extraídas do slide e do material da
 -- Aula 04 (pages/qualidade2/slide_introducao-testes-automatizados.html e
 -- .../material/material_introducao-testes-automatizados.html).
 --
@@ -43,56 +43,56 @@ with novas as (
    '["Como fato, porque o número corresponde a uma prática consolidada em sistemas dessa natureza",
      "Como requisito não funcional novo, incorporado à lista de requisitos com o próximo identificador",
      "Como suposição explícita e validável, com a decisão marcada como sem requisito correspondente",
-     "Como lacuna, suspendendo a proposta de cache até que alguém da equipe confirme a meta de tempo"]'::jsonb, 40, 'Fato, lacuna, suposição e decisão', 'seção 1'),
+     "Como lacuna, suspendendo a proposta de cache até que alguém da equipe confirme a meta de tempo"]'::jsonb, 90, 'Fato, lacuna, suposição e decisão', 'seção 1'),
 
   ('atam-q2-a05', 2,
    'A equipe precisa mostrar, dentro do contêiner de treinamento, quem agenda o job, quem seleciona os dados novos, quem treina, quem valida e quem promove o modelo. Qual nível do C4 responde a essa pergunta?',
    '["Componentes, que distribui as responsabilidades internas do contêiner em foco",
      "Contêineres, que mostra as aplicações e os armazenamentos e onde cada um executa",
      "Contexto, que situa o sistema entre as pessoas e os sistemas vizinhos que o cercam",
-     "Código, que apresenta os tipos e os contratos das classes que implementam o fluxo"]'::jsonb, 40, 'Visões C4', 'seção 2'),
+     "Código, que apresenta os tipos e os contratos das classes que implementam o fluxo"]'::jsonb, 90, 'Visões C4', 'seção 2'),
 
   ('atam-q2-a05', 3,
    'O pipeline diário grava o novo watermark assim que começa a treinar, para não reprocessar registros. O treino falha no meio e a execução seguinte parte do watermark já avançado. Qual invariante da aula foi violada?',
    '["O batch não pode indisponibilizar o fluxo online durante a janela de treinamento",
      "O candidato não pode ser promovido sem passar pelos gates de comparação com o vigente",
      "A execução precisa ser reprodutível, registrando dados, parâmetros e versão utilizados",
-     "O checkpoint só avança depois do sucesso, sob pena de perder os dados do intervalo"]'::jsonb, 40, 'Isolamento entre online e batch', 'seção 2'),
+     "O checkpoint só avança depois do sucesso, sob pena de perder os dados do intervalo"]'::jsonb, 90, 'Isolamento entre online e batch', 'seção 2'),
 
   ('atam-q2-a05', 4,
    'Uma instabilidade no agendador dispara o job das 23h duas vezes, com segundos de diferença, e as duas execuções passam a treinar ao mesmo tempo sobre o mesmo intervalo. Qual controle do checklist evita especificamente esse cenário?',
    '["Retry, que diferencia falha transitória de falha permanente antes de tentar de novo",
      "Lock, que impede que duas execuções do mesmo job avancem simultaneamente",
      "Idempotência, que garante que reexecutar o processo não duplique os efeitos",
-     "Gates, que comparam o candidato com o baseline antes de qualquer promoção"]'::jsonb, 40, 'Idempotência, lock e recuperação', 'seção 3'),
+     "Gates, que comparam o candidato com o baseline antes de qualquer promoção"]'::jsonb, 90, 'Idempotência, lock e recuperação', 'seção 3'),
 
   ('atam-q2-a05', 5,
    'Um cenário foi escrito assim: "quando o banco degrada durante o pico da noite, o serviço de consulta de conteúdo continua respondendo às requisições dos assinantes". Segundo as seis partes do cenário ATAM, o que falta?',
    '["O estímulo, porque não se sabe o que acontece para provocar a reação do sistema",
      "O ambiente, porque a condição de operação em que tudo ocorre não foi declarada",
      "A métrica de resposta, porque não há como saber se a reação foi suficiente",
-     "O artefato, porque a parte do sistema afetada pelo estímulo não foi identificada"]'::jsonb, 40, 'Cenário de atributo de qualidade', 'seção 4'),
+     "O artefato, porque a parte do sistema afetada pelo estímulo não foi identificada"]'::jsonb, 90, 'Cenário de atributo de qualidade', 'seção 4'),
 
   ('atam-q2-a05', 6,
    'Na utility tree, quatro cenários receberam os pares (importância, dificuldade): (alta, alta), (alta, baixa), (baixa, alta) e (baixa, baixa). Por onde a análise começa, e por quê?',
    '["Pelo (alta, alta), que reúne valor para o negócio e incerteza técnica ao mesmo tempo",
      "Pelo (alta, baixa), que entrega resultado rápido e libera a equipe para os demais",
      "Pelo (baixa, alta), que é onde o desconhecimento técnico da equipe é maior",
-     "Pela ordem dos atributos na árvore, para não enviesar a priorização dos cenários"]'::jsonb, 40, 'Utility tree e priorização', 'seção 4'),
+     "Pela ordem dos atributos na árvore, para não enviesar a priorização dos cenários"]'::jsonb, 90, 'Utility tree e priorização', 'seção 4'),
 
   ('atam-q2-a05', 7,
    'Aumentar o número de réplicas do modelo ativo melhora a disponibilidade e, ao mesmo tempo, eleva o custo mensal e o tempo de publicação de uma versão nova. Como essa decisão é registrada na análise?',
    '["Como risco, porque existem atributos de qualidade prejudicados pela decisão tomada",
      "Como ponto de trade-off, porque a mesma decisão melhora um atributo e piora outros",
      "Como ponto de sensibilidade, porque a disponibilidade depende fortemente dessa decisão",
-     "Como tema de risco, porque o mesmo padrão se repete em outras decisões da arquitetura"]'::jsonb, 40, 'Vocabulário das descobertas', 'seção 4'),
+     "Como tema de risco, porque o mesmo padrão se repete em outras decisões da arquitetura"]'::jsonb, 90, 'Vocabulário das descobertas', 'seção 4'),
 
   ('atam-q2-a05', 8,
    'Na revisão cruzada, os agentes divergem sobre reter os dados brutos por 90 dias. O agente de dados encerra o assunto "decidindo" pela retenção e segue para o próximo item. O que a governança da aula determina?',
    '["Que o agente de segurança decida, por ser o papel responsável pelo tema em discussão",
      "Que a divergência saia do documento, preservando apenas a decisão final consolidada",
      "Que a decisão do agente valha enquanto ninguém a contestar, virando regra de retenção",
-     "Que a divergência fique registrada e que pessoas arbitrem e aceitem o risco residual"]'::jsonb, 40, 'Governança da IA agêntica', 'seção 5')
+     "Que a divergência fique registrada e que pessoas arbitrem e aceitem o risco residual"]'::jsonb, 90, 'Governança da IA agêntica', 'seção 5')
   returning id, ordem
 )
 insert into quiz_answer_key (question_id, correta, explicacao)

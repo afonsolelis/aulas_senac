@@ -3,7 +3,7 @@
 -- Quiz de retomada da Aula 03: "Caixa Branca vs Caixa Preta e o
 -- nascimento do Foot Fanatics".
 --
--- Oito questões, 40 segundos cada, extraídas do slide e do material da
+-- Oito questões, 90 segundos cada, extraídas do slide e do material da
 -- Aula 03 (pages/qualidade2/slide_caixa-branca-preta.html e
 -- .../material/material_caixa-branca-preta.html).
 --
@@ -41,56 +41,56 @@ with novas as (
    '["Caixa branca, porque o relatório de cobertura acusa o ramo de bloqueio que nunca executou",
      "Caixa preta, porque parte da especificação e cobra o comportamento que deveria existir",
      "Caixa branca, porque a leitura do fluxo de controle revela a condição que ficou faltando",
-     "Nenhum dos dois: sem código escrito, a falha só aparece em produção, com usuário real"]'::jsonb, 40, 'O que cada caixa enxerga', 'Parte 1 · caixa preta e caixa branca'),
+     "Nenhum dos dois: sem código escrito, a falha só aparece em produção, com usuário real"]'::jsonb, 90, 'O que cada caixa enxerga', 'Parte 1 · caixa preta e caixa branca'),
 
   ('caixa-q2-a04', 2,
    'A linha sob teste é "if (token != null && !token.expirado()) { liberarAcesso(); }". Quantos testes, no mínimo, cada critério exige — comando, ramo e condição, nessa ordem?',
    '["1, 2 e 3: condição exige avaliar cada operando como verdadeiro e como falso",
      "1, 2 e 2: com token nulo e token válido os dois critérios já ficam satisfeitos",
      "2, 2 e 3: comando também precisa do caso que nega o acesso para valer 100%",
-     "1, 3 e 3: ramo precisa de nulo, expirado e válido para cobrir a decisão"]'::jsonb, 40, 'Comando, ramo e condição', 'Parte 1 · critérios de cobertura'),
+     "1, 3 e 3: ramo precisa de nulo, expirado e válido para cobrir a decisão"]'::jsonb, 90, 'Comando, ramo e condição', 'Parte 1 · critérios de cobertura'),
 
   ('caixa-q2-a04', 3,
    'A sessão vale 30 minutos e aos 1800 s ainda é válida. Alguém troca "idade_s > 1800" por "idade_s >= 1800". A suíte tem os casos 1799, 1800 e 1801. Qual deles fica vermelho, e o que isso demonstra?',
    '["1799, porque é o único valor logo antes da fronteira declarada na regra",
      "1801, porque passa a ser aceito quando a comparação muda de sinal",
      "1800, porque é o valor exatamente na fronteira — é o que a análise de valor limite existe para pegar",
-     "Os três, porque qualquer alteração no operador invalida a classe de equivalência inteira"]'::jsonb, 40, 'Análise de valor limite', 'Parte 1 · técnicas de caixa preta'),
+     "Os três, porque qualquer alteração no operador invalida a classe de equivalência inteira"]'::jsonb, 90, 'Análise de valor limite', 'Parte 1 · técnicas de caixa preta'),
 
   ('caixa-q2-a04', 4,
    'Ao testar o campo de plano da assinatura, a equipe usa "free", "premium" e "pirata" como entradas. Qual é o papel da terceira entrada nessa escolha?',
    '["É a classe de entrada inválida, a mais esquecida e justamente a que o atacante usa",
      "É o valor de fronteira entre as duas classes válidas, no espírito do valor limite",
      "É um caso redundante, mantido apenas para elevar o número de testes da suíte",
-     "É a regra don''t care da tabela de decisão, que colapsa duas combinações em uma"]'::jsonb, 40, 'Partição de equivalência', 'Parte 1 · técnicas de caixa preta'),
+     "É a regra don''t care da tabela de decisão, que colapsa duas combinações em uma"]'::jsonb, 90, 'Partição de equivalência', 'Parte 1 · técnicas de caixa preta'),
 
   ('caixa-q2-a04', 5,
    'A regra de acesso combina três condições: logado, assinante e conteúdo premium. São oito combinações possíveis, mas a tabela de decisão da aula tem quatro regras. O que reduziu o número?',
    '["A partição de equivalência, que escolhe um representante por classe de entrada",
      "O critério de ramo, que exige apenas verdadeiro e falso para cada decisão do código",
      "A análise de valor limite, que descarta as combinações longe de qualquer fronteira",
-     "O don''t care: sem sessão, assinatura e tipo de conteúdo não mudam o resultado"]'::jsonb, 40, 'Tabela de decisão', 'Parte 1 · técnicas de caixa preta'),
+     "O don''t care: sem sessão, assinatura e tipo de conteúdo não mudam o resultado"]'::jsonb, 90, 'Tabela de decisão', 'Parte 1 · técnicas de caixa preta'),
 
   ('caixa-q2-a04', 6,
    'Um teste chama pode_assistir, não tem nenhuma asserção, passa sempre e soma 100% de cobertura na linha. Qual experimento da aula demonstra que ele não protege nada?',
    '["Repetir a execução com --cov-branch, que revela o ramo ainda não exercitado",
      "Sabotar a regra de propósito e rodar a suíte: se não ficar vermelha, o teste é decoração",
      "Comparar a cobertura de comando com a de condição e exigir a diferença entre as duas",
-     "Elevar a meta de cobertura do projeto até que o teste sem asserção deixe de bastar"]'::jsonb, 40, 'A armadilha dos 100%', 'Parte 1 · cobertura não é proteção'),
+     "Elevar a meta de cobertura do projeto até que o teste sem asserção deixe de bastar"]'::jsonb, 90, 'A armadilha dos 100%', 'Parte 1 · cobertura não é proteção'),
 
   ('caixa-q2-a04', 7,
    'No Foot Fanatics a equipe chama POST /auth/login como um cliente qualquer, mas escolhe os casos sabendo que existe um filtro de sessão com ramo de expiração, e depois confere no banco que a sessão foi invalidada. Como se classifica esse teste?',
    '["Caixa preta pura, já que a chamada é feita pelo contrato público da API",
      "Caixa branca pura, já que os casos foram escolhidos a partir do fluxo interno",
      "Caixa cinza: chamada pelo contrato, casos escolhidos com conhecimento interno",
-     "Teste de unidade, porque verifica o filtro de sessão isolado do restante do sistema"]'::jsonb, 40, 'Caixa cinza', 'Parte 1 · caixa cinza'),
+     "Teste de unidade, porque verifica o filtro de sessão isolado do restante do sistema"]'::jsonb, 90, 'Caixa cinza', 'Parte 1 · caixa cinza'),
 
   ('caixa-q2-a04', 8,
    'Na elicitação com IA, uma equipe registrou: "RNF-04 — o catálogo deve ser rápido para o assinante". Segundo o critério da aula, o que falta e como corrigir?',
    '["Falta o escopo: basta amarrar o item a E4 Conteúdo e manter a redação atual",
      "Falta identificar a persona de origem; a métrica só é exigida na semana da carga",
      "Nada falta: o item já distingue assinante de visitante e por isso é verificável",
-     "Falta métrica: RNF só existe se for medível, como p95 abaixo de 2 s no catálogo"]'::jsonb, 40, 'RF, RNF e requisito medível', 'Parte 2 · elicitação de requisitos')
+     "Falta métrica: RNF só existe se for medível, como p95 abaixo de 2 s no catálogo"]'::jsonb, 90, 'RF, RNF e requisito medível', 'Parte 2 · elicitação de requisitos')
   returning id, ordem
 )
 insert into quiz_answer_key (question_id, correta, explicacao)

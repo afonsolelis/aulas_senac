@@ -72,6 +72,13 @@ pública por desenho, quem limita o alcance é a RLS.
 - **Token do professor: `080909`, fixo para todas as salas** (decisão do professor — a sala é
   descartável e o token só abre, revela e reinicia; não há dado pessoal atrás dele). Vai
   gravado no próprio seed.
+- **Ritmo da pergunta: 90 segundos, e o painel revela sozinho** — assim que `respostas >=
+  jogadores` (ou quando o cronômetro zera), o painel chama `revelar` e mostra gabarito,
+  distribuição e placar sem clique do professor. `Revelar resposta` continua no rodapé para
+  adiantar. A checagem mora na leitura periódica de 2 s (`talvezRevelar` em `aula0N-painel.html`),
+  então a revelação chega até dois segundos depois do gatilho. `scripts/quiz-e2e.mjs` **valida
+  esse avanço** — ele não clica mais em Revelar; se o painel voltar a depender do clique, o
+  script falha.
 - Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
   respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
 - **Histórico:** `reiniciar` arquiva a rodada em `quiz_relatorios` (uma linha por estudante

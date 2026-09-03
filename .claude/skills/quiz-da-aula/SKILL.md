@@ -5,7 +5,7 @@ description: Criar o quiz ao vivo (estilo Kahoot, hospedado no próprio Hub) que
 
 # Quiz da aula
 
-Cada aula do Hub abre com um quiz de **retomada**: oito questões de 40 segundos sobre **a aula anterior**, respondidas no celular e projetadas no telão. No fim, cada aluno recebe os temas que precisa retomar e o professor recebe um relatório por tema, questão e estudante.
+Cada aula do Hub abre com um quiz de **retomada**: oito questões de 90 segundos sobre **a aula anterior**, respondidas no celular e projetadas no telão. No fim, cada aluno recebe os temas que precisa retomar e o professor recebe um relatório por tema, questão e estudante.
 
 A regra que não muda: **a aula N cobra a aula N−1.** Nunca cobre o conteúdo que ainda vai ser dado.
 
@@ -24,7 +24,7 @@ O que separa um quiz que ensina de um que decora:
 - **Sem atalho de forma.** Comprimentos parecidos (nada de a correta ser sempre a mais longa) e a posição da correta distribuída entre A, B, C e D — com 8 questões, duas de cada.
 - **Explicação que ensina.** Dois ou três períodos: por que a correta está certa **e** por que o distrator mais atraente está errado. É o texto que aparece projetado na revelação.
 - **`tema` e `secao` em toda questão.** São eles que viram o relatório "o que retomar" — sem isso o quiz vira placar e perde a função pedagógica.
-- Oito questões, `segundos = 40`, quatro alternativas.
+- Oito questões, `segundos = 90`, quatro alternativas.
 
 ## Passo a passo
 

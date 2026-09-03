@@ -178,7 +178,7 @@
       <div class="lobby-texto">
         <h1>Aponte a câmera para entrar</h1>
         <div class="url-caixa" id="url-quiz"></div>
-        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 40 segundos de cronômetro.</p>
+        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar.</p>
         <div class="nomes" id="nomes"></div>
       </div>
     </section>
@@ -256,12 +256,35 @@
   let laco = null;
   let cronometro = null;
   let chaveCronometro = null;
+  let revelacaoAuto = null;   // pergunta já revelada sozinha (ordem|aberta_em)
   let offsetRelogio = 0;   // relógio do servidor menos o desta máquina
 
   /* O cronômetro projetado usa o mesmo relógio do servidor que o celular do
      aluno, para que a contagem na parede e a do aparelho não divirjam. */
   function pararCronometro() {
     if (cronometro) { clearInterval(cronometro); cronometro = null; }
+  }
+
+  /* Avanço automático: a pergunta se fecha sozinha, sem depender do clique do
+     professor. Fecha quando todo mundo já respondeu — e também quando o
+     cronômetro zera, para que um aluno que não respondeu não trave a sala.
+     A checagem mora na leitura periódica (a cada 2 s), então a revelação
+     chega até dois segundos depois do gatilho. */
+  function talvezRevelar(d) {
+    const jogadores = d.jogadores || 0;
+    if (jogadores > 0 && (d.respostas || 0) >= jogadores) return revelarSozinho('todos responderam');
+    const fim = new Date(d.aberta_em).getTime() + (d.pergunta.segundos * 1000);
+    if (Date.now() + offsetRelogio >= fim) revelarSozinho('tempo esgotado');
+  }
+
+  async function revelarSozinho(motivo) {
+    if (!ultimo || ultimo.estado !== 'pergunta') return;
+    const chave = ultimo.ordem + '|' + ultimo.aberta_em;
+    if (revelacaoAuto === chave) return;   // uma revelação por abertura de pergunta
+    revelacaoAuto = chave;
+    console.log('[quiz] revelando automaticamente: ' + motivo);
+    try { aplicar(await chamar('revelar')); }
+    catch (e) { revelacaoAuto = null; console.error(e); }   // a próxima leitura tenta de novo
   }
 
   function iniciarCronometro(abertaEm, segundos, chave) {
@@ -403,6 +426,7 @@
       opcoes(el('alternativas'), d.pergunta, d.distribuicao || {}, false, 'p' + d.ordem);
       iniciarCronometro(d.aberta_em, d.pergunta.segundos, d.ordem + '|' + d.aberta_em);
       mostrar('pergunta');
+      talvezRevelar(d);
     } else if (d.estado === 'revelacao') {
       el('rev-ordem').textContent = `${d.ordem} de ${d.total}`;
       opcoes(el('rev-alternativas'), d.pergunta, d.distribuicao || {}, true, 'r' + d.ordem);
