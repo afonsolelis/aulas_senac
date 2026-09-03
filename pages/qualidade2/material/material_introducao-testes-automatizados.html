@@ -1,16 +1,392 @@
-<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Arquitetura e ATAM com IA Agêntica - Material</title><meta name="description" content="Material da Aula 04 de Qualidade de Software sobre arquitetura orientada por requisitos e análise ATAM com IA agêntica."><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../../css/style.css"><style>.prompt{white-space:pre-wrap;font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.55;background:#fff;border:1px solid #ffb199;border-left:6px solid #DD2476;border-radius:1rem;padding:1.25rem}.tag{display:inline-block;padding:.25rem .6rem;border-radius:2rem;background:#f8f9fa;font-size:.82rem;font-weight:600}</style></head>
-<body><nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></div></nav>
-<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div><span class="badge bg-white text-danger mb-1">Aula 04 · Semana 35 · 2026.2</span><h1 class="h3 fw-bold text-white mb-0">Arquitetura e ATAM com IA Agêntica</h1></div></div></header>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arquitetura e ATAM com IA Agêntica - Material</title>
+<meta name="description" content="Material da Aula 04 de Qualidade de Software: arquitetura orientada por requisitos, C4, pipeline diário, análise ATAM e revisão por IA agêntica, com exemplos resolvidos no Foot Fanatics.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+<style>
+.prompt{white-space:pre-wrap;font-family:'Outfit',sans-serif;font-size:.92rem;line-height:1.55;background:#fff;border:1px solid #ffb199;border-left:6px solid #DD2476;border-radius:1rem;padding:1.25rem}
+.tag{display:inline-block;padding:.25rem .6rem;border-radius:2rem;background:#f8f9fa;font-size:.82rem;font-weight:600}
+.sumario a{text-decoration:none}
+.sumario li{margin-bottom:.35rem}
+.ruim,.bom{border-radius:.9rem;padding:1rem 1.15rem;height:100%}
+.ruim{background:#fdecea;border-left:5px solid #c0392b}
+.bom{background:#eaf6f1;border-left:5px solid #1f7a5c}
+.ruim h4,.bom h4{font-size:.95rem;font-weight:700;margin-bottom:.5rem}
+.ruim p,.bom p,.ruim li,.bom li{font-size:.92rem;margin-bottom:.35rem}
+.figura{background:#fff;border:1px solid #e9ecef;border-radius:1rem;padding:1rem}
+.figura img{width:100%;height:auto}
+.figura figcaption{font-size:.85rem;color:#6c757d;margin-top:.75rem}
+.passo{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1rem}
+.passo .n{flex:0 0 2rem;height:2rem;border-radius:.6rem;display:grid;place-items:center;font-weight:700;color:#fff;background:linear-gradient(45deg,#FF512F,#DD2476)}
+.tempo{font-size:.8rem;font-weight:600;color:#DD2476}
+code{font-size:.88em}
+</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div><span class="badge bg-white text-danger mb-1">Aula 04 &middot; Semana 35 &middot; 2026.2</span><h1 class="h3 fw-bold text-white mb-0">Arquitetura e ATAM com IA Agêntica</h1></div></div></header>
+
 <main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Objetivo e ponto de partida</h2><p class="lead text-muted">Transformar as personas e os requisitos levantados na aula anterior em uma arquitetura justificável, submetê-la a uma análise ATAM e registrar decisões rastreáveis.</p><div class="alert alert-warning mb-0"><strong>Escopo:</strong> nesta aula não há implementação, comandos de terminal nem criação de testes. O produto é a arquitetura e sua avaliação crítica.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">1. Fonte de verdade e disciplina de decisão</h2><p class="text-muted">A arquitetura deve nascer dos artefatos reais do projeto. Antes de propor tecnologia ou componentes, separe:</p><div class="row g-3"><div class="col-md-3"><div class="border rounded p-3 h-100"><strong>Fato</strong><p class="small text-muted mb-0">Está declarado e pode ser citado.</p></div></div><div class="col-md-3"><div class="border rounded p-3 h-100"><strong>Lacuna</strong><p class="small text-muted mb-0">Informação necessária que não existe.</p></div></div><div class="col-md-3"><div class="border rounded p-3 h-100"><strong>Suposição</strong><p class="small text-muted mb-0">Hipótese explícita e validável.</p></div></div><div class="col-md-3"><div class="border rounded p-3 h-100"><strong>Decisão</strong><p class="small text-muted mb-0">Escolha justificada por forças.</p></div></div></div><p class="text-muted mt-3 mb-0">Toda decisão precisa apontar para um requisito, atributo de qualidade ou restrição. Se não houver origem, marque “decisão sem requisito correspondente”.</p></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">2. Visões arquiteturais e os dois fluxos</h2><p class="text-muted">Use C4 para contar a história do sistema em níveis: contexto (pessoas e sistemas vizinhos), contêineres (aplicações e armazenamentos) e componentes (responsabilidades internas). O nível de código fica para uma etapa posterior.</p><div class="table-responsive"><table class="table table-bordered align-middle"><thead class="table-dark"><tr><th>Fluxo</th><th>Responsabilidade</th><th>Qualidades críticas</th></tr></thead><tbody><tr><td>Online</td><td>Receber interação, consultar o modelo ativo e responder.</td><td>Latência, disponibilidade, segurança e privacidade.</td></tr><tr><td>Batch diário</td><td>Ao final do dia, selecionar somente dados novos, treinar/re-treinar, validar e versionar um candidato.</td><td>Idempotência, recuperação, observabilidade, reprodutibilidade e custo.</td></tr></tbody></table></div><div class="alert alert-dark mb-0">O pipeline de treinamento não deve indisponibilizar o fluxo online, avançar o checkpoint antes de concluir nem promover automaticamente um modelo pior.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">3. Checklist do pipeline incremental</h2><div class="row g-3"><div class="col-md-6"><ul class="text-muted mb-0"><li><strong>Watermark/checkpoint:</strong> define quais registros são novos.</li><li><strong>Idempotência:</strong> reexecutar não duplica efeitos.</li><li><strong>Lock:</strong> impede jobs concorrentes.</li><li><strong>Retry:</strong> diferencia falha transitória de permanente.</li><li><strong>Qualidade:</strong> bloqueia dados inválidos ou degradados.</li></ul></div><div class="col-md-6"><ul class="text-muted mb-0"><li><strong>Reprodutibilidade:</strong> registra dados, parâmetros e versão.</li><li><strong>Registry:</strong> versiona candidatos e modelo ativo.</li><li><strong>Gates:</strong> comparam candidato e baseline.</li><li><strong>Rollback:</strong> restaura versão estável.</li><li><strong>Observabilidade:</strong> logs, métricas, alertas e linhagem.</li></ul></div></div><p class="small text-muted mt-3 mb-0">Segurança/LGPD, retenção, minimização, controle de acesso e custos atravessam todas essas decisões.</p></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">4. ATAM: avaliar abordagens por cenários</h2><p class="text-muted">O Architecture Tradeoff Analysis Method conecta drivers de negócio, atributos de qualidade e abordagens arquiteturais. A análise não produz um selo de “arquitetura correta”; ela expõe onde decisões respondem bem, onde são sensíveis e onde concentram risco.</p><h3 class="h5 mt-4">Cenário de atributo de qualidade</h3><div class="table-responsive"><table class="table table-striped align-middle"><thead><tr><th>Parte</th><th>Pergunta</th></tr></thead><tbody><tr><td>Fonte</td><td>Quem ou o que provoca?</td></tr><tr><td>Estímulo</td><td>O que acontece?</td></tr><tr><td>Ambiente</td><td>Em qual condição?</td></tr><tr><td>Artefato</td><td>Qual parte é afetada?</td></tr><tr><td>Resposta</td><td>Como o sistema reage?</td></tr><tr><td>Métrica</td><td>Como saberemos se foi suficiente?</td></tr></tbody></table></div><p class="text-muted"><strong>Exemplo:</strong> durante a execução diária, o processo falha após treinar o candidato; o pipeline preserva o modelo ativo, não avança o checkpoint e retoma sem duplicar dados na próxima tentativa.</p><h3 class="h5 mt-4">Utility tree</h3><p class="text-muted">Organize atributos → refinamentos → cenários e atribua importância e dificuldade. Cenários de alta importância e alta dificuldade merecem atenção primeiro.</p><div class="d-flex flex-wrap gap-2"><span class="tag">ponto de sensibilidade</span><span class="tag">ponto de trade-off</span><span class="tag">risco</span><span class="tag">não-risco</span><span class="tag">tema de risco</span></div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Material de apoio &mdash; catálogo de táticas de Len Bass</h2><p class="text-muted">A análise ATAM fica vaga quando as abordagens arquiteturais são descritas pela implementação (&ldquo;usamos Redis&rdquo;) em vez da intenção (&ldquo;mantemos múltiplas cópias de dados para reduzir latência&rdquo;). O catálogo abaixo reúne as táticas arquiteturais de Len Bass organizadas por atributo de qualidade, com o custo de cada uma e a forma de verificá-la por teste automatizado.</p><div class="row g-3 align-items-center"><div class="col-md-7"><ul class="text-muted mb-0"><li>Catálogo completo da 3ª edição: disponibilidade, interoperabilidade, modificabilidade, desempenho, segurança, testabilidade e usabilidade.</li><li>Acréscimos da 4ª edição: implantabilidade, integrabilidade, eficiência energética e <em>safety</em>.</li><li>Para cada tática: o que ela controla, o trade-off que impõe e a evidência de teste esperada.</li><li>Como uma tática vira risco, não-risco, ponto de sensibilidade, trade-off ou tema de risco no ATAM.</li><li>Aplicação no case de aula (Foot Fanatics) e no projeto avaliado (Organização de Recursos).</li></ul></div><div class="col-md-5 text-center"><a href="../assets/taticas-arquiteturais-len-bass.md" download class="btn btn-danger btn-lg rounded-pill"><i class="fas fa-download me-2" aria-hidden="true"></i> Baixar catálogo (.md)</a><p class="small text-muted mt-2 mb-0">Guarde-o no repositório da equipe, ao lado de <code>docs/arquitetura.md</code>.</p></div></div><div class="alert alert-warning mt-3 mb-0"><strong>Regra da aula:</strong> decisão sem tática nomeada é decisão sem justificativa; tática sem cenário associado é otimização especulativa.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">5. IA agêntica com revisão cruzada</h2><p class="text-muted">Distribuir papéis reduz o viés de um único agente. O analista extrai drivers; o arquiteto estrutura C4; dados/ML pressiona o pipeline; segurança/LGPD procura exposição; operações testa falhas e recuperação; custos questiona sustentabilidade; o facilitador ATAM consolida cenários e descobertas.</p><div class="alert alert-warning mb-0"><strong>Governança:</strong> agentes não têm autoridade para inventar requisitos. Pessoas conferem fontes, arbitram divergências e aceitam riscos residuais.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Prática guiada — use somente estes prompts</h2><p class="text-muted">Execute na ordem. Cada prompt é autocontido e deve ser copiado por inteiro. Revise o resultado antes de avançar.</p></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold">Prompt 1 — descoberta e drivers</h2><div class="prompt">Atue como analista de requisitos e arquiteto de software. Trabalhe somente com os artefatos do repositório aberto.
+
+<!-- ============================ COMO USAR ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4">
+  <h2 class="h3 fw-bold">Como usar este material</h2>
+  <p class="lead text-muted">Este texto existe para você chegar na aula sabendo <strong>o que vamos fazer e por quê</strong>. A aula é prática: quem lê antes produz arquitetura; quem não lê, assiste.</p>
+  <div class="row g-3 mt-1">
+    <div class="col-md-4">
+      <div class="border rounded-3 p-3 h-100 bg-white">
+        <span class="tempo">ANTES DA AULA &middot; ~25 min</span>
+        <p class="mb-0 mt-2 small">Seções 1 a 7. Você não precisa decorar nada — precisa reconhecer o vocabulário: <em>driver</em>, <em>cenário</em>, <em>utility tree</em>, <em>sensibilidade</em>, <em>trade-off</em>, <em>tática</em>.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="border rounded-3 p-3 h-100 bg-white">
+        <span class="tempo">DURANTE A AULA</span>
+        <p class="mb-0 mt-2 small">Seção 9: os quatro prompts, na ordem, com o <strong>checklist de revisão</strong> depois de cada um. É aqui que a maior parte do tempo será gasta.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="border rounded-3 p-3 h-100 bg-white">
+        <span class="tempo">DEPOIS DA AULA</span>
+        <p class="mb-0 mt-2 small">Seção 10 (exemplo resolvido) e 11 (critérios de aceite) para conferir o que a sua equipe entregou antes de fechar o commit.</p>
+      </div>
+    </div>
+  </div>
+  <div class="alert alert-warning mt-4 mb-0">
+    <strong>A aula abre com um quiz.</strong> Oito questões de 40 segundos sobre a <strong>Aula 03</strong> — caixa preta, caixa branca, cobertura, valor limite, tabela de decisão e RNF medível. Vale revisar
+    <a href="material_caixa-branca-preta.html">o material da Aula 03</a> antes de entrar em
+    <a href="../quiz/aula04-quiz.html">quiz ao vivo</a>. Não vale nota; vale saber onde você está.
+  </div>
+</section>
+
+<!-- ============================ SUMÁRIO ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4">
+  <h2 class="h3 fw-bold">O que tem aqui</h2>
+  <ol class="sumario text-muted mb-0">
+    <li><a href="#s1">Onde estamos e por que arquitetura entra numa disciplina de qualidade</a></li>
+    <li><a href="#s2">Fato, lacuna, suposição e decisão: a disciplina que sustenta tudo</a></li>
+    <li><a href="#s3">C4: quatro níveis, quatro perguntas — com os diagramas do Foot Fanatics</a></li>
+    <li><a href="#s4">Dois ritmos: fluxo online e pipeline batch diário</a></li>
+    <li><a href="#s5">O cron diário destrinchado: dez controles e o que acontece sem cada um</a></li>
+    <li><a href="#s6">ATAM: o que é, o que produz e o que não produz</a></li>
+    <li><a href="#s7">Táticas de Len Bass: como uma decisão ganha justificativa</a></li>
+    <li><a href="#s8">IA agêntica: papéis, governança e o que a IA costuma errar</a></li>
+    <li><a href="#s9">Prática guiada: os quatro prompts e a revisão de cada um</a></li>
+    <li><a href="#s10">Exemplo resolvido de ponta a ponta</a></li>
+    <li><a href="#s11">Entregável, critérios de aceite e erros comuns</a></li>
+    <li><a href="#s12">Glossário e autoavaliação</a></li>
+  </ol>
+</section>
+
+<!-- ============================ 1 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s1">
+  <h2 class="h3 fw-bold">1. Onde estamos</h2>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th style="width:22%">Semana</th><th>O que você aprendeu a fazer</th></tr></thead>
+      <tbody>
+        <tr><td><strong>32</strong> — Vocabulário</td><td>Nomear: atributo de qualidade, defeito, erro, falha.</td></tr>
+        <tr><td><strong>33</strong> — Caso de teste</td><td>Especificar: primeiro contato com ATAM, utility tree e cenário de qualidade.</td></tr>
+        <tr><td><strong>34</strong> — Técnica</td><td>Enxergar: caixa preta, caixa branca, cobertura, e os primeiros requisitos do Foot Fanatics.</td></tr>
+        <tr class="table-danger"><td><strong>35</strong> — hoje</td><td><strong>Justificar:</strong> transformar personas e requisitos numa arquitetura defensável e submetê-la a uma análise ATAM que aponta riscos e trade-offs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">Por que uma disciplina de qualidade fala de arquitetura?</h3>
+  <p class="text-muted">Porque a maior parte dos atributos de qualidade <strong>não se testa para dentro depois</strong>. Você consegue acrescentar um teste; não consegue acrescentar disponibilidade, modificabilidade ou privacidade a um sistema que foi estruturado contra elas. Um defeito de código custa uma correção; uma fronteira errada custa uma reescrita.</p>
+  <p class="text-muted mb-0">A frase que resume a aula: <strong>arquitetura é hipótese</strong>. Requisitos orientam a hipótese, cenários a pressionam, evidências a sustentam. O ATAM é o método que faz essa pressão de forma organizada — antes de a decisão virar código e ficar cara de mudar.</p>
+
+  <div class="alert alert-light border mt-4 mb-0">
+    <strong>Escopo de hoje:</strong> não há implementação, comando de terminal nem criação de teste. O produto da aula é <strong>a arquitetura e sua avaliação crítica</strong>, dentro de <code>docs/arquitetura.md</code>.
+  </div>
+</section>
+
+<!-- ============================ 2 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s2">
+  <h2 class="h3 fw-bold">2. Fato, lacuna, suposição e decisão</h2>
+  <p class="text-muted">Toda a aula depende disso. Quando a IA entra na conversa, o risco não é ela errar — é ela <em>preencher lacuna com texto convincente</em>. A defesa é classificar cada afirmação antes de usá-la.</p>
+
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light"><tr><th style="width:16%">Categoria</th><th style="width:34%">Definição operacional</th><th>Exemplo no Foot Fanatics</th></tr></thead>
+      <tbody>
+        <tr><td class="fw-bold">Fato</td><td>Está declarado num artefato do repositório e pode ser citado com caminho e identificador.</td><td>“<code>RF-07</code>: o token de sessão expira em 30 minutos” — está em <code>docs/prd.md</code>, escrito na Semana 34.</td></tr>
+        <tr><td class="fw-bold">Lacuna</td><td>Informação necessária para decidir que <strong>não existe</strong> em lugar nenhum.</td><td>Quantos assinantes simultâneos o sistema precisa atender no horário de jogo? Ninguém escreveu.</td></tr>
+        <tr><td class="fw-bold">Suposição</td><td>Hipótese assumida <strong>explicitamente</strong>, com justificativa e impacto caso esteja errada.</td><td>“Assumimos até 500 sessões simultâneas; se for 5.000, o cache em memória de instância única não serve.”</td></tr>
+        <tr><td class="fw-bold">Decisão</td><td>Escolha justificada por requisito, atributo ou restrição — e rastreável até ele.</td><td>“Token opaco em vez de JWT, para permitir revogação imediata (<code>RNF-03</code>, segurança).”</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row g-3 mt-2">
+    <div class="col-md-6"><div class="ruim">
+      <h4><i class="fas fa-xmark me-1"></i> Como não escrever</h4>
+      <p>“O sistema deve responder em menos de 200 ms, como é padrão em APIs de conteúdo.”</p>
+      <p class="mb-0"><em>Problema:</em> o número não veio de artefato nenhum. Virou “fato” por repetição e ninguém mais vai questioná-lo.</p>
+    </div></div>
+    <div class="col-md-6"><div class="bom">
+      <h4><i class="fas fa-check me-1"></i> Como escrever</h4>
+      <p>“<strong>Suposição S-02:</strong> p95 &lt; 200 ms na listagem de conteúdo. Origem: hipótese da equipe, sem respaldo nos artefatos. <strong>Validação pendente</strong> com o professor/cliente. Se a meta real for 1 s, a decisão D-04 (cache) perde justificativa.”</p>
+      <p class="mb-0"><em>Por quê:</em> qualquer pessoa consegue contestar — e é exatamente isso que se quer.</p>
+    </div></div>
+  </div>
+
+  <p class="text-muted mt-4 mb-0"><strong>Regra prática:</strong> toda decisão aponta para um requisito, atributo ou restrição. Se não houver origem, ela não é apagada — ela é <strong>marcada</strong>: <span class="tag">decisão sem requisito correspondente</span>. Marcar é honesto; inventar a origem é dívida técnica disfarçada.</p>
+</section>
+
+<!-- ============================ 3 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s3">
+  <h2 class="h3 fw-bold">3. C4: quatro níveis, quatro perguntas</h2>
+  <p class="text-muted">C4 é uma forma de contar a história do sistema em níveis de zoom. Cada nível responde <strong>uma</strong> pergunta; misturar as perguntas é o erro mais comum em diagrama de equipe iniciante.</p>
+
+  <div class="table-responsive mb-4">
+    <table class="table table-striped align-middle">
+      <thead><tr><th>Nível</th><th>Pergunta-guia</th><th>Entra</th><th>Não entra</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1 · Contexto</strong></td><td>Qual problema, para quem, com quais vizinhos?</td><td>Personas, sistemas externos, fronteira do produto.</td><td>Tecnologia, banco de dados, fila.</td></tr>
+        <tr><td><strong>2 · Contêineres</strong></td><td>Onde as coisas executam e onde os dados persistem?</td><td>Aplicações, APIs, jobs, bancos, storage.</td><td>Classes, métodos, nomes de arquivo.</td></tr>
+        <tr><td><strong>3 · Componentes</strong></td><td>Quem faz o quê dentro de um contêiner?</td><td>Responsabilidades internas e suas interfaces.</td><td>Detalhe de implementação de cada uma.</td></tr>
+        <tr><td><strong>4 · Código</strong></td><td>Quais tipos e contratos realizariam isso?</td><td>Um recorte demonstrativo, quando ajuda.</td><td>O código-fonte de verdade — não é hoje.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure class="figura mb-4">
+    <img src="../assets/c4-foot-fanatics-contexto.svg" alt="Diagrama C4 de contexto do Foot Fanatics, com personas, o sistema e a fonte externa de dados esportivos">
+    <figcaption><strong>Nível 1 — Contexto.</strong> Quem usa e com quem o sistema conversa. Repare que não há nenhuma tecnologia no desenho: neste nível ela seria ruído. As relações tracejadas marcam a parte que ainda é proposta didática, não fato do repositório.</figcaption>
+  </figure>
+
+  <figure class="figura mb-4">
+    <img src="../assets/c4-foot-fanatics-containers.svg" alt="Diagrama C4 de contêineres do Foot Fanatics, separando o fluxo online do pipeline batch diário">
+    <figcaption><strong>Nível 2 — Contêineres.</strong> Aqui aparece a decisão que organiza a aula inteira: <strong>o fluxo online e o pipeline batch são contêineres distintos</strong>. É o que permite dizer, mais adiante, que treinar não pode derrubar quem está assistindo.</figcaption>
+  </figure>
+
+  <figure class="figura mb-4">
+    <img src="../assets/c4-foot-fanatics-componentes.svg" alt="Diagrama C4 de componentes do contêiner de pipeline de treinamento do Foot Fanatics">
+    <figcaption><strong>Nível 3 — Componentes.</strong> Zoom no contêiner batch: quem agenda, quem seleciona os dados novos, quem treina, quem valida, quem promove. Cada caixa é uma responsabilidade que depois vira alvo de cenário no ATAM.</figcaption>
+  </figure>
+
+  <figure class="figura mb-0">
+    <img src="../assets/c4-foot-fanatics-codigo.svg" alt="Diagrama C4 de código com os tipos do seletor incremental do Foot Fanatics">
+    <figcaption><strong>Nível 4 — Código.</strong> Demonstrativo. Serve para mostrar que os contratos <em>cabem</em> — não para antecipar implementação. Nomes e assinaturas ainda precisam passar por ADR e por ATAM.</figcaption>
+  </figure>
+
+  <div class="alert alert-danger mt-4 mb-0"><strong>Erro clássico:</strong> desenhar o nível 2 com nomes de classe, ou o nível 1 com o PostgreSQL no meio. Se o diagrama responde a duas perguntas ao mesmo tempo, ele não responde bem a nenhuma — e a discussão da equipe trava em detalhe irrelevante.</div>
+</section>
+
+<!-- ============================ 4 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s4">
+  <h2 class="h3 fw-bold">4. Dois ritmos, uma arquitetura</h2>
+  <p class="text-muted">A restrição desta aula: <strong>existe um cron job que roda todo dia, ao final do dia, e treina ou retreina usando somente dados novos</strong>. Isso cria dois fluxos com naturezas opostas dentro do mesmo sistema.</p>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light"><tr><th style="width:22%">Fluxo</th><th style="width:38%">Responsabilidade</th><th>Qualidades críticas</th></tr></thead>
+      <tbody>
+        <tr><td class="fw-bold">Online</td><td>Receber a interação, consultar o modelo vigente e responder agora.</td><td>Latência, disponibilidade, segurança, privacidade.</td></tr>
+        <tr><td class="fw-bold">Batch diário</td><td>No fim do dia, selecionar só o que é novo, treinar, validar e versionar um candidato.</td><td>Idempotência, recuperação, observabilidade, reprodutibilidade, custo.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <h3 class="h5 fw-bold mt-4">As três invariantes que a aula cobra</h3>
+  <ol class="text-muted mb-0">
+    <li>O batch <strong>não</strong> indisponibiliza o online — nem por competição de recurso, nem por lock de tabela.</li>
+    <li>O checkpoint <strong>não</strong> avança antes do sucesso — senão os dados do intervalo somem em silêncio.</li>
+    <li>Nenhum candidato é promovido <strong>automaticamente</strong> sem passar por gate de comparação com o modelo vigente.</li>
+  </ol>
+</section>
+
+<!-- ============================ 5 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s5">
+  <h2 class="h3 fw-bold">5. O cron diário destrinchado</h2>
+  <p class="text-muted">O checklist abaixo é o coração técnico da aula. Não decore os nomes: entenda <strong>a falha que cada controle evita</strong>. Na análise ATAM, cada linha desta tabela vira pelo menos um cenário.</p>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead><tr><th style="width:24%">Controle</th><th style="width:38%">O que faz</th><th>O que acontece se faltar</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Watermark / checkpoint</strong></td><td>Marca até onde já foi processado, definindo o que é “novo”.</td><td>Ou reprocessa tudo todo dia (custo), ou perde registros do intervalo (silencioso e grave).</td></tr>
+        <tr><td><strong>Atualização atômica do checkpoint</strong></td><td>Avança só depois do sucesso, de uma vez.</td><td>Falha no meio deixa o marcador adiantado: os dados daquele intervalo nunca mais entram no treino.</td></tr>
+        <tr><td><strong>Idempotência</strong></td><td>Reexecutar o mesmo intervalo não duplica efeito.</td><td>O retry vira duplicação de dados e o modelo aprende com peso errado.</td></tr>
+        <tr><td><strong>Lock</strong></td><td>Impede duas execuções concorrentes do mesmo job.</td><td>Duas execuções escrevem o mesmo checkpoint e corrompem o estado. <em>Idempotência não resolve isso</em> — são problemas diferentes.</td></tr>
+        <tr><td><strong>Retry com classificação</strong></td><td>Distingue falha transitória (repetir) de permanente (parar e alertar).</td><td>Ou o job desiste do que era rede instável, ou insiste eternamente em erro de esquema.</td></tr>
+        <tr><td><strong>Validação de qualidade</strong></td><td>Bloqueia dado inválido, fora de esquema ou degradado.</td><td>Lixo entra no treino; o modelo piora sem nenhum alarme disparar.</td></tr>
+        <tr><td><strong>Reprodutibilidade</strong></td><td>Registra dados, parâmetros e versão de código de cada execução.</td><td>Um resultado ruim não pode ser investigado nem refeito — ninguém sabe o que entrou.</td></tr>
+        <tr><td><strong>Registry / versionamento</strong></td><td>Guarda os candidatos e aponta qual é o modelo ativo.</td><td>Não existe “voltar para a versão de ontem”.</td></tr>
+        <tr><td><strong>Gates de promoção</strong></td><td>Compara candidato e baseline segundo critério declarado.</td><td>Um modelo pior entra em produção por ser mais recente.</td></tr>
+        <tr><td><strong>Rollback</strong></td><td>Restaura a última versão estável rapidamente.</td><td>O incidente dura o tempo de um novo treino — horas, não minutos.</td></tr>
+        <tr><td><strong>Observabilidade</strong></td><td>Log correlacionado, métrica, alerta e linhagem do dado.</td><td>A falha só é descoberta pelo usuário, dias depois.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-muted mb-0"><strong>Atravessando tudo:</strong> segurança e LGPD (minimização, retenção, controle de acesso, descarte) e custo (janela de execução, computação, armazenamento, crescimento). Esses dois não são seções separadas do documento — são perguntas feitas a cada decisão.</p>
+</section>
+
+<!-- ============================ 6 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s6">
+  <h2 class="h3 fw-bold">6. ATAM</h2>
+  <p class="text-muted"><strong>Architecture Tradeoff Analysis Method.</strong> Um método para avaliar uma arquitetura <em>antes</em> de construí-la, ligando decisões arquiteturais aos atributos de qualidade que o negócio precisa.</p>
+
+  <div class="row g-3">
+    <div class="col-md-6"><div class="bom">
+      <h4>O que o ATAM produz</h4>
+      <ul class="mb-0">
+        <li>Cenários mensuráveis que pressionam a arquitetura.</li>
+        <li>Pontos de sensibilidade e de trade-off explícitos.</li>
+        <li>Riscos, não-riscos e temas de risco.</li>
+        <li>Uma lista honesta do que ainda não se sabe.</li>
+      </ul>
+    </div></div>
+    <div class="col-md-6"><div class="ruim">
+      <h4>O que o ATAM não produz</h4>
+      <ul class="mb-0">
+        <li>Um selo de “arquitetura correta”.</li>
+        <li>Uma nota, um score ou um ranking.</li>
+        <li>Decisão automática entre alternativas.</li>
+        <li>Substituto para medir depois, com o sistema rodando.</li>
+      </ul>
+    </div></div>
+  </div>
+
+  <figure class="figura my-4">
+    <img src="../assets/fluxo-conceitual-atam.svg" alt="Fluxo conceitual do ATAM: drivers de negócio e arquitetura alimentam atributos e abordagens, que geram cenários e decisões; a análise produz trade-offs, sensibilidades, não riscos e riscos, consolidados em temas de risco">
+    <figcaption>Direcionadores de negócio e arquitetura entram; cenários e decisões são confrontados; do confronto saem as descobertas — e os temas de risco realimentam os direcionadores.</figcaption>
+  </figure>
+
+  <h3 class="h5 fw-bold mt-4">6.1 O cenário de atributo de qualidade tem seis partes</h3>
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered align-middle">
+      <thead class="table-light"><tr><th>Parte</th><th>Pergunta</th><th>Exemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Fonte</strong></td><td>Quem ou o que provoca?</td><td>O job de treinamento diário.</td></tr>
+        <tr><td><strong>Estímulo</strong></td><td>O que acontece?</td><td>Falha após treinar o candidato, antes de promover.</td></tr>
+        <tr><td><strong>Ambiente</strong></td><td>Em qual condição?</td><td>Execução noturna regular, com o online em operação.</td></tr>
+        <tr><td><strong>Artefato</strong></td><td>Qual parte é afetada?</td><td>Pipeline batch, checkpoint e model registry.</td></tr>
+        <tr><td><strong>Resposta</strong></td><td>Como o sistema reage?</td><td>Preserva o modelo ativo, não avança o checkpoint e retoma sem duplicar dados.</td></tr>
+        <tr><td><strong>Métrica</strong></td><td>Como saberemos se foi suficiente?</td><td>Retomada em até 1 execução; zero registro duplicado; modelo ativo inalterado.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row g-3 mt-1">
+    <div class="col-md-6"><div class="ruim">
+      <h4><i class="fas fa-xmark me-1"></i> Cenário fraco</h4>
+      <p class="mb-0">“O sistema deve ser resiliente a falhas no processamento noturno.”</p>
+      <p class="mb-0 mt-2"><em>Não dá para verificar.</em> Falta ambiente, artefato e, sobretudo, métrica. É uma boa intenção, não um cenário.</p>
+    </div></div>
+    <div class="col-md-6"><div class="bom">
+      <h4><i class="fas fa-check me-1"></i> Cenário forte</h4>
+      <p class="mb-0">“Quando o job noturno falha após o treino e antes da promoção, com o online em operação, o pipeline preserva o modelo ativo, mantém o checkpoint anterior e retoma na execução seguinte sem duplicar registros — verificável em uma execução, com zero duplicatas.”</p>
+    </div></div>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">6.2 Utility tree: prioridade com contexto</h3>
+  <p class="text-muted">Organize <strong>atributo → refinamento → cenário</strong> e atribua a cada cenário um par (importância para o negócio, dificuldade técnica). Comece pelos <strong>(alta, alta)</strong>: é onde o valor e a incerteza se encontram.</p>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <thead><tr><th>Atributo</th><th>Refinamento</th><th>Cenário (resumido)</th><th style="width:16%">Imp. × Dif.</th></tr></thead>
+      <tbody>
+        <tr class="table-danger"><td>Disponibilidade</td><td>Isolamento batch/online</td><td>Treino noturno em execução; consultas de conteúdo continuam dentro do p95 acordado.</td><td><strong>Alta × Alta</strong></td></tr>
+        <tr class="table-danger"><td>Integridade de dados</td><td>Falha parcial</td><td>Falha após o treino: modelo ativo preservado e checkpoint intacto.</td><td><strong>Alta × Alta</strong></td></tr>
+        <tr><td>Segurança / LGPD</td><td>Minimização</td><td>Dado pessoal não necessário ao treino não sai da base de origem.</td><td>Alta × Média</td></tr>
+        <tr><td>Custo</td><td>Janela de execução</td><td>Treino cabe na janela noturna sem escalar máquina extra.</td><td>Média × Média</td></tr>
+        <tr><td>Modificabilidade</td><td>Troca de modelo</td><td>Trocar o algoritmo afeta um componente e nenhum contrato externo.</td><td>Média × Baixa</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">6.3 O vocabulário das descobertas</h3>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-light"><tr><th style="width:22%">Termo</th><th style="width:34%">Significa</th><th>Exemplo</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Ponto de sensibilidade</strong></td><td>Uma decisão afeta fortemente <em>um</em> atributo.</td><td>O tamanho do lote de treino determina se a execução cabe na janela.</td></tr>
+        <tr><td><strong>Ponto de trade-off</strong></td><td>A mesma decisão melhora um atributo e piora outro.</td><td>Mais réplicas do modelo ativo: melhora disponibilidade, piora custo e tempo de publicação.</td></tr>
+        <tr><td><strong>Risco</strong></td><td>Algo que pode impedir um cenário de ser atendido.</td><td>Não há lock: duas execuções simultâneas corrompem o checkpoint.</td></tr>
+        <tr><td><strong>Não-risco</strong></td><td>A decisão responde satisfatoriamente ao cenário.</td><td>Rollback por ponteiro no registry devolve a versão anterior em segundos.</td></tr>
+        <tr><td><strong>Tema de risco</strong></td><td>Padrão que se repete entre várias descobertas.</td><td>“Nenhuma etapa do batch tem alerta”: aparece em recuperação, qualidade e promoção.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="text-muted mb-0"><strong>Distinção que costuma cair:</strong> sensibilidade é sobre <em>um</em> atributo; trade-off é quando a mesma decisão puxa dois atributos em direções opostas. Todo trade-off é sensível — nem toda sensibilidade é trade-off.</p>
+</section>
+
+<!-- ============================ 7 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s7">
+  <h2 class="h3 fw-bold">7. Táticas de Len Bass</h2>
+  <p class="text-muted">Uma <strong>tática</strong> é uma decisão de projeto que influencia a resposta do sistema a um estímulo, mirando <strong>um</strong> atributo de qualidade. Descrever a decisão pela tática, e não pela ferramenta, é o que torna a análise discutível.</p>
+
+  <div class="row g-3">
+    <div class="col-md-6"><div class="ruim">
+      <h4><i class="fas fa-xmark me-1"></i> Descrição pela implementação</h4>
+      <p class="mb-0">“Usamos Redis.”</p>
+      <p class="mb-0 mt-2"><em>Não dá para avaliar:</em> qual atributo isso serve? Que custo impõe? Como se verifica?</p>
+    </div></div>
+    <div class="col-md-6"><div class="bom">
+      <h4><i class="fas fa-check me-1"></i> Descrição pela intenção</h4>
+      <p class="mb-0">“Mantemos <strong>múltiplas cópias de dados</strong> (tática de desempenho/disponibilidade) para reduzir latência de leitura do catálogo.”</p>
+      <p class="mb-0 mt-2"><em>Agora dá:</em> o custo é consistência eventual e invalidação; a evidência é o p95 medido com e sem a cópia.</p>
+    </div></div>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">Da decisão à evidência, em cinco campos</h3>
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered align-middle">
+      <tbody>
+        <tr><td class="fw-bold" style="width:22%">Decisão</td><td>Publicar o modelo por troca de ponteiro no registry, nunca sobrescrevendo o artefato ativo.</td></tr>
+        <tr><td class="fw-bold">Tática (Bass)</td><td>Disponibilidade → <em>preparação e reparo</em>: manter a versão anterior íntegra para reversão.</td></tr>
+        <tr><td class="fw-bold">Cenário atendido</td><td>Candidato promovido apresenta degradação; a equipe reverte com o online em operação.</td></tr>
+        <tr><td class="fw-bold">Métrica</td><td>Rollback concluído em menos de 1 minuto, sem reinício do serviço online.</td></tr>
+        <tr><td class="fw-bold">Trade-off</td><td>Custo de armazenamento das versões retidas e disciplina de limpeza (retenção).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="alert alert-light border mt-3 mb-0">
+    <p class="mb-2"><strong>Regra da aula:</strong> decisão sem tática nomeada é decisão sem justificativa; tática sem cenário associado é otimização especulativa.</p>
+    <a href="../assets/taticas-arquiteturais-len-bass.md" download class="btn btn-outline-danger btn-sm rounded-pill"><i class="fas fa-download me-1" aria-hidden="true"></i> Baixar o catálogo completo de táticas (.md)</a>
+    <span class="small text-muted ms-2">Guarde no repositório da equipe, ao lado de <code>docs/arquitetura.md</code>.</span>
+  </div>
+</section>
+
+<!-- ============================ 8 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s8">
+  <h2 class="h3 fw-bold">8. IA agêntica: especialização e confronto</h2>
+  <p class="text-muted">Um único agente concorda com o que ele mesmo propôs. A saída é distribuir papéis e fazer com que eles se contestem, com uma pessoa arbitrando.</p>
+  <div class="row g-3">
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Analista</h3><p class="small mb-0">Extrai drivers dos artefatos reais e separa fato de suposição.</p></div></div>
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Arquiteto</h3><p class="small mb-0">Estrutura o C4, define fronteiras e interfaces.</p></div></div>
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Dados / ML</h3><p class="small mb-0">Pressiona o pipeline: watermark, gates, reprodutibilidade.</p></div></div>
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Segurança / LGPD</h3><p class="small mb-0">Procura exposição, retenção indevida e acesso amplo demais.</p></div></div>
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Operações / SRE</h3><p class="small mb-0">Testa falha, recuperação, alerta e rollback.</p></div></div>
+    <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold">Custos e facilitador ATAM</h3><p class="small mb-0">Questiona sustentabilidade e consolida cenários e descobertas.</p></div></div>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">O que a IA costuma errar aqui — e você precisa pegar</h3>
+  <ol class="text-muted">
+    <li><strong>Inventar número.</strong> SLA, volume, percentual de crescimento. Se não está no artefato, é suposição — exija a marcação.</li>
+    <li><strong>Escolher tecnologia por popularidade.</strong> Kafka, Redis, Kubernetes aparecem sem nenhum requisito que os justifique.</li>
+    <li><strong>Concordar com o próprio texto.</strong> Na revisão cruzada, o agente “revisor” elogia o que o agente anterior escreveu. Force objeção: peça <em>o que está errado</em>, não <em>o que está bom</em>.</li>
+    <li><strong>Transformar suposição em fato entre uma resposta e outra.</strong> O que era hipótese no prompt 2 aparece como requisito no prompt 4.</li>
+    <li><strong>Diagrama e texto divergentes.</strong> O Mermaid mostra um componente que o texto não menciona (ou vice-versa).</li>
+    <li><strong>Cenário sem métrica.</strong> Volta “deve ser rápido e confiável” com outras palavras.</li>
+  </ol>
+  <div class="alert alert-warning mb-0"><strong>Governança:</strong> agentes analisam, propõem e confrontam. <strong>Não têm autoridade</strong> para criar requisito, encerrar divergência nem aceitar risco. Isso é das pessoas — e fica registrado com nome e motivo.</div>
+</section>
+
+<!-- ============================ 9 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s9">
+  <h2 class="h3 fw-bold">9. Prática guiada — os quatro prompts</h2>
+  <p class="text-muted">Execute na ordem. Cada prompt é autocontido e deve ser copiado por inteiro. <strong>Depois de cada um, faça a revisão indicada antes de avançar</strong> — é a revisão, não o prompt, que produz aprendizado.</p>
+
+  <div class="passo mt-4"><div class="n">1</div><div><h3 class="h5 fw-bold mb-1">Descoberta e drivers</h3><p class="text-muted small mb-0">Estabelece a base factual: o que existe, o que falta, o que se está assumindo.</p></div></div>
+  <div class="prompt">Atue como analista de requisitos e arquiteto de software. Trabalhe somente com os artefatos do repositório aberto.
 
 OBJETIVO
 Preparar a base factual da arquitetura a partir das personas e dos requisitos levantados anteriormente.
@@ -20,27 +396,33 @@ INSTRUÇÕES
 2. Trate esses arquivos como única fonte de verdade. Não invente personas, fluxos, volumes, tecnologias, SLAs, regras, métricas ou integrações.
 3. Separe claramente: fatos confirmados; lacunas; conflitos; suposições; perguntas abertas. Uma suposição nunca pode aparecer como fato.
 4. Identifique requisitos arquiteturalmente significativos, atributos de qualidade, restrições e drivers de negócio. Para cada item, informe a origem.
-5. Considere como restrição obrigatória desta atividade: um cron job roda diariamente ao final do dia para treinar ou retreinar usando somente dados novos. Se essa restrição não estiver nos artefatos ou entrar em conflito com eles, registre sua origem como “restrição fornecida pelo professor” e destaque o conflito.
+5. Considere como restrição obrigatória desta atividade: um cron job roda diariamente ao final do dia para treinar ou retreinar usando somente dados novos. Se essa restrição não estiver nos artefatos ou entrar em conflito com eles, registre sua origem como "restrição fornecida pelo professor" e destaque o conflito.
 6. Crie ou atualize docs/arquitetura.md com: contexto e objetivo; stakeholders/personas; fonte de verdade; requisitos significativos; atributos de qualidade; drivers priorizados; glossário; fatos, lacunas, suposições e perguntas; riscos arquiteturais iniciais.
 
 CRITÉRIOS
-Cada driver deve ter origem rastreável. Toda métrica ausente deve permanecer como pergunta ou hipótese. Não altere personas/requisitos, não implemente código e não forneça nem execute comandos shell.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold">Prompt 2 — arquitetura C4 e pipeline diário</h2><div class="prompt">Atue como arquiteto de solução e especialista em arquitetura de dados/ML. Trabalhe somente com as personas, os requisitos e docs/arquitetura.md do repositório.
+Cada driver deve ter origem rastreável. Toda métrica ausente deve permanecer como pergunta ou hipótese. Não altere personas/requisitos, não implemente código e não forneça nem execute comandos shell.</div>
+  <div class="alert alert-secondary mt-3"><strong>Revise antes de seguir:</strong> todo driver tem caminho de arquivo citado? Nenhum número apareceu sem origem? A lista de lacunas não está vazia (se estiver, desconfie)? Os identificadores originais (<code>RF-01</code>, <code>RNF-02</code>) foram preservados?</div>
+
+  <div class="passo mt-4"><div class="n">2</div><div><h3 class="h5 fw-bold mb-1">Arquitetura C4 e pipeline diário</h3><p class="text-muted small mb-0">Transforma drivers em estrutura: fronteiras, responsabilidades, interfaces e o batch.</p></div></div>
+  <div class="prompt">Atue como arquiteto de solução e especialista em arquitetura de dados/ML. Trabalhe somente com as personas, os requisitos e docs/arquitetura.md do repositório.
 
 OBJETIVO
 Conceber uma arquitetura orientada pelos drivers já extraídos, separando o fluxo online do pipeline batch diário.
 
 INSTRUÇÕES
 1. Leia os artefatos de origem e a seção de drivers. Não assuma fatos ausentes; registre suposições, alternativas e perguntas.
-2. Defina limites, responsabilidades, interfaces, dependências e dados. Não escolha tecnologia por preferência: relacione cada escolha a requisito, restrição ou atributo; marque “sem requisito correspondente” quando necessário.
+2. Defina limites, responsabilidades, interfaces, dependências e dados. Não escolha tecnologia por preferência: relacione cada escolha a requisito, restrição ou atributo; marque "sem requisito correspondente" quando necessário.
 3. Inclua em docs/arquitetura.md diagramas Mermaid compatíveis com C4: contexto, contêineres e componentes. Inclua também um diagrama de sequência do fluxo online e outro da execução batch.
 4. Modele o cron job executado diariamente ao final do dia, treinando/re-treinando somente com dados novos. Analise explicitamente: watermark/checkpoint; atualização atômica do checkpoint; idempotência; deduplicação; lock e concorrência; retry, timeout, recuperação e falha parcial; dados tardios; qualidade, esquema e linhagem; reprodutibilidade; validação do candidato; versionamento e model registry; critérios de promoção; rollback; isolamento do modelo ativo.
 5. Inclua observabilidade (logs correlacionados, métricas, alertas e auditoria), segurança/LGPD (minimização, retenção, acesso, criptografia e descarte) e custos (janela, computação, armazenamento e crescimento).
 6. Para decisões sem dados suficientes, compare pelo menos duas alternativas e adie a escolha ou registre uma hipótese validável.
 
 CRITÉRIOS
-Diagramas e texto devem usar os mesmos nomes e relações. O batch não pode derrubar o online, avançar checkpoint antes do sucesso nem promover modelo sem gate. Não implemente código, não forneça nem execute comandos shell e não altere a fonte de verdade.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold">Prompt 3 — análise ATAM</h2><div class="prompt">Atue como uma equipe avaliadora ATAM independente. Leia integralmente as personas, os requisitos e docs/arquitetura.md antes de avaliar.
+Diagramas e texto devem usar os mesmos nomes e relações. O batch não pode derrubar o online, avançar checkpoint antes do sucesso nem promover modelo sem gate. Não implemente código, não forneça nem execute comandos shell e não altere a fonte de verdade.</div>
+  <div class="alert alert-secondary mt-3"><strong>Revise antes de seguir:</strong> os nomes do Mermaid batem com os do texto? Cada um dos onze itens do checklist do batch foi tratado — ou marcado como pendente? Alguma tecnologia entrou sem requisito que a justifique? As três invariantes da seção 4 continuam válidas no desenho?</div>
+
+  <div class="passo mt-4"><div class="n">3</div><div><h3 class="h5 fw-bold mb-1">Análise ATAM</h3><p class="text-muted small mb-0">Pressiona a proposta com cenários e revela sensibilidades, trade-offs e riscos.</p></div></div>
+  <div class="prompt">Atue como uma equipe avaliadora ATAM independente. Leia integralmente as personas, os requisitos e docs/arquitetura.md antes de avaliar.
 
 OBJETIVO
 Pressionar a arquitetura por cenários mensuráveis e revelar sensibilidades, trade-offs, riscos e temas de risco.
@@ -48,15 +430,18 @@ Pressionar a arquitetura por cenários mensuráveis e revelar sensibilidades, tr
 INSTRUÇÕES
 1. Resuma os drivers de negócio, restrições, atributos prioritários e abordagens arquiteturais. Aponte divergências entre requisitos e arquitetura.
 2. Construa uma utility tree no formato atributo → refinamento → cenário. Para cada cenário, atribua importância e dificuldade com justificativa.
-3. Escreva cada cenário com: fonte do estímulo; estímulo; ambiente; artefato; resposta; métrica de resposta. Não invente valores como fatos. Quando faltar uma meta, proponha uma faixa como hipótese e marque “validação pendente”.
+3. Escreva cada cenário com: fonte do estímulo; estímulo; ambiente; artefato; resposta; métrica de resposta. Não invente valores como fatos. Quando faltar uma meta, proponha uma faixa como hipótese e marque "validação pendente".
 4. Cubra no mínimo: falha parcial do job; reexecução; jobs sobrepostos; dados atrasados ou duplicados; alteração de esquema; degradação da qualidade dos dados; candidato pior que o modelo ativo; promoção incompleta; rollback; indisponibilidade do registry; vazamento ou uso indevido de dados; custo/tempo acima da janela; impacto do batch no online.
-5. Para cada cenário, identifique decisões relacionadas, evidências existentes e lacunas.
+5. Para cada cenário, identifique decisões relacionadas, evidências existentes e lacunas. Exija que cada abordagem cite a tática arquitetural do catálogo de Len Bass que a sustenta e a métrica que a comprova.
 6. Registre pontos de sensibilidade, pontos de trade-off, riscos, não-riscos e temas de risco. Diferencie risco confirmado de dúvida ainda não investigada.
 7. Acrescente a análise ATAM a docs/arquitetura.md sem apagar origem, suposições ou alternativas.
 
 CRITÉRIOS
-Toda descoberta deve apontar para cenário e decisão. Não implemente código, não execute comandos shell e não transforme hipótese em requisito.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold">Prompt 4 — revisão cruzada, ADRs e rastreabilidade</h2><div class="prompt">Atue como painel revisor formado por seis papéis: arquiteto de software, especialista em dados/ML, segurança e LGPD, operações/SRE, custos/FinOps e facilitador ATAM. Leia todos os artefatos de requisitos e docs/arquitetura.md.
+Toda descoberta deve apontar para cenário e decisão. Não implemente código, não execute comandos shell e não transforme hipótese em requisito.</div>
+  <div class="alert alert-secondary mt-3"><strong>Revise antes de seguir:</strong> todo cenário tem as seis partes, com métrica? Existe ao menos um trade-off nomeado (arquitetura sem trade-off é sinal de análise superficial)? Os cenários (alta, alta) foram analisados primeiro? Cada risco aponta para uma decisão concreta?</div>
+
+  <div class="passo mt-4"><div class="n">4</div><div><h3 class="h5 fw-bold mb-1">Revisão cruzada, ADRs e rastreabilidade</h3><p class="text-muted small mb-0">Fecha o ciclo: decisões registradas e cobertura demonstrada ponta a ponta.</p></div></div>
+  <div class="prompt">Atue como painel revisor formado por seis papéis: arquiteto de software, especialista em dados/ML, segurança e LGPD, operações/SRE, custos/FinOps e facilitador ATAM. Leia todos os artefatos de requisitos e docs/arquitetura.md.
 
 OBJETIVO
 Revisar criticamente a proposta, registrar decisões e demonstrar cobertura ponta a ponta.
@@ -70,8 +455,120 @@ INSTRUÇÕES
 6. Faça uma leitura final como auditor: uma pessoa nova deve conseguir localizar a origem de cada decisão e contestá-la.
 
 CRITÉRIOS
-Não invente fatos, não altere personas/requisitos, não escreva código e não forneça nem execute comandos shell.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Entregável e critérios de aceite</h2><ul class="text-muted"><li><code>docs/arquitetura.md</code> com fontes, drivers, suposições e perguntas.</li><li>C4 de contexto, contêineres e componentes; sequências online e batch.</li><li>Pipeline incremental completo, incluindo falhas, promoção e rollback.</li><li>Utility tree, cenários mensuráveis e matriz ATAM.</li><li>ADRs e matriz requisito → decisão → componente → evidência.</li></ul><div class="alert alert-success mb-0"><strong>Definition of Done:</strong> outra equipe consegue entender, rastrear e contestar a arquitetura sem depender de explicação oral.</div></section>
-<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Autoavaliação</h2><ol class="text-muted mb-0"><li>Qual requisito justifica cada componente?</li><li>O que acontece se o cron rodar duas vezes?</li><li>Como sabemos que apenas dados novos entraram?</li><li>Quem impede a promoção de um modelo pior?</li><li>Qual decisão concentra mais trade-offs?</li><li>Quais riscos permanecem aceitos e por quê?</li></ol></section>
-<div class="text-center"><a href="../slide_introducao-testes-automatizados.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
-</div></div></main><footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script></body></html>
+Não invente fatos, não altere personas/requisitos, não escreva código e não forneça nem execute comandos shell.</div>
+  <div class="alert alert-secondary mt-3 mb-0"><strong>Revise para fechar:</strong> as divergências entre papéis aparecem no documento, ou o painel “concordou” com tudo? Existe ADR para cada decisão relevante, com alternativa descartada e motivo? A matriz tem linha para todo requisito significativo — inclusive os sem cobertura?</div>
+</section>
+
+<!-- ============================ 10 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s10">
+  <h2 class="h3 fw-bold">10. Exemplo resolvido de ponta a ponta</h2>
+  <p class="text-muted">Uma linha completa, do driver de negócio até a evidência. É esta a forma que o seu <code>docs/arquitetura.md</code> deve ter no fim da aula — repetida para cada decisão relevante.</p>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">Driver de negócio</h3>
+  <p class="text-muted">Assinante paga para assistir no horário do jogo. Indisponibilidade nesse horário é cancelamento no mês seguinte.</p>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">Cenário (seis partes)</h3>
+  <p class="text-muted mb-0"><strong>Fonte:</strong> pipeline batch. <strong>Estímulo:</strong> treino diário inicia enquanto há tráfego residual. <strong>Ambiente:</strong> janela noturna, online em operação. <strong>Artefato:</strong> banco de leitura do catálogo. <strong>Resposta:</strong> as consultas do online seguem atendidas sem degradação perceptível. <strong>Métrica:</strong> p95 do catálogo não piora mais que 10% durante a janela (<em>validação pendente</em>: a meta base ainda não está nos artefatos).</p>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">Decisão + tática</h3>
+  <p class="text-muted">O batch lê de uma réplica dedicada, nunca da instância que serve o online. Tática de desempenho: <em>manter múltiplas cópias de dados</em>; tática de disponibilidade: <em>isolamento de recursos</em>.</p>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">Descobertas do ATAM</h3>
+  <ul class="text-muted">
+    <li><strong>Ponto de sensibilidade:</strong> o atraso de replicação determina o quão “novos” são os dados novos.</li>
+    <li><strong>Trade-off:</strong> a réplica melhora disponibilidade e custa dinheiro e consistência eventual.</li>
+    <li><strong>Risco:</strong> se o atraso crescer sem alerta, o treino do dia perde registros silenciosamente.</li>
+    <li><strong>Não-risco:</strong> falha da réplica não derruba o online, que continua na instância primária.</li>
+  </ul>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">ADR resumido</h3>
+  <pre class="bg-light border rounded p-3 small text-wrap"><code># ADR-003 — Leitura do batch em réplica dedicada
+Status: aceita
+Contexto e forças: janela noturna coincide com tráfego residual; RNF de disponibilidade no horário de jogo.
+Requisitos/cenários: RNF-01, cenário DISP-01.
+Alternativas: (a) ler da primária com limite de taxa; (b) adiantar a janela; (c) réplica dedicada.
+Decisão: (c) réplica dedicada.
+Consequências: + isolamento do online; − custo mensal e consistência eventual.
+Riscos: atraso de replicação sem alerta (R-04).
+Evidência necessária: medir p95 do catálogo com e sem o batch em execução.
+Condição de revisão: se o atraso p99 passar de 5 min, reavaliar.</code></pre>
+
+  <h3 class="h6 fw-bold text-uppercase text-danger mt-4">Linha da matriz de rastreabilidade</h3>
+  <div class="table-responsive">
+    <table class="table table-sm table-bordered align-middle mb-0">
+      <thead class="table-light"><tr><th>Requisito</th><th>Decisão / ADR</th><th>Componente</th><th>Evidência de verificação</th></tr></thead>
+      <tbody><tr><td>RNF-01 (disponibilidade no horário de jogo)</td><td>ADR-003</td><td>Réplica de leitura + seletor incremental</td><td>Medição de p95 do catálogo com e sem batch; alerta de atraso de replicação</td></tr></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ 11 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s11">
+  <h2 class="h3 fw-bold">11. Entregável, aceite e erros comuns</h2>
+  <h3 class="h5 fw-bold">O que precisa existir ao fim da aula</h3>
+  <ul class="text-muted">
+    <li><code>docs/arquitetura.md</code> com fontes citadas, drivers, suposições e perguntas abertas.</li>
+    <li>C4 de contexto, contêineres e componentes; sequência do online e do batch.</li>
+    <li>Pipeline incremental completo, incluindo falha, promoção e rollback.</li>
+    <li>Utility tree, cenários mensuráveis e a matriz de descobertas do ATAM.</li>
+    <li>ADRs e a matriz requisito → decisão → componente → evidência.</li>
+  </ul>
+  <div class="alert alert-success"><strong>Definition of Done:</strong> outra equipe consegue entender, rastrear e <strong>contestar</strong> a sua arquitetura sem depender de explicação oral.</div>
+
+  <h3 class="h5 fw-bold mt-4">Erros comuns nesta aula</h3>
+  <div class="table-responsive">
+    <table class="table table-striped align-middle mb-0">
+      <thead><tr><th style="width:38%">Erro</th><th>Como corrigir</th></tr></thead>
+      <tbody>
+        <tr><td>Começar pela tecnologia (“vamos usar Kafka”).</td><td>Comece pelo driver e pelo cenário; a tecnologia é a última escolha e precisa de origem.</td></tr>
+        <tr><td>Cenário sem métrica.</td><td>Pergunte “como saberemos que foi suficiente?”. Se não houver resposta numérica, é intenção, não cenário.</td></tr>
+        <tr><td>Documento sem lacuna nenhuma.</td><td>Improvável. Reveja: alguma suposição virou fato pelo caminho.</td></tr>
+        <tr><td>Diagrama bonito e texto ausente.</td><td>Diagrama não decide nada sozinho; a justificativa é o texto e o ADR.</td></tr>
+        <tr><td>Aceitar a primeira resposta da IA.</td><td>Rode a revisão cruzada e exija objeção fundamentada de cada papel.</td></tr>
+        <tr><td>Análise sem nenhum trade-off.</td><td>Toda decisão custa algo. Se nada custou, a análise ainda não olhou de perto.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============================ 12 ============================ -->
+<section class="glass-card p-4 p-md-5 mb-4" id="s12">
+  <h2 class="h3 fw-bold">12. Glossário e autoavaliação</h2>
+  <div class="table-responsive">
+    <table class="table table-sm table-striped align-middle">
+      <tbody>
+        <tr><td class="fw-bold" style="width:26%">Driver de negócio</td><td>Objetivo do negócio que a arquitetura precisa sustentar; origem dos atributos prioritários.</td></tr>
+        <tr><td class="fw-bold">Requisito arquiteturalmente significativo</td><td>Requisito cuja satisfação depende de estrutura, não de código local.</td></tr>
+        <tr><td class="fw-bold">Cenário de qualidade</td><td>Fonte, estímulo, ambiente, artefato, resposta e métrica — a forma verificável de um atributo.</td></tr>
+        <tr><td class="fw-bold">Utility tree</td><td>Árvore atributo → refinamento → cenário, priorizada por importância e dificuldade.</td></tr>
+        <tr><td class="fw-bold">Tática arquitetural</td><td>Decisão de projeto que influencia a resposta a um estímulo, mirando um atributo.</td></tr>
+        <tr><td class="fw-bold">ADR</td><td>Registro de decisão arquitetural: contexto, alternativas, decisão, consequências e condição de revisão.</td></tr>
+        <tr><td class="fw-bold">Watermark / checkpoint</td><td>Marcador do que já foi processado; define o que conta como dado novo.</td></tr>
+        <tr><td class="fw-bold">Gate de promoção</td><td>Critério que um candidato precisa vencer para substituir o modelo ativo.</td></tr>
+        <tr><td class="fw-bold">Model registry</td><td>Repositório versionado de modelos, com indicação de qual está ativo.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 class="h5 fw-bold mt-4">Responda antes de fechar o commit</h3>
+  <ol class="text-muted mb-0">
+    <li>Qual requisito justifica cada componente do seu diagrama?</li>
+    <li>O que acontece se o cron rodar duas vezes ao mesmo tempo?</li>
+    <li>Como você sabe que apenas dados novos entraram no treino?</li>
+    <li>Quem impede a promoção de um modelo pior — e com que critério?</li>
+    <li>Qual decisão concentra mais trade-offs?</li>
+    <li>Quais riscos permanecem aceitos, e por quem?</li>
+  </ol>
+</section>
+
+<div class="text-center">
+  <a href="../slide_introducao-testes-automatizados.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a>
+  <a href="../quiz/aula04-quiz.html" class="btn btn-outline-dark rounded-pill me-2"><i class="fas fa-bolt me-1" aria-hidden="true"></i> Quiz da aula</a>
+  <a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a>
+</div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
