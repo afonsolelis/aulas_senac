@@ -72,6 +72,8 @@ pública por desenho, quem limita o alcance é a RLS.
 - Cada aula abre cobrando a **aula anterior**: `caixa-q2-a04` (Aula 04 cobra a Aula 03 —
   caixas e cobertura) e `atam-q2-a05` (Aula 05 cobra a Aula 04 — arquitetura e ATAM).
 - Para montar o próximo, use a skill `quiz-da-aula` (`.claude/skills/quiz-da-aula/`).
+- Validação: `node scripts/quiz-e2e.mjs <prefixo> <slug-da-sala>` percorre lobby → pergunta →
+  revelação → encerramento → relatório contra o Supabase real e reinicia a sala no fim.
 
 ## Convenções de nomenclatura
 
