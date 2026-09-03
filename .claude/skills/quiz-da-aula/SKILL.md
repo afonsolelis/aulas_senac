@@ -78,33 +78,34 @@ grep -c "aula0<antiga>\|<slug-antigo>" pages/<slug>/quiz/aula0<nova>-*.html   # 
 
 ### 4. Como se chega até lá (não pule)
 
-Um quiz que ninguém acha não existe. São **três** portas, e todas precisam ser criadas:
+Um quiz que ninguém acha não existe. São três portas, cada uma para um público — e **nenhuma delas acrescenta um terceiro botão ao card**:
 
-1. **No slide da aula** — é onde o professor está enquanto ensina. Ao lado do "Voltar para página inicial", no topo:
+1. **No slide da aula**, topo à direita, um único controle (o deck é a tela de quem projeta):
 
 ```html
 <div class="position-absolute top-0 end-0 m-4 d-flex gap-2" style="z-index:6">
-  <a href="quiz/aula0NN-quiz.html" class="btn btn-danger rounded-pill"><i class="fas fa-bolt me-2" aria-hidden="true"></i> Quiz</a>
-  <a href="quiz/aula0NN-painel.html" class="btn btn-dark rounded-pill"><i class="fas fa-sliders me-2" aria-hidden="true"></i> Painel</a>
+  <a href="quiz/aula0NN-painel.html" class="btn btn-dark rounded-pill"><i class="fas fa-sliders me-2" aria-hidden="true"></i> Painel do quiz</a>
 </div>
 ```
 
 Nunca mexa no `footer.slide-footer` para isso: ele precisa ter exatamente quatro filhos.
 
-2. **Na central** `pages/<slug>/quiz/index.html` — acrescente a sala nova à lista, com painel, tela do aluno, relatório e slides.
-3. **No card da home** — "Quiz ao vivo" (aluno) e "Painel" (aponta para a central).
-
-### 5. Link na home
-
-No card da aula alvo, junto de "Ver slide" e "Ver material":
+2. **No card do cronograma**, um **chip** ao lado do badge de semana — nunca um botão, que competiria com "Ver slide" e "Ver material":
 
 ```html
-<a href="<slug>/quiz/aula0NN-quiz.html" class="btn btn-outline-dark btn-sm"
-   aria-label="Entrar no quiz ao vivo da Aula NN, com as questões de retomada da Aula NN-1">
-  <i class="fas fa-bolt me-1" aria-hidden="true"></i> Quiz ao vivo</a>
+<a href="qualidade2/quiz/aula0NN-quiz.html"
+   class="badge rounded-pill bg-danger-subtle text-danger-emphasis border border-danger-subtle fw-semibold text-decoration-none d-inline-flex align-items-center py-2"
+   aria-label="Entrar no quiz ao vivo da Aula NN, com as questões de retomada da aula anterior">
+  <i class="fas fa-bolt me-1" aria-hidden="true"></i> Quiz</a>
 ```
 
-E mencione o quiz na descrição do card. Se a aula tiver material escrito, vale abrir o material com um aviso apontando para o quiz e para o material da aula anterior.
+`text-danger-emphasis` não é decoração: `text-danger` sobre `bg-danger-subtle` dá 3,39:1 e reprova no WCAG AA; com emphasis vai a 10,2:1.
+
+3. **Na central** `pages/<slug>/quiz/index.html` — acrescente a sala à lista, com painel, tela do aluno, relatório e slides.
+
+### 5. Material da aula
+
+Abra o material da aula alvo com um aviso curto: que a aula começa com o quiz, o que ele cobra e o link para o material da aula anterior. É o que faz o aluno reler antes de entrar na sala.
 
 ### 6. Validar
 

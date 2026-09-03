@@ -72,6 +72,8 @@ Todos os cards ficam dentro de `<div class="row g-3"> > <div class="col-12">` e 
 | Variante | Uso | Container | Classes-chave |
 |---|---|---|---|
 | **Aula normal** | Aula com slide + material | `<a href="<slide>">` | `list-group-item-action border border-light bg-white` |
+
+**Densidade de ação (regra dura):** no máximo **duas** ações com peso de botão por card — "Ver slide" e "Ver material". Recurso extra da aula (download, planilha, link externo) vive **dentro do material**, não no cronograma. Sinalização de que a aula tem algo a mais é **chip**, não botão: `a.badge.rounded-pill.bg-danger-subtle.text-danger-emphasis`, à esquerda do badge de semana, com `d-inline-flex align-items-center py-2` para dar 24 px de alvo de toque (WCAG 2.5.8). Um terceiro botão quebra a varredura vertical da lista — foi medido: com 5 botões num card e 2 nos demais, a coluna de ações deixa de ser previsível.
 | **Feriado** | Sem aula por feriado | `<div>` | `border border-warning bg-warning-subtle`, badge `bg-warning` com ícone `fa-umbrella-beach` |
 | **Acompanhamento de Projeto** | Semana dedicada a acompanhamento (sem slide) | `<div>` | `border border-warning bg-warning-subtle`, badge `bg-warning`, título fixo "Acompanhamento de Projeto" |
 | **Avaliação** | Prova/avaliação sem slide | `<div>` | `border border-danger bg-danger-subtle`, badge `bg-danger` com `fa-exclamation-circle` |
@@ -144,7 +146,7 @@ Detalhes operacionais (CDN, partículas, animMap, validação Playwright) vivem 
 - Primeiro e último slide: `.slide.cover-bg` com `<svg class="cover-particles">` e `.glass-cover` contendo o conteúdo principal.
 - Slides de conteúdo: `.slide` com `.slide-content` centralizado (`max-width: 1000px`).
 - Footer fixo (`.slide-footer`, 10vh) com 4 filhos: `.slide-controls`, texto central, link de material, logo Senac.
-- **Controles fixos do deck** são filhos diretos de `.slide-container` com `position-absolute`: o botão "Voltar ao cronograma" (topo à esquerda) e, quando a aula tem quiz, o par "Quiz" + "Painel" (topo à direita). O `css/slides.css` dá `z-index: 6` e fundo claro a esses elementos — sem isso a capa (`.slide.cover-bg`, posicionada e posterior no DOM) os cobre, e o botão de voltar some justamente no primeiro slide.
+- **Controles fixos do deck** são filhos diretos de `.slide-container` com `position-absolute`: **um de cada lado**. "Voltar ao cronograma" no topo à esquerda e, quando a aula tem quiz, "Painel do quiz" no topo à direita — o deck é a tela de quem projeta, então o botão do painel é o do professor; o aluno entra pelo QR do painel ou pelo chip do cronograma. O `css/slides.css` dá `z-index: 6` e fundo claro a esses elementos — sem isso a capa (`.slide.cover-bg`, posicionada e posterior no DOM) os cobre, e o botão de voltar some justamente no primeiro slide.
 - Animação: **anime.js v4** via ESM CDN. Nunca v3.
 
 ## 6. Ícones

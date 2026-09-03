@@ -64,8 +64,9 @@ pública por desenho, quem limita o alcance é a RLS.
 
 - SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-gabarito.sql` →
   `quiz-seed-<aula>.sql`), rodado **à mão** no SQL Editor. Ver `supabase/README.md`.
-- Acesso do professor: botões **Quiz** e **Painel** no topo do slide da aula, central em
-  `pages/qualidade2/quiz/index.html` e botão **Painel** no card da home. A aba
+- Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em
+  `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
+  (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba
   *Perguntas e gabarito* do relatório mostra as oito questões com a correta e a explicação.
 - **Token do professor: `080909`, fixo para todas as salas** (decisão do professor — a sala é
   descartável e o token só abre, revela e reinicia; não há dado pessoal atrás dele). Vai
