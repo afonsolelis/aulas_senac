@@ -76,7 +76,25 @@ Depois confirme que não sobrou referência antiga:
 grep -c "aula0<antiga>\|<slug-antigo>" pages/<slug>/quiz/aula0<nova>-*.html   # tem que dar 0
 ```
 
-### 4. Link na home
+### 4. Como se chega até lá (não pule)
+
+Um quiz que ninguém acha não existe. São **três** portas, e todas precisam ser criadas:
+
+1. **No slide da aula** — é onde o professor está enquanto ensina. Ao lado do "Voltar para página inicial", no topo:
+
+```html
+<div class="position-absolute top-0 end-0 m-4 d-flex gap-2" style="z-index:6">
+  <a href="quiz/aula0NN-quiz.html" class="btn btn-danger rounded-pill"><i class="fas fa-bolt me-2" aria-hidden="true"></i> Quiz</a>
+  <a href="quiz/aula0NN-painel.html" class="btn btn-dark rounded-pill"><i class="fas fa-sliders me-2" aria-hidden="true"></i> Painel</a>
+</div>
+```
+
+Nunca mexa no `footer.slide-footer` para isso: ele precisa ter exatamente quatro filhos.
+
+2. **Na central** `pages/<slug>/quiz/index.html` — acrescente a sala nova à lista, com painel, tela do aluno, relatório e slides.
+3. **No card da home** — "Quiz ao vivo" (aluno) e "Painel" (aponta para a central).
+
+### 5. Link na home
 
 No card da aula alvo, junto de "Ver slide" e "Ver material":
 
@@ -88,7 +106,7 @@ No card da aula alvo, junto de "Ver slide" e "Ver material":
 
 E mencione o quiz na descrição do card. Se a aula tiver material escrito, vale abrir o material com um aviso apontando para o quiz e para o material da aula anterior.
 
-### 5. Validar
+### 6. Validar
 
 ```bash
 node scripts/quiz-e2e.mjs aula0NN <slug-da-sala>            # local, contra o Supabase real
@@ -100,7 +118,7 @@ O script percorre lobby → pergunta → resposta → revelação → encerramen
 
 Se a suíte reclamar de link quebrado ou logo ausente, é porque a página nova precisa do logo Senac (`alt` contendo "senac") e de todo `href` relativo resolvendo no disco.
 
-### 6. Fechar
+### 7. Fechar
 
 Commit com o resumo das questões e do que foi validado, e push — a turma acessa pelo GitHub Pages, então sem push não existe quiz.
 
@@ -112,6 +130,8 @@ Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` →
 
 - **Não nomeie os arquivos `slide_*.html`** dentro de `pages/<slug>/quiz/`: o `specs/slide-structure.spec.js` passaria a exigir capa, agenda e rodapé de quatro filhos.
 - O relatório mostra um item por `tema` distinto: temas repetidos entre questões se fundem numa linha só.
+- A aba **Perguntas e gabarito** do relatório (RPC `quiz_gabarito`, exige token) lista as oito questões com a
+  correta e a explicação — é por ali que se confere o quiz antes da aula, sem abrir pergunta por pergunta.
 - A chave publicável do Supabase fica escrita no HTML — é pública por desenho, quem limita o alcance é a RLS. A senha do banco, não: ela nunca entra no repositório.
 - Reiniciar apaga tudo daquela sala. Em aula, só depois do CSV.
 

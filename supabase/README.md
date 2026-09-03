@@ -15,8 +15,10 @@ define o que ela alcança é a RLS, não o sigilo dela).
    novo zera respostas e jogadores de todas as salas.
 2. `quiz-relatorio.sql` — função `quiz_relatorio`, usada pela página de relatório.
    Não destrói dado algum; pode ser aplicado com sessão em andamento.
-3. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula.
-4. O token do professor já vai no próprio seed: **`080909`**, o mesmo para todas as
+3. `quiz-gabarito.sql` — função `quiz_gabarito`, que devolve as perguntas com o
+   gabarito para a aba "Perguntas e gabarito" do relatório. Exige token.
+4. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula.
+5. O token do professor já vai no próprio seed: **`080909`**, o mesmo para todas as
    salas, por decisão do professor. A sala é descartável e o token só abre, revela e
    reinicia — quem o descobrir consegue, no máximo, atrapalhar a rodada.
 
@@ -46,11 +48,14 @@ credencial de outro jogador.
 
 ## Conduzindo a sessão
 
-1. Abrir `aula05-painel.html`, digitar o token (fica guardado no navegador).
+1. Abrir o painel pelo botão **Painel** no topo do slide da aula, pela central em
+   `pages/qualidade2/quiz/index.html` ou pelo botão **Painel** no card da home. Digitar o
+   token uma vez — ele fica guardado neste navegador.
 2. Projetar o lobby: QR code e endereço do quiz; os nomes aparecem conforme
    a turma entra.
 3. `Abrir pergunta` → cronômetro de 40 s no celular de cada aluno →
    `Revelar resposta` (mostra distribuição, explicação e placar) → repetir.
 4. `Encerrar sessão` na última: cada aluno vê os temas que precisa retomar.
-5. `Relatório` para a leitura por tema, questão e estudante; `Baixar CSV` antes
-   de `Reiniciar`, porque reiniciar apaga jogadores e respostas.
+5. `Relatório` para a leitura por tema, questão e estudante — e a aba
+   *Perguntas e gabarito*, que mostra as oito questões com a correta e a explicação.
+   `Baixar CSV` antes de `Reiniciar`, porque reiniciar apaga jogadores e respostas.

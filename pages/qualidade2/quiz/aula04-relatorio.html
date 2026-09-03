@@ -112,6 +112,15 @@
             background: rgba(255,255,255,.08); color: var(--paper); }
     input:focus { outline: none; border-color: var(--primary); }
     .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
+    /* Banco de perguntas (leitura do professor) */
+    .gab-alt { display: grid; grid-template-columns: 26px 1fr; gap: 10px; align-items: start;
+               font-size: .86rem; margin-bottom: 6px; line-height: 1.45; }
+    .gab-alt .l { width: 26px; height: 26px; border-radius: 7px; display: grid; place-items: center;
+                  font-weight: 700; font-size: .76rem; background: rgba(255,255,255,.12); }
+    .gab-alt.certa .l { background: var(--bom); color: var(--ink); }
+    .gab-alt.certa { color: var(--bom); font-weight: 600; }
+    .gab-explic { margin-top: 8px; font-size: .82rem; line-height: 1.5; padding: 10px 13px;
+                  border-radius: 9px; border-left: 3px solid var(--bom); background: rgba(78,205,196,.12); }
     .vazio { color: var(--muted); font-size: .9rem; line-height: 1.6; }
   </style>
 </head>
@@ -147,6 +156,7 @@
         <button class="aba" role="tab" aria-selected="true"  data-aba="temas">Temas a reforçar</button>
         <button class="aba" role="tab" aria-selected="false" data-aba="questoes">Questão a questão</button>
         <button class="aba" role="tab" aria-selected="false" data-aba="alunos">Por estudante</button>
+        <button class="aba" role="tab" aria-selected="false" data-aba="perguntas">Perguntas e gabarito</button>
       </div>
 
       <div data-conteudo="temas" class="ativo">
@@ -165,6 +175,12 @@
         <h2>Desempenho individual</h2>
         <p class="legenda">Cada linha traz as questões erradas e os temas correspondentes, para orientar o estudo de quem ficou abaixo da turma.</p>
         <div id="tabela-alunos"></div>
+      </div>
+
+      <div data-conteudo="perguntas">
+        <h2>Banco de perguntas</h2>
+        <p class="legenda">As oito perguntas na ordem em que serão abertas, com a alternativa correta em verde e a explicação que aparece projetada na revelação. Use para conferir antes da aula — esta aba exige o token e nunca é vista pelo aluno.</p>
+        <div id="lista-perguntas"></div>
       </div>
     </section>
   </main>
@@ -224,6 +240,42 @@
     desenharTemas(d.temas);
     desenharQuestoes(d.questoes);
     desenharAlunos(d.alunos, d.total);
+    carregarPerguntas();
+  }
+
+// Banco de perguntas: só o professor vê, e só com token.
+  async function carregarPerguntas() {
+    const { data, error } = await db.rpc('quiz_gabarito', { p_slug: SLUG, p_token: token });
+    const alvo = el('lista-perguntas');
+    alvo.innerHTML = '';
+    if (error || !data || !data.ok) {
+      alvo.innerHTML = '<p class="vazio">Não foi possível carregar o banco de perguntas.</p>';
+      return;
+    }
+    data.perguntas.forEach((q) => {
+      const d = document.createElement('div');
+      d.className = 'item';
+      d.innerHTML = `<div class="item-cab">
+          <span class="nome"></span><span class="meta"></span>
+        </div>
+        <p class="q-enunciado"></p>
+        <div class="alts-gab"></div>
+        <div class="gab-explic"></div>`;
+      d.querySelector('.nome').textContent = `Questão ${q.ordem} — ${q.tema || ''}`;
+      d.querySelector('.meta').textContent = `${q.secao || ''} · ${q.segundos}s`;
+      d.querySelector('.q-enunciado').textContent = q.enunciado;
+      const alvoAlts = d.querySelector('.alts-gab');
+      q.alternativas.forEach((texto, i) => {
+        const linha = document.createElement('div');
+        linha.className = 'gab-alt' + (i === q.correta ? ' certa' : '');
+        linha.innerHTML = '<span class="l"></span><span class="t"></span>';
+        linha.children[0].textContent = LETRAS[i];
+        linha.children[1].textContent = texto;
+        alvoAlts.appendChild(linha);
+      });
+      d.querySelector('.gab-explic').textContent = q.explicacao || '';
+      alvo.appendChild(d);
+    });
   }
 
   function desenharTemas(temas) {
