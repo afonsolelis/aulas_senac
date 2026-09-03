@@ -16,6 +16,25 @@
   overflow: hidden;
 }
 
+/* Controles fixos do deck — voltar ao cronograma, quiz, painel.
+   A capa (.slide.cover-bg) é posicionada e vem depois no DOM: sem z-index
+   explícito ela cobre esses botões, e o "Voltar" some justamente no primeiro
+   slide, que é o primeiro que se vê. O fundo claro garante contraste tanto
+   sobre a capa em gradiente quanto sobre os slides claros. */
+.slide-container > .position-absolute {
+  z-index: 6;
+}
+
+.slide-container > a.btn.position-absolute {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.slide-container > a.btn.position-absolute:hover {
+  background: #fff;
+}
+
 .slide {
   display: none;
   width: 100%;

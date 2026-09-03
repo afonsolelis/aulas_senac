@@ -144,6 +144,7 @@ Detalhes operacionais (CDN, partículas, animMap, validação Playwright) vivem 
 - Primeiro e último slide: `.slide.cover-bg` com `<svg class="cover-particles">` e `.glass-cover` contendo o conteúdo principal.
 - Slides de conteúdo: `.slide` com `.slide-content` centralizado (`max-width: 1000px`).
 - Footer fixo (`.slide-footer`, 10vh) com 4 filhos: `.slide-controls`, texto central, link de material, logo Senac.
+- **Controles fixos do deck** são filhos diretos de `.slide-container` com `position-absolute`: o botão "Voltar ao cronograma" (topo à esquerda) e, quando a aula tem quiz, o par "Quiz" + "Painel" (topo à direita). O `css/slides.css` dá `z-index: 6` e fundo claro a esses elementos — sem isso a capa (`.slide.cover-bg`, posicionada e posterior no DOM) os cobre, e o botão de voltar some justamente no primeiro slide.
 - Animação: **anime.js v4** via ESM CDN. Nunca v3.
 
 ## 6. Ícones
