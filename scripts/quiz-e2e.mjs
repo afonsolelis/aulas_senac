@@ -9,8 +9,9 @@
  *
  * Sem `base`, roda nos arquivos locais (file://) — o mesmo código das páginas,
  * falando com o Supabase de verdade. Percorre lobby → pergunta → resposta →
- * revelação → encerramento → relatório e, no fim, REINICIA a sala: a validação
- * não deixa jogador de teste no placar da turma.
+ * revelação → encerramento → relatório e, no fim, DESCARTA a sala: a validação
+ * não deixa jogador de teste no placar da turma nem na série histórica
+ * (descartar zera sem arquivar; reiniciar, o que o professor usa, arquiva).
  *
  * A alternativa correta não é chumbada aqui: ela é lida pelo painel do professor
  * (quiz_host devolve o gabarito da pergunta aberta), então o script serve para
@@ -39,7 +40,9 @@ const ok = (m) => console.log('  ok   ' + m);
 const falha = (m) => { console.log(' FALHA ' + m); erros.push(m); };
 const shot = async (p, nome) => { if (SHOTS) await p.screenshot({ path: `${SHOTS}/${PRE}-${nome}.png` }); };
 
-const inicial = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'reiniciar' });
+// 'descartar' zera a sala sem arquivar: o jogador de teste não entra na
+// série histórica de quiz_relatorios, que é dado de turma.
+const inicial = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'descartar' });
 if (!inicial.ok) { console.error('não foi possível falar com a sala:', inicial.erro || inicial); process.exit(1); }
 ok(`sala ${SALA} zerada para o teste (${inicial.total} perguntas carregadas)`);
 
@@ -148,7 +151,7 @@ else ok(`relatório: ${n} temas, acerto médio ${await rel.textContent('#m-media
 await shot(rel, 'relatorio');
 
 await navegador.close();
-const fim = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'reiniciar' });
+const fim = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'descartar' });
 ok(`sala devolvida para a aula: estado=${fim.estado}, jogadores=${fim.jogadores}, perguntas=${fim.total}`);
 
 if (erros.length) { console.log('\nPROBLEMAS:\n- ' + erros.join('\n- ')); process.exit(1); }

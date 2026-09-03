@@ -56,7 +56,7 @@ PGPASSWORD='<senha>' psql "postgresql://postgres.lwamaovuxcevsjfvtqhf@aws-0-us-w
   -v ON_ERROR_STOP=1 -f supabase/quiz-seed-<arquivo>.sql
 ```
 
-Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto novo, rode antes `supabase/quiz-schema.sql` e `supabase/quiz-relatorio.sql` (nessa ordem).
+Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto novo, rode antes `supabase/quiz-schema.sql`, `supabase/quiz-relatorio.sql`, `supabase/quiz-ingestao.sql` e `supabase/quiz-gabarito.sql` (nessa ordem). A sessão precisa do campo `periodo` (`2026-2`) no `insert into quiz_sessions` — é ele que compõe a `data_tag` do histórico.
 
 ### 3. As três páginas
 
@@ -115,7 +115,7 @@ node scripts/quiz-e2e.mjs aula0NN <slug-da-sala> 080909 https://afonsolelis.gith
 npx jest                                                    # logo, links internos, estrutura
 ```
 
-O script percorre lobby → pergunta → resposta → revelação → encerramento → relatório, confere cronômetro, gabarito, explicação e temas, e **reinicia a sala no fim** — nunca deixe jogador de teste no placar da turma. Ele lê o gabarito pelo painel do professor, então serve para qualquer sala sem edição.
+O script percorre lobby → pergunta → resposta → revelação → encerramento → relatório, confere cronômetro, gabarito, explicação e temas, e **descarta a sala no fim** (`descartar` zera sem arquivar) — nunca deixe jogador de teste no placar da turma nem na série histórica. Ele lê o gabarito pelo painel do professor, então serve para qualquer sala sem edição.
 
 Se a suíte reclamar de link quebrado ou logo ausente, é porque a página nova precisa do logo Senac (`alt` contendo "senac") e de todo `href` relativo resolvendo no disco.
 
@@ -125,7 +125,7 @@ Commit com o resumo das questões e do que foi validado, e push — a turma aces
 
 ## Conduzir em aula
 
-Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` → discutir a distribuição na revelação → repetir → `Encerrar sessão` → `Relatório` → **baixar o CSV antes de `Reiniciar`**, porque reiniciar apaga jogadores e respostas.
+Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` → discutir a distribuição na revelação → repetir → `Encerrar sessão` → `Relatório` → `Reiniciar`, que abre a confirmação com **Baixar CSV** antes de apagar. O reinício **arquiva sozinho** a rodada em `quiz_relatorios` e diz quantas respostas guardou; o CSV é conveniência, não seguro.
 
 ## Armadilhas conhecidas
 
@@ -134,6 +134,6 @@ Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` →
 - A aba **Perguntas e gabarito** do relatório (RPC `quiz_gabarito`, exige token) lista as oito questões com a
   correta e a explicação — é por ali que se confere o quiz antes da aula, sem abrir pergunta por pergunta.
 - A chave publicável do Supabase fica escrita no HTML — é pública por desenho, quem limita o alcance é a RLS. A senha do banco, não: ela nunca entra no repositório.
-- Reiniciar apaga tudo daquela sala. Em aula, só depois do CSV.
+- Reiniciar apaga tudo daquela sala — mas arquiva antes, no histórico. Só reinicie entre turmas, não no meio de uma.
 
 Detalhes do esquema, das RPCs e do desenho de acesso: `supabase/README.md`.

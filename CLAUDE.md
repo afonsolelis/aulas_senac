@@ -62,8 +62,9 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HTML — é
 pública por desenho, quem limita o alcance é a RLS.
 
-- SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-gabarito.sql` →
-  `quiz-seed-<aula>.sql`), rodado **à mão** no SQL Editor. Ver `supabase/README.md`.
+- SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-ingestao.sql` →
+  `quiz-gabarito.sql` → `quiz-seed-<aula>.sql`), rodado **à mão** no SQL Editor. Ver
+  `supabase/README.md`.
 - Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em
   `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
   (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba
@@ -73,11 +74,17 @@ pública por desenho, quem limita o alcance é a RLS.
   gravado no próprio seed.
 - Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
   respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
+- **Histórico:** `reiniciar` arquiva a rodada em `quiz_relatorios` (uma linha por estudante
+  e questão, `data_tag` = `2026-2-<sala>`) **antes** de apagar — a mesma sala é jogada pelas
+  três turmas. O botão Reiniciar do painel abre um diálogo que oferece `Baixar CSV` primeiro,
+  mas o arquivamento não depende disso. A ação `descartar` zera **sem** arquivar e é a que a
+  validação usa, para não lançar jogador de teste na série. A exportação em CSV é de
+  `js/quiz-csv.js`, compartilhada pelo painel e pelo relatório.
 - Cada aula abre cobrando a **aula anterior**: `caixa-q2-a04` (Aula 04 cobra a Aula 03 —
   caixas e cobertura) e `atam-q2-a05` (Aula 05 cobra a Aula 04 — arquitetura e ATAM).
 - Para montar o próximo, use a skill `quiz-da-aula` (`.claude/skills/quiz-da-aula/`).
 - Validação: `node scripts/quiz-e2e.mjs <prefixo> <slug-da-sala>` percorre lobby → pergunta →
-  revelação → encerramento → relatório contra o Supabase real e reinicia a sala no fim.
+  revelação → encerramento → relatório contra o Supabase real e descarta a sala no fim.
 
 ## Convenções de nomenclatura
 

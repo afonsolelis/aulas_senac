@@ -197,6 +197,7 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="../../../js/quiz-csv.js"></script>
   <script>
   const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
@@ -389,25 +390,7 @@
   }
 
   /* Exportação, para guardar o resultado antes de reiniciar a sala. */
-  function baixarCsv() {
-    if (!dados) return;
-    const linhas = [['tipo','identificacao','acertos','respostas','taxa','detalhe']];
-    dados.temas.forEach((t) =>
-      linhas.push(['tema', t.tema || '', t.acertos, t.respostas, t.taxa ?? '', t.secao || '']));
-    dados.questoes.forEach((q) =>
-      linhas.push(['questao', `Q${q.ordem} ${q.tema || ''}`, q.acertos, q.respostas, q.taxa ?? '',
-                   `correta ${LETRAS[q.correta]}`]));
-    dados.alunos.forEach((a) =>
-      linhas.push(['estudante', a.nome, a.acertos, a.respondidas, '',
-                   `errou ${a.erros.join(' ')} | reforcar: ${a.temas_a_reforcar.join('; ')}`]));
-    const csv = linhas.map((l) => l.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(',')).join('\n');
-    const url = URL.createObjectURL(new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `relatorio-quiz-${SLUG}-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+  const baixarCsv = () => window.quizCsv.baixar(dados, SLUG);
 
   document.querySelectorAll('.aba').forEach((b) => b.addEventListener('click', () => {
     document.querySelectorAll('.aba').forEach((o) => o.setAttribute('aria-selected', String(o === b)));

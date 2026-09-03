@@ -25,8 +25,10 @@
 -- Rodar depois de quiz-schema.sql e quiz-relatorio.sql. É idempotente.
 -- =====================================================================
 
-insert into quiz_sessions (slug, titulo) values
-  ('caixa-q2-a04', 'Aula 04 — Retomada: Caixa Preta, Caixa Branca e Cobertura')
+-- O período compõe a data_tag do histórico (quiz-ingestao.sql): o
+-- on conflict não o sobrescreve, para não desfazer um ajuste manual.
+insert into quiz_sessions (slug, titulo, periodo) values
+  ('caixa-q2-a04', 'Aula 04 — Retomada: Caixa Preta, Caixa Branca e Cobertura', '2026-2')
 on conflict (slug) do update set titulo = excluded.titulo;
 
 delete from quiz_questions where session_slug = 'caixa-q2-a04';

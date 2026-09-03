@@ -131,6 +131,16 @@
     }
     input:focus { outline: none; border-color: var(--primary); }
     .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
+
+    /* Encerramento da sala — o CSV sai antes do arquivamento */
+    dialog.reiniciar {
+      border: 1px solid var(--line); border-radius: 18px; padding: 26px; max-width: 520px;
+      background: #2b0716; color: var(--paper); font: inherit;
+    }
+    dialog.reiniciar::backdrop { background: rgba(0,0,0,.62); }
+    dialog.reiniciar h2 { margin-bottom: 10px; }
+    dialog.reiniciar p { color: var(--muted); line-height: 1.55; font-size: .9rem; margin: 0 0 14px; }
+    dialog.reiniciar .acoes { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     @media (max-width: 900px) {
       .duas-colunas, .grade-alt { grid-template-columns: 1fr; }
       [data-tela].lobby { flex-direction: column; }
@@ -199,6 +209,20 @@
     </section>
   </main>
 
+
+  <dialog class="reiniciar" id="dlg-reiniciar">
+    <h2>Reiniciar a sala</h2>
+    <p>Reiniciar apaga jogadores e respostas para a próxima turma. Antes de apagar, o
+       resultado desta rodada é <strong>arquivado no histórico</strong> — nada se perde
+       se você esquecer o CSV. Ainda assim, baixe o arquivo se quiser a leitura na mão.</p>
+    <div class="acoes">
+      <button id="btn-dlg-csv" type="button" class="secundario">Baixar CSV</button>
+      <button id="btn-dlg-ok" type="button" class="perigo">Arquivar e reiniciar</button>
+      <button id="btn-dlg-cancelar" type="button" class="secundario">Cancelar</button>
+    </div>
+    <p class="aviso" id="dlg-aviso" role="status" style="margin:14px 0 0"></p>
+  </dialog>
+
   <footer>
     <button id="btn-abrir"    type="button">Abrir pergunta</button>
     <button id="btn-revelar"  type="button" class="secundario">Revelar resposta</button>
@@ -216,6 +240,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="../../../js/quiz-csv.js"></script>
   <script>
   const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
@@ -412,9 +437,48 @@
   el('btn-revelar').addEventListener('click', () => agir('revelar'));
   el('btn-reabrir').addEventListener('click', () => agir('reabrir'));
   el('btn-encerrar').addEventListener('click', () => agir('encerrar'));
+
+  /* Reinício: o CSV sai daqui, e o próprio reinício arquiva a rodada no
+     histórico (quiz_relatorios). O relatório é buscado sob demanda, porque
+     o painel não precisa dele para conduzir a aula. */
+  async function baixarCsvDaSala() {
+    el('dlg-aviso').textContent = 'Montando o relatório…';
+    const { data, error } = await db.rpc('quiz_relatorio', { p_slug: SLUG, p_token: token });
+    if (error || !data || !data.ok) {
+      el('dlg-aviso').textContent = 'Não foi possível montar o relatório agora.';
+      return;
+    }
+    window.quizCsv.baixar(data, SLUG);
+    el('dlg-aviso').textContent = `CSV baixado — ${data.jogadores} estudante(s).`;
+  }
+
+  async function confirmarReinicio() {
+    el('dlg-aviso').textContent = 'Arquivando e reiniciando…';
+    let d;
+    try { d = await chamar('reiniciar'); }
+    catch (e) { el('dlg-aviso').textContent = 'Falha de rede — a sala não foi reiniciada.'; return; }
+    if (!d.ok) { el('dlg-aviso').textContent = d.erro; return; }
+    aplicar(d);
+    // O diálogo fica aberto com o resultado: a leitura periódica reescreve a
+    // barra de estado a cada 2 s e engoliria o aviso lá embaixo.
+    el('dlg-aviso').textContent = d.arquivadas
+      ? `Sala reiniciada — ${d.arquivadas} respostas arquivadas no histórico.`
+      : 'Sala reiniciada — não havia resposta a arquivar.';
+    el('btn-dlg-csv').disabled = true;
+    el('btn-dlg-ok').disabled = true;
+    el('btn-dlg-cancelar').textContent = 'Fechar';
+  }
+
   el('btn-reiniciar').addEventListener('click', () => {
-    if (confirm('Isso apaga todos os jogadores e respostas desta sala. Confirmar?')) agir('reiniciar');
+    el('dlg-aviso').textContent = '';
+    el('btn-dlg-csv').disabled = false;
+    el('btn-dlg-ok').disabled = false;
+    el('btn-dlg-cancelar').textContent = 'Cancelar';
+    el('dlg-reiniciar').showModal();
   });
+  el('btn-dlg-csv').addEventListener('click', baixarCsvDaSala);
+  el('btn-dlg-ok').addEventListener('click', confirmarReinicio);
+  el('btn-dlg-cancelar').addEventListener('click', () => el('dlg-reiniciar').close());
 
   if (token) { el('token').value = token; autenticar(); }
   </script>
