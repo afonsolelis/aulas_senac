@@ -16,22 +16,24 @@ define o que ela alcança é a RLS, não o sigilo dela).
 2. `quiz-relatorio.sql` — função `quiz_relatorio`, usada pela página de relatório.
    Não destrói dado algum; pode ser aplicado com sessão em andamento.
 3. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula.
-4. O token do professor, digitado à mão (nunca versionado — este repositório é
-   público e quem tem o token abre, revela e reinicia a sessão):
+4. O token do professor já vai no próprio seed: **`080909`**, o mesmo para todas as
+   salas, por decisão do professor. A sala é descartável e o token só abre, revela e
+   reinicia — quem o descobrir consegue, no máximo, atrapalhar a rodada.
 
    ```sql
    insert into quiz_host_tokens (session_slug, token)
-   values ('<slug-da-sessao>', 'COLE-O-TOKEN-AQUI')
+   values ('<slug-da-sessao>', '080909')
    on conflict (session_slug) do update set token = excluded.token;
    ```
 
-   Token novo: `python3 -c "import secrets;print(secrets.token_urlsafe(9))"`
-
 ## Sessões cadastradas
 
-| Aula | Slug | Seed | Páginas |
-|---|---|---|---|
-| Qualidade 2026.2 — Aula 05 (Semana 36), retomada da Aula 04 | `atam-q2-a05` | `quiz-seed-aula05-atam.sql` | `pages/qualidade2/quiz/aula05-quiz.html` (aluno), `aula05-painel.html` (professor), `aula05-relatorio.html` |
+Cada aula abre cobrando a aula anterior.
+
+| Aula | Cobra | Slug | Seed | Páginas |
+|---|---|---|---|---|
+| Aula 04 (Semana 35) — Arquitetura e ATAM | Aula 03 — caixas, cobertura e técnicas | `caixa-q2-a04` | `quiz-seed-aula04-caixas.sql` | `pages/qualidade2/quiz/aula04-quiz.html`, `aula04-painel.html`, `aula04-relatorio.html` |
+| Aula 05 (Semana 36) — Gestão de erros e bugs | Aula 04 — arquitetura, C4, pipeline e ATAM | `atam-q2-a05` | `quiz-seed-aula05-atam.sql` | `pages/qualidade2/quiz/aula05-quiz.html`, `aula05-painel.html`, `aula05-relatorio.html` |
 
 ## Desenho de acesso (resumo)
 

@@ -64,11 +64,14 @@ pública por desenho, quem limita o alcance é a RLS.
 
 - SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-seed-<aula>.sql`),
   rodado **à mão** no SQL Editor. Ver `supabase/README.md`.
-- **Nunca versione o token do professor** — o repositório é público e o token abre, revela
-  e reinicia a sessão. Ele é digitado no SQL Editor e guardado no navegador do professor.
+- **Token do professor: `080909`, fixo para todas as salas** (decisão do professor — a sala é
+  descartável e o token só abre, revela e reinicia; não há dado pessoal atrás dele). Vai
+  gravado no próprio seed.
 - Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
   respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
-- Sessões cadastradas: `atam-q2-a05` (Qualidade 2026.2, Aula 05, retomada da Aula 04).
+- Cada aula abre cobrando a **aula anterior**: `caixa-q2-a04` (Aula 04 cobra a Aula 03 —
+  caixas e cobertura) e `atam-q2-a05` (Aula 05 cobra a Aula 04 — arquitetura e ATAM).
+- Para montar o próximo, use a skill `quiz-da-aula` (`.claude/skills/quiz-da-aula/`).
 
 ## Convenções de nomenclatura
 

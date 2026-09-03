@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aula 04 - Quiz de retomada - Qualidade de Software 2026.2</title>
+  <meta name="description" content="Quiz ao vivo da Aula 04: oito questões de retomada sobre caixa preta, caixa branca, cobertura e técnicas de teste da Aula 03.">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Paleta da disciplina — config/disciplina-qualidade2.json */
+    :root {
+      --primary: #DD2476;
+      --secondary: #FF512F;
+      --deep: #5b0f2d;
+      --ink: #1d1220;
+      --paper: #ffffff;
+      --line: #e6e1e6;
+      --muted: #6b6570;
+      --ok: #1f7a5c;
+      --erro: #c0392b;
+      --soft: #fdeef5;
+      --gradiente: linear-gradient(135deg, #5b0f2d 0%, #DD2476 50%, #FF512F 100%);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--deep); color: var(--ink);
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+      -webkit-text-size-adjust: 100%;
+    }
+    header.barra {
+      background: var(--gradiente); color: #fff; flex: 0 0 auto;
+      padding: 12px 18px calc(12px + env(safe-area-inset-top));
+      display: flex; align-items: center; gap: 12px;
+    }
+    header.barra img { height: 26px; }
+    .barra .curso { font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+                    text-transform: uppercase; opacity: .9; line-height: 1.3; }
+    .barra .quem { margin-left: auto; font-size: .8rem; font-weight: 700; }
+    main {
+      flex: 1 1 auto; background: var(--paper);
+      border-radius: 22px 22px 0 0; padding: 22px 18px calc(28px + env(safe-area-inset-bottom));
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    [data-tela] { display: none; flex-direction: column; gap: 16px; flex: 1 1 auto; }
+    [data-tela].ativa { display: flex; }
+
+    h1 { font-size: 1.3rem; line-height: 1.25; margin: 0; font-weight: 700; }
+    h2 { font-size: 1rem; margin: 0; font-weight: 700; }
+    p  { margin: 0; line-height: 1.55; font-size: .93rem; color: var(--muted); }
+    .selo {
+      display: inline-block; background: var(--soft); color: var(--primary);
+      border-radius: 999px; padding: 5px 13px; font-size: .72rem; font-weight: 700;
+      letter-spacing: .04em; text-transform: uppercase; align-self: flex-start;
+    }
+    label { font-size: .82rem; font-weight: 700; }
+    input {
+      width: 100%; padding: 15px 16px; font: inherit; font-size: 1.05rem; font-weight: 600;
+      border: 2px solid var(--line); border-radius: 13px; background: var(--paper); color: var(--ink);
+    }
+    input:focus { outline: none; border-color: var(--primary); }
+    button {
+      font: inherit; font-weight: 700; cursor: pointer; border: none; border-radius: 13px;
+      padding: 16px 18px; font-size: 1rem; color: #fff;
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+    }
+    button:disabled { opacity: .5; cursor: default; }
+    .aviso { font-size: .85rem; font-weight: 600; color: var(--erro); min-height: 1.1em; }
+
+    /* Alternativas */
+    .alternativas { display: flex; flex-direction: column; gap: 10px; }
+    .alt {
+      display: flex; align-items: flex-start; gap: 12px; text-align: left;
+      background: var(--paper); color: var(--ink);
+      border: 2px solid var(--line); border-radius: 14px; padding: 14px 15px;
+      font-size: .95rem; font-weight: 500; line-height: 1.4; width: 100%;
+    }
+    .alt .letra {
+      flex: 0 0 28px; height: 28px; border-radius: 8px; background: var(--soft);
+      color: var(--primary); font-weight: 700; font-size: .85rem;
+      display: grid; place-items: center;
+    }
+    .alt[aria-pressed="true"] { border-color: var(--primary); background: var(--soft); }
+    .alt.certa  { border-color: var(--ok);   background: #eaf6f1; }
+    .alt.errada { border-color: var(--erro); background: #fdecea; }
+    .alt.certa .letra  { background: var(--ok);   color: #fff; }
+    .alt.errada .letra { background: var(--erro); color: #fff; }
+
+    /* Cronômetro */
+    .cronometro { display: flex; align-items: center; gap: 12px; }
+    .trilha { flex: 1 1 auto; height: 9px; border-radius: 999px; background: var(--line); overflow: hidden; }
+    .barra-tempo { height: 100%; width: 100%; border-radius: 999px;
+                   background: linear-gradient(45deg, var(--secondary), var(--primary));
+                   transition: width .25s linear; }
+    .segundos { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1rem;
+                min-width: 2.4ch; text-align: right; }
+
+    /* Resultado */
+    .veredito { border-radius: 16px; padding: 18px; text-align: center; }
+    .veredito.acerto { background: #eaf6f1; color: #145c45; }
+    .veredito.erro   { background: #fdecea; color: #96271c; }
+    .veredito .titulo { font-size: 1.15rem; font-weight: 700; }
+    .veredito .pontos { font-size: 2.1rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1.1; }
+    .explicacao { background: var(--soft); border-radius: 13px; padding: 14px; font-size: .88rem;
+                  line-height: 1.55; color: var(--deep); font-weight: 500; }
+
+    /* Ranking */
+    .ranking { display: flex; flex-direction: column; gap: 6px; }
+    .linha {
+      display: grid; grid-template-columns: 30px 1fr auto; gap: 10px; align-items: center;
+      padding: 11px 13px; border-radius: 11px; background: #f6f4f6;
+      font-size: .92rem; font-weight: 600;
+    }
+    .linha.eu { background: var(--soft); border: 2px solid var(--primary); }
+    .linha .pos { font-weight: 700; color: var(--muted); font-variant-numeric: tabular-nums; }
+    .linha .pts { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--primary); }
+
+    .reforcar { background: var(--soft); border-radius: 13px; padding: 15px; }
+    .reforcar h3 { margin: 0 0 4px; font-size: .9rem; font-weight: 700; color: var(--primary); }
+    .reforcar p { font-size: .82rem; margin: 0 0 10px; }
+    .reforcar ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 5px; }
+    .reforcar li { font-size: .86rem; font-weight: 600; color: var(--deep); line-height: 1.4; }
+    .reforcar li span { font-weight: 400; color: var(--muted); }
+
+    .rodape { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+              display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .rodape a { text-decoration: none; font-size: .72rem; font-weight: 700; padding: 8px 10px;
+                border-radius: 9px; background: #f6f4f6; color: var(--ink); white-space: nowrap; }
+    .estado-conexao { font-size: .7rem; font-weight: 600; color: var(--muted); text-align: center; }
+    .pulsa { animation: pulsa 1.6s ease-in-out infinite; }
+    @keyframes pulsa { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
+    @media (min-width: 620px) {
+      body { align-items: center; }
+      main, header.barra { max-width: 620px; width: 100%; margin: 0 auto; }
+      main { border-radius: 22px; }
+      h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="barra">
+    <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac">
+    <span class="curso">Qualidade de Software<br>Aula 04 &middot; Semana 35</span>
+    <span class="quem" id="quem"></span>
+  </header>
+
+  <main>
+    <section data-tela="carregando" class="ativa">
+      <p class="pulsa">Carregando a sala&hellip;</p>
+    </section>
+
+    <section data-tela="entrada">
+      <span class="selo">Retomada da Aula 03</span>
+      <h1>Escolha o nome que aparecerá no placar</h1>
+      <p>O nome é público para a turma durante a sessão. Use algo que você reconheça no ranking projetado.</p>
+      <label for="nome">Seu nome na sala</label>
+      <input id="nome" type="text" maxlength="24" autocomplete="off" autocapitalize="words"
+             spellcheck="false" placeholder="entre 2 e 24 caracteres">
+      <p class="aviso" id="aviso-entrada" role="alert"></p>
+      <button id="btn-entrar" type="button">Entrar na sala</button>
+    </section>
+
+    <section data-tela="espera">
+      <span class="selo">Inscrição confirmada</span>
+      <h1 id="espera-titulo">Aguarde a abertura da primeira pergunta</h1>
+      <p>Mantenha esta página aberta. A pergunta aparece aqui automaticamente quando o professor abrir.</p>
+      <p><strong id="contagem-jogadores">&mdash;</strong></p>
+    </section>
+
+    <section data-tela="pergunta">
+      <div class="cronometro">
+        <span class="selo" id="pergunta-selo">Pergunta</span>
+        <div class="trilha"><div class="barra-tempo" id="barra-tempo"></div></div>
+        <span class="segundos" id="segundos">&mdash;</span>
+      </div>
+      <h2 id="enunciado"></h2>
+      <div class="alternativas" id="alternativas"></div>
+      <p class="aviso" id="aviso-pergunta" role="alert"></p>
+    </section>
+
+    <section data-tela="respondido">
+      <span class="selo">Resposta registrada</span>
+      <h1>Resposta registrada</h1>
+      <p>O resultado aparece quando o professor encerrar a pergunta. Não é possível alterar a escolha.</p>
+      <p><strong id="respondido-contagem">&mdash;</strong></p>
+    </section>
+
+    <section data-tela="revelacao">
+      <div class="veredito" id="veredito">
+        <div class="titulo" id="veredito-titulo"></div>
+        <div class="pontos" id="veredito-pontos"></div>
+      </div>
+      <div class="explicacao" id="explicacao"></div>
+      <h2>Placar acumulado</h2>
+      <div class="ranking" id="ranking-parcial"></div>
+    </section>
+
+    <section data-tela="final">
+      <span class="selo">Sessão encerrada</span>
+      <h1>Placar geral</h1>
+      <p id="final-resumo"></p>
+      <div id="meus-temas"></div>
+      <div class="ranking" id="ranking-final"></div>
+    </section>
+
+    <section data-tela="erro">
+      <span class="selo">Falha de conexão</span>
+      <h1 id="erro-titulo">Não foi possível falar com o servidor</h1>
+      <p id="erro-detalhe"></p>
+      <button id="btn-retentar" type="button">Tentar novamente</button>
+    </section>
+
+    <nav class="rodape" aria-label="Navegação da aula">
+      <a href="../material/material_caixa-branca-preta.html">Material da Aula 03</a>
+      <a href="../slide_caixa-branca-preta.html">Slides da Aula 03</a>
+      <a href="../../home_qualidade_2026_2.html">Voltar ao cronograma</a>
+    </nav>
+    <p class="estado-conexao" id="conexao"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script>
+  /* ------------------------------------------------------------------
+     Configuração. A chave publicável é pública por desenho: o que ela
+     alcança é definido pelas policies de RLS, não pelo sigilo dela.
+     Ver supabase/quiz-schema.sql na raiz do repositório.
+  ------------------------------------------------------------------ */
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SLUG = new URLSearchParams(location.search).get('sala') || 'caixa-q2-a04';
+  const CHAVE_LOCAL = 'quiz:' + SLUG;
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: false },
+  });
+
+  const el = (id) => document.getElementById(id);
+  const LETRAS = ['A', 'B', 'C', 'D', 'E'];
+
+  let jogador = null;      // { id, nome }
+  let estadoAtual = null;  // último payload de quiz_estado
+  let offsetRelogio = 0;   // relógio do servidor menos o do aparelho
+  let escolhaPendente = null;
+  let cronometro = null;
+  let perguntaDesenhada = null;  // evita recriar os botões a cada sincronização
+  let assinaturaOk = false;
+
+  try { jogador = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || 'null'); } catch { jogador = null; }
+
+  function mostrar(tela) {
+    document.querySelectorAll('[data-tela]').forEach((s) => {
+      s.classList.toggle('ativa', s.dataset.tela === tela);
+    });
+  }
+
+  function marcarConexao(texto) { el('conexao').textContent = texto; }
+
+  /* ---------- Cadastro ---------- */
+
+  async function entrar() {
+    const nome = el('nome').value.trim();
+    el('aviso-entrada').textContent = '';
+    el('btn-entrar').disabled = true;
+    try {
+      const { data, error } = await db.rpc('quiz_entrar', { p_slug: SLUG, p_nome: nome });
+      if (error) throw error;
+      if (!data.ok) { el('aviso-entrada').textContent = data.erro; return; }
+      jogador = { id: data.player_id, nome: data.nome };
+      localStorage.setItem(CHAVE_LOCAL, JSON.stringify(jogador));
+      el('quem').textContent = jogador.nome;
+      await sincronizar();
+    } catch (e) {
+      el('aviso-entrada').textContent = 'Falha de rede. Verifique a conexão e tente de novo.';
+      console.error(e);
+    } finally {
+      el('btn-entrar').disabled = false;
+    }
+  }
+
+  /* ---------- Resposta ---------- */
+
+  async function responder(indice) {
+    if (escolhaPendente !== null) return;
+    escolhaPendente = indice;
+    document.querySelectorAll('.alt').forEach((b, i) => {
+      b.setAttribute('aria-pressed', String(i === indice));
+      b.disabled = true;
+    });
+    try {
+      const { data, error } = await db.rpc('quiz_responder',
+        { p_player: jogador.id, p_escolha: indice });
+      if (error) throw error;
+      if (!data.ok) {
+        el('aviso-pergunta').textContent = data.erro;
+        escolhaPendente = null;
+        document.querySelectorAll('.alt').forEach((b) => { b.disabled = false; });
+        return;
+      }
+      pararCronometro();
+      mostrar('respondido');
+    } catch (e) {
+      el('aviso-pergunta').textContent = 'Não foi possível registrar. Toque novamente.';
+      escolhaPendente = null;
+      document.querySelectorAll('.alt').forEach((b) => { b.disabled = false; });
+      console.error(e);
+    }
+  }
+
+  /* ---------- Cronômetro, corrigido pelo relógio do servidor ---------- */
+
+  function pararCronometro() {
+    if (cronometro) { clearInterval(cronometro); cronometro = null; }
+  }
+
+  function iniciarCronometro(abertaEm, segundos) {
+    pararCronometro();
+    const inicio = new Date(abertaEm).getTime();
+    const tick = () => {
+      const agora = Date.now() + offsetRelogio;
+      const restante = Math.max(0, segundos - (agora - inicio) / 1000);
+      el('segundos').textContent = Math.ceil(restante);
+      el('barra-tempo').style.width = (restante / segundos * 100) + '%';
+      if (restante <= 0) {
+        pararCronometro();
+        el('segundos').textContent = '0';
+        // O tempo esgotado não bloqueia o envio: quem decide é o professor,
+        // ao encerrar a pergunta. A pontuação por rapidez já zerou.
+      }
+    };
+    tick();
+    cronometro = setInterval(tick, 200);
+  }
+
+  /* ---------- Desenho das telas ---------- */
+
+  function desenharPergunta(s) {
+    const p = s.pergunta;
+
+    // A sincronização periódica não pode recriar os botões nem reiniciar o
+    // cronômetro: isso apagaria a escolha em curso no meio de um toque.
+    if (perguntaDesenhada === p.id) { mostrar('pergunta'); return; }
+    perguntaDesenhada = p.id;
+
+    el('pergunta-selo').textContent = `Pergunta ${s.ordem} de ${s.total}`;
+    el('enunciado').textContent = p.enunciado;
+    el('aviso-pergunta').textContent = '';
+
+    const alvo = el('alternativas');
+    alvo.innerHTML = '';
+    p.alternativas.forEach((texto, i) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'alt';
+      b.setAttribute('aria-pressed', 'false');
+      b.innerHTML = '<span class="letra"></span><span></span>';
+      b.firstElementChild.textContent = LETRAS[i];
+      b.lastElementChild.textContent = texto;
+      b.addEventListener('click', () => responder(i));
+      alvo.appendChild(b);
+    });
+
+    escolhaPendente = null;
+    iniciarCronometro(s.aberta_em, p.segundos);
+    mostrar('pergunta');
+  }
+
+  function desenharRevelacao(s) {
+    pararCronometro();
+    const respondeu = s.respondi;
+    const acertou = s.acertei;
+    const v = el('veredito');
+    v.className = 'veredito ' + (acertou ? 'acerto' : 'erro');
+    el('veredito-titulo').textContent = !respondeu
+      ? 'Você não respondeu esta pergunta'
+      : acertou ? 'Resposta correta' : 'Resposta incorreta';
+    el('veredito-pontos').textContent = respondeu ? `+${s.pontos_rodada}` : '0';
+
+    const correta = s.gabarito ? s.gabarito.correta : null;
+    el('explicacao').textContent = [
+      correta !== null ? `Alternativa correta: ${LETRAS[correta]}.` : '',
+      s.gabarito ? s.gabarito.explicacao : '',
+    ].filter(Boolean).join(' ');
+
+    desenharRanking(el('ranking-parcial'), s.ranking || []);
+    mostrar('revelacao');
+  }
+
+  // Os temas em que o estudante errou, com a seção do material correspondente.
+  function desenharMeusTemas(temas) {
+    const alvo = el('meus-temas');
+    alvo.innerHTML = '';
+    if (!temas.length) return;
+    const d = document.createElement('div');
+    d.className = 'reforcar';
+    d.innerHTML = '<h3>O que retomar no material da Aula 03</h3><p></p><ul></ul>';
+    d.querySelector('p').textContent =
+      'Os assuntos abaixo correspondem às questões que você errou.';
+    const ul = d.querySelector('ul');
+    temas.forEach((t) => {
+      const li = document.createElement('li');
+      li.textContent = t.tema;
+      const s = document.createElement('span');
+      s.textContent = ' — ' + (t.secao || '');
+      li.appendChild(s);
+      ul.appendChild(li);
+    });
+    alvo.appendChild(d);
+  }
+
+  function desenharRanking(alvo, linhas) {
+    alvo.innerHTML = '';
+    if (!linhas.length) {
+      const p = document.createElement('p');
+      p.textContent = 'Nenhuma resposta registrada.';
+      alvo.appendChild(p);
+      return;
+    }
+    linhas.forEach((r, i) => {
+      const d = document.createElement('div');
+      d.className = 'linha' + (r.eu ? ' eu' : '');
+      const medalha = ['🥇', '🥈', '🥉'][i] || (i + 1);
+      d.innerHTML = '<span class="pos"></span><span class="nome"></span><span class="pts"></span>';
+      d.children[0].textContent = medalha;
+      d.children[1].textContent = r.nome;
+      d.children[2].textContent = `${r.pontos} pt`;
+      alvo.appendChild(d);
+    });
+  }
+
+  /* ---------- Sincronização ---------- */
+
+  async function sincronizar() {
+    try {
+      const { data, error } = await db.rpc('quiz_estado',
+        { p_slug: SLUG, p_player: jogador ? jogador.id : null });
+      if (error) throw error;
+      if (!data.ok) { falhar(data.erro); return; }
+
+      offsetRelogio = new Date(data.servidor_agora).getTime() - Date.now();
+      estadoAtual = data;
+      marcarConexao(assinaturaOk ? 'Conectado em tempo real.' : 'Conectado por consulta periódica.');
+
+      // Um jogador salvo localmente cujo nome o servidor não reconhece
+      // significa sessão reiniciada: o cadastro é refeito.
+      if (jogador && !data.nome) {
+        localStorage.removeItem(CHAVE_LOCAL);
+        jogador = null;
+        el('quem').textContent = '';
+      }
+      if (jogador) el('quem').textContent = jogador.nome;
+
+      if (!jogador) {
+        if (data.estado === 'encerrado') {
+          el('final-resumo').textContent = 'A sessão foi encerrada.';
+          desenharRanking(el('ranking-final'), data.ranking || []);
+          mostrar('final');
+        } else {
+          mostrar('entrada');
+        }
+        return;
+      }
+
+      if (data.estado === 'lobby') {
+        el('espera-titulo').textContent = 'Aguarde a abertura da primeira pergunta';
+        el('contagem-jogadores').textContent = `${data.jogadores} na sala`;
+        mostrar('espera');
+        return;
+      }
+
+      if (data.estado === 'pergunta') {
+        if (data.respondi) {
+          el('respondido-contagem').textContent = `Pergunta ${data.ordem} de ${data.total}`;
+          mostrar('respondido');
+        } else {
+          desenharPergunta(data);
+        }
+        return;
+      }
+
+      if (data.estado === 'revelacao') { desenharRevelacao(data); return; }
+
+      if (data.estado === 'encerrado') {
+        const meu = (data.ranking || []).find((r) => r.eu);
+        const pos = (data.ranking || []).findIndex((r) => r.eu) + 1;
+        el('final-resumo').textContent = meu
+          ? `${meu.pontos} pontos, ${meu.acertos} de ${data.total} corretas, ${pos}º lugar.`
+          : 'Sessão encerrada.';
+        desenharMeusTemas(data.meus_temas || []);
+        desenharRanking(el('ranking-final'), data.ranking || []);
+        mostrar('final');
+      }
+    } catch (e) {
+      console.error(e);
+      falhar('Verifique a conexão. A página tenta reconectar sozinha.');
+    }
+  }
+
+  function falhar(detalhe) {
+    el('erro-detalhe').textContent = detalhe;
+    mostrar('erro');
+  }
+
+  /* ---------- Realtime, com consulta periódica de reserva ---------- */
+
+  db.channel('sala-' + SLUG)
+    .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'quiz_sessions', filter: 'slug=eq.' + SLUG },
+        () => sincronizar())
+    .subscribe((status) => {
+      assinaturaOk = status === 'SUBSCRIBED';
+      if (estadoAtual) marcarConexao(assinaturaOk ? 'Conectado em tempo real.' : 'Conectado por consulta periódica.');
+    });
+
+  // Rede de sala de aula oscila; a consulta periódica garante que ninguém
+  // fique preso numa tela antiga caso o websocket caia.
+  setInterval(sincronizar, 3000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) sincronizar(); });
+
+  el('btn-entrar').addEventListener('click', entrar);
+  el('nome').addEventListener('keydown', (e) => { if (e.key === 'Enter') entrar(); });
+  el('btn-retentar').addEventListener('click', sincronizar);
+
+  sincronizar();
+  </script>
+</body>
+</html>
