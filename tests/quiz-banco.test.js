@@ -92,3 +92,27 @@ describe('quiz-banco.sql (as funções por trás do banco)', () => {
     expect(sql).not.toMatch(/order by [a-z_]+->>'taxa'/);
   });
 });
+
+describe('funções internas não podem ficar expostas à API', () => {
+  // O Supabase concede EXECUTE a anon e authenticated por default privilege em
+  // toda função nova do schema public, e esse grant sobrevive a um `revoke ...
+  // from public`. Uma interna deixada assim vira RPC aberta: quiz_linhas
+  // devolveria nome, escolha e gabarito de uma rodada em andamento.
+  const INTERNAS = {
+    'supabase/quiz-ingestao.sql': ['quiz_linhas(text)', 'quiz_arquivar(text)'],
+    'supabase/quiz-banco.sql': ['quiz_banco_piso()'],
+  };
+
+  for (const [arquivo, funcoes] of Object.entries(INTERNAS)) {
+    for (const fn of funcoes) {
+      test(`${fn} é revogada de anon e authenticated`, () => {
+        const escapada = fn.replace(/[()]/g, '\\$&');
+        const linha = new RegExp(`revoke all on function ${escapada}\\s+from ([^;]+);`);
+        const achado = ler(arquivo).match(linha);
+        expect(achado).not.toBeNull();
+        expect(achado[1]).toContain('anon');
+        expect(achado[1]).toContain('authenticated');
+      });
+    }
+  }
+});

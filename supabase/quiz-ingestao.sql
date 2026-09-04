@@ -95,6 +95,14 @@ begin
   return v_n;
 end $$;
 
--- Chamadas apenas de dentro de quiz_host: nada aqui é exposto à API.
-revoke all on function quiz_linhas(text)   from public;
-revoke all on function quiz_arquivar(text) from public;
+-- Chamadas apenas de dentro de quiz_host: nada aqui pode ser exposto à API.
+--
+-- Revogar de PUBLIC não basta no Supabase: o projeto concede EXECUTE a anon e
+-- authenticated por default privilege em toda função nova do schema public, e
+-- esse grant sobrevive ao revoke de PUBLIC. Sem as duas linhas de baixo,
+-- POST /rest/v1/rpc/quiz_linhas devolveria, com a chave publicável que está no
+-- HTML, o nome de cada estudante, a escolha de cada um e o gabarito — ao vivo,
+-- no meio da rodada. Estas funções são SECURITY DEFINER: quem as chama de
+-- dentro de quiz_host continua podendo, porque ali o dono é o executor.
+revoke all on function quiz_linhas(text)   from public, anon, authenticated;
+revoke all on function quiz_arquivar(text) from public, anon, authenticated;

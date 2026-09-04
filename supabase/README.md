@@ -89,6 +89,33 @@ ou escrito por chamada direta. Tudo passa pelas funções `security definer`, qu
 devolvem veredito e placar — nunca o gabarito antes da revelação, nunca a
 credencial de outro jogador.
 
+### Armadilha dos grants (ler antes de criar função nova)
+
+`revoke all on function ... from public` **não basta** aqui. O Supabase concede
+`EXECUTE` a `anon` e `authenticated` por *default privilege* em toda função nova
+do schema `public`, e esse grant sobrevive ao revoke de `PUBLIC`. Uma função
+interna deixada assim vira RPC aberta: `quiz_linhas` chegou a responder a
+`POST /rest/v1/rpc/quiz_linhas` com a chave publicável, devolvendo nome,
+escolha e gabarito de cada estudante. Toda função que não é para ser chamada de
+fora precisa de:
+
+```sql
+revoke all on function minha_funcao(...) from public, anon, authenticated;
+```
+
+Funções `security definer` chamadas de dentro de outra continuam funcionando: ali
+o executor é o dono. Conferir depois de aplicar qualquer arquivo novo:
+
+```sql
+select p.proname, has_function_privilege('anon', p.oid, 'execute') as anon
+  from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+ where n.nspname = 'public' and p.proname like 'quiz%' order by 2 desc, 1;
+```
+
+Só estas devem sair com `t`: `quiz_entrar`, `quiz_responder`, `quiz_estado`,
+`quiz_host`, `quiz_relatorio`, `quiz_gabarito`, `quiz_publicar`, `quiz_banco` e
+`quiz_banco_salas`. `tests/quiz-banco.test.js` guarda o lado do repositório.
+
 ## Conduzindo a sessão
 
 1. Abrir o painel pelo botão **Painel** no topo do slide da aula, pela central em

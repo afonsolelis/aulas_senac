@@ -270,6 +270,10 @@ begin
                           from jsonb_array_elements(r.data) l) >= quiz_banco_piso()));
 end $$;
 
+-- quiz_banco_piso é auxiliar interna: as duas funções acima a chamam de dentro,
+-- onde o dono é o executor. Revogar de anon evita mais uma RPC exposta à toa.
+revoke all on function quiz_banco_piso()                from public, anon, authenticated;
+
 revoke all on function quiz_banco_salas()                from public;
 revoke all on function quiz_banco(text)                  from public;
 revoke all on function quiz_publicar(text,text,text)     from public;
