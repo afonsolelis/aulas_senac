@@ -36,7 +36,7 @@ begin
   -- Por questão: taxa de acerto, distribuição das escolhas e tempo médio.
   -- O distrator mais escolhido é o que revela a concepção equivocada.
   v_out := v_out || jsonb_build_object('questoes', coalesce((
-    select jsonb_agg(x order by x->>'taxa') from (
+    select jsonb_agg(x order by (x->>'taxa')::numeric nulls last) from (
       select jsonb_build_object(
         'ordem', q.ordem, 'tema', q.tema, 'secao', q.secao,
         'enunciado', q.enunciado, 'alternativas', q.alternativas,
@@ -62,7 +62,7 @@ begin
 
   -- Por tema: é o recorte que orienta o que revisar com a turma.
   v_out := v_out || jsonb_build_object('temas', coalesce((
-    select jsonb_agg(x order by x->>'taxa') from (
+    select jsonb_agg(x order by (x->>'taxa')::numeric nulls last) from (
       select jsonb_build_object(
         'tema', q.tema, 'secao', q.secao,
         'questoes', array_agg(distinct q.ordem order by q.ordem),

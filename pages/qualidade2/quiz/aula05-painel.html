@@ -223,6 +223,20 @@
     <p class="aviso" id="dlg-aviso" role="status" style="margin:14px 0 0"></p>
   </dialog>
 
+  <dialog class="reiniciar" id="dlg-publicar">
+    <h2>Publicar o banco desta aula</h2>
+    <p>Publicar libera, para os alunos, as <strong>oito questões com o gabarito e a
+       explicação</strong> e o desempenho de cada rodada &mdash; por questão e por tema,
+       nunca por pessoa. Antes disso, arquiva a rodada corrente e zera a sala.</p>
+    <p><strong>Faça isto só depois que as três turmas jogarem.</strong> A mesma sala é
+       jogada ao longo da semana: publicar antes entrega o gabarito a quem ainda vai jogar.</p>
+    <div class="acoes">
+      <button id="btn-pub-ok" type="button" class="perigo">Arquivar e publicar</button>
+      <button id="btn-pub-cancelar" type="button" class="secundario">Cancelar</button>
+    </div>
+    <p class="aviso" id="pub-aviso" role="status" style="margin:14px 0 0"></p>
+  </dialog>
+
   <footer>
     <button id="btn-abrir"    type="button">Abrir pergunta</button>
     <button id="btn-revelar"  type="button" class="secundario">Revelar resposta</button>
@@ -233,7 +247,9 @@
       <a class="link" href="aula05-relatorio.html">Relatório</a>
       <a class="link" href="../material/material_introducao-testes-automatizados.html">Material da Aula 04</a>
       <a class="link" href="../slide_introducao-testes-automatizados.html">Slides da Aula 04</a>
+      <a class="link" href="banco.html">Banco</a>
       <a class="link" href="../../home_qualidade_2026_2.html">Voltar ao cronograma</a>
+      <button id="btn-publicar" type="button" class="secundario">Publicar banco</button>
       <button id="btn-reiniciar" type="button" class="perigo">Reiniciar</button>
     </div>
   </footer>
@@ -453,6 +469,7 @@
     el('btn-reabrir').disabled  = !(d.estado === 'revelacao' || d.estado === 'pergunta');
     el('btn-encerrar').disabled = d.estado === 'encerrado' || d.estado === 'lobby';
     el('btn-reiniciar').disabled = false;
+    el('btn-publicar').disabled  = false;   // agir() desabilita todo o rodapé
   }
 
   el('btn-auth').addEventListener('click', autenticar);
@@ -503,6 +520,42 @@
   el('btn-dlg-csv').addEventListener('click', baixarCsvDaSala);
   el('btn-dlg-ok').addEventListener('click', confirmarReinicio);
   el('btn-dlg-cancelar').addEventListener('click', () => el('dlg-reiniciar').close());
+
+
+  /* Publicação do banco: o gesto de fim de ciclo. Arquiva a rodada da última
+     turma, zera a sala e libera questões, gabarito e desempenho por rodada em
+     quiz/banco.html — sem nome de aluno. Ver supabase/quiz-banco.sql.
+     Para recolher: quiz_publicar(slug, token, 'despublicar') no SQL Editor. */
+  async function confirmarPublicacao() {
+    el('pub-aviso').textContent = 'Arquivando e publicando…';
+    let d;
+    try {
+      const r = await db.rpc('quiz_publicar', { p_slug: SLUG, p_token: token, p_acao: 'publicar' });
+      if (r.error) throw r.error;
+      d = r.data;
+    } catch (e) {
+      el('pub-aviso').textContent = 'Falha de rede — nada foi publicado.';
+      console.error(e);
+      return;
+    }
+    if (!d.ok) { el('pub-aviso').textContent = d.erro; return; }
+
+    try { aplicar(await chamar('ver')); } catch (e) { console.error(e); }
+    el('pub-aviso').textContent =
+      `Banco publicado — ${d.rodadas} rodada(s) visíveis para os alunos`
+      + (d.arquivadas ? `, ${d.arquivadas} respostas arquivadas agora.` : '.');
+    el('btn-pub-ok').disabled = true;
+    el('btn-pub-cancelar').textContent = 'Fechar';
+  }
+
+  el('btn-publicar').addEventListener('click', () => {
+    el('pub-aviso').textContent = '';
+    el('btn-pub-ok').disabled = false;
+    el('btn-pub-cancelar').textContent = 'Cancelar';
+    el('dlg-publicar').showModal();
+  });
+  el('btn-pub-ok').addEventListener('click', confirmarPublicacao);
+  el('btn-pub-cancelar').addEventListener('click', () => el('dlg-publicar').close());
 
   if (token) { el('token').value = token; autenticar(); }
   </script>

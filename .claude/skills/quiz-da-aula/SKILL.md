@@ -127,6 +127,8 @@ Commit com o resumo das questões e do que foi validado, e push — a turma aces
 
 Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` → discutir a distribuição na revelação → repetir → `Encerrar sessão` → `Relatório` → `Reiniciar`, que abre a confirmação com **Baixar CSV** antes de apagar. O reinício **arquiva sozinho** a rodada em `quiz_relatorios` e diz quantas respostas guardou; o CSV é conveniência, não seguro.
 
+Depois que **as três turmas** jogaram a mesma sala: `Publicar banco`, no painel. Arquiva a rodada da última turma, zera a sala e libera `pages/qualidade2/quiz/banco.html` — as questões com gabarito e explicação, e o desempenho de cada rodada, sem resultado individual. Publicar antes da última turma entrega o gabarito a quem ainda vai jogar.
+
 ## Armadilhas conhecidas
 
 - **Não nomeie os arquivos `slide_*.html`** dentro de `pages/<slug>/quiz/`: o `specs/slide-structure.spec.js` passaria a exigir capa, agenda e rodapé de quatro filhos.
@@ -135,5 +137,8 @@ Painel → token `080909` → projetar o lobby com o QR → `Abrir pergunta` →
   correta e a explicação — é por ali que se confere o quiz antes da aula, sem abrir pergunta por pergunta.
 - A chave publicável do Supabase fica escrita no HTML — é pública por desenho, quem limita o alcance é a RLS. A senha do banco, não: ela nunca entra no repositório.
 - Reiniciar apaga tudo daquela sala — mas arquiva antes, no histórico. Só reinicie entre turmas, não no meio de uma.
+- **Publicar é irreversível na prática:** o que os alunos leram, leram. `quiz_publicar(slug, token, 'despublicar')` recolhe a página, mas não desfaz a leitura. Publique no fim da semana da aula, nunca no meio.
+- O banco público rotula as rodadas como "Rodada 1, 2, 3", **não** pela turma: o `ts` do arquivamento ordena com segurança, mas pode cair no dia da turma seguinte.
+- Rodadas com menos de 3 participantes não aparecem no banco (`quiz_banco_piso()`): a distribuição por alternativa numa rodada minúscula equivale a desempenho individual.
 
 Detalhes do esquema, das RPCs e do desenho de acesso: `supabase/README.md`.

@@ -63,8 +63,8 @@ Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HT
 pública por desenho, quem limita o alcance é a RLS.
 
 - SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-ingestao.sql` →
-  `quiz-gabarito.sql` → `quiz-seed-<aula>.sql`), rodado **à mão** no SQL Editor. Ver
-  `supabase/README.md`.
+  `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-seed-<aula>.sql`), rodado **à mão** no
+  SQL Editor. Ver `supabase/README.md`.
 - Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em
   `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
   (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba
@@ -81,6 +81,14 @@ pública por desenho, quem limita o alcance é a RLS.
   script falha.
 - Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
   respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
+- **Banco público** (`pages/qualidade2/quiz/banco.html`, botão próprio na home da
+  disciplina): as questões com gabarito e explicação mais o desempenho de **cada rodada**
+  — por questão e por tema, **nunca por aluno**. Lê `quiz_relatorios` por `quiz_banco`,
+  sem token. Uma aula só aparece depois do botão **Publicar banco** do painel
+  (`quiz_publicar`), e isso se faz **depois que as três turmas jogaram** — publicar antes
+  entrega o gabarito a quem ainda vai jogar. Rodadas com menos de 3 participantes ficam
+  fora, e as rodadas são rotuladas "Rodada N", não pela turma (o `ts` do arquivamento
+  ordena, mas pode cair no dia da turma seguinte).
 - **Histórico:** `reiniciar` arquiva a rodada em `quiz_relatorios` (uma linha por estudante
   e questão, `data_tag` = `2026-2-<sala>`) **antes** de apagar — a mesma sala é jogada pelas
   três turmas. O botão Reiniciar do painel abre um diálogo que oferece `Baixar CSV` primeiro,
