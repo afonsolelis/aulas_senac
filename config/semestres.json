@@ -96,7 +96,7 @@
               "dia_semana": "Sexta-feira",
               "horarios": [
                 { "inicio": "19h10", "fim": "20h50", "sala": "C237" },
-                { "inicio": "21h05", "fim": "22h45", "sala": "C149" }
+                { "inicio": "21h05", "fim": "22h45", "sala": "D156" }
               ]
             }
           ],
@@ -125,7 +125,7 @@
               "dia_semana": "Terça-feira",
               "horarios": [
                 { "inicio": "19h10", "fim": "20h50", "sala": "Lab. A113" },
-                { "inicio": "21h05", "fim": "22h45", "sala": "J745" }
+                { "inicio": "21h05", "fim": "22h45", "sala": "J475" }
               ]
             }
           ],
