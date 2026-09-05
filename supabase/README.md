@@ -2,7 +2,8 @@
 
 Suporte de dados dos quizzes projetados em aula (`pages/<disciplina>/quiz/*.html`).
 O site continua estático: estes arquivos não são executados pelo site, são rodados
-**à mão**, uma vez por sessão, no **SQL Editor** do painel do Supabase.
+**à mão**, no **SQL Editor** do painel do Supabase. O esquema é instalado uma vez;
+para uma aula nova, usa-se o seed correspondente, sem recriar as tabelas existentes.
 
 Projeto Supabase: `lwamaovuxcevsjfvtqhf`
 (a chave publicável fica escrita nas páginas — ela é pública por desenho; quem
@@ -27,13 +28,15 @@ define o que ela alcança é a RLS, não o sigilo dela).
    Não destrói dado.
 6. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula. Grava o
    `periodo` (`2026-2`), que compõe a `data_tag` do histórico.
-7. O token do professor já vai no próprio seed: **`080909`**, o mesmo para todas as
-   salas, por decisão do professor. A sala é descartável e o token só abre, revela e
-   reinicia — quem o descobrir consegue, no máximo, atrapalhar a rodada.
+7. Os seeds existentes usam um token fixo e público, por decisão anterior do professor.
+   Ele autoriza também o relatório individual, o gabarito e a publicação do banco.
+   Portanto, não oferece confidencialidade aos resultados individuais. Para restringir
+   esse acesso, configure uma credencial privada no SQL Editor e não a versione.
+   A troca precisa ser aplicada à sala no Supabase; editar o arquivo local não basta.
 
    ```sql
    insert into quiz_host_tokens (session_slug, token)
-   values ('<slug-da-sessao>', '080909')
+   values ('<slug-da-sessao>', '<token-privado-definido-no-SQL-Editor>')
    on conflict (session_slug) do update set token = excluded.token;
    ```
 
@@ -160,7 +163,7 @@ Publicar é `quiz_publicar(slug, token, 'publicar')` — o botão **Publicar ban
 do painel. Para recolher uma aula sem perder o histórico:
 
 ```sql
-select quiz_publicar('atam-q2-a05', '080909', 'despublicar');
+select quiz_publicar('atam-q2-a05', '<token-do-professor>', 'despublicar');
 ```
 
 As perguntas vêm das tabelas ao vivo (a sala continua cadastrada depois de

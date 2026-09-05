@@ -53,10 +53,15 @@ page.on('pageerror', (err) => consoleErrors.push(String(err)));
 console.log(`[capture] opening ${fileUrl} @ ${width}x${height}`);
 await page.goto(fileUrl, { waitUntil: 'load' });
 
-// 1. Aguarda anime.js carregar (CDN ESM)
-await page.waitForFunction(() => !!window.__anime, null, { timeout: 8000 }).catch(() => {
-  addIssue(null, 'anime-missing', 'window.__anime não inicializou dentro de 8s (CDN falhou?)');
-});
+// 1. Decks legados usam apenas CSS. Só aguarda anime.js quando o HTML o declara.
+const expectsAnime = await page.evaluate(() => [...document.scripts].some((script) =>
+  /animejs|anime\.js/.test(script.src) || /window\.__anime\s*=/.test(script.textContent)
+));
+if (expectsAnime) {
+  await page.waitForFunction(() => !!window.__anime, null, { timeout: 8000 }).catch(() => {
+    addIssue(null, 'anime-missing', 'window.__anime não inicializou dentro de 8s (CDN falhou?)');
+  });
+}
 
 // 2. Descobre quantidade de slides e animMap.length
 const stats = await page.evaluate(() => {
@@ -71,6 +76,7 @@ console.log(`[capture] slides=${stats.slides} animMap=${stats.animMap} showSlide
 if (stats.animMap !== null && stats.animMap !== stats.slides) {
   addIssue(null, 'animmap-mismatch', `animMap.length=${stats.animMap} mas há ${stats.slides} slides`);
 }
+if (!stats.slides) addIssue(null, 'no-slides', 'o arquivo não contém nenhum .slide');
 
 // 3. Navega slide a slide e captura
 for (let i = 1; i <= stats.slides; i++) {
@@ -99,6 +105,7 @@ for (let i = 1; i <= stats.slides; i++) {
   });
 
   if (metrics) {
+    if (metrics.id !== `slide-${i}`) addIssue(i, 'wrong-active-slide', `esperado slide-${i}, encontrado ${metrics.id}`);
     if (metrics.scrollW > metrics.clientW + 1) addIssue(i, 'overflow-x', `scrollW=${metrics.scrollW} > clientW=${metrics.clientW}`);
     if (metrics.scrollH > metrics.clientH + 1) addIssue(i, 'overflow-y', `scrollH=${metrics.scrollH} > clientH=${metrics.clientH}`);
     if (metrics.isCover && !metrics.hasParticles) addIssue(i, 'missing-particles', 'slide cover-bg sem .cover-particles circle');

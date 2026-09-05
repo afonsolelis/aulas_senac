@@ -239,6 +239,12 @@ describe('Estrutura Obrigatória dos Slides', () => {
     // ── 3. Navegação ────────────────────────────────────────────
 
     describe('Navegação', () => {
+      test('IDs dos slides devem ser únicos e sequenciais para os controles', () => {
+        const slides = [...doc.querySelectorAll('.slide')];
+        expect(slides.map((slide) => slide.id)).toEqual(
+          slides.map((_, index) => `slide-${index + 1}`)
+        );
+      });
       test('deve ter botão/link de voltar para a home da disciplina', () => {
         expect(hasHomeButton(doc, html, discipline)).toBe(true);
       });

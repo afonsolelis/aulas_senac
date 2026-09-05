@@ -15,8 +15,8 @@
 -- nem a posição nem a extensão sirvam de atalho a quem não acompanhou.
 --
 -- O token do professor é fixo em '080909' e já vai gravado no fim deste
--- arquivo — decisão do professor: a sala é descartável e o token só abre,
--- revela e reinicia.
+-- arquivo por decisão anterior do professor. Também permite ler relatórios
+-- individuais e gabaritos: não oferece confidencialidade. Ver README.md.
 --
 --   insert into quiz_host_tokens (session_slug, token)
 --   values ('atam-q2-a05', 'COLE-O-TOKEN-AQUI')
@@ -109,8 +109,8 @@ select n.id, g.correta, g.explicacao
     (8, 3, 'Agentes especializados propõem e se confrontam, mas não têm autoridade para inventar requisito nem para aceitar risco. Divergência não resolvida fica registrada com o motivo; pessoas arbitram, aceitam o risco residual e respondem por ele.')
   ) as g(ordem, correta, explicacao) on g.ordem = n.ordem;
 
--- Token do professor. Fixo por decisão do professor: a sala é descartável e
--- o token só abre, revela e reinicia — não há dado pessoal atrás dele.
+-- Token público legado. Também autoriza relatórios individuais e publicação.
+-- Para restringir acesso, configure uma credencial privada no Supabase.
 insert into quiz_host_tokens (session_slug, token)
 values ('atam-q2-a05', '080909')
 on conflict (session_slug) do update set token = excluded.token;

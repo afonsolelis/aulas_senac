@@ -45,7 +45,7 @@ aulas_senac/
 - **TCC1** (CC) — planejamento, execução, documentação e apresentação.
 
 **2026.2** (início 03/08 → 11/12, cronograma por semana ISO 32–50)
-- **Qualidade de Software** (TADS) — em construção.
+- **Qualidade de Software** (TADS) — 17 aulas com slides e materiais, usando Foot Fanatics como case de aula e Organização de Recursos como projeto avaliado. JUnit na semana 38, WireMock na 39 e prova escrita na 40; entrega na 46 e prova oral na 47.
 - **TCC2** (CC) — desenvolvimento, entrega parcial (semana 38), depósito (semana 48) e apresentação (semana 50).
 
 **2025.2** — placeholders (Testes de Software, TCC2, Lógica da Computação).
@@ -69,6 +69,22 @@ npm test
 ```
 
 Os testes críticos pra alterações no cronograma são `tests/home-cards.test.js` e `tests/links-internos.test.js`.
+
+A consistência de semanas, marcos e materiais de 2026.2 é verificada por `tests/cronograma-2026-2.test.js`. Testes de mídia e links externos precisam de rede; falhas de DNS não confirmam que a URL está quebrada.
+
+Para capturar um deck inteiro e verificar overflow (os dois argumentos são obrigatórios):
+
+```bash
+npm run capture -- pages/qualidade2/slide_wiremock-api-seguras.html .tmp/shots-wiremock 1280 720
+```
+
+## Quizzes e integrações
+
+O frontend é estático; os quizzes ao vivo usam RPCs e Realtime do Supabase. Páginas em `pages/qualidade2/quiz/`, instalação SQL e operação em [supabase/README.md](supabase/README.md). Os quizzes cadastrados são das aulas 04 e 05, semanas 35 e 36.
+
+`scripts/discord-*.js` são ferramentas locais de administração e envio de mensagens, com scripts `discord:check`, `discord:post`, `discord:channel` e `discord:welcome` no `package.json`. Consulte o cabeçalho de uso de cada arquivo antes de operar; não fazem parte dos testes nem executam no site. `discord:post` trata texto livre como mensagem, inclusive `--help`.
+
+Ao reorganizar aulas, atualize a home, `config/semestres.json`, os resumos dos slides, os materiais e a tabela do projeto. Confira também quizzes e seeds quando suas aulas forem afetadas. As páginas são escritas à mão: o config não atualiza o HTML automaticamente.
 
 ## Design system
 

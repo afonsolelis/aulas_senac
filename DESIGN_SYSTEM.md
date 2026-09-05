@@ -71,15 +71,16 @@ Todos os cards ficam dentro de `<div class="row g-3"> > <div class="col-12">` e 
 
 | Variante | Uso | Container | Classes-chave |
 |---|---|---|---|
-| **Aula normal** | Aula com slide + material | `<a href="<slide>">` | `list-group-item-action border border-light bg-white` |
-
-**Densidade de ação (regra dura):** no máximo **duas** ações com peso de botão por card — "Ver slide" e "Ver material". Recurso extra da aula (download, planilha, link externo) vive **dentro do material**, não no cronograma. Sinalização de que a aula tem algo a mais é **chip**, não botão: `a.badge.rounded-pill.bg-danger-subtle.text-danger-emphasis`, à esquerda do badge de semana, com `d-inline-flex align-items-center py-2` para dar 24 px de alvo de toque (WCAG 2.5.8). Um terceiro botão quebra a varredura vertical da lista — foi medido: com 5 botões num card e 2 nos demais, a coluna de ações deixa de ser previsível.
+| **Aula normal 2026.1** | Aula com slide + materialMap | `<a href="<slide>">` | `list-group-item-action border border-light bg-white` |
+| **Aula normal 2026.2** | Aula com dois links explícitos | `<div>` | `border border-light bg-white` |
 | **Feriado** | Sem aula por feriado | `<div>` | `border border-warning bg-warning-subtle`, badge `bg-warning` com ícone `fa-umbrella-beach` |
 | **Acompanhamento de Projeto** | Semana dedicada a acompanhamento (sem slide) | `<div>` | `border border-warning bg-warning-subtle`, badge `bg-warning`, título fixo "Acompanhamento de Projeto" |
 | **Avaliação** | Prova/avaliação sem slide | `<div>` | `border border-danger bg-danger-subtle`, badge `bg-danger` com `fa-exclamation-circle` |
 | **Entrega do Projeto** | Dia da entrega com botão de envio | `<div>` | `border border-danger bg-danger-subtle`, badge extra `bg-danger text-white` "Entrega do Projeto", botão `btn-danger btn-sm` com `fab fa-github` |
 
-#### Skeleton — Aula normal
+**Densidade de ação:** no máximo duas ações com peso de botão por card, "Ver slide" e "Ver material". Downloads e outros recursos ficam no material. O quiz usa um chip `a.badge.rounded-pill.bg-danger-subtle.text-danger-emphasis` à esquerda da semana, com `d-inline-flex align-items-center py-2`.
+
+#### Skeleton — Aula normal 2026.1
 
 ```html
 <a href="<slug>/slide_<tema>.html"
@@ -130,9 +131,9 @@ O link deve ter entrada correspondente no `materialMap` (bloco `<script>` no fin
 </div>
 ```
 
-### 4.3 `materialMap` (injeção de botões)
+### 4.3 `materialMap` (injeção de botões em 2026.1)
 
-O script no fim de cada `home_*.html` mapeia `slide → material` e injeta botões "Ver slide" (cor da disciplina) + "Ver material" (`btn-primary`) nos cards de aula normal. Regras:
+Nas homes de disciplina de 2026.1, o script final mapeia `slide → material` e injeta botões "Ver slide" (cor da disciplina) + "Ver material" (`btn-primary`). As homes de 2026.2 usam dois links explícitos dentro de cada card `<div>` e não têm `materialMap`. Regras para 2026.1:
 
 - **Sempre** adicionar entrada no `materialMap` ao criar uma aula nova.
 - **Sempre** remover a entrada ao apagar um slide (o teste `tests/home-cards.test.js` quebra se ficar inconsistente).
@@ -171,7 +172,7 @@ Font Awesome 6.0 via CDN. Padrões estabelecidos:
 
 ## 8. Regras invariantes
 
-1. **Snake_case em nomes de arquivo** de slides e materiais (`slide_<tema>.html`, `material_aula<NN>-<tema>.html`).
+1. Prefixos `slide_` e `material_`, com temas em minúsculas separados por hífen; preserve os nomes existentes e os links (`slide_<tema>.html`, `material_aula<NN>-<tema>.html`).
 2. **Nunca** hardcode cor fora das paletas de `config/disciplina-*.json`.
 3. **Nunca** remover o badge de data dos cards de home — é o único marcador temporal visível.
 4. **Sempre** manter `tests/home-cards.test.js` e `tests/links-internos.test.js` verdes ao editar homes.
@@ -181,7 +182,7 @@ Font Awesome 6.0 via CDN. Padrões estabelecidos:
 
 ```
 config/
-  disciplina-<slug>.json   → tokens da disciplina (paleta, nome, paths) — qualidade, logica, tcc, tcc2
+  disciplina-<slug>.json   → tokens da disciplina (paleta, nome, paths) — qualidade, qualidade2, logica, tcc, tcc2
   semestres.json           → registro dos semestres, disciplinas, marcos e calendário
   standards.json           → IDs/classes estruturais dos slides
 css/

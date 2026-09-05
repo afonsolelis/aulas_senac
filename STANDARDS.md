@@ -15,7 +15,7 @@ Guia operacional para agentes: [CLAUDE.md](./CLAUDE.md). Verdade visual: [DESIGN
 Antes de commitar qualquer mudança de conteúdo ou infra:
 
 1. `npm test` **passa** (Jest: estrutura, homes, links internos, logo, `materialMap`).
-2. Slides novos/alterados validados visualmente: `npm run capture` (ou `node scripts/capture-slides.mjs <slide>`) — sem overflow, `animMap` casando o nº de slides.
+2. Slides novos/alterados validados visualmente: `npm run capture -- <slide.html> .tmp/shots` — os argumentos de entrada e saída são obrigatórios; verificar overflow e, quando houver `animMap`, sua correspondência com o número de slides.
 3. Links internos resolvem no disco (card e arquivo-alvo criados **juntos**).
 4. Nenhum segredo commitado (ver §5).
 5. Testes de rede podem falhar **offline** — rode ao menos uma vez com internet; se vermelho só por rede, registre no commit.
@@ -70,6 +70,7 @@ Detalhes e armadilhas: [CLAUDE.md](./CLAUDE.md) → "Invariantes que mantêm os 
 Críticos ao mexer no cronograma:
 
 - `tests/home-cards.test.js` — homes 2026.1 **hardcoded**; exige `materialMap` consistente (regex para no 1º `}`).
+- `tests/cronograma-2026-2.test.js` — semanas dos cards, slides e materiais; marcos do config e sequência da prova de Qualidade.
 - `tests/links-internos.test.js` — todo href interno resolve no disco.
 - `tests/index.test.js` — exatamente 3 cards de semestre com hrefs fixos.
 - `specs/slide-structure.spec.js` — 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório.

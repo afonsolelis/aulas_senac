@@ -47,8 +47,8 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 - `pages/`, `css/`, `specs/`, `tests/` — leia para verificar arquitetura e fluxos reais de execution
 
 **Arquitetura de verdade:**
-- Site estático UI-only — sem CLI, sem observabilidade
-- Eventos estão em `sources.json` e `specs/cloudinary.spec.js` valida rastreabilidade
+- Frontend estático; quizzes usam RPCs e Realtime do Supabase (SQL em `supabase/`). Scripts Discord são ferramentas locais de operação, não parte do frontend.
+- URLs de mídia estão em `sources.json` e `specs/cloudinary.spec.js` valida rastreabilidade
 - CSS na ordem: `css/style.css` → `css/slides.css` → `css/base-styles.css`
 
 ## Como evitar falhas comuns
@@ -83,6 +83,7 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 
 **Críticos para alterações no cronograma:**
 - `tests/home-cards.test.js` – homes 2026.1 **hardcoded**; `materialMap` consistente (regex para no 1º `}`)
+- `tests/cronograma-2026-2.test.js` – semanas das aulas e marcos em sincronia entre config, homes, slides e materiais
 - `tests/links-internos.test.js` – todo href interno resolve no disco
 - `tests/index.test.js` – exatamente 3 cards de semestre com hrefs fixos
 - `specs/slide-structure.spec.js` – 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório

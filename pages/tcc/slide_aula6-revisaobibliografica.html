@@ -15,9 +15,23 @@
   <link rel="stylesheet" href="../../css/style.css">
   <link rel="stylesheet" href="../../css/slides.css">
   <link rel="stylesheet" href="../../css/base-styles.css">
+  <style>
+    /* Ajusta a densidade deste deck extenso para projeção em 1280 × 720. */
+    .bibliography-deck .glass-cover { padding: 2rem; }
+    .bibliography-deck .slide-content { max-width: 1120px; }
+    .bibliography-deck .slide-content > h2 { font-size: 2rem; }
+    .bibliography-deck .slide-content .row { --bs-gutter-y: 1rem; }
+    .bibliography-deck .slide-content .card-body,
+    .bibliography-deck .slide-content .alert { padding: .75rem; }
+    .bibliography-deck .slide-content .mb-4 { margin-bottom: 1rem !important; }
+    .bibliography-deck .slide-content p { margin-bottom: .5rem; }
+    /* Em telas menores, permite ler o conteúdo completo sem ficar sob o rodapé. */
+    .bibliography-deck .slide > .slide-content,
+    .bibliography-deck .slide > .glass-cover { max-height: 100%; overflow-y: auto; }
+  </style>
 </head>
 
-<body class="slide-body" data-disciplina="tcc">
+<body class="slide-body bibliography-deck" data-disciplina="tcc">
 
   <div class="slide-container">
 
@@ -186,7 +200,7 @@
     </div>
 
     <!-- Slide 4: Revisão Bibliográfica vs Estado da Arte -->
-    <div class="slide" id="slide-4">
+    <div class="slide" id="slide-5">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Revisão Bibliográfica ≠ Estado da Arte</h2>
 
@@ -246,7 +260,7 @@
     </div>
 
     <!-- Slide 5: Como Escrever a Introdução -->
-    <div class="slide" id="slide-5">
+    <div class="slide" id="slide-6">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever a Introdução do TCC1</h2>
       <p class="lead text-center mb-4">A introdução é o cartão de visita do seu trabalho</p>
 
@@ -316,7 +330,7 @@
     </div>
 
     <!-- Slide 6: Como Escrever o Contexto -->
-    <div class="slide" id="slide-6">
+    <div class="slide" id="slide-7">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever o Contexto</h2>
       <p class="lead text-center mb-4">Situe o leitor no problema antes de apresentar sua solução</p>
 
@@ -365,7 +379,7 @@
     </div>
 
     <!-- Slide 7: Como Escrever a Justificativa -->
-    <div class="slide" id="slide-7">
+    <div class="slide" id="slide-8">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever a Justificativa</h2>
       <p class="lead text-center mb-4">Convença o leitor de que seu trabalho vale a pena</p>
 
@@ -426,7 +440,7 @@
     </div>
 
     <!-- Slide 8: Como Escrever os Objetivos -->
-    <div class="slide" id="slide-8">
+    <div class="slide" id="slide-9">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever os Objetivos</h2>
       <p class="lead text-center mb-4">Objetivos claros e mensuráveis são essenciais para um TCC de sucesso</p>
 
@@ -508,7 +522,7 @@
     </div>
 
     <!-- Slide 9: Onde Buscar - Bases de Dados -->
-    <div class="slide" id="slide-9">
+    <div class="slide" id="slide-10">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Onde Buscar: Bases de Dados Científicas</h2>
 
@@ -578,7 +592,7 @@
     </div>
 
     <!-- Slide 10: Como Buscar - Strings de Busca -->
-    <div class="slide" id="slide-10">
+    <div class="slide" id="slide-11">
       <div class="slide-content">
 
         <div class="row g-4">
@@ -662,7 +676,7 @@
     </div>
 
     <!-- Slide 7: Gerenciadores de Referência -->
-    <div class="slide" id="slide-7">
+    <div class="slide" id="slide-12">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Ferramentas: Gerenciadores de Referência</h2>
 
@@ -751,7 +765,7 @@
     </div>
 
     <!-- Slide 8: Como Ler Papers Eficientemente -->
-    <div class="slide" id="slide-8">
+    <div class="slide" id="slide-13">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Ler Papers Eficientemente</h2>
 
@@ -838,7 +852,7 @@
     </div>
 
     <!-- Slide 9: Como Sintetizar e Organizar -->
-    <div class="slide" id="slide-9">
+    <div class="slide" id="slide-14">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Sintetizar e Organizar Informações</h2>
 
@@ -932,7 +946,7 @@
     </div>
 
     <!-- Slide 10: Como Escrever a Revisão -->
-    <div class="slide" id="slide-10">
+    <div class="slide" id="slide-15">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever a Revisão Bibliográfica</h2>
 
@@ -1018,7 +1032,7 @@
     </div>
 
     <!-- Slide 11: Estrutura do Capítulo 2 - Revisão Bibliográfica do TCC1 -->
-    <div class="slide" id="slide-11">
+    <div class="slide" id="slide-16">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Estrutura do Capítulo 2: Revisão Bibliográfica</h2>
       <p class="lead text-center mb-4">Como organizar o capítulo de Revisão Bibliográfica no TCC1</p>
 
@@ -1091,7 +1105,7 @@
     </div>
 
     <!-- Slide 12: Como Escrever Trabalhos Relacionados -->
-    <div class="slide" id="slide-12">
+    <div class="slide" id="slide-17">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Como Escrever Trabalhos Relacionados</h2>
       <p class="lead text-center mb-4">A seção mais importante da sua Revisão Bibliográfica</p>
 
@@ -1153,7 +1167,7 @@
     </div>
 
     <!-- Slide 13: Especificidades por Caminho Metodológico -->
-    <div class="slide" id="slide-13">
+    <div class="slide" id="slide-18">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-3 text-dark text-center">Revisão Bibliográfica por Caminho Metodológico</h2>
 
@@ -1254,7 +1268,7 @@
     </div>
 
     <!-- Slide 12: Erros Comuns -->
-    <div class="slide" id="slide-12">
+    <div class="slide" id="slide-19">
       <div class="slide-content">
         <h2 class="display-5 fw-bold mb-4 text-dark text-center">Erros Comuns a Evitar</h2>
 
@@ -1355,7 +1369,7 @@
     </div>
 
     <!-- Slide 14: Checklist Final - TCC1 -->
-    <div class="slide" id="slide-14">
+    <div class="slide" id="slide-20">
       <h2 class="display-5 fw-bold mb-4 text-dark text-center">Checklist Final: TCC1 Completo</h2>
       <p class="lead text-center mb-4">Verifique se seu trabalho está pronto para entrega</p>
 
@@ -1532,7 +1546,7 @@
     </div>
 
     <!-- Slide 15: Recursos e Próximos Passos -->
-    <div class="slide" id="slide-15">
+    <div class="slide" id="slide-21">
       <div class="text-center slide-content">
         <h1 class="display-3 fw-bold mb-4 text-dark">Recursos e Próximos Passos</h1>
 
@@ -1585,7 +1599,7 @@
       <div class="progress mx-3" style="width: 100px; height: 6px;">
         <div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div>
       </div>
-      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 23</span>
+      <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 21</span>
       <button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right"></i></button>
       <button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand"></i></button>
     </div>

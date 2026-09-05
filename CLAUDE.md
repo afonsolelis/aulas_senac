@@ -21,7 +21,7 @@ npm run capture                  # validação visual (Playwright) — scripts/c
 node scripts/capture-slides.mjs pages/<slug>/slide_<arq>.html .tmp/shots 1280 720   # captura 1 slide
 ```
 
-> ❌ **Não existem** `npm run lint`, `typecheck`, `build`, `sync:ide`, `validate:structure`, `validate:agents`. Se algum doc/agente mandar rodar isso, está errado (ver aviso sobre AGENTS.md abaixo). Os únicos scripts são `test`, `test:watch`, `test:coverage`, `capture`.
+> **Não existem** `npm run lint`, `typecheck`, `build`, `sync:ide`, `validate:structure`, `validate:agents`. Os scripts de validação são `test`, `test:watch`, `test:coverage` e `capture`; este último exige entrada e diretório de saída. Também existem `discord:post`, `discord:channel`, `discord:check` e `discord:welcome`, ferramentas locais de operação, não de validação.
 
 ## Arquitetura (navegação em 4 níveis)
 
@@ -69,9 +69,11 @@ pública por desenho, quem limita o alcance é a RLS.
   `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
   (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba
   *Perguntas e gabarito* do relatório mostra as oito questões com a correta e a explicação.
-- **Token do professor: `080909`, fixo para todas as salas** (decisão do professor — a sala é
-  descartável e o token só abre, revela e reinicia; não há dado pessoal atrás dele). Vai
-  gravado no próprio seed.
+- **Token do professor:** o valor fixo registrado nos seeds também autoriza relatórios
+  individuais, gabaritos e publicação do banco. Como está versionado, não é um segredo
+  nem protege a confidencialidade desses relatórios. Antes de usar dados reais com acesso
+  restrito, substitua-o no Supabase por uma credencial privada não versionada. Alterar só
+  a documentação ou o seed local não troca o token de uma sala já instalada.
 - **Ritmo da pergunta: 90 segundos, e o painel revela sozinho** — assim que `respostas >=
   jogadores` (ou quando o cronômetro zera), o painel chama `revelar` e mostra gabarito,
   distribuição e placar sem clique do professor. `Revelar resposta` continua no rodapé para
@@ -129,6 +131,6 @@ Detalhe completo dos testes: ver a seção "Testes" do [STANDARDS.md](./STANDARD
 - **Agentes locais** (`.claude/agents/`): **`slide-builder`** (cria/edita slides e materiais, detecta disciplina pelo path, valida com Playwright) e **`home-builder`** (edita `index.html` e `pages/home_*.html`, mantém `materialMap`/marcos/testes). Preferir esses agentes para conteúdo.
 - **Hook de persona:** `.claude/settings.json` injeta `.claude/persona-router.md` a cada prompt (roteia para uma persona AIOX).
 
-## ⚠️ AGENTS.md ≠ este projeto (era boilerplate genérico)
+## Instruções do projeto e personas
 
-`AGENTS.md` foi corrigido para refletir este repo. **Ignore qualquer versão antiga** que cite `bin/`, `packages/`, `docs/stories/`, `.codex/`, workflow "por stories", `CLI First`, ou os scripts `sync:ide`/`validate:structure`/`validate:agents`/`lint`/`typecheck` — **nada disso existe aqui**. Este é um site estático UI-only; os comandos válidos são os da seção "Comandos reais" acima.
+`AGENTS.md` contém as instruções específicas deste repositório. `.codex/skills/` e `.agents/skills/` existem e guardam skills locais. As personas genéricas de `.aiox-core/` não implicam que o site tenha CLI, build ou um fluxo obrigatório por stories. Confira os comandos no `package.json`; o frontend estático usa o Supabase para os quizzes.

@@ -101,7 +101,7 @@
             }
           ],
           "marcos": {
-            "prova": { "semana": 38, "ref": "3a semana de setembro" },
+            "prova": { "semana": 40, "ref": "Após a aula de WireMock e Chamadas de API Seguras" },
             "entrega_trabalho_final": { "semana": 46 },
             "prova_oral": { "semana": 47, "ref": "meio de novembro" }
           }
