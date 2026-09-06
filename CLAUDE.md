@@ -54,7 +54,7 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
-## Quiz ao vivo (Supabase) — única parte com backend
+## Quiz ao vivo (Supabase) — um dos dois usos de backend
 
 `pages/<slug>/quiz/` guarda quizzes projetados em aula: `<aula>-quiz.html` (celular do aluno),
 `<aula>-painel.html` (projetado, com QR, cronômetro e placar) e `<aula>-relatorio.html`
@@ -103,6 +103,36 @@ pública por desenho, quem limita o alcance é a RLS.
 - Validação: `node scripts/quiz-e2e.mjs <prefixo> <slug-da-sala>` percorre lobby → pergunta →
   revelação → encerramento → relatório contra o Supabase real e descarta a sala no fim.
 
+## Quadro de avisos (Supabase) — o outro uso de backend
+
+Botão flutuante (sino) em **todas** as páginas: `js/avisos.js`, carregado por uma tag
+`<script src="<../>js/avisos.js" defer>` antes de `</body>`. O widget injeta o próprio CSS
+(prefixo `.hbav-`) e desenha os ícones em SVG — **não depende** de Bootstrap, Font Awesome
+nem supabase-js; fala com o Supabase por `fetch` nas RPCs `avisos_*`.
+
+- **Página dedicada:** `pages/avisos.html` (mesmo quadro, embutido via `HubAvisos.montarEm`).
+  Ela marca `<body data-avisos-inline>` para esconder o sino redundante.
+- **Escopo por página:** o widget deduz a disciplina do caminho (`pages/<slug>/…`) ou do nome
+  da home (`home_qualidade_2026_2.html` → `qualidade2`) e pede ao servidor os avisos `geral`
+  **mais** os daquela disciplina. Sem escopo detectado (index, homes de semestre), o servidor
+  devolve todos. Para forçar, use `<body data-avisos-escopo="<slug>">`.
+- **Omitir o sino numa página:** `<body data-sem-avisos>` — é o caso dos painéis de quiz
+  (`aula0N-painel.html`), projetados para a turma inteira.
+- **Login do professor:** a senha **não está no JS**. `avisos_login(usuario, senha)` compara
+  no Postgres com o hash salgado (sha256 nativo, sem pgcrypto) e devolve um token de sessão
+  de 12 h, guardado no `localStorage`. Cinco erros seguidos bloqueiam a conta por 15 minutos.
+  A conta é criada com `supabase/avisos-admin.sql`, que **é versionado com a senha vazia**
+  (`SENHA-AQUI`): o repositório é público, a senha real só é digitada no SQL Editor.
+- **SQL:** `supabase/avisos-schema.sql` (idempotente e **não destrutivo**) e depois
+  `supabase/avisos-admin.sql`. Nenhuma tabela de avisos é legível pela API — RLS sem policy
+  alguma; tudo passa pelas funções `security definer`. Vale a mesma armadilha de grants do
+  quiz: `revoke ... from public, anon, authenticated` em toda função interna.
+- Remoção é **lógica** (`removido_em`), então um clique errado é reversível pelo botão
+  Restaurar da área do professor.
+- Validação: `node scripts/avisos-e2e.mjs <senha-do-professor>` percorre login → publicar →
+  listar → editar → remover → restaurar → sair contra o Supabase real, confere que as
+  funções internas continuam fechadas à chave publicável e retira o aviso de teste no fim.
+
 ## Convenções de nomenclatura
 
 - Slide body: `<body class="slide-body" data-disciplina="<slug-de-paleta>">`.
@@ -121,6 +151,7 @@ Alterar conteúdo **sem** respeitar isto quebra `npm test`:
 - **Todo `slide_*.html`**: `footer.slide-footer` com **exatamente 4 filhos** (`.slide-controls` com `#slideCounter`, link "Ver material escrito" com href `material/`, link do logo Senac) → `specs/footer-layout-standard.spec.js`. Mudar o texto ou adicionar um 5º filho quebra.
 - **Novo diretório de disciplina** `pages/<slug>/`: precisa entrar em `DISCIPLINE_HOME_MAP` de `specs/slide-structure.spec.js` (e no mapa de `tests/slides-footer.test.js`) — senão o teste **lança erro** "Disciplina desconhecida".
 - **Todo href relativo** em qualquer `.html` deve resolver no disco → `tests/links-internos.test.js`. Adicione card e arquivo-alvo **juntos**.
+- **Toda página `.html`** carrega `js/avisos.js` antes de `</body>`, com o número certo de `../` → `tests/avisos.test.js`. Página nova sem a tag fica sem o quadro de avisos, silenciosamente.
 - **Testes de rede** (`aulas.test.js`, `external-links.test.js`, `logo-senac.test.js`, `cloudinary.spec.js`) fazem HTTP real ao Cloudinary/LinkedIn — podem falhar **offline**. `external-links` usa cassetes Polly em `tests/cassettes/`.
 
 Detalhe completo dos testes: ver a seção "Testes" do [STANDARDS.md](./STANDARDS.md).

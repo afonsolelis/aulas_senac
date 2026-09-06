@@ -170,6 +170,24 @@ Font Awesome 6.0 via CDN. Padrões estabelecidos:
 - **Favicon:** mesma URL do logo.
 - Nunca adicionar imagem externa sem cadastrar em `sources.json`.
 
+## 7.1 Quadro de avisos (sino flutuante)
+
+Componente global de `js/avisos.js`, presente em toda página. É a **única** peça
+visual que não usa Bootstrap nem Font Awesome: injeta o próprio CSS com prefixo
+`.hbav-` e desenha o sino em SVG, para não herdar nem perturbar o estilo das
+páginas em que pousa (hub escuro, homes claras, decks de slide).
+
+| Elemento | Tratamento |
+|---|---|
+| Botão flutuante `.hbav-fab` | 56 px, canto inferior direito, gradiente `#2c3e50 → #4ca1af`; em `body.slide-body` sobe para `calc(10vh + 14px)`, acima do `.slide-footer` |
+| Contador `.hbav-badge` | pílula `#DD2476` com o número de avisos ainda não lidos (`9+` acima de nove) |
+| Painel `.hbav-painel` | gaveta de 420 px à direita (100 vw no celular), cabeçalho com o gradiente escuro do hero |
+| Cartão `.hbav-aviso` | borda esquerda de 4 px — `#4ca1af` normal, `#DD2476` quando fixado; opacidade reduzida quando expirado/removido |
+
+Regras: o sino **some em tela cheia** (apresentação de slide) e some por completo
+em `<body data-sem-avisos>` (painéis de quiz projetados). Enquanto o painel está
+aberto, as teclas digitadas dentro dele não vazam para os atalhos ←/→/f dos slides.
+
 ## 8. Regras invariantes
 
 1. Prefixos `slide_` e `material_`, com temas em minúsculas separados por hífen; preserve os nomes existentes e os links (`slide_<tema>.html`, `material_aula<NN>-<tema>.html`).
@@ -191,6 +209,8 @@ css/
   base-styles.css          → camada moderna (vars --sl-*, .cover-bg, particles)
 js/
   standard_slides.js       → navegação (prev/next/fullscreen/progress)
+  avisos.js                → quadro de avisos: sino flutuante, painel e área do professor
+  quiz-csv.js              → exportação em CSV do painel e do relatório de quiz
 .claude/agents/
   slide-builder.md         → criação/edição de slides
   home-builder.md          → cards das homes de disciplina

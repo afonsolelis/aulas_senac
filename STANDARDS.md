@@ -48,6 +48,7 @@ Antes de commitar qualquer mudança de conteúdo ou infra:
 
 - Toda URL de mídia externa (imagem/vídeo) usada em `pages/*.html` deve estar registrada em **`sources.json`** — chave `snake_case`, valor URL Cloudinary, sem duplicatas. `specs/cloudinary.spec.js` falha se faltar rastreabilidade.
 - **Logo Senac obrigatório em toda página `.html`** (`<img>` com `alt` contendo "senac") → `tests/logo-senac.test.js`.
+- **`js/avisos.js` obrigatório em toda página `.html`** (antes de `</body>`, com o número certo de `../`) → `tests/avisos.test.js`. Página nova sem ele fica sem o quadro de avisos, e sem erro visível.
 
 ## 7. Estrutura & nomenclatura (resumo)
 
@@ -75,6 +76,7 @@ Críticos ao mexer no cronograma:
 - `tests/index.test.js` — exatamente 3 cards de semestre com hrefs fixos.
 - `specs/slide-structure.spec.js` — 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório.
 - `specs/footer-layout-standard.spec.js` — footer com **exatamente 4 filhos** e texto literal "Ver material escrito".
+- `tests/avisos.test.js` — **toda** página `.html` carrega `js/avisos.js` (botão flutuante do quadro de avisos) por um caminho relativo que resolve; e a senha do professor não pode aparecer no JS nem no seed versionado.
 
 Dependentes de rede (flaky offline): `aulas.test.js`, `external-links.test.js`, `logo-senac.test.js`, `cloudinary.spec.js`.
 
