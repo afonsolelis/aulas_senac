@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Escopo da Prova Escrita - Qualidade 2026.2</title>
+  <meta name="description" content="Escopo da prova escrita de Qualidade de Software 2026.2, semana 40: o que cai, como estudar e o que levar das aulas 01 a 08.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../home_qualidade_2026_2.html">Qualidade 2026.2</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <a href="../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
+        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2
+      </a>
+      <div class="d-flex align-items-center justify-content-between">
+        <div>
+          <span class="badge bg-white text-danger mb-1">TADS &middot; 2026.2</span>
+          <h1 class="h3 fw-bold text-white mb-0">Escopo da Prova Escrita</h1>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="prova-heading">
+          <div class="text-center mb-4">
+            <i class="fas fa-file-pen fa-3x text-danger mb-3" aria-hidden="true"></i>
+            <h2 class="display-6 fw-bold" id="prova-heading">Prova escrita &middot; Semana 40</h2>
+            <p class="lead text-muted mb-3">Tudo o que foi visto da Aula 01 à Aula 08, cobrado como decisão justificada — não como memorização de sintaxe.</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+              <span class="badge bg-danger rounded-pill">Avaliação individual</span>
+              <span class="badge bg-dark rounded-pill">Aulas 01 a 08</span>
+              <span class="badge bg-primary rounded-pill">Semanas 32 a 39</span>
+            </div>
+          </div>
+          <div class="alert alert-danger mb-0">
+            <strong>A prova acontece na semana seguinte à Aula 08 (WireMock e Chamadas de API Seguras).</strong>
+            A Aula 09 (TDD e BDD, semana 41) já é conteúdo posterior e <em>não</em> cai.
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="conteudo-heading">
+          <h2 class="h3 fw-bold mb-3" id="conteudo-heading">O que cai, aula por aula</h2>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th scope="col">Aula</th>
+                  <th scope="col">Tema</th>
+                  <th scope="col">O que a prova cobra</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="fw-bold">01</td>
+                  <td>Introdução à Qualidade de Software</td>
+                  <td class="text-muted">Qualidade como adequação ao uso, custo de defeito ao longo do tempo, verificação × validação, papel do teste na decisão.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">02</td>
+                  <td>ATAM e Planejamento de Casos de Teste</td>
+                  <td class="text-muted">Atributos de qualidade, cenários, particionamento em classes de equivalência, análise de valor limite, priorização por risco.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">03</td>
+                  <td>Caixa Branca vs Caixa Preta</td>
+                  <td class="text-muted">Quando cada abordagem responde melhor, critérios de cobertura (linha, ramo, caminho), limites de cada técnica.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">04</td>
+                  <td>Arquitetura e Análise ATAM com IA Agêntica</td>
+                  <td class="text-muted">C4, utility tree, pontos de sensibilidade e trade-off, riscos e ADR: ler uma decisão arquitetural e apontar o que ela custa.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">05</td>
+                  <td>Gestão de Erros e Bugs</td>
+                  <td class="text-muted">Erro, defeito, falha e incidente; relato reproduzível; severidade × prioridade; causa raiz e teste de regressão.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">06</td>
+                  <td>Testes Automatizados em CI</td>
+                  <td class="text-muted">Anatomia de um workflow, por que <code>verify</code> e não <code>test</code>, artifacts como evidência, permissões mínimas, branch protection, diagnóstico de pipeline vermelho e de flakiness.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">07</td>
+                  <td>JUnit 5, JaCoCo e SonarCloud</td>
+                  <td class="text-muted">Lifecycle e parametrização, tempo como dependência injetada, cobertura de linha × ramo e o que ela <em>não</em> prova, leitura do relatório, quality gate no novo código.</td>
+                </tr>
+                <tr>
+                  <td class="fw-bold">08</td>
+                  <td>WireMock e Chamadas de API Seguras</td>
+                  <td class="text-muted">Mock de objeto × WireMock × Testcontainers, matriz de falhas da integração, timeout e retry idempotente, erro neutro e não vazamento de segredo.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="formato-heading">
+          <h2 class="h3 fw-bold mb-3" id="formato-heading">Como a prova pergunta</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm p-4">
+                <h3 class="h5 fw-bold">Cai</h3>
+                <ul class="small text-muted mb-0">
+                  <li>Escolher a técnica adequada a um cenário e justificar.</li>
+                  <li>Ler um trecho de teste, workflow ou relatório e apontar o defeito.</li>
+                  <li>Derivar casos de teste a partir de uma regra de negócio.</li>
+                  <li>Explicar o que uma evidência prova — e o que ela não prova.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card h-100 border-0 shadow-sm p-4">
+                <h3 class="h5 fw-bold">Não cai</h3>
+                <ul class="small text-muted mb-0">
+                  <li>Decorar assinatura de método ou versão exata de plugin.</li>
+                  <li>Escrever um projeto inteiro à mão.</li>
+                  <li>Conteúdo da Aula 09 em diante (TDD, BDD, JMeter).</li>
+                  <li>Configuração de conta em ferramenta externa.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="estudo-heading">
+          <h2 class="h3 fw-bold mb-3" id="estudo-heading">Roteiro de estudo</h2>
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Releia os materiais escritos das Aulas 01 a 08 — cada um fecha com critérios de aceite e perguntas de revisão; responda-as por escrito.</li>
+            <li class="list-group-item">Refaça os quizzes das aulas no <a href="quiz/banco.html">banco público de questões</a>, que traz gabarito e explicação de cada rodada já jogada.</li>
+            <li class="list-group-item">Abra o próprio repositório do projeto e explique em voz alta o que o pipeline faz, em que fase ele falha e qual evidência ele guarda.</li>
+            <li class="list-group-item">Pegue uma regra do <a href="especificacao-projeto.html">projeto de Organização de Recursos</a> e derive dela classes de equivalência, limites e a matriz de casos.</li>
+            <li class="list-group-item">Para cada técnica vista no semestre, escreva uma frase sobre o que ela prova e uma sobre o que ela deixa de fora.</li>
+          </ol>
+        </section>
+
+        <div class="text-center">
+          <a href="../home_qualidade_2026_2.html" class="btn btn-outline-danger rounded-pill">
+            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-light text-dark py-4 mt-5">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/avisos.js" defer></script>
+</body>
+
+</html>
