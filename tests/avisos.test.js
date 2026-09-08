@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const { JSDOM } = require('jsdom');
 
 /**
  * Quadro de avisos — invariantes do widget global.
@@ -64,6 +65,29 @@ describe('Quadro de avisos', () => {
       const seed = fs.readFileSync(
         path.join(rootDir, 'supabase', 'avisos-admin.sql'), 'utf-8');
       expect(seed).toMatch(/SENHA-AQUI/);
+    });
+  });
+
+  describe('Indicador global da semana', () => {
+    test('aparece mesmo quando a página desativa o quadro de avisos', () => {
+      const dom = new JSDOM(
+        '<!doctype html><html><head></head><body data-sem-avisos>' +
+        '<script src="http://localhost/js/avisos.js"></script></body></html>',
+        { runScripts: 'outside-only', url: 'http://localhost/' }
+      );
+      const widget = fs.readFileSync(path.join(rootDir, 'js', 'avisos.js'), 'utf-8');
+
+      dom.window.eval(widget);
+      dom.window.document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+
+      const indicador = dom.window.document.querySelector('#hbav-semana');
+      expect(indicador).not.toBeNull();
+      expect(indicador.textContent).toMatch(/^\d{1,2}$/);
+      expect(indicador.getAttribute('datetime')).toMatch(/^\d{4}-W\d{2}$/);
+      expect(indicador.getAttribute('tabindex')).toBe('0');
+      expect(indicador.getAttribute('aria-label')).toMatch(/^Estamos na semana \d{1,2} do ano$/);
+      expect(dom.window.document.querySelector('.hbav-fab')).toBeNull();
+      dom.window.close();
     });
   });
 });

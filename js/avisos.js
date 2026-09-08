@@ -165,6 +165,19 @@
 
   var CSS = [
     ':root{--hbav-cor:#2c3e50;--hbav-acento:#DD2476}',
+    '.hbav-semana{position:fixed;right:31px;bottom:84px;z-index:2147482999;',
+    'min-width:30px;height:30px;padding:0 9px;border:1px solid rgba(255,255,255,.22);border-radius:999px;',
+    'background:rgba(15,32,39,.88);color:#fff;box-shadow:0 3px 12px rgba(15,32,39,.22);',
+    'backdrop-filter:blur(6px);font:600 11px/1.2 Outfit,system-ui,-apple-system,sans-serif;',
+    'letter-spacing:.02em;display:flex;align-items:center;justify-content:center;box-sizing:border-box;',
+    'cursor:help;user-select:none;transition:min-width .18s ease,padding .18s ease,background .18s ease}',
+    '.hbav-semana::before{content:"Semana";max-width:0;margin-right:0;opacity:0;overflow:hidden;white-space:nowrap;',
+    'transition:max-width .18s ease,margin-right .18s ease,opacity .12s ease}',
+    '.hbav-semana:hover,.hbav-semana:focus-visible{min-width:82px;padding:0 11px;background:rgba(15,32,39,.96);outline:none}',
+    '.hbav-semana:hover::before,.hbav-semana:focus-visible::before{max-width:48px;margin-right:4px;opacity:1}',
+    '.hbav-semana:focus-visible{box-shadow:0 0 0 3px rgba(76,161,175,.45),0 3px 12px rgba(15,32,39,.22)}',
+    'body.slide-body .hbav-semana{bottom:calc(10vh + 78px)}',
+    '@media (max-width:520px){.hbav-semana{right:29px;bottom:76px;width:28px;height:28px;font-size:10px}}',
     '.hbav-fab{position:fixed;right:18px;bottom:18px;z-index:2147483000;',
     'width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;',
     'background:linear-gradient(135deg,#2c3e50,#4ca1af);color:#fff;',
@@ -253,9 +266,38 @@
 
   var fab, fundo, painel, corpo, badge, subtitulo, botaoProf, ultimoFoco;
 
+  function garantirEstilo() {
+    if (document.getElementById('hbav-estilo')) return;
+    document.head.appendChild(el('style', { id: 'hbav-estilo', html: CSS }));
+  }
+
+  function semanaISO(data) {
+    var d = new Date(Date.UTC(data.getFullYear(), data.getMonth(), data.getDate()));
+    var dia = d.getUTCDay() || 7;
+    d.setUTCDate(d.getUTCDate() + 4 - dia);
+    var inicio = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+    return {
+      ano: d.getUTCFullYear(),
+      numero: Math.ceil((((d - inicio) / 86400000) + 1) / 7)
+    };
+  }
+
+  function montarSemana() {
+    if (document.getElementById('hbav-semana')) return;
+    garantirEstilo();
+    var atual = semanaISO(new Date());
+    document.body.appendChild(el('time', {
+      id: 'hbav-semana',
+      class: 'hbav-semana',
+      datetime: atual.ano + '-W' + String(atual.numero).padStart(2, '0'),
+      tabindex: '0',
+      'aria-label': 'Estamos na semana ' + atual.numero + ' do ano',
+      text: String(atual.numero)
+    }));
+  }
+
   function montar() {
-    var estilo = el('style', { id: 'hbav-estilo', html: CSS });
-    document.head.appendChild(estilo);
+    garantirEstilo();
 
     badge = el('span', { class: 'hbav-badge', hidden: 'hidden' });
     fab = el('button', {
@@ -809,7 +851,9 @@
   /* ---------------- início ---------------- */
 
   function iniciar() {
-    if (!document.body || document.body.hasAttribute('data-sem-avisos')) return;
+    if (!document.body) return;
+    montarSemana();
+    if (document.body.hasAttribute('data-sem-avisos')) return;
     estado.escopo = escopoDaPagina();
     estado.vistoRef = parseInt(ler(CHAVE_VISTO) || '0', 10) || 0;
     montar();

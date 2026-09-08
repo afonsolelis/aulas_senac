@@ -179,13 +179,16 @@ páginas em que pousa (hub escuro, homes claras, decks de slide).
 
 | Elemento | Tratamento |
 |---|---|
+| Indicador temporal `.hbav-semana` | Número compacto acima do sino, calculado pela semana ISO da data local; expande para “Semana NN” em hover ou foco e permanece visível mesmo quando `data-sem-avisos` oculta o sino |
 | Botão flutuante `.hbav-fab` | 56 px, canto inferior direito, gradiente `#2c3e50 → #4ca1af`; em `body.slide-body` sobe para `calc(10vh + 14px)`, acima do `.slide-footer` |
 | Contador `.hbav-badge` | pílula `#DD2476` com o número de avisos ainda não lidos (`9+` acima de nove) |
 | Painel `.hbav-painel` | gaveta de 420 px à direita (100 vw no celular), cabeçalho com o gradiente escuro do hero |
 | Cartão `.hbav-aviso` | borda esquerda de 4 px — `#4ca1af` normal, `#DD2476` quando fixado; opacidade reduzida quando expirado/removido |
 
-Regras: o sino **some em tela cheia** (apresentação de slide) e some por completo
-em `<body data-sem-avisos>` (painéis de quiz projetados). Enquanto o painel está
+Regras: o indicador mostra apenas o número e revela “Semana NN” em hover ou foco,
+conforme a convenção ISO 8601, sem exigir
+manutenção manual. O sino **some em tela cheia** (apresentação de slide) e some por completo
+em `<body data-sem-avisos>` (painéis de quiz projetados), mas o indicador semanal permanece. Enquanto o painel está
 aberto, as teclas digitadas dentro dele não vazam para os atalhos ←/→/f dos slides.
 
 ## 8. Regras invariantes
