@@ -52,8 +52,13 @@ Cada aula abre cobrando a aula anterior.
 
 | Aula | Cobra | Slug | Seed | Páginas |
 |---|---|---|---|---|
+| Aula 02 (Semana 33) — ATAM e casos de teste | Aula 01 — fundamentos, ISO 25010 e métricas | `qualidade-q2-a02` | `quiz-seed-aula02-qualidade.sql` | `pages/qualidade2/quiz/aula02-quiz.html`, `aula02-painel.html`, `aula02-relatorio.html` |
+| Aula 03 (Semana 34) — Caixa Branca vs Caixa Preta | Aula 02 — ATAM, cenários e casos de teste | `atam-q2-a03` | `quiz-seed-aula03-atam.sql` | `pages/qualidade2/quiz/aula03-quiz.html`, `aula03-painel.html`, `aula03-relatorio.html` |
 | Aula 04 (Semana 35) — Arquitetura e ATAM | Aula 03 — caixas, cobertura e técnicas | `caixa-q2-a04` | `quiz-seed-aula04-caixas.sql` | `pages/qualidade2/quiz/aula04-quiz.html`, `aula04-painel.html`, `aula04-relatorio.html` |
 | Aula 05 (Semana 36) — Gestão de erros e bugs | Aula 04 — arquitetura, C4, pipeline e ATAM | `atam-q2-a05` | `quiz-seed-aula05-atam.sql` | `pages/qualidade2/quiz/aula05-quiz.html`, `aula05-painel.html`, `aula05-relatorio.html` |
+| Aula 06 (Semana 37) — Testes automatizados em CI | Aula 05 — bugs, triagem, causa raiz e regressão | `bugs-q2-a06` | `quiz-seed-aula06-bugs.sql` | `pages/qualidade2/quiz/aula06-quiz.html`, `aula06-painel.html`, `aula06-relatorio.html` |
+| Aula 07 (Semana 38) — JUnit, JaCoCo e SonarCloud | Aula 06 — CI, gates e diagnóstico de pipeline | `ci-q2-a07` | `quiz-seed-aula07-ci.sql` | `pages/qualidade2/quiz/aula07-quiz.html`, `aula07-painel.html`, `aula07-relatorio.html` |
+| Aula 08 (Semana 39) — WireMock e APIs seguras | Aula 07 — JUnit, cobertura e Quality Gate | `cobertura-q2-a08` | `quiz-seed-aula08-cobertura.sql` | `pages/qualidade2/quiz/aula08-quiz.html`, `aula08-painel.html`, `aula08-relatorio.html` |
 
 ### Histórico das turmas
 

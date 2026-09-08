@@ -80,7 +80,7 @@ npm run capture -- pages/qualidade2/slide_wiremock-api-seguras.html .tmp/shots-w
 
 ## Quizzes e integrações
 
-O frontend é estático; os quizzes ao vivo usam RPCs e Realtime do Supabase. Páginas em `pages/qualidade2/quiz/`, instalação SQL e operação em [supabase/README.md](supabase/README.md). Os quizzes cadastrados são das aulas 04 e 05, semanas 35 e 36.
+O frontend é estático; os quizzes ao vivo usam RPCs e Realtime do Supabase. Páginas em `pages/qualidade2/quiz/`, instalação SQL e operação em [supabase/README.md](supabase/README.md). Os quizzes de retomada estão cadastrados da Aula 02 à Aula 08: cada aula cobra o conteúdo da aula anterior.
 
 `scripts/discord-*.js` são ferramentas locais de administração e envio de mensagens, com scripts `discord:check`, `discord:post`, `discord:channel` e `discord:welcome` no `package.json`. Consulte o cabeçalho de uso de cada arquivo antes de operar; não fazem parte dos testes nem executam no site. `discord:post` trata texto livre como mensagem, inclusive `--help`.
 
