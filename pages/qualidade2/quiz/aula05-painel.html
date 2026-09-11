@@ -131,6 +131,12 @@
     }
     input:focus { outline: none; border-color: var(--primary); }
     .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
+    [hidden] { display: none !important; }
+
+    /* Questão de peso maior (supabase/quiz-peso-strike.sql) */
+    .dobro { align-self: flex-start; background: #fff; color: #2b0716; border-radius: 999px;
+             padding: 6px 16px; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
+             text-transform: uppercase; margin-bottom: 12px; }
 
     /* Encerramento da sala — o CSV sai antes do arquivamento */
     dialog.reiniciar {
@@ -153,7 +159,7 @@
       <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac">
       <div class="titulo">
         <small>Qualidade de Software &middot; Aula 05 &middot; Painel do professor</small>
-        <span id="cab-titulo">Retomada: Arquitetura e ATAM</span>
+        <span id="cab-titulo">Aula 05 — Retomada: Arquitetura e ATAM</span>
       </div>
     </div>
     <div class="medidores">
@@ -178,13 +184,14 @@
       <div class="lobby-texto">
         <h1>Aponte a câmera para entrar</h1>
         <div class="url-caixa" id="url-quiz"></div>
-        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar.</p>
+        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar. A última pergunta vale o dobro.</p>
         <div class="nomes" id="nomes"></div>
       </div>
     </section>
 
     <section data-tela="pergunta" class="pergunta">
       <div class="trilha"><i id="barra-tempo"></i></div>
+      <span class="dobro" id="p-dobro" hidden>Vale o dobro</span>
       <h1 id="enunciado"></h1>
       <div class="grade-alt" id="alternativas"></div>
     </section>
@@ -439,12 +446,16 @@
       mostrar('lobby');
     } else if (d.estado === 'pergunta') {
       el('enunciado').textContent = d.pergunta.enunciado;
+      const peso = d.pergunta.peso || 1;
+      el('p-dobro').hidden = peso <= 1;
+      el('p-dobro').textContent = peso === 2 ? 'Vale o dobro' : `Vale ${peso}×`;
       opcoes(el('alternativas'), d.pergunta, d.distribuicao || {}, false, 'p' + d.ordem);
       iniciarCronometro(d.aberta_em, d.pergunta.segundos, d.ordem + '|' + d.aberta_em);
       mostrar('pergunta');
       talvezRevelar(d);
     } else if (d.estado === 'revelacao') {
-      el('rev-ordem').textContent = `${d.ordem} de ${d.total}`;
+      el('rev-ordem').textContent = `${d.ordem} de ${d.total}`
+        + ((d.pergunta.peso || 1) > 1 ? ' · valeu o dobro' : '');
       opcoes(el('rev-alternativas'), d.pergunta, d.distribuicao || {}, true, 'r' + d.ordem);
       el('rev-explicacao').textContent = d.pergunta.explicacao || '';
       linhaRanking(el('rev-ranking'), d.ranking || []);

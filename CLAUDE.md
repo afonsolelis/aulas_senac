@@ -67,9 +67,13 @@ pública por desenho, quem limita o alcance é a RLS.
   rodado **à mão** no SQL Editor. Ver `supabase/README.md`. As RPCs do jogo (`quiz_responder`,
   `quiz_strike`, `quiz_estado`, `quiz_host`) moram em `quiz-peso-strike.sql`, que não destrói
   dado; `quiz-schema.sql` apaga as tabelas e só deve rodar em instalação nova.
-- **Peso e strike (quizzes das aulas 07 e 08, até a prova):** a última questão tem `peso = 2` (vale o dobro) e
-  quem sai da aba com a pergunta aberta leva strike e zera o ponto daquela questão. As páginas
-  das aulas 02–06 não chamam `quiz_strike` e pontuam como antes.
+- **Peso (toda sala):** a última questão tem `peso = 2` e vale o dobro; painel e celular mostram o
+  selo *Vale o dobro*. Sala instalada antes dessa regra recebe o peso por
+  `supabase/quiz-ajuste-peso-secao.sql` (só `update`, não apaga dado).
+- **Strike (aulas 07 e 08, até a prova):** quem sai da aba com a pergunta aberta leva strike e zera o
+  ponto daquela questão. As páginas das aulas 02–06 não chamam `quiz_strike`.
+- **`secao` de cada questão** é a seção numerada do material da aula cobrada (`seção N` = `<h2>` "N. …");
+  vira o "o que retomar" do aluno e do relatório. `tests/quiz-retomada.test.js` confere que ela existe.
 - Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em
   `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
   (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba

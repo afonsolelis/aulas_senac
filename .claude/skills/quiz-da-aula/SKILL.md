@@ -21,11 +21,12 @@ O que separa um quiz que ensina de um que decora:
 
 - **Situação, não definição.** Apresente um caso e peça a classificação, o diagnóstico ou a intervenção. "O que é X?" é a pior pergunta possível.
 - **Distratores reais.** Cada alternativa errada reproduz uma confusão que a turma comete de verdade (idempotência × lock, sensibilidade × trade-off, cobertura como prova de proteção). Alternativa absurda é alternativa desperdiçada.
-- **Sem atalho de forma.** Comprimentos parecidos (nada de a correta ser sempre a mais longa) e a posição da correta distribuída entre A, B, C e D — com 8 questões, duas de cada.
+- **Sem atalho de forma.** Comprimentos parecidos (nada de a correta ser sempre a mais longa) e a posição da correta distribuída entre A, B, C e D — com 8 questões, duas de cada, **embaralhadas** (nunca A, B, C, D, A, B, C, D). Depois que a primeira turma jogou, não reordene: o histórico casa as respostas pela posição.
 - **Explicação que ensina.** Dois ou três períodos: por que a correta está certa **e** por que o distrator mais atraente está errado. É o texto que aparece projetado na revelação.
-- **`tema` e `secao` em toda questão.** São eles que viram o relatório "o que retomar" — sem isso o quiz vira placar e perde a função pedagógica.
+- **`tema` e `secao` em toda questão.** São eles que viram o relatório "o que retomar" — sem isso o quiz vira placar e perde a função pedagógica. `secao` é a seção **numerada do material da aula anterior** onde o assunto está (`seção 7` = o `<h2>` "7. …"), conferida no material, não deduzida da ordem da questão. O `tests/quiz-retomada.test.js` falha se a seção não existir.
 - Oito questões, `segundos = 90`, quatro alternativas.
-- **Até a prova, a última vale o dobro.** Nos quizzes que antecedem a prova da Semana 40 (aulas 07 e 08), escolha para a oitava uma questão de síntese, que junte dois temas da aula; ela tem `peso = 2`. Depois da prova as aulas são de laboratório e não têm essas regras.
+- **A última vale o dobro, sempre.** Escolha para a oitava uma questão de síntese, que junte dois temas da aula; ela tem `peso = 2` em todo quiz.
+- **Strike só até a prova.** Nos quizzes que antecedem a prova da Semana 40 (aulas 07 e 08), sair da aba com a pergunta aberta conta strike. Depois da prova as aulas são de laboratório e não têm strike.
 
 ## Passo a passo
 
@@ -33,7 +34,7 @@ O que separa um quiz que ensina de um que decora:
 
 Copie o seed mais recente (`supabase/quiz-seed-*.sql`) e troque conteúdo e slug. Convenção do slug: `<assunto-cobrado>-q2-a<NN>` (`caixa-q2-a04` = a Aula 04 cobra as caixas; `atam-q2-a05` = a Aula 05 cobra o ATAM). O arquivo já termina gravando o token do professor — **`080909`, fixo para todas as salas**.
 
-Nos quizzes até a prova, o seed termina com o `update quiz_questions set peso = 2 ... max(ordem)` que dá peso dobrado à última questão — ver os seeds das aulas 07 e 08. Depois da prova, não inclua esse `update`: sem ele, toda questão tem peso 1. A coluna `peso` vem de `supabase/quiz-peso-strike.sql`.
+Todo seed termina com o `update quiz_questions set peso = 2 ... max(ordem)` que dá peso dobrado à última questão — nunca o omita. A coluna `peso` vem de `supabase/quiz-peso-strike.sql`.
 
 Cabeçalho do seed: registre de onde as questões saíram (caminhos do slide e do material) e o critério dos distratores. Quem for reaproveitar no semestre que vem precisa disso.
 
@@ -63,7 +64,7 @@ Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto n
 
 ### 3. As três páginas
 
-Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. **Atenção:** as páginas das aulas 07 e 08 trazem as regras da reta final antes da prova (selo **Vale o dobro**, strike por saída da aba, tela acesa, coluna de strikes). Para um quiz depois da prova, copie das páginas da Aula 06, que não têm essas regras.
+Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. Todas as salas trazem o selo **Vale o dobro**. **Atenção:** as páginas das aulas 07 e 08 trazem também o strike da reta final antes da prova (strike por saída da aba, tela acesa, coluna de strikes). Para um quiz depois da prova, copie das páginas da Aula 06, que têm o selo e não têm strike.
 
 | Trocar | Por |
 |---|---|

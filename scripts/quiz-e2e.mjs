@@ -139,8 +139,8 @@ await shot(prof, 'painel-revelacao');
 // ---- restante da sessão ---------------------------------------------
 const jogador = await aluno.evaluate((sala) => JSON.parse(localStorage.getItem('quiz:' + sala)).id, SALA);
 const n = visao.total;
-// Strike e peso só existem nas páginas que os trazem (Aula 07 em diante):
-// nas salas antigas estes passos não rodam.
+// O strike só existe nas páginas que o trazem (aulas 07 e 08, até a prova):
+// nas outras salas esses passos não rodam. O peso vale para toda sala.
 const temStrike = (await aluno.$('#strike-pergunta')) !== null;
 let acertosExtras = 0;   // questões além da 1 respondidas com o gabarito
 for (let i = 2; i <= n; i++) {
@@ -165,9 +165,20 @@ for (let i = 2; i <= n; i++) {
       .catch(() => falha('painel: contador de strikes não subiu'));
     escolha = v.pergunta.correta;
   }
-  // Última pergunta, quando pesa mais: acerta, para conferir o multiplicador.
-  const pesada = temStrike && i === n && (v.pergunta.peso || 1) > 1;
-  if (pesada) escolha = v.pergunta.correta;
+  // Última pergunta: vale o dobro em toda sala. Acerta, para conferir o multiplicador.
+  const pesada = i === n;
+  if (pesada) {
+    escolha = v.pergunta.correta;
+    (v.pergunta.peso || 1) === 2
+      ? ok(`servidor: a última pergunta (${i}) tem peso 2`)
+      : falha(`servidor: a última pergunta (${i}) tem peso ${v.pergunta.peso || 1}, não 2 — rode quiz-ajuste-peso-secao.sql`);
+    await prof.waitForSelector('#p-dobro:not([hidden])', { timeout: 20000 })
+      .then(() => ok('painel: selo Vale o dobro na última pergunta'))
+      .catch(() => falha('painel: a última pergunta abriu sem o selo Vale o dobro'));
+    await aluno.waitForSelector('#selo-dobro:not([hidden])', { timeout: 20000 })
+      .then(() => ok('aluno: selo Vale o dobro na última pergunta'))
+      .catch(() => falha('aluno: a última pergunta abriu sem o selo Vale o dobro'));
+  }
   if (escolha === v.pergunta.correta) acertosExtras++;
 
   await rpc('quiz_responder', { p_player: jogador, p_escolha: escolha });

@@ -100,14 +100,13 @@ rodado de novo, que recria todo o resto.
 
 ### Peso e strike
 
-Nos quizzes da Aula 07 (`ci-q2-a07`) e da Aula 08 (`cobertura-q2-a08`), os dois
-que antecedem a prova da Semana 40, duas regras mudam o placar:
-
-- **Peso.** `quiz_questions.peso` (1 a 3, padrão 1) multiplica a pontuação da
-  questão: acerto vale `(600 + até 400 pela rapidez) × peso`. O seed da aula
-  termina marcando `peso = 2` na última questão, que vale o dobro. Painel e
-  celular mostram o selo **Vale o dobro** enquanto ela está aberta.
-- **Strike.** A página do aluno chama `quiz_strike` quando perde a aba ou o foco
+- **Peso, em toda sala.** `quiz_questions.peso` (1 a 3, padrão 1) multiplica a
+  pontuação da questão: acerto vale `(600 + até 400 pela rapidez) × peso`. Todo
+  seed termina marcando `peso = 2` na última questão, que vale o dobro. Painel e
+  celular mostram o selo **Vale o dobro** enquanto ela está aberta, e a
+  revelação diz "valeu o dobro".
+- **Strike, só nas aulas 07 (`ci-q2-a07`) e 08 (`cobertura-q2-a08`)**, as duas
+  que antecedem a prova da Semana 40. A página do aluno chama `quiz_strike` quando perde a aba ou o foco
   (`visibilitychange`, `pagehide`, `blur`). O servidor só lança o strike se a
   pergunta estiver aberta, um por aluno e questão, e zera o ponto daquela
   questão, tenha o aluno respondido antes ou depois. O acerto continua
@@ -117,11 +116,21 @@ que antecedem a prova da Semana 40, duas regras mudam o placar:
   acesa (Screen Wake Lock) durante a sessão. Em navegador sem a API, a regra vale
   do mesmo jeito, e o aviso na entrada da sala diz isso ao aluno.
 
-As páginas das aulas 02 a 06 não chamam `quiz_strike` e as questões delas têm
-peso 1: pontuam exatamente como antes da mudança.
+As páginas das aulas 02 a 06 não chamam `quiz_strike`: nelas só a última
+questão muda, porque vale o dobro.
 
 Numa instalação que já existia, aplicar nesta ordem: `quiz-peso-strike.sql`,
 `quiz-relatorio.sql`, `quiz-ingestao.sql` e o seed da aula. Nenhum apaga dado.
+
+### Ajuste das salas já instaladas
+
+`quiz-ajuste-peso-secao.sql` leva para o banco duas correções feitas nos seeds
+depois que as salas foram criadas: `peso = 2` na última questão de todas as salas
+(antes só 07 e 08 tinham) e o `secao` que aponta para a seção certa do material.
+Só faz `update` — não roda o `delete` dos seeds, que apagaria em cascata as
+respostas de uma rodada ainda não arquivada. Rodadas já arquivadas em
+`quiz_relatorios` guardam o `secao` antigo. Termina com uma consulta de
+conferência: cada sala deve mostrar `peso_ultima = 2` e `com_peso = 1`.
 
 ### Desenho de acesso (resumo)
 

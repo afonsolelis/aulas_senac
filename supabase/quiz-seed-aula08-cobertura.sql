@@ -40,56 +40,56 @@ with novas as (
    '["Aumentar o sleep para três segundos, criando margem para a lentidão do runner",
      "Marcar o teste com assertTimeout, para que o limite fique explícito no próprio caso",
      "Isolar o teste em um job próprio, sem concorrência com o resto da suíte na CI",
-     "Injetar um Clock.fixed no validador, tratando o tempo como entrada e não ambiente"]'::jsonb, 90, 'Tempo como dependência', 'seção 1'),
+     "Injetar um Clock.fixed no validador, tratando o tempo como entrada e não ambiente"]'::jsonb, 90, 'Tempo como dependência', 'seção 5'),
 
   ('cobertura-q2-a08', 2,
    'O relatório do JaCoCo mostra 100% de cobertura de linha no autorizador, mas o ramo "token expirado" nunca foi verificado. Como isso é possível?',
    '["É um defeito conhecido do JaCoCo ao medir código que usa expressões condicionais",
      "Executar a linha da decisão já a conta como coberta, sem exigir os dois resultados",
      "A cobertura de linha só ignora ramos quando o método tem mais de uma saída possível",
-     "O agente não foi preparado no build, então o número exibido não corresponde à execução"]'::jsonb, 90, 'Cobertura de linha × de ramo', 'seção 2'),
+     "O agente não foi preparado no build, então o número exibido não corresponde à execução"]'::jsonb, 90, 'Cobertura de linha × de ramo', 'seção 6'),
 
   ('cobertura-q2-a08', 3,
    'A regra diz que o token vale enquanto o instante atual for anterior ao de expiração. Pela trinca de limite da aula, quais três entradas o teste parametrizado precisa cobrir?',
    '["Um segundo antes do limite, exatamente no limite e um segundo depois do limite",
      "Um token recém-emitido, um token de ontem e um token com data de expiração nula",
      "Um valor baixo, um valor médio e um valor alto dentro do intervalo de validade",
-     "Três instantes sorteados no intervalo, para não viciar o teste em um caso único"]'::jsonb, 90, 'Classes de equivalência e limites', 'seção 3'),
+     "Três instantes sorteados no intervalo, para não viciar o teste em um caso único"]'::jsonb, 90, 'Classes de equivalência e limites', 'seção 4'),
 
   ('cobertura-q2-a08', 4,
    'O JaCoCo está gerando o relatório HTML, mas o build fica verde mesmo com a cobertura de ramo em 40%. As metas do projeto são 80% de linha e 70% de ramo. O que está faltando?',
    '["Rodar ./mvnw test em vez de verify, porque check só atua na fase de testes",
      "Elevar as metas no SonarCloud, que é quem decide a aprovação do build no PR",
      "Executar o goal check com as regras configuradas, além do goal report, na fase verify",
-     "Adicionar o prepare-agent, sem o qual o plugin não consegue medir nada da execução"]'::jsonb, 90, 'JaCoCo como gate do build', 'seção 4'),
+     "Adicionar o prepare-agent, sem o qual o plugin não consegue medir nada da execução"]'::jsonb, 90, 'JaCoCo como gate do build', 'seção 7'),
 
   ('cobertura-q2-a08', 5,
    'No relatório HTML do JaCoCo, uma linha da regra de assinatura aparece em amarelo. O que isso significa, e qual é a ação?',
    '["A linha não foi executada; verificar se representa risco ou se é código morto",
      "A decisão foi parcialmente coberta; escrever o caso que exercita o resultado ausente",
      "A linha foi executada sem assert relevante; acrescentar oráculo ao teste existente",
-     "A linha está fora do escopo medido; incluir o pacote nas regras do bundle do plugin"]'::jsonb, 90, 'Leitura do relatório', 'seção 5'),
+     "A linha está fora do escopo medido; incluir o pacote nas regras do bundle do plugin"]'::jsonb, 90, 'Leitura do relatório', 'seção 8'),
 
   ('cobertura-q2-a08', 6,
    'O SonarCloud passou sem nenhum problema aberto no módulo de assinatura, mas a regra de negócio calcula o vencimento com um mês de diferença. Como interpretar isso?',
    '["Como falso negativo da análise, que deveria ter apontado o cálculo incorreto",
      "Como sinal de que faltou configurar a regra de negócio no perfil de qualidade",
      "Como esperado: análise estática encontra padrões, não comprova regra de negócio",
-     "Como efeito da cobertura baixa, já que o Sonar só analisa o que os testes executam"]'::jsonb, 90, 'SonarCloud e testes são complementares', 'seção 6'),
+     "Como efeito da cobertura baixa, já que o Sonar só analisa o que os testes executam"]'::jsonb, 90, 'SonarCloud e testes são complementares', 'seção 9'),
 
   ('cobertura-q2-a08', 7,
    'O projeto é legado e tem muita dívida acumulada. Exigir métrica alta sobre toda a base travaria a equipe por semanas. Qual é a estratégia de Quality Gate defendida na aula?',
    '["Aplicar o gate ao código novo, mantendo a base existente sob acompanhamento",
      "Desativar o gate até que um mutirão de correção reduza a dívida acumulada",
      "Reduzir o gate global a um patamar que a base atual já alcance hoje sem esforço",
-     "Excluir da análise os pacotes legados, deixando apenas os módulos recém-criados"]'::jsonb, 90, 'Quality Gate no novo código', 'seção 7'),
+     "Excluir da análise os pacotes legados, deixando apenas os módulos recém-criados"]'::jsonb, 90, 'Quality Gate no novo código', 'seção 11'),
 
   ('cobertura-q2-a08', 8,
    'Uma classe de teste tem um @BeforeEach de quarenta linhas que monta assinatura, token, relógio e provedor para todos os casos. Ler um teste isolado não deixa claro qual cenário ele exercita. O que a aula recomenda?',
    '["Trocar por @BeforeAll, para que o custo do setup seja pago uma única vez",
      "Manter o setup e documentar cada caso com um comentário no topo do método",
      "Extrair o setup para uma classe utilitária compartilhada por toda a suíte",
-     "Organizar em @Nested com @DisplayName, e cada cenário monta o que de fato usa"]'::jsonb, 90, 'Organizar testes por comportamento', 'seção 8')
+     "Organizar em @Nested com @DisplayName, e cada cenário monta o que de fato usa"]'::jsonb, 90, 'Organizar testes por comportamento', 'seção 3')
   returning id, ordem
 )
 insert into quiz_answer_key (question_id, correta, explicacao)

@@ -10,8 +10,18 @@
 -- confusões reais: atributo × cenário, sensibilidade × trade-off,
 -- risco × selo de aprovação e requisito vago × critério mensurável.
 -- A posição correta é distribuída entre as quatro letras — duas em cada.
+-- Nesta sala a sequência ficou A, B, C, D, A, B, C, D. Não foi reordenada
+-- depois de jogada porque o histórico casa as respostas pela posição da
+-- alternativa; no próximo semestre, embaralhe antes da primeira turma.
 --
--- Rodar depois de quiz-schema.sql e quiz-relatorio.sql. É idempotente.
+-- O token do professor é fixo em '080909' e já vai gravado no fim deste
+-- arquivo. Também permite ler relatórios individuais e gabaritos: não
+-- oferece confidencialidade. Ver README.md.
+--
+-- A última questão vale o dobro (peso 2): ver quiz-peso-strike.sql.
+--
+-- Rodar depois de quiz-schema.sql, quiz-peso-strike.sql e
+-- quiz-relatorio.sql. É idempotente.
 -- =====================================================================
 
 insert into quiz_sessions (slug, titulo, periodo) values
@@ -70,9 +80,16 @@ select n.id, g.correta, g.explicacao
     (8, 3, 'Todo plano deixa algo de fora. Registrar itens não testados, justificativa e risco torna a fronteira revisável e assumida; omitir a lista apenas esconde a decisão até que uma falha a revele.')
   ) as g(ordem, correta, explicacao) on g.ordem = n.ordem;
 
+-- Token público legado. Também autoriza relatórios individuais e publicação.
 insert into quiz_host_tokens (session_slug, token)
 values ('atam-q2-a03', '080909')
 on conflict (session_slug) do update set token = excluded.token;
 
-select count(*) || ' perguntas carregadas' as resultado
+-- A última questão vale o dobro.
+update quiz_questions set peso = 2
+ where session_slug = 'atam-q2-a03'
+   and ordem = (select max(ordem) from quiz_questions where session_slug = 'atam-q2-a03');
+
+select count(*) || ' perguntas carregadas, a última com peso '
+       || max(peso) filter (where ordem = 8) as resultado
   from quiz_questions where session_slug = 'atam-q2-a03';

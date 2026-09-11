@@ -133,6 +133,13 @@
     .estado-conexao { font-size: .7rem; font-weight: 600; color: var(--muted); text-align: center; }
     .pulsa { animation: pulsa 1.6s ease-in-out infinite; }
     @keyframes pulsa { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
+    [hidden] { display: none !important; }
+
+    /* Regra da sala: a última pergunta vale o dobro */
+    .regras { background: #fff7e6; border: 1px solid #f3d9a4; border-radius: 13px; padding: 13px 15px;
+              font-size: .84rem; line-height: 1.5; color: #6b4a00; font-weight: 500; }
+    .regras strong { color: #4a3300; }
+    .selo.dobro { background: var(--ink); color: #fff; }
     @media (min-width: 620px) {
       body { align-items: center; }
       main, header.barra { max-width: 620px; width: 100%; margin: 0 auto; }
@@ -157,6 +164,7 @@
       <span class="selo">Retomada da Aula 03</span>
       <h1>Escolha o nome que aparecerá no placar</h1>
       <p>O nome é público para a turma durante a sessão. Use algo que você reconheça no ranking projetado.</p>
+      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro.</p>
       <label for="nome">Seu nome na sala</label>
       <input id="nome" type="text" maxlength="24" autocomplete="off" autocapitalize="words"
              spellcheck="false" placeholder="entre 2 e 24 caracteres">
@@ -168,6 +176,7 @@
       <span class="selo">Inscrição confirmada</span>
       <h1 id="espera-titulo">Aguarde a abertura da primeira pergunta</h1>
       <p>Mantenha esta página aberta. A pergunta aparece aqui automaticamente quando o professor abrir.</p>
+      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro.</p>
       <p><strong id="contagem-jogadores">&mdash;</strong></p>
     </section>
 
@@ -177,6 +186,7 @@
         <div class="trilha"><div class="barra-tempo" id="barra-tempo"></div></div>
         <span class="segundos" id="segundos">&mdash;</span>
       </div>
+      <span class="selo dobro" id="selo-dobro" hidden>Vale o dobro</span>
       <h2 id="enunciado"></h2>
       <div class="alternativas" id="alternativas"></div>
       <p class="aviso" id="aviso-pergunta" role="alert"></p>
@@ -346,6 +356,9 @@
     perguntaDesenhada = p.id;
 
     el('pergunta-selo').textContent = `Pergunta ${s.ordem} de ${s.total}`;
+    const peso = p.peso || 1;
+    el('selo-dobro').hidden = peso <= 1;
+    el('selo-dobro').textContent = peso === 2 ? 'Vale o dobro' : `Vale ${peso}×`;
     el('enunciado').textContent = p.enunciado;
     el('aviso-pergunta').textContent = '';
 

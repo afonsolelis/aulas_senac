@@ -19,7 +19,10 @@
 -- arquivo. Também permite ler relatórios individuais e gabaritos: não
 -- oferece confidencialidade. Ver README.md.
 --
--- Rodar depois de quiz-schema.sql e quiz-relatorio.sql. É idempotente.
+-- A última questão vale o dobro (peso 2): ver quiz-peso-strike.sql.
+--
+-- Rodar depois de quiz-schema.sql, quiz-peso-strike.sql e
+-- quiz-relatorio.sql. É idempotente.
 -- =====================================================================
 
 insert into quiz_sessions (slug, titulo, periodo) values
@@ -50,14 +53,14 @@ with novas as (
    '["Severidade crítica e prioridade P0, pela exposição pública imediata do problema",
      "Severidade baixa e prioridade alta, porque o dano técnico é pequeno e a janela é hoje",
      "Severidade alta e prioridade P2, porque a imagem do produto é um requisito de negócio",
-     "Severidade média e prioridade P3, porque existe contorno disponível para o problema"]'::jsonb, 90, 'Severidade × prioridade', 'seção 3'),
+     "Severidade média e prioridade P3, porque existe contorno disponível para o problema"]'::jsonb, 90, 'Severidade × prioridade', 'seção 4'),
 
   ('bugs-q2-a06', 4,
    'Na triagem, a equipe conclui que o comportamento relatado é exatamente o que o requisito acordado descreve — o usuário é que esperava outra coisa. Qual é a decisão correta?',
    '["Registrar como defeito de severidade baixa, já que o usuário percebeu o problema",
      "Fechar como não reproduzível, porque o comportamento observado é o esperado",
      "Vincular ao registro canônico como duplicado do requisito que descreve o fluxo",
-     "Tratar como melhoria ou decisão de produto, porque nenhum requisito foi violado"]'::jsonb, 90, 'Triagem como decisão explícita', 'seção 4'),
+     "Tratar como melhoria ou decisão de produto, porque nenhum requisito foi violado"]'::jsonb, 90, 'Triagem como decisão explícita', 'seção 5'),
 
   ('bugs-q2-a06', 5,
    'Quem corrigiu marcou o registro como resolvido, anexou o commit e pediu para fechar no mesmo instante. O que o ciclo de vida auditável exige antes do estado fechado?',
@@ -71,21 +74,21 @@ with novas as (
    '["Corrigir a comparação no controller e reabrir o registro se o problema retornar",
      "Apagar a conta duplicada em produção e avisar o suporte sobre o caso encontrado",
      "Adicionar um alerta que detecte contas equivalentes e notifique a operação de plantão",
-     "Criar o tipo-valor que normaliza, exigir restrição única no banco e atualizar a RTM"]'::jsonb, 90, 'Causa raiz e ação sistêmica', 'seção 6'),
+     "Criar o tipo-valor que normaliza, exigir restrição única no banco e atualizar a RTM"]'::jsonb, 90, 'Causa raiz e ação sistêmica', 'seção 7'),
 
   ('bugs-q2-a06', 7,
    'A equipe corrigiu a duplicidade e escreveu um teste que passa. Pelas três provas de uma correção completa, o que ainda falta demonstrar?',
    '["Que a mudança foi a menor possível, comparando o diff com alternativas descartadas",
      "Que o teste falha no commit anterior à correção, e pelo motivo esperado",
      "Que a cobertura do módulo subiu depois que o teste novo entrou na suíte",
-     "Que o relato original foi reescrito com os passos definitivos de reprodução"]'::jsonb, 90, 'Correção com prova de regressão', 'seção 7'),
+     "Que o relato original foi reescrito com os passos definitivos de reprodução"]'::jsonb, 90, 'Correção com prova de regressão', 'seção 8'),
 
   ('bugs-q2-a06', 8,
    'A coordenação propõe um ranking mensal de bugs abertos por desenvolvedor para estimular qualidade. Qual é a objeção da aula, e o que medir no lugar?',
    '["Nenhuma: o ranking expõe quem precisa de apoio e acelera a melhoria da equipe",
      "A objeção é o custo de coletar o dado; melhor medir apenas o total de bugs abertos",
      "A métrica vira ranking e incentiva ocultar e fragmentar; meça o fluxo de trabalho",
-     "A objeção é a amostra pequena; o ranking funciona quando o volume mensal é alto"]'::jsonb, 90, 'Métricas sem caça aos culpados', 'seção 8')
+     "A objeção é a amostra pequena; o ranking funciona quando o volume mensal é alto"]'::jsonb, 90, 'Métricas sem caça aos culpados', 'seção 9')
   returning id, ordem
 )
 insert into quiz_answer_key (question_id, correta, explicacao)
@@ -107,5 +110,11 @@ insert into quiz_host_tokens (session_slug, token)
 values ('bugs-q2-a06', '080909')
 on conflict (session_slug) do update set token = excluded.token;
 
-select count(*) || ' perguntas carregadas' as resultado
+-- A última questão vale o dobro.
+update quiz_questions set peso = 2
+ where session_slug = 'bugs-q2-a06'
+   and ordem = (select max(ordem) from quiz_questions where session_slug = 'bugs-q2-a06');
+
+select count(*) || ' perguntas carregadas, a última com peso '
+       || max(peso) filter (where ordem = 8) as resultado
   from quiz_questions where session_slug = 'bugs-q2-a06';
