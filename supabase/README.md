@@ -105,8 +105,7 @@ rodado de novo, que recria todo o resto.
   seed termina marcando `peso = 2` na última questão, que vale o dobro. Painel e
   celular mostram o selo **Vale o dobro** enquanto ela está aberta, e a
   revelação diz "valeu o dobro".
-- **Strike, só nas aulas 07 (`ci-q2-a07`) e 08 (`cobertura-q2-a08`)**, as duas
-  que antecedem a prova da Semana 40. A página do aluno chama `quiz_strike` quando perde a aba ou o foco
+- **Strike, em toda sala.** A página do aluno chama `quiz_strike` quando perde a aba ou o foco
   (`visibilitychange`, `pagehide`, `blur`). O servidor só lança o strike se a
   pergunta estiver aberta, um por aluno e questão, e zera o ponto daquela
   questão, tenha o aluno respondido antes ou depois. O acerto continua
@@ -115,9 +114,6 @@ rodado de novo, que recria todo o resto.
 - Para o bloqueio automático do celular não virar strike, a página pede a tela
   acesa (Screen Wake Lock) durante a sessão. Em navegador sem a API, a regra vale
   do mesmo jeito, e o aviso na entrada da sala diz isso ao aluno.
-
-As páginas das aulas 02 a 06 não chamam `quiz_strike`: nelas só a última
-questão muda, porque vale o dobro.
 
 Numa instalação que já existia, aplicar nesta ordem: `quiz-peso-strike.sql`,
 `quiz-relatorio.sql`, `quiz-ingestao.sql` e o seed da aula. Nenhum apaga dado.

@@ -19,7 +19,8 @@
 -- arquivo. Também permite ler relatórios individuais e gabaritos: não
 -- oferece confidencialidade. Ver README.md.
 --
--- A última questão vale o dobro (peso 2): ver quiz-peso-strike.sql.
+-- A última questão vale o dobro (peso 2) e a página do aluno registra
+-- strike a quem sair da aba com a pergunta aberta: ver quiz-peso-strike.sql.
 --
 -- Rodar depois de quiz-schema.sql, quiz-peso-strike.sql e
 -- quiz-relatorio.sql. É idempotente.

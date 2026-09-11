@@ -135,11 +135,20 @@
     @keyframes pulsa { 0%,100% { opacity: 1 } 50% { opacity: .45 } }
     [hidden] { display: none !important; }
 
-    /* Regra da sala: a última pergunta vale o dobro */
+    /* Regras da sala: questão de peso maior e strike por sair da aba */
     .regras { background: #fff7e6; border: 1px solid #f3d9a4; border-radius: 13px; padding: 13px 15px;
               font-size: .84rem; line-height: 1.5; color: #6b4a00; font-weight: 500; }
     .regras strong { color: #4a3300; }
     .selo.dobro { background: var(--ink); color: #fff; }
+    .strike { background: #fdecea; color: #96271c; border-radius: 12px; padding: 11px 13px;
+              font-size: .85rem; font-weight: 700; line-height: 1.45; }
+
+    /* A pergunta segue à vista depois de responder e na revelação */
+    .pergunta-eco { background: #f6f4f6; border-left: 3px solid var(--primary); border-radius: 0 12px 12px 0;
+                    padding: 12px 14px; font-size: .95rem; font-weight: 600; line-height: 1.4;
+                    color: var(--ink); }
+    .pergunta-eco .rot { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+                         text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
     @media (min-width: 620px) {
       body { align-items: center; }
       main, header.barra { max-width: 620px; width: 100%; margin: 0 auto; }
@@ -164,7 +173,7 @@
       <span class="selo">Retomada da Aula 03</span>
       <h1>Escolha o nome que aparecerá no placar</h1>
       <p>O nome é público para a turma durante a sessão. Use algo que você reconheça no ranking projetado.</p>
-      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro.</p>
+      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro. Enquanto uma pergunta estiver aberta, fique nesta aba: trocar de aba ou de aplicativo, sair da janela ou bloquear a tela conta um <strong>strike</strong> e zera os pontos daquela pergunta.</p>
       <label for="nome">Seu nome na sala</label>
       <input id="nome" type="text" maxlength="24" autocomplete="off" autocapitalize="words"
              spellcheck="false" placeholder="entre 2 e 24 caracteres">
@@ -176,7 +185,7 @@
       <span class="selo">Inscrição confirmada</span>
       <h1 id="espera-titulo">Aguarde a abertura da primeira pergunta</h1>
       <p>Mantenha esta página aberta. A pergunta aparece aqui automaticamente quando o professor abrir.</p>
-      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro.</p>
+      <p class="regras"><strong>Regras da sala.</strong> A última pergunta vale o dobro. Enquanto uma pergunta estiver aberta, fique nesta aba: trocar de aba ou de aplicativo, sair da janela ou bloquear a tela conta um <strong>strike</strong> e zera os pontos daquela pergunta.</p>
       <p><strong id="contagem-jogadores">&mdash;</strong></p>
     </section>
 
@@ -187,6 +196,7 @@
         <span class="segundos" id="segundos">&mdash;</span>
       </div>
       <span class="selo dobro" id="selo-dobro" hidden>Vale o dobro</span>
+      <p class="strike" id="strike-pergunta" role="alert" hidden>Strike: você saiu da aba com a pergunta aberta. Esta pergunta vale 0 ponto para você.</p>
       <h2 id="enunciado"></h2>
       <div class="alternativas" id="alternativas"></div>
       <p class="aviso" id="aviso-pergunta" role="alert"></p>
@@ -195,15 +205,18 @@
     <section data-tela="respondido">
       <span class="selo">Resposta registrada</span>
       <h1>Resposta registrada</h1>
+      <p class="pergunta-eco" id="eco-respondido" hidden><span class="rot"></span><span class="txt"></span></p>
       <p>O resultado aparece quando o professor encerrar a pergunta. Não é possível alterar a escolha.</p>
-      <p><strong id="respondido-contagem">&mdash;</strong></p>
+      <p class="strike" id="strike-respondido" role="alert" hidden>Strike: você saiu da aba com a pergunta aberta. Esta pergunta vale 0 ponto para você.</p>
     </section>
 
     <section data-tela="revelacao">
+      <p class="pergunta-eco" id="eco-revelacao" hidden><span class="rot"></span><span class="txt"></span></p>
       <div class="veredito" id="veredito">
         <div class="titulo" id="veredito-titulo"></div>
         <div class="pontos" id="veredito-pontos"></div>
       </div>
+      <p class="strike" id="strike-revelacao" hidden>Strike nesta pergunta: você saiu da aba enquanto ela estava aberta, então ela valeu 0 ponto.</p>
       <div class="explicacao" id="explicacao"></div>
       <h2>Placar acumulado</h2>
       <div class="ranking" id="ranking-parcial"></div>
@@ -259,6 +272,76 @@
   let perguntaDesenhada = null;  // evita recriar os botões a cada sincronização
   let assinaturaOk = false;
 
+  /* ---------- Strike: sair da aba com a pergunta aberta ----------
+     Trocar de aba ou de aplicativo, tirar o foco da janela ou bloquear a
+     tela conta um strike e zera os pontos da pergunta aberta
+     (supabase/quiz-peso-strike.sql). Quem decide se havia pergunta aberta
+     é o servidor: o aviso sai em qualquer estado e é ignorado fora de
+     'pergunta'. O envio usa fetch com keepalive porque a página pode estar
+     indo para o fundo quando ele parte; se falhar, fica guardado e é
+     reenviado na volta. */
+  const RPC_URL = SUPABASE_URL + '/rest/v1/rpc/';
+  const CHAVE_STRIKE = 'quiz-strike:' + SLUG;
+  let ultimaSaida = 0;
+  let travaTela = null;
+  let pedindoTrava = false;
+
+  function enviarStrike(motivo) {
+    return fetch(RPC_URL + 'quiz_strike', {
+      method: 'POST',
+      keepalive: true,
+      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY,
+                 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_player: jogador.id, p_motivo: motivo }),
+    }).then((r) => r.json());
+  }
+
+  function confirmarStrike(d) {
+    if (!d || !d.ok) return;
+    try { localStorage.removeItem(CHAVE_STRIKE); } catch { /* nada a limpar */ }
+    if (d.strike && estadoAtual) { estadoAtual.strike = true; marcarStrike(estadoAtual); }
+  }
+
+  function saiu(motivo) {
+    if (!jogador || !estadoAtual || estadoAtual.estado === 'encerrado') return;
+    const agora = Date.now();
+    if (agora - ultimaSaida < 1500) return;   // blur e visibilitychange chegam juntos
+    ultimaSaida = agora;
+    try { localStorage.setItem(CHAVE_STRIKE, motivo); } catch { /* segue sem a reserva */ }
+    enviarStrike(motivo).then(confirmarStrike).catch(() => {});
+  }
+
+  function voltou() {
+    let pendente = null;
+    try { pendente = localStorage.getItem(CHAVE_STRIKE); } catch { pendente = null; }
+    if (pendente && jogador) enviarStrike(pendente).then(confirmarStrike).catch(() => {});
+    sincronizar();
+  }
+
+  function marcarStrike(s) {
+    ['strike-pergunta', 'strike-respondido', 'strike-revelacao']
+      .forEach((id) => { el(id).hidden = !s.strike; });
+  }
+
+  /* Tela acesa durante a sessão: sem isto, o bloqueio automático do celular
+     no meio dos 90 segundos contaria como saída. O navegador solta a trava
+     quando a página vai para o fundo; ela é pedida de novo a cada
+     sincronização. Sem suporte à API, a regra continua valendo. */
+  async function manterTelaAcesa(ligar) {
+    try {
+      if (ligar && !travaTela && !pedindoTrava && 'wakeLock' in navigator && !document.hidden) {
+        pedindoTrava = true;
+        travaTela = await navigator.wakeLock.request('screen');
+        travaTela.addEventListener('release', () => { travaTela = null; });
+      } else if (!ligar && travaTela) {
+        const t = travaTela;
+        travaTela = null;
+        await t.release();
+      }
+    } catch { travaTela = null; }
+    finally { pedindoTrava = false; }
+  }
+
   try { jogador = JSON.parse(localStorage.getItem(CHAVE_LOCAL) || 'null'); } catch { jogador = null; }
 
   function mostrar(tela) {
@@ -311,6 +394,8 @@
         return;
       }
       pararCronometro();
+      marcarStrike(estadoAtual || {});
+      ecoDaPergunta('eco-respondido', estadoAtual);
       mostrar('respondido');
     } catch (e) {
       el('aviso-pergunta').textContent = 'Não foi possível registrar. Toque novamente.';
@@ -349,6 +434,7 @@
 
   function desenharPergunta(s) {
     const p = s.pergunta;
+    marcarStrike(s);
 
     // A sincronização periódica não pode recriar os botões nem reiniciar o
     // cronômetro: isso apagaria a escolha em curso no meio de um toque.
@@ -381,8 +467,23 @@
     mostrar('pergunta');
   }
 
+  /* O enunciado continua à vista depois de responder e na revelação: quem
+     respondeu cedo acompanha a discussão sem perder a pergunta de vista.
+     quiz_estado devolve 'pergunta' nos dois estados. */
+  function ecoDaPergunta(id, s) {
+    const alvo = el(id);
+    const p = s && s.pergunta;
+    alvo.hidden = !p;
+    if (!p) return;
+    alvo.querySelector('.rot').textContent =
+      `Pergunta ${s.ordem} de ${s.total}` + ((p.peso || 1) > 1 ? ' · vale o dobro' : '');
+    alvo.querySelector('.txt').textContent = p.enunciado;
+  }
+
   function desenharRevelacao(s) {
     pararCronometro();
+    marcarStrike(s);
+    ecoDaPergunta('eco-revelacao', s);
     const respondeu = s.respondi;
     const acertou = s.acertei;
     const v = el('veredito');
@@ -439,7 +540,7 @@
       d.innerHTML = '<span class="pos"></span><span class="nome"></span><span class="pts"></span>';
       d.children[0].textContent = medalha;
       d.children[1].textContent = r.nome;
-      d.children[2].textContent = `${r.pontos} pt`;
+      d.children[2].textContent = `${r.pontos} pt` + (r.strikes ? ` · ${r.strikes} ⚠` : '');
       alvo.appendChild(d);
     });
   }
@@ -465,6 +566,7 @@
         el('quem').textContent = '';
       }
       if (jogador) el('quem').textContent = jogador.nome;
+      manterTelaAcesa(Boolean(jogador) && data.estado !== 'encerrado');
 
       if (!jogador) {
         if (data.estado === 'encerrado') {
@@ -486,7 +588,8 @@
 
       if (data.estado === 'pergunta') {
         if (data.respondi) {
-          el('respondido-contagem').textContent = `Pergunta ${data.ordem} de ${data.total}`;
+          ecoDaPergunta('eco-respondido', data);
+          marcarStrike(data);
           mostrar('respondido');
         } else {
           desenharPergunta(data);
@@ -499,8 +602,10 @@
       if (data.estado === 'encerrado') {
         const meu = (data.ranking || []).find((r) => r.eu);
         const pos = (data.ranking || []).findIndex((r) => r.eu) + 1;
+        const strikes = meu && meu.strikes
+          ? `, ${meu.strikes} ${meu.strikes === 1 ? 'strike' : 'strikes'}` : '';
         el('final-resumo').textContent = meu
-          ? `${meu.pontos} pontos, ${meu.acertos} de ${data.total} corretas, ${pos}º lugar.`
+          ? `${meu.pontos} pontos, ${meu.acertos} de ${data.total} corretas${strikes}, ${pos}º lugar.`
           : 'Sessão encerrada.';
         desenharMeusTemas(data.meus_temas || []);
         desenharRanking(el('ranking-final'), data.ranking || []);
@@ -531,7 +636,12 @@
   // Rede de sala de aula oscila; a consulta periódica garante que ninguém
   // fique preso numa tela antiga caso o websocket caia.
   setInterval(sincronizar, 3000);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) sincronizar(); });
+  // Saída e volta. Aba ou app trocado dispara visibilitychange; outra janela
+  // por cima, só blur. Os dois contam como saída.
+  document.addEventListener('visibilitychange', () => { if (document.hidden) saiu('aba'); else voltou(); });
+  window.addEventListener('pagehide', () => saiu('aba'));
+  window.addEventListener('blur', () => saiu('foco'));
+  window.addEventListener('focus', voltou);
 
   el('btn-entrar').addEventListener('click', entrar);
   el('nome').addEventListener('keydown', (e) => { if (e.key === 'Enter') entrar(); });

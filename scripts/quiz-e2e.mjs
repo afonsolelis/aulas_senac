@@ -139,8 +139,8 @@ await shot(prof, 'painel-revelacao');
 // ---- restante da sessão ---------------------------------------------
 const jogador = await aluno.evaluate((sala) => JSON.parse(localStorage.getItem('quiz:' + sala)).id, SALA);
 const n = visao.total;
-// O strike só existe nas páginas que o trazem (aulas 07 e 08, até a prova):
-// nas outras salas esses passos não rodam. O peso vale para toda sala.
+// Peso e strike valem em toda sala; a checagem ainda é condicional para o caso
+// de uma página antiga, sem o aviso de strike, ser validada por este script.
 const temStrike = (await aluno.$('#strike-pergunta')) !== null;
 let acertosExtras = 0;   // questões além da 1 respondidas com o gabarito
 for (let i = 2; i <= n; i++) {

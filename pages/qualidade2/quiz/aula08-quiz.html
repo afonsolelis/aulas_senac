@@ -142,6 +142,13 @@
     .selo.dobro { background: var(--ink); color: #fff; }
     .strike { background: #fdecea; color: #96271c; border-radius: 12px; padding: 11px 13px;
               font-size: .85rem; font-weight: 700; line-height: 1.45; }
+
+    /* A pergunta segue à vista depois de responder e na revelação */
+    .pergunta-eco { background: #f6f4f6; border-left: 3px solid var(--primary); border-radius: 0 12px 12px 0;
+                    padding: 12px 14px; font-size: .95rem; font-weight: 600; line-height: 1.4;
+                    color: var(--ink); }
+    .pergunta-eco .rot { display: block; font-size: .68rem; font-weight: 700; letter-spacing: .06em;
+                         text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
     @media (min-width: 620px) {
       body { align-items: center; }
       main, header.barra { max-width: 620px; width: 100%; margin: 0 auto; }
@@ -198,12 +205,13 @@
     <section data-tela="respondido">
       <span class="selo">Resposta registrada</span>
       <h1>Resposta registrada</h1>
+      <p class="pergunta-eco" id="eco-respondido" hidden><span class="rot"></span><span class="txt"></span></p>
       <p>O resultado aparece quando o professor encerrar a pergunta. Não é possível alterar a escolha.</p>
       <p class="strike" id="strike-respondido" role="alert" hidden>Strike: você saiu da aba com a pergunta aberta. Esta pergunta vale 0 ponto para você.</p>
-      <p><strong id="respondido-contagem">&mdash;</strong></p>
     </section>
 
     <section data-tela="revelacao">
+      <p class="pergunta-eco" id="eco-revelacao" hidden><span class="rot"></span><span class="txt"></span></p>
       <div class="veredito" id="veredito">
         <div class="titulo" id="veredito-titulo"></div>
         <div class="pontos" id="veredito-pontos"></div>
@@ -387,6 +395,7 @@
       }
       pararCronometro();
       marcarStrike(estadoAtual || {});
+      ecoDaPergunta('eco-respondido', estadoAtual);
       mostrar('respondido');
     } catch (e) {
       el('aviso-pergunta').textContent = 'Não foi possível registrar. Toque novamente.';
@@ -458,9 +467,23 @@
     mostrar('pergunta');
   }
 
+  /* O enunciado continua à vista depois de responder e na revelação: quem
+     respondeu cedo acompanha a discussão sem perder a pergunta de vista.
+     quiz_estado devolve 'pergunta' nos dois estados. */
+  function ecoDaPergunta(id, s) {
+    const alvo = el(id);
+    const p = s && s.pergunta;
+    alvo.hidden = !p;
+    if (!p) return;
+    alvo.querySelector('.rot').textContent =
+      `Pergunta ${s.ordem} de ${s.total}` + ((p.peso || 1) > 1 ? ' · vale o dobro' : '');
+    alvo.querySelector('.txt').textContent = p.enunciado;
+  }
+
   function desenharRevelacao(s) {
     pararCronometro();
     marcarStrike(s);
+    ecoDaPergunta('eco-revelacao', s);
     const respondeu = s.respondi;
     const acertou = s.acertei;
     const v = el('veredito');
@@ -565,7 +588,7 @@
 
       if (data.estado === 'pergunta') {
         if (data.respondi) {
-          el('respondido-contagem').textContent = `Pergunta ${data.ordem} de ${data.total}`;
+          ecoDaPergunta('eco-respondido', data);
           marcarStrike(data);
           mostrar('respondido');
         } else {

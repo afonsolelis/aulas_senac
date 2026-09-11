@@ -87,6 +87,8 @@
       border-radius: 0 12px 12px 0; padding: 15px 18px; font-size: 1rem; line-height: 1.55; font-weight: 400;
     }
     .duas-colunas { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; align-items: start; }
+    /* O enunciado continua no telão durante a revelação */
+    .rev-enunciado { font-size: 1.35rem; line-height: 1.35; font-weight: 700; margin: 0 0 14px; }
 
     /* Ranking projetado */
     .ranking { display: flex; flex-direction: column; gap: 7px; }
@@ -133,7 +135,7 @@
     .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
     [hidden] { display: none !important; }
 
-    /* Questão de peso maior (supabase/quiz-peso-strike.sql) */
+    /* Questão de peso maior e strikes (supabase/quiz-peso-strike.sql) */
     .dobro { align-self: flex-start; background: #fff; color: #2b0716; border-radius: 999px;
              padding: 6px 16px; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
              text-transform: uppercase; margin-bottom: 12px; }
@@ -165,6 +167,7 @@
     <div class="medidores">
       <div class="medidor"><div class="n" id="m-jogadores">0</div><div class="r">na sala</div></div>
       <div class="medidor"><div class="n" id="m-respostas">0</div><div class="r">responderam</div></div>
+      <div class="medidor"><div class="n" id="m-strikes">0</div><div class="r">strikes</div></div>
       <div class="medidor"><div class="n" id="m-pergunta">&mdash;</div><div class="r">pergunta</div></div>
       <div class="medidor"><div class="n" id="m-tempo">&mdash;</div><div class="r">segundos</div></div>
     </div>
@@ -184,7 +187,7 @@
       <div class="lobby-texto">
         <h1>Aponte a câmera para entrar</h1>
         <div class="url-caixa" id="url-quiz"></div>
-        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar. A última pergunta vale o dobro.</p>
+        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar. A última pergunta vale o dobro, e quem sair da aba com a pergunta aberta leva um strike e zera os pontos dela.</p>
         <div class="nomes" id="nomes"></div>
       </div>
     </section>
@@ -200,6 +203,7 @@
       <div class="duas-colunas">
         <div>
           <h2>Pergunta <span id="rev-ordem"></span></h2>
+          <p class="rev-enunciado" id="rev-enunciado"></p>
           <div class="grade-alt revelado" id="rev-alternativas" style="grid-template-columns:1fr"></div>
           <div class="explicacao" id="rev-explicacao" style="margin-top:16px"></div>
         </div>
@@ -396,7 +400,7 @@
       d.innerHTML = '<span class="pos"></span><span class="nome"></span><span class="pts"></span>';
       d.children[0].textContent = ['🥇', '🥈', '🥉'][i] || (i + 1);
       d.children[1].textContent = r.nome;
-      d.children[2].textContent = `${r.pontos} pt · ${r.acertos} ✓`;
+      d.children[2].textContent = `${r.pontos} pt · ${r.acertos} ✓` + (r.strikes ? ` · ${r.strikes} ⚠` : '');
       alvo.appendChild(d);
     });
   }
@@ -427,6 +431,7 @@
     el('cab-titulo').textContent = d.titulo;
     el('m-jogadores').textContent = d.jogadores;
     el('m-respostas').textContent = d.respostas || 0;
+    el('m-strikes').textContent = d.strikes || 0;   // da pergunta corrente
     el('m-pergunta').textContent = d.ordem ? `${d.ordem}/${d.total}` : '—';
     el('estado-txt').textContent = {
       lobby: 'Sala aberta para inscrição.', pergunta: 'Pergunta em curso.',
@@ -456,6 +461,7 @@
     } else if (d.estado === 'revelacao') {
       el('rev-ordem').textContent = `${d.ordem} de ${d.total}`
         + ((d.pergunta.peso || 1) > 1 ? ' · valeu o dobro' : '');
+      el('rev-enunciado').textContent = d.pergunta.enunciado;
       opcoes(el('rev-alternativas'), d.pergunta, d.distribuicao || {}, true, 'r' + d.ordem);
       el('rev-explicacao').textContent = d.pergunta.explicacao || '';
       linhaRanking(el('rev-ranking'), d.ranking || []);

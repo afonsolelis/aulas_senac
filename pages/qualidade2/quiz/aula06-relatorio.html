@@ -363,18 +363,21 @@
     if (!alunos.length) { alvo.innerHTML = '<p class="vazio">Nenhum estudante registrado.</p>'; return; }
     const t = document.createElement('table');
     t.innerHTML = `<thead><tr>
-      <th>Estudante</th><th>Acertos</th><th>Pontos</th><th>Errou as questões</th><th>Temas a reforçar</th>
+      <th>Estudante</th><th>Acertos</th><th>Pontos</th><th>Strikes</th><th>Errou as questões</th><th>Temas a reforçar</th>
     </tr></thead><tbody></tbody>`;
     const tb = t.querySelector('tbody');
     alunos.forEach((a) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `<td class="nome"></td><td class="num"></td><td class="num"></td>
-                      <td class="num"></td><td><div class="tags"></div></td>`;
+                      <td class="num"></td><td class="num"></td><td><div class="tags"></div></td>`;
       tr.children[0].textContent = a.nome;
       tr.children[1].textContent = `${a.acertos}/${total}`;
       tr.children[2].textContent = a.pontos;
-      tr.children[3].textContent = a.erros.length ? a.erros.join(', ') : '—';
-      const tags = tr.children[4].firstElementChild;
+      // Saídas da aba com a pergunta aberta; cada uma zerou o ponto daquela questão.
+      tr.children[3].textContent = a.strikes
+        ? `${a.strikes} (Q${(a.questoes_strike || []).join(', Q')})` : '—';
+      tr.children[4].textContent = a.erros.length ? a.erros.join(', ') : '—';
+      const tags = tr.children[5].firstElementChild;
       if (!a.temas_a_reforcar.length) {
         const s = document.createElement('span');
         s.className = 'tag ok'; s.textContent = 'nenhum';

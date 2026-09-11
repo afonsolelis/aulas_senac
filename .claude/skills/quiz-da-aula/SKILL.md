@@ -26,7 +26,8 @@ O que separa um quiz que ensina de um que decora:
 - **`tema` e `secao` em toda questão.** São eles que viram o relatório "o que retomar" — sem isso o quiz vira placar e perde a função pedagógica. `secao` é a seção **numerada do material da aula anterior** onde o assunto está (`seção 7` = o `<h2>` "7. …"), conferida no material, não deduzida da ordem da questão. O `tests/quiz-retomada.test.js` falha se a seção não existir.
 - Oito questões, `segundos = 90`, quatro alternativas.
 - **A última vale o dobro, sempre.** Escolha para a oitava uma questão de síntese, que junte dois temas da aula; ela tem `peso = 2` em todo quiz.
-- **Strike só até a prova.** Nos quizzes que antecedem a prova da Semana 40 (aulas 07 e 08), sair da aba com a pergunta aberta conta strike. Depois da prova as aulas são de laboratório e não têm strike.
+- **Strike em toda sala.** Sair da aba com a pergunta aberta conta strike e zera o ponto daquela questão, em qualquer quiz — a regra aparece no aviso de entrada da sala e no lobby do painel.
+- **A pergunta não some.** Depois de responder e na revelação, o celular repete o enunciado e o painel o mostra ao lado do placar acumulado. Ao copiar as páginas, mantenha `ecoDaPergunta` e o `#rev-enunciado`.
 
 ## Passo a passo
 
@@ -64,7 +65,7 @@ Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto n
 
 ### 3. As três páginas
 
-Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. Todas as salas trazem o selo **Vale o dobro**. **Atenção:** as páginas das aulas 07 e 08 trazem também o strike da reta final antes da prova (strike por saída da aba, tela acesa, coluna de strikes). Para um quiz depois da prova, copie das páginas da Aula 06, que têm o selo e não têm strike.
+Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. Todas as salas trazem as mesmas regras: selo **Vale o dobro**, strike por saída da aba (com tela acesa e coluna de strikes no painel e no relatório) e o enunciado repetido na espera e na revelação. Copiar de qualquer aula de 02 a 08 traz o conjunto completo.
 
 | Trocar | Por |
 |---|---|

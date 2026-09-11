@@ -107,7 +107,7 @@ describe('quizzes de retomada de Qualidade 2026.2', () => {
   });
 });
 
-describe('peso por questão e strike por saída da aba (Aula 07 em diante)', () => {
+describe('peso por questão e strike por saída da aba (toda sala)', () => {
   const sql = read('supabase/quiz-peso-strike.sql');
 
   test('quiz_strike é RPC pública e só pune com a pergunta aberta', () => {
@@ -134,15 +134,12 @@ describe('peso por questão e strike por saída da aba (Aula 07 em diante)', () 
     }
   });
 
-  // Da Aula 07 até a prova (Semana 40): a última aula antes dela é a 08.
-  const comRegras = salas.filter(({ aula }) => ['07', '08'].includes(aula));
-
-  // O peso vale para toda sala; o strike, só até a prova.
+  // As duas regras valem em toda sala: peso dobrado na última e strike por sair da aba.
   test.each(salas)('o seed da Aula $aula dá peso 2 à última questão', ({ seed }) => {
     expect(read(`supabase/${seed}`)).toMatch(/set peso = 2[\s\S]{0,160}max\(ordem\)/);
   });
 
-  test.each(comRegras)('a página do aluno da Aula $aula registra o strike e avisa as regras', ({ aula }) => {
+  test.each(salas)('a página do aluno da Aula $aula registra o strike e avisa as regras', ({ aula }) => {
     const html = read(`pages/qualidade2/quiz/aula${aula}-quiz.html`);
     const doc = new JSDOM(html).window.document;
     expect(html).toContain("'quiz_strike'");
@@ -152,10 +149,28 @@ describe('peso por questão e strike por saída da aba (Aula 07 em diante)', () 
     expect(doc.querySelector('.regras').textContent).toMatch(/vale o dobro/i);
   });
 
-  test.each(comRegras)('o painel e o relatório da Aula $aula mostram peso e strikes', ({ aula }) => {
+  test.each(salas)('o painel e o relatório da Aula $aula mostram peso e strikes', ({ aula }) => {
     const painel = read(`pages/qualidade2/quiz/aula${aula}-painel.html`);
     expect(painel).toContain('id="m-strikes"');
     expect(painel).toContain('id="p-dobro"');
     expect(read(`pages/qualidade2/quiz/aula${aula}-relatorio.html`)).toContain('<th>Strikes</th>');
+  });
+
+  // Quem respondeu cedo e quem lê o resultado continuam com a pergunta à vista.
+  test.each(salas)('a Aula $aula repete o enunciado na espera e na revelação', ({ aula }) => {
+    const html = read(`pages/qualidade2/quiz/aula${aula}-quiz.html`);
+    const doc = new JSDOM(html).window.document;
+    for (const id of ['eco-respondido', 'eco-revelacao']) {
+      const eco = doc.querySelector(`#${id}`);
+      expect(eco).not.toBeNull();
+      expect(eco.querySelector('.rot')).not.toBeNull();
+      expect(eco.querySelector('.txt')).not.toBeNull();
+      expect(html).toContain(`ecoDaPergunta('${id}'`);
+    }
+    expect(html).toMatch(/alvo\.querySelector\('\.txt'\)\.textContent = p\.enunciado;/);
+
+    const painel = read(`pages/qualidade2/quiz/aula${aula}-painel.html`);
+    expect(new JSDOM(painel).window.document.querySelector('#rev-enunciado')).not.toBeNull();
+    expect(painel).toContain("el('rev-enunciado').textContent = d.pergunta.enunciado;");
   });
 });

@@ -87,6 +87,8 @@
       border-radius: 0 12px 12px 0; padding: 15px 18px; font-size: 1rem; line-height: 1.55; font-weight: 400;
     }
     .duas-colunas { display: grid; grid-template-columns: 1.35fr 1fr; gap: 26px; align-items: start; }
+    /* O enunciado continua no telão durante a revelação */
+    .rev-enunciado { font-size: 1.35rem; line-height: 1.35; font-weight: 700; margin: 0 0 14px; }
 
     /* Ranking projetado */
     .ranking { display: flex; flex-direction: column; gap: 7px; }
@@ -201,6 +203,7 @@
       <div class="duas-colunas">
         <div>
           <h2>Pergunta <span id="rev-ordem"></span></h2>
+          <p class="rev-enunciado" id="rev-enunciado"></p>
           <div class="grade-alt revelado" id="rev-alternativas" style="grid-template-columns:1fr"></div>
           <div class="explicacao" id="rev-explicacao" style="margin-top:16px"></div>
         </div>
@@ -458,6 +461,7 @@
     } else if (d.estado === 'revelacao') {
       el('rev-ordem').textContent = `${d.ordem} de ${d.total}`
         + ((d.pergunta.peso || 1) > 1 ? ' · valeu o dobro' : '');
+      el('rev-enunciado').textContent = d.pergunta.enunciado;
       opcoes(el('rev-alternativas'), d.pergunta, d.distribuicao || {}, true, 'r' + d.ordem);
       el('rev-explicacao').textContent = d.pergunta.explicacao || '';
       linhaRanking(el('rev-ranking'), d.ranking || []);

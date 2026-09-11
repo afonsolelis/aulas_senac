@@ -70,8 +70,12 @@ pública por desenho, quem limita o alcance é a RLS.
 - **Peso (toda sala):** a última questão tem `peso = 2` e vale o dobro; painel e celular mostram o
   selo *Vale o dobro*. Sala instalada antes dessa regra recebe o peso por
   `supabase/quiz-ajuste-peso-secao.sql` (só `update`, não apaga dado).
-- **Strike (aulas 07 e 08, até a prova):** quem sai da aba com a pergunta aberta leva strike e zera o
-  ponto daquela questão. As páginas das aulas 02–06 não chamam `quiz_strike`.
+- **Strike (toda sala):** quem sai da aba com a pergunta aberta leva strike e zera o
+  ponto daquela questão; as sete páginas de aluno chamam `quiz_strike`, e painel, relatório e
+  CSV trazem a coluna de strikes.
+- **A pergunta fica à vista (toda sala):** depois de responder e na revelação, o celular repete o
+  enunciado (`ecoDaPergunta`, `#eco-respondido`/`#eco-revelacao`) e o painel o mostra em
+  `#rev-enunciado`, junto do placar acumulado.
 - **`secao` de cada questão** é a seção numerada do material da aula cobrada (`seção N` = `<h2>` "N. …");
   vira o "o que retomar" do aluno e do relatório. `tests/quiz-retomada.test.js` confere que ela existe.
 - Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em

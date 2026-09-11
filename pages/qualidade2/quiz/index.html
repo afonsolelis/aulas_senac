@@ -20,7 +20,7 @@
 
 <section class="glass-card p-4 p-md-5 mb-4">
   <h2 class="h4 fw-bold">Como funciona</h2>
-  <p class="text-muted">Cada aula abre com oito questões de 90 segundos sobre a <strong>aula anterior</strong>. O aluno responde pelo celular; a turma acompanha pelo telão; no fim cada um recebe os temas que precisa retomar e o professor, um relatório por tema, questão e estudante. <strong>A última questão vale o dobro</strong> em toda sala. Nas aulas 07 e 08, as últimas antes da prova, sair da aba com a pergunta aberta conta <strong>strike</strong> e zera o ponto daquela questão.</p>
+  <p class="text-muted">Cada aula abre com oito questões de 90 segundos sobre a <strong>aula anterior</strong>. O aluno responde pelo celular; a turma acompanha pelo telão; no fim cada um recebe os temas que precisa retomar e o professor, um relatório por tema, questão e estudante. Em toda sala valem as mesmas duas regras: <strong>a última questão vale o dobro</strong> e, enquanto a pergunta está aberta, sair da aba conta <strong>strike</strong> e zera o ponto daquela questão.</p>
   <div class="row g-3 mt-1">
     <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold"><i class="fas fa-mobile-screen text-danger me-2" aria-hidden="true"></i>Tela do aluno</h3><p class="small text-muted mb-0">Aberta pelo QR code do painel. O aluno escolhe o nome e espera a pergunta abrir.</p></div></div>
     <div class="col-md-4"><div class="border rounded-3 p-3 h-100 bg-white"><h3 class="h6 fw-bold"><i class="fas fa-sliders text-danger me-2" aria-hidden="true"></i>Painel do professor</h3><p class="small text-muted mb-0">É o que se projeta: QR, cronômetro, enunciado, distribuição das respostas e placar. Pede o token.</p></div></div>
@@ -101,7 +101,6 @@
     <div class="d-flex w-100 align-items-center gap-2 flex-wrap mb-2">
       <h3 class="h5 mb-0 fw-bold text-dark">Aula 07 &middot; Semana 38</h3>
       <span class="badge bg-light text-dark border fw-normal">cobra a Aula 06 &middot; CI, gate de merge e diagnóstico de pipeline</span>
-      <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fw-normal">strike por sair da aba</span>
     </div>
     <div class="d-flex gap-2 flex-wrap">
       <a href="aula07-painel.html" class="btn btn-dark btn-sm"><i class="fas fa-sliders me-1" aria-hidden="true"></i> Painel do professor</a>
@@ -115,7 +114,6 @@
     <div class="d-flex w-100 align-items-center gap-2 flex-wrap mb-2">
       <h3 class="h5 mb-0 fw-bold text-dark">Aula 08 &middot; Semana 39</h3>
       <span class="badge bg-light text-dark border fw-normal">cobra a Aula 07 &middot; JUnit, cobertura de ramo e Quality Gate</span>
-      <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle fw-normal">strike por sair da aba</span>
     </div>
     <div class="d-flex gap-2 flex-wrap">
       <a href="aula08-painel.html" class="btn btn-dark btn-sm"><i class="fas fa-sliders me-1" aria-hidden="true"></i> Painel do professor</a>
@@ -130,8 +128,8 @@
   <h2 class="h4 fw-bold">Conduzindo a sessão</h2>
   <div class="passo"><div class="n">1</div><div><strong>Abra o painel</strong> e informe o token da sessão. Ele fica guardado neste navegador — não é preciso digitar de novo.</div></div>
   <div class="passo"><div class="n">2</div><div><strong>Projete o lobby.</strong> O QR e o endereço aparecem grandes; os nomes surgem conforme a turma entra. Espere o número de nomes estabilizar.</div></div>
-  <div class="passo"><div class="n">3</div><div><strong>Abrir pergunta.</strong> O enunciado aparece ao mesmo tempo no telão e nos celulares, com 90 segundos de cronômetro. Na última, telão e celulares mostram o selo <em>Vale o dobro</em>.</div></div>
-  <div class="passo"><div class="n">4</div><div><strong>Revelação.</strong> Assim que todo mundo responde — ou quando o tempo acaba — o painel mostra sozinho a alternativa correta, a distribuição das escolhas, a explicação e o placar. <em>Revelar resposta</em> só adianta. É o momento de discutir o distrator que atraiu mais gente.</div></div>
+  <div class="passo"><div class="n">3</div><div><strong>Abrir pergunta.</strong> O enunciado aparece ao mesmo tempo no telão e nos celulares, com 90 segundos de cronômetro. Na última, telão e celulares mostram o selo <em>Vale o dobro</em>. Quem sair da aba com a pergunta aberta leva <em>strike</em> e zera o ponto dela — avise a turma antes da primeira.</div></div>
+  <div class="passo"><div class="n">4</div><div><strong>Revelação.</strong> Assim que todo mundo responde — ou quando o tempo acaba — o painel mostra sozinho o enunciado, a alternativa correta, a distribuição das escolhas, a explicação e o placar — e o celular repete a pergunta junto do resultado. <em>Revelar resposta</em> só adianta. É o momento de discutir o distrator que atraiu mais gente.</div></div>
   <div class="passo"><div class="n">5</div><div><strong>Repita</strong> até a oitava e clique em <strong>Encerrar sessão</strong>: cada aluno recebe, no próprio celular, os temas que precisa retomar.</div></div>
   <div class="passo"><div class="n">6</div><div><strong>Reiniciar</strong> para a turma seguinte. A rodada é <strong>arquivada sozinha</strong> no histórico antes de a sala ser zerada; o CSV que o diálogo oferece é conveniência, não seguro.</div></div>
   <div class="passo"><div class="n">7</div><div><strong>Publicar banco</strong>, e só <em>depois que as três turmas jogaram</em>. Arquiva a última rodada, zera a sala e libera as questões, o gabarito e o desempenho de cada rodada no <a href="banco.html">banco público</a>. Publicar antes entrega o gabarito a quem ainda vai jogar.</div></div>
