@@ -41,6 +41,18 @@ const ok = (m) => console.log('  ok   ' + m);
 const falha = (m) => { console.log(' FALHA ' + m); erros.push(m); };
 const shot = async (p, nome) => { if (SHOTS) await p.screenshot({ path: `${SHOTS}/${PRE}-${nome}.png` }); };
 
+// Simula o aluno trocando de aba por menos de um segundo: a página vê
+// visibilitychange com a aba oculta e, em seguida, visível de novo.
+const sairDaAba = (p) => p.evaluate(() => {
+  const definir = (oculta) => {
+    Object.defineProperty(document, 'hidden', { value: oculta, configurable: true });
+    Object.defineProperty(document, 'visibilityState', { value: oculta ? 'hidden' : 'visible', configurable: true });
+    document.dispatchEvent(new Event('visibilitychange'));
+  };
+  definir(true);
+  return new Promise((r) => setTimeout(() => { definir(false); r(); }, 800));
+});
+
 // 'descartar' zera a sala sem arquivar: o jogador de teste não entra na
 // série histórica de quiz_relatorios, que é dado de turma.
 const inicial = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'descartar' });
@@ -127,14 +139,53 @@ await shot(prof, 'painel-revelacao');
 // ---- restante da sessão ---------------------------------------------
 const jogador = await aluno.evaluate((sala) => JSON.parse(localStorage.getItem('quiz:' + sala)).id, SALA);
 const n = visao.total;
+// Strike e peso só existem nas páginas que os trazem (Aula 07 em diante):
+// nas salas antigas estes passos não rodam.
+const temStrike = (await aluno.$('#strike-pergunta')) !== null;
+let acertosExtras = 0;   // questões além da 1 respondidas com o gabarito
 for (let i = 2; i <= n; i++) {
   await prof.click('#btn-abrir');
   await prof.waitForFunction((o) => document.getElementById('m-pergunta').textContent === o, `${i}/${n}`, { timeout: 20000 });
   const v = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'ver' });
   if (!v.pergunta || !v.pergunta.enunciado) falha('pergunta ' + i + ' sem enunciado');
   if (!v.pergunta.explicacao) falha('pergunta ' + i + ' sem explicação no gabarito');
-  await rpc('quiz_responder', { p_player: jogador, p_escolha: (v.pergunta.correta + 1) % v.pergunta.alternativas.length });
+  let escolha = (v.pergunta.correta + 1) % v.pergunta.alternativas.length;
+
+  // Pergunta 2: o aluno sai da aba antes de responder e depois acerta.
+  // O acerto fica registrado, o ponto não.
+  const comStrike = temStrike && i === 2;
+  if (comStrike) {
+    await aluno.waitForSelector('[data-tela="pergunta"].ativa', { timeout: 20000 });
+    await sairDaAba(aluno);
+    await aluno.waitForSelector('#strike-pergunta:not([hidden])', { timeout: 20000 })
+      .then(() => ok('aluno: saiu da aba e o aviso de strike apareceu'))
+      .catch(() => falha('aluno: saiu da aba e o aviso de strike NÃO apareceu'));
+    await prof.waitForFunction(() => document.getElementById('m-strikes').textContent === '1', { timeout: 20000 })
+      .then(() => ok('painel: contador de strikes da pergunta subiu'))
+      .catch(() => falha('painel: contador de strikes não subiu'));
+    escolha = v.pergunta.correta;
+  }
+  // Última pergunta, quando pesa mais: acerta, para conferir o multiplicador.
+  const pesada = temStrike && i === n && (v.pergunta.peso || 1) > 1;
+  if (pesada) escolha = v.pergunta.correta;
+  if (escolha === v.pergunta.correta) acertosExtras++;
+
+  await rpc('quiz_responder', { p_player: jogador, p_escolha: escolha });
   await prof.waitForSelector('[data-tela="revelacao"].ativa', { timeout: 20000 });
+
+  if (comStrike || pesada) {
+    const e = await rpc('quiz_estado', { p_slug: SALA, p_player: jogador });
+    if (comStrike) {
+      (e.acertei && e.pontos_rodada === 0 && e.strike)
+        ? ok('servidor: acerto com strike valeu 0 ponto')
+        : falha(`servidor: acerto com strike valeu ${e.pontos_rodada} (acertei=${e.acertei}, strike=${e.strike})`);
+    }
+    if (pesada) {
+      (e.pontos_rodada >= 600 * v.pergunta.peso)
+        ? ok(`servidor: a pergunta ${i} valeu ${e.pontos_rodada} pt (peso ${v.pergunta.peso})`)
+        : falha(`servidor: a pergunta ${i} tem peso ${v.pergunta.peso} e valeu só ${e.pontos_rodada} pt`);
+    }
+  }
 }
 ok(`painel: as ${n} perguntas abriram e revelaram sozinhas em sequência`);
 
@@ -142,7 +193,8 @@ await prof.click('#btn-encerrar');
 await aluno.waitForSelector('[data-tela="final"].ativa', { timeout: 20000 });
 ok('aluno: encerramento — ' + (await aluno.textContent('#final-resumo')).trim());
 const temas = await aluno.$$eval('#meus-temas li', (e) => e.length);
-if (temas !== n - 1) falha(`aluno: esperava ${n - 1} temas a retomar, veio ${temas}`);
+const erradas = n - 1 - acertosExtras;
+if (temas !== erradas) falha(`aluno: esperava ${erradas} temas a retomar, veio ${temas}`);
 else ok(`aluno: ${temas} temas a retomar listados`);
 await shot(prof, 'painel-final');
 
@@ -155,6 +207,13 @@ await rel.waitForSelector('[data-painel="dados"].ativo', { timeout: 20000 });
 const nTemas = await rel.$$eval('#lista-temas .item', (e) => e.length);
 if (nTemas !== n) falha(`relatório: ${nTemas} temas para ${n} questões — confira o campo tema do seed`);
 else ok(`relatório: ${n} temas, acerto médio ${await rel.textContent('#m-media')}`);
+if (temStrike) {
+  const r = await rpc('quiz_relatorio', { p_slug: SALA, p_token: TOKEN });
+  const eu = (r.alunos || []).find((a) => a.nome === 'Teste E2E');
+  (eu && eu.strikes === 1)
+    ? ok(`relatório: 1 strike registrado (Q${eu.questoes_strike.join(', Q')})`)
+    : falha(`relatório: esperava 1 strike, veio ${eu ? eu.strikes : 'nenhum estudante'}`);
+}
 await shot(rel, 'relatorio');
 
 await navegador.close();

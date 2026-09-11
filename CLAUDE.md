@@ -62,9 +62,14 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HTML — é
 pública por desenho, quem limita o alcance é a RLS.
 
-- SQL em `supabase/` (`quiz-schema.sql` → `quiz-relatorio.sql` → `quiz-ingestao.sql` →
-  `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-seed-<aula>.sql`), rodado **à mão** no
-  SQL Editor. Ver `supabase/README.md`.
+- SQL em `supabase/` (`quiz-schema.sql` → `quiz-peso-strike.sql` → `quiz-relatorio.sql` →
+  `quiz-ingestao.sql` → `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-seed-<aula>.sql`),
+  rodado **à mão** no SQL Editor. Ver `supabase/README.md`. As RPCs do jogo (`quiz_responder`,
+  `quiz_strike`, `quiz_estado`, `quiz_host`) moram em `quiz-peso-strike.sql`, que não destrói
+  dado; `quiz-schema.sql` apaga as tabelas e só deve rodar em instalação nova.
+- **Peso e strike (quizzes das aulas 07 e 08, até a prova):** a última questão tem `peso = 2` (vale o dobro) e
+  quem sai da aba com a pergunta aberta leva strike e zera o ponto daquela questão. As páginas
+  das aulas 02–06 não chamam `quiz_strike` e pontuam como antes.
 - Acesso do professor: botão **Painel do quiz** no topo do slide da aula e central em
   `pages/qualidade2/quiz/index.html`. No card da home o quiz é um **chip**, não um botão
   (o cronograma tem no máximo duas ações por card — ver DESIGN_SYSTEM). A aba

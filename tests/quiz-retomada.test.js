@@ -42,3 +42,55 @@ describe('quizzes de retomada de Qualidade 2026.2', () => {
     expect(sql.match(/\),\n\n|\)\n  returning/g)).toHaveLength(8);
   });
 });
+
+describe('peso por questão e strike por saída da aba (Aula 07 em diante)', () => {
+  const sql = read('supabase/quiz-peso-strike.sql');
+
+  test('quiz_strike é RPC pública e só pune com a pergunta aberta', () => {
+    expect(sql).toMatch(/create or replace function quiz_strike\(p_player uuid, p_motivo text/);
+    expect(sql).toMatch(/grant execute on function quiz_strike\(uuid,text\)\s+to anon, authenticated;/);
+    expect(sql).toMatch(/v_s\.estado <> 'pergunta' then\s+return jsonb_build_object\('ok', true, 'strike', false\)/);
+  });
+
+  test('quiz_strikes não é legível pela API', () => {
+    expect(sql).toMatch(/alter table quiz_strikes enable row level security;/);
+    expect(sql).toMatch(/revoke all on quiz_strikes from anon, authenticated;/);
+  });
+
+  test('a pontuação multiplica pelo peso e o strike zera a questão', () => {
+    expect(sql).toMatch(/\(600 \+ 400 \* v_fracao\) \* v_q\.peso/);
+    expect(sql).toMatch(/if v_correta and not v_strike then/);
+    expect(sql).toMatch(/update quiz_answers set pontos = 0/);
+  });
+
+  test('o esquema destrutivo não redefine as RPCs do jogo', () => {
+    const schema = read('supabase/quiz-schema.sql');
+    for (const fn of ['quiz_responder', 'quiz_estado', 'quiz_host']) {
+      expect(schema).not.toMatch(new RegExp(`create or replace function ${fn}\\(`));
+    }
+  });
+
+  // Da Aula 07 até a prova (Semana 40): a última aula antes dela é a 08.
+  const comRegras = salas.filter(({ aula }) => ['07', '08'].includes(aula));
+
+  test.each(comRegras)('o seed da Aula $aula dá peso 2 à última questão', ({ seed }) => {
+    expect(read(`supabase/${seed}`)).toMatch(/set peso = 2[\s\S]{0,160}max\(ordem\)/);
+  });
+
+  test.each(comRegras)('a página do aluno da Aula $aula registra o strike e avisa as regras', ({ aula }) => {
+    const html = read(`pages/qualidade2/quiz/aula${aula}-quiz.html`);
+    const doc = new JSDOM(html).window.document;
+    expect(html).toContain("'quiz_strike'");
+    expect(html).toMatch(/addEventListener\('visibilitychange'[\s\S]{0,80}saiu\('aba'\)/);
+    expect(doc.querySelector('#strike-pergunta')).not.toBeNull();
+    expect(doc.querySelectorAll('.regras')).toHaveLength(2);
+    expect(doc.querySelector('.regras').textContent).toMatch(/vale o dobro/i);
+  });
+
+  test.each(comRegras)('o painel e o relatório da Aula $aula mostram peso e strikes', ({ aula }) => {
+    const painel = read(`pages/qualidade2/quiz/aula${aula}-painel.html`);
+    expect(painel).toContain('id="m-strikes"');
+    expect(painel).toContain('id="p-dobro"');
+    expect(read(`pages/qualidade2/quiz/aula${aula}-relatorio.html`)).toContain('<th>Strikes</th>');
+  });
+});

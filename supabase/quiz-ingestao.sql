@@ -13,8 +13,9 @@
 --             e questão — de onde qualquer agregação pode ser refeita
 --   data_tag  origem, no padrão PERIODO-sala (2026-2-atam-q2-a05)
 --
--- Rodar depois de quiz-schema.sql e quiz-relatorio.sql, e ANTES dos
--- seeds — eles gravam o período na sessão. Não destrói dado algum.
+-- Rodar depois de quiz-schema.sql, quiz-peso-strike.sql (quiz_linhas lê
+-- quiz_strikes) e quiz-relatorio.sql, e ANTES dos seeds — eles gravam o
+-- período na sessão. Não destrói dado algum.
 -- =====================================================================
 
 -- Período que cursou a sessão (2026-2, 2027-1, ...). Compõe a data_tag.
@@ -57,6 +58,10 @@ language sql stable security definer set search_path = public, pg_temp as $$
                'correta', k.correta,
                'acertou', a.correta,
                'pontos', a.pontos,
+               'peso', q.peso,
+               'strike', exists (select 1 from quiz_strikes st
+                                  where st.player_id = a.player_id
+                                    and st.question_id = a.question_id),
                'ms', a.ms,
                'respondida_em', a.respondida_em
              ) as l

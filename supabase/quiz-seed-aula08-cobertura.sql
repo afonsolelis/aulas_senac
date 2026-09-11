@@ -19,7 +19,11 @@
 -- arquivo. Também permite ler relatórios individuais e gabaritos: não
 -- oferece confidencialidade. Ver README.md.
 --
--- Rodar depois de quiz-schema.sql e quiz-relatorio.sql. É idempotente.
+-- A última questão vale o dobro (peso 2) e a página do aluno registra
+-- strike a quem sair da aba com a pergunta aberta: ver quiz-peso-strike.sql.
+--
+-- Rodar depois de quiz-schema.sql, quiz-peso-strike.sql e
+-- quiz-relatorio.sql. É idempotente.
 -- =====================================================================
 
 insert into quiz_sessions (slug, titulo, periodo) values
@@ -107,5 +111,11 @@ insert into quiz_host_tokens (session_slug, token)
 values ('cobertura-q2-a08', '080909')
 on conflict (session_slug) do update set token = excluded.token;
 
-select count(*) || ' perguntas carregadas' as resultado
+-- A última questão vale o dobro.
+update quiz_questions set peso = 2
+ where session_slug = 'cobertura-q2-a08'
+   and ordem = (select max(ordem) from quiz_questions where session_slug = 'cobertura-q2-a08');
+
+select count(*) || ' perguntas carregadas, a última com peso '
+       || max(peso) filter (where ordem = 8) as resultado
   from quiz_questions where session_slug = 'cobertura-q2-a08';

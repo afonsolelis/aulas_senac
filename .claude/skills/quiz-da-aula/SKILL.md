@@ -25,12 +25,15 @@ O que separa um quiz que ensina de um que decora:
 - **Explicação que ensina.** Dois ou três períodos: por que a correta está certa **e** por que o distrator mais atraente está errado. É o texto que aparece projetado na revelação.
 - **`tema` e `secao` em toda questão.** São eles que viram o relatório "o que retomar" — sem isso o quiz vira placar e perde a função pedagógica.
 - Oito questões, `segundos = 90`, quatro alternativas.
+- **Até a prova, a última vale o dobro.** Nos quizzes que antecedem a prova da Semana 40 (aulas 07 e 08), escolha para a oitava uma questão de síntese, que junte dois temas da aula; ela tem `peso = 2`. Depois da prova as aulas são de laboratório e não têm essas regras.
 
 ## Passo a passo
 
 ### 1. Seed SQL
 
 Copie o seed mais recente (`supabase/quiz-seed-*.sql`) e troque conteúdo e slug. Convenção do slug: `<assunto-cobrado>-q2-a<NN>` (`caixa-q2-a04` = a Aula 04 cobra as caixas; `atam-q2-a05` = a Aula 05 cobra o ATAM). O arquivo já termina gravando o token do professor — **`080909`, fixo para todas as salas**.
+
+Nos quizzes até a prova, o seed termina com o `update quiz_questions set peso = 2 ... max(ordem)` que dá peso dobrado à última questão — ver os seeds das aulas 07 e 08. Depois da prova, não inclua esse `update`: sem ele, toda questão tem peso 1. A coluna `peso` vem de `supabase/quiz-peso-strike.sql`.
 
 Cabeçalho do seed: registre de onde as questões saíram (caminhos do slide e do material) e o critério dos distratores. Quem for reaproveitar no semestre que vem precisa disso.
 
@@ -60,7 +63,7 @@ Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto n
 
 ### 3. As três páginas
 
-Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos:
+Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. **Atenção:** as páginas das aulas 07 e 08 trazem as regras da reta final antes da prova (selo **Vale o dobro**, strike por saída da aba, tela acesa, coluna de strikes). Para um quiz depois da prova, copie das páginas da Aula 06, que não têm essas regras.
 
 | Trocar | Por |
 |---|---|
@@ -131,6 +134,7 @@ Depois que **as três turmas** jogaram a mesma sala: `Publicar banco`, no painel
 
 ## Armadilhas conhecidas
 
+- **Strike é regra da sala, não do navegador.** Sair da aba com a pergunta aberta (outra aba, outro app, outra janela, tela bloqueada) conta strike e zera o ponto daquela questão, e o aviso na entrada da sala diz isso. A página pede a tela acesa para o bloqueio automático do celular não punir ninguém; em navegador sem Wake Lock, avise a turma para não deixar a tela apagar. Um strike por questão: sair de novo não soma.
 - **Não nomeie os arquivos `slide_*.html`** dentro de `pages/<slug>/quiz/`: o `specs/slide-structure.spec.js` passaria a exigir capa, agenda e rodapé de quatro filhos.
 - O relatório mostra um item por `tema` distinto: temas repetidos entre questões se fundem numa linha só.
 - A aba **Perguntas e gabarito** do relatório (RPC `quiz_gabarito`, exige token) lista as oito questões com a

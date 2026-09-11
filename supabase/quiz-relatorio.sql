@@ -5,8 +5,8 @@
 -- corresponde, para que o relatório aponte o que reforçar no estudo e
 -- não apenas quantas respostas erradas houve.
 --
--- Rodar depois de quiz-schema.sql. Não destrói dado algum: pode ser
--- aplicado com uma sessão em andamento.
+-- Rodar depois de quiz-schema.sql e quiz-peso-strike.sql. Não destrói dado
+-- algum: pode ser aplicado com uma sessão em andamento.
 -- =====================================================================
 
 alter table quiz_questions add column if not exists tema  text;
@@ -40,7 +40,8 @@ begin
       select jsonb_build_object(
         'ordem', q.ordem, 'tema', q.tema, 'secao', q.secao,
         'enunciado', q.enunciado, 'alternativas', q.alternativas,
-        'correta', k.correta,
+        'correta', k.correta, 'peso', q.peso,
+        'strikes', (select count(*) from quiz_strikes st where st.question_id = q.id)::int,
         'respostas', count(a.*) filter (where a.player_id is not null),
         'acertos',   count(a.*) filter (where a.correta),
         'taxa', case when count(a.*) filter (where a.player_id is not null) = 0 then null
@@ -57,7 +58,7 @@ begin
       join quiz_answer_key k on k.question_id = q.id
       left join quiz_answers a on a.question_id = q.id
       where q.session_slug = p_slug
-      group by q.id, q.ordem, q.tema, q.secao, q.enunciado, q.alternativas, k.correta
+      group by q.id, q.ordem, q.tema, q.secao, q.enunciado, q.alternativas, q.peso, k.correta
     ) s), '[]'::jsonb));
 
   -- Por tema: é o recorte que orienta o que revisar com a turma.
@@ -86,6 +87,11 @@ begin
         'respondidas', count(a.*) filter (where a.player_id is not null),
         'acertos', count(a.*) filter (where a.correta),
         'pontos', coalesce(sum(a.pontos), 0)::int,
+        -- saídas da aba com pergunta aberta; cada uma zerou o ponto da questão
+        'strikes', (select count(*) from quiz_strikes st where st.player_id = p.id)::int,
+        'questoes_strike', coalesce((select array_agg(q2.ordem order by q2.ordem)
+                   from quiz_strikes st join quiz_questions q2 on q2.id = st.question_id
+                  where st.player_id = p.id), '{}'),
         'erros', coalesce(array_agg(q.ordem order by q.ordem)
                    filter (where a.player_id is not null and not a.correta), '{}'),
         'temas_a_reforcar', coalesce(array_agg(distinct q.tema)

@@ -17,24 +17,28 @@ define o que ela alcança é a RLS, não o sigilo dela).
 
 ### Ordem de execução
 
-1. `quiz-schema.sql` — tabelas, RLS e funções (`quiz_entrar`, `quiz_responder`,
-   `quiz_estado`, `quiz_host`). **Apaga as tabelas do quiz e recria**: rodar de
-   novo zera respostas e jogadores de todas as salas.
-2. `quiz-relatorio.sql` — função `quiz_relatorio`, usada pela página de relatório.
+1. `quiz-schema.sql` — tabelas, RLS e `quiz_entrar`. **Apaga as tabelas do quiz
+   e recria**: rodar de novo zera respostas e jogadores de todas as salas.
+2. `quiz-peso-strike.sql` — as RPCs do jogo (`quiz_responder`, `quiz_strike`,
+   `quiz_estado`, `quiz_host`), a coluna `peso` em `quiz_questions` e a tabela
+   `quiz_strikes`. Não destrói dado; pode ser aplicado com sessão em andamento.
+   Ver "Peso e strike", abaixo.
+3. `quiz-relatorio.sql` — função `quiz_relatorio`, usada pela página de relatório.
    Não destrói dado algum; pode ser aplicado com sessão em andamento.
-3. `quiz-ingestao.sql` — a série histórica: coluna `periodo` em `quiz_sessions`,
+4. `quiz-ingestao.sql` — a série histórica: coluna `periodo` em `quiz_sessions`,
    tabela `quiz_relatorios` e as funções `quiz_linhas` / `quiz_arquivar`. Não
    destrói dado. **A ação `reiniciar` depende deste arquivo** — sem ele o botão
-   Reiniciar do painel falha (e, por falhar, não apaga nada).
-4. `quiz-gabarito.sql` — função `quiz_gabarito`, que devolve as perguntas com o
+   Reiniciar do painel falha (e, por falhar, não apaga nada). `quiz_linhas` lê
+   `quiz_strikes`, então roda depois do passo 2.
+5. `quiz-gabarito.sql` — função `quiz_gabarito`, que devolve as perguntas com o
    gabarito para a aba "Perguntas e gabarito" do relatório. Exige token.
-5. `quiz-banco.sql` — o banco público: coluna `publicado_em` em `quiz_sessions`,
+6. `quiz-banco.sql` — o banco público: coluna `publicado_em` em `quiz_sessions`,
    as funções `quiz_banco_salas` / `quiz_banco` (leitura sem token, sem nome de
    aluno) e `quiz_publicar`, que o botão **Publicar banco** do painel chama.
    Não destrói dado.
-6. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula. Grava o
+7. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula. Grava o
    `periodo` (`2026-2`), que compõe a `data_tag` do histórico.
-7. Os seeds existentes usam um token fixo e público, por decisão anterior do professor.
+8. Os seeds existentes usam um token fixo e público, por decisão anterior do professor.
    Ele autoriza também o relatório individual, o gabarito e a publicação do banco.
    Portanto, não oferece confidencialidade aos resultados individuais. Para restringir
    esse acesso, configure uma credencial privada no SQL Editor e não a versione.
@@ -94,6 +98,31 @@ select l->>'tema' as tema,
 A tabela não referencia as tabelas do quiz — assim sobrevive a um `quiz-schema.sql`
 rodado de novo, que recria todo o resto.
 
+### Peso e strike
+
+Nos quizzes da Aula 07 (`ci-q2-a07`) e da Aula 08 (`cobertura-q2-a08`), os dois
+que antecedem a prova da Semana 40, duas regras mudam o placar:
+
+- **Peso.** `quiz_questions.peso` (1 a 3, padrão 1) multiplica a pontuação da
+  questão: acerto vale `(600 + até 400 pela rapidez) × peso`. O seed da aula
+  termina marcando `peso = 2` na última questão, que vale o dobro. Painel e
+  celular mostram o selo **Vale o dobro** enquanto ela está aberta.
+- **Strike.** A página do aluno chama `quiz_strike` quando perde a aba ou o foco
+  (`visibilitychange`, `pagehide`, `blur`). O servidor só lança o strike se a
+  pergunta estiver aberta, um por aluno e questão, e zera o ponto daquela
+  questão, tenha o aluno respondido antes ou depois. O acerto continua
+  registrado para o relatório. Painel, placar, relatório, CSV e o histórico
+  (`strike` em cada linha de `quiz_relatorios`) mostram os strikes.
+- Para o bloqueio automático do celular não virar strike, a página pede a tela
+  acesa (Screen Wake Lock) durante a sessão. Em navegador sem a API, a regra vale
+  do mesmo jeito, e o aviso na entrada da sala diz isso ao aluno.
+
+As páginas das aulas 02 a 06 não chamam `quiz_strike` e as questões delas têm
+peso 1: pontuam exatamente como antes da mudança.
+
+Numa instalação que já existia, aplicar nesta ordem: `quiz-peso-strike.sql`,
+`quiz-relatorio.sql`, `quiz-ingestao.sql` e o seed da aula. Nenhum apaga dado.
+
 ### Desenho de acesso (resumo)
 
 Só `quiz_sessions` é legível pela API — é o que permite ao Realtime avisar os
@@ -126,9 +155,9 @@ select p.proname, has_function_privilege('anon', p.oid, 'execute') as anon
  where n.nspname = 'public' and p.proname like 'quiz%' order by 2 desc, 1;
 ```
 
-Só estas devem sair com `t`: `quiz_entrar`, `quiz_responder`, `quiz_estado`,
-`quiz_host`, `quiz_relatorio`, `quiz_gabarito`, `quiz_publicar`, `quiz_banco` e
-`quiz_banco_salas`. `tests/quiz-banco.test.js` guarda o lado do repositório.
+Só estas devem sair com `t`: `quiz_entrar`, `quiz_responder`, `quiz_strike`,
+`quiz_estado`, `quiz_host`, `quiz_relatorio`, `quiz_gabarito`, `quiz_publicar`,
+`quiz_banco` e `quiz_banco_salas`. `tests/quiz-banco.test.js` guarda o lado do repositório.
 
 ### Conduzindo a sessão
 

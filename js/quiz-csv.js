@@ -21,7 +21,8 @@
               `correta ${LETRAS[q.correta]}`]));
     (dados.alunos || []).forEach((a) =>
       l.push(['estudante', a.nome, a.acertos, a.respondidas, '',
-              `errou ${a.erros.join(' ')} | reforcar: ${a.temas_a_reforcar.join('; ')}`]));
+              `errou ${a.erros.join(' ')} | reforcar: ${a.temas_a_reforcar.join('; ')}`
+              + (a.strikes ? ` | strikes: Q${(a.questoes_strike || []).join(' Q')}` : '')]));
     return l;
   }
 
