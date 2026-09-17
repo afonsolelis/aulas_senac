@@ -65,7 +65,7 @@ Sem a senha, entregue o arquivo para colar no SQL Editor do painel. Em projeto n
 
 ### 3. As três páginas
 
-Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. Todas as salas trazem as mesmas regras: selo **Vale o dobro**, strike por saída da aba (com tela acesa e coluna de strikes no painel e no relatório) e o enunciado repetido na espera e na revelação. Copiar de qualquer aula de 02 a 08 traz o conjunto completo.
+Copie o conjunto mais recente de `pages/<slug>/quiz/` e substitua, em todos os três arquivos, o que está na tabela abaixo. Todas as salas trazem as mesmas regras: selo **Vale o dobro**, strike por saída da aba (com tela acesa e coluna de strikes no painel e no relatório) e o enunciado repetido na espera e na revelação, além do campo **Tempo** no rodapé do painel (chama `quiz_tempo`, de `supabase/quiz-tempo.sql`, para calibrar os segundos da sala). Copiar de qualquer aula de 02 a 08 traz o conjunto completo.
 
 | Trocar | Por |
 |---|---|

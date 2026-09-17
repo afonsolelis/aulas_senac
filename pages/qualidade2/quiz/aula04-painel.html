@@ -135,6 +135,13 @@
     .aviso { color: var(--accent); font-size: .85rem; font-weight: 600; min-height: 1.1em; }
     [hidden] { display: none !important; }
 
+    /* Tempo por pergunta (supabase/quiz-tempo.sql) */
+    form.tempo { display: flex; gap: 8px; align-items: center; margin: 0; }
+    form.tempo label, form.tempo .unidade { font-size: .78rem; font-weight: 600; color: var(--muted); }
+    form.tempo input { width: 5.4em; padding: 10px; font-size: .95rem; text-align: right; }
+    form.tempo input:disabled { opacity: .35; }
+    form.tempo button { padding: 10px 14px; }
+
     /* Questão de peso maior e strikes (supabase/quiz-peso-strike.sql) */
     .dobro { align-self: flex-start; background: #fff; color: #2b0716; border-radius: 999px;
              padding: 6px 16px; font-size: .9rem; font-weight: 700; letter-spacing: .05em;
@@ -187,7 +194,7 @@
       <div class="lobby-texto">
         <h1>Aponte a câmera para entrar</h1>
         <div class="url-caixa" id="url-quiz"></div>
-        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com 90 segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar. A última pergunta vale o dobro, e quem sair da aba com a pergunta aberta leva um strike e zera os pontos dela.</p>
+        <p class="estado-txt">Cada aluno escolhe o próprio nome. A pergunta abre para todos ao mesmo tempo, com <span id="lobby-segundos">90</span> segundos de cronômetro. A resposta é revelada sozinha quando todos responderem ou o tempo acabar. A última pergunta vale o dobro, e quem sair da aba com a pergunta aberta leva um strike e zera os pontos dela.</p>
         <div class="nomes" id="nomes"></div>
       </div>
     </section>
@@ -253,6 +260,13 @@
     <button id="btn-revelar"  type="button" class="secundario">Revelar resposta</button>
     <button id="btn-reabrir"  type="button" class="secundario">Reabrir</button>
     <button id="btn-encerrar" type="button" class="secundario">Encerrar sessão</button>
+    <form class="tempo" id="form-tempo" title="Segundos por pergunta. Troque entre perguntas; vale para a sala inteira.">
+      <label for="tempo-segundos">Tempo</label>
+      <input id="tempo-segundos" type="number" min="10" max="600" step="5" inputmode="numeric" required>
+      <span class="unidade">s</span>
+      <button id="btn-tempo" type="submit" class="secundario">Aplicar</button>
+      <span class="estado-txt" id="tempo-aviso" role="status"></span>
+    </form>
     <div class="direita">
       <span class="estado-txt" id="estado-txt"></span>
       <a class="link" href="aula04-relatorio.html">Relatório</a>
@@ -285,6 +299,7 @@
   let chaveCronometro = null;
   let revelacaoAuto = null;   // pergunta já revelada sozinha (ordem|aberta_em)
   let offsetRelogio = 0;   // relógio do servidor menos o desta máquina
+  let avisoTempoTimer = null;
 
   /* O cronômetro projetado usa o mesmo relógio do servidor que o celular do
      aluno, para que a contagem na parede e a do aparelho não divirjam. */
@@ -327,6 +342,60 @@
     };
     tick();
     cronometro = setInterval(tick, 200);
+  }
+
+  /* Tempo por pergunta: o professor calibra entre perguntas e o valor vale
+     para todas as questões da sala, também nas turmas seguintes. Quem conta
+     o tempo (pontuação, celular e este painel) lê o mesmo campo no servidor.
+     Ver supabase/quiz-tempo.sql. */
+  async function tempo(segundos) {
+    const args = { p_slug: SLUG, p_token: token };
+    if (segundos != null) args.p_segundos = segundos;
+    const { data, error } = await db.rpc('quiz_tempo', args);
+    if (error) throw error;
+    return data;
+  }
+
+  function mostrarTempo(segundos) {
+    if (!segundos) return;
+    el('lobby-segundos').textContent = segundos;
+    // não atropela o número que o professor está digitando
+    if (document.activeElement !== el('tempo-segundos')) el('tempo-segundos').value = segundos;
+  }
+
+  function avisoTempo(msg) {
+    el('tempo-aviso').textContent = msg;
+    clearTimeout(avisoTempoTimer);
+    avisoTempoTimer = setTimeout(() => { el('tempo-aviso').textContent = ''; }, 6000);
+  }
+
+  async function aplicarTempo(ev) {
+    ev.preventDefault();
+    const s = Number(el('tempo-segundos').value);
+    if (!Number.isInteger(s) || s < 10 || s > 600) { avisoTempo('Use de 10 a 600 segundos.'); return; }
+    el('btn-tempo').disabled = true;
+    try {
+      const d = await tempo(s);
+      if (!d.ok) { avisoTempo(d.erro); return; }
+      el('tempo-segundos').blur();
+      mostrarTempo(d.segundos);
+      avisoTempo(`Aplicado: ${d.segundos} s por pergunta.`);
+    } catch (e) {
+      avisoTempo('Falha de rede — o tempo não mudou.');
+      console.error(e);
+    } finally {
+      atualizarBotoes(ultimo);
+    }
+  }
+
+  async function carregarTempo() {
+    try {
+      const d = await tempo();
+      if (d.ok) mostrarTempo(d.segundos);
+    } catch (e) {
+      avisoTempo('Tempo fixo: falta aplicar supabase/quiz-tempo.sql.');
+      console.warn(e);
+    }
   }
 
   function mostrar(tela) {
@@ -372,6 +441,7 @@
       if (!d.ok) { el('aviso-auth').textContent = d.erro; return; }
       localStorage.setItem(CHAVE_TOKEN, token);
       aplicar(d);
+      carregarTempo();
       if (!laco) laco = setInterval(atualizar, 2000);
     } catch (e) {
       el('aviso-auth').textContent = 'Falha de rede ao verificar o token.';
@@ -438,6 +508,7 @@
       revelacao: 'Resposta revelada.', encerrado: 'Sessão encerrada.',
     }[d.estado] || '';
 
+    if (d.pergunta) mostrarTempo(d.pergunta.segundos);
     if (d.estado !== 'pergunta') { pararCronometro(); chaveCronometro = null; el('m-tempo').textContent = '—'; }
 
     if (d.estado === 'lobby') {
@@ -487,6 +558,9 @@
     el('btn-encerrar').disabled = d.estado === 'encerrado' || d.estado === 'lobby';
     el('btn-reiniciar').disabled = false;
     el('btn-publicar').disabled  = false;   // agir() desabilita todo o rodapé
+    // com a pergunta aberta o servidor recusa a troca; o campo espera a revelação
+    el('btn-tempo').disabled      = d.estado === 'pergunta';
+    el('tempo-segundos').disabled = d.estado === 'pergunta';
   }
 
   el('btn-auth').addEventListener('click', autenticar);
@@ -495,6 +569,7 @@
   el('btn-revelar').addEventListener('click', () => agir('revelar'));
   el('btn-reabrir').addEventListener('click', () => agir('reabrir'));
   el('btn-encerrar').addEventListener('click', () => agir('encerrar'));
+  el('form-tempo').addEventListener('submit', aplicarTempo);
 
   /* Reinício: o CSV sai daqui, e o próprio reinício arquiva a rodada no
      histórico (quiz_relatorios). O relatório é buscado sob demanda, porque

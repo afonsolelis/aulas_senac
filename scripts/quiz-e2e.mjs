@@ -13,6 +13,8 @@
  * fim, DESCARTA a sala: a validação não deixa jogador de teste no placar da
  * turma nem na série histórica
  * (descartar zera sem arquivar; reiniciar, o que o professor usa, arquiva).
+ * O tempo por pergunta é calibrado pelo campo do painel para TEMPO_TESTE e
+ * volta ao valor original da sala no fim.
  *
  * A alternativa correta não é chumbada aqui: ela é lida pelo painel do professor
  * (quiz_host devolve o gabarito da pergunta aberta), então o script serve para
@@ -36,6 +38,7 @@ const rpc = async (fn, body) => (await fetch(RPC + fn, {
   body: JSON.stringify(body),
 })).json();
 
+const TEMPO_TESTE = 60;   // diferente dos 90 do seed, para provar que a troca chega
 const erros = [];
 const ok = (m) => console.log('  ok   ' + m);
 const falha = (m) => { console.log(' FALHA ' + m); erros.push(m); };
@@ -97,6 +100,24 @@ ok('painel: lobby com ' + JSON.stringify(await prof.$$eval('#nomes .chip', (e) =
   : falha('painel: QR não foi gerado');
 await shot(prof, 'painel-lobby');
 
+// ---- tempo por pergunta (supabase/quiz-tempo.sql) --------------------
+const tempoOriginal = await rpc('quiz_tempo', { p_slug: SALA, p_token: TOKEN });
+if (!tempoOriginal.ok) { console.error('quiz_tempo indisponível — aplique supabase/quiz-tempo.sql:', tempoOriginal); process.exit(1); }
+(await rpc('quiz_tempo', { p_slug: SALA, p_token: 'token-errado', p_segundos: 30 })).ok
+  ? falha('servidor: quiz_tempo aceitou token inválido')
+  : ok('servidor: quiz_tempo recusa token inválido');
+(await rpc('quiz_tempo', { p_slug: SALA, p_token: TOKEN, p_segundos: 5 })).ok
+  ? falha('servidor: quiz_tempo aceitou 5 s, fora da faixa')
+  : ok('servidor: quiz_tempo recusa tempo fora da faixa');
+await prof.fill('#tempo-segundos', String(TEMPO_TESTE));
+await prof.click('#btn-tempo');
+await prof.waitForFunction(() => document.getElementById('tempo-aviso').textContent.startsWith('Aplicado'), { timeout: 15000 })
+  .then(() => ok(`painel: tempo calibrado para ${TEMPO_TESTE}s pelo campo (era ${tempoOriginal.segundos}s)`))
+  .catch(async () => falha('painel: o campo Tempo não aplicou — ' + await prof.textContent('#tempo-aviso')));
+(await prof.textContent('#lobby-segundos')) === String(TEMPO_TESTE)
+  ? ok('painel: o texto do lobby acompanha o tempo novo')
+  : falha('painel: o lobby continua anunciando ' + await prof.textContent('#lobby-segundos') + ' s');
+
 // ---- pergunta 1 ------------------------------------------------------
 const t0 = Date.now();
 await prof.click('#btn-abrir');
@@ -109,6 +130,15 @@ if (alts < 2) falha('aluno: pergunta veio com ' + alts + ' alternativas'); else 
 // o gabarito vem do painel do professor, então o teste serve para qualquer sala
 const visao = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'ver' });
 const limite = visao.pergunta.segundos;
+limite === TEMPO_TESTE
+  ? ok(`servidor: a pergunta abriu com os ${TEMPO_TESTE}s calibrados`)
+  : falha(`servidor: a pergunta abriu com ${limite}s, não os ${TEMPO_TESTE}s calibrados`);
+(await rpc('quiz_tempo', { p_slug: SALA, p_token: TOKEN, p_segundos: 30 })).ok
+  ? falha('servidor: quiz_tempo trocou o tempo com a pergunta aberta')
+  : ok('servidor: quiz_tempo recusa a troca com a pergunta aberta');
+(await prof.isDisabled('#btn-tempo'))
+  ? ok('painel: campo Tempo travado durante a pergunta')
+  : falha('painel: campo Tempo liberado com a pergunta aberta');
 for (const [pagina, id, quem] of [[aluno, '#segundos', 'aluno'], [prof, '#m-tempo', 'painel']]) {
   const s = Number(await pagina.textContent(id));
   if (!(s > 0 && s <= limite)) falha(`${quem}: cronômetro fora da faixa (${s} de ${limite})`);
@@ -229,7 +259,8 @@ await shot(rel, 'relatorio');
 
 await navegador.close();
 const fim = await rpc('quiz_host', { p_slug: SALA, p_token: TOKEN, p_acao: 'descartar' });
-ok(`sala devolvida para a aula: estado=${fim.estado}, jogadores=${fim.jogadores}, perguntas=${fim.total}`);
+const volta = await rpc('quiz_tempo', { p_slug: SALA, p_token: TOKEN, p_segundos: tempoOriginal.segundos });
+ok(`sala devolvida para a aula: estado=${fim.estado}, jogadores=${fim.jogadores}, perguntas=${fim.total}, tempo=${volta.segundos}s`);
 
 if (erros.length) { console.log('\nPROBLEMAS:\n- ' + erros.join('\n- ')); process.exit(1); }
 console.log('\nTUDO VERDE');

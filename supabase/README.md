@@ -41,9 +41,12 @@ define o que ela alcança é a RLS, não o sigilo dela).
    as funções `quiz_banco_salas` / `quiz_banco` (leitura sem token, sem nome de
    aluno) e `quiz_publicar`, que o botão **Publicar banco** do painel chama.
    Não destrói dado.
-7. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula. Grava o
+7. `quiz-tempo.sql` — função `quiz_tempo`, que o campo **Tempo** do painel chama
+   para calibrar os segundos por pergunta da sala. Cria só a função; não altera
+   tabela. Ver "Tempo por pergunta", abaixo.
+8. `quiz-seed-<aula>.sql` — a sessão e as perguntas daquela aula. Grava o
    `periodo` (`2026-2`), que compõe a `data_tag` do histórico.
-8. Os seeds existentes usam um token fixo e público, por decisão anterior do professor.
+9. Os seeds existentes usam um token fixo e público, por decisão anterior do professor.
    Ele autoriza também o relatório individual, o gabarito e a publicação do banco.
    Portanto, não oferece confidencialidade aos resultados individuais. Para restringir
    esse acesso, configure uma credencial privada no SQL Editor e não a versione.
@@ -123,6 +126,21 @@ rodado de novo, que recria todo o resto.
 Numa instalação que já existia, aplicar nesta ordem: `quiz-peso-strike.sql`,
 `quiz-relatorio.sql`, `quiz-ingestao.sql` e o seed da aula. Nenhum apaga dado.
 
+### Tempo por pergunta
+
+O seed grava `segundos = 90` em cada questão. No rodapé do painel, o campo
+**Tempo** (10 a 600 s) chama `quiz_tempo(slug, token, segundos)`, que troca
+`quiz_questions.segundos` de **todas as questões da sala**. A pontuação por
+rapidez (`quiz_responder`), o cronômetro do celular (`quiz_estado`) e o do
+painel (`quiz_host`) já leem esse campo, então nada mais muda.
+
+- A troca é **entre perguntas**: com pergunta aberta o servidor recusa e o campo
+  fica travado, para que o cronômetro projetado e a pontuação de quem já
+  respondeu não usem relógios diferentes. Vale a partir da próxima pergunta.
+- O valor fica na sala e **atravessa o Reiniciar**, então vale para as turmas
+  seguintes até ser trocado. Rodar o seed de novo volta a 90.
+- `quiz_tempo(slug, token)`, sem segundos, só lê o valor atual.
+
 ### Ajuste das salas já instaladas
 
 `quiz-ajuste-peso-secao.sql` leva para o banco duas correções feitas nos seeds
@@ -166,7 +184,7 @@ select p.proname, has_function_privilege('anon', p.oid, 'execute') as anon
 ```
 
 Só estas devem sair com `t`: `quiz_entrar`, `quiz_responder`, `quiz_strike`,
-`quiz_estado`, `quiz_host`, `quiz_relatorio`, `quiz_gabarito`, `quiz_publicar`,
+`quiz_estado`, `quiz_host`, `quiz_tempo`, `quiz_relatorio`, `quiz_gabarito`, `quiz_publicar`,
 `quiz_banco` e `quiz_banco_salas`. `tests/quiz-banco.test.js` guarda o lado do repositório.
 
 ### Conduzindo a sessão
@@ -176,8 +194,9 @@ Só estas devem sair com `t`: `quiz_entrar`, `quiz_responder`, `quiz_strike`,
    tela do aluno — o caminho do professor é o slide ou a central.) Digitar o
    token uma vez — ele fica guardado neste navegador.
 2. Projetar o lobby: QR code e endereço do quiz; os nomes aparecem conforme
-   a turma entra.
-3. `Abrir pergunta` → cronômetro de 90 s no celular de cada aluno → o painel
+   a turma entra. Se quiser outro ritmo, digitar os segundos no campo **Tempo**
+   do rodapé e `Aplicar` (padrão 90 s; só entre perguntas).
+3. `Abrir pergunta` → cronômetro (90 s, ou o calibrado) no celular de cada aluno → o painel
    **revela sozinho** assim que todos respondem ou o tempo acaba (mostra
    distribuição, explicação e placar) → repetir. `Revelar resposta` continua no
    rodapé para adiantar.

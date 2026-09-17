@@ -70,7 +70,7 @@ Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HT
 pública por desenho, quem limita o alcance é a RLS.
 
 - SQL em `supabase/` (`quiz-schema.sql` → `quiz-peso-strike.sql` → `quiz-relatorio.sql` →
-  `quiz-ingestao.sql` → `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-seed-<aula>.sql`),
+  `quiz-ingestao.sql` → `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-tempo.sql` → `quiz-seed-<aula>.sql`),
   rodado **à mão** no SQL Editor. Ver `supabase/README.md`. As RPCs do jogo (`quiz_responder`,
   `quiz_strike`, `quiz_estado`, `quiz_host`) moram em `quiz-peso-strike.sql`, que não destrói
   dado; `quiz-schema.sql` apaga as tabelas e só deve rodar em instalação nova.
@@ -94,7 +94,11 @@ pública por desenho, quem limita o alcance é a RLS.
   nem protege a confidencialidade desses relatórios. Antes de usar dados reais com acesso
   restrito, substitua-o no Supabase por uma credencial privada não versionada. Alterar só
   a documentação ou o seed local não troca o token de uma sala já instalada.
-- **Ritmo da pergunta: 90 segundos, e o painel revela sozinho** — assim que `respostas >=
+- **Tempo calibrável:** o seed grava 90 s por pergunta; o campo **Tempo** no rodapé do painel
+  (10–600 s) chama `quiz_tempo` (`supabase/quiz-tempo.sql`), que troca `quiz_questions.segundos`
+  de toda a sala. Só entre perguntas (com pergunta aberta o servidor recusa) e persiste entre
+  turmas até ser trocado. `tests/quiz-tempo.test.js` guarda o controle nos painéis.
+- **Ritmo da pergunta: 90 segundos (ou o calibrado), e o painel revela sozinho** — assim que `respostas >=
   jogadores` (ou quando o cronômetro zera), o painel chama `revelar` e mostra gabarito,
   distribuição e placar sem clique do professor. `Revelar resposta` continua no rodapé para
   adiantar. A checagem mora na leitura periódica de 2 s (`talvezRevelar` em `aula0N-painel.html`),
