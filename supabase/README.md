@@ -1,8 +1,13 @@
 # Supabase — banco de dados do Hub
 
-Dois assuntos vivem no mesmo projeto Supabase e não se tocam: o **quiz ao vivo**
-(o grosso deste arquivo) e o **quadro de avisos** (última seção). Cada um tem os
-seus arquivos `*.sql` e o seu conjunto de funções.
+Três assuntos do Hub vivem no mesmo projeto Supabase e não se tocam: o **quiz ao
+vivo** (o grosso deste arquivo), o **TBL ao vivo** e o **quadro de avisos** (últimas
+seções). Cada um tem os seus arquivos `*.sql` e o seu conjunto de funções.
+
+> ⛔ **O projeto é compartilhado com as aulas do Einstein** (`~/repos/einstein`), dono
+> de todos os objetos `tbl_*`. Nunca rode `drop`, `truncate`, `alter` ou `create or
+> replace` sobre objeto que não seja do Hub. Antes de qualquer SQL de escrita, siga
+> `.claude/skills/supabase-compartilhado/SKILL.md`.
 
 ## Quiz ao vivo
 
@@ -321,3 +326,58 @@ devolver linha alguma por leitura direta.
 select id, escopo, fixado, publicado_em, expira_em, titulo from avisos
  where removido_em is null order by fixado desc, publicado_em desc;
 ```
+
+## TBL ao vivo
+
+Aprendizagem baseada em equipes (Team-Based Learning) sobre um caso único,
+percorrido por questões de quatro táticas com ganho e custo, **sem alternativa
+correta**. Cada questão passa por primeira decisão individual → discussão (com as
+justificativas sem nome e, quando houver, o **dado novo**) → segunda decisão →
+síntese. Páginas em `pages/qualidade2/tbl/` (`<aula>-tbl.html` no celular,
+`<aula>-painel.html` projetado). Portado de `~/repos/aulas`, com prefixo **`hubtbl_`**
+(o `tbl_` é do Einstein) e **sem nenhum `drop`**.
+
+### Ordem de execução
+
+1. `hubtbl-schema.sql` — tabelas, RLS e Realtime. Tudo `if not exists`; reaplicar
+   não apaga sala, voto nem histórico.
+2. `hubtbl-funcoes.sql` — RPCs `hubtbl_entrar`, `hubtbl_votar`, `hubtbl_estado` e
+   `hubtbl_host`, mais as internas (fechadas a `public`, `anon` e `authenticated`).
+   Idempotente.
+3. `hubtbl-seed-<aula>.sql` — o caso e as questões de uma sala. Idempotente e
+   restrito ao `slug` da sala.
+
+### Acesso
+
+- Só `hubtbl_sessions` é legível pela API (fase, questão e prazo — é o que o
+  Realtime replica). Caso, questões, votos, token e histórico ficam sob RLS sem policy.
+- `hubtbl_estado` entrega **só a questão corrente**, e o dado novo **só a partir da
+  discussão**.
+- Token do professor: o mesmo dos quizzes, com a mesma ressalva (está versionado).
+
+### Ações do painel (`hubtbl_host`)
+
+`ver`, `iniciar`, `avancar`, `proxima`, `anterior`, `estender` (+120 s), `revelar`,
+`lobby` (apaga votos), `reiniciar` (**arquiva** a rodada em `hubtbl_historico` e
+apaga participantes e votos — use entre turmas) e `descartar` (zera **sem**
+arquivar — usada pela validação).
+
+Para ler as rodadas arquivadas, no SQL Editor:
+
+```sql
+select arquivado_em, participantes, decisoes
+  from hubtbl_historico where session_slug = 'ff-q2-a07-tbl' order by arquivado_em;
+```
+
+### Salas
+
+| Sala | Aula | Caso |
+|---|---|---|
+| `ff-q2-a07-tbl` | Qualidade 2026.2 · Aula 07 (Semana 38) | Foot Fanatics às vésperas do plano anual — 5 questões, dado novo na 2 |
+
+### Validação
+
+`node scripts/tbl-e2e.mjs aula07 ff-q2-a07-tbl` percorre, com um painel e dois
+alunos no navegador, lobby → decisões → discussão → síntese de todas as questões →
+consolidado, confere o corte do dado novo e **descarta** a sala no fim. Não rode
+durante a aula: descartar desconecta quem estiver na sala.

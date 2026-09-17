@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Aula 07 - TBL Foot Fanatics - Qualidade de Software 2026.2</title>
+  <meta name="description" content="Sala do TBL da Aula 07: um caso do Foot Fanatics e cinco decisões de qualidade, tomadas em duas rodadas com a turma.">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* Paleta da disciplina — config/disciplina-qualidade2.json */
+    :root {
+      --primary: #DD2476;
+      --secondary: #FF512F;
+      --accent: #ffb199;
+      --ink: #2b0716;
+      --paper: #ffffff;
+      --line: color-mix(in srgb, var(--ink) 14%, var(--paper));
+      --muted: color-mix(in srgb, var(--ink) 62%, var(--paper));
+      --deep: color-mix(in srgb, var(--primary) 62%, var(--ink));
+      --soft: color-mix(in srgb, var(--primary) 9%, var(--paper));
+      --areia: color-mix(in srgb, var(--ink) 4%, var(--paper));
+      --verde: #1f7a4d;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body {
+      margin: 0; font-family: 'Outfit', system-ui, sans-serif;
+      background: var(--ink); color: var(--ink);
+      min-height: 100vh; min-height: 100dvh;
+      display: flex; flex-direction: column;
+      -webkit-text-size-adjust: 100%;
+    }
+    header.barra {
+      background: radial-gradient(900px 300px at 10% -40%, #5b0f2d 0%, var(--ink) 70%);
+      color: var(--paper);
+      padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      position: sticky; top: 0; z-index: 20;
+    }
+    header .marca { display: flex; align-items: center; gap: 10px; min-width: 0; }
+    header .marca img { height: 26px; flex: 0 0 auto; }
+    header .quem { font-size: .66rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+                   color: var(--accent); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    header .fase { font-size: .95rem; font-weight: 700; }
+    header .relogio { font-size: 1.45rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    header .relogio.acabando { color: var(--secondary); }
+    main {
+      flex: 1; background: var(--paper);
+      padding: 18px 16px calc(96px + env(safe-area-inset-bottom));
+      display: flex; flex-direction: column; gap: 16px;
+      max-width: 760px; width: 100%; margin: 0 auto;
+    }
+    h1 { font-size: 1.4rem; line-height: 1.2; margin: 0; font-weight: 700; }
+    h2 { font-size: 1.05rem; line-height: 1.3; margin: 0 0 8px; font-weight: 700; }
+    h3 { font-size: .78rem; margin: 0 0 6px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); font-weight: 600; }
+    h4 { font-weight: 700; }
+    p { margin: 0 0 10px; line-height: 1.55; font-size: .95rem; }
+    .selo { display: inline-block; font-size: .66rem; font-weight: 700; letter-spacing: .08em;
+            text-transform: uppercase; color: var(--deep); background: var(--soft);
+            border-radius: 999px; padding: 5px 11px; }
+    .bloco { border: 1px solid var(--line); border-radius: 16px; padding: 15px; background: var(--paper); }
+    .bloco p, .caso p { text-align: justify; text-justify: inter-word; hyphens: auto; }
+    .bloco p strong, .caso p strong { color: var(--deep); font-weight: 700; }
+    .bloco.destaque { border-color: var(--primary); border-width: 2px; background: var(--soft); }
+    .passos { display: flex; gap: 6px; margin: 0 0 12px; flex-wrap: wrap; }
+    .passo { width: 26px; height: 26px; display: grid; place-items: center; border-radius: 999px;
+             border: 1px solid var(--line); background: var(--paper); font-size: .74rem; font-weight: 700; opacity: .45; }
+    .passo.feito { opacity: 1; border-color: var(--deep); color: var(--deep); }
+    .passo.agora { opacity: 1; background: linear-gradient(45deg, var(--secondary), var(--primary)); color: var(--paper); border-color: transparent; }
+    .indicadores { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; margin-top: 10px; }
+    .indicador { background: var(--areia); border-radius: 12px; padding: 10px 12px; }
+    .indicador b { display: block; font-size: .98rem; color: var(--deep); }
+    .indicador span { display: block; font-size: .7rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+    .indicador em { display: block; font-size: .74rem; font-style: normal; color: var(--ink); opacity: .78; margin-top: 2px; }
+    details.caso { border: 1px solid var(--line); border-radius: 14px; padding: 0 14px; background: var(--areia); }
+    details.caso > summary { cursor: pointer; font-weight: 700; font-size: .9rem; padding: 13px 0; list-style: none; }
+    details.caso > summary::-webkit-details-marker { display: none; }
+    details.caso > summary::after { content: ' ▾'; color: var(--muted); }
+    details.caso[open] > summary::after { content: ' ▴'; }
+    details.caso > div { padding-bottom: 12px; }
+    .opcoes { display: flex; flex-direction: column; gap: 11px; }
+    button.opcao, div.opcao {
+      display: grid; grid-template-columns: 42px 1fr; gap: 12px; text-align: left; width: 100%;
+      font: inherit; color: inherit; padding: 14px;
+      border: 2px solid var(--line); border-radius: 15px; background: var(--paper);
+    }
+    button.opcao { cursor: pointer; }
+    button.opcao:hover { border-color: var(--muted); }
+    button.opcao:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+    button.opcao[aria-pressed="true"] { border-color: var(--primary); background: var(--soft); }
+    .opcao .letra {
+      width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+      font-size: 1.1rem; font-weight: 700; background: var(--ink); color: var(--paper);
+    }
+    button.opcao[aria-pressed="true"] .letra { background: linear-gradient(45deg, var(--secondary), var(--primary)); }
+    .opcao h4 { margin: 0 0 3px; font-size: 1rem; }
+    .opcao .tatica { font-size: .7rem; font-weight: 700; text-transform: uppercase;
+                     letter-spacing: .05em; color: var(--deep); display: block; margin-bottom: 6px; }
+    .opcao p { font-size: .9rem; margin: 0 0 8px; }
+    .troca { display: grid; gap: 5px; font-size: .84rem; line-height: 1.45; }
+    .troca b { font-weight: 700; }
+    .troca .ganho b { color: var(--verde); }
+    .troca .custo b { color: var(--primary); }
+    .justifica { margin-top: 14px; }
+    .justifica label { display: block; font-size: .86rem; font-weight: 600; margin-bottom: 6px; }
+    .justifica textarea {
+      width: 100%; min-height: 88px; font: inherit; font-size: .95rem; padding: 11px;
+      border: 2px solid var(--line); border-radius: 12px; resize: vertical; background: var(--paper); color: var(--ink);
+    }
+    .justifica textarea:focus { outline: 3px solid var(--primary); outline-offset: 1px; border-color: var(--primary); }
+    .contagem { font-size: .72rem; color: var(--muted); font-weight: 600; text-align: right; margin-top: 4px; }
+    button.acao {
+      font: inherit; font-weight: 700; font-size: 1rem; width: 100%; padding: 14px;
+      border: none; border-radius: 13px; color: var(--paper); cursor: pointer;
+      background: linear-gradient(45deg, var(--secondary), var(--primary));
+    }
+    button.acao:disabled { background: var(--muted); cursor: not-allowed; }
+    button.acao:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+    .aviso { font-size: .88rem; font-weight: 600; padding: 11px 13px; border-radius: 12px;
+             background: var(--areia); color: var(--deep); }
+    .aviso.erro { background: color-mix(in srgb, var(--primary) 14%, var(--paper)); color: var(--primary); }
+    .barras { display: grid; gap: 8px; }
+    .barra { display: grid; grid-template-columns: 26px 1fr 74px; align-items: center; gap: 9px; }
+    .barra .rotulo { font-weight: 700; font-size: .92rem; }
+    .trilho { height: 15px; border-radius: 999px; background: var(--areia); overflow: hidden; }
+    .preenche { display: block; height: 100%; border-radius: 999px; transition: width .4s ease;
+                background: linear-gradient(45deg, var(--secondary), var(--primary)); }
+    .preenche.antes { background: var(--muted); }
+    .barra .valor { font-size: .78rem; font-weight: 600; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+    .vozes { display: grid; gap: 8px; margin-top: 10px; }
+    .voz { display: grid; grid-template-columns: 26px 1fr; gap: 9px; align-items: start;
+           font-size: .88rem; line-height: 1.45; padding: 9px 11px; background: var(--areia); border-radius: 11px; }
+    .voz .letra { font-weight: 700; color: var(--deep); }
+    .roteiro { display: grid; gap: 9px; }
+    .roteiro div { padding: 10px 12px; border-left: 3px solid var(--primary); background: var(--areia); border-radius: 0 10px 10px 0; }
+    .roteiro b { display: block; font-size: .82rem; margin-bottom: 2px; }
+    .roteiro span { font-size: .88rem; line-height: 1.45; }
+    .evidencias { margin: 10px 0 0; padding-left: 18px; display: grid; gap: 7px; }
+    .evidencias li { font-size: .9rem; line-height: 1.45; }
+    .trajeto { display: grid; gap: 7px; margin-top: 10px; }
+    .trajeto div { display: flex; justify-content: space-between; gap: 10px; font-size: .88rem;
+                   padding: 9px 12px; background: var(--areia); border-radius: 10px; }
+    .trajeto .mudou { background: var(--soft); font-weight: 600; }
+    .numeros { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; margin-top: 10px; }
+    .numeros div { text-align: center; background: var(--areia); border-radius: 12px; padding: 12px 6px; font-size: .76rem; color: var(--muted); font-weight: 600; }
+    .numeros b { display: block; font-size: 1.5rem; color: var(--deep); }
+    form.entrada { display: grid; gap: 11px; }
+    form.entrada input {
+      font: inherit; font-size: 1rem; padding: 13px; border: 2px solid var(--line);
+      border-radius: 12px; width: 100%; background: var(--paper); color: var(--ink);
+    }
+    form.entrada input:focus { outline: 3px solid var(--primary); outline-offset: 1px; }
+    .rodape { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line);
+              display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+    .rodape a { text-decoration: none; font-size: .76rem; font-weight: 600; padding: 8px 11px;
+                border-radius: 9px; background: var(--areia); color: var(--ink); white-space: nowrap; }
+    .conexao { font-size: .72rem; font-weight: 600; color: var(--muted); text-align: center; }
+    @media (max-width: 420px) {
+      button.opcao, div.opcao { grid-template-columns: 34px 1fr; gap: 9px; padding: 12px; }
+      .opcao .letra { width: 34px; height: 34px; font-size: .95rem; }
+      .numeros { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="barra">
+    <div class="marca">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac">
+      <div style="min-width:0">
+        <div class="quem" id="quem">Qualidade · Aula 07</div>
+        <div class="fase" id="fase">Sala TBL</div>
+      </div>
+    </div>
+    <div class="relogio" id="relogio" aria-live="off">--:--</div>
+  </header>
+
+  <main>
+    <!-- Entrada -->
+    <section id="tela-entrada">
+      <span class="selo">Team-Based Learning</span>
+      <h1 style="margin:10px 0 8px">Foot Fanatics às vésperas do plano anual</h1>
+      <p>Um caso e cinco decisões de qualidade, costurando tudo que vimos da Aula 01 à Aula 07. Em cada questão você decide sozinho, ouve a turma e decide outra vez. Nenhuma alternativa é a correta: cada uma é uma tática com ganho e custo declarados.</p>
+      <form class="entrada" id="form-entrada">
+        <label for="nome" class="conexao" style="text-align:left">Como você quer aparecer para o professor</label>
+        <input id="nome" maxlength="24" autocomplete="name" placeholder="Seu nome" required>
+        <button class="acao" type="submit">Entrar na sala</button>
+      </form>
+      <p class="aviso erro" id="erro-entrada" hidden></p>
+      <p class="conexao" style="margin-top:12px">A turma lê suas justificativas sem o seu nome. Sua identificação fica guardada só neste aparelho, para você voltar se a página fechar.</p>
+    </section>
+
+    <!-- Sala -->
+    <section id="tela-sala" hidden>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+        <span class="selo" id="selo-fase">Lobby</span>
+        <span class="conexao" id="presenca"></span>
+      </div>
+      <div id="conteudo" style="display:flex;flex-direction:column;gap:14px"></div>
+      <p class="aviso" id="recado" hidden style="margin-top:12px"></p>
+    </section>
+
+    <nav class="rodape" aria-label="Navegação da aula">
+      <a href="../slide_junit-jacoco-sonarcloud.html">Slides da aula</a>
+      <a href="../material/material_junit-jacoco-sonarcloud.html">Material</a>
+      <a href="../../home_qualidade_2026_2.html">Cronograma</a>
+    </nav>
+    <p class="conexao" id="conexao"></p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script>
+  /* ------------------------------------------------------------------
+     Chave publicável: a proteção não está no sigilo dela, e sim na RLS
+     e nas funções SECURITY DEFINER. Ver supabase/hubtbl-schema.sql.
+     ------------------------------------------------------------------ */
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SLUG = new URLSearchParams(location.search).get('sala') || 'ff-q2-a07-tbl';
+  const GUARDA = 'hubtbl:' + SLUG;
+  const LETRAS = ['A', 'B', 'C', 'D'];
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+    auth: { persistSession: false }
+  });
+
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g,
+    c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
+  // O caso vem em parágrafos separados por linha em branco, com os pontos de
+  // apoio entre asteriscos duplos. A conversão ocorre depois do escape, então
+  // o texto do banco não injeta marcação.
+  const paragrafos = t => String(t ?? '').split(/\n\s*\n/)
+    .map(p => p.trim()).filter(Boolean)
+    .map(p => `<p>${esc(p).replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')}</p>`)
+    .join('');
+
+  const NOMES_FASE = {
+    lobby: 'Lobby', voto1: 'Primeira decisão', discussao: 'Discussão',
+    voto2: 'Segunda decisão', sintese: 'Síntese', revelacao: 'Fechamento'
+  };
+  const TITULOS_FASE = {
+    lobby: 'Leia o caso', voto1: 'Decida', discussao: 'Justifique e ouça',
+    voto2: 'Decida outra vez', sintese: 'O que moveu a sala', revelacao: 'As cinco decisões'
+  };
+
+  let eu = null;        // { id, nome }
+  let s = null;         // último estado recebido
+  let chaveRender = ''; // impede redesenhar a tela enquanto o aluno digita
+  let escolhaAtual = null;
+  let rascunho = '';
+  let rodadaEmTela = null;
+  let prazo = 0;
+  let enviando = false;
+
+  try { eu = JSON.parse(localStorage.getItem(GUARDA)); } catch { eu = null; }
+  const guardar = v => { try { v ? localStorage.setItem(GUARDA, JSON.stringify(v))
+                                 : localStorage.removeItem(GUARDA); } catch {} };
+
+  const relogio = n => {
+    n = Math.max(0, Number(n) || 0);
+    return String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
+  };
+
+  function recado(texto, erro) {
+    const el = $('#recado');
+    el.textContent = texto || '';
+    el.hidden = !texto;
+    el.classList.toggle('erro', !!erro);
+  }
+
+  async function rpc(fn, args) {
+    const { data, error } = await db.rpc(fn, args);
+    if (error) throw new Error(error.message);
+    if (data && data.ok === false) throw new Error(data.erro);
+    return data;
+  }
+
+  /* --------------------------- desenho --------------------------- */
+
+  function htmlPassos() {
+    const total = s.total_questoes || 0;
+    if (!total) return '';
+    let itens = '';
+    for (let i = 1; i <= total; i++) {
+      const estado = s.fase === 'revelacao' || i < s.questao ? 'feito' : (i === s.questao && s.fase !== 'lobby') ? 'agora' : '';
+      itens += `<span class="passo ${estado}">${i}</span>`;
+    }
+    return `<div class="passos" aria-label="Questão ${s.questao} de ${total}">${itens}</div>`;
+  }
+
+  function htmlCaso(aberto) {
+    const ind = (s.contexto || []).map(i => `
+      <div class="indicador"><span>${esc(i.rotulo)}</span><b>${esc(i.valor)}</b><em>${esc(i.nota)}</em></div>`).join('');
+    const corpo = `<div>${paragrafos(s.caso_texto)}<div class="indicadores">${ind}</div></div>`;
+    if (aberto) {
+      return `<div class="bloco caso"><span class="selo">Caso</span>
+        <h2 style="margin-top:9px">${esc(s.caso_titulo)}</h2>${corpo}</div>`;
+    }
+    return `<details class="caso"><summary>Reler o caso: ${esc(s.caso_titulo)}</summary>${corpo}</details>`;
+  }
+
+  function htmlAlternativas(interativo) {
+    return (s.alternativas || []).map((o, i) => {
+      const miolo = `<span class="letra">${esc(o.letra)}</span>
+        <span>
+          <h4>${esc(o.titulo)}</h4>
+          <span class="tatica">${esc(o.tatica)}</span>
+          <p>${esc(o.texto)}</p>
+          <span class="troca">
+            <span class="ganho"><b>Ganho.</b> ${esc(o.ganho)}</span>
+            <span class="custo"><b>Custo.</b> ${esc(o.custo)}</span>
+          </span>
+        </span>`;
+      return interativo
+        ? `<button type="button" class="opcao" data-escolha="${i}" aria-pressed="${escolhaAtual === i}">${miolo}</button>`
+        : `<div class="opcao">${miolo}</div>`;
+    }).join('');
+  }
+
+  function htmlOpcoes(rodada) {
+    const meu = (s.meus_votos || {})[String(rodada)];
+    if (escolhaAtual === null && meu) { escolhaAtual = meu.escolha; rascunho = meu.justificativa || ''; }
+    const pergunta = rodada === 2 && s.dado_novo ? s.dado_novo.pergunta : s.pergunta;
+    const rotuloJust = rodada === 1
+      ? 'O que precisa ser verdade para a sua escolha funcionar?'
+      : s.dado_novo
+        ? 'A sua escolha anterior sobrevive ao dado novo? Explique.'
+        : 'O que sustentou ou mudou a sua decisão depois de ouvir a turma?';
+    const registrado = meu ? `<p class="aviso">Decisão registrada: <b>${LETRAS[meu.escolha]}</b>. Você pode mudá-la enquanto a rodada estiver aberta.</p>` : '';
+    return `
+      <div class="bloco"><span class="selo">${esc(s.categoria)}</span>
+        <h2 style="margin:9px 0 0">${esc(pergunta)}</h2></div>
+      ${registrado}
+      <div class="opcoes">${htmlAlternativas(true)}</div>
+      <div class="justifica">
+        <label for="justificativa">${rotuloJust}</label>
+        <textarea id="justificativa" maxlength="240" placeholder="Mínimo de 10 caracteres. A turma lê sem o seu nome.">${esc(rascunho)}</textarea>
+        <p class="contagem" id="contagem"></p>
+      </div>
+      <button class="acao" id="registrar">Registrar decisão</button>`;
+  }
+
+  function htmlBarras(dados, titulo, antes) {
+    const total = (dados || []).reduce((a, x) => a + x.votos, 0);
+    const linhas = (dados || []).map(x => {
+      const pct = total ? Math.round(100 * x.votos / total) : 0;
+      return `<div class="barra">
+        <span class="rotulo">${LETRAS[x.escolha]}</span>
+        <span class="trilho"><span class="preenche ${antes ? 'antes' : ''}" style="width:${pct}%"></span></span>
+        <span class="valor">${x.votos} · ${pct}%</span></div>`;
+    }).join('');
+    return `<h3>${esc(titulo)}</h3><div class="barras">${linhas}</div>`;
+  }
+
+  function htmlVozes(lista, titulo) {
+    if (!lista || !lista.length) return '';
+    const itens = lista.map(v => `<div class="voz"><span class="letra">${LETRAS[v.escolha]}</span><span>${esc(v.texto)}</span></div>`).join('');
+    return `<h3 style="margin-top:14px">${esc(titulo)}</h3><div class="vozes">${itens}</div>`;
+  }
+
+  function htmlTrajetos(lista, titulo) {
+    if (!lista || !lista.length) return '';
+    const itens = lista.map(t => `
+      <div class="${t.de === t.para ? '' : 'mudou'}">
+        <span>${LETRAS[t.de]} → ${LETRAS[t.para]} ${t.de === t.para ? '· manteve' : '· mudou'}</span>
+        <b>${t.pessoas}</b></div>`).join('');
+    return `<h3 style="margin-top:14px">${esc(titulo)}</h3><div class="trajeto">${itens}</div>`;
+  }
+
+  function htmlDadoNovo() {
+    const r = s.dado_novo;
+    if (!r) return '';
+    const ev = (r.evidencias || []).map(e => `<li>${esc(e)}</li>`).join('');
+    return `
+      <div class="bloco destaque"><span class="selo">Dado novo</span>
+        <h2 style="margin-top:9px">${esc(r.titulo)}</h2>
+        <p>${esc(r.texto)}</p>
+        ${ev ? `<h3 style="margin-top:12px">Evidências apuradas</h3><ul class="evidencias">${ev}</ul>` : ''}</div>`;
+  }
+
+  function htmlDiscussao() {
+    const meu = (s.meus_votos || {})['1'];
+    const minha = meu
+      ? `Você escolheu <b>${LETRAS[meu.escolha]} · ${esc(s.alternativas[meu.escolha].titulo)}</b>. Defenda primeiro o custo dessa tática, e só depois questione a alternativa vizinha.`
+      : 'Você não registrou decisão na primeira rodada. Acompanhe a discussão e decida na segunda.';
+    return `
+      ${htmlDadoNovo()}
+      <div class="bloco destaque"><span class="selo">Sua posição</span><p style="margin-top:9px">${minha}</p></div>
+      <div class="bloco">${htmlBarras(s.rodada1, 'Como a turma decidiu na primeira rodada', true)}
+        ${htmlVozes(s.justificativas1, 'As hipóteses declaradas pela turma')}</div>
+      <div class="bloco"><h2>Perguntas que organizam a discussão</h2>
+        <div class="roteiro">
+          <div><b>1 · Atributo de qualidade</b><span>Qual característica da ISO/IEC 25010 a sua tática protege, e qual ela sacrifica?</span></div>
+          <div><b>2 · Hipótese</b><span>Que medida ou teste mostraria que a hipótese da sua escolha é falsa?</span></div>
+          <div><b>3 · Custo assumido</b><span>Quem paga o custo da sua tática: o torcedor, a equipe ou o negócio?</span></div>
+          <div><b>4 · Evidência</b><span>Daqui a uma sprint, que relatório, teste ou métrica prova que a decisão funcionou?</span></div>
+        </div></div>`;
+  }
+
+  function htmlSintese() {
+    const t = s.trajetos || [];
+    const total = t.reduce((a, x) => a + x.pessoas, 0);
+    const manteve = t.filter(x => x.de === x.para).reduce((a, x) => a + x.pessoas, 0);
+    const principal = t.filter(x => x.de !== x.para).sort((a, b) => b.pessoas - a.pessoas)[0];
+    const leitura = principal
+      ? `A mudança mais frequente foi de <b>${LETRAS[principal.de]}</b> para <b>${LETRAS[principal.para]}</b>, com ${principal.pessoas} ${principal.pessoas === 1 ? 'pessoa' : 'pessoas'}. Mudar registra a revisão de um critério; não transforma a alternativa escolhida em resposta correta.`
+      : 'A turma manteve as posições nesta questão.';
+    return `
+      <div class="bloco"><span class="selo">${esc(s.categoria)}</span>
+        <h2 style="margin:9px 0 0">${esc(s.questao_titulo)}</h2></div>
+      <div class="bloco">${htmlBarras(s.rodada1, 'Primeira decisão', true)}</div>
+      <div class="bloco">${htmlBarras(s.rodada2, 'Decisão depois da discussão')}</div>
+      <div class="bloco"><h2>O que moveu a sala nesta questão</h2>
+        <div class="numeros">
+          <div><b>${total}</b>decidiram duas vezes</div>
+          <div><b>${manteve}</b>mantiveram a posição</div>
+          <div><b>${total - manteve}</b>mudaram a decisão</div>
+        </div>
+        <p style="margin-top:12px">${leitura}</p>
+        ${htmlTrajetos(t, 'Primeira decisão → decisão depois da discussão')}</div>
+      ${(s.justificativas2 || []).length ? `<div class="bloco">${htmlVozes(s.justificativas2, 'O que a turma declarou na segunda decisão')}</div>` : ''}`;
+  }
+
+  function htmlRevelacao() {
+    const qs = s.consolidado || [];
+    const blocos = qs.map(q => {
+      const t = q.trajetos || [];
+      const total = t.reduce((a, x) => a + x.pessoas, 0);
+      const mudou = t.filter(x => x.de !== x.para).reduce((a, x) => a + x.pessoas, 0);
+      const alt = (q.alternativas || []).map((o, i) => `${LETRAS[i]} · ${esc(o.titulo)}`).join(' · ');
+      return `<div class="bloco"><span class="selo">${q.ordem} · ${esc(q.categoria)}</span>
+        <h2 style="margin:9px 0 4px">${esc(q.titulo)}</h2>
+        <p class="conexao" style="text-align:left">${alt}</p>
+        ${htmlBarras(q.rodada1, 'Primeira decisão', true)}
+        <div style="height:10px"></div>
+        ${htmlBarras(q.rodada2, 'Depois da discussão')}
+        <p class="aviso" style="margin-top:12px">${mudou} de ${total} mudaram a decisão nesta questão.</p></div>`;
+    }).join('');
+    const totalMudancas = qs.reduce((a, q) =>
+      a + (q.trajetos || []).filter(x => x.de !== x.para).reduce((b, x) => b + x.pessoas, 0), 0);
+    return `
+      <div class="bloco destaque"><span class="selo">Fechamento</span>
+        <h2 style="margin-top:9px">Cinco decisões sobre o mesmo produto</h2>
+        <p>A sequência passou pelo semestre inteiro: o requisito de qualidade que precisa de medida, o teste que executa sem verificar, a tática arquitetural que troca um atributo por outro, o defeito que precisa de triagem e causa raiz, e o gate que só vale enquanto ninguém o contorna. Foram ${totalMudancas} ${totalMudancas === 1 ? 'mudança' : 'mudanças'} de decisão ao longo das questões. Cada tática escolhida protege algo e expõe outra coisa, e é essa exposição que o seu projeto precisa registrar como risco, com evidência.</p></div>
+      ${blocos}`;
+  }
+
+  function desenhar() {
+    $('#fase').textContent = TITULOS_FASE[s.fase] || 'Sala TBL';
+    $('#selo-fase').textContent = (NOMES_FASE[s.fase] || s.fase) +
+      (s.fase === 'revelacao' || s.fase === 'lobby' ? '' : ` · questão ${s.questao} de ${s.total_questoes}`);
+    $('#quem').textContent = eu ? eu.nome + ' · Aula 07' : 'Qualidade · Aula 07';
+
+    const rodada = { voto1: 1, voto2: 2 }[s.fase] || null;
+    const chave = JSON.stringify([s.fase, s.questao, s.meus_votos, s.votacao_aberta,
+      s.rodada1, s.rodada2, !!s.dado_novo, (s.justificativas1 || []).length,
+      (s.justificativas2 || []).length, (s.consolidado || []).length]);
+    if (chave === chaveRender) return;
+    chaveRender = chave;
+    // Cada rodada começa sem escolha e sem texto: repetir a decisão anterior já
+    // marcada levaria a confirmá-la sem reexaminá-la. A decisão já registrada
+    // nesta rodada é restaurada adiante, a partir de meus_votos.
+    const passo = s.questao + ':' + rodada;
+    if (passo !== rodadaEmTela) { escolhaAtual = null; rascunho = ''; rodadaEmTela = passo; recado(''); }
+
+    let html = htmlPassos();
+    if (s.fase === 'lobby') {
+      html += htmlCaso(true) +
+        `<p class="aviso">Leia o caso com atenção. São ${s.total_questoes} questões, e a primeira abre quando o professor liberar.</p>`;
+    } else if (s.fase === 'discussao') {
+      html += htmlDiscussao() + htmlCaso(false);
+    } else if (s.fase === 'sintese') {
+      html += htmlSintese() + htmlCaso(false);
+    } else if (s.fase === 'revelacao') {
+      html += htmlRevelacao() + htmlCaso(false);
+    } else if (rodada) {
+      html += (rodada === 2
+        ? htmlDadoNovo() + `<div class="bloco">${htmlBarras(s.rodada1, 'Primeira decisão da turma', true)}
+             ${htmlVozes(s.justificativas1, 'As hipóteses declaradas pela turma')}</div>`
+        : '') + htmlOpcoes(rodada) + htmlCaso(false);
+    }
+    $('#conteudo').innerHTML = html;
+
+    if (rodada) {
+      const ta = $('#justificativa');
+      if (ta) {
+        ta.addEventListener('input', () => { rascunho = ta.value; atualizarContagem(); atualizarBotao(); });
+        atualizarContagem();
+      }
+      atualizarBotao();
+    }
+  }
+
+  function atualizarContagem() {
+    const el = $('#contagem');
+    if (el) el.textContent = (rascunho || '').trim().length + '/240';
+  }
+
+  function atualizarBotao() {
+    const b = $('#registrar');
+    if (!b) return;
+    const fechada = !s.votacao_aberta || (prazo && Date.now() > prazo);
+    const curta = (rascunho || '').trim().length < 10;
+    b.disabled = enviando || fechada || escolhaAtual === null || curta;
+    b.textContent = fechada ? 'Rodada encerrada'
+      : enviando ? 'Registrando…'
+      : escolhaAtual === null ? 'Escolha uma tática'
+      : curta ? 'Escreva a justificativa'
+      : 'Registrar decisão';
+  }
+
+  function atualizarCabecalho() {
+    const restante = s && prazo ? Math.max(0, Math.ceil((prazo - Date.now()) / 1000)) : null;
+    const el = $('#relogio');
+    el.textContent = restante === null ? '--:--' : relogio(restante);
+    el.classList.toggle('acabando', restante !== null && restante <= 60);
+    if (s) {
+      $('#presenca').textContent = s.participantes + ' na sala · ' +
+        (['voto1','voto2'].includes(s.fase) ? s.votos_rodada + ' já decidiram' : 'aguardando o professor');
+      atualizarBotao();
+    }
+  }
+
+  /* --------------------------- ciclo --------------------------- */
+
+  async function atualizar() {
+    if (!eu) return;
+    try {
+      const novo = await rpc('hubtbl_estado', { p_slug: SLUG, p_participante: eu.id });
+      if (!novo.inscrito) {   // a sala foi reiniciada para outra turma
+        eu = null; guardar(null); s = null; prazo = 0; chaveRender = ''; rodadaEmTela = null;
+        $('#quem').textContent = 'Qualidade · Aula 07';
+        $('#fase').textContent = 'Sala TBL';
+        atualizarCabecalho();
+        $('#tela-sala').hidden = true; $('#tela-entrada').hidden = false;
+        $('#erro-entrada').textContent = 'A sala foi reiniciada pelo professor. Entre novamente.';
+        $('#erro-entrada').hidden = false;
+        return;
+      }
+      s = novo;
+      prazo = s.restante === null ? 0 : Date.now() + s.restante * 1000;
+      $('#tela-entrada').hidden = true;
+      $('#tela-sala').hidden = false;
+      desenhar();
+      atualizarCabecalho();
+      $('#conexao').textContent = '';
+    } catch (e) {
+      $('#conexao').textContent = 'Sem conexão com a sala. Nova tentativa em instantes.';
+    }
+  }
+
+  async function registrar() {
+    const rodada = { voto1: 1, voto2: 2 }[s.fase];
+    if (!rodada || escolhaAtual === null) return;
+    enviando = true; atualizarBotao(); recado('');
+    try {
+      await rpc('hubtbl_votar', {
+        p_participante: eu.id, p_rodada: rodada,
+        p_escolha: escolhaAtual, p_justificativa: rascunho
+      });
+      recado('Decisão registrada. Você pode mudá-la enquanto a rodada estiver aberta.');
+      chaveRender = '';
+      await atualizar();
+    } catch (e) {
+      recado(e.message, true);
+    } finally {
+      enviando = false; atualizarBotao();
+    }
+  }
+
+  $('#form-entrada').addEventListener('submit', async e => {
+    e.preventDefault();
+    const nome = $('#nome').value.trim();
+    $('#erro-entrada').hidden = true;
+    try {
+      const r = await rpc('hubtbl_entrar', { p_slug: SLUG, p_nome: nome, p_id: eu ? eu.id : null });
+      eu = { id: r.participante_id, nome: r.nome };
+      guardar(eu);
+      chaveRender = '';
+      await atualizar();
+    } catch (err) {
+      $('#erro-entrada').textContent = err.message;
+      $('#erro-entrada').hidden = false;
+    }
+  });
+
+  document.addEventListener('click', e => {
+    const cartao = e.target.closest('button.opcao');
+    if (cartao) {
+      escolhaAtual = Number(cartao.dataset.escolha);
+      document.querySelectorAll('button.opcao').forEach(b =>
+        b.setAttribute('aria-pressed', String(Number(b.dataset.escolha) === escolhaAtual)));
+      atualizarBotao();
+      const ta = $('#justificativa');
+      if (ta && !ta.value) ta.focus({ preventScroll: true });
+      return;
+    }
+    if (e.target.closest('#registrar')) registrar();
+  });
+
+  // A virada de fase chega pelo Realtime; a consulta periódica cobre
+  // presença, contagem de votos e eventual perda do canal.
+  db.channel('hubtbl-' + SLUG)
+    .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'hubtbl_sessions', filter: 'slug=eq.' + SLUG },
+        () => { chaveRender = ''; atualizar(); })
+    .subscribe();
+
+  if (eu && eu.id) { $('#nome').value = eu.nome; atualizar(); }
+  setInterval(atualizar, 4000);
+  setInterval(atualizarCabecalho, 500);
+  </script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

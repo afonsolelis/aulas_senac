@@ -54,6 +54,13 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
+## ⛔ Banco Supabase compartilhado com o Einstein
+
+O projeto `lwamaovuxcevsjfvtqhf` também serve às aulas do **Einstein** (`~/repos/einstein`), dono de
+todos os objetos `tbl_*`. **Nunca** rode `drop`, `truncate`, `alter` nem `create or replace` sobre
+objeto existente que não seja `quiz_*`/`avisos*`, e não aplique SQL de outro repositório sem
+adaptar. Antes de qualquer SQL de escrita, siga `.claude/skills/supabase-compartilhado/SKILL.md`.
+
 ## Quiz ao vivo (Supabase) — um dos dois usos de backend
 
 `pages/<slug>/quiz/` guarda quizzes projetados em aula: `<aula>-quiz.html` (celular do aluno),
@@ -115,6 +122,21 @@ pública por desenho, quem limita o alcance é a RLS.
 - Para montar o próximo, use a skill `quiz-da-aula` (`.claude/skills/quiz-da-aula/`).
 - Validação: `node scripts/quiz-e2e.mjs <prefixo> <slug-da-sala>` percorre lobby → pergunta →
   revelação → encerramento → relatório contra o Supabase real e descarta a sala no fim.
+
+## TBL ao vivo (Supabase)
+
+`pages/qualidade2/tbl/` guarda salas de Team-Based Learning: `<aula>-tbl.html` (celular) e
+`<aula>-painel.html` (projetado, com QR, cronômetro e `data-sem-avisos`). Um caso único e
+questões de quatro táticas com ganho e custo, **sem alternativa correta**; cada questão passa por
+decisão individual → discussão (justificativas sem nome e, se houver, o dado novo) → segunda
+decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — `tbl_*` é do Einstein.
+
+- SQL: `supabase/hubtbl-schema.sql` → `hubtbl-funcoes.sql` → `hubtbl-seed-<aula>.sql`, todos
+  idempotentes e sem `drop`. Detalhes em `supabase/README.md`.
+- Estreia: Aula 07 (sala `ff-q2-a07-tbl`, caso Foot Fanatics costurando as Aulas 01–07). Botão
+  **Painel do TBL** no topo do slide e chip **TBL** no card da home.
+- Entre turmas, **Arquivar e reiniciar** guarda a rodada em `hubtbl_historico` antes de apagar.
+- Validação: `node scripts/tbl-e2e.mjs aula07 ff-q2-a07-tbl` (descarta a sala no fim; não rode em aula).
 
 ## Quadro de avisos (Supabase) — o outro uso de backend
 
