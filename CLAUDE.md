@@ -208,3 +208,7 @@ Detalhe completo dos testes: ver a seção "Testes" do [STANDARDS.md](./STANDARD
 ## Instruções do projeto e personas
 
 `AGENTS.md` contém as instruções específicas deste repositório. `.codex/skills/` e `.agents/skills/` existem e guardam skills locais. As personas genéricas de `.aiox-core/` não implicam que o site tenha CLI, build ou um fluxo obrigatório por stories. Confira os comandos no `package.json`; o frontend estático usa o Supabase para os quizzes.
+
+## Escrita (obrigatório)
+
+Todo texto destinado ao aluno (slides, materiais, páginas, quizzes, atividades) segue as skills `escrita-afonso` e `humanizacao`, em `.claude/skills/`. Aplique-as já na redação, e não só numa revisão posterior. Evite linguagem de rede social: título em forma de aforismo, travessão como conector, "não é X, é Y", negrito na prosa, setas decorativas e frases de efeito no fechamento. Títulos de slide devem ser descritivos e curtos, cabendo em uma linha na projeção. Preserve números, fatos, código e prompts.

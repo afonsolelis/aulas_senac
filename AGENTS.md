@@ -94,3 +94,7 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 ## Generação de índice
 
 `index.json` (raiz) mantém a árvore navegável (`.aiox-core` aparece resumido; `.git`/`node_modules` omitidos). Regenerar após mudanças estruturais grandes.
+
+## Escrita (obrigatório)
+
+Todo texto destinado ao aluno (slides, materiais, páginas, quizzes, atividades) segue as skills `escrita-afonso` e `humanizacao`, em `.claude/skills/`. Aplique-as já na redação, e não só numa revisão posterior. Evite linguagem de rede social: título em forma de aforismo, travessão como conector, "não é X, é Y", negrito na prosa, setas decorativas e frases de efeito no fechamento. Títulos de slide devem ser descritivos e curtos, cabendo em uma linha na projeção. Preserve números, fatos, código e prompts.
