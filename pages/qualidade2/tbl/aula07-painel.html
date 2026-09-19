@@ -82,6 +82,11 @@
     .opcao p { font-size: .92rem; margin: 7px 0 0; text-align: left; }
     .opcao .ganho b { color: var(--verde); }
     .opcao .custo b { color: var(--primary); }
+    .placar { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; padding-top: 10px;
+              border-top: 1px solid var(--line); font-size: .8rem; }
+    .placar span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); }
+    .placar span b { color: var(--deep); font-variant-numeric: tabular-nums; }
+    .placar .subiu { border-color: var(--primary); color: var(--deep); }
     .indicador h4 { color: var(--deep); font-size: 1.15rem; }
     .vozes { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 9px; }
     .voz { display: grid; grid-template-columns: 26px 1fr; gap: 9px; font-size: .95rem; line-height: 1.45;
@@ -164,8 +169,6 @@
             <button data-acao="anterior" id="btn-anterior">Questão anterior</button>
             <button data-acao="estender">+2 min</button>
             <button data-acao="revelar">Fechar e consolidar</button>
-            <button data-acao="iniciar">Reiniciar sequência</button>
-            <button data-acao="lobby">Voltar ao lobby</button>
           </div>
           <p class="recado" id="recado"></p>
         </section>
@@ -202,9 +205,14 @@
       </section>
 
       <section class="bloco">
-        <h2>Outra turma</h2>
-        <p>Arquiva as decisões desta rodada no histórico e depois apaga participantes e votos, voltando ao lobby. Quem estiver com a página aberta precisa entrar de novo. <span id="arquivadas"></span></p>
-        <button class="perigo" data-acao="reiniciar">Arquivar e reiniciar para nova turma</button>
+        <h2>Zerar a sala</h2>
+        <p>Os dois primeiros apagam apenas as respostas e mantêm a turma conectada — use entre um ensaio e a rodada de verdade. Os dois últimos apagam também os participantes: quem estiver com a página aberta precisa entrar de novo. <span id="arquivadas"></span></p>
+        <div class="controles">
+          <button data-acao="iniciar">Zerar respostas e recomeçar na questão 1</button>
+          <button data-acao="lobby">Zerar respostas e voltar ao lobby</button>
+          <button class="perigo" data-acao="descartar">Limpar respostas e participantes</button>
+          <button class="perigo" data-acao="reiniciar">Arquivar e limpar para outra turma</button>
+        </div>
         <p class="recado" id="recado-reset"></p>
       </section>
     </div>
@@ -261,11 +269,13 @@
     avancar: 'Fase avançada.', proxima: 'Próxima questão aberta.', anterior: 'Questão anterior retomada.',
     estender: 'Dois minutos acrescentados ao prazo.',
     revelar: 'Consolidado revelado à turma.', iniciar: 'Sequência reiniciada na primeira questão; as decisões anteriores foram apagadas.',
-    lobby: 'Sala de volta ao lobby; as decisões foram apagadas.'
+    lobby: 'Sala de volta ao lobby; as decisões foram apagadas.',
+    descartar: 'Respostas e participantes apagados; a sala está vazia, no lobby.'
   };
   const CONFIRMAR = {
     iniciar: 'Reiniciar a sequência? Todas as decisões registradas serão apagadas, sem arquivar.',
     lobby: 'Voltar ao lobby? Todas as decisões registradas serão apagadas, sem arquivar.',
+    descartar: 'Apagar TODAS as respostas e TODOS os participantes desta sala, sem arquivar? Não há como desfazer.',
     reiniciar: 'Arquivar esta rodada e limpar a sala para outra turma? Os participantes precisarão entrar de novo.'
   };
 
@@ -322,14 +332,37 @@
       ${paragrafos(s.caso_texto)}<div class="opcoes" style="margin-top:14px">${ind}</div>`;
   }
 
-  function htmlQuestao() {
-    const alt = (s.alternativas || []).map(o =>
-      `<div class="opcao"><span class="letra">${esc(o.letra)}</span>
+  /* Um placar por alternativa, impresso dentro do próprio cartão: sem isto o
+     número da distribuição vive longe da tática que o produziu, e a turma
+     precisa lembrar qual era a letra C para discutir a letra C. */
+  function placarDe(dados, rotulo, escolha) {
+    if (!dados || !dados.length) return '';
+    const total = dados.reduce((a, x) => a + x.votos, 0);
+    const item = dados.find(x => x.escolha === escolha);
+    const votos = item ? item.votos : 0;
+    const pct = total ? Math.round(100 * votos / total) : 0;
+    const lider = total && votos > 0 && votos === Math.max(...dados.map(x => x.votos));
+    return `<span class="${lider ? 'subiu' : ''}">${rotulo} <b>${votos}</b> · ${pct}%</span>`;
+  }
+
+  /* As quatro táticas ficam na tela em TODAS as fases a partir da primeira
+     decisão — inclusive na síntese e no fechamento, que é onde a discussão
+     acontece de fato. */
+  function htmlAlternativas(alternativas, r1, r2) {
+    return (alternativas || []).map((o, i) => {
+      const placar = (r1 ? placarDe(r1, '1ª', i) : '') + (r2 ? placarDe(r2, '2ª', i) : '');
+      return `<div class="opcao"><span class="letra">${esc(o.letra)}</span>
         <h4>${esc(o.titulo)}</h4><span class="tatica">${esc(o.tatica)}</span>
         <p>${esc(o.texto)}</p>
-        <p class="ganho"><b>Ganho.</b> ${esc(o.ganho)}</p><p class="custo"><b>Custo.</b> ${esc(o.custo)}</p></div>`).join('');
+        <p class="ganho"><b>Ganho.</b> ${esc(o.ganho)}</p><p class="custo"><b>Custo.</b> ${esc(o.custo)}</p>
+        ${placar ? `<div class="placar">${placar}</div>` : ''}</div>`;
+    }).join('');
+  }
+
+  function htmlQuestao(r1, r2, pergunta) {
     return `<span class="selo">Questão ${s.questao} de ${s.total_questoes} · ${esc(s.categoria)}</span>
-      <h2 style="margin-top:10px">${esc(s.pergunta)}</h2><div class="opcoes">${alt}</div>`;
+      <h2 style="margin-top:10px">${esc(pergunta || s.pergunta)}</h2>
+      <div class="opcoes">${htmlAlternativas(s.alternativas, r1, r2)}</div>`;
   }
 
   function htmlConsolidado() {
@@ -337,11 +370,11 @@
       const t = q.trajetos || [];
       const total = t.reduce((a, x) => a + x.pessoas, 0);
       const mudou = t.filter(x => x.de !== x.para).reduce((a, x) => a + x.pessoas, 0);
-      const alt = (q.alternativas || []).map((o, i) => `${LETRAS[i]} · ${esc(o.titulo)}`).join(' &nbsp;·&nbsp; ');
       return `<div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line)">
         <h3>Questão ${q.ordem} · ${esc(q.categoria)}</h3>
-        <p style="font-size:.95rem;color:var(--muted);text-align:left;margin-bottom:4px">${esc(q.titulo)} — ${mudou} de ${total} mudaram a decisão.</p>
-        <p style="font-size:.88rem;text-align:left">${alt}</p>
+        <h2 style="margin:6px 0 4px">${esc(q.pergunta)}</h2>
+        <p style="font-size:.95rem;color:var(--muted);text-align:left;margin-bottom:12px">${esc(q.titulo)} — ${mudou} de ${total} mudaram a decisão.</p>
+        <div class="opcoes">${htmlAlternativas(q.alternativas, q.rodada1, q.rodada2)}</div>
         ${htmlBarras(q.rodada1, 'Primeira decisão', true)}
         ${htmlBarras(q.rodada2, 'Depois da discussão')}</div>`;
     }).join('');
@@ -376,19 +409,24 @@
     if (s.fase === 'lobby') {
       html = htmlCaso();
     } else if (s.fase === 'voto1') {
-      html = htmlQuestao();
+      // A distribuição parcial não vai à projeção: ela ancoraria a decisão
+      // individual que esta fase existe para colher.
+      html = htmlQuestao(null, null);
     } else if (s.fase === 'discussao') {
-      html = htmlQuestao() +
+      html = htmlQuestao(s.rodada1, null) +
         htmlBarras(s.rodada1, 'Primeira decisão · distribuição', true) +
         htmlVozes(s.justificativas1, 'Hipóteses declaradas na primeira decisão') +
         `<h3 style="margin-top:18px">Condução</h3>
          <p style="text-align:left">Chame primeiro quem escolheu a alternativa menos votada e peça o custo que ela assume, não o benefício. Depois peça a quem escolheu a mais votada que responda à objeção. Puxe a aula de origem: cenário e medida, cobertura e mutação, tática e trade-off, triagem e causa raiz, gate e exceção.</p>`;
     } else if (s.fase === 'voto2') {
-      html = htmlQuestao() +
+      html = htmlQuestao(s.rodada1, null, s.dado_novo ? s.dado_novo.pergunta : null) +
         htmlBarras(s.rodada1, 'Primeira decisão · distribuição', true) +
         htmlVozes(s.justificativas1, 'Hipóteses declaradas na primeira decisão');
     } else if (s.fase === 'sintese') {
-      html = `<span class="selo">Síntese · ${esc(s.categoria)}</span><h2 style="margin-top:10px">${esc(s.questao_titulo)}</h2>` +
+      // As táticas permanecem projetadas, agora com os dois placares em cada
+      // cartão: é aqui que a turma compara o deslocamento com a tática que o
+      // causou, e a tela só de barras matava a discussão.
+      html = htmlQuestao(s.rodada1, s.rodada2) +
         htmlBarras(s.rodada1, 'Primeira decisão', true) +
         htmlBarras(s.rodada2, 'Depois da discussão') +
         htmlTrajetos(s.trajetos, 'Mudanças de decisão nesta questão') +
@@ -484,7 +522,7 @@
   document.querySelectorAll('[data-acao]').forEach(b => b.addEventListener('click', async () => {
     const acao = b.dataset.acao;
     if (CONFIRMAR[acao] && !confirm(CONFIRMAR[acao])) return;
-    const alvo = acao === 'reiniciar' ? $('#recado-reset') : $('#recado');
+    const alvo = ['reiniciar','descartar','iniciar','lobby'].includes(acao) ? $('#recado-reset') : $('#recado');
     $('#recado').textContent = ''; $('#recado-reset').textContent = '';
     alvo.classList.remove('erro');
     alvo.textContent = 'Atualizando a sala…';

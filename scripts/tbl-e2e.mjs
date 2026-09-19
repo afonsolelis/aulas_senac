@@ -86,6 +86,13 @@ try {
     await painel.click(`[data-acao="${a}"]`);
     await painel.waitForFunction(() => !document.querySelector('#recado').textContent.startsWith('Atualizando'), null, { timeout: 15000 });
   };
+  // As quatro táticas precisam continuar na tela: é a condição que a síntese e
+  // o fechamento quebravam antes, deixando o professor sem o que discutir.
+  const taticasNaTela = async (p, onde) => {
+    await p.waitForTimeout(500);
+    const n = await p.locator('.opcao .troca, .opcao .custo').count();
+    confere(n >= 4, `${onde}: as quatro táticas continuam na tela (${n} cartões)`);
+  };
 
   // Questão 1, ciclo completo.
   await acao('avancar');
@@ -113,6 +120,9 @@ try {
   await fase(alunos[0], 'Síntese');
   await espera(alunos[0], () => document.querySelector('#conteudo').textContent.includes('mudaram a decisão'), null, 'síntese mostra quem mudou');
   await espera(alunos[0], () => document.querySelector('#conteudo').textContent.includes('A → D'), null, 'síntese mostra a trajetória A → D');
+  await taticasNaTela(alunos[0], 'síntese (aluno)');
+  await taticasNaTela(painel, 'síntese (painel)');
+  await espera(painel, () => /1ª/.test(document.querySelector('#projecao').textContent) && /2ª/.test(document.querySelector('#projecao').textContent), null, 'síntese do painel traz os dois placares por tática');
   await shot(alunos[0], 'aluno-sintese');
 
   // Percorre as demais questões conferindo o corte do dado novo.
@@ -147,6 +157,8 @@ try {
   await fase(alunos[0], 'Fechamento');
   await espera(alunos[0], () => document.querySelector('#conteudo').textContent.includes('Cinco decisões sobre o mesmo produto'), null, 'aluno vê o fechamento');
   await espera(painel, () => document.querySelectorAll('#projecao h3').length >= 5, null, 'painel projeta o consolidado das questões');
+  const cartoes = await painel.locator('#projecao .opcao .custo').count();
+  confere(cartoes >= 4 * inicial.total_questoes, `fechamento projeta as táticas por extenso (${cartoes})`);
   await shot(alunos[0], 'aluno-fechamento');
   await shot(painel, 'painel-fechamento');
 } finally {

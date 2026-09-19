@@ -139,7 +139,11 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   idempotentes e sem `drop`. Detalhes em `supabase/README.md`.
 - Estreia: Aula 07 (sala `ff-q2-a07-tbl`, caso Foot Fanatics costurando as Aulas 01–07). Botão
   **Painel do TBL** no topo do slide e chip **TBL** no card da home.
-- Entre turmas, **Arquivar e reiniciar** guarda a rodada em `hubtbl_historico` antes de apagar.
+- As quatro táticas ficam na tela em **todas** as fases a partir da primeira decisão, com o placar
+  de cada rodada dentro do próprio cartão — a síntese e o fechamento são onde a discussão acontece.
+- Seção **Zerar a sala** no painel, do mais leve ao mais pesado: zerar respostas (mantém a turma),
+  voltar ao lobby, `descartar` (apaga respostas e participantes) e **Arquivar e limpar**, que guarda
+  a rodada em `hubtbl_historico` antes de apagar.
 - Validação: `node scripts/tbl-e2e.mjs aula07 ff-q2-a07-tbl` (descarta a sala no fim; não rode em aula).
 
 ## Quadro de avisos (Supabase) — o outro uso de backend

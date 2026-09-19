@@ -104,6 +104,11 @@
     .troca b { font-weight: 700; }
     .troca .ganho b { color: var(--verde); }
     .troca .custo b { color: var(--primary); }
+    .placar { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 11px; padding-top: 10px;
+              border-top: 1px solid var(--line); font-size: .8rem; }
+    .placar span { border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; color: var(--muted); }
+    .placar span b { color: var(--deep); font-variant-numeric: tabular-nums; }
+    .placar .subiu { border-color: var(--primary); color: var(--deep); }
     .justifica { margin-top: 14px; }
     .justifica label { display: block; font-size: .86rem; font-weight: 600; margin-bottom: 6px; }
     .justifica textarea {
@@ -302,7 +307,25 @@
     return `<details class="caso"><summary>Reler o caso: ${esc(s.caso_titulo)}</summary>${corpo}</details>`;
   }
 
-  function htmlAlternativas(interativo) {
+  /* O placar de cada rodada é impresso dentro do próprio cartão, para que o
+     número nunca fique separado da tática que o produziu. */
+  function placarDe(escolha) {
+    const linha = (dados, rotulo) => {
+      if (!dados || !dados.length) return '';
+      const total = dados.reduce((a, x) => a + x.votos, 0);
+      const item = dados.find(x => x.escolha === escolha);
+      const votos = item ? item.votos : 0;
+      const pct = total ? Math.round(100 * votos / total) : 0;
+      const lider = total && votos > 0 && votos === Math.max(...dados.map(x => x.votos));
+      return `<span class="${lider ? 'subiu' : ''}">${rotulo} <b>${votos}</b> · ${pct}%</span>`;
+    };
+    const mostra1 = ['discussao','voto2','sintese','revelacao'].includes(s.fase);
+    const mostra2 = ['sintese','revelacao'].includes(s.fase);
+    const partes = (mostra1 ? linha(s.rodada1, '1ª') : '') + (mostra2 ? linha(s.rodada2, '2ª') : '');
+    return partes ? `<div class="placar">${partes}</div>` : '';
+  }
+
+  function htmlAlternativas(interativo, comPlacar) {
     return (s.alternativas || []).map((o, i) => {
       const miolo = `<span class="letra">${esc(o.letra)}</span>
         <span>
@@ -313,6 +336,7 @@
             <span class="ganho"><b>Ganho.</b> ${esc(o.ganho)}</span>
             <span class="custo"><b>Custo.</b> ${esc(o.custo)}</span>
           </span>
+          ${comPlacar ? placarDe(i) : ''}
         </span>`;
       return interativo
         ? `<button type="button" class="opcao" data-escolha="${i}" aria-pressed="${escolhaAtual === i}">${miolo}</button>`
@@ -334,7 +358,7 @@
       <div class="bloco"><span class="selo">${esc(s.categoria)}</span>
         <h2 style="margin:9px 0 0">${esc(pergunta)}</h2></div>
       ${registrado}
-      <div class="opcoes">${htmlAlternativas(true)}</div>
+      <div class="opcoes">${htmlAlternativas(true, rodada === 2)}</div>
       <div class="justifica">
         <label for="justificativa">${rotuloJust}</label>
         <textarea id="justificativa" maxlength="240" placeholder="Mínimo de 10 caracteres. A turma lê sem o seu nome.">${esc(rascunho)}</textarea>
@@ -389,6 +413,8 @@
     return `
       ${htmlDadoNovo()}
       <div class="bloco destaque"><span class="selo">Sua posição</span><p style="margin-top:9px">${minha}</p></div>
+      <div class="bloco"><h2>As quatro táticas e como a turma decidiu</h2>
+        <div class="opcoes">${htmlAlternativas(false, true)}</div></div>
       <div class="bloco">${htmlBarras(s.rodada1, 'Como a turma decidiu na primeira rodada', true)}
         ${htmlVozes(s.justificativas1, 'As hipóteses declaradas pela turma')}</div>
       <div class="bloco"><h2>Perguntas que organizam a discussão</h2>
@@ -411,6 +437,8 @@
     return `
       <div class="bloco"><span class="selo">${esc(s.categoria)}</span>
         <h2 style="margin:9px 0 0">${esc(s.questao_titulo)}</h2></div>
+      <div class="bloco"><h2>As quatro táticas, antes e depois da discussão</h2>
+        <div class="opcoes">${htmlAlternativas(false, true)}</div></div>
       <div class="bloco">${htmlBarras(s.rodada1, 'Primeira decisão', true)}</div>
       <div class="bloco">${htmlBarras(s.rodada2, 'Decisão depois da discussão')}</div>
       <div class="bloco"><h2>O que moveu a sala nesta questão</h2>
@@ -430,10 +458,29 @@
       const t = q.trajetos || [];
       const total = t.reduce((a, x) => a + x.pessoas, 0);
       const mudou = t.filter(x => x.de !== x.para).reduce((a, x) => a + x.pessoas, 0);
-      const alt = (q.alternativas || []).map((o, i) => `${LETRAS[i]} · ${esc(o.titulo)}`).join(' · ');
+      const placar = (dados, rotulo, escolha) => {
+        if (!dados || !dados.length) return '';
+        const soma = dados.reduce((a, x) => a + x.votos, 0);
+        const item = dados.find(x => x.escolha === escolha);
+        const votos = item ? item.votos : 0;
+        const pct = soma ? Math.round(100 * votos / soma) : 0;
+        const lider = soma && votos > 0 && votos === Math.max(...dados.map(x => x.votos));
+        return `<span class="${lider ? 'subiu' : ''}">${rotulo} <b>${votos}</b> · ${pct}%</span>`;
+      };
+      const alt = (q.alternativas || []).map((o, i) =>
+        `<div class="opcao"><span class="letra">${esc(o.letra)}</span>
+          <span><h4>${esc(o.titulo)}</h4><span class="tatica">${esc(o.tatica)}</span>
+            <p>${esc(o.texto)}</p>
+            <span class="troca">
+              <span class="ganho"><b>Ganho.</b> ${esc(o.ganho)}</span>
+              <span class="custo"><b>Custo.</b> ${esc(o.custo)}</span>
+            </span>
+            <div class="placar">${placar(q.rodada1, '1ª', i)}${placar(q.rodada2, '2ª', i)}</div>
+          </span></div>`).join('');
       return `<div class="bloco"><span class="selo">${q.ordem} · ${esc(q.categoria)}</span>
         <h2 style="margin:9px 0 4px">${esc(q.titulo)}</h2>
-        <p class="conexao" style="text-align:left">${alt}</p>
+        <p class="conexao" style="text-align:left">${esc(q.pergunta || '')}</p>
+        <div class="opcoes" style="margin:12px 0">${alt}</div>
         ${htmlBarras(q.rodada1, 'Primeira decisão', true)}
         <div style="height:10px"></div>
         ${htmlBarras(q.rodada2, 'Depois da discussão')}
