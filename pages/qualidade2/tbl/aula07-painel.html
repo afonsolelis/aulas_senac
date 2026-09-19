@@ -126,6 +126,34 @@
     .creditos { font-size: .75rem; color: var(--muted); text-align: center; }
     @media (max-width: 1100px) { .grade { grid-template-columns: 1fr 1fr; } .grade > :first-child { grid-column: 1 / -1; } }
     @media (max-width: 700px) { .grade { grid-template-columns: 1fr; } }
+
+    /* Na projeção os quatro cartões são discutidos com a turma olhando para
+       eles. Com `auto-fit`, o quarto caía para a linha de baixo em telas de
+       1280px, fora do campo de visão: o número de colunas passa a ser fixo. */
+    .opcoes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    @media (min-width: 1100px) { .opcoes { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @media (max-width: 720px) { .opcoes { grid-template-columns: 1fr; } }
+
+    /* Modo questão: fora do lobby o topo encolhe para que o enunciado e os
+       quatro cartões caibam na altura da tela. O QR já cumpriu a função de
+       fazer a turma entrar e o tempo continua no relógio do cabeçalho. */
+    @media (max-height: 960px) { html.foco { font-size: 14.5px; } }
+    @media (max-height: 820px) { html.foco { font-size: 12.5px; } }
+    body.foco main { padding-top: 12px; gap: 12px; }
+    body.foco .grade { grid-template-columns: 1fr; }
+    body.foco #bloco-qr, body.foco .cronometro { display: none; }
+    body.foco header .relogio { font-size: 1.9rem; }
+    body.foco #fase-descricao, body.foco #fase-instrucao { display: none; }
+    body.foco .grade .bloco { padding: 11px 15px; }
+    body.foco .controles { margin-top: 8px; gap: 6px; }
+    body.foco .controles button { padding: 7px 11px; font-size: .8rem; }
+    body.foco #projecao { padding: 15px 17px; }
+    body.foco #projecao > h2 { font-size: 1.1rem; margin: 8px 0 12px; }
+    body.foco .opcao { padding: 11px; }
+    body.foco .opcao .letra { width: 30px; height: 30px; margin-bottom: 6px; }
+    body.foco .opcao h4 { font-size: .95rem; }
+    body.foco .opcao p { font-size: .82rem; margin-top: 5px; }
+    body.foco .placar { margin-top: 8px; padding-top: 8px; }
   </style>
 </head>
 <body data-sem-avisos>
@@ -169,6 +197,7 @@
             <button data-acao="anterior" id="btn-anterior">Questão anterior</button>
             <button data-acao="estender">+2 min</button>
             <button data-acao="revelar">Fechar e consolidar</button>
+            <button id="alternar-foco" type="button">Mostrar topo completo</button>
           </div>
           <p class="recado" id="recado"></p>
         </section>
@@ -176,7 +205,7 @@
           <span class="tempo" id="tempo-grande">--:--</span>
           <span class="etiqueta" id="tempo-etiqueta">Sem prazo nesta fase</span>
         </section>
-        <section class="bloco">
+        <section class="bloco" id="bloco-qr">
           <h3>Acesso da turma</h3>
           <div class="qr" id="qr" style="margin-top:0">
             <div id="qr-alvo" role="img" aria-label="Código QR com o endereço da sala do TBL"></div>
@@ -287,6 +316,20 @@
   let token = guarda.ler(GUARDA_TOKEN) || '';
   let s = null, chaveRender = '', prazo = 0;
   let turmaAberta = guarda.ler(GUARDA_TURMA) === '1';
+
+  /* Fora do lobby o topo encolhe para que o enunciado e os quatro cartões
+     caibam na altura da projeção: com um cartão abaixo da dobra, a discussão
+     com a turma perde a comparação entre as táticas. `focoManual` guarda a
+     escolha explícita do professor e é zerado a cada mudança de fase. */
+  let focoManual = null;
+  let faseDoFoco = null;
+  function aplicarFoco() {
+    const automatico = !!s && s.fase !== 'lobby';
+    const foco = focoManual === null ? automatico : focoManual;
+    document.body.classList.toggle('foco', foco);
+    document.documentElement.classList.toggle('foco', foco);
+    $('#alternar-foco').textContent = foco ? 'Mostrar topo completo' : 'Compactar topo';
+  }
 
   const relogio = n => {
     n = Math.max(0, Number(n) || 0);
@@ -399,6 +442,9 @@
     $('#arquivadas').textContent = n ? `${n} ${n === 1 ? 'rodada arquivada' : 'rodadas arquivadas'} até agora.` : '';
 
     desenharTurma();
+
+    if (faseDoFoco !== s.fase) { focoManual = null; faseDoFoco = s.fase; }
+    aplicarFoco();
 
     const chave = JSON.stringify([s.fase, s.questao, s.rodada1, s.rodada2,
       (s.justificativas1 || []).length, (s.justificativas2 || []).length, (s.trajetos || []).length]);
@@ -542,6 +588,11 @@
       if (s) { desenhar(); atualizarRelogio(); }
     }
   }));
+
+  $('#alternar-foco').addEventListener('click', () => {
+    focoManual = !document.body.classList.contains('foco');
+    aplicarFoco();
+  });
 
   $('#alternar-turma').addEventListener('click', () => {
     turmaAberta = !turmaAberta;
