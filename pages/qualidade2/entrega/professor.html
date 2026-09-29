@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Entregas do Projeto - Professor - Qualidade de Software 2026.2</title>
+<meta name="description" content="Área do professor: entregas do projeto de Qualidade de Software 2026.2 por turma, com repositório, nota e comentário.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+<style>.grupo{border-left:6px solid #DD2476}</style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div><span class="badge bg-white text-danger mb-1">Qualidade de Software &middot; 2026.2 &middot; Professor</span><h1 class="h3 fw-bold text-white mb-0">Entregas do Projeto</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-10 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token do professor</h2>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:14rem" type="password" inputmode="numeric"
+           autocomplete="current-password" placeholder="Token" required aria-label="Token do professor">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div id="painel" class="d-none">
+  <section class="glass-card p-4 mb-4">
+    <div class="d-flex gap-2 flex-wrap align-items-end">
+      <div>
+        <label class="form-label fw-semibold mb-1" for="formulario">Turma</label>
+        <select id="formulario" class="form-select"></select>
+      </div>
+      <button class="btn btn-outline-secondary" type="button" id="atualizar"><i class="fas fa-rotate me-1" aria-hidden="true"></i> Atualizar</button>
+      <button class="btn btn-outline-secondary" type="button" id="exportar"><i class="fas fa-file-csv me-1" aria-hidden="true"></i> Exportar CSV</button>
+      <button class="btn btn-outline-danger" type="button" id="alternar-aberto"></button>
+      <button class="btn btn-link text-secondary" type="button" id="sair">Sair</button>
+    </div>
+    <p class="text-muted small mt-3 mb-0" id="form-meta"></p>
+    <div id="recado" class="alert mt-3 mb-0 d-none" role="status"></div>
+  </section>
+
+  <section class="glass-card p-4 mb-4">
+    <h2 class="h4 fw-bold">Grupos</h2>
+    <p class="text-muted small" id="resumo"></p>
+    <div id="grupos"></div>
+  </section>
+</div>
+
+</div></div></main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  // Os formulários entrega_* são compartilhados com o hub do Mackenzie; aqui entram só estes.
+  const PREFIXO = 'senac-qs-2026-2-';
+  // O token fica só nesta aba (sessionStorage) e é validado no banco a cada chamada.
+  const CHAVE_SESSAO = 'entregas_qualidade2_token';
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const $ = (id) => document.getElementById(id);
+  let formularios = [];
+
+  const quando = (iso) => iso ? new Date(iso).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' }) : '';
+  const lerToken = () => { try { return sessionStorage.getItem(CHAVE_SESSAO) || ''; } catch { return ''; } };
+  const gravarToken = (t) => { try { t ? sessionStorage.setItem(CHAVE_SESSAO, t) : sessionStorage.removeItem(CHAVE_SESSAO); } catch {} };
+
+  function avisar(alvo, texto, tipo) {
+    alvo.textContent = texto;
+    alvo.className = alvo.className.replace(/\balert-\w+|\bd-none\b/g, '').trim() +
+      (texto ? (tipo === 'ok' ? ' alert-success' : ' alert-danger') : ' d-none');
+  }
+
+  // Monta elementos só com textContent: todo conteúdo vem de formulário de aluno.
+  function el(tag, texto, attrs = {}) {
+    const e = document.createElement(tag);
+    if (texto != null) e.textContent = texto;
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  }
+  function link(url) {
+    if (!url || !/^https?:\/\//i.test(url)) return el('span', url || '—');
+    return el('a', url, { href: url, target: '_blank', rel: 'noopener noreferrer' });
+  }
+
+  async function chamar(fn, args) {
+    const { data, error } = await db.rpc(fn, { p_token: lerToken(), ...args });
+    if (error) throw new Error(error.message);
+    if (!data.ok) throw new Error(data.erro);
+    return data;
+  }
+
+  async function carregar() {
+    const data = await chamar('entrega_painel', {});
+    formularios = data.formularios.filter((f) => f.slug.startsWith(PREFIXO))
+      .sort((a, b) => a.turma.localeCompare(b.turma));
+    const sel = $('formulario');
+    const atual = sel.value;
+    sel.replaceChildren(...formularios.map((f) =>
+      el('option', `${f.turma} · ${f.respostas.length ? porGrupo(f.respostas).length : 0} grupos`, { value: f.slug })));
+    if (atual && formularios.some((f) => f.slug === atual)) sel.value = atual;
+    desenhar();
+  }
+
+  // O grupo é identificado pelo repositório; o primeiro de cada lista é o envio mais recente.
+  function porGrupo(respostas) {
+    const mapa = new Map();
+    for (const r of respostas) {
+      const chave = r.grupo.trim().toLowerCase();
+      if (!mapa.has(chave)) mapa.set(chave, []);
+      mapa.get(chave).push(r);
+    }
+    for (const lista of mapa.values()) lista.sort((a, b) => b.enviado_em.localeCompare(a.enviado_em));
+    return [...mapa.values()].sort((a, b) =>
+      a[0].grupo.localeCompare(b[0].grupo, 'pt-BR', { numeric: true }));
+  }
+
+  function desenhar() {
+    const f = formularios.find((x) => x.slug === $('formulario').value);
+    const alvo = $('grupos');
+    alvo.replaceChildren();
+    if (!f) { $('form-meta').textContent = 'Nenhuma turma cadastrada no banco.'; return; }
+
+    $('form-meta').textContent = `${f.titulo} · ${f.turma} · ` +
+      (f.aberto ? 'recebendo entregas' : 'recebimento fechado');
+    $('alternar-aberto').textContent = f.aberto ? 'Fechar recebimento' : 'Reabrir recebimento';
+
+    const grupos = porGrupo(f.respostas);
+    const corrigidos = grupos.filter((g) => g[0].corrigido_em).length;
+    $('resumo').textContent = `${grupos.length} grupos enviaram · ${corrigidos} corrigidos · ${f.respostas.length} envios no total`;
+
+    for (const envios of grupos) {
+      const r = envios[0];
+      const card = el('div', null, { class: 'grupo border rounded shadow-sm p-3 mb-3 bg-white' });
+      card.append(el('h3', r.grupo, { class: 'h5 fw-bold mb-1' }));
+      card.append(el('p', `Último envio em ${quando(r.enviado_em)}` +
+        (envios.length > 1 ? ` · ${envios.length} envios` : ''), { class: 'text-muted small mb-2' }));
+
+      const dl = el('dl', null, { class: 'row mb-2' });
+      const linha = (rotulo, valor) => {
+        dl.append(el('dt', rotulo, { class: 'col-sm-2' }));
+        const dd = el('dd', null, { class: 'col-sm-10 text-break', style: 'white-space:pre-line' });
+        valor instanceof Node ? dd.append(valor) : dd.textContent = valor || '—';
+        dl.append(dd);
+      };
+      linha('Repositório', link(r.repositorio_url));
+      linha('Integrantes', r.integrantes);
+      card.append(dl);
+
+      const corr = el('form', null, { class: 'd-flex gap-2 flex-wrap align-items-start' });
+      const nota = el('input', null, { type: 'number', min: '0', max: '10', step: '0.1', class: 'form-control',
+        style: 'max-width:9rem', placeholder: 'Nota 0 a 10', 'aria-label': `Nota de ${r.grupo}` });
+      if (r.nota != null) nota.value = r.nota;
+      const comentario = el('textarea', null, { rows: '2', class: 'form-control', style: 'flex:1 1 18rem',
+        placeholder: 'Comentário de correção', 'aria-label': `Comentário de ${r.grupo}` });
+      comentario.value = r.comentario || '';
+      const botao = el('button', 'Salvar correção', { class: 'btn btn-danger', type: 'submit' });
+      corr.append(nota, comentario, botao);
+      corr.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        botao.disabled = true;
+        try {
+          await chamar('entrega_corrigir', {
+            p_id: r.id,
+            p_nota: nota.value === '' ? null : Number(nota.value),
+            p_comentario: comentario.value,
+          });
+          await carregar();
+          avisar($('recado'), `Correção de ${r.grupo} salva.`, 'ok');
+        } catch (e) {
+          avisar($('recado'), e.message, 'erro');
+          botao.disabled = false;
+        }
+      });
+      card.append(corr, el('p', r.corrigido_em ? `Corrigido em ${quando(r.corrigido_em)}` : 'Sem correção',
+        { class: 'text-muted small mt-2 mb-0' }));
+
+      if (envios.length > 1) {
+        const hist = el('details', null, { class: 'mt-2 small' });
+        hist.append(el('summary', 'Envios anteriores'));
+        const ul = el('ul', null, { class: 'mb-0' });
+        for (const antigo of envios.slice(1)) {
+          ul.append(el('li', `${quando(antigo.enviado_em)} · ${antigo.integrantes.replace(/\s*\n\s*/g, ', ')}`));
+        }
+        hist.append(ul);
+        card.append(hist);
+      }
+      alvo.append(card);
+    }
+  }
+
+  function exportarCsv() {
+    const f = formularios.find((x) => x.slug === $('formulario').value);
+    if (!f) return;
+    const cel = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+    const linhas = [['turma', 'grupo', 'integrantes', 'repositorio', 'enviado_em', 'nota', 'comentario']];
+    for (const [r] of porGrupo(f.respostas)) {
+      linhas.push([f.turma, r.grupo, r.integrantes.replace(/\s*\n\s*/g, '; '), r.repositorio_url,
+        quando(r.enviado_em), r.nota, r.comentario]);
+    }
+    const csv = '﻿' + linhas.map((l) => l.map(cel).join(';')).join('\r\n');
+    const a = el('a', null, { href: URL.createObjectURL(new Blob([csv], { type: 'text/csv' })),
+      download: `entregas_${f.slug}.csv` });
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  async function entrar() {
+    try {
+      await carregar();
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+      avisar($('recado-token'), '');
+    } catch (e) {
+      gravarToken('');
+      $('tela-token').classList.remove('d-none');
+      $('painel').classList.add('d-none');
+      avisar($('recado-token'), e.message, 'erro');
+    }
+  }
+
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    gravarToken($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('formulario').addEventListener('change', () => { avisar($('recado'), ''); desenhar(); });
+  $('atualizar').addEventListener('click', () => carregar().catch((e) => avisar($('recado'), e.message, 'erro')));
+  $('exportar').addEventListener('click', exportarCsv);
+  $('sair').addEventListener('click', () => { gravarToken(''); location.reload(); });
+  $('alternar-aberto').addEventListener('click', async () => {
+    const f = formularios.find((x) => x.slug === $('formulario').value);
+    try {
+      await chamar('entrega_ajustar', { p_slug: f.slug, p_aberto: !f.aberto, p_prazo: null });
+      await carregar();
+      avisar($('recado'), f.aberto ? `Recebimento da ${f.turma} fechado.` : `Recebimento da ${f.turma} reaberto.`, 'ok');
+    } catch (e) { avisar($('recado'), e.message, 'erro'); }
+  });
+
+  if (lerToken()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>
