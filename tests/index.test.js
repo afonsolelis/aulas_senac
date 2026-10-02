@@ -69,14 +69,15 @@ describe('index.html (seletor de semestre)', () => {
       expect(doc.querySelector('#semestres')).not.toBeNull();
     });
 
-    test('tem exatamente 3 cards de semestre (.semester-card)', () => {
-      expect(doc.querySelectorAll('#semestres .semester-card').length).toBe(3);
+    test('tem exatamente 4 cards de semestre (.semester-card)', () => {
+      expect(doc.querySelectorAll('#semestres .semester-card').length).toBe(4);
     });
 
     test.each([
       ['2025.2', 'pages/home_2025_2.html'],
       ['2026.1', 'pages/home_2026_1.html'],
       ['2026.2', 'pages/home_2026_2.html'],
+      ['2027.1', 'pages/home_2027_1.html'],
     ])('card de %s aponta para %s', (_periodo, href) => {
       const links = Array.from(doc.querySelectorAll('#semestres a.semester-card'));
       expect(links.find(l => l.getAttribute('href') === href)).toBeDefined();

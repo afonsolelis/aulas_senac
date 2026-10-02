@@ -136,6 +136,63 @@
           }
         }
       ]
+    },
+    {
+      "periodo": "2027.1",
+      "home": "pages/home_2027_1.html",
+      "accent": "#11998e",
+      "calendario": {
+        "inicio": "2027-01-25",
+        "fim": "2027-07-02",
+        "semana_inicio": 4,
+        "semana_fim": 26,
+        "provisorio": true,
+        "carga_horaria": "72h: 22 encontros semanais de 3h20 (19h10–20h50 e 21h05–22h45) = 73h20",
+        "feriados_previstos": ["Semana 6: Carnaval (08–10 fev)", "Semana 12: Sexta-feira Santa (26 mar)", "Semana 16: Tiradentes (21 abr, quarta)", "Semana 21: Corpus Christi (27 mai, quinta)"]
+      },
+      "disciplinas": [
+        {
+          "name": "Qualidade de Software",
+          "slug": "qualidade3",
+          "home": "pages/home_qualidade_2027_1.html",
+          "status": "placeholder",
+          "obs": "Cronograma provisório, sem slides. Quando ganhar slides, criar pages/qualidade3/, config/disciplina-qualidade3.json com data_disciplina=qualidade e registrar o slug nos mapas dos testes.",
+          "avaliacao": {
+            "sem_prova": true,
+            "prova_substitutiva": { "semana": 23, "ref": "segunda semana de junho; avaliações regulares encerradas na semana 22" },
+            "trabalho_1": {
+              "formato": "individual",
+              "semana_entrega": 12,
+              "prova_oral": [13, 14],
+              "foco": "Projeto construído com Spec-Driven Development (especificação → plano → tarefas → código) e aderente às boas práticas de qualidade: TDD, testes de unidade com JUnit 5, cobertura no JaCoCo, quality gate no SonarCloud e CI no GitHub Actions.",
+              "restricoes": "Escopo pequeno, sem banco de dados e sem integração externa; dados em memória ou em arquivo.",
+              "proposta": "Motor de classificação de campeonato de pontos corridos: recebe os resultados e devolve a tabela com os critérios de desempate do regulamento, as zonas (título, Libertadores, rebaixamento) e o tratamento de W.O. e de jogo anulado."
+            },
+            "trabalho_2": {
+              "formato": "grupos de 4",
+              "semana_entrega": 20,
+              "prova_oral": [21, 22],
+              "foco": "API REST mais robusta, com banco de dados e integração com API externa, testada em todas as camadas.",
+              "exigencias": "PostgreSQL com Testcontainers, integração externa isolada com WireMock, cenários BDD, teste de carga no JMeter, quality gate no SonarCloud e CI.",
+              "proposta": "Bolão do campeonato: contas, grupos de bolão, palpites com prazo até o início do jogo, resultados importados de uma API de futebol e ranking por regras de pontuação. Pode reaproveitar o motor do Trabalho 1 de um dos integrantes."
+            }
+          },
+          "marcos": {
+            "entrega_trabalho_1": { "semana": 12 },
+            "prova_oral_trabalho_1": { "semanas": [13, 14] },
+            "entrega_trabalho_2": { "semana": 20 },
+            "prova_oral_trabalho_2": { "semanas": [21, 22] },
+            "prova_substitutiva": { "semana": 23 }
+          }
+        },
+        {
+          "name": "TCC1",
+          "slug": "tcc1",
+          "home": "pages/home_tcc1_2027_1.html",
+          "status": "placeholder",
+          "obs": "Página sem conteúdo. O TCC1 de 2026.1 usa o slug tcc; este usa tcc1 para não misturar os semestres. Paleta futura: data_disciplina=tcc."
+        }
+      ]
     }
   ]
 }

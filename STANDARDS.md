@@ -54,7 +54,7 @@ Antes de commitar qualquer mudança de conteúdo ou infra:
 
 | Item | Padrão |
 |---|---|
-| Seletor de semestre | `index.html` (único, `body.semester-hub`, 3 cards) |
+| Seletor de semestre | `index.html` (único, `body.semester-hub`, 4 cards) |
 | Home de semestre | `pages/home_<ano>_<sem>.html` |
 | Home de disciplina | `pages/home_<slug>.html` (2026.1) · nome dedicado (2026.2) |
 | Slides | `pages/<slug>/slide_*.html` |
@@ -73,7 +73,7 @@ Críticos ao mexer no cronograma:
 - `tests/home-cards.test.js` — homes 2026.1 **hardcoded**; exige `materialMap` consistente (regex para no 1º `}`).
 - `tests/cronograma-2026-2.test.js` — semanas dos cards, slides e materiais; marcos do config e sequência da prova de Qualidade.
 - `tests/links-internos.test.js` — todo href interno resolve no disco.
-- `tests/index.test.js` — exatamente 3 cards de semestre com hrefs fixos.
+- `tests/index.test.js` — exatamente 4 cards de semestre com hrefs fixos.
 - `specs/slide-structure.spec.js` — 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório.
 - `specs/footer-layout-standard.spec.js` — footer com **exatamente 4 filhos** e texto literal "Ver material escrito".
 - `tests/avisos.test.js` — **toda** página `.html` carrega `js/avisos.js` (botão flutuante do quadro de avisos) por um caminho relativo que resolve; e a senha do professor não pode aparecer no JS nem no seed versionado.

@@ -36,6 +36,8 @@
 
   var ESCOPOS = [
     { valor: 'geral',      rotulo: 'Todas as turmas' },
+    { valor: 'qualidade3', rotulo: 'Qualidade de Software (2027.1)' },
+    { valor: 'tcc1',       rotulo: 'TCC1 (2027.1)' },
     { valor: 'qualidade2', rotulo: 'Qualidade de Software (2026.2)' },
     { valor: 'tcc2',       rotulo: 'TCC2 (2026.2)' },
     { valor: 'qualidade',  rotulo: 'Qualidade de Software (2026.1)' },

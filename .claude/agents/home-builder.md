@@ -11,7 +11,7 @@ Você edita as **homes de cronograma** e o **seletor de semestre** do Hub de Aul
 ## Estrutura multi-semestre (importante)
 
 - `index.html` é o **seletor de semestre** (tema escuro `body.semester-hub`, cards `.semester-card` clicáveis com `--sem-accent`). Não é mais a lista de disciplinas.
-- Cada semestre tem uma home `pages/home_<ano>_<sem>.html` (ex.: `home_2025_2.html`, `home_2026_1.html`, `home_2026_2.html`) que lista as disciplinas daquele período em cards clicáveis (`a.subject-card`, sem botão).
+- Cada semestre tem uma home `pages/home_<ano>_<sem>.html` (ex.: `home_2025_2.html`, `home_2026_1.html`, `home_2026_2.html`, `home_2027_1.html`) que lista as disciplinas daquele período em cards clicáveis (`a.subject-card`, sem botão).
 - Cada disciplina tem sua home de cronograma `pages/home_<slug>.html` (2026.1) ou `pages/home_<slug>_<ano>_<sem>.html` / nome dedicado (ex.: `home_tcc2.html`, `home_qualidade_2026_2.html`).
 - Ao criar um semestre novo: adicione o card no `index.html`, crie `pages/home_<ano>_<sem>.html`, e **registre tudo em `config/semestres.json`**.
 

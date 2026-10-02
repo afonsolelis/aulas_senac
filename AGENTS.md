@@ -27,7 +27,7 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 **Config como documentação:** `config/*.json` é a fonte de registro — nada é lido em runtime. As páginas são HTML escrito à mão.
 
 **Invariantes que quebram `npm test`:**
-- `index.html`: exatamente 3 cards `.semester-card` com hrefs fixos
+- `index.html`: exatamente 4 cards `.semester-card` com hrefs fixos
 - Homes 2026.1: todo `a[href*="slide_"]` deve estar no objeto `materialMap` do `<script>` no fim da home
 - Homes 2026.2: sem `materialMap` — botões "Ver slide"/"Ver material" já estão no HTML
 - Todo `slide_*.html`: `footer.slide-footer` com **exatamente 4 filhos** (`.slide-controls` com `#slideCounter`, link "Ver material escrito" com href `material/`, logo Senac)
@@ -85,7 +85,7 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 - `tests/home-cards.test.js` – homes 2026.1 **hardcoded**; `materialMap` consistente (regex para no 1º `}`)
 - `tests/cronograma-2026-2.test.js` – semanas das aulas e marcos em sincronia entre config, homes, slides e materiais
 - `tests/links-internos.test.js` – todo href interno resolve no disco
-- `tests/index.test.js` – exatamente 3 cards de semestre com hrefs fixos
+- `tests/index.test.js` – exatamente 4 cards de semestre com hrefs fixos
 - `specs/slide-structure.spec.js` – 1º slide (logo+keywords), 2º slide ("Agenda"), `DISCIPLINE_HOME_MAP` obrigatório
 - `specs/footer-layout-standard.spec.js` – footer com **exatamente 4 filhos** e texto "Ver material escrito"
 

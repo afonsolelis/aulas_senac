@@ -25,7 +25,7 @@ node scripts/capture-slides.mjs pages/<slug>/slide_<arq>.html .tmp/shots 1280 72
 
 ## Arquitetura (navegação em 4 níveis)
 
-1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **3** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`.
+1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **4** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`, `pages/home_2027_1.html`. 2027.1 tem só placeholders (`qualidade3`, `tcc1`).
 2. **`pages/home_<ano>_<sem>.html`** — home do semestre: lista as disciplinas daquele período como cartões.
 3. **`pages/home_<disciplina>.html`** — cronograma da disciplina (cards de aula → slides). Padrão de nome **não uniforme**: 2026.1 usa `home_<slug>.html` (`home_qualidade.html`); 2026.2 usa nome dedicado (`home_qualidade_2026_2.html`, `home_tcc2.html`).
 4. **`pages/<slug>/slide_*.html`** e **`pages/<slug>/material/material_*.html`** — slides e materiais escritos, linkados nos dois sentidos.
@@ -188,7 +188,7 @@ nem supabase-js; fala com o Supabase por `fetch` nas RPCs `avisos_*`.
 
 Alterar conteúdo **sem** respeitar isto quebra `npm test`:
 
-- **`index.html`**: exatamente **3** `.semester-card` com hrefs fixos → `tests/index.test.js`. Adicionar/renomear semestre exige atualizar o teste.
+- **`index.html`**: exatamente **4** `.semester-card` com hrefs fixos → `tests/index.test.js`. Adicionar/renomear semestre exige atualizar o teste.
 - **Homes 2026.1** (`home_qualidade/logica/tcc`): todo `a[href*="slide_"]` (sem `.no-actions`) precisa de entrada no objeto `materialMap` do `<script>` no fim da home → `tests/home-cards.test.js`. O regex `materialMap = {...}` **para no primeiro `}`**: não aninhe chaves, não deixe vazio.
 - **Homes 2026.2**: **não têm `materialMap`** — os botões "Ver slide"/"Ver material" já vão escritos no HTML do card. Não misture os dois estilos numa mesma home.
 - **Todo `slide_*.html`**: `footer.slide-footer` com **exatamente 4 filhos** (`.slide-controls` com `#slideCounter`, link "Ver material escrito" com href `material/`, link do logo Senac) → `specs/footer-layout-standard.spec.js`. Mudar o texto ou adicionar um 5º filho quebra.
