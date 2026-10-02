@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto 1 - Qualidade 2027.1</title>
+  <meta name="description" content="Projeto 1 de Qualidade de Software 2027.1: API REST simples de consulta aos livros de uma biblioteca, com os dados em um arquivo JSON, individual e construída com Spec-Driven Development.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body data-avisos-escopo="qualidade3">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../home_qualidade_2027_1.html">Qualidade 2027.1</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
+        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1
+      </a>
+      <div>
+        <span class="badge bg-white text-danger mb-1">Qualidade de Software &middot; 2027.1</span>
+        <h1 class="h3 fw-bold text-white mb-0">Projeto 1 &middot; Individual</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="projeto-heading">
+          <div class="text-center mb-4">
+            <i class="fas fa-book fa-3x text-danger mb-3" aria-hidden="true"></i>
+            <h2 class="display-6 fw-bold" id="projeto-heading">API da Biblioteca</h2>
+            <p class="lead text-muted mb-3">Uma API simples que lê os livros de um arquivo JSON e responde a consultas, construída a partir de uma especificação.</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+              <span class="badge bg-danger rounded-pill">Individual</span>
+              <span class="badge bg-dark rounded-pill">Dados em JSON &middot; sem banco</span>
+              <span class="badge bg-success rounded-pill">Java 21 &middot; Spring Boot 3.x</span>
+              <span class="badge bg-primary rounded-pill">Entrega na semana 12</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="objetivo-heading">
+          <h2 class="h3 fw-bold mb-4" id="objetivo-heading"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivo</h2>
+          <p>Construir, individualmente, uma API REST simples que responde a consultas sobre os livros de uma biblioteca. As informações ficam em um arquivo <code>livros.json</code> dentro do projeto: a API lê esse arquivo e devolve os dados pedidos. Não há banco de dados, cadastro nem empréstimo.</p>
+          <p class="mb-0">Com o domínio simples, o esforço vai para o que a disciplina avalia: o projeto nasce de uma especificação escrita antes do código, seguindo o Spec-Driven Development da Aula 02, e cada regra chega à entrega com testes que a verificam.</p>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="escopo-heading">
+          <h2 class="h3 fw-bold mb-4" id="escopo-heading"><i class="fas fa-ruler-combined text-danger me-2" aria-hidden="true"></i>Escopo e restrições</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-success h-100 mb-0">
+                <h3 class="h5 fw-bold">Dentro do escopo</h3>
+          <ul class="mb-0">
+            <li>Arquivo <code>livros.json</code> com pelo menos 20 livros: id, título, autor, ano, gênero e exemplares disponíveis.</li>
+            <li>Somente requisições <code>GET</code>, com respostas em JSON.</li>
+            <li>Java 21, Spring Boot 3.x, Maven e JUnit 5.</li>
+          </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-secondary h-100 mb-0">
+                <h3 class="h5 fw-bold">Fora do escopo</h3>
+          <ul class="mb-0">
+            <li>Banco de dados de qualquer tipo.</li>
+            <li>Chamada a API externa.</li>
+            <li>Cadastro, alteração ou exclusão de livros, empréstimos e login.</li>
+          </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="endpoints-heading">
+          <h2 class="h3 fw-bold mb-4" id="endpoints-heading"><i class="fas fa-route text-danger me-2" aria-hidden="true"></i>Rotas obrigatórias</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white mb-0">
+              <thead class="table-dark"><tr><th style="width:10%">Método</th><th style="width:38%">Rota</th><th>Responde</th></tr></thead>
+              <tbody class="small">
+                <tr><td><span class="badge bg-success">GET</span></td><td><code>/livros</code></td><td>Todos os livros do arquivo</td></tr>
+                <tr><td><span class="badge bg-success">GET</span></td><td><code>/livros/{id}</code></td><td>Um livro pelo id</td></tr>
+                <tr><td><span class="badge bg-success">GET</span></td><td><code>/livros?autor=</code></td><td>Livros de um autor</td></tr>
+                <tr><td><span class="badge bg-success">GET</span></td><td><code>/livros?genero=</code></td><td>Livros de um gênero</td></tr>
+                <tr><td><span class="badge bg-success">GET</span></td><td><code>/livros/disponiveis</code></td><td>Livros com pelo menos um exemplar disponível</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="regras-heading">
+          <h2 class="h3 fw-bold mb-4" id="regras-heading"><i class="fas fa-list-ol text-danger me-2" aria-hidden="true"></i>Regras de negócio obrigatórias</h2>
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Livro encontrado responde 200 com os dados do livro.</li>
+            <li class="list-group-item">Id que não existe no arquivo responde 404.</li>
+            <li class="list-group-item">Id que não é número inteiro positivo responde 400.</li>
+            <li class="list-group-item">A busca por autor e por gênero ignora maiúsculas e minúsculas e aceita parte do nome: <code>assis</code> encontra Machado de Assis.</li>
+            <li class="list-group-item">Busca sem resultado responde 200 com lista vazia.</li>
+            <li class="list-group-item">Um livro está disponível quando tem um ou mais exemplares disponíveis.</li>
+            <li class="list-group-item">Todo erro responde no mesmo formato: <code>{"status": 404, "mensagem": "Livro 99 não encontrado"}</code>.</li>
+          </ol>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="sdd-heading">
+          <h2 class="h3 fw-bold mb-4" id="sdd-heading"><i class="fas fa-file-signature text-danger me-2" aria-hidden="true"></i>Fluxo de Spec-Driven Development</h2>
+          <div class="row g-3">
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">1. Especificação</h3><p class="small text-muted mb-0"><code>spec.md</code> com as rotas e regras acima escritas como requisitos verificáveis, cada um com identificador.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">2. Plano</h3><p class="small text-muted mb-0"><code>plan.md</code> com as decisões de projeto: camadas, leitura do JSON e formato de erro.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">3. Tarefas</h3><p class="small text-muted mb-0"><code>tasks.md</code> quebrando o plano em passos pequenos, cada um ligado a um requisito.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">4. Implementação por TDD</h3><p class="small text-muted mb-0">Cada tarefa começa por um teste vermelho; o histórico de commits mostra o ciclo red, green e refactor.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">5. Rastreabilidade</h3><p class="small text-muted mb-0">Cada requisito aponta para os testes que o verificam, e cada teste cita o requisito no nome.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">6. Revisão da especificação</h3><p class="small text-muted mb-0">Quando o código revela uma regra mal escrita, a especificação é corrigida no mesmo commit.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="qualidade-heading">
+          <h2 class="h3 fw-bold mb-4" id="qualidade-heading"><i class="fas fa-vials text-danger me-2" aria-hidden="true"></i>Práticas de qualidade exigidas</h2>
+          <div class="row g-3">
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes de unidade</h3><p class="small text-muted mb-0">JUnit 5 com testes parametrizados para os casos válidos, inválidos e de borda de cada regra.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes de API</h3><p class="small text-muted mb-0">Chamadas às rotas com MockMvc conferindo status e corpo da resposta.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Cobertura</h3><p class="small text-muted mb-0">Relatório do JaCoCo gerado no build.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Análise estática</h3><p class="small text-muted mb-0">Projeto no SonarCloud com quality gate aprovado.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Integração contínua</h3><p class="small text-muted mb-0">GitHub Actions rodando testes, cobertura e análise a cada push e pull request.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Documentação</h3><p class="small text-muted mb-0"><code>README.md</code> com como rodar, como testar e um exemplo de chamada para cada rota.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="metas-heading">
+          <h2 class="h3 fw-bold mb-4" id="metas-heading"><i class="fas fa-chart-line text-danger me-2" aria-hidden="true"></i>Metas mensuráveis</h2>
+          <div class="row g-3 text-center">
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">80%</strong><span class="small">cobertura de linhas</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">70%</strong><span class="small">cobertura de branches</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">100%</strong><span class="small">dos requisitos com teste</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">0</strong><span class="small">bugs ou vulnerabilidades críticas</span></div></div>
+          </div>
+          <p class="small text-muted mt-3 mb-0">Testes que só executam linhas, sem verificar resultado, não contam. A prova oral confere se você sabe explicar por que cada caso de teste existe.</p>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="avaliacao-heading">
+          <h2 class="h3 fw-bold mb-4" id="avaliacao-heading"><i class="fas fa-award text-danger me-2" aria-hidden="true"></i>Avaliação</h2>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead class="table-dark"><tr><th scope="col">Dimensão</th><th scope="col" class="text-end">Peso</th></tr></thead>
+              <tbody>
+                <tr><td>Especificação, plano e tarefas (SDD)</td><td class="text-end fw-bold">25%</td></tr>
+                <tr><td>Qualidade e projeto dos casos de teste</td><td class="text-end fw-bold">25%</td></tr>
+                <tr><td>Regras de negócio corretas</td><td class="text-end fw-bold">15%</td></tr>
+                <tr><td>CI, cobertura e SonarCloud</td><td class="text-end fw-bold">15%</td></tr>
+                <tr><td>Rastreabilidade requisito-teste</td><td class="text-end fw-bold">10%</td></tr>
+                <tr><td>Organização do repositório e README</td><td class="text-end fw-bold">10%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger mb-0"><strong>Limitadores de nota:</strong> projeto que não compila, pipeline ausente, código sem especificação prévia ou trabalho que o autor não consegue explicar na prova oral.</div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="datas-heading">
+          <h2 class="h3 fw-bold mb-4" id="datas-heading"><i class="fas fa-calendar-check text-danger me-2" aria-hidden="true"></i>Datas</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white mb-0">
+              <thead class="table-dark"><tr><th style="width:14%">Semana</th><th style="width:22%">Datas</th><th>O que acontece</th></tr></thead>
+              <tbody class="small">
+                <tr class=""><td class="fw-bold">5</td><td>01 a 05 fev</td><td>Abertura do trabalho na aula de Spec-Driven Development</td></tr>
+                <tr class="table-primary"><td class="fw-bold">12</td><td>22 a 26 mar</td><td>Entrega: link do repositório público no GitHub</td></tr>
+                <tr class="table-success"><td class="fw-bold">13</td><td>29 mar a 02 abr</td><td>Prova oral, dia 1</td></tr>
+                <tr class="table-success"><td class="fw-bold">14</td><td>05 a 09 abr</td><td>Prova oral, dia 2</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted mt-3 mb-0">Datas provisórias até a publicação do calendário oficial do Senac.</p>
+        </section>
+
+        <div class="text-center">
+          <a href="../home_qualidade_2027_1.html" class="btn btn-outline-danger rounded-pill px-4">
+            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-light text-dark py-4 mt-5">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/avisos.js" defer></script>
+</body>
+
+</html>

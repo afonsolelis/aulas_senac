@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projeto 2 - Qualidade 2027.1</title>
+  <meta name="description" content="Projeto 2 de Qualidade de Software 2027.1: sistema de organização de recursos da universidade em grupos de quatro, com cadastro de alunos e professores via ViaCEP e banco relacional.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+
+<body data-avisos-escopo="qualidade3">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../../index.html">
+        <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo"
+          class="me-2" style="height: 40px;">
+        <span class="fw-bold text-dark">Hub de Aulas</span>
+      </a>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../home_qualidade_2027_1.html">Qualidade 2027.1</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;">
+    <div class="container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2">
+        <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1
+      </a>
+      <div>
+        <span class="badge bg-white text-danger mb-1">Qualidade de Software &middot; 2027.1</span>
+        <h1 class="h3 fw-bold text-white mb-0">Projeto 2 &middot; Grupos de 4</h1>
+      </div>
+    </div>
+  </header>
+
+  <main class="container py-5">
+    <div class="row">
+      <div class="col-lg-10 mx-auto">
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="projeto-heading">
+          <div class="text-center mb-4">
+            <i class="fas fa-calendar-check fa-3x text-danger mb-3" aria-hidden="true"></i>
+            <h2 class="display-6 fw-bold" id="projeto-heading">Organização de Recursos</h2>
+            <p class="lead text-muted mb-3">Alocação de salas, professores e materiais da universidade sem conflitos, com cadastro de alunos e professores e banco relacional.</p>
+            <div class="d-flex justify-content-center gap-2 flex-wrap">
+              <span class="badge bg-danger rounded-pill">Grupos de 4</span>
+              <span class="badge bg-dark rounded-pill">PostgreSQL &middot; ViaCEP</span>
+              <span class="badge bg-success rounded-pill">Java 21 &middot; Spring Boot 3.x</span>
+              <span class="badge bg-primary rounded-pill">Entrega na semana 20</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="objetivo-heading">
+          <h2 class="h3 fw-bold mb-4" id="objetivo-heading"><i class="fas fa-bullseye text-danger me-2" aria-hidden="true"></i>Objetivo</h2>
+          <p>Em grupos de quatro, desenvolver e validar uma aplicação que organize a alocação de salas, professores e materiais da universidade sem conflitos de horário. Diferente do Projeto 1, este sistema grava dados: alunos, professores, turmas e reservas ficam em um banco relacional, e o endereço de cada pessoa cadastrada é completado pela API ViaCEP.</p>
+          <p class="mb-0">A avaliação considera o sistema funcionando, mas pesa sobretudo as evidências de qualidade: modelo relacional justificado, testes em todas as camadas, rastreabilidade e desempenho.</p>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="perfis-heading">
+          <h2 class="h3 fw-bold mb-4" id="perfis-heading"><i class="fas fa-users-gear text-danger me-2" aria-hidden="true"></i>Perfis</h2>
+          <div class="row g-3">
+            <div class="col-md-6 col-lg-3"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Aluno</h3><p class="small text-muted mb-0">Tem cadastro com endereço, está matriculado em turmas e consulta a agenda das suas aulas.</p></div></div></div>
+            <div class="col-md-6 col-lg-3"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Professor</h3><p class="small text-muted mb-0">Tem cadastro com endereço e competências, consulta a disponibilidade e cria, altera ou cancela reservas.</p></div></div></div>
+            <div class="col-md-6 col-lg-3"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Responsável</h3><p class="small text-muted mb-0">Aprova solicitações de recursos restritos e acompanha retiradas e devoluções de material.</p></div></div></div>
+            <div class="col-md-6 col-lg-3"><div class="card h-100 border-0 bg-light"><div class="card-body"><h3 class="h5 fw-bold">Administrador</h3><p class="small text-muted mb-0">Gerencia salas, materiais, usuários, bloqueios e períodos de manutenção.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="requisitos-heading">
+          <h2 class="h3 fw-bold mb-4" id="requisitos-heading"><i class="fas fa-list-ol text-danger me-2" aria-hidden="true"></i>Requisitos funcionais obrigatórios</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+          <ol class="list-group list-group-numbered">
+            <li class="list-group-item">Autenticação e autorização por perfil.</li>
+            <li class="list-group-item">Cadastro de alunos e professores com endereço preenchido pela ViaCEP a partir do CEP.</li>
+            <li class="list-group-item">Cadastro de turmas, com professor responsável e alunos matriculados.</li>
+            <li class="list-group-item">Cadastro e consulta de salas e materiais.</li>
+            <li class="list-group-item">Pesquisa por tipo, capacidade, localização, competência e disponibilidade.</li>
+            <li class="list-group-item">Criação, alteração e cancelamento de reservas.</li>
+            <li class="list-group-item">Detecção de sobreposição de horários, inclusive na agenda do professor.</li>
+          </ol>
+            </div>
+            <div class="col-md-6">
+          <ol class="list-group list-group-numbered" start="8">
+            <li class="list-group-item">Sala reservada para uma turma comporta todos os alunos matriculados.</li>
+            <li class="list-group-item">Proteção contra dupla reserva em solicitações simultâneas.</li>
+            <li class="list-group-item">Aprovação obrigatória para recursos restritos e bloqueio de recursos em manutenção.</li>
+            <li class="list-group-item">Registro de retirada e devolução de materiais.</li>
+            <li class="list-group-item">Histórico auditável de mudanças.</li>
+            <li class="list-group-item">Relatório de utilização por recurso, carga horária alocada e conflitos evitados.</li>
+            <li class="list-group-item">Documentação da API em OpenAPI.</li>
+          </ol>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="viacep-heading">
+          <h2 class="h3 fw-bold mb-4" id="viacep-heading"><i class="fas fa-map-location-dot text-danger me-2" aria-hidden="true"></i>Integração com a ViaCEP</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-info h-100 mb-0">
+                <h3 class="h5 fw-bold">Como funciona</h3>
+          <ul class="mb-0">
+            <li>O cadastro recebe o CEP e consulta <code>https://viacep.com.br/ws/{cep}/json/</code>.</li>
+            <li>Logradouro, bairro, cidade e UF vêm da resposta; número e complemento são digitados.</li>
+            <li>O endereço fica gravado no banco: a ViaCEP só é chamada no cadastro e na alteração do CEP.</li>
+          </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-warning h-100 mb-0">
+                <h3 class="h5 fw-bold">O que precisa ser testado</h3>
+          <ul class="mb-0">
+            <li>CEP com formato inválido é recusado sem chamar a ViaCEP.</li>
+            <li>CEP bem formado e inexistente (resposta <code>{"erro": true}</code>) gera mensagem clara.</li>
+            <li>ViaCEP lenta ou fora do ar não derruba o cadastro: há tempo limite e resposta de erro controlada.</li>
+            <li>Nos testes, a ViaCEP é simulada com WireMock; nenhum teste automatizado depende da internet.</li>
+          </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="modelagem-heading">
+          <h2 class="h3 fw-bold mb-4" id="modelagem-heading"><i class="fas fa-database text-danger me-2" aria-hidden="true"></i>Modelagem relacional</h2>
+          <p>O banco é PostgreSQL, e o modelo faz parte da nota. O grupo entrega o diagrama entidade-relacionamento e justifica as decisões de normalização.</p>
+          <div class="row g-3">
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Entidades mínimas</h3><p class="small text-muted mb-0">Pessoa, aluno, professor, endereço, turma, matrícula, sala, material, reserva e auditoria.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Relacionamentos</h3><p class="small text-muted mb-0">Matrícula como tabela associativa entre aluno e turma; competência como associação entre professor e disciplina.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Normalização</h3><p class="small text-muted mb-0">Modelo na terceira forma normal, com a justificativa de qualquer desnormalização.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Restrições no banco</h3><p class="small text-muted mb-0">Chaves estrangeiras, <code>unique</code> em CPF e e-mail, <code>check</code> em término posterior ao início.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Migrações</h3><p class="small text-muted mb-0">Esquema versionado com Flyway; o banco sobe do zero só com as migrações.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes do modelo</h3><p class="small text-muted mb-0">Testcontainers com PostgreSQL real verificando que as restrições recusam dados inválidos.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="regras-heading">
+          <h2 class="h3 fw-bold mb-4" id="regras-heading"><i class="fas fa-code-branch text-danger me-2" aria-hidden="true"></i>Regras críticas</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="alert alert-warning h-100 mb-0">
+                <h3 class="h5 fw-bold">Tempo e concorrência</h3>
+          <ul class="mb-0">
+            <li>O término deve ser posterior ao início.</li>
+            <li>Reservas do mesmo recurso não podem se sobrepor, seja sala, material ou professor.</li>
+            <li>Duas solicitações simultâneas devem produzir uma única reserva aceita.</li>
+            <li>Recursos em manutenção não podem ser reservados.</li>
+          </ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="alert alert-info h-100 mb-0">
+                <h3 class="h5 fw-bold">Estados e auditoria</h3>
+<p class="small mb-2"><code>SOLICITADA → APROVADA → EM_USO → CONCLUÍDA</code></p>
+          <ul class="mb-0">
+            <li>Estados alternativos: rejeitada, cancelada e não compareceu.</li>
+            <li>Somente responsáveis aprovam recursos restritos.</li>
+            <li>Reservas iniciadas não podem ser apagadas.</li>
+            <li>Toda mudança de estado gera auditoria.</li>
+          </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="qualidade-heading">
+          <h2 class="h3 fw-bold mb-4" id="qualidade-heading"><i class="fas fa-vials text-danger me-2" aria-hidden="true"></i>Estratégia obrigatória de qualidade</h2>
+          <div class="row g-3">
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Especificação</h3><p class="small text-muted mb-0">Os requisitos seguem o fluxo de SDD do Projeto 1: especificação, plano e tarefas versionados.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Testes automatizados</h3><p class="small text-muted mb-0">Unitários com JUnit 5, parametrizados, de integração e de API em caixa-preta.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Banco real em teste</h3><p class="small text-muted mb-0">PostgreSQL com Testcontainers nos testes de repositório e de restrições.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">ViaCEP isolada</h3><p class="small text-muted mb-0">WireMock simulando resposta normal, CEP inexistente, lentidão e erro.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">BDD</h3><p class="small text-muted mb-0">Cenários Gherkin para conflito de horário, capacidade da sala e aprovação.</p></div></div></div>
+            <div class="col-sm-6 col-lg-4"><div class="card h-100 border-light shadow-sm"><div class="card-body"><h3 class="h6 fw-bold">Carga, CI e análise</h3><p class="small text-muted mb-0">JMeter em reservas simultâneas, GitHub Actions, JaCoCo e quality gate do SonarCloud.</p></div></div></div>
+          </div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="metas-heading">
+          <h2 class="h3 fw-bold mb-4" id="metas-heading"><i class="fas fa-chart-line text-danger me-2" aria-hidden="true"></i>Metas mensuráveis</h2>
+          <div class="row g-3 text-center">
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">80%</strong><span class="small">cobertura de linhas</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">70%</strong><span class="small">cobertura de branches</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">100%</strong><span class="small">dos requisitos críticos na RTM</span></div></div>
+            <div class="col-6 col-md-3"><div class="p-3 bg-light rounded h-100"><strong class="fs-3 text-danger d-block">0</strong><span class="small">bugs ou vulnerabilidades críticas</span></div></div>
+          </div>
+          <p class="small text-muted mt-3 mb-0">Na prova oral, cada integrante responde por qualquer parte do sistema, inclusive pelo modelo do banco. O histórico do repositório precisa mostrar a contribuição de todos.</p>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="entregaveis-heading">
+          <h2 class="h3 fw-bold mb-4" id="entregaveis-heading"><i class="fas fa-box-open text-danger me-2" aria-hidden="true"></i>Entregáveis</h2>
+          <ul class="mb-0">
+            <li>Repositório público com histórico de trabalho e revisão por pares em pull requests.</li>
+            <li>Aplicação executável com <code>docker compose</code> e instruções no <code>README.md</code>.</li>
+            <li>Especificação, plano e tarefas do SDD.</li>
+            <li>Diagrama entidade-relacionamento e migrações Flyway.</li>
+            <li><code>RTM.md</code> ligando requisito, risco, teste e evidência.</li>
+            <li>Relatórios do JaCoCo, do SonarCloud e do teste de carga.</li>
+            <li>Registro dos defeitos encontrados e corrigidos.</li>
+          </ul>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="avaliacao-heading">
+          <h2 class="h3 fw-bold mb-4" id="avaliacao-heading"><i class="fas fa-award text-danger me-2" aria-hidden="true"></i>Avaliação</h2>
+          <div class="table-responsive">
+            <table class="table table-striped align-middle">
+              <thead class="table-dark"><tr><th scope="col">Dimensão</th><th scope="col" class="text-end">Peso</th></tr></thead>
+              <tbody>
+                <tr><td>Requisitos, especificação e regras de negócio</td><td class="text-end fw-bold">15%</td></tr>
+                <tr><td>Modelagem relacional e migrações</td><td class="text-end fw-bold">15%</td></tr>
+                <tr><td>Qualidade dos testes automatizados</td><td class="text-end fw-bold">25%</td></tr>
+                <tr><td>Integração com banco e ViaCEP testada</td><td class="text-end fw-bold">15%</td></tr>
+                <tr><td>CI, cobertura e análise estática</td><td class="text-end fw-bold">10%</td></tr>
+                <tr><td>Carga, segurança e rastreabilidade</td><td class="text-end fw-bold">10%</td></tr>
+                <tr><td>Organização, colaboração e autoria</td><td class="text-end fw-bold">10%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-danger mb-0"><strong>Limitadores de nota:</strong> aplicação que não sobe, pipeline ausente, possibilidade de dupla reserva, teste que depende da ViaCEP real ou integrante que não consegue explicar o sistema na prova oral.</div>
+        </section>
+
+        <section class="glass-card p-4 p-md-5 mb-4" aria-labelledby="datas-heading">
+          <h2 class="h3 fw-bold mb-4" id="datas-heading"><i class="fas fa-calendar-check text-danger me-2" aria-hidden="true"></i>Datas</h2>
+          <div class="table-responsive">
+            <table class="table table-bordered align-middle bg-white mb-0">
+              <thead class="table-dark"><tr><th style="width:14%">Semana</th><th style="width:22%">Datas</th><th>O que acontece</th></tr></thead>
+              <tbody class="small">
+                <tr class=""><td class="fw-bold">15</td><td>12 a 16 abr</td><td>Formação dos grupos e abertura do trabalho</td></tr>
+                <tr class=""><td class="fw-bold">16</td><td>19 a 23 abr</td><td>Testcontainers: modelo relacional testado com PostgreSQL real</td></tr>
+                <tr class=""><td class="fw-bold">17</td><td>26 a 30 abr</td><td>WireMock: integração com a ViaCEP isolada em teste</td></tr>
+                <tr class="table-primary"><td class="fw-bold">20</td><td>17 a 21 mai</td><td>Entrega: link do repositório público no GitHub</td></tr>
+                <tr class="table-success"><td class="fw-bold">21</td><td>24 a 28 mai</td><td>Prova oral, dia 1</td></tr>
+                <tr class="table-success"><td class="fw-bold">22</td><td>31 mai a 04 jun</td><td>Prova oral, dia 2</td></tr>
+                <tr class="table-danger"><td class="fw-bold">23</td><td>07 a 11 jun</td><td>Prova substitutiva</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted mt-3 mb-0">Datas provisórias até a publicação do calendário oficial do Senac.</p>
+        </section>
+
+        <div class="text-center">
+          <a href="../home_qualidade_2027_1.html" class="btn btn-outline-danger rounded-pill px-4">
+            <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-light text-dark py-4 mt-5">
+    <div class="container text-center">
+      <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac"
+        height="25" class="mb-2 opacity-75">
+      <p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../../js/avisos.js" defer></script>
+</body>
+
+</html>

@@ -162,19 +162,21 @@
             "prova_substitutiva": { "semana": 23, "ref": "segunda semana de junho; avaliações regulares encerradas na semana 22" },
             "trabalho_1": {
               "formato": "individual",
+              "especificacao": "pages/qualidade3/projeto-1.html",
               "semana_entrega": 12,
               "prova_oral": [13, 14],
               "foco": "Projeto construído com Spec-Driven Development (especificação → plano → tarefas → código) e aderente às boas práticas de qualidade: TDD, testes de unidade com JUnit 5, cobertura no JaCoCo, quality gate no SonarCloud e CI no GitHub Actions.",
-              "restricoes": "Escopo pequeno, sem banco de dados e sem integração externa; dados em memória ou em arquivo.",
-              "proposta": "Motor de classificação de campeonato de pontos corridos: recebe os resultados e devolve a tabela com os critérios de desempate do regulamento, as zonas (título, Libertadores, rebaixamento) e o tratamento de W.O. e de jogo anulado."
+              "restricoes": "Escopo pequeno e somente leitura, sem banco de dados e sem integração externa; acervo em arquivo JSON.",
+              "proposta": "API REST simples de consulta aos livros de uma biblioteca: cinco rotas GET que leem um arquivo livros.json, com busca por id, autor e gênero, livros disponíveis e formato único de erro."
             },
             "trabalho_2": {
               "formato": "grupos de 4",
+              "especificacao": "pages/qualidade3/projeto-2.html",
               "semana_entrega": 20,
               "prova_oral": [21, 22],
-              "foco": "API REST mais robusta, com banco de dados e integração com API externa, testada em todas as camadas.",
-              "exigencias": "PostgreSQL com Testcontainers, integração externa isolada com WireMock, cenários BDD, teste de carga no JMeter, quality gate no SonarCloud e CI.",
-              "proposta": "Bolão do campeonato: contas, grupos de bolão, palpites com prazo até o início do jogo, resultados importados de uma API de futebol e ranking por regras de pontuação. Pode reaproveitar o motor do Trabalho 1 de um dos integrantes."
+              "foco": "Sistema completo com banco relacional modelado e justificado, integração com a ViaCEP e testes em todas as camadas.",
+              "exigencias": "PostgreSQL com Flyway e Testcontainers, DER na terceira forma normal, ViaCEP isolada com WireMock, cenários BDD, teste de carga no JMeter, quality gate no SonarCloud e CI.",
+              "proposta": "Organização de Recursos (o mesmo projeto de 2026.2): alocação de salas, professores e materiais sem conflito, agora com cadastro de alunos e professores com endereço pela ViaCEP e modelagem relacional como entregável."
             }
           },
           "marcos": {
