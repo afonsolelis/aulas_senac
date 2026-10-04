@@ -1,42 +1,129 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Semana 48 - Qualidade: Feedback, Correções e Aprendizado</title>
-  <meta name="keywords" content="qualidade de software, feedback, análise de causa raiz, regressão, severidade, prioridade, foot fanatics, melhoria contínua">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../css/style.css"><link rel="stylesheet" href="../../css/slides.css"><link rel="stylesheet" href="../../css/base-styles.css">
-  <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
-</head>
-<body class="slide-body" data-disciplina="qualidade">
-  <div class="slide-container">
-    <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
-    <div class="slide active" id="slide-1"><div class="glass-cover text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-4"><h5 class="text-uppercase text-secondary tracking-wider mb-2 fw-bold">Qualidade de Software - TADS</h5><h1 class="display-4 fw-bold mb-3 text-black">Aula 15: Feedback e Correções</h1><p class="fs-4 text-secondary mb-3">Transformar avaliação em <strong>aprendizado verificável</strong></p><hr class="border-secondary w-25 mx-auto my-3 opacity-100"><h3 class="fw-normal text-dark">Professor Afonso</h3><span class="badge bg-danger mt-3 px-3 py-2 rounded-pill">Semana 48 - 2026.2</span><div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">feedback</span><span class="keyword">causa raiz</span><span class="keyword">regressão</span><span class="keyword">Foot Fanatics</span><span class="keyword">melhoria contínua</span></div></div></div>
-
-    <div class="slide" id="slide-2"><div class="slide-content"><h1 class="display-4 fw-bold mb-4 text-dark text-center">Agenda de Hoje</h1><div class="row g-3"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-primary align-self-start mb-2">Diagnosticar</span><h4 class="fw-bold">Do comentário à causa</h4><ul class="text-muted mb-0"><li>Fato, interpretação e hipótese</li><li>Severidade × prioridade</li><li>Reprodução e cinco porquês</li></ul></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><span class="badge bg-danger align-self-start mb-2">Aprender</span><h4 class="fw-bold">Da correção ao sistema</h4><ul class="text-muted mb-0"><li>Teste de regressão</li><li>Atualização da RTM/ADR</li><li>Retrospectiva e ação preventiva</li></ul></div></div></div></div></div>
-
-    <div class="slide" id="slide-3"><div class="slide-content text-center"><p class="lead text-muted">Feedback não é sentença sobre a equipe.</p><h2 class="display-4 fw-bold mb-4 text-dark">É uma nova evidência sobre o produto e o processo</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Fato</h5><p class="small text-muted mb-0">“Usuário free recebeu HTTP 200 no conteúdo premium.”</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-warning">Interpretação</h5><p class="small text-muted mb-0">“A autorização provavelmente está no lugar errado.”</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Ação</h5><p class="small text-muted mb-0">Reproduzir primeiro; corrigir depois; provar com regressão.</p></div></div></div></div></div>
-
-    <div class="slide" id="slide-4"><div class="slide-content text-center"><h2 class="display-5 fw-bold mb-3 text-dark">Severidade não é prioridade</h2><div class="table-responsive shadow-sm rounded-3"><table class="table table-bordered align-middle bg-white mb-0"><thead class="table-dark"><tr><th></th><th>Baixa urgência</th><th>Alta urgência</th></tr></thead><tbody><tr><th>Alto impacto</th><td>Planejar correção segura</td><td class="table-danger"><strong>P0/P1</strong> — corrigir agora</td></tr><tr><th>Baixo impacto</th><td class="table-light">Backlog</td><td class="table-warning">Correção rápida se o risco for baixo</td></tr></tbody></table></div><p class="text-muted mt-3 mb-0">Severidade mede impacto técnico/negócio. Prioridade decide quando agir considerando impacto, probabilidade, prazo e custo.</p></div></div>
-
-    <div class="slide" id="slide-5"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Um bug bem descrito já começa a solução</h2><div class="row g-3"><div class="col-md-6"><ul class="list-group shadow-sm"><li class="list-group-item"><strong>ID e título:</strong> comportamento + contexto</li><li class="list-group-item"><strong>Ambiente:</strong> versão, commit, dados e perfil</li><li class="list-group-item"><strong>Passos:</strong> sequência mínima reproduzível</li><li class="list-group-item"><strong>Esperado × obtido:</strong> sem ambiguidade</li></ul></div><div class="col-md-6"><ul class="list-group shadow-sm"><li class="list-group-item"><strong>Evidência:</strong> resposta, log ou trace</li><li class="list-group-item"><strong>Frequência:</strong> sempre, intermitente, condição</li><li class="list-group-item"><strong>Impacto:</strong> pessoa/requisito afetado</li><li class="list-group-item"><strong>Ligação:</strong> RF/RNF e caso de teste</li></ul></div></div></div></div>
-
-    <div class="slide" id="slide-6"><div class="slide-content text-center"><span class="badge bg-dark mb-2">Análise de causa raiz</span><h2 class="display-5 fw-bold mb-3 text-dark">Pare no processo, não na pessoa</h2><div class="row g-2 text-start justify-content-center"><div class="col-md-10"><ol class="list-group list-group-numbered shadow-sm"><li class="list-group-item">Por que conteúdo premium foi exposto? A regra não foi aplicada no endpoint.</li><li class="list-group-item">Por quê? A autorização existia apenas na camada de interface.</li><li class="list-group-item">Por quê? O ADR não fixou a fronteira de segurança.</li><li class="list-group-item">Por quê? O risco não entrou na revisão arquitetural.</li><li class="list-group-item">Por quê? A checklist de ameaça não fazia parte do DoD.</li></ol></div></div><div class="alert alert-danger border-0 mt-3 mb-0">A causa útil aponta para uma mudança de sistema: <strong>regra no domínio + teste de integração + item no DoD</strong>.</div></div></div>
-
-    <div class="slide" id="slide-7"><div class="slide-content"><h2 class="display-5 fw-bold mb-3 text-dark text-center">Correção completa em quatro camadas</h2><div class="row g-3 text-center"><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary mx-auto mb-2">1</span><h6 class="fw-bold">Reproduzir</h6><p class="small text-muted mb-0">Teste vermelho que captura o defeito.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary mx-auto mb-2">2</span><h6 class="fw-bold">Corrigir</h6><p class="small text-muted mb-0">Menor mudança segura.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-white rounded-4"><span class="badge bg-primary mx-auto mb-2">3</span><h6 class="fw-bold">Regredir</h6><p class="small text-muted mb-0">Suíte inteira e cenários vizinhos.</p></div></div><div class="col-md-3"><div class="card h-100 border-0 shadow-sm p-3 bg-danger-subtle rounded-4"><span class="badge bg-danger mx-auto mb-2">4</span><h6 class="fw-bold">Prevenir</h6><p class="small text-muted mb-0">RTM, ADR, checklist e aprendizado.</p></div></div></div></div></div>
-
-    <div class="slide" id="slide-8"><div class="slide-content text-center"><h2 class="display-5 fw-bold mb-3 text-dark">O teste de regressão é a memória do bug</h2><div class="bg-dark text-white p-4 rounded-4 text-start shadow-sm"><code class="text-info">@Test<br>void usuarioFreeNaoAcessaConteudoPremium() {<br>&nbsp;&nbsp;given(usuarioFreeAutenticado());<br>&nbsp;&nbsp;when().get("/materias/premium/42")<br>&nbsp;&nbsp;&nbsp;&nbsp;.then().statusCode(403);<br>}</code></div><p class="text-muted mt-3 mb-0">Nomeie pelo comportamento protegido. O teste deve falhar sem a correção e permanecer rápido, determinístico e legível.</p></div></div>
-
-    <div class="slide" id="slide-9"><div class="slide-content"><span class="badge bg-danger mb-2">Prática Foot Fanatics</span><h2 class="display-6 fw-bold mb-3 text-dark">Clínica de feedback</h2><ol class="list-group list-group-numbered shadow-sm"><li class="list-group-item">Escolher um apontamento real da prova oral ou do relatório.</li><li class="list-group-item">Separar fato, interpretação e hipótese; reproduzir no RC.</li><li class="list-group-item">Classificar severidade e prioridade com justificativa.</li><li class="list-group-item">Abrir teste vermelho, corrigir e executar regressão.</li><li class="list-group-item">Atualizar RTM, risco/ADR e registrar causa raiz.</li></ol></div></div>
-
-    <div class="slide" id="slide-10"><div class="slide-content text-center"><h2 class="display-5 fw-bold mb-3 text-dark">Critérios do entregável</h2><div class="row g-3 text-start"><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-primary">Evidência</h5><p class="small text-muted mb-0">Bug reproduzido no commit e ligado ao requisito.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4"><h5 class="fw-bold text-success">Proteção</h5><p class="small text-muted mb-0">Teste falha antes, passa depois e não quebra a suíte.</p></div></div><div class="col-md-4"><div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle rounded-4"><h5 class="fw-bold text-danger">Aprendizado</h5><p class="small text-muted mb-0">Causa sistêmica e ação preventiva registradas.</p></div></div></div></div></div>
-
-    <div class="slide" id="slide-11"><div class="text-center slide-content"><h1 class="display-3 fw-bold mb-4 text-dark">Corrigir fecha o bug.<br>Aprender fecha o ciclo.</h1><p class="lead text-muted mb-4">O Foot Fanatics melhora quando o feedback muda código, teste, documentação e processo.</p><div class="alert alert-danger border-0 shadow-sm d-inline-block"><strong>Próxima aula:</strong> revisão integrada de toda a disciplina.</div></div></div>
-  </div>
-  <footer class="slide-footer"><div class="slide-controls"><button id="prevBtn" disabled><i class="fas fa-chevron-left" aria-hidden="true"></i></button><div class="progress mx-3" style="width:100px;height:6px;"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width:0%"></div></div><span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 11</span><button id="nextBtn" class="ms-2"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2"><i class="fas fa-expand" aria-hidden="true"></i></button></div><div class="text-center text-muted small d-none d-md-block">Qualidade - Feedback e Correções (Semana 48)</div><a href="material/material_feedback-correcoes.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75"></a></footer>
-  <script src="../../js/standard_slides.js"></script><script>window.animMap = Array.from(document.querySelectorAll('.slide'), function () { return null; });</script>
-<script src="../../js/avisos.js" defer></script>
-</body></html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="feedback, causa raiz, cinco porquês, teste de regressão, memória do projeto, prática, prompts" />
+    <title>Aula 15 - Feedback e correções</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · TADS</h5>
+          <h1 class="display-4 fw-bold text-dark">Aula 15: Feedback e correções</h1>
+          <p class="fs-4 text-secondary">Causa raiz, teste de regressão e memória do projeto</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 48 · Prática em sala</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">feedback</span><span class="keyword">causa raiz</span><span class="keyword">cinco porquês</span><span class="keyword">teste de regressão</span></div>
+        </div>
+      </div>
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda da prática</h1>
+          <p class="lead text-center text-muted mb-4">Transformar o retorno da prova oral e da entrega em defeitos rastreáveis, corrigidos com teste de regressão e registrados na memória do projeto para que o mesmo erro não volte.</p>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Abertura e combinados (10 min)</li><li>Prompt 1 · triagem do feedback (35 min)</li><li>Prompt 2 · causa raiz e regressão (55 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 2 · correções restantes (40 min)</li><li>Prompt 3 · memória do projeto (35 min)</li><li>Checagem na mesa (25 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">Antes de abrir o agente</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Pré-requisitos</h3>
+                <ul class="fs-5 mb-0"><li>Feedback da entrega e da prova oral em mãos.</li><li>Tag <code>v1.0.0-rc1</code> como referência do que foi avaliado.</li><li>Pasta <code>docs/defeitos/</code> do semestre.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-robot me-2" aria-hidden="true"></i>Uso do agente</h3>
+                <ul class="fs-5 mb-0"><li>Trabalhe numa branch da prática, nunca direto na main.</li><li>Leia o diff inteiro antes de aceitar a mudança proposta pelo agente.</li><li>Rode <code>./mvnw -B verify</code> antes de cada commit e abra pull request no fim.</li><li>Não cole token, senha nem dado pessoal real no prompt.</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-dark mt-4 mb-0 fs-5">Os prompts estão no material escrito, prontos para copiar. O projeto é o de cada equipe, o sistema de Organização de Recursos.</div>
+        </div>
+      </div>
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Triagem do feedback</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como gestor de defeitos do sistema de Organização de Recursos. Vou colar abaixo o feedback recebido na entrega e na prova oral. Você pode usar o terminal (bash) para localizar no código e nos documentos cada ponto citado. Classifique cada observação como defeito de produto, lacuna de teste, lacuna de documentação ou falha de argumentação. Para os três primeiros tipos, crie um arquivo em <code>docs/defeitos/</code> com identificador, descrição, severidade, requisito afetado na RTM, passos para reproduzir e evidência. Ordene por severidade e por impacto nos limitadores de nota e diga quais cabem nesta aula. Não corrija nada ainda. [cole o feedback aqui]</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Cada observação virou um registro ou foi descartada com motivo.</div>
+        </div>
+      </div>
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">95 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Causa raiz e teste de regressão</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como desenvolvedor responsável pela correção. Você pode usar o terminal (bash) e o <code>git</code>. Para cada defeito priorizado em <code>docs/defeitos/</code>, faça a análise dos cinco porquês e registre-a no próprio arquivo do defeito, até chegar a uma causa sobre a qual o grupo pode agir (processo, teste ausente, requisito ambíguo ou decisão de design), não só ao sintoma. Em seguida escreva o teste de regressão que reproduz o defeito, rode e mostre a falha, faça commit <code>test(regressao): &lt;id&gt;</code>; corrija com a menor mudança possível e faça commit <code>fix(&lt;id&gt;): &lt;descrição&gt;</code>. Confirme a suíte inteira verde e o gate do JaCoCo e do SonarCloud. Atualize o defeito para corrigido com os commits e a linha correspondente da RTM.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Todo defeito corrigido tem teste que falhava antes; a causa raiz não é o sintoma.</div>
+        </div>
+      </div>
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Memória do projeto</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como mantenedor da memória do projeto. Você pode usar o terminal (bash) e o <code>git</code>. Leia os defeitos corrigidos hoje e as análises de causa raiz. Atualize o arquivo de instruções do agente na raiz do repositório (<code>CLAUDE.md</code> ou <code>AGENTS.md</code>; crie se não existir) com regras curtas e verificáveis que teriam evitado esses defeitos, por exemplo a exigência de teste de concorrência para qualquer mudança em reservas. Escreva <code>docs/licoes-aprendidas.md</code> com defeito, causa, regra criada e onde ela é verificada (teste, CI ou revisão). Se alguma correção mudou uma decisão de arquitetura, registre um ADR novo em <code>docs/adr/</code> que substitui o anterior, sem apagar o antigo. Abra pull request com tudo.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Cada regra nova aponta para o teste ou a verificação que a garante.</div>
+        </div>
+      </div>
+      <div class="slide" id="slide-7">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 15</span>
+          <p class="fs-4 mb-4">Defeitos do feedback registrados, testes de regressão com commits red e fix, arquivo de instruções do agente atualizado e <code>docs/licoes-aprendidas.md</code>.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>Escolho um defeito e peço o commit do teste de regressão.</li><li>Leio a causa raiz e pergunto o que o grupo muda no processo.</li><li>Confiro se a regra nova da memória tem verificação.</li></ul>
+          </div>
+          
+        </div>
+      </div>
+      <div class="slide cover-bg" id="slide-8">
+        <div class="glass-cover text-center">
+          <i class="fas fa-screwdriver-wrench fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Revisão integrada do semestre.</p>
+        </div>
+      </div>
+    </div>
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Feedback e correções · Semana 48</div>
+      <a href="material/material_feedback-correcoes.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

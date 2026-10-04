@@ -2,501 +2,128 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-    />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="Foot Fanatics, conteúdo público, conteúdo exclusivo, E4, testes, publicação"
-    />
-    <title>Aula 11 - Projeto E4 Conteúdo</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <meta name="keywords" content="projeto final, auditoria, relatório de utilização, requisitos, TDD, prática, prompts" />
+    <title>Aula 11 - Projeto final: auditoria e relatórios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="../../css/style.css" />
     <link rel="stylesheet" href="../../css/slides.css" />
     <link rel="stylesheet" href="../../css/base-styles.css" />
-    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
   </head>
   <body class="slide-body" data-disciplina="qualidade">
     <div class="slide-container">
-      <a
-        href="../home_qualidade_2026_2.html"
-        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
-        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a
-      >
+      <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
       <div class="slide active" id="slide-1">
         <div class="glass-cover text-center">
-          <img
-            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-            alt="Senac Logo"
-            height="80"
-            class="mb-3"
-          />
-          <h5 class="text-uppercase text-secondary fw-bold">
-            Qualidade de Software · Projeto
-          </h5>
-          <h1 class="display-4 fw-bold text-dark">Aula 11: Foot Fanatics E4</h1>
-          <p class="fs-4 text-secondary">
-            Conteúdo público e exclusivo com contrato testável
-          </p>
-          <span class="badge bg-danger px-3 py-2 rounded-pill"
-            >Semana 43 · Sprint de projeto</span
-          >
-          <div class="slide-keywords d-none" aria-hidden="true">
-            <span class="keyword">E4</span><span class="keyword">conteúdo</span
-            ><span class="keyword">exclusivo</span>
-          </div>
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · TADS</h5>
+          <h1 class="display-4 fw-bold text-dark">Aula 11: Projeto final: auditoria e relatórios</h1>
+          <p class="fs-4 text-secondary">Fechamento dos requisitos com histórico auditável e relatório de uso</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 43 · Prática em sala</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">projeto final</span><span class="keyword">auditoria</span><span class="keyword">relatório de utilização</span><span class="keyword">requisitos</span></div>
         </div>
       </div>
       <div class="slide" id="slide-2">
         <div class="slide-content">
-          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
-          <div class="row g-3 fs-5">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda da prática</h1>
+          <p class="lead text-center text-muted mb-4">Saber exatamente o que falta no projeto e fechar dois requisitos obrigatórios que costumam ficar para o fim: o histórico auditável das mudanças de estado e o relatório de utilização.</p>
+          <div class="row g-3">
             <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Escopo E4</strong
-                ><span class="text-muted">modelo, estados e endpoints.</span>
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Abertura e combinados (10 min)</li><li>Prompt 1 · diagnóstico dos requisitos (30 min)</li><li>Prompt 2 · auditoria por TDD (60 min)</li></ol>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Contratos</strong
-                ><span class="text-muted"
-                  >público, exclusivo e resposta segura.</span
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Testes</strong
-                ><span class="text-muted"
-                  >domínio, API, banco e negativos.</span
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Sprint</strong
-                ><span class="text-muted"
-                  >incremento vertical demonstrável.</span
-                >
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 3 · relatório de utilização (70 min)</li><li>Checagem na mesa (30 min)</li></ol>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="slide" id="slide-3">
-        <div class="slide-content text-center">
-          <span class="badge bg-danger mb-3">E4 · fronteira de valor</span>
-          <h2 class="display-5 fw-bold">
-            O conteúdo é público ou exclusivo — nunca “quase”
-          </h2>
-          <p class="lead text-muted">
-            Um erro de classificação ou resposta pode entregar o produto pago a
-            quem não tem direito.
-          </p>
-          <div class="row g-3 text-start mt-3">
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Visitante</strong
-                ><small class="text-muted">lista e lê conteúdo público.</small>
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">Antes de abrir o agente</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Pré-requisitos</h3>
+                <ul class="fs-5 mb-0"><li>Teste de concorrência da Aula 10 integrado na main.</li><li><code>docs/rtm.md</code> atualizada até a semana passada.</li><li>Especificação do projeto aberta para conferir os requisitos obrigatórios.</li></ul>
               </div>
             </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Assinante</strong
-                ><small class="text-muted"
-                  >lê público e exclusivo se vigente.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Editor</strong
-                ><small class="text-muted"
-                  >rascunha, publica e classifica.</small
-                >
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-robot me-2" aria-hidden="true"></i>Uso do agente</h3>
+                <ul class="fs-5 mb-0"><li>Trabalhe numa branch da prática, nunca direto na main.</li><li>Leia o diff inteiro antes de aceitar a mudança proposta pelo agente.</li><li>Rode <code>./mvnw -B verify</code> antes de cada commit e abra pull request no fim.</li><li>Não cole token, senha nem dado pessoal real no prompt.</li></ul>
               </div>
             </div>
           </div>
-          <div class="alert alert-dark mt-4">
-            Hoje construímos o conteúdo e seu contrato. A política completa de
-            autorização fecha na Aula 12.
-          </div>
+          <div class="alert alert-dark mt-4 mb-0 fs-5">Os prompts estão no material escrito, prontos para copiar. O projeto é o de cada equipe, o sistema de Organização de Recursos.</div>
         </div>
       </div>
       <div class="slide" id="slide-4">
         <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Modelo de domínio mínimo
-          </h2>
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Conteudo</strong
-                ><small class="text-muted"
-                  >id, título, resumo, corpo, autor, datas.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Visibilidade</strong
-                ><small class="text-muted"
-                  ><code>PUBLICO</code> ou <code>EXCLUSIVO</code>.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Status</strong
-                ><small class="text-muted"
-                  ><code>RASCUNHO</code>, <code>PUBLICADO</code>,
-                  <code>ARQUIVADO</code>.</small
-                >
-              </div>
-            </div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Diagnóstico do que falta</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como auditor de qualidade do sistema de Organização de Recursos. Você pode usar o terminal (bash), com <code>ls</code>, <code>find</code>, <code>grep</code> e <code>cat</code>, e rodar <code>./mvnw -B verify</code>. Não implemente nada nesta etapa. Compare os 14 requisitos funcionais obrigatórios e as regras críticas da especificação com o código, os testes e <code>docs/rtm.md</code>. Escreva <code>docs/status-requisitos.md</code> com uma tabela requisito → situação (feito, parcial, ausente) → evidência (arquivo e nome do teste) → risco se ficar de fora. Só marque feito quando houver teste que falharia se a regra quebrasse. Ordene as pendências começando pelos limitadores de nota: aplicação que não executa, pipeline ausente, falha de autorização e possibilidade de dupla reserva. Termine com uma proposta de divisão das pendências entre os integrantes até a Semana 46.</p>
           </div>
-          <div class="alert alert-warning mt-4">
-            <strong>Invariantes:</strong> título/corpo obrigatórios; só
-            publicado aparece ao leitor; publicação registra instante; enum
-            inválido é rejeitado.
-          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Nenhum item está como feito sem teste citado; a ordem respeita os limitadores.</div>
         </div>
       </div>
       <div class="slide" id="slide-5">
         <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-3">Contrato da API</h2>
-          <div class="table-responsive">
-            <table class="table table-bordered bg-white">
-              <thead class="table-dark">
-                <tr>
-                  <th>Operação</th>
-                  <th>Uso</th>
-                  <th>Resposta esperada</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>GET /conteudos</code></td>
-                  <td>catálogo publicado</td>
-                  <td>somente campos de resumo</td>
-                </tr>
-                <tr>
-                  <td><code>GET /conteudos/{id}</code></td>
-                  <td>leitura</td>
-                  <td>corpo apenas quando autorizado</td>
-                </tr>
-                <tr>
-                  <td><code>POST /conteudos</code></td>
-                  <td>criar rascunho</td>
-                  <td>201 + localização</td>
-                </tr>
-                <tr>
-                  <td><code>PUT /conteudos/{id}</code></td>
-                  <td>editar</td>
-                  <td>200/204 ou 409</td>
-                </tr>
-                <tr>
-                  <td><code>POST /conteudos/{id}/publicacao</code></td>
-                  <td>publicar</td>
-                  <td>estado publicado</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">60 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Histórico auditável guiado por teste</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como desenvolvedor praticando TDD. Você pode usar o terminal (bash) e o <code>git</code>. Implemente o histórico auditável das reservas começando pelos testes: toda mudança de estado gera um registro com reserva, usuário, instante (via <code>Clock</code>), estado anterior, estado novo e motivo; o registro não pode ser alterado nem apagado pela API; reserva já iniciada não pode ser apagada. Escreva primeiro testes de unidade para as regras e depois um teste de integração com Testcontainers que confirma a gravação da auditoria na mesma transação da mudança de estado, inclusive que um rollback não deixa auditoria órfã. Mostre cada teste falhando antes da implementação e faça commits separados de teste e de código. Exponha a consulta do histórico de uma reserva só para Responsável e Administrador e teste o 403 para o Solicitante.</p>
           </div>
-          <p class="text-muted text-center">
-            DTO de lista não deve conter o corpo exclusivo “escondido” no JSON.
-          </p>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Há teste para o rollback; o Solicitante recebe 403 na consulta do histórico.</div>
         </div>
       </div>
       <div class="slide" id="slide-6">
         <div class="slide-content">
-          <span class="badge bg-primary mb-2">Design seguro</span>
-          <h2 class="display-5 fw-bold">Filtrar na origem, não na interface</h2>
-          <div class="row g-4">
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm p-4 bg-danger-subtle">
-                <h4>Frágil</h4>
-                <p class="text-muted">
-                  API devolve tudo e a tela oculta o corpo exclusivo.
-                </p>
-                <code>conteudo.body = "...pago..."</code>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card h-100 border-0 shadow-sm p-4 bg-success-subtle">
-                <h4>Seguro</h4>
-                <p class="text-muted">
-                  Aplicação decide acesso antes de montar a resposta.
-                </p>
-                <code>ResumoConteudoResponse</code>
-              </div>
-            </div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">70 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Relatório de utilização com oráculo calculado</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como engenheiro de qualidade. Você pode usar o terminal (bash), o <code>git</code> e o <code>gh</code>. Implemente <code>GET /relatorios/utilizacao?inicio=&amp;fim=</code> com horas reservadas por recurso, carga horária alocada por professor e quantidade de conflitos evitados (tentativas recusadas por sobreposição no período). Escreva primeiro testes de API em caixa-preta com uma massa pequena semeada no teste e os valores esperados calculados à mão, deixando a conta num comentário do próprio teste. Cubra período vazio, reserva que cruza a borda do período e reservas canceladas, que não contam como uso. Somente Responsável e Administrador acessam; teste 401 sem token e 403 para Solicitante. Documente o endpoint no README ou no OpenAPI, atualize <code>docs/rtm.md</code> e <code>docs/status-requisitos.md</code> e abra pull request.</p>
           </div>
-          <div class="alert alert-dark mt-4 mb-0">
-            O navegador do usuário não é uma fronteira de segurança.
-          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Os valores esperados não foram copiados da saída da própria aplicação.</div>
         </div>
       </div>
       <div class="slide" id="slide-7">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Incremento vertical
-          </h2>
-          <div
-            class="d-flex align-items-center justify-content-center gap-2 flex-wrap"
-          >
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Requisito E4</strong>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Domínio</strong>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Persistência</strong>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3"><strong>API</strong></div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Teste</strong>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3"><strong>RTM</strong></div>
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 11</span>
+          <p class="fs-4 mb-4"><code>docs/status-requisitos.md</code>, a auditoria com testes de unidade e integração, o relatório de utilização com testes de API e a RTM atualizada, num pull request revisado por outro integrante.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>Escolho um item marcado como feito e peço o teste.</li><li>Peço para mostrar o registro de auditoria de uma reserva cancelada.</li><li>Refaço à mão uma linha do relatório de utilização.</li></ul>
           </div>
-          <div class="alert alert-light border mt-4">
-            Melhor uma história completa e demonstrável que cinco camadas pela
-            metade.
-          </div>
+          
         </div>
       </div>
-      <div class="slide" id="slide-8">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-3">
-            Matriz de testes E4
-          </h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-bordered bg-white">
-              <thead class="table-dark">
-                <tr>
-                  <th>ID</th>
-                  <th>Cenário</th>
-                  <th>Nível</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>E4-CT01</td>
-                  <td>publicar conteúdo válido</td>
-                  <td>domínio + API</td>
-                </tr>
-                <tr>
-                  <td>E4-CT02</td>
-                  <td>rejeitar título/corpo vazio</td>
-                  <td>unidade + API</td>
-                </tr>
-                <tr>
-                  <td>E4-CT03</td>
-                  <td>catálogo lista só publicados</td>
-                  <td>integração</td>
-                </tr>
-                <tr>
-                  <td>E4-CT04</td>
-                  <td>lista não expõe corpo exclusivo</td>
-                  <td>contrato</td>
-                </tr>
-                <tr>
-                  <td>E4-CT05</td>
-                  <td>rascunho não é lido externamente</td>
-                  <td>API</td>
-                </tr>
-                <tr>
-                  <td>E4-CT06</td>
-                  <td>mudança concorrente preserva estado</td>
-                  <td>integração</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="slide" id="slide-9">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Definition of Done do incremento
-          </h2>
-          <ul class="list-group fs-5">
-            <li class="list-group-item">
-              <i class="fas fa-check text-success me-2" aria-hidden="true"></i
-              >RF/RNF e critérios revisados
-            </li>
-            <li class="list-group-item">
-              <i class="fas fa-check text-success me-2" aria-hidden="true"></i
-              >migração e entidade sem segredo/dado sensível
-            </li>
-            <li class="list-group-item">
-              <i class="fas fa-check text-success me-2" aria-hidden="true"></i
-              >contrato documentado e erros consistentes
-            </li>
-            <li class="list-group-item">
-              <i class="fas fa-check text-success me-2" aria-hidden="true"></i
-              >testes positivos, limites e negativos no pipeline
-            </li>
-            <li class="list-group-item">
-              <i class="fas fa-check text-success me-2" aria-hidden="true"></i
-              >RTM atualizada e demo reproduzível
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="slide" id="slide-10">
-        <div class="slide-content">
-          <span class="badge bg-success mb-2">Sprint em sala</span>
-          <h2 class="display-5 fw-bold mb-3">
-            Conteúdo público e exclusivo de ponta a ponta
-          </h2>
-          <ol class="list-group list-group-numbered fs-5">
-            <li class="list-group-item">
-              Revisar RF-E4 e invariantes; dividir um incremento vertical.
-            </li>
-            <li class="list-group-item">
-              Modelar <code>Conteudo</code>, visibilidade e status.
-            </li>
-            <li class="list-group-item">
-              Implementar criação, publicação, catálogo e detalhe.
-            </li>
-            <li class="list-group-item">Automatizar E4-CT01 a E4-CT05.</li>
-            <li class="list-group-item">
-              Abrir PR com contrato, execução e RTM.
-            </li>
-          </ol>
-          <div class="alert alert-success mt-3 mb-0">
-            <strong>Meta:</strong> conteúdo público navegável e exclusivo nunca
-            presente em resposta não autorizada.
-          </div>
-        </div>
-      </div>
-      <div class="slide" id="slide-11">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Checkpoint de revisão
-          </h2>
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Contrato</strong
-                ><small class="text-muted"
-                  >status, DTO e erro são previsíveis?</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Segurança</strong
-                ><small class="text-muted"
-                  >há campo exclusivo vazando em lista/log/cache?</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Evidência</strong
-                ><small class="text-muted"
-                  >cada critério aponta para teste executado?</small
-                >
-              </div>
-            </div>
-          </div>
-          <p class="lead text-center text-muted mt-4">
-            Pare, revise em dupla, corrija e só então faça merge.
-          </p>
-        </div>
-      </div>
-      <div class="slide" id="slide-12">
+      <div class="slide cover-bg" id="slide-8">
         <div class="glass-cover text-center">
-          <h1 class="display-4 fw-bold text-dark">
-            E4 pronto é um fluxo completo
-          </h1>
-          <p class="fs-4 text-secondary">
-            Modelo, contrato, persistência, teste, pipeline e RTM.
-          </p>
-          <div class="row g-3 text-start mt-3">
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Leve</strong
-                ><small class="text-muted"
-                  >filtre conteúdo antes da resposta.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Entregue</strong
-                ><small class="text-muted"
-                  >incremento público/exclusivo demonstrável.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Próxima</strong
-                ><small class="text-muted">autorização por plano e RTM.</small>
-              </div>
-            </div>
-          </div>
-          <h2 class="mt-4">Dúvidas?</h2>
+          <i class="fas fa-clipboard-list fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Autorização por perfil e fechamento da RTM.</p>
         </div>
       </div>
     </div>
     <footer class="slide-footer">
       <div class="slide-controls">
-        <button id="prevBtn" disabled>
-          <i class="fas fa-chevron-left" aria-hidden="true"></i>
-        </button>
-        <div class="progress mx-3" style="width: 100px; height: 6px">
-          <div
-            id="progressBar"
-            class="progress-bar bg-dark"
-            role="progressbar"
-            style="width: 0%"
-          ></div>
-        </div>
-        <span id="slideCounter" class="small text-muted fw-semibold me-2"
-          >1 / 12</span
-        ><button id="nextBtn" class="ms-2">
-          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
-        ><button id="fullscreenBtn" class="ms-2">
-          <i class="fas fa-expand" aria-hidden="true"></i>
-        </button>
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
       </div>
-      <div class="text-center text-muted small d-none d-md-block">
-        Qualidade · Projeto E4 Conteúdo · Semana 43
-      </div>
-      <a
-        href="material/material_projeto-conteudo.html"
-        class="btn btn-outline-primary btn-sm rounded-pill"
-        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
-      ><a href="../../index.html"
-        ><img
-          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-          alt="Senac"
-          height="30"
-          class="opacity-75"
-      /></a>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Projeto final: auditoria e relatórios · Semana 43</div>
+      <a href="material/material_projeto-conteudo.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
     </footer>
     <script src="../../js/standard_slides.js"></script>
-  <script src="../../js/avisos.js" defer></script>
+    <script src="../../js/avisos.js" defer></script>
   </body>
 </html>

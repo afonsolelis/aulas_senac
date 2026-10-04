@@ -1,95 +1,32 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8">
-  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aula 14 - Finalização e Entrega do Foot Fanatics</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="../../../css/style.css">
-</head>
-<body>
-  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height: 40px;"><span class="fw-bold text-dark">Hub de Aulas</span></a><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></nav>
-
-  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height: 12vh;"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div class="d-flex align-items-center justify-content-between"><div><span class="badge bg-white text-danger mb-1">Semana 46 &middot; 2026.2 &middot; Aula 14</span><h1 class="h3 fw-bold text-white mb-0">Finalização e Entrega do Foot Fanatics</h1></div></div></div></header>
-
-  <main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3"><i class="fas fa-flag-checkered text-danger me-2" aria-hidden="true"></i>Objetivo da aula</h2>
-      <p class="text-muted mb-0">Transformar a versão funcional do Foot Fanatics em um <strong>release candidate reproduzível, rastreável e defensável</strong>. Ao final, código, testes, RTM, relatório de qualidade e riscos residuais devem apontar para o mesmo commit.</p>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">1. O que caracteriza uma entrega de qualidade</h2>
-      <p class="text-muted">Entregar não é apenas compartilhar uma URL. Uma terceira pessoa precisa conseguir reproduzir o ambiente, verificar os resultados e entender a decisão do grupo sem depender de explicações privadas.</p>
-      <div class="row g-3">
-        <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold text-primary">Reproduzível</h3><p class="small text-muted mb-0">O README descreve pré-requisitos, configuração, execução e testes. Um colega que não montou o ambiente confirma o passo a passo.</p></div></div>
-        <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold text-success">Rastreável</h3><p class="small text-muted mb-0">Requisitos, riscos, casos de teste, execuções e defeitos têm identificadores e ligações verificáveis.</p></div></div>
-        <div class="col-md-4"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold text-danger">Defensável</h3><p class="small text-muted mb-0">O relatório conclui se a versão pode ser liberada e explicita as limitações dessa decisão.</p></div></div>
-      </div>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">2. Congelamento de escopo e release candidate</h2>
-      <p class="text-muted">A partir do corte da semana 46, a prioridade deixa de ser adicionar valor e passa a ser <strong>reduzir incerteza</strong>. Se uma mudança não reduz um risco ligado ao aceite, ela fica no backlog.</p>
-      <div class="table-responsive"><table class="table table-bordered align-middle bg-white"><thead class="table-dark"><tr><th>Mudança</th><th>Decisão</th><th>Condição</th></tr></thead><tbody class="small"><tr><td>Correção de acesso indevido a conteúdo premium</td><td><span class="badge bg-success">Entrar</span></td><td>Falha alta, reproduzida e coberta por regressão.</td></tr><tr><td>Nova tela ou endpoint solicitado pelo grupo</td><td><span class="badge bg-danger">Adiar</span></td><td>Escopo novo aumenta a superfície de risco.</td></tr><tr><td>Correção do README/configuração</td><td><span class="badge bg-success">Entrar</span></td><td>Necessária para reproduzir o produto.</td></tr><tr><td>Refatoração estrutural extensa</td><td><span class="badge bg-warning text-dark">Evitar</span></td><td>Só se for indispensável para corrigir bloqueador.</td></tr></tbody></table></div>
-      <h3 class="h5 fw-bold mt-4">Identificação da versão</h3>
-      <div class="bg-dark text-white p-3 rounded-3"><code class="text-info">git switch -c release/1.0.0<br>git tag -a v1.0.0-rc1 -m "Foot Fanatics — candidato avaliado"<br>git push origin v1.0.0-rc1</code></div>
-      <p class="text-muted small mt-2 mb-0">A tag deve ser criada somente depois dos gates. Se houver correção, crie <code>rc2</code>; não mova silenciosamente uma tag já usada como evidência.</p>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">3. Definition of Done do Foot Fanatics</h2>
-      <div class="row g-3">
-        <div class="col-md-6"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold">Produto e automação</h3><ul class="small text-muted mb-0"><li>Build limpo em ambiente novo</li><li>Testes unitários, integração e contrato verdes</li><li>Pipeline verde no commit da tag</li><li>Quality Gate do SonarCloud sem bloqueio</li><li>Cenário de carga executado com resultado anexado</li></ul></div></div>
-        <div class="col-md-6"><div class="p-3 border rounded-3 bg-white h-100"><h3 class="h6 fw-bold">Documentação e decisão</h3><ul class="small text-muted mb-0"><li>RTM sem requisito órfão</li><li>ADRs coerentes com a implementação</li><li>Riscos residuais registrados</li><li>Relatório de qualidade versionado</li><li>README validado por terceiro</li></ul></div></div>
-      </div>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">4. Fechamento da matriz de rastreabilidade</h2>
-      <p class="text-muted">Não basta preencher a RTM: cada referência deve abrir a evidência correta. Requisito sem teste, teste sem requisito e resultado sem commit são órfãos diferentes.</p>
-      <div class="table-responsive"><table class="table table-bordered align-middle bg-white"><thead class="table-dark"><tr><th>ID</th><th>Risco</th><th>Caso</th><th>Evidência</th><th>Resultado</th></tr></thead><tbody class="small"><tr><td><code>RF-12</code></td><td>Usuário free acessa matéria premium</td><td><code>CT-API-18</code></td><td>Actions #148 / commit da tag</td><td><span class="badge bg-success">Passou</span></td></tr><tr><td><code>RNF-PERF-02</code></td><td>Lista degrada sob 100 usuários</td><td><code>CT-PERF-04</code></td><td><code>jmeter/rc1/index.html</code></td><td><span class="badge bg-warning text-dark">Risco aceito</span></td></tr></tbody></table></div>
-      <div class="alert alert-warning border-0 mb-0"><strong>Risco aceito não é teste “quase verde”.</strong> Registre impacto, probabilidade, justificativa, responsável e ação futura.</div>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">5. Estrutura do relatório de qualidade</h2>
-      <ol class="text-muted">
-        <li class="mb-2"><strong>Identificação:</strong> versão, tag, commit, data, ambiente e integrantes.</li>
-        <li class="mb-2"><strong>Escopo avaliado:</strong> E1–E4 e itens explicitamente fora do escopo.</li>
-        <li class="mb-2"><strong>Estratégia:</strong> níveis, tipos e ferramentas de teste usados.</li>
-        <li class="mb-2"><strong>Resultados:</strong> números contextualizados, com links para a origem.</li>
-        <li class="mb-2"><strong>Defeitos e riscos residuais:</strong> severidade, impacto e mitigação.</li>
-        <li class="mb-0"><strong>Recomendação:</strong> liberar, liberar com ressalvas ou bloquear, com justificativa.</li>
-      </ol>
-      <div class="alert alert-secondary border-0 mb-0">Evite “100% dos testes passaram” sem dizer <em>quais testes</em>, <em>em qual commit</em> e <em>contra quais requisitos</em>.</div>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3">6. Laboratório: war room do RC1</h2>
-      <ol class="list-group list-group-numbered mb-3">
-        <li class="list-group-item">Selecionar e anotar o SHA do candidato.</li>
-        <li class="list-group-item">Executar <code>./mvnw clean verify</code> e registrar a execução do pipeline.</li>
-        <li class="list-group-item">Conferir JaCoCo, SonarCloud, WireMock e o plano de carga.</li>
-        <li class="list-group-item">Cruzar qualquer falha com RTM e riscos.</li>
-        <li class="list-group-item">Corrigir bloqueadores com teste de regressão; repetir os gates.</li>
-        <li class="list-group-item">Fechar relatório, tag e checklist de submissão.</li>
-      </ol>
-      <h3 class="h5 fw-bold">Entregável da aula</h3>
-      <p class="text-muted mb-0">Tag de release candidate, RTM fechada, relatório de qualidade e checklist assinado pelo grupo. Tudo precisa apontar para a mesma versão.</p>
-    </section>
-
-    <section class="glass-card p-4 mb-4">
-      <h2 class="h4 fw-bold mb-3"><i class="fas fa-clipboard-check text-success me-2" aria-hidden="true"></i>Checklist final de submissão</h2>
-      <ul class="text-muted mb-0"><li>Repositório acessível sem solicitar permissão</li><li>Integrantes e turma identificados</li><li>Tag final e pipeline correspondentes</li><li>Segredos ausentes do histórico</li><li>README testado em ambiente novo</li><li>RTM e relatório versionados</li><li>Links para SonarCloud e evidências funcionando</li><li>Riscos residuais explicitados</li></ul>
-    </section>
-
-    <div class="text-center"><a href="../slide_entrega-projeto-final.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
-  </div></div></main>
-  <footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!DOCTYPE html><html lang="pt-br"><head><meta charset="UTF-8"><link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Entrega do trabalho final - Material</title><meta name="description" content="Roteiro da prática em sala da Aula 14: Release candidate, pacote de evidências e decisão de qualidade, com os prompts para o agente de código."><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"><link rel="stylesheet" href="../../../css/style.css"></head><body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2026_2.html">Qualidade 2026.2</a></li></ul></div></div></nav>
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2026_2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2026.2</a><div><span class="badge bg-white text-danger mb-1">Aula 14 &middot; Semana 46 &middot; Prática em sala</span><h1 class="h3 fw-bold text-white mb-0">Entrega do trabalho final</h1></div></div></header>
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Objetivo da prática</h2><p class="lead text-muted">Sair da aula com o projeto entregue: aplicação reproduzível a partir do README, tag do release candidate com CI verde, pacote de evidências indexado e decisão de qualidade assinada pelo grupo.</p>
+<p class="text-muted mb-0">A aula inteira é prática no projeto da equipe, o sistema de Organização de Recursos. Cada etapa tem um prompt pronto para colar no agente de código. O prompt delega a execução, mas a revisão continua com a equipe: leia o diff, rode a suíte e só então aceite.</p></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Roteiro da aula</h2><div class="row g-3"><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><h3 class="h6 fw-bold"><i class="far fa-clock me-1" aria-hidden="true"></i> 19h10–20h50</h3><ol class="small text-muted mb-0"><li>Abertura e combinados (10 min)</li><li>Prompt 1 · checklist e clone limpo (50 min)</li><li>Correções de bloqueadores (40 min)</li></ol></div></div><div class="col-md-6"><div class="card h-100 border-0 shadow-sm p-3"><h3 class="h6 fw-bold"><i class="far fa-clock me-1" aria-hidden="true"></i> 21h05–22h45</h3><ol class="small text-muted mb-0"><li>Prompt 2 · release candidate (40 min)</li><li>Prompt 3 · decisão e envio (40 min)</li><li>Checagem na mesa (20 min)</li></ol></div></div></div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">Antes de começar</h2><div class="row g-4"><div class="col-md-6"><h3 class="h6 fw-bold">Pré-requisitos</h3><ul class="text-muted mb-0"><li>Relatório de qualidade da Aula 13 versionado.</li><li>Repositório público no GitHub.</li><li>Nomes completos dos integrantes, até quatro por grupo.</li></ul></div><div class="col-md-6"><h3 class="h6 fw-bold">Uso do agente</h3><ul class="text-muted mb-0"><li>Trabalhe numa branch da prática, nunca direto na main.</li><li>Leia o diff inteiro antes de aceitar a mudança proposta pelo agente.</li><li>Rode <code>./mvnw -B verify</code> antes de cada commit e abra pull request no fim.</li><li>Não cole token, senha nem dado pessoal real no prompt.</li></ul></div></div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">1. Checklist da entrega em clone limpo</h2><p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 50 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Atue como avaliador externo do sistema de Organização de Recursos. Você pode usar o terminal (bash) e o git. Clone o repositório num diretório temporário, sem reaproveitar nada da máquina de quem desenvolveu, e siga apenas o README para subir a aplicação e rodar ./mvnw -B verify. Anote cada passo que faltou ou falhou. Depois confira os entregáveis da especificação: repositório com revisão por pares, aplicação executável, README e documentação da API, docs/rtm.md, diagramas de contexto, componentes e sequências críticas, plano e relatório de testes, pipeline de CI, relatórios do SonarCloud e do JaCoCo, plano e resultado do teste de carga, registro de defeitos e relatório final de qualidade. Escreva docs/entrega/checklist.md com item → existe → atualizado → caminho, e liste os bloqueadores em ordem. Não corrija nada nesta etapa.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: O clone foi feito do zero; cada item do checklist tem caminho.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">2. Release candidate e pacote de evidências</h2><p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 40 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Atue como responsável pelo release. Você pode usar o terminal (bash), o git e o gh. Depois que os bloqueadores do checklist estiverem corrigidos e o CI estiver verde na main, crie a tag anotada v1.0.0-rc1 no commit avaliado e envie a tag. Escreva CHANGELOG.md com o que entra nesta versão. Monte docs/evidencias/README.md como índice do pacote: link da execução do CI no commit da tag, relatório do JaCoCo como artifact, link do Quality Gate do SonarCloud, docs/performance/resultado-01.md, docs/rtm.md, docs/defeitos/ e docs/relatorio-qualidade.md. Toda evidência deve apontar para o commit da tag. Se for preciso corrigir algo depois, crie v1.0.0-rc2; nunca mova uma tag já usada.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: A execução do CI citada é do commit da tag; nenhum link do índice está quebrado.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">3. Decisão de qualidade e envio</h2><p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 40 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Atue como relator da decisão de qualidade. Você pode usar o terminal (bash) para ler o pacote de evidências. Escreva docs/decisao-qualidade.md com a decisão (liberar, liberar com ressalvas ou bloquear), os critérios usados, a evidência de cada critério, os riscos aceitos com impacto, justificativa e responsável, e o nome de cada integrante declarando o que fez. A decisão deve ser proporcional à evidência: não escreva pronto para produção a partir de testes locais. Ao final, gere um texto curto com o link do repositório público e a tag avaliada, para um integrante colar no formulário de entrega do Hub.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: Os riscos aceitos têm responsável; um único integrante envia pelo grupo.</div></section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h3 fw-bold">4. Entregável e checagem</h2><p class="text-muted">Tag <code>v1.0.0-rc1</code> com CI verde, <code>docs/entrega/checklist.md</code>, <code>docs/evidencias/README.md</code>, <code>docs/decisao-qualidade.md</code> e o envio feito no formulário de entrega.</p><p class="text-muted">Um integrante envia pelo grupo: até quatro nomes e o link do repositório público no GitHub.</p><a href="../entrega/entrega.html" class="btn btn-danger rounded-pill mb-3"><i class="fas fa-upload me-1" aria-hidden="true"></i> Abrir o formulário de entrega</a><h3 class="h6 fw-bold">O que o professor confere na mesa</h3><ul class="text-muted mb-0"><li>Clono o repositório e sigo o README.</li><li>Abro a execução do CI ligada à tag.</li><li>Confiro se o formulário recebeu a entrega do grupo.</li></ul></section>
+<div class="text-center"><a href="../slide_entrega-projeto-final.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2026_2.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+</div></div></main><footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
 <script src="../../../js/avisos.js" defer></script>
-</body>
-</html>
+</body></html>

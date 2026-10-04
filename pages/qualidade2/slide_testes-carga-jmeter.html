@@ -2,529 +2,128 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="icon"
-      type="image/png"
-      href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-    />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="keywords"
-      content="JMeter, carga, performance, latência, throughput, percentil, concorrência, Foot Fanatics"
-    />
-    <title>Aula 10 - Testes de Carga com JMeter</title>
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
+    <meta name="keywords" content="JMeter, carga, concorrência, dupla reserva, Testcontainers, p95, prática, prompts" />
+    <title>Aula 10 - Carga e concorrência no projeto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
     <link rel="stylesheet" href="../../css/style.css" />
     <link rel="stylesheet" href="../../css/slides.css" />
     <link rel="stylesheet" href="../../css/base-styles.css" />
-    <script type="module">import * as anime from 'https://cdn.jsdelivr.net/npm/animejs@4/+esm'; window.__anime = anime; window.dispatchEvent(new CustomEvent('anime-ready'));</script>
   </head>
   <body class="slide-body" data-disciplina="qualidade">
     <div class="slide-container">
-      <a
-        href="../home_qualidade_2026_2.html"
-        class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"
-        ><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a
-      >
+      <a href="../home_qualidade_2026_2.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
       <div class="slide active" id="slide-1">
         <div class="glass-cover text-center">
-          <img
-            src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-            alt="Senac Logo"
-            height="80"
-            class="mb-3"
-          />
-          <h5 class="text-uppercase text-secondary fw-bold">
-            Qualidade de Software · TADS
-          </h5>
-          <h1 class="display-4 fw-bold text-dark">
-            Aula 10: Carga e performance com JMeter
-          </h1>
-          <p class="fs-4 text-secondary">
-            Da sensação de “rápido” a um experimento reproduzível
-          </p>
-          <span class="badge bg-danger px-3 py-2 rounded-pill"
-            >Semana 42 · Foot Fanatics</span
-          >
-          <div class="slide-keywords d-none" aria-hidden="true">
-            <span class="keyword">JMeter</span
-            ><span class="keyword">latência</span
-            ><span class="keyword">concorrência</span>
-          </div>
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · TADS</h5>
+          <h1 class="display-4 fw-bold text-dark">Aula 10: Carga e concorrência no projeto</h1>
+          <p class="fs-4 text-secondary">Reservas simultâneas do mesmo recurso sob carga</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 42 · Prática em sala</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">JMeter</span><span class="keyword">carga</span><span class="keyword">concorrência</span><span class="keyword">dupla reserva</span></div>
         </div>
       </div>
       <div class="slide" id="slide-2">
         <div class="slide-content">
-          <h1 class="display-5 fw-bold text-center mb-4">Agenda da aula</h1>
-          <div class="row g-3 fs-5">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda da prática</h1>
+          <p class="lead text-center text-muted mb-4">Provar com teste automatizado que duas solicitações simultâneas geram uma única reserva aceita e medir, com JMeter, o comportamento da API sob carga contra um requisito escrito antes da execução.</p>
+          <div class="row g-3">
             <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>1. Métricas</strong
-                ><span class="text-muted"
-                  >latência, throughput, erro e percentis.</span
-                >
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Abertura e combinados (10 min)</li><li>Prompt 1 · teste de concorrência (50 min)</li><li>Prompt 2 · RNF e plano JMeter (40 min)</li></ol>
               </div>
             </div>
             <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>2. Modelo de carga</strong
-                ><span class="text-muted"
-                  >usuário, ritmo, rampa e duração.</span
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>3. JMeter</strong
-                ><span class="text-muted"
-                  >plano, correlação, asserção e relatório.</span
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>4. Laboratório</strong
-                ><span class="text-muted"
-                  >renovação concorrente de sessão.</span
-                >
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 2 · execução em modo CLI (25 min)</li><li>Prompt 3 · análise e decisão (50 min)</li><li>Checagem na mesa (25 min)</li></ol>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="slide" id="slide-3">
-        <div class="slide-content text-center">
-          <span class="badge bg-danger mb-3">Pergunta de qualidade</span>
-          <h2 class="display-5 fw-bold">
-            “A API está rápida” não é um resultado
-          </h2>
-          <p class="lead text-muted">
-            Rápida para qual operação, com quantos usuários, por quanto tempo e
-            em qual ambiente?
-          </p>
-          <div class="alert alert-dark fs-5 mt-4">
-            Durante 10 min, com 100 sessões ativas e 20 renovações/s,
-            <strong>p95 &lt; 800 ms</strong>, erro &lt; 1% e nenhuma sessão
-            duplicada.
+        <div class="slide-content">
+          <h2 class="display-5 fw-bold text-center mb-4">Antes de abrir o agente</h2>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Pré-requisitos</h3>
+                <ul class="fs-5 mb-0"><li>Docker funcionando e Testcontainers já usado na Aula 08.</li><li>Apache JMeter 5.6 instalado (<code>jmeter -v</code>) ou disponível no laboratório.</li><li>Aplicação subindo localmente com banco PostgreSQL em container.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold"><i class="fas fa-robot me-2" aria-hidden="true"></i>Uso do agente</h3>
+                <ul class="fs-5 mb-0"><li>Trabalhe numa branch da prática, nunca direto na main.</li><li>Leia o diff inteiro antes de aceitar a mudança proposta pelo agente.</li><li>Rode <code>./mvnw -B verify</code> antes de cada commit e abra pull request no fim.</li><li>Não cole token, senha nem dado pessoal real no prompt.</li></ul>
+              </div>
+            </div>
           </div>
-          <p class="text-muted">
-            Isso é hipótese testável: contexto + carga + métrica + limite +
-            integridade.
-          </p>
+          <div class="alert alert-dark mt-4 mb-0 fs-5">Os prompts estão no material escrito, prontos para copiar. O projeto é o de cada equipe, o sistema de Organização de Recursos.</div>
         </div>
       </div>
       <div class="slide" id="slide-4">
         <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            As quatro métricas essenciais
-          </h2>
-          <div class="row g-3 text-center">
-            <div class="col-md-3">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <i
-                  class="fas fa-stopwatch fa-2x text-danger mb-2"
-                  aria-hidden="true"
-                ></i
-                ><strong>Latência</strong
-                ><small class="text-muted">tempo por request</small>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <i
-                  class="fas fa-gauge-high fa-2x text-primary mb-2"
-                  aria-hidden="true"
-                ></i
-                ><strong>Throughput</strong
-                ><small class="text-muted">requisições por segundo</small>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <i
-                  class="fas fa-triangle-exclamation fa-2x text-warning mb-2"
-                  aria-hidden="true"
-                ></i
-                ><strong>Erros</strong
-                ><small class="text-muted">taxa e tipo</small>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <i
-                  class="fas fa-microchip fa-2x text-success mb-2"
-                  aria-hidden="true"
-                ></i
-                ><strong>Recursos</strong
-                ><small class="text-muted">CPU, memória, conexões</small>
-              </div>
-            </div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">50 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Dupla reserva provada por teste</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como engenheiro de qualidade do sistema de Organização de Recursos. Você pode usar o terminal (bash) e o <code>git</code>. Escreva um teste de integração com JUnit 5 e Testcontainers (PostgreSQL real, sem H2) que dispara 20 solicitações simultâneas de reserva para a mesma sala e o mesmo horário, usando <code>ExecutorService</code> e um <code>CountDownLatch</code> para que todas partam juntas. O resultado esperado é exatamente uma reserva aceita e 19 recusadas com 409, e uma única linha no banco para aquele recurso e intervalo; verifique isso por consulta, não só pela resposta. Repita o mesmo teste para a agenda do professor. Rode cinco vezes seguidas. Se algum caso falhar, não ajuste o teste: registre o defeito em <code>docs/defeitos/</code> com passos e evidência e corrija no banco, com constraint de exclusão do PostgreSQL (<code>EXCLUDE USING gist</code> sobre <code>tstzrange</code>) ou lock pessimista, e escreva um ADR curto em <code>docs/adr/</code> com o motivo da escolha.</p>
           </div>
-          <div class="alert alert-warning mt-4 mb-0">
-            Tempo médio esconde caudas. Reporte ao menos
-            <strong>mediana, p95 e p99</strong>.
-          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: O teste ficou vermelho sem a proteção e verde com ela; a contagem vem do banco.</div>
         </div>
       </div>
       <div class="slide" id="slide-5">
         <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-3">
-            Tipos de experimento
-          </h2>
-          <div class="table-responsive">
-            <table class="table table-bordered bg-white shadow-sm">
-              <thead class="table-dark">
-                <tr>
-                  <th>Teste</th>
-                  <th>Pergunta</th>
-                  <th>Forma</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Load</strong></td>
-                  <td>suporta a carga esperada?</td>
-                  <td>patamar nominal</td>
-                </tr>
-                <tr>
-                  <td><strong>Stress</strong></td>
-                  <td>onde quebra e como recupera?</td>
-                  <td>aumenta até o limite</td>
-                </tr>
-                <tr>
-                  <td><strong>Spike</strong></td>
-                  <td>reage a pico abrupto?</td>
-                  <td>salto de carga</td>
-                </tr>
-                <tr>
-                  <td><strong>Endurance</strong></td>
-                  <td>degrada com o tempo?</td>
-                  <td>carga longa</td>
-                </tr>
-                <tr>
-                  <td><strong>Volume</strong></td>
-                  <td>dados acumulados alteram resposta?</td>
-                  <td>massa grande</td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">65 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Requisito de desempenho e plano JMeter</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como engenheiro de desempenho. Você pode usar o terminal (bash). Antes da ferramenta, escreva em <code>docs/performance/rnf.md</code> uma proposta de requisito mensurável para a consulta de disponibilidade e para a criação de reserva (por exemplo, p95 até 300 ms com 50 usuários simultâneos e taxa de erro abaixo de 1%), marcada como proposta para o grupo validar, com o modelo de carga: usuários, ramp-up, duração e mistura de operações. Depois crie <code>perf/reservas.jmx</code> com Thread Group, login extraindo o token por JSON Extractor, CSV Data Set com usuários fictícios em <code>perf/usuarios.csv</code>, consulta de disponibilidade e criação de reserva disputando o mesmo recurso. Adicione asserções: a criação só pode responder 201 ou 409, nunca 500. Rode só em modo CLI contra a aplicação local, nunca contra ambiente compartilhado: <code>jmeter -n -t perf/reservas.jmx -l perf/resultados/rodada-01.jtl -e -o perf/relatorio-01</code>. Versione o plano e o CSV; não versione o relatório HTML gerado.</p>
           </div>
-          <p class="text-center text-muted">
-            Hoje: load test curto e concorrência na renovação.
-          </p>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: O RNF foi escrito antes da primeira rodada; o plano não tem token fixo.</div>
         </div>
       </div>
       <div class="slide" id="slide-6">
         <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Modelo de carga antes da ferramenta
-          </h2>
-          <div class="row g-3">
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Perfis</strong
-                ><small class="text-muted"
-                  >free consulta público; premium consulta exclusivo; sessão
-                  renova.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Distribuição</strong
-                ><small class="text-muted"
-                  >70% leitura pública, 25% exclusiva, 5% renovação.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>Ritmo</strong
-                ><small class="text-muted"
-                  >rampa, patamar, duração e think time.</small
-                >
-              </div>
-            </div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">50 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Ler o resultado e decidir</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 58vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como analista de desempenho. Você pode usar o terminal (bash) para ler <code>perf/resultados/rodada-01.jtl</code> e o relatório gerado. Calcule p50, p95 e p99 por operação, vazão e taxa de erro, separando 409 esperado de erro real. Consulte o banco e confirme que existe no máximo uma reserva aceita por recurso e intervalo disputado. Compare os números com <code>docs/performance/rnf.md</code> e escreva <code>docs/performance/resultado-01.md</code> com ambiente (máquina, versão da aplicação, commit), carga aplicada, tabela de resultados, decisão (atende, não atende ou inconclusivo), uma hipótese de gargalo com o dado que a sustenta e o próximo experimento. Não arredonde a favor do grupo e não afirme nada sobre produção a partir de uma máquina local. Ligue o RNF ao plano e ao resultado em <code>docs/rtm.md</code>.</p>
           </div>
-          <div class="alert alert-light border mt-4">
-            Sem modelo, “100 threads” é só um número. A carga deve representar
-            uma história de uso e um RNF.
-          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: Cada número do resultado aparece no .jtl; o limite da conclusão está escrito.</div>
         </div>
       </div>
       <div class="slide" id="slide-7">
-        <div class="slide-content">
-          <span class="badge bg-primary mb-2">JMeter</span>
-          <h2 class="display-5 fw-bold mb-3">Anatomia do plano</h2>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <ol class="list-group list-group-numbered">
-                <li class="list-group-item">
-                  <strong>Thread Group</strong>: usuários, rampa, loops
-                </li>
-                <li class="list-group-item">
-                  <strong>Config</strong>: base URL e defaults
-                </li>
-                <li class="list-group-item">
-                  <strong>HTTP Request</strong>: operação
-                </li>
-              </ol>
-            </div>
-            <div class="col-md-6">
-              <ol class="list-group list-group-numbered" start="4">
-                <li class="list-group-item">
-                  <strong>Extractor</strong>: token/id dinâmico
-                </li>
-                <li class="list-group-item">
-                  <strong>Assertion</strong>: status e conteúdo
-                </li>
-                <li class="list-group-item">
-                  <strong>Report</strong>: resultado agregado
-                </li>
-              </ol>
-            </div>
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 10</span>
+          <p class="fs-4 mb-4">Pull request com o teste de concorrência verde, o ADR da proteção, <code>perf/reservas.jmx</code>, <code>docs/performance/rnf.md</code>, <code>docs/performance/resultado-01.md</code> e a RTM atualizada.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>Peço para remover a proteção e rodar o teste de concorrência.</li><li>Pergunto de onde saiu o p95 e abro o .jtl junto com vocês.</li><li>Confiro se o 409 foi contado como erro.</li></ul>
           </div>
-          <pre
-            class="bg-dark text-white rounded-3 p-3 mt-3 mb-0"
-          ><code class="text-info">jmeter -n -t foot-fanatics.jmx \
-  -JbaseUrl=http://localhost:8080 \
-  -l resultados.jtl -e -o relatorio</code></pre>
+          
         </div>
       </div>
-      <div class="slide" id="slide-8">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Correlação: cada usuário tem sua sessão
-          </h2>
-          <div
-            class="d-flex align-items-center justify-content-center gap-3 flex-wrap fs-5"
-          >
-            <div class="card border-0 shadow-sm p-3">
-              <strong>POST /login</strong>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Extrair token</strong
-              ><small class="text-muted">$.accessToken</small>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>Authorization</strong
-              ><small class="text-muted">Bearer ${token}</small>
-            </div>
-            <i class="fas fa-arrow-right text-danger" aria-hidden="true"></i>
-            <div class="card border-0 shadow-sm p-3">
-              <strong>POST /refresh</strong>
-            </div>
-          </div>
-          <ul class="fs-5 mt-4">
-            <li>dados de usuário não podem colidir;</li>
-            <li>token expira e precisa ser atualizado no fluxo;</li>
-            <li>asserção funcional continua obrigatória sob carga;</li>
-            <li>segredo não entra no arquivo de resultados.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="slide" id="slide-9">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-3">
-            Experimento de renovação concorrente
-          </h2>
-          <div class="table-responsive">
-            <table class="table table-bordered bg-white">
-              <thead class="table-dark">
-                <tr>
-                  <th>Fase</th>
-                  <th>Duração</th>
-                  <th>Carga</th>
-                  <th>Objetivo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Aquecimento</td>
-                  <td>2 min</td>
-                  <td>0 → 20 req/s</td>
-                  <td>JIT, pool e caches</td>
-                </tr>
-                <tr class="table-warning">
-                  <td>Patamar</td>
-                  <td>10 min</td>
-                  <td>20 req/s</td>
-                  <td>medir RNF</td>
-                </tr>
-                <tr>
-                  <td>Pico</td>
-                  <td>1 min</td>
-                  <td>40 req/s</td>
-                  <td>observar recuperação</td>
-                </tr>
-                <tr>
-                  <td>Descida</td>
-                  <td>2 min</td>
-                  <td>40 → 0</td>
-                  <td>encerrar sem fila presa</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="alert alert-danger mb-0">
-            <strong>Invariante:</strong> duas renovações concorrentes do mesmo
-            refresh token não podem criar duas sessões válidas.
-          </div>
-        </div>
-      </div>
-      <div class="slide" id="slide-10">
-        <div class="slide-content">
-          <h2 class="display-5 fw-bold text-center mb-4">
-            Ler resultado sem adivinhar
-          </h2>
-          <div class="row g-3">
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>p95 subiu + CPU alta</strong
-                ><small class="text-muted"
-                  >capacidade computacional ou algoritmo.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>p95 subiu + pool cheio</strong
-                ><small class="text-muted"
-                  >conexão/banco é gargalo provável.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>erros crescem no pico</strong
-                ><small class="text-muted"
-                  >limite, timeout ou fila saturada.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card border-0 shadow-sm p-3 h-100">
-                <strong>memória cresce sem voltar</strong
-                ><small class="text-muted"
-                  >investigar retenção; endurance confirma.</small
-                >
-              </div>
-            </div>
-          </div>
-          <p class="text-muted text-center mt-4">
-            Correlação sugere hipótese; perfil, logs e nova execução confirmam.
-          </p>
-        </div>
-      </div>
-      <div class="slide" id="slide-11">
-        <div class="slide-content">
-          <span class="badge bg-success mb-2">Prática · evidência da aula</span>
-          <h2 class="display-5 fw-bold mb-3">Teste de carga reproduzível</h2>
-          <ol class="list-group list-group-numbered fs-5">
-            <li class="list-group-item">
-              Escrever RNF com operação, carga, duração e limites.
-            </li>
-            <li class="list-group-item">
-              Criar JMX parametrizado; autenticar e correlacionar token.
-            </li>
-            <li class="list-group-item">
-              Executar aquecimento + patamar; salvar JTL e relatório HTML.
-            </li>
-            <li class="list-group-item">
-              Verificar p95, erro e invariante de sessão única.
-            </li>
-            <li class="list-group-item">
-              Registrar ambiente, commit e conclusão na RTM/relatório.
-            </li>
-          </ol>
-          <div class="alert alert-success mt-3 mb-0">
-            <strong>Entregável:</strong> JMX versionado, comando de execução,
-            relatório e diagnóstico baseado em evidência.
-          </div>
-        </div>
-      </div>
-      <div class="slide" id="slide-12">
+      <div class="slide cover-bg" id="slide-8">
         <div class="glass-cover text-center">
-          <h1 class="display-4 fw-bold text-dark">
-            Performance é requisito + experimento
-          </h1>
-          <p class="fs-4 text-secondary">
-            Carga representativa, percentis, integridade e ambiente registrado.
-          </p>
-          <div class="row g-3 text-start mt-3">
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Leve</strong
-                ><small class="text-muted">média não basta; use p95/p99.</small>
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Construiu</strong
-                ><small class="text-muted"
-                  >plano de renovação concorrente.</small
-                >
-              </div>
-            </div>
-            <div class="col-md-4">
-              <div class="card border-0 p-3 h-100">
-                <strong>Próxima</strong
-                ><small class="text-muted"
-                  >E4: conteúdo público e exclusivo.</small
-                >
-              </div>
-            </div>
-          </div>
-          <h2 class="mt-4">Dúvidas?</h2>
+          <i class="fas fa-gauge-high fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Auditoria e relatório de utilização.</p>
         </div>
       </div>
     </div>
     <footer class="slide-footer">
       <div class="slide-controls">
-        <button id="prevBtn" disabled>
-          <i class="fas fa-chevron-left" aria-hidden="true"></i>
-        </button>
-        <div class="progress mx-3" style="width: 100px; height: 6px">
-          <div
-            id="progressBar"
-            class="progress-bar bg-dark"
-            role="progressbar"
-            style="width: 0%"
-          ></div>
-        </div>
-        <span id="slideCounter" class="small text-muted fw-semibold me-2"
-          >1 / 12</span
-        ><button id="nextBtn" class="ms-2">
-          <i class="fas fa-chevron-right" aria-hidden="true"></i></button
-        ><button id="fullscreenBtn" class="ms-2">
-          <i class="fas fa-expand" aria-hidden="true"></i>
-        </button>
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 8</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
       </div>
-      <div class="text-center text-muted small d-none d-md-block">
-        Qualidade · Carga com JMeter · Semana 42
-      </div>
-      <a
-        href="material/material_testes-carga-jmeter.html"
-        class="btn btn-outline-primary btn-sm rounded-pill"
-        ><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a
-      ><a href="../../index.html"
-        ><img
-          src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png"
-          alt="Senac"
-          height="30"
-          class="opacity-75"
-      /></a>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Carga e concorrência no projeto · Semana 42</div>
+      <a href="material/material_testes-carga-jmeter.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
     </footer>
     <script src="../../js/standard_slides.js"></script>
-  <script src="../../js/avisos.js" defer></script>
+    <script src="../../js/avisos.js" defer></script>
   </body>
 </html>

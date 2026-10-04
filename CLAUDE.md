@@ -52,6 +52,7 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 
 - Stack: **Java 21 LTS + Spring Boot 3.x**, Maven, PostgreSQL, JUnit 5, JaCoCo, Testcontainers, WireMock, SonarCloud, JMeter. **Não use Jest/VCR** nas aulas de 2026.2 — foram migrados para o equivalente Java (aulas 07 e 08).
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
+- **Aulas 09 a 17 (Semanas 41–50) são só prática em sala com prompts**, aplicadas ao projeto das equipes (Organização de Recursos), sem teoria. Cada deck segue capa → agenda dos dois blocos → "Antes de abrir o agente" → um slide por prompt (com "Antes de aceitar") → entregável e checagem na mesa → dúvidas; o material repete os prompts com botão de copiar. Os nove pares são gerados a partir de um único conjunto de dados; edite os prompts no slide e no material juntos.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
 ## ⛔ Banco Supabase compartilhado com o Einstein
