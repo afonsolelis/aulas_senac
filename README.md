@@ -23,6 +23,7 @@ aulas_senac/
 │   ├── professor.html
 │   ├── qualidade/  logica/  tcc/   # slides + material/ de 2026.1
 │   ├── qualidade2/                 # slides + material/ de Qualidade (2026.2)
+│   │   └── prova/                  # correção da prova escrita, uma página por turma
 │   └── tcc2/                       # slides + material/ de TCC2 (2026.2)
 ├── css/                            # style.css, slides.css, base-styles.css
 ├── js/standard_slides.js           # navegação prev/next/fullscreen/progress
