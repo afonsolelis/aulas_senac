@@ -32,15 +32,21 @@
   <div id="recado" class="alert d-none" role="status"></div>
 
   <form id="form-entrega" novalidate>
-    <div class="mb-3">
-      <label class="form-label fw-semibold" for="turma">Turma</label>
-      <select class="form-select" id="turma" name="turma" required>
-        <option value="">Escolha a turma</option>
-        <option value="senac-qs-2026-2-stadscas4na">STADSCAS4NA &middot; Segunda</option>
-        <option value="senac-qs-2026-2-stadscas4nb">STADSCAS4NB &middot; Quinta</option>
-        <option value="senac-qs-2026-2-stadscas4nd">STADSCAS4ND &middot; Sexta</option>
-      </select>
-    </div>
+    <fieldset class="mb-3" id="turma">
+      <legend class="form-label fw-semibold fs-6">Turma</legend>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="turma" id="turma-4na" value="senac-qs-2026-2-stadscas4na" required>
+        <label class="form-check-label" for="turma-4na">STADSCAS4NA &middot; Segunda</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="turma" id="turma-4nb" value="senac-qs-2026-2-stadscas4nb">
+        <label class="form-check-label" for="turma-4nb">STADSCAS4NB &middot; Quinta</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="turma" id="turma-4nd" value="senac-qs-2026-2-stadscas4nd">
+        <label class="form-check-label" for="turma-4nd">STADSCAS4ND &middot; Sexta</label>
+      </div>
+    </fieldset>
 
     <div class="mb-3">
       <label class="form-label fw-semibold" for="integrante-1">Integrante 1 <span class="text-muted fw-normal small">nome completo, obrigatório</span></label>
@@ -85,7 +91,8 @@
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const form = document.getElementById('form-entrega');
   const recado = document.getElementById('recado');
-  const turma = document.getElementById('turma');
+  const opcoesTurma = [...document.querySelectorAll('input[name="turma"]')];
+  const rotuloTurma = (radio) => document.querySelector(`label[for="${radio.id}"]`);
   const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
     timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
 
@@ -94,13 +101,13 @@
     recado.className = 'alert ' + (tipo === 'ok' ? 'alert-success' : 'alert-danger');
   }
 
-  // Turma com recebimento fechado pelo professor fica desabilitada na lista.
+  // Turma com recebimento fechado pelo professor fica desabilitada.
   async function carregar() {
-    for (const opcao of [...turma.options].filter((o) => o.value)) {
+    for (const opcao of opcoesTurma) {
       const { data } = await db.rpc('entrega_formulario', { p_slug: opcao.value });
       if (!data || !data.aceitando) {
         opcao.disabled = true;
-        opcao.textContent += ' (recebimento fechado)';
+        rotuloTurma(opcao).textContent += ' (recebimento fechado)';
       }
     }
   }
@@ -143,7 +150,7 @@
     const dl = document.getElementById('comprovante-dados');
     dl.replaceChildren();
     for (const [rotulo, valor] of [
-      ['Turma', turma.selectedOptions[0].textContent],
+      ['Turma', rotuloTurma(opcoesTurma.find((o) => o.checked)).textContent],
       ['Integrantes', integrantes.join(', ')],
       ['Repositório', data.repositorio],
       ['Enviado em', quando(data.enviado_em)],
