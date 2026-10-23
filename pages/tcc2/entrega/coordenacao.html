@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Depósitos do TCC2 - Coordenação - TCC2 2026.2</title>
+<meta name="description" content="Acesso da coordenação aos PDFs finais do TCC2 2026.2, somente leitura.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc2.html">TCC2 2026.2</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_tcc2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2 2026.2</a><div><span class="badge bg-white text-dark mb-1">TCC2 &middot; 2026.2 &middot; Coordenação</span><h1 class="h3 fw-bold text-white mb-0">Depósitos do TCC2</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-10 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token da coordenação</h2>
+  <p class="text-muted small">Acesso somente leitura aos PDFs finais depositados pelos alunos.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:16rem" type="password"
+           autocomplete="current-password" placeholder="Token" required aria-label="Token da coordenação">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<section class="glass-card p-4 mb-4 d-none" id="painel">
+  <div class="d-flex gap-2 flex-wrap align-items-center mb-3">
+    <h2 class="h4 fw-bold mb-0 me-auto">PDFs depositados</h2>
+    <button class="btn btn-outline-secondary" type="button" id="atualizar"><i class="fas fa-rotate me-1" aria-hidden="true"></i> Atualizar</button>
+    <button class="btn btn-primary" type="button" id="baixar-todos"><i class="fas fa-file-zipper me-1" aria-hidden="true"></i> Baixar todos (.zip)</button>
+    <button class="btn btn-link text-secondary" type="button" id="sair">Sair</button>
+  </div>
+  <p class="text-muted small" id="resumo"></p>
+  <div id="recado" class="alert d-none" role="status"></div>
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <thead><tr><th scope="col">Turma</th><th scope="col">Integrantes</th><th scope="col">PDF</th><th scope="col">Enviado em</th></tr></thead>
+      <tbody id="linhas"></tbody>
+    </table>
+  </div>
+</section>
+
+</div></div></main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const pdfUrl = (caminho) => `${SUPABASE_URL}/storage/v1/object/public/hub-tcc2-depositos/${caminho}`;
+  // O token fica só nesta aba e é conferido no banco a cada leitura.
+  const CHAVE_SESSAO = 'depositos_tcc2_coordenacao';
+  const $ = (id) => document.getElementById(id);
+  let depositos = [];
+
+  const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+  const lerToken = () => { try { return sessionStorage.getItem(CHAVE_SESSAO) || ''; } catch { return ''; } };
+  const gravarToken = (t) => { try { t ? sessionStorage.setItem(CHAVE_SESSAO, t) : sessionStorage.removeItem(CHAVE_SESSAO); } catch {} };
+
+  function avisar(alvo, texto, tipo) {
+    alvo.textContent = texto;
+    alvo.className = 'alert ' + (!texto ? 'd-none' : tipo === 'ok' ? 'alert-success' : 'alert-danger') +
+      (alvo.id === 'recado-token' ? ' mt-3' : '');
+  }
+
+  // Tudo vem de formulário de aluno: só textContent.
+  function el(tag, texto, attrs = {}) {
+    const e = document.createElement(tag);
+    if (texto != null) e.textContent = texto;
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  }
+
+  async function carregar() {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/hubdeposito_coordenacao`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_token: lerToken() }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.message || 'Falha ao consultar o servidor.');
+    if (!data.ok) throw new Error(data.erro);
+    depositos = data.depositos;
+    desenhar();
+  }
+
+  function desenhar() {
+    const corpo = $('linhas');
+    corpo.replaceChildren();
+    $('resumo').textContent = depositos.length === 1 ? '1 depósito.' : `${depositos.length} depósitos.`;
+    $('baixar-todos').disabled = depositos.length === 0;
+    if (!depositos.length) {
+      const tr = el('tr'); tr.append(el('td', 'Nenhum PDF depositado ainda.', { colspan: '4', class: 'text-muted' }));
+      corpo.append(tr);
+      return;
+    }
+    for (const d of depositos) {
+      const tr = el('tr');
+      tr.append(el('td', d.turma));
+      tr.append(el('td', d.integrantes, { style: 'white-space:pre-line' }));
+      const td = el('td');
+      td.append(el('a', d.nome_arquivo || 'Abrir PDF', { href: pdfUrl(d.arquivo), target: '_blank', rel: 'noopener noreferrer' }));
+      tr.append(td, el('td', quando(d.enviado_em)));
+      corpo.append(tr);
+    }
+  }
+
+  // Nome do arquivo no .zip: turma + integrante 1, sem caracteres problemáticos.
+  const nomeNoZip = (d, usados) => {
+    const base = `${d.turma.split(' ')[0]} - ${d.grupo}`.normalize('NFD').replace(/[̀-ͯ]/g, '')
+      .replace(/[^\w .-]+/g, '').trim();
+    let nome = `${base}.pdf`, n = 2;
+    while (usados.has(nome)) nome = `${base} (${n++}).pdf`;
+    usados.add(nome);
+    return nome;
+  };
+
+  async function baixarTodos() {
+    const botao = $('baixar-todos');
+    botao.disabled = true;
+    try {
+      const zip = new JSZip();
+      const usados = new Set();
+      for (const [i, d] of depositos.entries()) {
+        avisar($('recado'), `Baixando ${i + 1} de ${depositos.length}…`, 'ok');
+        const r = await fetch(pdfUrl(d.arquivo));
+        if (!r.ok) throw new Error(`Não consegui baixar o PDF de ${d.grupo}.`);
+        zip.file(nomeNoZip(d, usados), await r.blob());
+      }
+      const blob = await zip.generateAsync({ type: 'blob' });
+      const a = el('a', null, { href: URL.createObjectURL(blob), download: 'tcc2-2026-2-depositos.zip' });
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+      avisar($('recado'), depositos.length === 1 ? '1 PDF baixado.' : `${depositos.length} PDFs baixados.`, 'ok');
+    } catch (e) {
+      avisar($('recado'), e.message, 'erro');
+    }
+    botao.disabled = false;
+  }
+
+  async function entrar() {
+    try {
+      await carregar();
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+      avisar($('recado-token'), '');
+    } catch (e) {
+      gravarToken('');
+      $('tela-token').classList.remove('d-none');
+      $('painel').classList.add('d-none');
+      avisar($('recado-token'), e.message, 'erro');
+    }
+  }
+
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    gravarToken($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('atualizar').addEventListener('click', () => carregar().catch((e) => avisar($('recado'), e.message, 'erro')));
+  $('baixar-todos').addEventListener('click', baixarTodos);
+  $('sair').addEventListener('click', () => { gravarToken(''); location.reload(); });
+
+  if (lerToken()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

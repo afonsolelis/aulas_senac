@@ -17,6 +17,10 @@ nenhum deste lado.
 | `tbl_*` | **Einstein. Não tocar.** | tabelas `tbl_sessions`, `tbl_participants`, `tbl_votes`; funções `tbl_distribution`, `tbl_enter`, `tbl_host`, `tbl_host_state`, `tbl_phase`, `tbl_state`, `tbl_timeline`, `tbl_vote` |
 | `quiz_*` | Hub (quiz ao vivo) | `quiz_sessions`, `quiz_questions`, `quiz_answer_key`, `quiz_answers`, `quiz_players`, `quiz_strikes`, `quiz_host_tokens`, `quiz_relatorios` e as RPCs `quiz_*` |
 | `avisos*` | Hub (quadro de avisos) | `avisos`, `avisos_admin`, `avisos_sessoes` e as RPCs `avisos_*` |
+| `hubtbl_*` | Hub (TBL ao vivo) | tabelas e RPCs `hubtbl_*` |
+| `hubdeposito_*` | Hub (depósito do TCC2) | `hubdeposito_respostas`, `hubdeposito_acesso`, RPCs `hubdeposito_*`, bucket `hub-tcc2-depositos` e a policy `hub-tcc2-depositos: envio` em `storage.objects` |
+| `entrega_*` | `aulas_mackenzie`. Hub só insere linhas `senac-*` | `entrega_formularios`, `entrega_respostas`, `entrega_professor` e as RPCs `entrega_*` |
+| `card-images` (bucket) | outro projeto. Não tocar | bucket e policies `card-images: *` |
 
 A lista envelhece. **Antes de escrever, levante de novo** (consulta abaixo). Objeto que não
 estiver em `quiz_*`/`avisos*` e não tiver sido criado nesta conversa é de outro projeto.

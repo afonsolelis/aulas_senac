@@ -62,7 +62,7 @@ todos os objetos `tbl_*`. **Nunca** rode `drop`, `truncate`, `alter` nem `create
 objeto existente que não seja `quiz_*`/`avisos*`, e não aplique SQL de outro repositório sem
 adaptar. Antes de qualquer SQL de escrita, siga `.claude/skills/supabase-compartilhado/SKILL.md`.
 
-## Quiz ao vivo (Supabase) — um dos dois usos de backend
+## Quiz ao vivo (Supabase)
 
 `pages/<slug>/quiz/` guarda quizzes projetados em aula: `<aula>-quiz.html` (celular do aluno),
 `<aula>-painel.html` (projetado, com QR, cronômetro e placar) e `<aula>-relatorio.html`
@@ -147,7 +147,21 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   a rodada em `hubtbl_historico` antes de apagar.
 - Validação: `node scripts/tbl-e2e.mjs aula07 ff-q2-a07-tbl` (descarta a sala no fim; não rode em aula).
 
-## Quadro de avisos (Supabase) — o outro uso de backend
+## Entregas e depósitos (Supabase)
+
+- **Qualidade 2026.2** (`pages/qualidade2/entrega/`) e o formulário de turmas usam as tabelas e funções
+  `entrega_*`, que são do repositório `aulas_mackenzie`. Daqui só se inserem formulários `senac-*`
+  (`supabase/entregas-*.sql`). Token do professor: o mesmo da área de entregas do Mackenzie.
+- **TCC2 2026.2** (`pages/tcc2/entrega/`): o aluno deposita o **PDF final** no bucket
+  `hub-tcc2-depositos` (público para leitura pelo link, sem policy de SELECT, logo sem listagem;
+  só PDF, até 30 MB; nome sorteado `<turma>/<uuid>.pdf`). `hubdeposito_enviar` confere o arquivo no
+  storage e grava em `hubdeposito_respostas`. Abertura da turma vem de `entrega_formularios`
+  (`senac-tcc2-*`). SQL: `supabase/hubdeposito-tcc2.sql` → `hubdeposito-coordenacao.sql`.
+- `professor.html` (token do professor, nota e comentário) e `coordenacao.html` (somente leitura,
+  token próprio em `hubdeposito_acesso`, hash salgado, nunca versionado; baixa todos em .zip).
+- Arquivo de storage não se apaga por SQL (`storage.protect_delete`): use o painel do Supabase.
+
+## Quadro de avisos (Supabase)
 
 Botão flutuante (sino) em **todas** as páginas: `js/avisos.js`, carregado por uma tag
 `<script src="<../>js/avisos.js" defer>` antes de `</body>`. O widget injeta o próprio CSS

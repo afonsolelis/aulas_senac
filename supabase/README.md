@@ -400,3 +400,10 @@ select arquivado_em, participantes, decisoes
 alunos no navegador, lobby → decisões → discussão → síntese de todas as questões →
 consolidado, confere o corte do dado novo e **descarta** a sala no fim. Não rode
 durante a aula: descartar desconecta quem estiver na sala.
+
+## Depósito do TCC2 (`hubdeposito_*`)
+
+Ordem: `hubdeposito-tcc2.sql` (bucket `hub-tcc2-depositos`, policy de envio, tabela e funções)
+→ `hubdeposito-coordenacao.sql` (acesso somente leitura da coordenação). Ambos só criam objetos
+novos. O token da coordenação não é versionado: o comando para criar ou trocar está no cabeçalho
+de `hubdeposito-coordenacao.sql`.
