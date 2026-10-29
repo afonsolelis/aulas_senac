@@ -215,21 +215,17 @@
     <p class="conexao" id="conexao"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="/static/js/aulas.js"></script>
   <script>
   /* ------------------------------------------------------------------
-     Chave publicável: a proteção não está no sigilo dela, e sim na RLS
-     e nas funções SECURITY DEFINER. Ver supabase/hubtbl-schema.sql.
+     As chamadas vão para o app (/api/v1/senac/tbl) pelo cliente
+     /static/js/aulas.js; o aluno não usa token nenhum.
      ------------------------------------------------------------------ */
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
   const SLUG = new URLSearchParams(location.search).get('sala') || 'ff-q2-a07-tbl';
   const GUARDA = 'hubtbl:' + SLUG;
   const LETRAS = ['A', 'B', 'C', 'D'];
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false }
-  });
+  const api = Aulas('senac');
 
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g,
@@ -274,13 +270,6 @@
     el.textContent = texto || '';
     el.hidden = !texto;
     el.classList.toggle('erro', !!erro);
-  }
-
-  async function rpc(fn, args) {
-    const { data, error } = await db.rpc(fn, args);
-    if (error) throw new Error(error.message);
-    if (data && data.ok === false) throw new Error(data.erro);
-    return data;
   }
 
   /* --------------------------- desenho --------------------------- */
@@ -576,7 +565,7 @@
   async function atualizar() {
     if (!eu) return;
     try {
-      const novo = await rpc('hubtbl_estado', { p_slug: SLUG, p_participante: eu.id });
+      const novo = await api.get('tbl', SLUG, 'estado', { participante: eu.id });
       if (!novo.inscrito) {   // a sala foi reiniciada para outra turma
         eu = null; guardar(null); s = null; prazo = 0; chaveRender = ''; rodadaEmTela = null;
         $('#quem').textContent = 'Qualidade · Aula 07';
@@ -604,9 +593,9 @@
     if (!rodada || escolhaAtual === null) return;
     enviando = true; atualizarBotao(); recado('');
     try {
-      await rpc('hubtbl_votar', {
-        p_participante: eu.id, p_rodada: rodada,
-        p_escolha: escolhaAtual, p_justificativa: rascunho
+      await api.post('tbl', SLUG, 'votar', {
+        participante: eu.id, rodada,
+        escolha: escolhaAtual, justificativa: rascunho
       });
       recado('Decisão registrada. Você pode mudá-la enquanto a rodada estiver aberta.');
       chaveRender = '';
@@ -623,8 +612,8 @@
     const nome = $('#nome').value.trim();
     $('#erro-entrada').hidden = true;
     try {
-      const r = await rpc('hubtbl_entrar', { p_slug: SLUG, p_nome: nome, p_id: eu ? eu.id : null });
-      eu = { id: r.participante_id, nome: r.nome };
+      const r = await api.post('tbl', SLUG, 'entrar', { nome, participante: eu ? eu.id : null });
+      eu = { id: r.participante, nome: r.nome };
       guardar(eu);
       chaveRender = '';
       await atualizar();
@@ -648,13 +637,9 @@
     if (e.target.closest('#registrar')) registrar();
   });
 
-  // A virada de fase chega pelo Realtime; a consulta periódica cobre
+  // A virada de fase chega por SSE; a consulta periódica cobre
   // presença, contagem de votos e eventual perda do canal.
-  db.channel('hubtbl-' + SLUG)
-    .on('postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'hubtbl_sessions', filter: 'slug=eq.' + SLUG },
-        () => { chaveRender = ''; atualizar(); })
-    .subscribe();
+  api.ouvir('tbl', SLUG, () => { chaveRender = ''; atualizar(); }, 0);
 
   if (eu && eu.id) { $('#nome').value = eu.nome; atualizar(); }
   setInterval(atualizar, 4000);

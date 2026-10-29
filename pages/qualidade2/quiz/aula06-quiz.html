@@ -245,21 +245,16 @@
     <p class="estado-conexao" id="conexao"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="/static/js/aulas.js"></script>
   <script>
   /* ------------------------------------------------------------------
-     Configuração. A chave publicável é pública por desenho: o que ela
-     alcança é definido pelas policies de RLS, não pelo sigilo dela.
-     Ver supabase/quiz-schema.sql na raiz do repositório.
+     Configuração. As chamadas vão para o app (/api/v1/senac) pelo
+     cliente /static/js/aulas.js; o aluno não usa token nenhum.
   ------------------------------------------------------------------ */
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
   const SLUG = new URLSearchParams(location.search).get('sala') || 'bugs-q2-a06';
   const CHAVE_LOCAL = 'quiz:' + SLUG;
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false },
-  });
+  const api = Aulas('senac');
 
   const el = (id) => document.getElementById(id);
   const LETRAS = ['A', 'B', 'C', 'D', 'E'];
@@ -274,30 +269,22 @@
 
   /* ---------- Strike: sair da aba com a pergunta aberta ----------
      Trocar de aba ou de aplicativo, tirar o foco da janela ou bloquear a
-     tela conta um strike e zera os pontos da pergunta aberta
-     (supabase/quiz-peso-strike.sql). Quem decide se havia pergunta aberta
-     é o servidor: o aviso sai em qualquer estado e é ignorado fora de
+     tela conta um strike e zera os pontos da pergunta aberta. Quem decide
+     se havia pergunta aberta é o servidor: o aviso sai em qualquer estado e é ignorado fora de
      'pergunta'. O envio usa fetch com keepalive porque a página pode estar
      indo para o fundo quando ele parte; se falhar, fica guardado e é
      reenviado na volta. */
-  const RPC_URL = SUPABASE_URL + '/rest/v1/rpc/';
   const CHAVE_STRIKE = 'quiz-strike:' + SLUG;
   let ultimaSaida = 0;
   let travaTela = null;
   let pedindoTrava = false;
 
   function enviarStrike(motivo) {
-    return fetch(RPC_URL + 'quiz_strike', {
-      method: 'POST',
-      keepalive: true,
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY,
-                 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_player: jogador.id, p_motivo: motivo }),
-    }).then((r) => r.json());
+    return api.post('quiz', SLUG, 'strike', { jogador: jogador.id, motivo }, { keepalive: true });
   }
 
   function confirmarStrike(d) {
-    if (!d || !d.ok) return;
+    if (!d) return;
     try { localStorage.removeItem(CHAVE_STRIKE); } catch { /* nada a limpar */ }
     if (d.strike && estadoAtual) { estadoAtual.strike = true; marcarStrike(estadoAtual); }
   }
@@ -359,10 +346,9 @@
     el('aviso-entrada').textContent = '';
     el('btn-entrar').disabled = true;
     try {
-      const { data, error } = await db.rpc('quiz_entrar', { p_slug: SLUG, p_nome: nome });
-      if (error) throw error;
+      const data = await api.tentar(api.post('quiz', SLUG, 'entrar', { nome }));
       if (!data.ok) { el('aviso-entrada').textContent = data.erro; return; }
-      jogador = { id: data.player_id, nome: data.nome };
+      jogador = { id: data.jogador, nome: data.nome };
       localStorage.setItem(CHAVE_LOCAL, JSON.stringify(jogador));
       el('quem').textContent = jogador.nome;
       await sincronizar();
@@ -384,9 +370,8 @@
       b.disabled = true;
     });
     try {
-      const { data, error } = await db.rpc('quiz_responder',
-        { p_player: jogador.id, p_escolha: indice });
-      if (error) throw error;
+      const data = await api.tentar(api.post('quiz', SLUG, 'responder',
+        { jogador: jogador.id, escolha: indice }));
       if (!data.ok) {
         el('aviso-pergunta').textContent = data.erro;
         escolhaPendente = null;
@@ -549,9 +534,8 @@
 
   async function sincronizar() {
     try {
-      const { data, error } = await db.rpc('quiz_estado',
-        { p_slug: SLUG, p_player: jogador ? jogador.id : null });
-      if (error) throw error;
+      const data = await api.tentar(api.get('quiz', SLUG, 'estado',
+        { jogador: jogador ? jogador.id : null }));
       if (!data.ok) { falhar(data.erro); return; }
 
       offsetRelogio = new Date(data.servidor_agora).getTime() - Date.now();
@@ -622,19 +606,15 @@
     mostrar('erro');
   }
 
-  /* ---------- Realtime, com consulta periódica de reserva ---------- */
+  /* ---------- Tempo real (SSE), com consulta periódica de reserva ---------- */
 
-  db.channel('sala-' + SLUG)
-    .on('postgres_changes',
-        { event: 'UPDATE', schema: 'public', table: 'quiz_sessions', filter: 'slug=eq.' + SLUG },
-        () => sincronizar())
-    .subscribe((status) => {
-      assinaturaOk = status === 'SUBSCRIBED';
-      if (estadoAtual) marcarConexao(assinaturaOk ? 'Conectado em tempo real.' : 'Conectado por consulta periódica.');
-    });
+  api.ouvir('quiz', SLUG, () => sincronizar(), 0, (ok) => {
+    assinaturaOk = ok;
+    if (estadoAtual) marcarConexao(assinaturaOk ? 'Conectado em tempo real.' : 'Conectado por consulta periódica.');
+  });
 
   // Rede de sala de aula oscila; a consulta periódica garante que ninguém
-  // fique preso numa tela antiga caso o websocket caia.
+  // fique preso numa tela antiga caso o fluxo de eventos caia.
   setInterval(sincronizar, 3000);
   // Saída e volta. Aba ou app trocado dispara visibilitychange; outra janela
   // por cima, só blur. Os dois contam como saída.

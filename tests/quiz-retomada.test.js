@@ -107,33 +107,9 @@ describe('quizzes de retomada de Qualidade 2026.2', () => {
   });
 });
 
+// A pontuação por peso e o strike (só com a pergunta aberta) são regras do app,
+// conferidas nos testes dele; aqui ficam o conteúdo e o lado das páginas.
 describe('peso por questão e strike por saída da aba (toda sala)', () => {
-  const sql = read('supabase/quiz-peso-strike.sql');
-
-  test('quiz_strike é RPC pública e só pune com a pergunta aberta', () => {
-    expect(sql).toMatch(/create or replace function quiz_strike\(p_player uuid, p_motivo text/);
-    expect(sql).toMatch(/grant execute on function quiz_strike\(uuid,text\)\s+to anon, authenticated;/);
-    expect(sql).toMatch(/v_s\.estado <> 'pergunta' then\s+return jsonb_build_object\('ok', true, 'strike', false\)/);
-  });
-
-  test('quiz_strikes não é legível pela API', () => {
-    expect(sql).toMatch(/alter table quiz_strikes enable row level security;/);
-    expect(sql).toMatch(/revoke all on quiz_strikes from anon, authenticated;/);
-  });
-
-  test('a pontuação multiplica pelo peso e o strike zera a questão', () => {
-    expect(sql).toMatch(/\(600 \+ 400 \* v_fracao\) \* v_q\.peso/);
-    expect(sql).toMatch(/if v_correta and not v_strike then/);
-    expect(sql).toMatch(/update quiz_answers set pontos = 0/);
-  });
-
-  test('o esquema destrutivo não redefine as RPCs do jogo', () => {
-    const schema = read('supabase/quiz-schema.sql');
-    for (const fn of ['quiz_responder', 'quiz_estado', 'quiz_host']) {
-      expect(schema).not.toMatch(new RegExp(`create or replace function ${fn}\\(`));
-    }
-  });
-
   // As duas regras valem em toda sala: peso dobrado na última e strike por sair da aba.
   test.each(salas)('o seed da Aula $aula dá peso 2 à última questão', ({ seed }) => {
     expect(read(`supabase/${seed}`)).toMatch(/set peso = 2[\s\S]{0,160}max\(ordem\)/);
@@ -142,7 +118,7 @@ describe('peso por questão e strike por saída da aba (toda sala)', () => {
   test.each(salas)('a página do aluno da Aula $aula registra o strike e avisa as regras', ({ aula }) => {
     const html = read(`pages/qualidade2/quiz/aula${aula}-quiz.html`);
     const doc = new JSDOM(html).window.document;
-    expect(html).toContain("'quiz_strike'");
+    expect(html).toMatch(/api\.post\('quiz', SLUG, 'strike', [^)]*\{ keepalive: true \}\)/);
     expect(html).toMatch(/addEventListener\('visibilitychange'[\s\S]{0,80}saiu\('aba'\)/);
     expect(doc.querySelector('#strike-pergunta')).not.toBeNull();
     expect(doc.querySelectorAll('.regras')).toHaveLength(2);

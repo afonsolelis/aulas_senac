@@ -196,18 +196,17 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="/static/js/aulas.js"></script>
   <script src="../../../js/quiz-csv.js"></script>
   <script>
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
   const SLUG = new URLSearchParams(location.search).get('sala') || 'bugs-q2-a06';
   const CHAVE_TOKEN = 'quiz-host:' + SLUG;   // o mesmo token do painel
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const el = (id) => document.getElementById(id);
   const LETRAS = ['A', 'B', 'C', 'D', 'E'];
   let token = localStorage.getItem(CHAVE_TOKEN) || '';
+  // O token vai no cabeçalho Authorization; com a sessão do /admin, nem precisa.
+  let api = Aulas('senac', { token });
   let dados = null;
 
   const faixa = (t) => t === null ? 'medio' : t < 50 ? 'ruim' : t < 75 ? 'medio' : 'bom';
@@ -215,8 +214,8 @@
   async function carregar() {
     el('aviso').textContent = '';
     try {
-      const { data, error } = await db.rpc('quiz_relatorio', { p_slug: SLUG, p_token: token });
-      if (error) throw error;
+      api = Aulas('senac', { token });
+      const data = await api.tentar(api.get('quiz', SLUG, 'relatorio'));
       if (!data.ok) { el('aviso').textContent = data.erro; return; }
       localStorage.setItem(CHAVE_TOKEN, token);
       dados = data;
@@ -246,10 +245,11 @@
 
 // Banco de perguntas: só o professor vê, e só com token.
   async function carregarPerguntas() {
-    const { data, error } = await db.rpc('quiz_gabarito', { p_slug: SLUG, p_token: token });
+    let data = null;
+    try { data = await api.tentar(api.get('quiz', SLUG, 'gabarito')); } catch (e) { console.error(e); }
     const alvo = el('lista-perguntas');
     alvo.innerHTML = '';
-    if (error || !data || !data.ok) {
+    if (!data || !data.ok) {
       alvo.innerHTML = '<p class="vazio">Não foi possível carregar o banco de perguntas.</p>';
       return;
     }
