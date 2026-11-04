@@ -74,9 +74,12 @@
 
 </div></div></main>
 
-<script src="/static/js/aulas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
 <script>
-  const api = Aulas('senac');
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const form = document.getElementById('form-entrega');
   const recado = document.getElementById('recado');
   const opcoesTurma = [...document.querySelectorAll('input[name="turma"]')];
@@ -92,8 +95,7 @@
   // Turma com recebimento fechado pelo professor fica desabilitada.
   async function carregar() {
     for (const opcao of opcoesTurma) {
-      let data = null;   // turma inexistente (404) ou falha de rede: fica fechada
-      try { data = await api.get('entregas', opcao.value, 'formulario'); } catch {}
+      const { data } = await db.rpc('entrega_formulario', { p_slug: opcao.value });
       if (!data || !data.aceitando) {
         opcao.disabled = true;
         rotuloTurma(opcao).textContent += ' (recebimento fechado)';
@@ -101,23 +103,9 @@
     }
   }
 
+  const BUCKET = 'hub-tcc2-depositos';
   const LIMITE = 30 * 1024 * 1024;
-  const linkPublico = (caminho) => `${location.origin}/api/v1/senac/deposito/arquivo/${caminho}`;
-
-  // O PDF sobe sozinho (corpo = o arquivo) antes do registro; um arquivo existente não é trocado.
-  async function subirPdf(caminho, arquivo) {
-    let r;
-    try {
-      r = await fetch(linkPublico(caminho), {
-        method: 'PUT', credentials: 'same-origin',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/pdf' },
-        body: arquivo,
-      });
-    } catch { return 'sem conexão com o servidor.'; }
-    if (r.ok) return null;
-    const d = await r.json().catch(() => ({}));
-    return (d.erro && d.erro.mensagem) || `HTTP ${r.status}`;
-  }
+  const linkPublico = (caminho) => db.storage.from(BUCKET).getPublicUrl(caminho).data.publicUrl;
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -135,24 +123,22 @@
     botao.disabled = true;
     avisar('Enviando o PDF…', 'ok');
 
-    const falhaPdf = await subirPdf(caminho, arquivo);
-    if (falhaPdf) {
+    const subida = await db.storage.from(BUCKET).upload(caminho, arquivo, { contentType: 'application/pdf', upsert: false });
+    if (subida.error) {
       botao.disabled = false;
-      avisar('O envio do PDF falhou: ' + falhaPdf, 'erro');
+      avisar('O envio do PDF falhou: ' + subida.error.message, 'erro');
       return;
     }
-    let data;
-    try {
-      data = await api.post('deposito', opcao.value, 'enviar', {
-        integrantes,
-        arquivo: caminho,
-        nome_arquivo: arquivo.name,
-      });
-    } catch (e) {
-      avisar(e.message || 'O registro falhou. Tente de novo.', 'erro');
+    const { data, error } = await db.rpc('hubdeposito_enviar', {
+      p_slug: opcao.value,
+      p_integrantes: integrantes,
+      p_arquivo: caminho,
+      p_nome_arquivo: arquivo.name,
+    });
+    botao.disabled = false;
+    if (error) {
+      avisar(error.message || 'O registro falhou. Tente de novo.', 'erro');
       return;
-    } finally {
-      botao.disabled = false;
     }
     avisar('Depósito registrado.', 'ok');
     const dl = document.getElementById('comprovante-dados');

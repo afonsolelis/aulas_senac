@@ -1,11 +1,11 @@
 /**
  * Tempo por pergunta calibrado no painel do professor.
  *
- * O campo "Tempo" do painel chama POST /api/v1/senac/quiz/<sala>/tempo, que
- * troca o tempo das questões da sala. Quem exige o token, limita a faixa e
- * recusa a troca com a pergunta aberta é o app (testes dele e o ponta a ponta
- * em aulas-projeto/e2e); aqui se guarda o lado da página: todo painel tem o
- * controle e o texto do lobby acompanha o valor.
+ * O campo "Tempo" do painel chama quiz_tempo, que troca quiz_questions.segundos
+ * da sala. Nenhuma suíte exercita o painel contra o Supabase (isso é o
+ * scripts/quiz-e2e.mjs), então aqui se guarda o contrato dos dois lados: todo
+ * painel tem o controle e o texto do lobby acompanha o valor; a função exige
+ * token, limita a faixa e recusa a troca com a pergunta aberta.
  */
 const fs = require('fs');
 const path = require('path');
@@ -20,7 +20,7 @@ describe('painéis do quiz: controle de tempo', () => {
     expect(paineis.length).toBeGreaterThan(0);
   });
 
-  test.each(paineis)('%s tem o campo Tempo e chama a rota tempo', (arquivo) => {
+  test.each(paineis)('%s tem o campo Tempo e chama quiz_tempo', (arquivo) => {
     const html = fs.readFileSync(path.join(DIR, arquivo), 'utf-8');
     const doc = new JSDOM(html).window.document;
 
@@ -32,7 +32,30 @@ describe('painéis do quiz: controle de tempo', () => {
 
     // o lobby não pode prometer 90 s fixos se o professor calibrou outro valor
     expect(doc.querySelector('#lobby-segundos')).not.toBeNull();
-    expect(html).toMatch(/api\.post\('quiz', SLUG, 'tempo'/);
+    expect(html).toMatch(/db\.rpc\('quiz_tempo'/);
     expect(html).toMatch(/el\('btn-tempo'\)\.disabled\s*=\s*d\.estado === 'pergunta'/);
+  });
+});
+
+describe('quiz-tempo.sql', () => {
+  const sql = fs.readFileSync(path.join(ROOT, 'supabase/quiz-tempo.sql'), 'utf-8');
+
+  test('cria só quiz_tempo, sem destruir nem alterar objeto existente', () => {
+    const funcoes = [...sql.matchAll(/create or replace function (\w+)/g)].map((m) => m[1]);
+    expect(funcoes).toEqual(['quiz_tempo']);
+    expect(sql).not.toMatch(/^\s*(drop|truncate|alter|delete)\b/im);
+  });
+
+  test('exige o token do professor', () => {
+    expect(sql).toMatch(/quiz_host_tokens[\s\S]{0,300}Token do professor inválido/);
+  });
+
+  test('limita a faixa e recusa a troca com a pergunta aberta', () => {
+    expect(sql).toMatch(/p_segundos not between 10 and 600/);
+    expect(sql).toMatch(/v_estado = 'pergunta'[\s\S]{0,200}'ok', false/);
+  });
+
+  test('só mexe nas questões da própria sala', () => {
+    expect(sql).toMatch(/update quiz_questions set segundos = p_segundos where session_slug = p_slug;/);
   });
 });

@@ -3,13 +3,13 @@
 
    Uma única tag <script src=".../js/avisos.js" defer> por página monta o
    botão, o painel, a leitura dos avisos e a área do professor. Não depende
-   de Bootstrap, Font Awesome nem de outra biblioteca: injeta o próprio CSS,
-   desenha os ícones em SVG e fala com o app por fetch nas rotas
-   /api/v1/senac/avisos/<acao>.
+   de Bootstrap, Font Awesome nem supabase-js: injeta o próprio CSS, desenha
+   os ícones em SVG e fala com o Supabase por fetch nas RPCs.
 
-   A senha do professor NÃO está aqui: quem a confere é a rota de login, no
-   servidor, que devolve um token de sessão de 12 h; esse token vai no
-   cabeçalho Authorization das ações do professor, nunca na URL.
+   Backend: supabase/avisos-schema.sql. A chave publicável abaixo é pública
+   por desenho — o que ela alcança é definido pela RLS, não pelo sigilo dela.
+   A senha do professor NÃO está aqui: quem a confere é avisos_login, no
+   servidor, que devolve um token de sessão de 12 h.
 
    Para omitir o botão numa página (ex.: painel de quiz projetado na sala),
    marque <body data-sem-avisos>.
@@ -19,7 +19,8 @@
 
   if (window.HubAvisos) return;
 
-  var API = '/api/v1/senac/avisos/';
+  var SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
 
   var CHAVE_SESSAO = 'hub:avisos:sessao';   // token do professor neste navegador
   var CHAVE_VISTO  = 'hub:avisos:visto';    // maior id já visto, para o contador
@@ -118,30 +119,18 @@
     return null;
   }
 
-  /* Devolve { ok: true, ...dados } ou { ok: false, erro, codigo } (recusa do
-     servidor, HTTP 4xx); falha de rede e servidor fora (5xx) viram exceção.
-     As rotas dos avisos não têm sala no caminho: por isso fetch direto, e
-     não o cliente /static/js/aulas.js. */
-  async function chamar(metodo, acao, dados, token) {
-    var url = API + acao;
-    var opcoes = { method: metodo, credentials: 'same-origin', headers: { Accept: 'application/json' } };
-    if (metodo === 'GET') {
-      var q = new URLSearchParams();
-      Object.keys(dados || {}).forEach(function (k) {
-        if (dados[k] !== undefined && dados[k] !== null) q.set(k, dados[k]);
-      });
-      if (q.toString()) url += '?' + q.toString();
-    } else {
-      opcoes.headers['Content-Type'] = 'application/json';
-      opcoes.body = JSON.stringify(dados || {});
-    }
-    if (token) opcoes.headers.Authorization = 'Bearer ' + token;
-    var r = await fetch(url, opcoes);
-    var d = await r.json().catch(function () { return {}; });
-    if (r.ok) return Object.assign({ ok: true }, d);
-    if (r.status >= 500) throw new Error('HTTP ' + r.status);
-    var erro = d.erro || {};
-    return { ok: false, erro: erro.mensagem || 'Algo deu errado. Tente de novo.', codigo: erro.codigo };
+  async function rpc(fn, args) {
+    var r = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + fn, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        apikey: SUPABASE_KEY,
+        Authorization: 'Bearer ' + SUPABASE_KEY
+      },
+      body: JSON.stringify(args || {})
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
   }
 
   /* ---------------- estado ---------------- */
@@ -453,8 +442,7 @@
     }
     estado.carregando = true;
     try {
-      var r = await chamar('GET', 'listar', { escopo: estado.escopo });
-      if (!r.ok) throw new Error(r.erro);
+      var r = await rpc('avisos_listar', { p_escopo: estado.escopo });
       estado.avisos = (r && r.avisos) || [];
       estado.erro = null;
       try {
@@ -549,8 +537,8 @@
         msg.textContent = 'Verificando…';
         botao.disabled = true;
         try {
-          var r = await chamar('POST', 'login', {
-            usuario: usuario.value, senha: senha.value
+          var r = await rpc('avisos_login', {
+            p_usuario: usuario.value, p_senha: senha.value
           });
           if (!r.ok) {
             msg.className = 'hbav-msg hbav-ruim';
@@ -604,9 +592,11 @@
     ]);
   }
 
-  async function chamarAutenticado(metodo, acao, dados) {
-    var r = await chamar(metodo, acao, dados, estado.sessao ? estado.sessao.token : '');
-    if (r && !r.ok && (r.codigo === 'sessao_expirada' || /Sessão expirada/i.test(r.erro || ''))) {
+  async function chamarAutenticado(fn, args) {
+    args = args || {};
+    args.p_token = estado.sessao ? estado.sessao.token : '';
+    var r = await rpc(fn, args);
+    if (r && !r.ok && /Sessão expirada/i.test(r.erro || '')) {
       estado.sessao = null;
       guardar(CHAVE_SESSAO, '');
       ir('login');
@@ -650,16 +640,16 @@
         enviar.disabled = true;
         try {
           var args = {
-            titulo: titulo.value,
-            corpo: texto.value,
-            escopo: escopo.value,
-            fixado: fixado.checked,
+            p_titulo: titulo.value,
+            p_corpo: texto.value,
+            p_escopo: escopo.value,
+            p_fixado: fixado.checked,
             // fim do dia escolhido, no fuso do navegador
-            expira_em: expira.value ? new Date(expira.value + 'T23:59:59').toISOString() : null
+            p_expira_em: expira.value ? new Date(expira.value + 'T23:59:59').toISOString() : null
           };
           var r;
-          if (ed) { args.id = ed.id; r = await chamarAutenticado('POST', 'editar', args); }
-          else { r = await chamarAutenticado('POST', 'publicar', args); }
+          if (ed) { args.p_id = ed.id; r = await chamarAutenticado('avisos_editar', args); }
+          else { r = await chamarAutenticado('avisos_publicar', args); }
           if (!r || !r.ok) {
             msg.className = 'hbav-msg hbav-ruim';
             msg.textContent = (r && r.erro) || 'Não foi possível salvar.';
@@ -710,7 +700,7 @@
       el('button', {
         class: 'hbav-btn hbav-sec hbav-mini', type: 'button', text: 'Sair',
         onclick: async function () {
-          try { await chamarAutenticado('POST', 'sair', {}); } catch (e) { /* segue */ }
+          try { await chamarAutenticado('avisos_sair', {}); } catch (e) { /* segue */ }
           estado.sessao = null;
           guardar(CHAVE_SESSAO, '');
           ir('lista');
@@ -723,7 +713,7 @@
 
   async function carregarPainel(alvo) {
     try {
-      var r = await chamarAutenticado('GET', 'painel', {});
+      var r = await chamarAutenticado('avisos_painel', {});
       if (!r || !r.ok) {
         alvo.className = 'hbav-msg hbav-ruim';
         alvo.textContent = (r && r.erro) || 'Não foi possível listar.';
@@ -753,7 +743,7 @@
               av.removido_em ? el('button', {
                 class: 'hbav-btn hbav-sec hbav-mini', type: 'button', text: 'Restaurar',
                 onclick: async function () {
-                  await chamarAutenticado('POST', 'restaurar', { id: av.id });
+                  await chamarAutenticado('avisos_restaurar', { p_id: av.id });
                   try { sessionStorage.removeItem(CHAVE_CACHE); } catch (e) { /* ok */ }
                   await carregar(true);
                   desenharProfessor();
@@ -767,7 +757,7 @@
                     b.textContent = 'Confirmar remoção';
                     return;
                   }
-                  await chamarAutenticado('POST', 'remover', { id: av.id });
+                  await chamarAutenticado('avisos_remover', { p_id: av.id });
                   try { sessionStorage.removeItem(CHAVE_CACHE); } catch (e) { /* ok */ }
                   await carregar(true);
                   desenharProfessor();
@@ -802,8 +792,8 @@
         msg.textContent = 'Enviando…';
         botao.disabled = true;
         try {
-          var r = await chamarAutenticado('POST', 'trocar-senha', {
-            atual: atual.value, nova: nova.value
+          var r = await chamarAutenticado('avisos_trocar_senha', {
+            p_atual: atual.value, p_nova: nova.value
           });
           if (!r || !r.ok) {
             msg.className = 'hbav-msg hbav-ruim';

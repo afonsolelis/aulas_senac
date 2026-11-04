@@ -54,9 +54,9 @@ describe('Quadro de avisos', () => {
     const widget = fs.readFileSync(path.join(rootDir, 'js', 'avisos.js'), 'utf-8');
 
     test('A senha do professor não pode viver no JavaScript público', () => {
-      // Quem confere a senha é a rota de login, no servidor. Qualquer comparação
+      // Quem confere a senha é avisos_login, no Postgres. Qualquer comparação
       // de senha no cliente seria contornável pelo DevTools de qualquer aluno.
-      expect(widget).toMatch(/chamar\('POST', 'login'/);
+      expect(widget).toMatch(/avisos_login/);
       expect(widget).not.toMatch(/senha\s*(===|==)\s*['"]/);
       expect(widget).not.toMatch(/\bsenha\s*:\s*['"][^'"]+['"]/);
     });

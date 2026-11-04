@@ -83,9 +83,12 @@
 
 </div></div></main>
 
-<script src="/static/js/aulas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
 <script>
-  const api = Aulas('senac');
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const form = document.getElementById('form-entrega');
   const recado = document.getElementById('recado');
   const opcoesTurma = [...document.querySelectorAll('input[name="turma"]')];
@@ -101,8 +104,7 @@
   // Turma com recebimento fechado pelo professor fica desabilitada.
   async function carregar() {
     for (const opcao of opcoesTurma) {
-      let data = null;   // turma inexistente (404) ou falha de rede: fica fechada
-      try { data = await api.get('entregas', opcao.value, 'formulario'); } catch {}
+      const { data } = await db.rpc('entrega_formulario', { p_slug: opcao.value });
       if (!data || !data.aceitando) {
         opcao.disabled = true;
         rotuloTurma(opcao).textContent += ' (recebimento fechado)';
@@ -134,17 +136,15 @@
       avisar('O repositório não foi encontrado ou é privado. Deixe-o público no GitHub e confira o link.', 'erro');
       return;
     }
-    let data;
-    try {
-      data = await api.post('entregas', f.get('turma'), 'enviar-grupo', {
-        integrantes,
-        repositorio: f.get('repositorio'),
-      });
-    } catch (e) {
-      avisar(e.message || 'O envio falhou. Tente de novo.', 'erro');
+    const { data, error } = await db.rpc('entrega_enviar_grupo', {
+      p_slug: f.get('turma'),
+      p_integrantes: integrantes,
+      p_repositorio: f.get('repositorio'),
+    });
+    botao.disabled = false;
+    if (error) {
+      avisar(error.message || 'O envio falhou. Tente de novo.', 'erro');
       return;
-    } finally {
-      botao.disabled = false;
     }
     avisar('Entrega registrada.', 'ok');
     const dl = document.getElementById('comprovante-dados');

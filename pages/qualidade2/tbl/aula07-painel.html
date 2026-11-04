@@ -255,9 +255,11 @@
     <p class="creditos">Senac · Qualidade de Software 2026.2 · Prof. Afonso Brandão</p>
   </main>
 
-  <script src="/static/js/aulas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
   const SALA_PADRAO = 'ff-q2-a07-tbl';
   const SLUG = new URLSearchParams(location.search).get('sala') || SALA_PADRAO;
   const GUARDA_TOKEN = 'hubtbl-host:' + SLUG;
@@ -265,6 +267,7 @@
   const URL_PUBLICA = 'https://afonsolelis.github.io/aulas_senac/pages/qualidade2/tbl/aula07-tbl.html';
   const LETRAS = ['A', 'B', 'C', 'D'];
 
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g,
     c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
@@ -333,9 +336,11 @@
     return String(Math.floor(n / 60)).padStart(2, '0') + ':' + String(n % 60).padStart(2, '0');
   };
 
-  // O token vai no cabeçalho Authorization; com a sessão do /admin, nem precisa.
   async function chamar(acao) {
-    return Aulas('senac', { token }).post('tbl', SLUG, 'host', { acao });
+    const { data, error } = await db.rpc('hubtbl_host', { p_slug: SLUG, p_token: token, p_acao: acao });
+    if (error) throw new Error(error.message);
+    if (data && data.ok === false) throw new Error(data.erro);
+    return data;
   }
 
   function htmlBarras(dados, titulo, antes) {
@@ -546,7 +551,7 @@
         $('#recado-token').textContent = e.message;
         $('#recado-token').classList.add('erro');
       } else {
-        $('#recado').textContent = 'Sem conexão com a sala. Nova tentativa em instantes.';
+        $('#recado').textContent = 'Sem conexão com o Supabase. Nova tentativa em instantes.';
       }
     }
   }
@@ -622,7 +627,11 @@
   });
 
   // A virada de fase feita em outra aba chega sem esperar a consulta periódica.
-  Aulas('senac').ouvir('tbl', SLUG, () => atualizar(), 0);
+  db.channel('hubtbl-painel-' + SLUG)
+    .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'hubtbl_sessions', filter: 'slug=eq.' + SLUG },
+        () => atualizar())
+    .subscribe();
 
   if (token) { $('#token').value = token; atualizar(); }
   setInterval(atualizar, 3000);

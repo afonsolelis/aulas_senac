@@ -49,10 +49,11 @@
 </div></div></main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="/static/js/aulas.js"></script>
 <script>
-  const pdfUrl = (caminho) => `${location.origin}/api/v1/senac/deposito/arquivo/${caminho}`;
-  // O token fica só nesta aba, vai no cabeçalho Authorization e é conferido a cada leitura.
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const pdfUrl = (caminho) => `${SUPABASE_URL}/storage/v1/object/public/hub-tcc2-depositos/${caminho}`;
+  // O token fica só nesta aba e é conferido no banco a cada leitura.
   const CHAVE_SESSAO = 'depositos_tcc2_coordenacao';
   const $ = (id) => document.getElementById(id);
   let depositos = [];
@@ -77,7 +78,14 @@
   }
 
   async function carregar() {
-    const data = await Aulas('senac', { token: lerToken() }).get('deposito', null, 'coordenacao');
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/hubdeposito_coordenacao`, {
+      method: 'POST',
+      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_token: lerToken() }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.message || 'Falha ao consultar o servidor.');
+    if (!data.ok) throw new Error(data.erro);
     depositos = data.depositos;
     desenhar();
   }

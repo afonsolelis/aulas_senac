@@ -55,14 +55,17 @@
 
 </div></div></main>
 
-<script src="/static/js/aulas.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
 <script>
+  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
   // Os formulários entrega_* são compartilhados com o hub do Mackenzie; aqui entram só estes.
   const PREFIXO = 'senac-tcc2-2026-2-';
-  const pdfUrl = (caminho) => `${location.origin}/api/v1/senac/deposito/arquivo/${caminho}`;
-  // O token fica só nesta aba (sessionStorage), vai no cabeçalho Authorization e é validado a cada chamada.
+  const pdfUrl = (caminho) => `${SUPABASE_URL}/storage/v1/object/public/hub-tcc2-depositos/${caminho}`;
+  // O token fica só nesta aba (sessionStorage) e é validado no banco a cada chamada.
   const CHAVE_SESSAO = 'entregas_tcc2_token';
 
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
   const $ = (id) => document.getElementById(id);
   let formularios = [];
 
@@ -89,11 +92,15 @@
     return el('a', texto || url, { href: url, target: '_blank', rel: 'noopener noreferrer' });
   }
 
-  // O token lido a cada chamada (pode mudar no formulário) vai no cabeçalho Authorization.
-  const api = () => Aulas('senac', { token: lerToken() });
+  async function chamar(fn, args) {
+    const { data, error } = await db.rpc(fn, { p_token: lerToken(), ...args });
+    if (error) throw new Error(error.message);
+    if (!data.ok) throw new Error(data.erro);
+    return data;
+  }
 
   async function carregar() {
-    const data = await api().get('deposito', null, 'painel');
+    const data = await chamar('hubdeposito_painel', {});
     formularios = data.formularios.filter((f) => f.slug.startsWith(PREFIXO))
       .sort((a, b) => a.turma.localeCompare(b.turma));
     const sel = $('formulario');
@@ -162,10 +169,10 @@
         ev.preventDefault();
         botao.disabled = true;
         try {
-          await api().post('deposito', null, 'corrigir', {
-            id: r.id,
-            nota: nota.value === '' ? null : Number(nota.value),
-            comentario: comentario.value,
+          await chamar('hubdeposito_corrigir', {
+            p_id: r.id,
+            p_nota: nota.value === '' ? null : Number(nota.value),
+            p_comentario: comentario.value,
           });
           await carregar();
           avisar($('recado'), `Correção de ${r.grupo} salva.`, 'ok');
@@ -234,7 +241,7 @@
   $('alternar-aberto').addEventListener('click', async () => {
     const f = formularios.find((x) => x.slug === $('formulario').value);
     try {
-      await api().post('entregas', f.slug, 'ajustar', { aberto: !f.aberto, prazo: null });
+      await chamar('entrega_ajustar', { p_slug: f.slug, p_aberto: !f.aberto, p_prazo: null });
       await carregar();
       avisar($('recado'), f.aberto ? `Recebimento da ${f.turma} fechado.` : `Recebimento da ${f.turma} reaberto.`, 'ok');
     } catch (e) { avisar($('recado'), e.message, 'erro'); }
