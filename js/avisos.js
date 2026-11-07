@@ -19,8 +19,7 @@
 
   if (window.HubAvisos) return;
 
-  var SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  var SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  var SUPABASE_URL = 'https://aulas-senac-api.afonsolelis.tech';
 
   var CHAVE_SESSAO = 'hub:avisos:sessao';   // token do professor neste navegador
   var CHAVE_VISTO  = 'hub:avisos:visto';    // maior id já visto, para o contador
@@ -120,12 +119,10 @@
   }
 
   async function rpc(fn, args) {
-    var r = await fetch(SUPABASE_URL + '/rest/v1/rpc/' + fn, {
+    var r = await fetch(SUPABASE_URL + '/rpc/' + fn, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        apikey: SUPABASE_KEY,
-        Authorization: 'Bearer ' + SUPABASE_KEY
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(args || {})
     });

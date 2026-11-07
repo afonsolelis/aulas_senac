@@ -245,21 +245,18 @@
     <p class="estado-conexao" id="conexao"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="../../../js/api_aulas.js"></script>
   <script>
   /* ------------------------------------------------------------------
      Configuração. A chave publicável é pública por desenho: o que ela
      alcança é definido pelas policies de RLS, não pelo sigilo dela.
      Ver supabase/quiz-schema.sql na raiz do repositório.
   ------------------------------------------------------------------ */
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SUPABASE_URL = window.AULAS_API_URL;
   const SLUG = new URLSearchParams(location.search).get('sala') || 'atam-q2-a05';
   const CHAVE_LOCAL = 'quiz:' + SLUG;
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false },
-  });
+  const db = window.aulasApi.cliente();
 
   const el = (id) => document.getElementById(id);
   const LETRAS = ['A', 'B', 'C', 'D', 'E'];
@@ -280,7 +277,7 @@
      'pergunta'. O envio usa fetch com keepalive porque a página pode estar
      indo para o fundo quando ele parte; se falhar, fica guardado e é
      reenviado na volta. */
-  const RPC_URL = SUPABASE_URL + '/rest/v1/rpc/';
+  const RPC_URL = SUPABASE_URL + '/rpc/';
   const CHAVE_STRIKE = 'quiz-strike:' + SLUG;
   let ultimaSaida = 0;
   let travaTela = null;
@@ -290,8 +287,7 @@
     return fetch(RPC_URL + 'quiz_strike', {
       method: 'POST',
       keepalive: true,
-      headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY,
-                 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ p_player: jogador.id, p_motivo: motivo }),
     }).then((r) => r.json());
   }
@@ -635,7 +631,7 @@
 
   // Rede de sala de aula oscila; a consulta periódica garante que ninguém
   // fique preso numa tela antiga caso o websocket caia.
-  setInterval(sincronizar, 3000);
+  setInterval(sincronizar, 1000);
   // Saída e volta. Aba ou app trocado dispara visibilitychange; outra janela
   // por cima, só blur. Os dois contam como saída.
   document.addEventListener('visibilitychange', () => { if (document.hidden) saiu('aba'); else voltou(); });

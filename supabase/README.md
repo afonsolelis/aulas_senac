@@ -1,5 +1,11 @@
 # Supabase — banco de dados do Hub
 
+> Desde 07/11/2026 as atividades do Hub não rodam mais no Supabase. Elas estão no
+> Postgres + PostgREST do projeto `aulas_senac` na VPS (ver [`../postgrest/README.md`](../postgrest/README.md)).
+> Os arquivos abaixo seguem como fonte das questões e das funções, aplicados com `psql`
+> no banco da VPS em vez do SQL Editor. O bucket `hub-tcc2-depositos` foi substituído
+> por `postgrest/hubdeposito-arquivos.sql`.
+
 Três assuntos do Hub vivem no mesmo projeto Supabase e não se tocam: o **quiz ao
 vivo** (o grosso deste arquivo), o **TBL ao vivo** e o **quadro de avisos** (últimas
 seções). Cada um tem os seus arquivos `*.sql` e o seu conjunto de funções.

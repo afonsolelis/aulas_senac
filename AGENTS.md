@@ -47,7 +47,7 @@ Este arquivo define as instrucoes do projeto para o Codex CLI. Use este arquivo 
 - `pages/`, `css/`, `specs/`, `tests/` — leia para verificar arquitetura e fluxos reais de execution
 
 **Arquitetura de verdade:**
-- Frontend estático; quizzes usam RPCs e Realtime do Supabase (SQL em `supabase/`). Scripts Discord são ferramentas locais de operação, não parte do frontend.
+- Frontend estático; quiz, TBL, entregas e avisos usam RPCs do PostgREST do Senac na VPS (`js/api_aulas.js`, operação em `postgrest/README.md`, SQL em `supabase/`). Scripts Discord são ferramentas locais de operação, não parte do frontend.
 - URLs de mídia estão em `sources.json` e `specs/cloudinary.spec.js` valida rastreabilidade
 - CSS na ordem: `css/style.css` → `css/slides.css` → `css/base-styles.css`
 

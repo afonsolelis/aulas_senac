@@ -50,9 +50,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
-  const pdfUrl = (caminho) => `${SUPABASE_URL}/storage/v1/object/public/hub-tcc2-depositos/${caminho}`;
+  const SUPABASE_URL = 'https://aulas-senac-api.afonsolelis.tech';
+  const pdfUrl = (caminho) => `${SUPABASE_URL}/rpc/hubdeposito_pdf?p_caminho=${encodeURIComponent(caminho)}`;
   // O token fica só nesta aba e é conferido no banco a cada leitura.
   const CHAVE_SESSAO = 'depositos_tcc2_coordenacao';
   const $ = (id) => document.getElementById(id);
@@ -78,9 +77,9 @@
   }
 
   async function carregar() {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/hubdeposito_coordenacao`, {
+    const r = await fetch(`${SUPABASE_URL}/rpc/hubdeposito_coordenacao`, {
       method: 'POST',
-      headers: { apikey: SUPABASE_KEY, 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ p_token: lerToken() }),
     });
     const data = await r.json();

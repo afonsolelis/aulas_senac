@@ -83,12 +83,11 @@
 
 </div></div></main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+<script src="../../../js/api_aulas.js"></script>
 <script>
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SUPABASE_URL = window.AULAS_API_URL;
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const db = window.aulasApi.cliente();
   const form = document.getElementById('form-entrega');
   const recado = document.getElementById('recado');
   const opcoesTurma = [...document.querySelectorAll('input[name="turma"]')];

@@ -55,17 +55,16 @@
 
 </div></div></main>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+<script src="../../../js/api_aulas.js"></script>
 <script>
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SUPABASE_URL = window.AULAS_API_URL;
   // Os formulários entrega_* são compartilhados com o hub do Mackenzie; aqui entram só estes.
   const PREFIXO = 'senac-tcc2-2026-2-';
-  const pdfUrl = (caminho) => `${SUPABASE_URL}/storage/v1/object/public/hub-tcc2-depositos/${caminho}`;
+  const pdfUrl = (caminho) => `${SUPABASE_URL}/rpc/hubdeposito_pdf?p_caminho=${encodeURIComponent(caminho)}`;
   // O token fica só nesta aba (sessionStorage) e é validado no banco a cada chamada.
   const CHAVE_SESSAO = 'entregas_tcc2_token';
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const db = window.aulasApi.cliente();
   const $ = (id) => document.getElementById(id);
   let formularios = [];
 

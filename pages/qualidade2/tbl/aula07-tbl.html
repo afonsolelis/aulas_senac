@@ -215,21 +215,18 @@
     <p class="conexao" id="conexao"></p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="../../../js/api_aulas.js"></script>
   <script>
   /* ------------------------------------------------------------------
      Chave publicável: a proteção não está no sigilo dela, e sim na RLS
      e nas funções SECURITY DEFINER. Ver supabase/hubtbl-schema.sql.
      ------------------------------------------------------------------ */
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SUPABASE_URL = window.AULAS_API_URL;
   const SLUG = new URLSearchParams(location.search).get('sala') || 'ff-q2-a07-tbl';
   const GUARDA = 'hubtbl:' + SLUG;
   const LETRAS = ['A', 'B', 'C', 'D'];
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-    auth: { persistSession: false }
-  });
+  const db = window.aulasApi.cliente();
 
   const $ = s => document.querySelector(s);
   const esc = s => String(s ?? '').replace(/[&<>"']/g,
@@ -657,7 +654,7 @@
     .subscribe();
 
   if (eu && eu.id) { $('#nome').value = eu.nome; atualizar(); }
-  setInterval(atualizar, 4000);
+  setInterval(atualizar, 1000);
   setInterval(atualizarCabecalho, 500);
   </script>
 <script src="../../../js/avisos.js" defer></script>

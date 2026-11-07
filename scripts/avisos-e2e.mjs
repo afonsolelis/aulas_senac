@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Validação ponta a ponta do quadro de avisos, contra o Supabase real.
+ * Validação ponta a ponta do quadro de avisos, contra o PostgREST do Senac na VPS.
  *
  *   node scripts/avisos-e2e.mjs <senha-do-professor> [usuario]
  *
@@ -14,8 +14,7 @@
  * funções internas precisam recusar a chave publicável.
  */
 
-const URL_BASE = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-const CHAVE = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+const URL_BASE = 'https://aulas-senac-api.afonsolelis.tech';
 
 const senha = process.argv[2];
 const usuario = process.argv[3] || 'afonsolelis';
@@ -32,12 +31,10 @@ function checar(condicao, descricao, extra) {
 }
 
 async function rpc(fn, args) {
-  const r = await fetch(`${URL_BASE}/rest/v1/rpc/${fn}`, {
+  const r = await fetch(`${URL_BASE}/rpc/${fn}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      apikey: CHAVE,
-      Authorization: `Bearer ${CHAVE}`,
     },
     body: JSON.stringify(args || {}),
   });
@@ -123,8 +120,8 @@ for (const fn of ['avisos_hash', 'avisos_usuario', 'avisos_novo_token']) {
   checar(r.status === 404 || r.status === 403 || r.status === 401,
     `${fn} não é executável pela API (HTTP ${r.status})`);
 }
-const tabela = await fetch(`${URL_BASE}/rest/v1/avisos_admin?select=*`, {
-  headers: { apikey: CHAVE, Authorization: `Bearer ${CHAVE}` },
+const tabela = await fetch(`${URL_BASE}/avisos_admin?select=*`, {
+  headers: {},
 });
 const linhas = tabela.ok ? await tabela.json() : null;
 checar(!tabela.ok || (Array.isArray(linhas) && linhas.length === 0),

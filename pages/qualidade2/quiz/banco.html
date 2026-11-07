@@ -163,17 +163,16 @@
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.114.0/dist/umd/supabase.js"></script>
+  <script src="../../../js/api_aulas.js"></script>
   <script>
   /* -------------------------------------------------------------------
      Página pública: não pede token e não tem como pedir. As funções
      quiz_banco_salas e quiz_banco só devolvem sala publicada, e nenhuma
      delas devolve nome de aluno. Ver supabase/quiz-banco.sql.
   ------------------------------------------------------------------- */
-  const SUPABASE_URL = 'https://lwamaovuxcevsjfvtqhf.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_j0O_u0t7-lDCtBbmqaIz3A_8vAIGcyJ';
+  const SUPABASE_URL = window.AULAS_API_URL;
 
-  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: false } });
+  const db = window.aulasApi.cliente();
   const el = (id) => document.getElementById(id);
   const LETRAS = ['A', 'B', 'C', 'D', 'E'];
 

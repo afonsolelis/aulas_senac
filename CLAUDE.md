@@ -55,24 +55,27 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 - **Aulas 09 a 17 (Semanas 41–50) são só prática em sala com prompts**, aplicadas ao projeto das equipes (Organização de Recursos), sem teoria. Cada deck segue capa → agenda dos dois blocos → "Antes de abrir o agente" → um slide por prompt (com "Antes de aceitar") → entregável e checagem na mesa → dúvidas; o material repete os prompts com botão de copiar. Os nove pares são gerados a partir de um único conjunto de dados; edite os prompts no slide e no material juntos.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
 
-## ⛔ Banco Supabase compartilhado com o Einstein
+## Banco das atividades: PostgREST na VPS
 
-O projeto `lwamaovuxcevsjfvtqhf` também serve às aulas do **Einstein** (`~/repos/einstein`), dono de
-todos os objetos `tbl_*`. **Nunca** rode `drop`, `truncate`, `alter` nem `create or replace` sobre
-objeto existente que não seja `quiz_*`/`avisos*`, e não aplique SQL de outro repositório sem
-adaptar. Antes de qualquer SQL de escrita, siga `.claude/skills/supabase-compartilhado/SKILL.md`.
+Desde 07/11/2026, quiz, TBL, entregas, depósito do TCC2 e avisos rodam no Postgres + PostgREST
+do projeto `aulas_senac` no Coolify (`https://aulas-senac-api.afonsolelis.tech`), separado do
+Mackenzie. As páginas usam `js/api_aulas.js`; não há chave nem Realtime. Operação, túnel e
+aplicação de SQL em `postgrest/README.md`.
 
-## Quiz ao vivo (Supabase)
+O Supabase `lwamaovuxcevsjfvtqhf` ficou só como histórico do Hub e continua servindo às aulas do
+**Einstein** (`~/repos/einstein`), dono dos objetos `tbl_*`. Não escreva mais nele pelo Hub; se
+precisar, siga `.claude/skills/supabase-compartilhado/SKILL.md`.
+
+## Quiz ao vivo
 
 `pages/<slug>/quiz/` guarda quizzes projetados em aula: `<aula>-quiz.html` (celular do aluno),
 `<aula>-painel.html` (projetado, com QR, cronômetro e placar) e `<aula>-relatorio.html`
-(por tema, questão e estudante). São páginas estáticas: falam por RPC com um projeto
-Supabase (`lwamaovuxcevsjfvtqhf`), cuja chave **publicável** fica escrita no HTML — é
-pública por desenho, quem limita o alcance é a RLS.
+(por tema, questão e estudante). São páginas estáticas: falam por RPC com o PostgREST do
+Senac (`js/api_aulas.js`), sem chave; quem limita o alcance são os grants e a RLS.
 
 - SQL em `supabase/` (`quiz-schema.sql` → `quiz-peso-strike.sql` → `quiz-relatorio.sql` →
   `quiz-ingestao.sql` → `quiz-gabarito.sql` → `quiz-banco.sql` → `quiz-tempo.sql` → `quiz-seed-<aula>.sql`),
-  rodado **à mão** no SQL Editor. Ver `supabase/README.md`. As RPCs do jogo (`quiz_responder`,
+  aplicado à mão com `psql` no banco da VPS (`postgrest/README.md`). Ver `supabase/README.md`. As RPCs do jogo (`quiz_responder`,
   `quiz_strike`, `quiz_estado`, `quiz_host`) moram em `quiz-peso-strike.sql`, que não destrói
   dado; `quiz-schema.sql` apaga as tabelas e só deve rodar em instalação nova.
 - **Peso (toda sala):** a última questão tem `peso = 2` e vale o dobro; painel e celular mostram o
@@ -93,7 +96,7 @@ pública por desenho, quem limita o alcance é a RLS.
 - **Token do professor:** o valor fixo registrado nos seeds também autoriza relatórios
   individuais, gabaritos e publicação do banco. Como está versionado, não é um segredo
   nem protege a confidencialidade desses relatórios. Antes de usar dados reais com acesso
-  restrito, substitua-o no Supabase por uma credencial privada não versionada. Alterar só
+  restrito, substitua-o no banco por uma credencial privada não versionada. Alterar só
   a documentação ou o seed local não troca o token de uma sala já instalada.
 - **Tempo calibrável:** o seed grava 90 s por pergunta; o campo **Tempo** no rodapé do painel
   (10–600 s) chama `quiz_tempo` (`supabase/quiz-tempo.sql`), que troca `quiz_questions.segundos`
@@ -102,11 +105,11 @@ pública por desenho, quem limita o alcance é a RLS.
 - **Ritmo da pergunta: 90 segundos (ou o calibrado), e o painel revela sozinho** — assim que `respostas >=
   jogadores` (ou quando o cronômetro zera), o painel chama `revelar` e mostra gabarito,
   distribuição e placar sem clique do professor. `Revelar resposta` continua no rodapé para
-  adiantar. A checagem mora na leitura periódica de 2 s (`talvezRevelar` em `aula0N-painel.html`),
-  então a revelação chega até dois segundos depois do gatilho. `scripts/quiz-e2e.mjs` **valida
+  adiantar. A checagem mora na leitura periódica de 1 s (`talvezRevelar` em `aula0N-painel.html`),
+  então a revelação chega até um segundo depois do gatilho. `scripts/quiz-e2e.mjs` **valida
   esse avanço** — ele não clica mais em Revelar; se o painel voltar a depender do clique, o
   script falha.
-- Só `quiz_sessions` é legível pela API (é o que o Realtime replica). Gabarito, jogadores,
+- Só `quiz_sessions` é legível pela API (herança do Realtime do Supabase). Gabarito, jogadores,
   respostas e token ficam sob RLS sem policy, acessíveis só pelas funções `security definer`.
 - **Banco público** (`pages/qualidade2/quiz/banco.html`, botão próprio na home da
   disciplina): as questões com gabarito e explicação mais o desempenho de **cada rodada**
@@ -126,9 +129,9 @@ pública por desenho, quem limita o alcance é a RLS.
   caixas e cobertura) e `atam-q2-a05` (Aula 05 cobra a Aula 04 — arquitetura e ATAM).
 - Para montar o próximo, use a skill `quiz-da-aula` (`.claude/skills/quiz-da-aula/`).
 - Validação: `node scripts/quiz-e2e.mjs <prefixo> <slug-da-sala>` percorre lobby → pergunta →
-  revelação → encerramento → relatório contra o Supabase real e descarta a sala no fim.
+  revelação → encerramento → relatório contra o PostgREST do Senac e descarta a sala no fim.
 
-## TBL ao vivo (Supabase)
+## TBL ao vivo
 
 `pages/qualidade2/tbl/` guarda salas de Team-Based Learning: `<aula>-tbl.html` (celular) e
 `<aula>-painel.html` (projetado, com QR, cronômetro e `data-sem-avisos`). Um caso único e
@@ -147,26 +150,28 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   a rodada em `hubtbl_historico` antes de apagar.
 - Validação: `node scripts/tbl-e2e.mjs aula07 ff-q2-a07-tbl` (descarta a sala no fim; não rode em aula).
 
-## Entregas e depósitos (Supabase)
+## Entregas e depósitos
 
 - **Qualidade 2026.2** (`pages/qualidade2/entrega/`) e o formulário de turmas usam as tabelas e funções
   `entrega_*`, que são do repositório `aulas_mackenzie`. Daqui só se inserem formulários `senac-*`
   (`supabase/entregas-*.sql`). Token do professor: o mesmo da área de entregas do Mackenzie.
-- **TCC2 2026.2** (`pages/tcc2/entrega/`): o aluno deposita o **PDF final** no bucket
-  `hub-tcc2-depositos` (público para leitura pelo link, sem policy de SELECT, logo sem listagem;
-  só PDF, até 30 MB; nome sorteado `<turma>/<uuid>.pdf`). `hubdeposito_enviar` confere o arquivo no
-  storage e grava em `hubdeposito_respostas`. Abertura da turma vem de `entrega_formularios`
+- **TCC2 2026.2** (`pages/tcc2/entrega/`): o aluno deposita o **PDF final**, que fica no próprio
+  Postgres (`hubdeposito_arquivos`, fechada para a API): `hubdeposito_subir` recebe o PDF em
+  base64 (só PDF, até 30 MB; nome sorteado `<turma>/<uuid>.pdf`) e `hubdeposito_pdf` o devolve
+  pelo link público `GET /rpc/hubdeposito_pdf?p_caminho=...`, sem listagem. `hubdeposito_enviar`
+  confere o arquivo e grava em `hubdeposito_respostas`. SQL do armazenamento:
+  `postgrest/hubdeposito-arquivos.sql`. Abertura da turma vem de `entrega_formularios`
   (`senac-tcc2-*`). SQL: `supabase/hubdeposito-tcc2.sql` → `hubdeposito-coordenacao.sql`.
 - `professor.html` (token do professor, nota e comentário) e `coordenacao.html` (somente leitura,
   token próprio em `hubdeposito_acesso`, hash salgado, nunca versionado; baixa todos em .zip).
-- Arquivo de storage não se apaga por SQL (`storage.protect_delete`): use o painel do Supabase.
+- PDF enviado que não virou depósito some depois de um dia; PDF de depósito só sai com `delete` em `hubdeposito_arquivos`.
 
-## Quadro de avisos (Supabase)
+## Quadro de avisos
 
 Botão flutuante (sino) em **todas** as páginas: `js/avisos.js`, carregado por uma tag
 `<script src="<../>js/avisos.js" defer>` antes de `</body>`. O widget injeta o próprio CSS
 (prefixo `.hbav-`) e desenha os ícones em SVG — **não depende** de Bootstrap, Font Awesome
-nem supabase-js; fala com o Supabase por `fetch` nas RPCs `avisos_*`.
+nem supabase-js; fala com o PostgREST do Senac por `fetch` nas RPCs `avisos_*`.
 
 - **Página dedicada:** `pages/avisos.html` (mesmo quadro, embutido via `HubAvisos.montarEm`).
   Ela marca `<body data-avisos-inline>` para esconder o sino redundante.
@@ -180,7 +185,7 @@ nem supabase-js; fala com o Supabase por `fetch` nas RPCs `avisos_*`.
   no Postgres com o hash salgado (sha256 nativo, sem pgcrypto) e devolve um token de sessão
   de 12 h, guardado no `localStorage`. Cinco erros seguidos bloqueiam a conta por 15 minutos.
   A conta é criada com `supabase/avisos-admin.sql`, que **é versionado com a senha vazia**
-  (`SENHA-AQUI`): o repositório é público, a senha real só é digitada no SQL Editor.
+  (`SENHA-AQUI`): o repositório é público, a senha real só é digitada no `psql` do banco da VPS.
 - **SQL:** `supabase/avisos-schema.sql` (idempotente e **não destrutivo**) e depois
   `supabase/avisos-admin.sql`. Nenhuma tabela de avisos é legível pela API — RLS sem policy
   alguma; tudo passa pelas funções `security definer`. Vale a mesma armadilha de grants do
@@ -188,8 +193,8 @@ nem supabase-js; fala com o Supabase por `fetch` nas RPCs `avisos_*`.
 - Remoção é **lógica** (`removido_em`), então um clique errado é reversível pelo botão
   Restaurar da área do professor.
 - Validação: `node scripts/avisos-e2e.mjs <senha-do-professor>` percorre login → publicar →
-  listar → editar → remover → restaurar → sair contra o Supabase real, confere que as
-  funções internas continuam fechadas à chave publicável e retira o aviso de teste no fim.
+  listar → editar → remover → restaurar → sair contra o PostgREST do Senac, confere que as
+  funções internas continuam fechadas à API e retira o aviso de teste no fim.
 
 ## Convenções de nomenclatura
 
