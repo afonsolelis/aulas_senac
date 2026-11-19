@@ -148,20 +148,20 @@ git log --oneline --graph -5</pre>
 <h2 class="h3 fw-bold">7. O que é qualidade de software</h2>
 <p class="text-muted">Qualidade tem pelo menos três leituras. Conformidade: o software faz o que a especificação diz. Adequação ao uso: o software resolve o problema de quem usa; uma especificação errada produz um sistema conforme e inútil. Qualidade do código: o software continua barato de mudar, o que depende de testes, legibilidade e baixa complexidade.</p>
 <p class="text-muted">Duas perguntas organizam as atividades. Verificação pergunta se o produto está sendo construído do jeito certo, e responde com testes, revisão e análise estática. Validação pergunta se o produto certo está sendo construído, e responde com critérios de aceite, protótipos e conversa com o usuário.</p>
-<h3 class="h6 fw-bold">ISO/IEC 25010:2023</h3>
-<p class="text-muted">A norma descreve a qualidade do produto em nove características. A versão de 2023 renomeou usabilidade para capacidade de interação, portabilidade para flexibilidade, e acrescentou proteção (safety).</p>
-<div class="table-responsive"><table class="table table-sm small">
-<thead class="table-light"><tr><th>Característica</th><th>Pergunta que ela faz</th></tr></thead>
+<h3 class="h6 fw-bold">Os eixos da ISO/IEC 25010:2023</h3>
+<p class="text-muted">A norma descreve a qualidade do produto em nove características, os eixos que organizam toda a disciplina, e cada uma se divide em subcaracterísticas. Os requisitos de qualidade dos dois trabalhos partem desta tabela. A versão de 2023 renomeou usabilidade para capacidade de interação, portabilidade para flexibilidade, e acrescentou proteção (safety).</p>
+<div class="table-responsive"><table class="table table-sm small align-middle">
+<thead class="table-light"><tr><th>Característica</th><th>Pergunta que ela faz</th><th>Subcaracterísticas</th><th>Onde a disciplina verifica</th></tr></thead>
 <tbody>
-<tr><td>Adequação funcional</td><td>As funções estão completas, corretas e são as que o usuário precisa?</td></tr>
-<tr><td>Eficiência de desempenho</td><td>Quanto tempo leva e quanto recurso consome sob a carga esperada?</td></tr>
-<tr><td>Compatibilidade</td><td>Convive e troca dados com outros sistemas?</td></tr>
-<tr><td>Capacidade de interação</td><td>É fácil de aprender e de operar, e protege o usuário de erros?</td></tr>
-<tr><td>Confiabilidade</td><td>Funciona sem falhar, fica disponível e se recupera?</td></tr>
-<tr><td>Segurança</td><td>Protege confidencialidade, integridade e autenticidade?</td></tr>
-<tr><td>Manutenibilidade</td><td>É modular, testável e fácil de modificar?</td></tr>
-<tr><td>Flexibilidade</td><td>Adapta-se a outro ambiente, escala e instala com facilidade?</td></tr>
-<tr><td>Proteção (safety)</td><td>Evita dano a pessoas, patrimônio e ambiente?</td></tr>
+<tr><td>Adequação funcional</td><td>As funções estão completas, corretas e são as que o usuário precisa?</td><td>completude funcional, correção funcional, pertinência funcional</td><td>teste de unidade, cenário BDD</td></tr>
+<tr><td>Eficiência de desempenho</td><td>Quanto tempo leva e quanto recurso consome sob a carga esperada?</td><td>comportamento no tempo, utilização de recursos, capacidade</td><td>teste de carga (Aula 12)</td></tr>
+<tr><td>Compatibilidade</td><td>Convive e troca dados com outros sistemas?</td><td>coexistência, interoperabilidade</td><td>teste de contrato e dublê da ViaCEP (Aula 11)</td></tr>
+<tr><td>Capacidade de interação</td><td>É fácil de aprender e de operar, e protege o usuário de erros?</td><td>reconhecimento de adequação, aprendizagem, operabilidade, proteção contra erro do usuário, engajamento, inclusividade, assistência ao usuário, autodescrição</td><td>teste de API com mensagens de erro (Aula 11)</td></tr>
+<tr><td>Confiabilidade</td><td>Funciona sem falhar, fica disponível e se recupera?</td><td>ausência de falhas, disponibilidade, tolerância a falhas, recuperabilidade</td><td>dublê de teste, integração com banco (Aulas 10 e 11)</td></tr>
+<tr><td>Segurança</td><td>Protege confidencialidade, integridade e autenticidade?</td><td>confidencialidade, integridade, não repúdio, responsabilização, autenticidade, resistência</td><td>análise estática, SQL parametrizado (Aulas 05 e 10)</td></tr>
+<tr><td>Manutenibilidade</td><td>É modular, testável e fácil de modificar?</td><td>modularidade, reusabilidade, analisabilidade, modificabilidade, testabilidade</td><td>TDD, cobertura e ESLint (Aulas 04 e 05)</td></tr>
+<tr><td>Flexibilidade</td><td>Adapta-se a outro ambiente, escala e instala com facilidade?</td><td>adaptabilidade, escalabilidade, instalabilidade, substituibilidade</td><td>devcontainer, migrações e CI (Aulas 01, 05 e 10)</td></tr>
+<tr><td>Proteção (safety)</td><td>Evita dano a pessoas, patrimônio e ambiente?</td><td>restrição operacional, identificação de risco, falha segura, alerta de perigo, integração segura</td><td>teste de unidade e cenário BDD de recurso interditado</td></tr>
 </tbody></table></div>
 <p class="text-muted mb-0">Uma característica só vira requisito quando ganha métrica, meta numérica e uma técnica que consiga reprová-la. "O sistema deve ser rápido" não reprova nada. "O p95 do tempo de resposta da busca fica abaixo de 300 ms com 50 usuários simultâneos" vira um teste de carga na Aula 12.</p>
 </section>

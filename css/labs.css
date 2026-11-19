@@ -247,3 +247,18 @@
    somem enquanto um slide de laboratório está ativo e voltam nos demais. */
 body:has(.slide.active.slide-lab) .hbav-fab,
 body:has(.slide.active.slide-lab) .hbav-semana { display: none !important; }
+
+/* ---------- Explorador dos eixos da ISO/IEC 25010 (Aula 01 de qualidade3) ---------- */
+.iso-exp { flex: 1 1 auto; min-height: 0; display: grid; grid-template-columns: minmax(220px, 32%) 1fr; gap: 1rem; background: #0B1424; border-radius: 12px; padding: 1rem; color: #E6EDF3; }
+.iso-roda { display: flex; flex-direction: column; gap: .4rem; overflow: auto; }
+.iso-roda button { text-align: left; border: 1px solid #2F3B55; background: #0F1B33; color: #DCE3EE; border-radius: 8px; padding: .5rem .75rem; font: 600 .95rem var(--fonte); cursor: pointer; }
+.iso-roda button:hover { border-color: #58C4E8; }
+.iso-roda button.is-on { background: var(--sl-primary, #DD2476); border-color: var(--sl-primary, #DD2476); color: #fff; }
+.iso-det { overflow: auto; padding: .4rem .8rem; }
+.iso-det .iso-n { margin: 0; color: #F2CB0A; font: 700 .8rem var(--fonte); letter-spacing: .1em; text-transform: uppercase; }
+.iso-det h3 { margin: .2rem 0 .8rem; font-weight: 800; font-size: clamp(1.5rem, 2.4vw, 2.1rem); color: #fff; }
+.iso-subs { display: flex; flex-wrap: wrap; gap: .45rem; margin-bottom: 1rem; }
+.iso-subs span { background: rgba(88,196,232,.14); border: 1px solid #58C4E8; color: #E6EDF3; border-radius: 999px; padding: .3rem .8rem; font-size: .95rem; }
+.iso-det dt { color: #F2CB0A; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-top: .7rem; }
+.iso-det dd { margin: .15rem 0 0; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.45; }
+.iso-det code { background: rgba(255,255,255,.1); color: #fff; padding: .1em .35em; border-radius: 4px; }

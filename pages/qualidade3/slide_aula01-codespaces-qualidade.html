@@ -37,7 +37,7 @@
             <div class="col-md-6">
               <div class="card border-0 shadow-sm p-4 h-100 text-start">
                 <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
-                <ol class="mb-0 fs-5"><li>Como a disciplina funciona (15 min)</li><li>Demonstração: Codespaces, opencode, OpenRouter e o projeto Node criado pelo agente (35 min)</li><li>Git com branches curtas (15 min)</li><li>Introdução à qualidade e ISO/IEC 25010 (35 min)</li></ol>
+                <ol class="mb-0 fs-5"><li>Como a disciplina funciona (15 min)</li><li>Demonstração: Codespaces, opencode, OpenRouter e o projeto Node criado pelo agente (35 min)</li><li>Git com branches curtas (15 min)</li><li>Introdução à qualidade e os eixos da ISO/IEC 25010 (35 min)</li></ol>
               </div>
             </div>
             <div class="col-md-6">
@@ -248,8 +248,43 @@ docs: descreve requisitos de qualidade</pre>
         </div>
       </div>
 
+      <!-- Eixos da ISO/IEC 25010, parte 1 de 3 -->
+      <div class="slide" id="slide-14">
+        <div class="slide-content" style="max-width:1180px">
+          <h2 class="h2 fw-bold text-center mb-1">Eixos da ISO/IEC 25010 (1 de 3)</h2>
+          <p class="text-center text-muted mb-3">Cada característica se divide em subcaracterísticas. A coluna da direita diz com qual técnica da disciplina cada uma é medida.</p>
+          <div class="table-responsive"><table class="table table-sm align-middle bg-white shadow-sm mb-0 text-start" style="font-size:.9rem"><thead class="table-light"><tr><th style="width:14%">Característica</th><th style="width:24%">Subcaracterísticas</th><th>No organizacao-recursos</th><th style="width:20%">Métrica</th><th style="width:14%">Como verificar</th></tr></thead><tbody><tr><td class="fw-bold">Adequação funcional</td><td>Completude funcional · Correção funcional · Pertinência funcional</td><td>Toda regra da spec existe; a reserva sobreposta é recusada; o sistema pede só os dados que a reserva precisa.</td><td><code class="text-wrap">Reservas conflitantes aceitas = 0</code></td><td>Teste de unidade, cenário BDD</td></tr><tr><td class="fw-bold">Eficiência de desempenho</td><td>Comportamento no tempo · Utilização de recursos · Capacidade</td><td>A consulta de salas livres responde rápido mesmo no início do semestre.</td><td><code class="text-wrap">p95 de GET /salas/disponiveis &lt; 300 ms com 50 usuários</code></td><td>Teste de carga (k6)</td></tr><tr><td class="fw-bold">Compatibilidade</td><td>Coexistência · Interoperabilidade</td><td>O cadastro troca dados com a ViaCEP e convive com outros sistemas da universidade.</td><td><code class="text-wrap">Cadastros que falham por formato da ViaCEP = 0</code></td><td>Teste de contrato, dublê de teste</td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- Eixos da ISO/IEC 25010, parte 2 de 3 -->
+      <div class="slide" id="slide-15">
+        <div class="slide-content" style="max-width:1180px">
+          <h2 class="h2 fw-bold text-center mb-1">Eixos da ISO/IEC 25010 (2 de 3)</h2>
+          <p class="text-center text-muted mb-3">Cada característica se divide em subcaracterísticas. A coluna da direita diz com qual técnica da disciplina cada uma é medida.</p>
+          <div class="table-responsive"><table class="table table-sm align-middle bg-white shadow-sm mb-0 text-start" style="font-size:.9rem"><thead class="table-light"><tr><th style="width:14%">Característica</th><th style="width:24%">Subcaracterísticas</th><th>No organizacao-recursos</th><th style="width:20%">Métrica</th><th style="width:14%">Como verificar</th></tr></thead><tbody><tr><td class="fw-bold">Capacidade de interação</td><td>Reconhecimento de adequação · Aprendizagem · Operabilidade · Proteção contra erro do usuário · Engajamento · Inclusividade · Assistência ao usuário · Autodescrição</td><td>A API devolve mensagem clara quando o horário é inválido, em vez de erro 500.</td><td><code class="text-wrap">Respostas 4xx com mensagem que nomeia o campo = 100%</code></td><td>Teste de API (supertest)</td></tr><tr><td class="fw-bold">Confiabilidade</td><td>Ausência de falhas · Disponibilidade · Tolerância a falhas · Recuperabilidade</td><td>Se a ViaCEP cair, o cadastro continua e o endereço fica pendente.</td><td><code class="text-wrap">Cadastros perdidos com a ViaCEP fora = 0</code></td><td>Dublê de teste, teste de integração</td></tr><tr><td class="fw-bold">Segurança</td><td>Confidencialidade · Integridade · Não repúdio · Responsabilização · Autenticidade · Resistência</td><td>Nenhuma chave no repositório; SQL sempre parametrizado; e-mail único no banco.</td><td><code class="text-wrap">Segredos versionados = 0; consultas concatenadas = 0</code></td><td>Análise estática, teste de integração</td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- Eixos da ISO/IEC 25010, parte 3 de 3 -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content" style="max-width:1180px">
+          <h2 class="h2 fw-bold text-center mb-1">Eixos da ISO/IEC 25010 (3 de 3)</h2>
+          <p class="text-center text-muted mb-3">Cada característica se divide em subcaracterísticas. A coluna da direita diz com qual técnica da disciplina cada uma é medida.</p>
+          <div class="table-responsive"><table class="table table-sm align-middle bg-white shadow-sm mb-0 text-start" style="font-size:.9rem"><thead class="table-light"><tr><th style="width:14%">Característica</th><th style="width:24%">Subcaracterísticas</th><th>No organizacao-recursos</th><th style="width:20%">Métrica</th><th style="width:14%">Como verificar</th></tr></thead><tbody><tr><td class="fw-bold">Manutenibilidade</td><td>Modularidade · Reusabilidade · Analisabilidade · Modificabilidade · Testabilidade</td><td>As regras de conflito ficam em funções pequenas, testáveis sem banco.</td><td><code class="text-wrap">Cobertura de ramos em src/ &gt;= 80%; complexidade &lt;= 8</code></td><td>Cobertura, ESLint, TDD</td></tr><tr><td class="fw-bold">Flexibilidade</td><td>Adaptabilidade · Escalabilidade · Instalabilidade · Substituibilidade</td><td>O Codespace sobe o ambiente igual para qualquer pessoa; o banco sobe só com as migrações.</td><td><code class="text-wrap">Passos manuais para rodar o projeto = 0</code></td><td>devcontainer, migrações, CI</td></tr><tr><td class="fw-bold">Proteção (safety)</td><td>Restrição operacional · Identificação de risco · Falha segura · Alerta de perigo · Integração segura</td><td>Sala interditada por manutenção não pode ser reservada, mesmo por engano.</td><td><code class="text-wrap">Reservas em sala interditada = 0</code></td><td>Teste de unidade, cenário BDD</td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- Explorador dos eixos -->
+      <div class="slide slide-lab" id="slide-17">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório · clique numa característica</p><h2>Do eixo da norma ao teste que reprova</h2></div></div>
+          <div class="lab-area" id="lab-eixos"></div>
+        </div>
+      </div>
+
       <!-- 13. VS Code: requisitos de qualidade mensuráveis -->
-      <div class="slide slide-lab" id="slide-14">
+      <div class="slide slide-lab" id="slide-18">
         <div class="slide-content">
           <div class="lab-split">
             <div class="lab-side">
@@ -266,7 +301,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 14. Mapa do semestre -->
-      <div class="slide slide-lab" id="slide-15">
+      <div class="slide slide-lab" id="slide-19">
         <div class="slide-content">
           <div class="lab-head"><div><p class="kicker">Mapa do semestre</p><h2>Onde cada técnica entra no seu repositório</h2></div></div>
           <div class="lab-area" id="flow-semestre"></div>
@@ -274,7 +309,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 15. Laboratório -->
-      <div class="slide" id="slide-16">
+      <div class="slide" id="slide-20">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
           <h2 class="h1 fw-bold text-center mb-3">Seu repositório e seu Codespace</h2>
@@ -297,7 +332,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 16. Prompt 1 -->
-      <div class="slide" id="slide-17">
+      <div class="slide" id="slide-21">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">Devcontainer e configuração do opencode</h2>
@@ -309,7 +344,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- Prompt 2: projeto Node -->
-      <div class="slide" id="slide-18">
+      <div class="slide" id="slide-22">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">O opencode monta o projeto Node</h2>
@@ -321,7 +356,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 17. Prompt 2 -->
-      <div class="slide" id="slide-19">
+      <div class="slide" id="slide-23">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">Requisitos de qualidade do seu projeto</h2>
@@ -333,7 +368,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 18. Entregável -->
-      <div class="slide" id="slide-20">
+      <div class="slide" id="slide-24">
         <div class="slide-content text-center">
           <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 01</span>
           <p class="fs-4 mb-4">Repositório público com devcontainer, <code>opencode.json</code>, <code>AGENTS.md</code>, <code>.gitignore</code>, projeto Node com <code>npm test</code> passando e <code>docs/qualidade.md</code>, tudo integrado na main por branches curtas.</p>
@@ -345,7 +380,7 @@ docs: descreve requisitos de qualidade</pre>
       </div>
 
       <!-- 19. Dúvidas -->
-      <div class="slide cover-bg" id="slide-21">
+      <div class="slide cover-bg" id="slide-25">
         <div class="glass-cover text-center">
           <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
           <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
@@ -358,7 +393,7 @@ docs: descreve requisitos de qualidade</pre>
       <div class="slide-controls">
         <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
         <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
-        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 21</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 25</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
       </div>
       <div class="text-center text-muted small d-none d-md-block">Qualidade · Codespaces e introdução à qualidade · Semana 4</div>
       <a href="material/material_aula01-codespaces-qualidade.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
@@ -622,6 +657,23 @@ Labs.vscode('#lab-git', {
     { label: '4. Responder ao feedback', kind: 'blue', clear: false, cmd: 'git log --oneline --graph -4', out: [
       '* 8e0f7a1 (HEAD -> main, origin/main) fix(docs): coloca meta numérica no desempenho (#2)', '* 3b1c2d9 docs: descreve requisitos de qualidade', '* 9c4d118 chore: cria devcontainer e configuração do opencode', '* a41f0e2 Initial commit', '[info] Commit 8e0f7a1 tem "Closes #2" no corpo: a issue de feedback fechou sozinha quando chegou à main.' ] }
   ]
+});
+
+/* ---------- Explorador dos eixos da ISO/IEC 25010 ---------- */
+Labs.register('#lab-eixos', (el) => {
+  const EIXOS = [{"c": "Adequação funcional", "sub": "Completude funcional · Correção funcional · Pertinência funcional", "ex": "Toda regra da spec existe; a reserva sobreposta é recusada; o sistema pede só os dados que a reserva precisa.", "m": "Reservas conflitantes aceitas = 0", "t": "Teste de unidade, cenário BDD"}, {"c": "Eficiência de desempenho", "sub": "Comportamento no tempo · Utilização de recursos · Capacidade", "ex": "A consulta de salas livres responde rápido mesmo no início do semestre.", "m": "p95 de GET /salas/disponiveis &lt; 300 ms com 50 usuários", "t": "Teste de carga (k6)"}, {"c": "Compatibilidade", "sub": "Coexistência · Interoperabilidade", "ex": "O cadastro troca dados com a ViaCEP e convive com outros sistemas da universidade.", "m": "Cadastros que falham por formato da ViaCEP = 0", "t": "Teste de contrato, dublê de teste"}, {"c": "Capacidade de interação", "sub": "Reconhecimento de adequação · Aprendizagem · Operabilidade · Proteção contra erro do usuário · Engajamento · Inclusividade · Assistência ao usuário · Autodescrição", "ex": "A API devolve mensagem clara quando o horário é inválido, em vez de erro 500.", "m": "Respostas 4xx com mensagem que nomeia o campo = 100%", "t": "Teste de API (supertest)"}, {"c": "Confiabilidade", "sub": "Ausência de falhas · Disponibilidade · Tolerância a falhas · Recuperabilidade", "ex": "Se a ViaCEP cair, o cadastro continua e o endereço fica pendente.", "m": "Cadastros perdidos com a ViaCEP fora = 0", "t": "Dublê de teste, teste de integração"}, {"c": "Segurança", "sub": "Confidencialidade · Integridade · Não repúdio · Responsabilização · Autenticidade · Resistência", "ex": "Nenhuma chave no repositório; SQL sempre parametrizado; e-mail único no banco.", "m": "Segredos versionados = 0; consultas concatenadas = 0", "t": "Análise estática, teste de integração"}, {"c": "Manutenibilidade", "sub": "Modularidade · Reusabilidade · Analisabilidade · Modificabilidade · Testabilidade", "ex": "As regras de conflito ficam em funções pequenas, testáveis sem banco.", "m": "Cobertura de ramos em src/ &gt;= 80%; complexidade &lt;= 8", "t": "Cobertura, ESLint, TDD"}, {"c": "Flexibilidade", "sub": "Adaptabilidade · Escalabilidade · Instalabilidade · Substituibilidade", "ex": "O Codespace sobe o ambiente igual para qualquer pessoa; o banco sobe só com as migrações.", "m": "Passos manuais para rodar o projeto = 0", "t": "devcontainer, migrações, CI"}, {"c": "Proteção (safety)", "sub": "Restrição operacional · Identificação de risco · Falha segura · Alerta de perigo · Integração segura", "ex": "Sala interditada por manutenção não pode ser reservada, mesmo por engano.", "m": "Reservas em sala interditada = 0", "t": "Teste de unidade, cenário BDD"}];
+  el.innerHTML = '<div class="iso-exp"><div class="iso-roda"></div><div class="iso-det"></div></div>';
+  const roda = el.querySelector('.iso-roda'), det = el.querySelector('.iso-det');
+  function mostra(k) {
+    roda.querySelectorAll('button').forEach((b, j) => b.classList.toggle('is-on', j === k));
+    const e = EIXOS[k];
+    det.innerHTML = '<p class="iso-n">Característica ' + (k + 1) + ' de 9</p><h3>' + e.c + '</h3>' +
+      '<div class="iso-subs">' + e.sub.split(' · ').map((x) => '<span>' + x + '</span>').join('') + '</div>' +
+      '<dl><dt>No organizacao-recursos</dt><dd>' + e.ex + '</dd><dt>Métrica e meta</dt><dd><code>' + e.m + '</code></dd><dt>Como a disciplina verifica</dt><dd>' + e.t + '</dd></dl>';
+  }
+  EIXOS.forEach((e, k) => { const b = Labs.h('button', '', (k + 1) + '. ' + e.c); b.type = 'button'; b.addEventListener('click', () => mostra(k)); roda.appendChild(b); });
+  mostra(0);
+  return {};
 });
 
 /* ---------- 13. VS Code: requisitos de qualidade ---------- */
