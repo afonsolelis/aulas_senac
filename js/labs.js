@@ -4,7 +4,9 @@
    ---------------------------------------------------------------------
    Labs.register(alvo, init)  laboratório próprio: init(el) roda na 1ª
                               entrada do slide e pode devolver {enter, leave}
-   Labs.vscode(alvo, cfg)     VS Code com explorador, abas, realce de sintaxe,
+   Labs.vscode(alvo, cfg)     VS Code com explorador, abas, realce de sintaxe, painel
+                              de chat do Copilot ("opencode run" vira pedido ao agente;
+                              seletor Copilot/opencode na barra; cfg.agent fixa um deles),
                               digitação ao vivo e terminal integrado. Ocupa o
                               slide inteiro (cfg.full: false desliga); o roteiro
                               (.lab-side) abre com a tecla G ou o botão Roteiro.
@@ -133,6 +135,85 @@
   }
 
   /* ------------------------------------------------------------------
+     Agente das demonstrações: GitHub Copilot (padrão) ou opencode.
+     Os laboratórios são escritos com `opencode run "<pedido>"`. No modo
+     Copilot, o mesmo pedido aparece no painel de chat do VS Code (modo
+     Agent), com as ferramentas, as confirmações e a resposta do agente.
+     A escolha vale para a página inteira e fica guardada no navegador.
+     ------------------------------------------------------------------ */
+  const CHAVE_AGENTE = 'labs-agente';
+  let agenteGlobal = 'copilot';
+  try { agenteGlobal = localStorage.getItem(CHAVE_AGENTE) || 'copilot'; } catch (e) { /* sem armazenamento */ }
+  const agenteDe = (cfg) => cfg.agent || agenteGlobal;
+  function trocarAgente(a) {
+    agenteGlobal = a;
+    try { localStorage.setItem(CHAVE_AGENTE, a); } catch (e) { /* sem armazenamento */ }
+    document.dispatchEvent(new CustomEvent('labs:agente', { detail: a }));
+  }
+  function pedidoAoAgente(cmd) {
+    const m = /^opencode run(?:\s+-m\s+\S+)?\s+"([\s\S]*)"\s*$/.exec(String(cmd || '').trim());
+    return m ? m[1].replace(/\\"/g, '"') : null;
+  }
+  // "opencode" no texto vira "Copilot", menos em nomes de arquivo, pacote e comandos da CLI.
+  const nomeDoAgente = (t) => String(t).replace(/\bopencode\b(?![.\-]|\s+(?:run|auth|models|--))/g, 'Copilot');
+  const VERBO = { read: 'Leu', write: 'Criou', edit: 'Editou', bash: 'Executou no terminal', glob: 'Procurou arquivos', grep: 'Pesquisou' };
+  function limpa(l) {
+    let t = l, c = '';
+    if (l && typeof l === 'object') { t = l.t || ''; c = l.c || ''; }
+    const m = /^\[(ok|warn|err|info|mute|hi|red|blue|purple)\]\s?/.exec(t || '');
+    if (m) { c = c || m[1]; t = t.slice(m[0].length); }
+    return { t: t || '', c };
+  }
+  async function conversa(chat, pedido, linhas, token, speed) {
+    const msgs = chat.querySelector('.vsc-chat-msgs');
+    const ph = chat.querySelector('.vsc-chat-in .ph');
+    ph.textContent = '';
+    for (const ch of pedido.slice(0, 160)) { if (token && token.cancel) return; ph.textContent += ch; await sleep(6); }
+    await sleep(250);
+    ph.textContent = 'Peça uma tarefa ao agente…';
+    msgs.insertAdjacentHTML('beforeend', '<div class="cop-user"><b>você</b>' + esc(pedido) + '</div>');
+    const resp = h('div', 'cop-resp', '<b>GitHub Copilot</b>');
+    msgs.appendChild(resp);
+    const rola = () => { msgs.scrollTop = msgs.scrollHeight; };
+    rola();
+    let saida = null, confirma = null;
+    for (const l of linhas) {
+      if (token && token.cancel) return;
+      const { t, c } = limpa(l);
+      const tool = /^\s*▸\s*(\w+)\s+(.*)$/.exec(t);
+      const resposta = /^\s*›\s*(\S)(.*)$/.exec(t);
+      const pergunta = /^\s*(?:\?|△)\s*(.*?(?:Permiss|Permitir|quer executar|Aplicar as mudan|Posso).*)$/.exec(t);
+      if (tool) {
+        const v = VERBO[tool[1]] || tool[1];
+        const arg = tool[2].trim();
+        resp.insertAdjacentHTML('beforeend', '<div class="cop-tool"><i>' + (tool[1] === 'bash' ? '›_' : '◇') + '</i>' + esc(v) + ' <code>' + esc(arg) + '</code></div>');
+        saida = (tool[1] === 'bash' || tool[1] === 'grep' || tool[1] === 'glob') ? h('pre', 'cop-out') : null;
+        if (saida) resp.appendChild(saida);
+        confirma = null;
+      } else if (pergunta) {
+        let txt = pergunta[1].replace(/\s*\[a\].*$/, '').replace(/\s*\(s\/n\)\s*([sn])?\s*$/i, '');
+        const dito = /\(s\/n\)\s*([sn])\s*$/i.exec(pergunta[1]);
+        confirma = h('div', 'cop-conf', '<div>' + esc(txt.replace(/^Permissão:\s*bash\s*/, 'Executar no terminal: ')) + '</div><span class="ok">Continuar</span><span class="no">Cancelar</span>');
+        resp.appendChild(confirma);
+        if (dito) confirma.classList.add(dito[1].toLowerCase() === 's' ? 'aceito' : 'recusado');
+        saida = null;
+      } else if (resposta) {
+        if (confirma) confirma.classList.add(/[as]/i.test(resposta[1]) ? 'aceito' : 'recusado');
+        if (resposta[2].trim()) resp.insertAdjacentHTML('beforeend', '<p class="cop-nota">' + esc(resposta[2].trim().replace(/^\(|\)$/g, '')) + '</p>');
+      } else if (saida && (c && c !== 'warn' || /^\s/.test(t) || t === '')) {
+        saida.insertAdjacentHTML('beforeend', (c ? '<span class="o-' + c + '">' + esc(t) + '</span>' : esc(t)) + '\n');
+      } else {
+        saida = null;
+        if (t.trim()) resp.insertAdjacentHTML('beforeend', '<p' + (c === 'warn' || c === 'err' ? ' class="cop-' + c + '"' : '') + '>' + esc(t) + '</p>');
+      }
+      rola();
+      await sleep(l && l.d != null ? l.d : (speed || 140));
+    }
+    resp.insertAdjacentHTML('beforeend', '<div class="cop-fim">✓ Concluído. Revise as mudanças antes de aceitar.</div>');
+    rola();
+  }
+
+  /* ------------------------------------------------------------------
      VS Code
      ------------------------------------------------------------------ */
   function vscode(sel, cfg) {
@@ -144,8 +225,10 @@
         '<div class="vsc-body"><div class="vsc-activity"><b></b><b></b><b></b><b></b></div>' +
         '<div class="vsc-explorer"><h4>EXPLORADOR</h4><div class="vsc-folder">▾ ' + esc(cfg.folder || 'lab') + '</div><div class="vsc-tree"></div></div>' +
         '<div class="vsc-main"><div class="vsc-tabs"></div><div class="vsc-crumbs"></div><div class="vsc-editor"><pre class="vsc-code"></pre></div>' +
-        '<div class="vsc-panel"><div class="vsc-panel-tabs"><span>PROBLEMAS</span><span>SAÍDA</span><span class="on">TERMINAL</span><span class="sp"></span></div><div class="vsc-term"></div></div></div></div>' +
-        '<div class="vsc-status"><span>⎇ ' + esc(cfg.branch || 'main') + '</span><span>' + esc(cfg.status || '') + '</span><span class="sp"></span><button type="button" class="vsc-guia" title="Mostrar ou esconder o roteiro do laboratório (tecla G)">☰ Roteiro</button><span class="vsc-lang"></span><span>UTF-8</span><span>LF</span></div>';
+        '<div class="vsc-panel"><div class="vsc-panel-tabs"><span>PROBLEMAS</span><span>SAÍDA</span><span class="on">TERMINAL</span><span class="sp"></span></div><div class="vsc-term"></div></div></div>' +
+        '<div class="vsc-chat" hidden><div class="vsc-chat-top"><b>CHAT</b><span class="cop-logo">GitHub Copilot</span></div><div class="vsc-chat-msgs"></div>' +
+        '<div class="vsc-chat-in"><div class="ph">Peça uma tarefa ao agente…</div><div class="opts"><span>Agent ▾</span><span>Claude Sonnet 4 ▾</span><span class="sp"></span><span>➤</span></div></div></div></div>' +
+        '<div class="vsc-status"><span>⎇ ' + esc(cfg.branch || 'main') + '</span><span>' + esc(cfg.status || '') + '</span><span class="sp"></span><button type="button" class="vsc-agente" title="Trocar o agente da demonstração: GitHub Copilot ou opencode"></button><button type="button" class="vsc-guia" title="Mostrar ou esconder o roteiro do laboratório (tecla G)">☰ Roteiro</button><span class="vsc-lang"></span><span>UTF-8</span><span>LF</span></div>';
       el.appendChild(root);
       // Tela cheia: o VS Code ocupa o slide inteiro; o roteiro (Objetivo, Faça, Observe, Conclusão)
       // vira um painel sobreposto, aberto pelo botão "Roteiro" da barra de status ou pela tecla G.
@@ -237,6 +320,13 @@
         running = { cancel: false };
         travar(true);
         if (r.file) open(r.file);
+        const pedido = agenteDe(cfg) === 'copilot' ? pedidoAoAgente(r.cmd) : null;
+        if (pedido != null) {
+          await conversa(chat, pedido, typeof r.out === 'function' ? r.out() : (r.out || []), running, r.speed);
+          travar(false); running = null;
+          cfg.onRun && cfg.onRun(k, api);
+          return;
+        }
         if (r.clear !== false) term.innerHTML = '';
         await exec(r.cmd, r.out, r.speed);
         // r.prompt troca o prompt depois do comando (ex.: git switch); r.branch atualiza a barra de status
@@ -274,8 +364,30 @@
       }
       (cfg.run || []).forEach((r, k) => {
         const b = h('button', 'lab-btn' + (r.kind ? ' ' + r.kind : ''), '▶ ' + esc(r.label || r.cmd));
+        b.dataset.rotulo = '▶ ' + (r.label || r.cmd);
         b.addEventListener('click', () => run(k)); ptabs.appendChild(b);
       });
+      // Agente da demonstração: GitHub Copilot (padrão) ou opencode. cfg.agent fixa um dos dois.
+      const chat = root.querySelector('.vsc-chat');
+      const bAgente = root.querySelector('.vsc-agente');
+      const temPedido = (cfg.run || []).some((r) => pedidoAoAgente(r.cmd) != null);
+      if (cfg.agent || !temPedido) bAgente.remove();
+      else bAgente.addEventListener('click', () => trocarAgente(agenteDe(cfg) === 'copilot' ? 'opencode' : 'copilot'));
+      const aplicarAgente = () => {
+        const a = agenteDe(cfg);
+        chat.hidden = !(a === 'copilot' && temPedido);
+        if (bAgente.isConnected) bAgente.textContent = a === 'copilot' ? '◆ Agente: Copilot' : '◆ Agente: opencode';
+        const st = root.querySelectorAll('.vsc-status span')[1];
+        if (st && !cfg.agent) { if (!st.dataset.original) st.dataset.original = st.textContent; st.textContent = a === 'copilot' ? nomeDoAgente(st.dataset.original) : st.dataset.original; }
+        ptabs.querySelectorAll('.lab-btn[data-rotulo]').forEach((b) => { b.textContent = a === 'copilot' ? nomeDoAgente(b.dataset.rotulo) : b.dataset.rotulo; });
+        const lado = slideEl && slideEl.querySelector('.lab-side');
+        if (lado && !cfg.agent) {
+          if (!lado.dataset.original) lado.dataset.original = lado.innerHTML;
+          lado.innerHTML = a === 'copilot' ? nomeDoAgente(lado.dataset.original) : lado.dataset.original;
+        }
+      };
+      aplicarAgente();
+      document.addEventListener('labs:agente', aplicarAgente);
       // Digitação manual simulada: desligada por padrão, porque nas aulas o código vem do agente.
       if (cfg.typing) {
         const bt = h('button', 'lab-btn ghost', '⌨ Digitar ao vivo');

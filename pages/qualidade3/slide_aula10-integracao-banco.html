@@ -170,7 +170,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Ver o banco recusar dados que violam as regras do DER.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Perguntar ao opencode": ele propõe os INSERTs que deveriam falhar.<br>2. Rode "Descrever emprestimos" e as quatro inserções inválidas.<br>3. Compare o nome da restrição em cada erro com <code>003_cria_emprestimos.sql</code>.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Perguntar ao agente": ele propõe os INSERTs que deveriam falhar.<br>2. Rode "Descrever emprestimos" e as quatro inserções inválidas.<br>3. Compare o nome da restrição em cada erro com <code>003_cria_emprestimos.sql</code>.</div>
                 <div class="rl obs"><b>Observe</b>Cada erro traz o código (23505, 23503, 23514) e o nome da restrição. São esses dois campos que o teste de integração vai conferir.</div>
                 <div class="rl conc"><b>Conclusão</b>Dar nome às restrições deixa o erro legível e o teste preciso.</div>
               </div>
@@ -205,7 +205,7 @@
           <div class="row g-3 text-start">
             <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-feather me-2" aria-hidden="true"></i>SQLite no lugar</h3><p class="mb-0 small">Outro dialeto: não tem <code>EXCLUDE USING gist</code>, <code>timestamptz</code> nem <code>RESTART IDENTITY</code>; foreign keys vêm desligadas por padrão; os códigos de erro são outros. O teste passa num banco que não vai para produção.</p></div></div>
             <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-mask me-2" aria-hidden="true"></i>Mock do pg</h3><p class="mb-0 small">Confere que <code>query</code> foi chamada com a string que você escreveu. Um <code>= NULL</code> no lugar de <code>IS NULL</code> passa, e uma restrição esquecida na migração também.</p></div></div>
-            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fab fa-docker me-2" aria-hidden="true"></i>Testcontainers</h3><p class="mb-0 small">O teste sobe <code>postgres:16-alpine</code> num container descartável, aplica as migrações e derruba tudo no fim. No Codespace, o Docker vem da feature <code>docker-in-docker</code> do devcontainer.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fab fa-docker me-2" aria-hidden="true"></i>Testcontainers</h3><p class="mb-0 small">O teste sobe <code>postgres:16-alpine</code> num container descartável, aplica as migrações e derruba tudo no fim. O Codespace já vem com Docker, então não há nada para instalar.</p></div></div>
           </div>
           <div class="alert alert-light border mt-3 mb-0 text-start">Dublês continuam valendo para o que está fora do seu controle, como a ViaCEP na próxima aula. O banco é parte do seu sistema: as migrações e o SQL são código seu e precisam de teste.</div>
         </div>
@@ -957,21 +957,11 @@ Labs.vscode('#lab-testcontainers', {
   prompt: PROMPT_PROF('test/integracao-emprestimos'),
   setup: [
     { cmd: 'npm install pg && npm install -D @testcontainers/postgresql', out: ['[mute] added 112 packages, and audited 287 packages in 9s', '[ok] found 0 vulnerabilities'] },
-    { cmd: 'docker info --format "{{.ServerVersion}} {{.OperatingSystem}}"', out: ['27.3.1 Debian GNU/Linux 12 (bookworm)', '[mute] Docker disponível pela feature docker-in-docker do devcontainer'] }
+    { cmd: 'docker info --format "{{.ServerVersion}} {{.OperatingSystem}}"', out: ['27.3.1 Debian GNU/Linux 12 (bookworm)', '[mute] Docker já vem na imagem padrão do Codespaces'] }
   ],
   files: [
     { path: 'test/integracao/helpers/banco.js', hl: [10, 11, 12, 13, 14, 15, 21], code: HELPER_BANCO },
-    { path: 'test/integracao/emprestimos.test.js', hl: [33, 41], code: TESTE_INT },
-    { path: '.devcontainer/devcontainer.json', hl: [4], code:
-`{
-  "name": "biblioteca-campus",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
-  "postCreateCommand": "npm ci && curl -fsSL https://opencode.ai/install | bash",
-  "secrets": {
-    "OPENROUTER_API_KEY": { "description": "Chave da OpenRouter usada pelo opencode" }
-  }
-}` }
+    { path: 'test/integracao/emprestimos.test.js', hl: [33, 41], code: TESTE_INT }
   ],
   run: [
     { label: 'opencode gera o helper', kind: 'purple', cmd: 'opencode run "Crie test/integracao/helpers/banco.js com Testcontainers (postgres:16-alpine) ou DATABASE_URL_TESTE, aplicando migrar(pool), e test/integracao/emprestimos.test.js cobrindo as restrições pelo code e pelo constraint do erro"', file: 'test/integracao/helpers/banco.js', speed: 110, out: [

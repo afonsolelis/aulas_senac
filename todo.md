@@ -51,7 +51,7 @@ semana 17 em `pages/qualidade3/entrega/professor.html`.
 
 Os comandos e o `opencode.json` dos slides foram escritos sem rodar num Codespace.
 
-- [ ] `curl -fsSL https://opencode.ai/install | bash` funciona no `postCreateCommand`
+- [ ] `npm install -g opencode-ai` funciona no Codespace padrão
 - [ ] `opencode auth login` lista a OpenRouter
 - [ ] `{env:OPENROUTER_API_KEY}` é lido a partir do secret do Codespaces
 - [ ] modelo padrão `openrouter/qwen/qwen3-coder` existe (ou trocar nos slides e materiais)

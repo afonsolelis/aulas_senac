@@ -20,7 +20,8 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
 <p class="lead text-muted">Retomar os dez temas do semestre antes da prova de recuperação, na semana 22, com uma síntese de cada técnica, um laboratório curto que a relembra no <code>biblioteca-campus</code> e questões abertas no estilo da prova oral.</p>
-<p class="text-muted mb-0">Cada laboratório segue o padrão do semestre: o opencode recebe um prompt e faz a tarefa; o aluno lê o rastro do agente e confere o resultado no terminal antes de aceitar. As respostas esperadas das questões estão na seção 13. Tente responder em voz alta antes de abrir cada uma.</p>
+<p class="text-muted mb-0">Cada laboratório segue o padrão do semestre: o agente recebe um prompt e faz a tarefa; o aluno lê o rastro do agente e confere o resultado no terminal antes de aceitar. As respostas esperadas das questões estão na seção 13. Tente responder em voz alta antes de abrir cada uma.</p>
+<p class="small text-muted mt-3 mb-0">Os prompts desta página servem para o chat do GitHub Copilot no modo Agent, o agente padrão da disciplina, e também para o opencode (<code>opencode run "..."</code>). Os comandos <code>opencode run</code> que aparecem nos exemplos equivalem a colar o mesmo pedido no chat do Copilot.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -42,7 +43,7 @@
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">2. Como revisar o que o agente produz</h2>
-<p class="text-muted">Durante o semestre, o código foi gerado pelo opencode. A responsabilidade pelo que entra na main continua sendo do aluno, e a prova oral cobra a explicação de cada arquivo. A revisão acontece em três momentos.</p>
+<p class="text-muted">Durante o semestre, o código foi gerado pelo agente. A responsabilidade pelo que entra na main continua sendo do aluno, e a prova oral cobra a explicação de cada arquivo. A revisão acontece em três momentos.</p>
 <ul class="text-muted">
 <li>Antes do prompt: diga quais arquivos o agente pode alterar e quais não pode, aponte a fonte da verdade (spec, <code>docs/qualidade.md</code>, <code>AGENTS.md</code>) e peça que ele pare e pergunte quando faltar informação.</li>
 <li>Durante a execução: leia o rastro (<code>▸ read</code>, <code>▸ write</code>, <code>▸ edit</code>, <code>▸ bash</code>). Negue permissão para <code>git push</code>, para apagar arquivos e para qualquer mudança fora do escopo. Recuse ofertas de alterar o teste ou o exemplo para que ele passe.</li>
@@ -63,7 +64,7 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">3. Qualidade e ISO/IEC 25010</h2>
 <p class="text-muted">Qualidade tem três leituras: conformidade com a especificação, adequação ao uso e facilidade de mudar o código. Verificação pergunta se o produto foi construído do jeito certo (testes, revisão, análise estática); validação pergunta se é o produto certo (critérios de aceite discutidos, protótipo, conversa com quem usa). A ISO/IEC 25010:2023 organiza a qualidade do produto em nove características: adequação funcional, eficiência de desempenho, compatibilidade, capacidade de interação, confiabilidade, segurança, manutenibilidade, flexibilidade e proteção (safety).</p>
-<p class="text-muted">Uma característica vira requisito quando ganha métrica, meta numérica e a técnica que vai medi-la. No laboratório, o opencode apontou a linha de confiabilidade sem métrica e propôs uma meta de 99,5%; o <code>grep '| ? |'</code> confirmou a linha. O número proposto pelo agente é uma sugestão e precisa de confirmação.</p>
+<p class="text-muted">Uma característica vira requisito quando ganha métrica, meta numérica e a técnica que vai medi-la. No laboratório, o agente apontou a linha de confiabilidade sem métrica e propôs uma meta de 99,5%; o <code>grep '| ? |'</code> confirmou a linha. O número proposto pelo agente é uma sugestão e precisa de confirmação.</p>
 <pre class="bg-dark text-info p-3 rounded small mb-0">| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 com 50 usuários | &lt; 300 ms | teste de carga (k6) |
 | Confiabilidade | O sistema não pode cair | ? | ? | ? |      &lt;- não reprova nada</pre>
 </section>

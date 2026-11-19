@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="revisão, ISO/IEC 25010, SDD, caixa preta, caixa branca, complexidade ciclomática, TDD, cobertura, ESLint, CI, Testcontainers, dublês, ViaCEP, BDD, k6, trunk-based, opencode" />
+    <meta name="keywords" content="revisão, ISO/IEC 25010, SDD, caixa preta, caixa branca, complexidade ciclomática, TDD, cobertura, ESLint, CI, Testcontainers, dublês, ViaCEP, BDD, k6, trunk-based, GitHub Copilot, opencode" />
     <title>Aula 17 - Revisão geral</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -56,7 +56,7 @@
           <h2 class="display-6 fw-bold text-center mb-4">Como esta revisão funciona</h2>
           <div class="row g-3 text-start">
             <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-layer-group me-2" aria-hidden="true"></i>Síntese</h3><p class="mb-0">Um slide por tema: a ideia central, como se configura ou se aplica e o erro que mais aparece na prova oral.</p></div></div>
-            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-code me-2" aria-hidden="true"></i>Laboratório curto</h3><p class="mb-0">No <code>biblioteca-campus</code>: o opencode faz a tarefa a partir de um prompt e o aluno confere o resultado no terminal.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-code me-2" aria-hidden="true"></i>Laboratório curto</h3><p class="mb-0">No <code>biblioteca-campus</code>: o agente faz a tarefa a partir de um prompt e o aluno confere o resultado no terminal.</p></div></div>
             <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-comments me-2" aria-hidden="true"></i>Questões</h3><p class="mb-0">Perguntas abertas como as da prova oral. A resposta esperada está no material escrito, não no slide.</p></div></div>
           </div>
           <div class="alert alert-dark mt-4 mb-0 fs-6">Cada laboratório tem o roteiro na tecla G. Responda as questões pensando no seu <code>organizacao-recursos</code>: na prova, o exemplo vem do seu repositório.</div>
@@ -116,7 +116,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Relembrar o que faz um requisito de qualidade ser verificável.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e compare a linha apontada com a proposta.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "Verificar" e compare a linha apontada com a proposta.</div>
                 <div class="rl obs"><b>Observe</b>A proposta do agente para confiabilidade traz métrica, meta e técnica. O número de 99,5% é dele: precisa de confirmação antes de entrar.</div>
                 <div class="rl conc"><b>Conclusão</b>Característica, métrica, meta e técnica. Faltando uma, o requisito não reprova nada.</div>
               </div>
@@ -147,7 +147,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Rastrear cada critério de aceite da spec até um teste.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e confira a lacuna que ele apontou.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "Verificar" e confira a lacuna que ele apontou.</div>
                 <div class="rl obs"><b>Observe</b>O CA-03 aparece no cenário BDD, mas não em teste de unidade. O <code>grep</code> confirma a resposta do agente.</div>
                 <div class="rl conc"><b>Conclusão</b>O identificador do critério no nome do teste torna a rastreabilidade um <code>grep</code>.</div>
               </div>
@@ -178,7 +178,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Ver o teste de valor-limite pegar um erro de fronteira.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia os testes gerados.<br>2. Rode "Verificar".<br>3. Rode "Trocar &gt;= por &gt;".</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente" e leia os testes gerados.<br>2. Rode "Verificar".<br>3. Rode "Trocar &gt;= por &gt;".</div>
                 <div class="rl obs"><b>Observe</b>Com <code>&gt;</code>, só o teste de 3 ativos falha (e a regra R2 da tabela). O teste de 0 ativos continua verde e não diria nada.</div>
                 <div class="rl conc"><b>Conclusão</b>A técnica escolhe os valores; o agente só escreve o código do teste.</div>
               </div>
@@ -209,7 +209,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Calcular V(G) de <code>emprestar</code> e conferir a conta com ferramentas.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "ESLint complexity" e "Cobertura de ramos".</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "ESLint complexity" e "Cobertura de ramos".</div>
                 <div class="rl obs"><b>Observe</b>O ESLint conta 5, como o agente. A cobertura mostra 87,5% de ramos e a linha 12 sem execução: o caminho do livro reservado por outro aluno não tem teste.</div>
                 <div class="rl conc"><b>Conclusão</b>A conta manual, a do agente e a do ESLint precisam bater. Se não batem, alguém errou e você precisa saber quem.</div>
               </div>
@@ -273,7 +273,7 @@ e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Confirmar que o CI reprova quando a cobertura de ramos cai.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar a cobertura" e "Lint".<br>3. Veja o histórico do CI.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "Verificar a cobertura" e "Lint".<br>3. Veja o histórico do CI.</div>
                 <div class="rl obs"><b>Observe</b>O agente pediu permissão para <code>git push</code> e recebeu não: push é decisão do aluno, depois de ver o comando falhar no Codespace.</div>
                 <div class="rl conc"><b>Conclusão</b>O gate só existe se a meta estiver no comando que o workflow roda.</div>
               </div>
@@ -303,7 +303,7 @@ e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Provar com o banco real que um livro não tem dois empréstimos ativos.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia a migração e o teste.<br>2. Rode "Verificar".</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente" e leia a migração e o teste.<br>2. Rode "Verificar".</div>
                 <div class="rl obs"><b>Observe</b>O teste espera o código <code>23505</code> (violação de unicidade) vindo do índice parcial da migração 001. Só um PostgreSQL de verdade devolve isso.</div>
                 <div class="rl conc"><b>Conclusão</b>Regra que mora no banco também precisa de teste, e esse teste precisa de banco.</div>
               </div>
@@ -341,7 +341,7 @@ e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Isolar a ViaCEP com <code>t.mock.fn</code> e cobrir os três casos.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e "Conferir a rede".</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "Verificar" e "Conferir a rede".</div>
                 <div class="rl obs"><b>Observe</b>O mesmo <code>t.mock.fn</code> serve de stub (resposta pronta) e de spy (<code>callCount</code>). Nenhum teste toca <code>viacep.com.br</code>.</div>
                 <div class="rl conc"><b>Conclusão</b>ViaCEP fora do ar vira um caso de teste comum: o cadastro segue com o endereço pendente.</div>
               </div>
@@ -371,7 +371,7 @@ e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Rodar a suíte de aceitação e a carga e ler os dois resumos.</div>
-                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Cenários" e "Carga" você mesmo.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao agente".<br>2. Rode "Cenários" e "Carga" você mesmo.</div>
                 <div class="rl obs"><b>Observe</b>O agente resumiu o p95 como "cerca de 130 ms". No resumo do k6 está 131,8 ms; na prova, cite o número do resumo.</div>
                 <div class="rl conc"><b>Conclusão</b>Os dois comandos são a evidência do Trabalho 2: um cenário por critério e uma meta que reprova.</div>
               </div>

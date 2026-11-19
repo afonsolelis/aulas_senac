@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spec-Driven Development: da especificação ao código - Material</title>
-<meta name="description" content="Material da Aula 02 de Qualidade de Software 2027.1: Spec-Driven Development com opencode, spec.md, critérios de aceite, plano, tarefas, AGENTS.md, rastreabilidade e abertura do Trabalho 1.">
+<meta name="description" content="Material da Aula 02 de Qualidade de Software 2027.1: Spec-Driven Development com agente de código (GitHub Copilot ou opencode), spec.md, critérios de aceite, plano, tarefas, AGENTS.md, rastreabilidade e abertura do Trabalho 1.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="../../../css/style.css">
@@ -20,7 +20,8 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
 <p class="lead text-muted">Sair da aula com a especificação do seu <code>organizacao-recursos</code> em <code>docs/spec.md</code>, o plano e as tarefas que o agente vai seguir, o <code>AGENTS.md</code> apontando para a spec e a primeira tarefa implementada, testada e integrada na main.</p>
-<p class="text-muted mb-0">No primeiro bloco, o professor mostra o fluxo completo no repositório <code>biblioteca-campus</code>, sempre com o opencode gerando os arquivos e o professor conferindo o resultado. No segundo bloco abre-se o Trabalho 1 e cada aluno aplica o mesmo fluxo no próprio repositório, com os três prompts desta página.</p>
+<p class="text-muted mb-0">No primeiro bloco, o professor mostra o fluxo completo no repositório <code>biblioteca-campus</code>, sempre com o agente gerando os arquivos e o professor conferindo o resultado. No segundo bloco abre-se o Trabalho 1 e cada aluno aplica o mesmo fluxo no próprio repositório, com os três prompts desta página.</p>
+<p class="small text-muted mt-3 mb-0">Os prompts desta página servem para o chat do GitHub Copilot no modo Agent, o agente padrão da disciplina, e também para o opencode (<code>opencode run "..."</code>). Os comandos <code>opencode run</code> que aparecem nos exemplos equivalem a colar o mesmo pedido no chat do Copilot.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -42,7 +43,7 @@
 <ol class="text-muted">
 <li>O problema é descrito em <code>docs/spec.md</code>: requisitos, regras, critérios de aceite, fora de escopo e perguntas em aberto.</li>
 <li>A spec é quebrada em <code>docs/plano.md</code> (como o código se organiza) e <code>docs/tarefas.md</code> (o que fazer, em que ordem).</li>
-<li>O <code>AGENTS.md</code> diz ao opencode que a spec é a fonte da verdade e que ele implementa uma tarefa por vez.</li>
+<li>O <code>AGENTS.md</code> diz ao agente que a spec é a fonte da verdade e que ele implementa uma tarefa por vez.</li>
 <li>O agente implementa a próxima tarefa com o teste do critério de aceite correspondente.</li>
 <li>Você revisa: lê o diff, roda <code>npm test</code> e só então commita. Se algo estiver errado, a tarefa volta para o agente.</li>
 </ol>
@@ -58,7 +59,7 @@
 <li>Fora de escopo: o que esta versão não faz. Impede o agente de criar cadastro, banco ou tela que ninguém pediu.</li>
 <li>Perguntas em aberto (<code>P01</code>...): decisões ainda não tomadas. O agente para quando uma tarefa depende delas.</li>
 </ul>
-<p class="text-muted">A spec da biblioteca usada na demonstração, gerada pelo opencode a partir das anotações de uma reunião e revisada pelo professor:</p>
+<p class="text-muted">A spec da biblioteca usada na demonstração, gerada pelo agente a partir das anotações de uma reunião e revisada pelo professor:</p>
 <pre class="bg-dark text-info p-3 rounded small" style="max-height:28rem;overflow:auto"># Especificação · biblioteca-campus
 
 Versão 1.2 · 02/02/2027 · fonte da verdade do projeto
@@ -162,7 +163,7 @@ Então a multa é 3000 centavos
 - [ ] T05 Aplicar a ordem dos motivos (RN06, CA02.5)
 - [ ] T06 Calcular multa com teto (RF03, RN05, CA03.1, CA03.2, CA03.3)
 - [ ] T07 Script de rastreabilidade (todos os CA)</pre>
-<p class="text-muted">O <code>AGENTS.md</code> é lido pelo opencode no início de cada sessão. É nele que o fluxo do SDD vira regra para o agente:</p>
+<p class="text-muted">O <code>AGENTS.md</code> é lido pelo agente no início de cada sessão. É nele que o fluxo do SDD vira regra para o agente:</p>
 <pre class="bg-dark text-info p-3 rounded small"># Regras para o agente
 
 ## Fonte da verdade

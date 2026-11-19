@@ -86,7 +86,7 @@
           <div class="lab-split">
             <div class="lab-side">
               <div class="roteiro-lab">
-                <div class="rl obj"><b>Objetivo</b>Pedir ao opencode o primeiro teste com node:test e conferir o que ele gerou.</div>
+                <div class="rl obj"><b>Objetivo</b>Pedir ao agente o primeiro teste com node:test e conferir o que ele gerou.</div>
                 <div class="rl"><b>Faça</b>1. "Preparar o ambiente".<br>2. "opencode: gerar o teste" e leia o arquivo criado.<br>3. "Conferir": <code>git status</code> e <code>npm test</code>.<br>4. "Ver uma falha", com o prazo trocado para 13 dias.</div>
                 <div class="rl obs"><b>Observe</b>O rastro <code>▸ read</code>, <code>▸ write</code>, <code>▸ bash</code> mostra o que o agente tocou, e ele pede permissão antes de rodar comando. Na falha, o Node mostra <code>+ actual</code>, <code>- expected</code> e a linha.</div>
                 <div class="rl conc"><b>Conclusão</b>O agente escreve; a etapa de qualidade é a sua revisão: ler o teste, ver que só ele mudou e provar que ele falha quando a regra quebra.</div>
@@ -194,7 +194,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Ver um teste que depende do dia falhar e corrigi-lo com relógio injetado.</div>
-                <div class="rl"><b>Faça</b>1. "Hoje, 22/02": passa.<br>2. "O mesmo teste em 10/03": falha sem ninguém mexer no código.<br>3. Peça a correção ao opencode e releia os dois arquivos.<br>4. Confira com <code>grep</code> e <code>npm test</code>, depois filtre pelo relógio.</div>
+                <div class="rl"><b>Faça</b>1. "Hoje, 22/02": passa.<br>2. "O mesmo teste em 10/03": falha sem ninguém mexer no código.<br>3. Peça a correção ao agente e releia os dois arquivos.<br>4. Confira com <code>grep</code> e <code>npm test</code>, depois filtre pelo relógio.</div>
                 <div class="rl obs"><b>Observe</b><code>estaAtrasado</code> recebe <code>hoje</code>; só <code>registrarAtraso</code> lê o relógio, e o teste dela fixa a data com <code>t.mock.timers</code>.</div>
                 <div class="rl conc"><b>Conclusão</b>O <code>grep</code> por <code>new Date()</code> nos testes é uma revisão que você faz em segundos e que pega o erro mais comum dos testes gerados.</div>
               </div>
@@ -247,7 +247,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Comparar a saída de testes com nomes vagos e com nomes que descrevem a regra, e separar unidade de integração.</div>
-                <div class="rl"><b>Faça</b>1. "Nomes vagos": tente dizer qual regra quebrou.<br>2. Peça a revisão ao opencode e leia a proposta antes de aceitar.<br>3. Confira o diff e rode os testes de unidade.<br>4. Rode "Teste que fala com o banco".</div>
+                <div class="rl"><b>Faça</b>1. "Nomes vagos": tente dizer qual regra quebrou.<br>2. Peça a revisão ao agente e leia a proposta antes de aceitar.<br>3. Confira o diff e rode os testes de unidade.<br>4. Rode "Teste que fala com o banco".</div>
                 <div class="rl obs"><b>Observe</b>A mesma falha fica legível só na segunda saída. O teste da pasta <code>integracao/</code> demora 1,5 s e cai com <code>ECONNREFUSED</code>: ele depende de um PostgreSQL rodando.</div>
                 <div class="rl conc"><b>Conclusão</b>Pedir a lista antes de gravar deixa a decisão com você; confira que nenhuma asserção mudou. O que precisa de banco fica em <code>test/integracao/</code> e ganha Testcontainers na Aula 10.</div>
               </div>
@@ -266,7 +266,7 @@
             <div class="col-md-6">
               <div class="card border-0 shadow-sm p-4 h-100">
                 <h3 class="h5 fw-bold">Como trabalhar com o agente</h3>
-                <ol class="mb-0"><li>Uma branch curta por regra: <code>feat/intervalo</code>, <code>feat/reserva</code>.</li><li>O prompt manda o opencode parar ao fim de cada passo.</li><li>Você lê a saída do <code>npm test</code> antes de commitar.</li><li>Commit por passo: <code>test(...)</code>, <code>feat(...)</code>, <code>refactor(...)</code>.</li></ol>
+                <ol class="mb-0"><li>Uma branch curta por regra: <code>feat/intervalo</code>, <code>feat/reserva</code>.</li><li>O prompt manda o agente parar ao fim de cada passo.</li><li>Você lê a saída do <code>npm test</code> antes de commitar.</li><li>Commit por passo: <code>test(...)</code>, <code>feat(...)</code>, <code>refactor(...)</code>.</li></ol>
               </div>
             </div>
             <div class="col-md-6">

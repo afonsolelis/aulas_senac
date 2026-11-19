@@ -5,7 +5,7 @@
 <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ambiente no Codespaces e introdução à qualidade - Material</title>
-<meta name="description" content="Material da Aula 01 de Qualidade de Software 2027.1: GitHub Codespaces, opencode com OpenRouter ou OpenLLM, Git com branches curtas e ISO/IEC 25010.">
+<meta name="description" content="Material da Aula 01 de Qualidade de Software 2027.1: GitHub Codespaces, GitHub Copilot ou opencode (OpenRouter, OpenLLM), Git com branches curtas e ISO/IEC 25010.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="../../../css/style.css">
@@ -19,7 +19,7 @@
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
-<p class="lead text-muted">Sair da aula com um repositório público, um Codespace funcionando, o opencode respondendo por um modelo da OpenRouter e um primeiro documento de requisitos de qualidade integrado na main.</p>
+<p class="lead text-muted">Sair da aula com um repositório público, um Codespace funcionando, o agente (GitHub Copilot ou opencode) respondendo e um primeiro documento de requisitos de qualidade integrado na main.</p>
 <p class="text-muted mb-0">O primeiro bloco é demonstração: o professor mostra cada passo em simulações do GitHub e do VS Code. O segundo bloco é laboratório: cada aluno repete os passos no próprio repositório, com os dois prompts desta página.</p>
 </section>
 
@@ -42,31 +42,32 @@
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">2. GitHub Codespaces</h2>
-<p class="text-muted">Um Codespace é uma máquina virtual do GitHub com o VS Code aberto no navegador. A configuração fica no próprio repositório, em <code>.devcontainer/devcontainer.json</code>, então qualquer pessoa que abrir um Codespace recebe o mesmo Node, as mesmas extensões e as mesmas ferramentas. A conta gratuita do GitHub tem uma cota mensal de horas; pare o Codespace quando terminar (menu Codespaces › Stop) para não gastá-la à toa.</p>
+<p class="text-muted">Um Codespace é uma máquina virtual do GitHub com o VS Code aberto no navegador. A imagem padrão já traz Node, npm, Git e Docker, então não há nada para configurar: basta abrir e usar. A conta gratuita do GitHub tem uma cota mensal de horas; pare o Codespace quando terminar (menu Codespaces › Stop) para não gastá-la à toa.</p>
 <h3 class="h6 fw-bold">Passo a passo</h3>
-<ol class="text-muted">
+<ol class="text-muted mb-0">
 <li>Em <code>github.com/new</code>, crie o repositório <code>organizacao-recursos</code>, público, com README.</li>
 <li>No repositório, clique em <code>&lt;&gt; Code</code>, aba Codespaces, <code>Create codespace on main</code>.</li>
 <li>Quando o VS Code abrir, use <code>Ctrl + `</code> para abrir o terminal e confira <code>node --version</code>.</li>
-<li>Instale o opencode: <code>curl -fsSL https://opencode.ai/install | bash</code>. Depois do prompt 1, o devcontainer passa a instalar sozinho a cada Codespace novo.</li>
+<li>Se for usar o agente, instale pelo npm: <code>npm install -g opencode-ai</code> e confira com <code>opencode --version</code>. A instalação vale para aquele Codespace; num Codespace novo, rode o comando de novo.</li>
 </ol>
-<pre class="bg-dark text-info p-3 rounded small mb-0">{
-  "name": "organizacao-recursos",
-  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
-  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
-  "postCreateCommand": "curl -fsSL https://opencode.ai/install | bash",
-  "secrets": {
-    "OPENROUTER_API_KEY": { "description": "Chave da OpenRouter usada pelo opencode" }
-  },
-  "customizations": { "vscode": { "extensions": ["dbaeumer.vscode-eslint"] } }
-}</pre>
-<p class="small text-muted mt-2 mb-0">A feature <code>docker-in-docker</code> será usada na Aula 10, quando os testes de integração subirem um PostgreSQL de verdade dentro do Codespace.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">3. opencode com OpenRouter</h2>
-<p class="text-muted">O opencode é um agente de código que roda no terminal. Ele lê os arquivos do repositório, propõe mudanças e executa comandos, sempre pedindo permissão. A OpenRouter é um intermediário que dá acesso a modelos de vários fornecedores com uma única chave e um único saldo.</p>
+<h2 class="h3 fw-bold">3. Agente de código: GitHub Copilot</h2>
+<p class="text-muted">O agente padrão da disciplina é o GitHub Copilot, que já vem no VS Code do Codespace. Abra o chat pelo ícone do Copilot na barra lateral ou com <code>Ctrl + Alt + I</code> e escolha o modo Agent: nele o Copilot lê os arquivos do repositório, edita, roda comandos no terminal e pede confirmação antes de cada comando. Nenhuma chave nem instalação é necessária.</p>
+<ul class="text-muted">
+<li>Qualquer conta do GitHub tem o plano Copilot Free, com limite mensal de pedidos.</li>
+<li>Estudante verificado no GitHub Education (<code>education.github.com</code>) recebe o Copilot Pro sem custo. Faça a verificação com o e-mail institucional logo na primeira semana, porque a aprovação pode levar alguns dias.</li>
+<li>O Copilot lê o <code>AGENTS.md</code> da raiz do repositório, o mesmo arquivo que o agente usa. As regras do projeto ficam num lugar só.</li>
+</ul>
+<p class="text-muted mb-0">As demonstrações das aulas mostram o Copilot. Nos laboratórios simulados, o botão "◆ Agente" na barra de status troca a demonstração para o opencode.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3.1 Opção: opencode com OpenRouter</h2>
+<p class="text-muted">Quem preferir, ou quem estourar o limite do Copilot Free, pode usar o agente, um agente de código que roda no terminal. Ele lê os arquivos do repositório, propõe mudanças e executa comandos, sempre pedindo permissão. A OpenRouter é um intermediário que dá acesso a modelos de vários fornecedores com uma única chave e um único saldo.</p>
 <ol class="text-muted">
+<li>Instale no Codespace: <code>npm install -g opencode-ai</code>.</li>
 <li>Em <code>openrouter.ai/settings/keys</code>, crie uma chave chamada <code>codespaces-qualidade-2027</code> com limite de crédito. Copie a chave na hora: ela não aparece de novo.</li>
 <li>No GitHub, em <code>Settings › Codespaces › Secrets</code>, crie o secret <code>OPENROUTER_API_KEY</code> com a chave como valor e libere o acesso só para <code>organizacao-recursos</code>.</li>
 <li>Volte ao Codespace e aceite o aviso "Reload to apply". Confira com <code>echo ${OPENROUTER_API_KEY:0:8}</code>: deve aparecer <code>sk-or-v1</code>.</li>
@@ -81,13 +82,13 @@
     }
   }
 }</pre>
-<p class="text-muted">O <code>opencode.json</code> vai para o repositório porque não contém segredo: <code>{env:OPENROUTER_API_KEY}</code> manda o opencode ler a variável de ambiente que o secret do Codespaces criou. Para ver os modelos disponíveis, use <code>opencode models openrouter</code>; a OpenRouter também oferece modelos gratuitos, marcados com <code>:free</code> no nome, com limite de uso diário.</p>
+<p class="text-muted">O <code>opencode.json</code> vai para o repositório porque não contém segredo: <code>{env:OPENROUTER_API_KEY}</code> manda o agente ler a variável de ambiente que o secret do Codespaces criou. Para ver os modelos disponíveis, use <code>opencode models openrouter</code>; a OpenRouter também oferece modelos gratuitos, marcados com <code>:free</code> no nome, com limite de uso diário.</p>
 <div class="alert alert-warning mb-0"><i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i> A chave nunca vai para arquivo, print, issue ou prompt. Se ela aparecer em qualquer commit, revogue-a na OpenRouter na mesma hora e crie outra: apagar o commit não basta, porque o histórico público já foi copiado.</div>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">4. Alternativa local: OpenLLM</h2>
-<p class="text-muted">Quem tem computador com GPU pode servir um modelo aberto localmente com o OpenLLM e ligar o opencode a ele, sem chave e sem custo por token. O OpenLLM expõe uma API compatível com a da OpenAI em <code>http://localhost:3000/v1</code>, e o opencode conversa com ela pelo pacote <code>@ai-sdk/openai-compatible</code>. O Codespace gratuito não tem GPU, por isso em sala usamos a OpenRouter.</p>
+<h2 class="h3 fw-bold">4. Opção local do agente: OpenLLM</h2>
+<p class="text-muted">Quem tem computador com GPU pode servir um modelo aberto localmente com o OpenLLM e ligar o agente a ele, sem chave e sem custo por token. O OpenLLM expõe uma API compatível com a da OpenAI em <code>http://localhost:3000/v1</code>, e o agente conversa com ela pelo pacote <code>@ai-sdk/openai-compatible</code>. O Codespace gratuito não tem GPU, por isso em sala usamos a OpenRouter.</p>
 <pre class="bg-dark text-info p-3 rounded small">pip install openllm
 openllm serve qwen2.5:7b</pre>
 <pre class="bg-dark text-info p-3 rounded small">"provider": {
@@ -104,10 +105,10 @@ openllm serve qwen2.5:7b</pre>
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">5. O projeto Node criado pelo agente</h2>
-<p class="text-muted">Na disciplina, o código e a configuração são gerados por LLM. O aluno escreve o pedido, acompanha as ferramentas que o agente usa e revisa o resultado antes de commitar. A demonstração mostra o opencode criando o projeto Node do zero: <code>package.json</code> com ES modules e os scripts <code>test</code>, <code>test:cov</code> e <code>lint</code>, o ESLint 9 em flat config, uma função e dois testes em node:test.</p>
+<p class="text-muted">Na disciplina, o código e a configuração são gerados por LLM. O aluno escreve o pedido, acompanha as ferramentas que o agente usa e revisa o resultado antes de commitar. A demonstração mostra o agente criando o projeto Node do zero: <code>package.json</code> com ES modules e os scripts <code>test</code>, <code>test:cov</code> e <code>lint</code>, o ESLint 9 em flat config, uma função e dois testes em node:test.</p>
 <ol class="text-muted">
 <li>Abra uma branch curta: <code>git switch -c chore/projeto-node</code>.</li>
-<li>Rode o prompt 2 desta página no opencode. O agente lê o <code>AGENTS.md</code>, escreve os arquivos e pede permissão antes do <code>npm install</code>.</li>
+<li>Cole o prompt 2 desta página no chat do Copilot, no modo Agent (ou no agente). O agente lê o <code>AGENTS.md</code>, escreve os arquivos e pede confirmação antes do <code>npm install</code>.</li>
 <li>Leia o resultado com <code>git status</code> e <code>git diff</code>. Na demonstração, o agente trocou o script de teste por <code>jest</code>, contrariando o <code>AGENTS.md</code>; a correção foi pedida a ele mesmo, num segundo prompt.</li>
 <li>Rode <code>npm run lint &amp;&amp; npm test</code> você mesmo. Só então faça o commit e integre na main.</li>
 </ol>
@@ -160,21 +161,21 @@ git log --oneline --graph -5</pre>
 <tr><td>Confiabilidade</td><td>Funciona sem falhar, fica disponível e se recupera?</td><td>ausência de falhas, disponibilidade, tolerância a falhas, recuperabilidade</td><td>dublê de teste, integração com banco (Aulas 10 e 11)</td></tr>
 <tr><td>Segurança</td><td>Protege confidencialidade, integridade e autenticidade?</td><td>confidencialidade, integridade, não repúdio, responsabilização, autenticidade, resistência</td><td>análise estática, SQL parametrizado (Aulas 05 e 10)</td></tr>
 <tr><td>Manutenibilidade</td><td>É modular, testável e fácil de modificar?</td><td>modularidade, reusabilidade, analisabilidade, modificabilidade, testabilidade</td><td>TDD, cobertura e ESLint (Aulas 04 e 05)</td></tr>
-<tr><td>Flexibilidade</td><td>Adapta-se a outro ambiente, escala e instala com facilidade?</td><td>adaptabilidade, escalabilidade, instalabilidade, substituibilidade</td><td>devcontainer, migrações e CI (Aulas 01, 05 e 10)</td></tr>
+<tr><td>Flexibilidade</td><td>Adapta-se a outro ambiente, escala e instala com facilidade?</td><td>adaptabilidade, escalabilidade, instalabilidade, substituibilidade</td><td><code>npm ci</code>, migrações e CI (Aulas 05 e 10)</td></tr>
 <tr><td>Proteção (safety)</td><td>Evita dano a pessoas, patrimônio e ambiente?</td><td>restrição operacional, identificação de risco, falha segura, alerta de perigo, integração segura</td><td>teste de unidade e cenário BDD de recurso interditado</td></tr>
 </tbody></table></div>
 <p class="text-muted mb-0">Uma característica só vira requisito quando ganha métrica, meta numérica e uma técnica que consiga reprová-la. "O sistema deve ser rápido" não reprova nada. "O p95 do tempo de resposta da busca fica abaixo de 300 ms com 50 usuários simultâneos" vira um teste de carga na Aula 12.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">8. Prompt 1 · devcontainer e configuração do opencode</h2>
+<h2 class="h3 fw-bold">8. Prompt 1 · regras do projeto para o agente</h2>
 <p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
-<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Você está num GitHub Codespace, na raiz do repositório organizacao-recursos, que hoje só tem o README. Crie .devcontainer/devcontainer.json usando a imagem mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm, a feature ghcr.io/devcontainers/features/docker-in-docker:2, a extensão dbaeumer.vscode-eslint, o secret recomendado OPENROUTER_API_KEY com descrição em português e um postCreateCommand que instale o opencode com curl -fsSL https://opencode.ai/install | bash. Crie opencode.json com o $schema https://opencode.ai/config.json, o provedor openrouter lendo a chave por {env:OPENROUTER_API_KEY} e o modelo padrão que eu informar. Crie .gitignore para Node (node_modules, coverage, .env). Crie AGENTS.md dizendo que o projeto é em JavaScript puro com ES modules, sem TypeScript, que os testes usam node:test e que todo commit segue Conventional Commits em português. Não escreva nenhuma chave em arquivo. Mostre o conteúdo de cada arquivo antes de gravar.</code></pre></div>
-<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: procure "sk-or" no diff. Se aparecer, recuse a mudança. Depois rode Rebuild Container e confira <code>opencode --version</code>.</div>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Você está num GitHub Codespace, na raiz do repositório organizacao-recursos, que hoje só tem o README. Crie AGENTS.md com as regras do projeto: JavaScript puro com ES modules, sem TypeScript; testes com node:test e node:assert/strict, rodados por npm test antes de qualquer commit; commits em Conventional Commits, em português; nenhuma chave, token ou senha em arquivo. Crie .gitignore para Node (node_modules, coverage, .env). Se eu estiver usando o opencode, crie também opencode.json com o $schema https://opencode.ai/config.json e o provedor openrouter lendo a chave por {env:OPENROUTER_API_KEY}. Mostre o conteúdo de cada arquivo antes de gravar.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: leia o <code>AGENTS.md</code> inteiro e procure "sk-or" no diff. Se aparecer, recuse a mudança.</div>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">9. Prompt 2 · o opencode monta o projeto Node</h2>
+<h2 class="h3 fw-bold">9. Prompt 2 · o agente monta o projeto Node</h2>
 <p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
 <div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia o AGENTS.md e transforme este repositório num projeto Node 22 com ES modules, sem TypeScript. Crie package.json com "type": "module", engines node >= 22 e os scripts test (node --test), test:cov (node --test --experimental-test-coverage --test-coverage-include='src/**') e lint (eslint .). Configure o ESLint 9 em eslint.config.js no formato flat, com @eslint/js recommended, globals do Node e a regra complexity limitada a 8. Crie src/intervalo.js com a função sobrepoe(a, b), que diz se dois intervalos [inicio, fim) de datas se sobrepõem, e test/intervalo.test.js com dois testes em node:test: intervalos que se cruzam e um que começa exatamente quando o outro termina. Peça permissão antes de instalar dependências. No fim, rode npm run lint e npm test e mostre a saída. Não use jest, mocha nem vitest.</code></pre></div>
 <div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: leia o <code>git diff</code> inteiro, confira que o script test é <code>node --test</code> e rode <code>npm run lint &amp;&amp; npm test</code> você mesmo.</div>
@@ -189,9 +190,9 @@ git log --oneline --graph -5</pre>
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">11. Entregável e checagem</h2>
-<p class="text-muted">Repositório público com <code>.devcontainer/devcontainer.json</code>, <code>opencode.json</code>, <code>AGENTS.md</code>, <code>.gitignore</code>, projeto Node com <code>npm test</code> passando e <code>docs/qualidade.md</code>, tudo integrado na main por branches curtas.</p>
+<p class="text-muted">Repositório público com <code>AGENTS.md</code>, <code>.gitignore</code>, projeto Node com <code>npm test</code> passando e <code>docs/qualidade.md</code>, tudo integrado na main por branches curtas.</p>
 <h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
-<ul class="text-muted mb-0"><li>O Codespace abre e o <code>opencode</code> responde com o modelo da OpenRouter.</li><li><code>npm run lint &amp;&amp; npm test</code> passam no Codespace.</li><li>Nenhum arquivo do repositório contém a chave.</li><li>O <code>git log --oneline --graph</code> é linear e as mensagens seguem o padrão.</li></ul>
+<ul class="text-muted mb-0"><li>O Codespace abre e o agente (Copilot ou opencode) responde.</li><li><code>npm run lint &amp;&amp; npm test</code> passam no Codespace.</li><li>Nenhum arquivo do repositório contém a chave.</li><li>O <code>git log --oneline --graph</code> é linear e as mensagens seguem o padrão.</li></ul>
 </section>
 
 <div class="text-center"><a href="../slide_aula01-codespaces-qualidade.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>

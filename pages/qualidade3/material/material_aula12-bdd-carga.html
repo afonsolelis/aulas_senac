@@ -20,7 +20,8 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
 <p class="lead text-muted">Sair da aula com cenários BDD em português, nascidos dos critérios de aceite da sua spec e executados pela API com cucumber-js, e com um teste de carga no k6 que reprova quando a meta de desempenho do <code>docs/qualidade.md</code> não é cumprida.</p>
-<p class="text-muted mb-0">É a última aula de conteúdo antes da entrega do Trabalho 2, na semana 17. Como nas aulas anteriores, o código das demonstrações é gerado pelo opencode a partir de um prompt, e cada laboratório mostra o que o aluno confere antes de aceitar: o diff, a execução dos cenários e o resumo do k6. O professor demonstra no repositório <code>biblioteca-campus</code>; você aplica no seu <code>organizacao-recursos</code>.</p>
+<p class="text-muted mb-0">É a última aula de conteúdo antes da entrega do Trabalho 2, na semana 17. Como nas aulas anteriores, o código das demonstrações é gerado pelo agente a partir de um prompt, e cada laboratório mostra o que o aluno confere antes de aceitar: o diff, a execução dos cenários e o resumo do k6. O professor demonstra no repositório <code>biblioteca-campus</code>; você aplica no seu <code>organizacao-recursos</code>.</p>
+<p class="small text-muted mt-3 mb-0">Os prompts desta página servem para o chat do GitHub Copilot no modo Agent, o agente padrão da disciplina, e também para o opencode (<code>opencode run "..."</code>). Os comandos <code>opencode run</code> que aparecem nos exemplos equivalem a colar o mesmo pedido no chat do Copilot.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -94,7 +95,7 @@ Funcionalidade: Empréstimo de livros
     Dado que "Ana" tem multa pendente de 450 centavos
     Quando "Ana" pede o livro "Clean Code"
     Então o empréstimo é recusado com a mensagem "multa pendente"</pre>
-<p class="text-muted mb-0">As frases ficam no ponto de vista de quem usa. Rota, SQL e nome de função ficam nas step definitions; se o .feature citar <code>POST /emprestimos</code>, ele quebra a cada mudança de API sem que o comportamento tenha mudado. Na demonstração, o opencode gera este arquivo a partir de <code>specs/emprestimo.md</code>, e o aluno confere com <code>grep -c '# CA-'</code> que cada critério tem cenário.</p>
+<p class="text-muted mb-0">As frases ficam no ponto de vista de quem usa. Rota, SQL e nome de função ficam nas step definitions; se o .feature citar <code>POST /emprestimos</code>, ele quebra a cada mudança de API sem que o comportamento tenha mudado. Na demonstração, o agente gera este arquivo a partir de <code>specs/emprestimo.md</code>, e o aluno confere com <code>grep -c '# CA-'</code> que cada critério tem cenário.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -301,7 +302,7 @@ export default function () {
 <li><code>thresholds</code> são os critérios de aprovação. Se algum cruzar, o k6 marca ✗ e sai com código 99, o que derruba um script ou um job de CI.</li>
 <li>Um único script pode guardar vários perfis num objeto e escolher por variável: <code>k6 run -e PERFIL=pico carga/perfis.js</code> chega ao script como <code>__ENV.PERFIL</code>.</li>
 </ul>
-<p class="text-muted mb-0">Na demonstração, o opencode escreveu <code>p(95)&lt;500</code> com o comentário "meta do docs/qualidade.md", mas a meta é 300 ms. O <code>grep</code> nos dois arquivos mostrou a diferença. Com 500, a execução sem o índice da busca teria passado.</p>
+<p class="text-muted mb-0">Na demonstração, o agente escreveu <code>p(95)&lt;500</code> com o comentário "meta do docs/qualidade.md", mas a meta é 300 ms. O <code>grep</code> nos dois arquivos mostrou a diferença. Com 500, a execução sem o índice da busca teria passado.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">

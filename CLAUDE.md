@@ -68,11 +68,14 @@ Home `pages/home_qualidade_2027_1.html`, slides e materiais em `pages/qualidade3
   `senac-qs-2027-1-trabalho-{1,2}` em `supabase/entregas-qualidade3-2027-1.sql`, `max_integrantes = 1`).
   Feedback chega como issue; o aluno responde com commit `... (#N)` e `Closes #N`. Sem pull request.
 - **Stack JavaScript puro:** Node 22, ES modules, node:test, cobertura nativa, ESLint 9, GitHub Actions,
-  Express 5 + supertest, PostgreSQL + Testcontainers, cucumber-js, k6. Ambiente: Codespaces + opencode
-  com OpenRouter (OpenLLM como alternativa local). Git trunk-based com branches curtas.
+  Express 5 + supertest, PostgreSQL + Testcontainers, cucumber-js, k6. Ambiente: Codespace padrão, sem
+  devcontainer (já traz Node, npm, Git e Docker). Agente: GitHub Copilot no modo Agent; opção opencode
+  instalado só com `npm install -g opencode-ai` (OpenRouter, ou OpenLLM local). Git trunk-based.
 - **Demonstrações simuladas:** todo deck usa `css/labs.css` + `js/labs.js` (VS Code em tela cheia,
   terminal, navegador, diagrama e `Labs.video`, que substitui GIF). Tecla G abre o roteiro do laboratório.
-  O código das demos aparece sendo gerado pelo opencode e revisado pelo aluno. O case das demos é
+  Os labs são escritos com `opencode run "<pedido>"`; por padrão o `labs.js` mostra o pedido no painel
+  de chat do Copilot, e o botão "◆ Agente" da barra de status troca para o opencode (`cfg.agent` fixa um).
+  O código das demos aparece sendo gerado pelo agente e revisado pelo aluno. O case das demos é
   `biblioteca-campus`; o projeto avaliado é Organização de Recursos.
 
 ## Banco das atividades: PostgREST na VPS

@@ -20,7 +20,8 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
 <p class="lead text-muted">Sair da aula com as primeiras regras do organizacao-recursos construídas em TDD, com node:test, um commit por passo do ciclo e testes que dão o mesmo resultado em qualquer dia.</p>
-<p class="text-muted mb-0">Na disciplina, o código e os testes são gerados pelo opencode a partir de prompts. A etapa de qualidade é a sua revisão: pedir um passo por vez, ler o que o agente escreveu, conferir com <code>git diff</code> e <code>npm test</code> e só então commitar. No primeiro bloco o professor mostra isso no repositório <code>biblioteca-campus</code>; no segundo, cada aluno aplica no próprio repositório com os três prompts desta página.</p>
+<p class="text-muted mb-0">Na disciplina, o código e os testes são gerados pelo agente a partir de prompts. A etapa de qualidade é a sua revisão: pedir um passo por vez, ler o que o agente escreveu, conferir com <code>git diff</code> e <code>npm test</code> e só então commitar. No primeiro bloco o professor mostra isso no repositório <code>biblioteca-campus</code>; no segundo, cada aluno aplica no próprio repositório com os três prompts desta página.</p>
+<p class="small text-muted mt-3 mb-0">Os prompts desta página servem para o chat do GitHub Copilot no modo Agent, o agente padrão da disciplina, e também para o opencode (<code>opencode run "..."</code>). Os comandos <code>opencode run</code> que aparecem nos exemplos equivalem a colar o mesmo pedido no chat do Copilot.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -130,7 +131,7 @@ it.todo('renova o empréstimo uma única vez');</pre>
 <li>Green: o menor código que faz esse teste passar, sem antecipar regras. Commit <code>feat(escopo): ...</code>.</li>
 <li>Refactor: com tudo verde, melhorar nomes e estrutura sem mudar o resultado. Commit <code>refactor(escopo): ...</code>.</li>
 </ol>
-<p class="text-muted">Com o opencode, quem conduz o ciclo é o aluno. Se o prompt pedir "implemente a multa com testes", o agente escreve teste e código juntos, e não há como saber se o teste teria falhado sem o código. Por isso cada prompt pede um passo e manda parar:</p>
+<p class="text-muted">Com o agente, quem conduz o ciclo é o aluno. Se o prompt pedir "implemente a multa com testes", o agente escreve teste e código juntos, e não há como saber se o teste teria falhado sem o código. Por isso cada prompt pede um passo e manda parar:</p>
 <pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">opencode run "Passo red. Acrescente em test/multa.test.js um único teste: 3 dias de atraso custam 450 centavos. Não altere nada em src/. Rode npm test e pare."
 git diff --stat &amp;&amp; npm test          # só o teste mudou? falhou com 0 !== 450?
 git add test/multa.test.js &amp;&amp; git commit -m "test(multa): cobra 150 centavos por dia de atraso"

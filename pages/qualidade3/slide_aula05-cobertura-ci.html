@@ -71,7 +71,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Gerar o relatório de cobertura nativo do Node e localizar os ramos que nenhum teste percorre.</div>
-                <div class="rl"><b>Faça</b>1. Rode a cobertura sem filtro e depois só de <code>src/</code>.<br>2. Peça ao opencode a leitura do relatório.<br>3. Confira as linhas apontadas no próprio arquivo.</div>
+                <div class="rl"><b>Faça</b>1. Rode a cobertura sem filtro e depois só de <code>src/</code>.<br>2. Peça ao agente a leitura do relatório.<br>3. Confira as linhas apontadas no próprio arquivo.</div>
                 <div class="rl obs"><b>Observe</b>Sem <code>--test-coverage-include</code>, os arquivos de teste entram na conta e inflam a média. As linhas 9-10 e 15-16 são as recusas por multa e por reserva.</div>
                 <div class="rl conc"><b>Conclusão</b>O agente lê a tabela rápido, mas a conferência é sua: abra as linhas citadas e veja se a regra descrita é a que está lá.</div>
               </div>
@@ -88,7 +88,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Transformar a cobertura em meta que reprova a execução, e cobrir os ramos que faltam.</div>
-                <div class="rl"><b>Faça</b>1. Peça ao opencode o script <code>test:cov</code>.<br>2. Confira o script e rode: a meta de ramos reprova.<br>3. Peça os testes que faltam, sem mexer em <code>src/</code>.<br>4. Confira o diff e rode de novo.</div>
+                <div class="rl"><b>Faça</b>1. Peça ao agente o script <code>test:cov</code>.<br>2. Confira o script e rode: a meta de ramos reprova.<br>3. Peça os testes que faltam, sem mexer em <code>src/</code>.<br>4. Confira o diff e rode de novo.</div>
                 <div class="rl obs"><b>Observe</b>Com <code>--test-coverage-branches=80</code>, 71,43% de ramos encerra o comando com código 1, mesmo com todos os testes verdes.</div>
                 <div class="rl conc"><b>Conclusão</b>A meta vira uma regra que o CI consegue aplicar. A revisão humana confere que os testes novos têm asserção e que o diff não tocou no código de produção.</div>
               </div>
@@ -131,7 +131,7 @@
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Ver um bug sobreviver a 100% de cobertura e encontrá-lo com asserções exatas.</div>
-                <div class="rl"><b>Faça</b>1. Rode a cobertura: 100% e tudo verde.<br>2. Peça ao opencode valores exatos nos testes.<br>3. Rode <code>npm test</code>: o bug aparece.<br>4. Peça a correção e confira com <code>test:cov</code>.</div>
+                <div class="rl"><b>Faça</b>1. Rode a cobertura: 100% e tudo verde.<br>2. Peça ao agente valores exatos nos testes.<br>3. Rode <code>npm test</code>: o bug aparece.<br>4. Peça a correção e confira com <code>test:cov</code>.</div>
                 <div class="rl obs"><b>Observe</b>O código usa <code>Math.max</code> onde a regra pede <code>Math.min</code>: 3 dias de atraso custam 3000 centavos. O teste antigo, com <code>assert.ok(multa &gt; 0)</code>, não percebia.</div>
                 <div class="rl conc"><b>Conclusão</b>A revisão que pegou o bug foi ler a asserção, não olhar o número da cobertura. É esse o trabalho que o agente não faz por você.</div>
               </div>
@@ -184,7 +184,7 @@ export default [
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Configurar o ESLint 9 com o agente e corrigir o que ele aponta sem desligar regras.</div>
-                <div class="rl"><b>Faça</b>1. Peça ao opencode a instalação e o <code>eslint.config.js</code>, e autorize o <code>npm install</code>.<br>2. Confira o diff e rode <code>npm run lint</code>.<br>3. Peça a correção.<br>4. Confira que não há <code>eslint-disable</code> e que os testes seguem verdes.</div>
+                <div class="rl"><b>Faça</b>1. Peça ao agente a instalação e o <code>eslint.config.js</code>, e autorize o <code>npm install</code>.<br>2. Confira o diff e rode <code>npm run lint</code>.<br>3. Peça a correção.<br>4. Confira que não há <code>eslint-disable</code> e que os testes seguem verdes.</div>
                 <div class="rl obs"><b>Observe</b><code>situacaoDoAluno</code> tem complexidade 7 e dois imports sem uso. A correção extrai <code>estaBloqueado</code> e troca o aninhamento por retornos antecipados.</div>
                 <div class="rl conc"><b>Conclusão</b>Um agente pressionado a zerar o lint pode inserir <code>// eslint-disable</code>. O <code>git grep</code> depois da correção é a revisão que impede isso.</div>
               </div>
@@ -209,7 +209,7 @@ export default [
             <div class="lab-side">
               <div class="roteiro-lab">
                 <div class="rl obj"><b>Objetivo</b>Criar o workflow com o agente, integrar na main e reagir a um CI vermelho.</div>
-                <div class="rl"><b>Faça</b>1. Peça o <code>ci.yml</code> e o badge.<br>2. Rode o gate local antes do merge.<br>3. Faça o merge <code>--ff-only</code> e o push.<br>4. Acompanhe com <code>gh run watch</code>: vermelho.<br>5. Peça o diagnóstico ao opencode.<br>6. Confira e mande o commit <code>fix</code>.</div>
+                <div class="rl"><b>Faça</b>1. Peça o <code>ci.yml</code> e o badge.<br>2. Rode o gate local antes do merge.<br>3. Faça o merge <code>--ff-only</code> e o push.<br>4. Acompanhe com <code>gh run watch</code>: vermelho.<br>5. Peça o diagnóstico ao agente.<br>6. Confira e mande o commit <code>fix</code>.</div>
                 <div class="rl obs"><b>Observe</b>Localmente tudo passou, porque o <code>node_modules</code> já estava instalado. No CI, <code>npm ci</code> recusa um <code>package-lock.json</code> fora de sincronia: ele ficou fora do commit do ESLint.</div>
                 <div class="rl conc"><b>Conclusão</b>CI vermelho na main vira commit <code>fix</code> imediato, antes de qualquer outra mudança. O diagnóstico do agente só vale depois de você conferir o <code>git status</code>.</div>
               </div>
@@ -301,7 +301,7 @@ export default [
             <div class="col-md-6">
               <div class="card border-0 shadow-sm p-3 h-100">
                 <h3 class="h6 fw-bold">Estado no GitHub</h3>
-                <ul class="small mb-0"><li>Repositório público <code>organizacao-recursos</code>, com README e badge do CI.</li><li>Último run da main verde na aba Actions.</li><li>Histórico linear, Conventional Commits em português, branches curtas apagadas.</li><li>Issues de feedback respondidas com <code>fix(...): ... (#N)</code> e <code>Closes #N</code>.</li><li>Você consegue explicar qualquer commit na prova oral, inclusive os gerados com o opencode.</li></ul>
+                <ul class="small mb-0"><li>Repositório público <code>organizacao-recursos</code>, com README e badge do CI.</li><li>Último run da main verde na aba Actions.</li><li>Histórico linear, Conventional Commits em português, branches curtas apagadas.</li><li>Issues de feedback respondidas com <code>fix(...): ... (#N)</code> e <code>Closes #N</code>.</li><li>Você consegue explicar qualquer commit na prova oral, inclusive os gerados com o agente.</li></ul>
               </div>
             </div>
           </div>

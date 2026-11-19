@@ -262,3 +262,34 @@ body:has(.slide.active.slide-lab) .hbav-semana { display: none !important; }
 .iso-det dt { color: #F2CB0A; font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; margin-top: .7rem; }
 .iso-det dd { margin: .15rem 0 0; font-size: clamp(1rem, 1.3vw, 1.2rem); line-height: 1.45; }
 .iso-det code { background: rgba(255,255,255,.1); color: #fff; padding: .1em .35em; border-radius: 4px; }
+
+/* ---------- Painel de chat do GitHub Copilot (modo Agent) ---------- */
+.vsc-chat { width: 340px; flex: none; display: flex; flex-direction: column; background: #1F1F1F; border-left: 1px solid #2B2B2B; font: 13px/1.45 var(--fonte); color: #CCCCCC; min-height: 0; }
+.vsc-chat[hidden] { display: none; }
+.vsc-chat-top { display: flex; align-items: center; gap: 10px; padding: 8px 12px; font-size: 11px; letter-spacing: .06em; color: #BBBBBB; border-bottom: 1px solid #2B2B2B; }
+.vsc-chat-top .cop-logo { margin-left: auto; letter-spacing: 0; font-size: 12px; color: #E6EDF3; }
+.vsc-chat-top .cop-logo::before { content: '◉ '; color: #A371F7; }
+.vsc-chat-msgs { flex: 1; min-height: 0; overflow: auto; padding: 10px 12px; display: flex; flex-direction: column; gap: 10px; }
+.cop-user { background: #2B2B2B; border-radius: 8px; padding: 8px 10px; color: #E6EDF3; white-space: pre-wrap; word-break: break-word; }
+.cop-user b, .cop-resp > b { display: block; font-size: 11px; color: #9DA5B4; margin-bottom: 3px; }
+.cop-resp p { margin: 4px 0; color: #D4D4D4; }
+.cop-resp p.cop-warn { color: #F2CB0A; } .cop-resp p.cop-err { color: #FF5C7A; }
+.cop-resp .cop-nota { color: #8B949E; font-style: italic; font-size: 12px; }
+.cop-tool { display: flex; gap: 6px; align-items: baseline; font-size: 12px; color: #9DA5B4; margin: 3px 0; }
+.cop-tool i { font-style: normal; color: #A371F7; width: 1.4em; flex: none; }
+.cop-tool code { color: #CE9178; background: #2B2B2B; padding: 0 4px; border-radius: 3px; word-break: break-all; font-size: 11.5px; }
+.cop-out { margin: 2px 0 6px 1.4em; padding: 6px 8px; background: #181818; border: 1px solid #2B2B2B; border-radius: 6px; font: 11.5px/1.4 var(--mono); color: #BBBBBB; white-space: pre-wrap; word-break: break-word; max-height: 160px; overflow: auto; }
+.cop-out:empty { display: none; }
+.cop-conf { border: 1px solid #3C3C3C; border-radius: 8px; padding: 8px 10px; margin: 6px 0; background: #252526; }
+.cop-conf div { margin-bottom: 6px; color: #E6EDF3; }
+.cop-conf span { display: inline-block; padding: 2px 10px; border-radius: 4px; margin-right: 6px; font-size: 12px; border: 1px solid #3C3C3C; color: #CCCCCC; }
+.cop-conf.aceito .ok { background: #0E639C; border-color: #0E639C; color: #fff; }
+.cop-conf.recusado .no { background: #8E1537; border-color: #8E1537; color: #fff; }
+.cop-fim { margin-top: 6px; font-size: 12px; color: #3FD47A; }
+.vsc-chat-in { margin: 8px 10px 10px; border: 1px solid #3C3C3C; border-radius: 8px; padding: 8px 10px; background: #252526; }
+.vsc-chat-in .ph { color: #8B949E; min-height: 1.4em; max-height: 4.5em; overflow: hidden; }
+.vsc-chat-in .opts { display: flex; gap: 10px; margin-top: 6px; font-size: 11.5px; color: #9DA5B4; }
+.vsc-chat-in .opts .sp { flex: 1; }
+.vsc-status .vsc-agente { background: rgba(255,255,255,.14); border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0 .6em; border-radius: 3px; }
+.vsc-status .vsc-agente:hover { background: rgba(255,255,255,.28); }
+@media (max-width: 1100px) { .vsc-chat { width: 280px; } }

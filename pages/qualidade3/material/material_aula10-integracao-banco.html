@@ -20,7 +20,8 @@
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">Objetivo da aula</h2>
 <p class="lead text-muted">Sair da aula com o <code>organizacao-recursos</code> guardando dados em PostgreSQL 16, com DER na 3FN, migrações versionadas, um repositório com queries parametrizadas e uma suíte de integração que roda contra um banco real no Codespace e no GitHub Actions.</p>
-<p class="text-muted mb-0">O primeiro bloco é demonstração no repositório <code>biblioteca-campus</code>, em laboratórios simulados do VS Code: o opencode gera o código a partir de um prompt e o professor confere o resultado com testes, <code>git diff</code> e psql antes de qualquer commit. O segundo bloco é laboratório: cada aluno aplica os três prompts desta página no próprio repositório. Esta é a primeira aula do segundo bloco, depois das provas orais do Trabalho 1. O <a href="../trabalho-2.html">enunciado do Trabalho 2</a> foi aberto na semana 11 e a entrega é na semana 17.</p>
+<p class="text-muted mb-0">O primeiro bloco é demonstração no repositório <code>biblioteca-campus</code>, em laboratórios simulados do VS Code: o agente gera o código a partir de um prompt e o professor confere o resultado com testes, <code>git diff</code> e psql antes de qualquer commit. O segundo bloco é laboratório: cada aluno aplica os três prompts desta página no próprio repositório. Esta é a primeira aula do segundo bloco, depois das provas orais do Trabalho 1. O <a href="../trabalho-2.html">enunciado do Trabalho 2</a> foi aberto na semana 11 e a entrega é na semana 17.</p>
+<p class="small text-muted mt-3 mb-0">Os prompts desta página servem para o chat do GitHub Copilot no modo Agent, o agente padrão da disciplina, e também para o opencode (<code>opencode run "..."</code>). Os comandos <code>opencode run</code> que aparecem nos exemplos equivalem a colar o mesmo pedido no chat do Copilot.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -34,7 +35,7 @@
 <tr><td>Dependências</td><td>dublês e fakes</td><td>PostgreSQL 16 num container</td></tr>
 <tr><td>Quando roda</td><td>a cada mudança</td><td>antes do merge e no CI</td></tr>
 </tbody></table></div>
-<p class="text-muted mb-0">O primeiro laboratório mostra por que as duas suítes são necessárias. O opencode gerou <code>contarAtivos</code> com <code>WHERE devolvido_em = NULL</code> e um teste de unidade com fake em memória, e informou que os testes passavam. Passavam mesmo: o fake compara com <code>=== null</code> em JavaScript. Em SQL, porém, <code>= NULL</code> resulta em desconhecido, nenhuma linha entra na contagem e a função devolve sempre zero. Com isso, o limite de 3 empréstimos ativos nunca seria aplicado. Só o teste de integração reprovou o código (<code>0 !== 1</code>), e a correção foi <code>IS NULL</code>.</p>
+<p class="text-muted mb-0">O primeiro laboratório mostra por que as duas suítes são necessárias. O agente gerou <code>contarAtivos</code> com <code>WHERE devolvido_em = NULL</code> e um teste de unidade com fake em memória, e informou que os testes passavam. Passavam mesmo: o fake compara com <code>=== null</code> em JavaScript. Em SQL, porém, <code>= NULL</code> resulta em desconhecido, nenhuma linha entra na contagem e a função devolve sempre zero. Com isso, o limite de 3 empréstimos ativos nunca seria aplicado. Só o teste de integração reprovou o código (<code>0 !== 1</code>), e a correção foi <code>IS NULL</code>.</p>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
@@ -163,7 +164,7 @@ grep -rnE "query\((\"|').*(\+|\$\{)" src/</pre>
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">6. PostgreSQL de verdade no teste com Testcontainers</h2>
 <p class="text-muted">Trocar o banco por SQLite ou por um mock do pg deixa o teste mais rápido e menos útil. O SQLite tem outro dialeto: não conhece <code>EXCLUDE USING gist</code>, <code>timestamptz</code> nem <code>RESTART IDENTITY</code>, vem com foreign keys desligadas por padrão e devolve outros códigos de erro. Um mock do pg confere que <code>query</code> foi chamada com a string que você escreveu, e por isso aceita o <code>= NULL</code> da seção 1 e qualquer restrição esquecida. O banco é parte do seu sistema; dublês ficam para o que está fora do seu controle, como a ViaCEP na Aula 11.</p>
-<p class="text-muted">O pacote <code>@testcontainers/postgresql</code> sobe <code>postgres:16-alpine</code> num container descartável, devolve a URL de conexão e derruba o container no fim. Junto sobe o Ryuk, que remove o container mesmo se o teste quebrar no meio. No Codespace, o Docker vem da feature <code>ghcr.io/devcontainers/features/docker-in-docker:2</code> do devcontainer, configurada na Aula 01.</p>
+<p class="text-muted">O pacote <code>@testcontainers/postgresql</code> sobe <code>postgres:16-alpine</code> num container descartável, devolve a URL de conexão e derruba o container no fim. Junto sobe o Ryuk, que remove o container mesmo se o teste quebrar no meio. O Codespace já vem com Docker na imagem padrão, então o teste roda sem nenhuma configuração extra.</p>
 <pre class="bg-dark text-info p-3 rounded small">npm install pg
 npm install -D @testcontainers/postgresql
 docker info --format "{{.ServerVersion}}"</pre>
@@ -270,7 +271,7 @@ afterEach(async () =&gt; {
 
 <section class="glass-card p-4 p-md-5 mb-4">
 <h2 class="h3 fw-bold">9. Como revisar o que o agente gerou</h2>
-<p class="text-muted">Nos sete laboratórios, o código veio do opencode e a verificação veio do professor. O agente acertou a maior parte e errou em três pontos que só a conferência mostrou: o <code>= NULL</code> que zerava a contagem, o SQL concatenado e o <code>beforeEach</code> sem limpeza. Antes de cada commit, confira:</p>
+<p class="text-muted">Nos sete laboratórios, o código veio do agente e a verificação veio do professor. O agente acertou a maior parte e errou em três pontos que só a conferência mostrou: o <code>= NULL</code> que zerava a contagem, o SQL concatenado e o <code>beforeEach</code> sem limpeza. Antes de cada commit, confira:</p>
 <ul class="text-muted mb-0">
 <li><code>npm test</code> e <code>npm run test:int</code> rodados por você, e não só o resumo do agente.</li>
 <li><code>git diff</code> lido arquivo por arquivo, com o <code>grep</code> de concatenação em <code>src/</code>.</li>
