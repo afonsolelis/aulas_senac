@@ -180,6 +180,7 @@
     for (const l of linhas) {
       if (token && token.cancel) return;
       const { t, c } = limpa(l);
+      if (/^\s*\(s\)\s*permitir/i.test(t)) continue;   // legenda das teclas do opencode
       const tool = /^\s*▸\s*(\w+)\s+(.*)$/.exec(t);
       const resposta = /^\s*›\s*(\S)(.*)$/.exec(t);
       const pergunta = /^\s*(?:\?|△)\s*(.*?(?:Permiss|Permitir|quer executar|Aplicar as mudan|Posso).*)$/.exec(t);
@@ -193,7 +194,7 @@
       } else if (pergunta) {
         let txt = pergunta[1].replace(/\s*\[a\].*$/, '').replace(/\s*\(s\/n\)\s*([sn])?\s*$/i, '');
         const dito = /\(s\/n\)\s*([sn])\s*$/i.exec(pergunta[1]);
-        confirma = h('div', 'cop-conf', '<div>' + esc(txt.replace(/^Permissão:\s*bash\s*/, 'Executar no terminal: ')) + '</div><span class="ok">Continuar</span><span class="no">Cancelar</span>');
+        confirma = h('div', 'cop-conf', '<div>' + esc(txt.replace(/^Permissão:\s*bash\s*/, 'Executar no terminal: ').replace(/^O opencode quer executar:\s*/, 'Executar no terminal: ')) + '</div><span class="ok">Continuar</span><span class="no">Cancelar</span>');
         resp.appendChild(confirma);
         if (dito) confirma.classList.add(dito[1].toLowerCase() === 's' ? 'aceito' : 'recusado');
         saida = null;

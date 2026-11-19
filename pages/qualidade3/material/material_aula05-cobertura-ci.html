@@ -189,28 +189,103 @@ gh run watch</pre>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">8. Prompt 1 · cobertura com meta</h2>
+<h2 class="h3 fw-bold">8. Quality gate sem SonarCloud</h2>
+<p class="text-muted">O SonarCloud junta várias análises num painel e reprova o código que não atinge as metas. A disciplina monta o mesmo gate com bibliotecas Node, que rodam na sua máquina e no GitHub Actions, sem conta nem token externo. O gate fica versionado no repositório, então qualquer mudança nele aparece no histórico.</p>
+<div class="table-responsive"><table class="table table-sm small align-middle">
+<thead class="table-light"><tr><th>O que o SonarCloud verifica</th><th>Biblioteca</th><th>O que reprova</th></tr></thead>
+<tbody>
+<tr><td>Bugs e code smells</td><td><code>eslint-plugin-sonarjs</code></td><td>As regras do próprio SonarSource, como plugin do ESLint</td></tr>
+<tr><td>Complexidade cognitiva</td><td><code>sonarjs/cognitive-complexity</code></td><td>Função acima de 15, além do <code>complexity</code> 8 do ESLint</td></tr>
+<tr><td>Código duplicado</td><td><code>jscpd</code></td><td>Mais de 3% de linhas duplicadas em <code>src/</code></td></tr>
+<tr><td>Vulnerabilidades no código</td><td><code>eslint-plugin-security</code></td><td><code>eval</code>, RegExp montada com texto do usuário, caminho de arquivo vindo de fora</td></tr>
+<tr><td>Segredos versionados</td><td><code>secretlint</code></td><td>Chave de API, token ou senha em qualquer arquivo</td></tr>
+<tr><td>Dependências vulneráveis</td><td><code>npm audit --audit-level=high</code></td><td>Vulnerabilidade alta ou crítica</td></tr>
+<tr><td>Cobertura</td><td>cobertura nativa do Node</td><td>Menos de 80% de linhas ou de ramos em <code>src/</code></td></tr>
+<tr><td>Código morto</td><td><code>knip</code></td><td>Arquivo, export ou dependência sem uso</td></tr>
+<tr><td>Painel</td><td><code>$GITHUB_STEP_SUMMARY</code></td><td>Tabela com o resultado de cada verificação no run</td></tr>
+</tbody></table></div>
+<pre class="bg-dark text-info p-3 rounded small">npm install -D eslint-plugin-sonarjs eslint-plugin-security jscpd secretlint \
+  @secretlint/secretlint-rule-preset-recommend knip</pre>
+<pre class="bg-dark text-info p-3 rounded small">// eslint.config.js
+import js from '@eslint/js';
+import globals from 'globals';
+import sonarjs from 'eslint-plugin-sonarjs';
+import pluginSecurity from 'eslint-plugin-security';
+
+export default [
+  { ignores: ['coverage/', 'node_modules/'] },
+  js.configs.recommended,
+  sonarjs.configs.recommended,
+  pluginSecurity.configs.recommended,
+  {
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.node },
+    rules: { complexity: ['error', 8], 'sonarjs/cognitive-complexity': ['error', 15] }
+  }
+];</pre>
+<pre class="bg-dark text-info p-3 rounded small">// package.json (scripts)
+"lint": "eslint .",
+"dup": "jscpd",
+"segredos": "secretlint \"**/*\"",
+"morto": "knip",
+"auditoria": "npm audit --audit-level=high",
+"qualidade": "npm run lint &amp;&amp; npm run dup &amp;&amp; npm run segredos &amp;&amp; npm run morto &amp;&amp; npm run auditoria &amp;&amp; npm run test:cov"</pre>
+<p class="text-muted">O <code>.jscpd.json</code> define <code>"path": ["src"]</code> e <code>"threshold": 3</code>; o <code>.secretlintrc.json</code> ativa o preset <code>@secretlint/secretlint-rule-preset-recommend</code>.</p>
+<p class="text-muted">No CI, cada verificação vira um passo com <code>id</code> e <code>continue-on-error: true</code>. Assim todas rodam mesmo quando a primeira falha, o resumo mostra todas, e o último passo reprova o run se alguma falhou:</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">      - { id: lint,      run: npm run lint,      continue-on-error: true }
+      - { id: dup,       run: npm run dup,       continue-on-error: true }
+      - { id: segredos,  run: npm run segredos,  continue-on-error: true }
+      - { id: morto,     run: npm run morto,     continue-on-error: true }
+      - { id: auditoria, run: npm run auditoria, continue-on-error: true }
+      - { id: cobertura, run: npm run test:cov,  continue-on-error: true }
+      - name: Resumo do quality gate
+        if: always()
+        run: |
+          {
+            echo "## Quality gate"
+            echo "| Verificação | Resultado |"
+            echo "|---|---|"
+            echo "| ESLint, sonarjs e security | ${{ steps.lint.outcome }} |"
+            echo "| Duplicação (jscpd, 3%) | ${{ steps.dup.outcome }} |"
+            echo "| Segredos (secretlint) | ${{ steps.segredos.outcome }} |"
+            echo "| Código morto (knip) | ${{ steps.morto.outcome }} |"
+            echo "| Dependências (npm audit) | ${{ steps.auditoria.outcome }} |"
+            echo "| Cobertura 80% | ${{ steps.cobertura.outcome }} |"
+          } &gt;&gt; "$GITHUB_STEP_SUMMARY"
+      - name: Reprovar se alguma verificação falhou
+        if: contains(join(steps.*.outcome, ','), 'failure')
+        run: exit 1</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Prompt 1 · cobertura com meta</h2>
 <p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min</p>
 <div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch test/cobertura do repositório organizacao-recursos, adicione ao package.json o script "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'", sem nenhuma dependência nova. Rode npm run test:cov e me mostre a tabela. Liste, arquivo por arquivo, as linhas e os ramos não cobertos e diga qual regra do domínio cada um representa (sobreposição de intervalos, capacidade da sala, professor em duas aulas, material indisponível, reserva no passado). Depois, um teste por vez, escreva testes que cubram esses ramos com asserção de valor exato ou da mensagem de erro, sem alterar nada em src/ e sem excluir arquivos da cobertura. Pare depois de cada teste para eu rodar npm run test:cov e commitar como test(escopo): ....</code></pre></div>
 <div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: todo teste novo confere valor ou mensagem, nada de <code>assert.ok</code> genérico, e o <code>git diff</code> não toca em <code>src/</code>.</div>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">9. Prompt 2 · ESLint no seu repositório</h2>
+<h2 class="h3 fw-bold">10. Prompt 2 · ESLint no seu repositório</h2>
 <p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 20 min</p>
 <div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch chore/eslint, instale como devDependencies eslint, @eslint/js e globals. Crie eslint.config.js no formato flat do ESLint 9, exportando um array com: ignores para coverage/ e node_modules/; js.configs.recommended; e um bloco com languageOptions { ecmaVersion: 2024, sourceType: 'module', globals: globals.node } e a regra complexity: ['error', 6]. Adicione o script "lint": "eslint .". Rode npm run lint e me mostre os problemas agrupados por regra. Corrija um arquivo por vez, sem usar comentários eslint-disable e sem desligar regras; para complexidade, extraia funções pequenas ou use retornos antecipados. Rode npm test depois de cada correção e pare para eu commitar.</code></pre></div>
 <div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: <code>git grep eslint-disable</code> vazio, <code>package-lock.json</code> no commit e <code>npm test</code> verde depois de cada refatoração.</div>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">10. Prompt 3 · workflow de CI e badge</h2>
+<h2 class="h3 fw-bold">11. Prompt 3 · workflow de CI e badge</h2>
 <p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
 <div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch chore/ci, crie .github/workflows/ci.yml com name CI, disparado em push e workflow_dispatch, com um job qualidade em ubuntu-latest e os passos: actions/checkout@v4; actions/setup-node@v4 com node-version 22 e cache npm; npm ci; npm run lint; npm run test:cov. Acrescente no topo do README.md o badge ![CI](https://github.com/MEU-USUARIO/organizacao-recursos/actions/workflows/ci.yml/badge.svg), perguntando antes qual é o meu usuário do GitHub. Não crie pull request nem outros workflows. Antes de terminar, rode npm ci, npm run lint e npm run test:cov localmente e me mostre o resultado de cada um.</code></pre></div>
 <div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode você mesmo <code>npm run lint &amp;&amp; npm run test:cov</code>, faça o merge <code>--ff-only</code>, o push e acompanhe com <code>gh run watch</code>. Vermelho vira commit <code>fix</code> na hora.</div>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">11. Checklist do Trabalho 1</h2>
+<h2 class="h3 fw-bold">12. Prompt 4 · quality gate no seu repositório</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 4"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch chore/quality-gate do repositório organizacao-recursos, monte um quality gate que substitua o SonarCloud. Instale como devDependencies eslint-plugin-sonarjs, eslint-plugin-security, jscpd, secretlint, @secretlint/secretlint-rule-preset-recommend e knip. No eslint.config.js, acrescente sonarjs.configs.recommended e pluginSecurity.configs.recommended, com a regra sonarjs/cognitive-complexity limitada a 15, mantendo complexity 8. Crie .jscpd.json com path ["src"], threshold 3 e reporters console e markdown, e .secretlintrc.json com o preset recomendado. Adicione ao package.json os scripts dup (jscpd), segredos (secretlint "**/*"), morto (knip), auditoria (npm audit --audit-level=high) e qualidade, que roda lint, dup, segredos, morto, auditoria e test:cov nessa ordem. No .github/workflows/ci.yml, transforme cada verificação num passo com id e continue-on-error: true, escreva em $GITHUB_STEP_SUMMARY uma tabela com o outcome de cada passo e termine com um passo que falha se algum outcome for failure. Rode npm run qualidade e corrija o que reprovar sem desligar regra, sem eslint-disable e sem subir o threshold. Mostre o diff antes de cada commit.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: <code>git grep eslint-disable</code> vazio, threshold do jscpd em 3 e o resumo do run mostrando as seis verificações.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">13. Checklist do Trabalho 1</h2>
 <p class="text-muted">A entrega é na semana 10, pelo link do repositório público, e a prova oral acontece nas semanas 11, 12 e 13. O trabalho é individual. Antes de entregar, confira:</p>
 <h3 class="h6 fw-bold">Conteúdo do repositório</h3>
 <ul class="text-muted">
@@ -219,7 +294,7 @@ gh run watch</pre>
 <li>Casos de teste de caixa preta e de caixa branca (Aula 03).</li>
 <li>Regras de reserva feitas em TDD, com o trio <code>test</code>, <code>feat</code>, <code>refactor</code> no histórico (Aula 04).</li>
 <li><code>npm run test:cov</code> com pelo menos 80% de linhas e de ramos em <code>src/</code>.</li>
-<li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li>
+<li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li><li><code>npm run qualidade</code> verde e o resumo do quality gate no run do CI.</li>
 </ul>
 <h3 class="h6 fw-bold">Estado no GitHub</h3>
 <ul class="text-muted">
@@ -233,7 +308,7 @@ gh run watch</pre>
 </section>
 
 <section class="glass-card p-4 p-md-5 mb-4">
-<h2 class="h3 fw-bold">12. Entregável e checagem</h2>
+<h2 class="h3 fw-bold">14. Entregável e checagem</h2>
 <p class="text-muted">Script <code>test:cov</code> com meta de 80%, <code>eslint.config.js</code>, <code>.github/workflows/ci.yml</code> e badge verde no README, tudo integrado na main.</p>
 <h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
 <ul class="text-muted mb-0"><li>O badge e o último run da main estão verdes na aba Actions.</li><li><code>npm run test:cov</code> mostra pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>git grep eslint-disable</code> não encontra nada.</li><li>Todo push que deixou o CI vermelho tem um commit <code>fix</code> logo depois.</li></ul>

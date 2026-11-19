@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="cobertura de código, node --test, experimental-test-coverage, ESLint 9, flat config, complexidade, GitHub Actions, integração contínua, qualidade de software" />
+    <meta name="keywords" content="quality gate, eslint-plugin-sonarjs, jscpd, secretlint, knip, cobertura de código, node --test, experimental-test-coverage, ESLint 9, flat config, complexidade, GitHub Actions, integração contínua, qualidade de software" />
     <title>Aula 05 - Cobertura, CI e análise estática</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
@@ -43,7 +43,7 @@
             <div class="col-md-6">
               <div class="card border-0 shadow-sm p-4 h-100 text-start">
                 <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
-                <ol class="mb-0 fs-5"><li>Prompt 1: cobertura com meta (30 min)</li><li>Prompt 2: ESLint no seu repositório (20 min)</li><li>Prompt 3: workflow de CI e badge (25 min)</li><li>Checklist do Trabalho 1 e checagem na mesa (25 min)</li></ol>
+                <ol class="mb-0 fs-5"><li>Prompt 1: cobertura com meta (30 min)</li><li>Prompt 2: ESLint no seu repositório (20 min)</li><li>Prompt 3: workflow de CI e badge (25 min)</li><li>Prompt 4: quality gate sem SonarCloud (25 min)</li><li>Checklist do Trabalho 1 e checagem na mesa (25 min)</li></ol>
               </div>
             </div>
           </div>
@@ -227,8 +227,34 @@ export default [
         </div>
       </div>
 
-      <!-- 13. Laboratório -->
+      <!-- Quality gate sem SonarCloud -->
       <div class="slide" id="slide-13">
+        <div class="slide-content" style="max-width:1100px">
+          <h2 class="h2 fw-bold text-center mb-1">Quality gate sem SonarCloud</h2>
+          <p class="text-center text-muted mb-3">Cada verificação do SonarCloud tem uma biblioteca Node equivalente. Todas rodam no GitHub Actions, sem conta nem token externo.</p>
+          <div class="table-responsive"><table class="table table-sm align-middle bg-white shadow-sm mb-0 text-start" style="font-size:.95rem"><thead class="table-light"><tr><th>O que o SonarCloud verifica</th><th>No seu repositório</th><th>O que reprova</th></tr></thead><tbody><tr><td>Bugs e code smells</td><td><code>eslint-plugin-sonarjs</code></td><td>As regras do próprio SonarSource, como plugin do ESLint</td></tr><tr><td>Complexidade cognitiva</td><td><code>sonarjs/cognitive-complexity</code></td><td>Limite de 15 por função, além do complexity 8</td></tr><tr><td>Código duplicado</td><td><code>jscpd</code></td><td>Reprova acima de 3% de linhas duplicadas em src/</td></tr><tr><td>Vulnerabilidades no código</td><td><code>eslint-plugin-security</code></td><td>eval, regex catastrófica, caminho de arquivo vindo do usuário</td></tr><tr><td>Segredos versionados</td><td><code>secretlint</code></td><td>Chaves de API, tokens e senhas em qualquer arquivo</td></tr><tr><td>Dependências vulneráveis</td><td><code>npm audit --audit-level=high</code></td><td>Reprova com vulnerabilidade alta ou crítica</td></tr><tr><td>Cobertura no gate</td><td><code>node --test com metas</code></td><td>80% de linhas e de ramos em src/</td></tr><tr><td>Código morto</td><td><code>knip</code></td><td>Arquivos, exports e dependências sem uso</td></tr><tr><td>Painel do Quality Gate</td><td><code>$GITHUB_STEP_SUMMARY</code></td><td>Tabela com o resultado de cada verificação no run</td></tr></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- Lab: quality gate -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Montar no próprio CI um quality gate que faz o papel do SonarCloud.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode: montar o quality gate" e leia <code>eslint.config.js</code> e <code>ci.yml</code>.<br>2. Rode "npm run qualidade" e veja o que reprova.<br>3. Peça a correção, confira o diff e rode o gate de novo.<br>4. Rode "gh run view" para ver o resumo do run.</div>
+                <div class="rl obs"><b>Observe</b>Cada passo do CI tem <code>continue-on-error</code>: todas as verificações rodam, o resumo mostra todas, e o último passo reprova se qualquer uma falhou.</div>
+                <div class="rl conc"><b>Conclusão</b>O gate é código no repositório: versionado, revisado e igual na sua máquina e no CI.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-gate"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Laboratório -->
+      <div class="slide" id="slide-15">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
           <h2 class="h1 fw-bold text-center mb-3">Cobertura, lint e CI no seu repositório</h2>
@@ -251,9 +277,9 @@ export default [
       </div>
 
       <!-- 14. Prompt 1 -->
-      <div class="slide" id="slide-14">
+      <div class="slide" id="slide-16">
         <div class="slide-content">
-          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 4</span><span class="badge bg-light text-dark border">30 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">Cobertura com meta</h2>
           <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
             <p class="small text-muted mb-0">Na branch test/cobertura do repositório organizacao-recursos, adicione ao package.json o script "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'", sem nenhuma dependência nova. Rode npm run test:cov e me mostre a tabela. Liste, arquivo por arquivo, as linhas e os ramos não cobertos e diga qual regra do domínio cada um representa (sobreposição de intervalos, capacidade da sala, professor em duas aulas, material indisponível, reserva no passado). Depois, um teste por vez, escreva testes que cubram esses ramos com asserção de valor exato ou da mensagem de erro, sem alterar nada em src/ e sem excluir arquivos da cobertura. Pare depois de cada teste para eu rodar npm run test:cov e commitar como test(escopo): ....</p>
@@ -263,9 +289,9 @@ export default [
       </div>
 
       <!-- 15. Prompt 2 -->
-      <div class="slide" id="slide-15">
+      <div class="slide" id="slide-17">
         <div class="slide-content">
-          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 4</span><span class="badge bg-light text-dark border">20 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">ESLint no seu repositório</h2>
           <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
             <p class="small text-muted mb-0">Na branch chore/eslint, instale como devDependencies eslint, @eslint/js e globals. Crie eslint.config.js no formato flat do ESLint 9, exportando um array com: ignores para coverage/ e node_modules/; js.configs.recommended; e um bloco com languageOptions { ecmaVersion: 2024, sourceType: 'module', globals: globals.node } e a regra complexity: ['error', 6]. Adicione o script "lint": "eslint .". Rode npm run lint e me mostre os problemas agrupados por regra. Corrija um arquivo por vez, sem usar comentários eslint-disable e sem desligar regras; para complexidade, extraia funções pequenas ou use retornos antecipados. Rode npm test depois de cada correção e pare para eu commitar.</p>
@@ -275,9 +301,9 @@ export default [
       </div>
 
       <!-- 16. Prompt 3 -->
-      <div class="slide" id="slide-16">
+      <div class="slide" id="slide-18">
         <div class="slide-content">
-          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 4</span><span class="badge bg-light text-dark border">25 min</span></div>
           <h2 class="h2 fw-bold mb-3 text-dark text-center">Workflow de CI e badge</h2>
           <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
             <p class="small text-muted mb-0">Na branch chore/ci, crie .github/workflows/ci.yml com name CI, disparado em push e workflow_dispatch, com um job qualidade em ubuntu-latest e os passos: actions/checkout@v4; actions/setup-node@v4 com node-version 22 e cache npm; npm ci; npm run lint; npm run test:cov. Acrescente no topo do README.md o badge ![CI](https://github.com/MEU-USUARIO/organizacao-recursos/actions/workflows/ci.yml/badge.svg), perguntando antes qual é o meu usuário do GitHub. Não crie pull request nem outros workflows. Antes de terminar, rode npm ci, npm run lint e npm run test:cov localmente e me mostre o resultado de cada um.</p>
@@ -286,8 +312,20 @@ export default [
         </div>
       </div>
 
+      <!-- Prompt 4 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 4 de 4</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Quality gate no seu repositório</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch chore/quality-gate do repositório organizacao-recursos, monte um quality gate que substitua o SonarCloud. Instale como devDependencies eslint-plugin-sonarjs, eslint-plugin-security, jscpd, secretlint, @secretlint/secretlint-rule-preset-recommend e knip. No eslint.config.js, acrescente sonarjs.configs.recommended e pluginSecurity.configs.recommended, com a regra sonarjs/cognitive-complexity limitada a 15, mantendo complexity 8. Crie .jscpd.json com path ["src"], threshold 3 e reporters console e markdown, e .secretlintrc.json com o preset recomendado. Adicione ao package.json os scripts dup (jscpd), segredos (secretlint "**/*"), morto (knip), auditoria (npm audit --audit-level=high) e qualidade, que roda lint, dup, segredos, morto, auditoria e test:cov nessa ordem. No .github/workflows/ci.yml, transforme cada verificação num passo com id e continue-on-error: true, escreva em $GITHUB_STEP_SUMMARY uma tabela com o outcome de cada passo e termine com um passo que falha se algum outcome for failure. Rode npm run qualidade e corrija o que reprovar sem desligar regra, sem eslint-disable e sem subir o threshold. Mostre o diff antes de cada commit.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: <code>git grep eslint-disable</code> vazio, threshold do jscpd em 3 e o resumo do run mostrando as seis verificações.</div>
+        </div>
+      </div>
+
       <!-- 17. Checklist do Trabalho 1 -->
-      <div class="slide" id="slide-17">
+      <div class="slide" id="slide-20">
         <div class="slide-content">
           <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Trabalho 1</span><span class="badge bg-light text-dark border">Entrega na semana 10</span></div>
           <h2 class="h2 fw-bold text-center mb-3">Checklist do Trabalho 1</h2>
@@ -295,7 +333,7 @@ export default [
             <div class="col-md-6">
               <div class="card border-0 shadow-sm p-3 h-100">
                 <h3 class="h6 fw-bold">Conteúdo do repositório</h3>
-                <ul class="small mb-0"><li><code>docs/qualidade.md</code> com requisitos mensuráveis (Aula 01).</li><li>Especificação e critérios de aceite (Aula 02).</li><li>Casos de teste de caixa preta e de caixa branca (Aula 03).</li><li>Regras de reserva feitas em TDD, com o trio <code>test</code>, <code>feat</code>, <code>refactor</code> no histórico (Aula 04).</li><li><code>npm run test:cov</code> com pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li></ul>
+                <ul class="small mb-0"><li><code>docs/qualidade.md</code> com requisitos mensuráveis (Aula 01).</li><li>Especificação e critérios de aceite (Aula 02).</li><li>Casos de teste de caixa preta e de caixa branca (Aula 03).</li><li>Regras de reserva feitas em TDD, com o trio <code>test</code>, <code>feat</code>, <code>refactor</code> no histórico (Aula 04).</li><li><code>npm run test:cov</code> com pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li><li><code>npm run qualidade</code> verde e o resumo do quality gate no run do CI.</li></ul>
               </div>
             </div>
             <div class="col-md-6">
@@ -310,7 +348,7 @@ export default [
       </div>
 
       <!-- 18. Entregável -->
-      <div class="slide" id="slide-18">
+      <div class="slide" id="slide-21">
         <div class="slide-content text-center">
           <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 05</span>
           <p class="fs-4 mb-4"><code>test:cov</code> com meta de 80%, <code>eslint.config.js</code>, <code>.github/workflows/ci.yml</code> e badge verde no README, tudo integrado na main.</p>
@@ -322,7 +360,7 @@ export default [
       </div>
 
       <!-- 19. Dúvidas -->
-      <div class="slide cover-bg" id="slide-19">
+      <div class="slide cover-bg" id="slide-22">
         <div class="glass-cover text-center">
           <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
           <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
@@ -335,7 +373,7 @@ export default [
       <div class="slide-controls">
         <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
         <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
-        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 19</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 22</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
       </div>
       <div class="text-center text-muted small d-none d-md-block">Qualidade · Cobertura, CI e análise estática · Semana 9</div>
       <a href="material/material_aula05-cobertura-ci.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
@@ -903,6 +941,128 @@ Labs.video('#vid-actions', {
         '<h2 class="h4 fw-bold">biblioteca-campus</h2><p id="badge"><span style="display:inline-flex;font:11px/1 Verdana,sans-serif;border-radius:3px;overflow:hidden"><span style="background:#555;color:#fff;padding:4px 6px">CI</span><span style="background:#3FB950;color:#fff;padding:4px 6px">passing</span></span></p>' +
         '<p>Empréstimo de livros da biblioteca do campus: limite de 3 empréstimos, prazo de 14 dias, reservas e multa de 150 centavos por dia (teto de 3000).</p></div></div></div>',
       steps: [ { to: '#badge', wait: 1200 } ] }
+  ]
+});
+
+/* ---------- Lab: quality gate sem SonarCloud ---------- */
+const ESLINT_GATE = `import js from '@eslint/js';
+import globals from 'globals';
+import sonarjs from 'eslint-plugin-sonarjs';
+import pluginSecurity from 'eslint-plugin-security';
+
+export default [
+  { ignores: ['coverage/', 'node_modules/'] },
+  js.configs.recommended,
+  sonarjs.configs.recommended,
+  pluginSecurity.configs.recommended,
+  {
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.node },
+    rules: {
+      complexity: ['error', 8],
+      'sonarjs/cognitive-complexity': ['error', 15]
+    }
+  }
+];`;
+const CI_GATE = `name: CI
+on: [push, workflow_dispatch]
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - { id: lint,      run: npm run lint,      continue-on-error: true }
+      - { id: dup,       run: npm run dup,       continue-on-error: true }
+      - { id: segredos,  run: npm run segredos,  continue-on-error: true }
+      - { id: morto,     run: npm run morto,     continue-on-error: true }
+      - { id: auditoria, run: npm run auditoria, continue-on-error: true }
+      - { id: cobertura, run: npm run test:cov,  continue-on-error: true }
+      - name: Resumo do quality gate
+        if: always()
+        run: |
+          {
+            echo "## Quality gate"
+            echo "| Verificação | Resultado |"
+            echo "|---|---|"
+            echo "| ESLint, sonarjs e security | \${{ steps.lint.outcome }} |"
+            echo "| Duplicação (jscpd, 3%) | \${{ steps.dup.outcome }} |"
+            echo "| Segredos (secretlint) | \${{ steps.segredos.outcome }} |"
+            echo "| Código morto (knip) | \${{ steps.morto.outcome }} |"
+            echo "| Dependências (npm audit) | \${{ steps.auditoria.outcome }} |"
+            echo "| Cobertura 80% | \${{ steps.cobertura.outcome }} |"
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Reprovar se alguma verificação falhou
+        if: contains(join(steps.*.outcome, ','), 'failure')
+        run: exit 1`;
+const PKG_GATE = `{
+  "name": "biblioteca-campus",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'",
+    "lint": "eslint .",
+    "dup": "jscpd",
+    "segredos": "secretlint \\"**/*\\"",
+    "morto": "knip",
+    "auditoria": "npm audit --audit-level=high",
+    "qualidade": "npm run lint && npm run dup && npm run segredos && npm run morto && npm run auditoria && npm run test:cov"
+  }
+}`;
+const arqGate = [
+  { path: 'eslint.config.js', hl: [3, 4, 9, 10, 15], code: ESLINT_GATE },
+  { path: '.github/workflows/ci.yml', hl: [12, 13, 14, 15, 16, 17, 30, 31], code: CI_GATE },
+  { path: 'package.json', hl: [8, 9, 10, 11, 12], code: PKG_GATE },
+  { path: '.jscpd.json', code: '{\n  "path": ["src"],\n  "threshold": 3,\n  "reporters": ["console", "markdown"],\n  "output": "relatorios/jscpd"\n}' },
+  { path: '.secretlintrc.json', code: '{\n  "rules": [\n    { "id": "@secretlint/secretlint-rule-preset-recommend" }\n  ]\n}' }
+];
+Labs.vscode('#lab-gate', {
+  folder: 'biblioteca-campus', status: 'Quality gate', branch: 'chore/quality-gate', open: 'eslint.config.js',
+  prompt: PROF + '(chore/quality-gate) $ ',
+  files: arqGate,
+  run: [
+    { label: 'opencode: montar o quality gate', kind: 'purple', file: 'eslint.config.js',
+      cmd: 'opencode run "Monte um quality gate que substitua o SonarCloud: eslint-plugin-sonarjs e eslint-plugin-security no ESLint, jscpd com threshold 3, secretlint, knip e npm audit, um script qualidade e o ci.yml com um passo por verificação e resumo no GITHUB_STEP_SUMMARY."',
+      out: [ ...PERMISSAO('npm install -D eslint-plugin-sonarjs eslint-plugin-security jscpd secretlint @secretlint/secretlint-rule-preset-recommend knip'),
+        ...OC(['▸ read eslint.config.js', '▸ read .github/workflows/ci.yml', '▸ bash npm install -D eslint-plugin-sonarjs eslint-plugin-security jscpd secretlint @secretlint/secretlint-rule-preset-recommend knip']),
+        '[mute]   added 214 packages in 12s',
+        ...OC(['▸ edit eslint.config.js', '▸ write .jscpd.json', '▸ write .secretlintrc.json', '▸ edit package.json', '▸ edit .github/workflows/ci.yml']), '',
+        'Quality gate montado: seis verificações, cada uma com script próprio e um passo no CI.',
+        'O resumo do run lista o resultado de cada uma, e o último passo reprova se alguma falhar.' ] },
+    { label: 'npm run qualidade', kind: 'red', clear: false, cmd: 'npm run qualidade', out: [
+      '> eslint .', '',
+      '/workspaces/biblioteca-campus/src/emprestimo.js',
+      '[err]   41:10  error  Refactor this function to reduce its Cognitive Complexity from 17 to the 15 allowed  sonarjs/cognitive-complexity',
+      '/workspaces/biblioteca-campus/src/relatorio.js',
+      '[err]   12:21  error  Found non-literal argument to RegExp Constructor  security/detect-non-literal-regexp', '',
+      '[err] ✖ 2 problems (2 errors, 0 warnings)',
+      '[mute] (os passos seguintes não rodam na máquina; no CI rodam todos)' ] },
+    { label: 'opencode: corrigir sem desligar regra', kind: 'purple',
+      cmd: 'opencode run "Corrija os dois erros do npm run qualidade sem eslint-disable, sem mudar o eslint.config.js e sem mudar o comportamento. Rode npm test depois."',
+      out: [ ...OC(['▸ read src/emprestimo.js', '▸ edit src/emprestimo.js', '▸ read src/relatorio.js', '▸ edit src/relatorio.js', '▸ bash npm test']),
+        '[ok]   ℹ pass 12  ℹ fail 0', '',
+        'emprestar foi dividida em verificarLimite, verificarReserva e verificarMulta.',
+        'Em relatorio.js, a busca deixou de montar RegExp com o texto do usuário e passou a usar includes.' ] },
+    { label: 'Conferir e rodar o gate', kind: 'blue', clear: false, cmd: 'git diff --stat && git grep -n "eslint-disable" ; npm run qualidade', out: [
+      ' src/emprestimo.js | 34 ++++++++++++++++++++++------------', ' src/relatorio.js  |  6 +++---',
+      '[mute] (git grep não encontrou eslint-disable)', '',
+      '> eslint .', '[ok] (nenhum problema)',
+      '> jscpd', '[ok] Found 0 clones.  Duplicated lines: 1.12% (threshold 3%)',
+      '> secretlint "**/*"', '[ok] (nenhum segredo encontrado)',
+      '> knip', '[warn] Unused dependencies (1)', '[warn]   dayjs  package.json', '[err] ✖ knip encontrou 1 problema' ] },
+    { label: 'Remover dependência sem uso', clear: false, cmd: 'npm uninstall dayjs && npm run qualidade', out: [
+      '[mute] removed 1 package in 1s',
+      '[ok] eslint: ok  ·  jscpd: 1.12%  ·  secretlint: ok  ·  knip: ok',
+      '> npm audit --audit-level=high', '[ok] found 0 vulnerabilities',
+      '> node --test --experimental-test-coverage ...', '[ok] ℹ pass 12  ℹ fail 0  all files 96.30 | 91.67',
+      '[ok] ' + PROF + '(chore/quality-gate) $ git add -A && git commit -m "ci: quality gate com sonarjs, security, jscpd, secretlint, knip e audit"' ] },
+    { label: 'gh run view', kind: 'blue', clear: false, cmd: 'gh run view --log | grep -A9 "## Quality gate"', out: [
+      '## Quality gate', '| Verificação | Resultado |', '|---|---|',
+      '[ok] | ESLint, sonarjs e security | success |', '[ok] | Duplicação (jscpd, 3%) | success |', '[ok] | Segredos (secretlint) | success |',
+      '[ok] | Código morto (knip) | success |', '[ok] | Dependências (npm audit) | success |', '[ok] | Cobertura 80% | success |',
+      "[ok] ✓ Run CI completed with 'success'" ] }
   ]
 });
     </script>

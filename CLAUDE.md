@@ -67,7 +67,8 @@ Home `pages/home_qualidade_2027_1.html`, slides e materiais em `pages/qualidade3
   **Entregar** → `qualidade3/entrega/entrega.html` (nome completo + link do repositório; formulários
   `senac-qs-2027-1-trabalho-{1,2}` em `supabase/entregas-qualidade3-2027-1.sql`, `max_integrantes = 1`).
   Feedback chega como issue; o aluno responde com commit `... (#N)` e `Closes #N`. Sem pull request.
-- **Stack JavaScript puro:** Node 22, ES modules, node:test, cobertura nativa, ESLint 9, GitHub Actions,
+- **Stack JavaScript puro:** Node 22, ES modules, node:test, cobertura nativa, ESLint 9, GitHub Actions; sem
+  SonarCloud: o quality gate é `npm run qualidade` (sonarjs, security, jscpd, secretlint, knip, npm audit) no CI,
   Express 5 + supertest, PostgreSQL + Testcontainers, cucumber-js, k6. Ambiente: Codespace padrão, sem
   devcontainer (já traz Node, npm, Git e Docker). Agente: GitHub Copilot no modo Agent; opção opencode
   instalado só com `npm install -g opencode-ai` (OpenRouter, ou OpenLLM local). Git trunk-based.
