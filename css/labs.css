@@ -1,0 +1,249 @@
+/* =====================================================================
+   Hub de Aulas Senac — laboratórios simulados (js/labs.js)
+   VS Code, terminal, navegador, diagrama animado e vídeo simulado.
+   As cores abaixo são do "cromo" das ferramentas simuladas (tema escuro
+   do VS Code, terminal, GitHub), não da paleta da disciplina: os tokens
+   de disciplina continuam vindo de base-styles.css.
+   Carregar depois de css/base-styles.css.
+   ===================================================================== */
+:root {
+  --lab-red: #FF2B5F; --lab-blue: #00B1D2; --lab-purple: #9B6BFF; --lab-green: #3FD47A; --lab-amber: #F2CB0A;
+  --lab-bg: #0D1117; --lab-bg2: #161B22; --lab-line: #30363D; --lab-text: #E6EDF3; --lab-mute: #8B949E;
+  --fonte: 'Outfit', system-ui, sans-serif;
+  --mono: 'JetBrains Mono', 'Cascadia Code', Consolas, 'Courier New', monospace;
+}
+
+/* ---------- Slide de laboratório ---------- */
+.slide.slide-lab { padding: 1rem 1.2rem; }
+.slide.slide-lab > .slide-content { max-width: none; height: 100%; display: flex; flex-direction: column; gap: .6rem; }
+.lab-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.lab-head .kicker { margin: 0; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--sl-primary, #DD2476); font-weight: 700; }
+.lab-head h2 { margin: 0; font-weight: 800; font-size: clamp(1.4rem, 2.4vw, 2.1rem); }
+.lab-area { flex: 1 1 auto !important; min-height: 0; display: flex; flex-direction: column; }
+.lab-split { flex: 1 1 auto !important; min-height: 0; display: grid; grid-template-columns: minmax(250px, 30%) 1fr; gap: 1rem; }
+.lab-split > * { min-height: 0; min-width: 0; }
+.lab-side { overflow: auto; padding-right: .3rem; font-size: clamp(.95rem, 1.2vw, 1.15rem); }
+.lab-side code { font-family: var(--mono); font-size: .88em; }
+
+/* ---------- Botões comuns ---------- */
+.lab-btn {
+  font: 600 .8rem/1 var(--fonte); color: #fff; background: #238636; border: 1px solid #2EA043;
+  padding: .5em .9em; border-radius: 6px; cursor: pointer; white-space: nowrap;
+}
+.lab-btn:hover { filter: brightness(1.15); }
+.lab-btn:disabled { opacity: .45; cursor: default; filter: none; }
+.lab-btn.ghost { background: transparent; border-color: var(--lab-line); color: var(--lab-text); }
+.lab-btn.red { background: #B3123F; border-color: var(--lab-red); }
+.lab-btn.blue { background: #0B6E8A; border-color: var(--lab-blue); }
+.lab-btn.purple { background: #5B3DB8; border-color: var(--lab-purple); }
+
+/* ---------- VS Code ---------- */
+.vsc {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column;
+  background: #1E1E1E; border: 1px solid #3C3C3C; border-radius: 10px; overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0,0,0,.45); font-family: var(--fonte); color: #CCCCCC;
+}
+.vsc-title { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 10px; background: #323233; font-size: 12px; flex: none; }
+.vsc-title i { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.vsc-title i:nth-child(1) { background: #FF5F57; } .vsc-title i:nth-child(2) { background: #FEBC2E; } .vsc-title i:nth-child(3) { background: #28C840; }
+.vsc-title span { flex: 1; text-align: center; color: #CCCCCC; opacity: .85; }
+.vsc-body { flex: 1; min-height: 0; display: flex; }
+.vsc-activity { width: 44px; background: #333333; display: flex; flex-direction: column; align-items: center; gap: 16px; padding-top: 12px; flex: none; }
+.vsc-activity b { width: 22px; height: 22px; border-radius: 4px; border: 2px solid #858585; opacity: .7; }
+.vsc-activity b:first-child { border-color: #fff; opacity: 1; }
+.vsc-explorer { width: 210px; background: #252526; font-size: 12.5px; overflow: auto; flex: none; }
+.vsc-explorer h4 { margin: 0; padding: 9px 14px; font: 600 11px/1 var(--fonte); letter-spacing: .08em; color: #BBBBBB; }
+.vsc-folder { padding: 4px 14px; font-weight: 700; color: #CCCCCC; font-size: 11.5px; text-transform: uppercase; }
+.vsc-file { display: block; width: 100%; text-align: left; background: none; border: 0; color: #CCCCCC; font: 13px/1.6 var(--fonte); padding: 1px 14px 1px calc(14px + var(--depth, 0) * 12px); cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.vsc-file:hover { background: #2A2D2E; }
+.vsc-file.is-open { background: #37373D; color: #fff; }
+.vsc-file::before { content: attr(data-ico); display: inline-block; width: 1.4em; font-weight: 700; font-size: 10px; color: var(--ico, #519ABA); }
+.vsc-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.vsc-tabs { display: flex; background: #252526; height: 34px; flex: none; overflow: hidden; }
+.vsc-tab { display: flex; align-items: center; gap: 6px; padding: 0 14px; font-size: 12.5px; color: #969696; background: #2D2D2D; border-right: 1px solid #252526; cursor: pointer; border: 0; font-family: var(--fonte); }
+.vsc-tab.is-active { background: #1E1E1E; color: #fff; box-shadow: inset 0 1px 0 #0078D4; }
+.vsc-crumbs { font-size: 12px; color: #A9A9A9; padding: 4px 16px; background: #1E1E1E; flex: none; }
+.vsc-editor { flex: 1 1 60%; min-height: 0; overflow: auto; background: #1E1E1E; position: relative; }
+.vsc-code { margin: 0; padding: 6px 0 14px; font: 14px/1.55 var(--mono); color: #D4D4D4; counter-reset: ln; tab-size: 4; }
+.vsc-code .ln { display: block; padding: 0 18px 0 0; white-space: pre; min-height: 1.55em; }
+.vsc-code .ln::before { counter-increment: ln; content: counter(ln); display: inline-block; width: 3.4em; padding-right: 1.3em; text-align: right; color: #6E7681; user-select: none; }
+.vsc-code .ln.hl { background: rgba(255, 213, 0, .12); box-shadow: inset 3px 0 0 #F2CB0A; }
+.vsc-code .caret { display: inline-block; width: 2px; height: 1.1em; background: #AEAFAD; vertical-align: text-bottom; animation: caret 1s steps(1) infinite; }
+@keyframes caret { 50% { opacity: 0; } }
+.vsc-panel { flex: 0 0 38%; min-height: 90px; display: flex; flex-direction: column; border-top: 1px solid #3C3C3C; background: #1E1E1E; }
+.vsc-panel-tabs { display: flex; align-items: center; flex-wrap: wrap; row-gap: 4px; gap: 12px; padding: 3px 10px; min-height: 34px; font-size: 11.5px; letter-spacing: .04em; color: #969696; flex: none; }
+.vsc-panel-tabs .on { color: #E7E7E7; border-bottom: 1px solid #E7E7E7; padding-bottom: 5px; padding-top: 6px; }
+.vsc-panel-tabs .sp { flex: 1; }
+.vsc-panel-tabs .lab-btn { font-size: 11.5px; padding: .45em .8em; }
+.vsc-term { flex: 1; min-height: 0; overflow: auto; padding: 4px 14px 10px; font: 13px/1.5 var(--mono); color: #CCCCCC; white-space: pre-wrap; word-break: break-word; }
+.vsc-status { display: flex; gap: 16px; align-items: center; height: 24px; padding: 0 10px; background: #007ACC; color: #fff; font-size: 12px; flex: none; }
+.vsc-status .sp { flex: 1; }
+.vsc.red-team .vsc-status { background: #8E1537; }
+.vsc.blue-team .vsc-status { background: #0B5E78; }
+.vsc.purple-team .vsc-status { background: #4B2E9E; }
+
+/* tokens de realce de sintaxe */
+.tk-k { color: #C586C0; } .tk-s { color: #CE9178; } .tk-n { color: #B5CEA8; } .tk-c { color: #6A9955; font-style: italic; }
+.tk-f { color: #DCDCAA; } .tk-b { color: #4EC9B0; } .tk-v { color: #9CDCFE; } .tk-p { color: #569CD6; } .tk-d { color: #D7BA7D; }
+
+/* ---------- Terminal ---------- */
+.term {
+  flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border-radius: 10px; overflow: hidden;
+  background: #0A0A0A; border: 1px solid #333; box-shadow: 0 16px 40px rgba(0,0,0,.5);
+}
+.term-bar { display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; background: #2B2B2B; color: #DDD; font: 12.5px var(--fonte); flex: none; }
+.term-bar i { width: 12px; height: 12px; border-radius: 50%; background: #555; display: inline-block; }
+.term-bar i:nth-child(1) { background: #FF5F57; } .term-bar i:nth-child(2) { background: #FEBC2E; } .term-bar i:nth-child(3) { background: #28C840; }
+.term-bar span { flex: 1; text-align: center; }
+.term-body { flex: 1; min-height: 0; overflow: auto; padding: 12px 16px; font: 14px/1.5 var(--mono); color: #D0D0D0; white-space: pre-wrap; word-break: break-word; }
+.term.windows { background: #012456; } .term.windows .term-body { color: #EEEDF0; }
+.term.windows .term-bar { background: #1F1F1F; }
+.term.green .term-body { color: #39FF6A; text-shadow: 0 0 4px rgba(57,255,106,.4); }
+.term-ctrl { display: flex; gap: 8px; align-items: center; padding: 8px 12px; background: #151515; border-top: 1px solid #2A2A2A; flex: none; flex-wrap: wrap; }
+.term-ctrl .note { flex: 1; color: #BBB; font: 12.5px/1.35 var(--fonte); min-width: 200px; }
+.term .pr { color: #3FD47A; font-weight: 700; }
+.term.windows .pr { color: #F2F2F2; }
+.term .cm { color: #fff; }
+
+/* cores de saída (terminal e VS Code) */
+.o-ok { color: #3FD47A; } .o-warn { color: #F2CB0A; } .o-err { color: #FF5C7A; } .o-info { color: #58C4E8; }
+.o-mute { color: #7D8590; } .o-hi { color: #fff; font-weight: 700; } .o-red { color: #FF5C7A; font-weight: 700; } .o-blue { color: #58C4E8; font-weight: 700; } .o-purple { color: #C2A5FF; font-weight: 700; }
+
+.vsc, .term, .brw, .flow { font-family: var(--fonte); }
+
+/* ---------- Navegador ---------- */
+.brw { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 16px 40px rgba(0,0,0,.45); border: 1px solid #C9CED8; }
+.brw-bar { display: flex; align-items: center; gap: 10px; padding: 7px 12px; background: #E9ECF2; flex: none; }
+.brw-bar i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; background: #C5C9D2; }
+.brw-bar i:nth-child(1) { background: #FF5F57; } .brw-bar i:nth-child(2) { background: #FEBC2E; } .brw-bar i:nth-child(3) { background: #28C840; }
+.brw-url { flex: 1; background: #fff; border-radius: 999px; padding: 6px 14px; font: 13px var(--fonte); color: #333; border: 1px solid #D3D7DF; display: flex; gap: 8px; align-items: center; white-space: nowrap; overflow: hidden; }
+.brw-url .lock { font-size: 12px; }
+.brw-url.danger { border-color: #FF2B5F; background: #FFF1F4; }
+.brw-page { flex: 1; min-height: 0; overflow: auto; color: #1A1A1A; font-family: var(--fonte); }
+.brw-page p, .brw-page li { color: #1A1A1A; font-size: 14px !important; line-height: 1.45 !important; }
+
+
+/* ---------- Diagrama animado (flow) ---------- */
+.flow { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; background: #0B1424; border: 1px solid #22314F; border-radius: 12px; overflow: hidden; }
+.flow-stage { flex: 1; min-height: 0; position: relative; }
+.flow-stage svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.flow-node rect { fill: #13213D; stroke: #3A5A8C; stroke-width: 2; transition: all .35s; }
+.flow-node text { fill: #E6EDF3; font-family: var(--fonte); }
+.flow-node .ico { font-size: 26px; }
+.flow-node .lbl { font-size: 16px; font-weight: 700; }
+.flow-node .sub { font-size: 13px; fill: #B3C2D8; }
+.flow-node.k-red rect { stroke: #FF2B5F; } .flow-node.k-blue rect { stroke: #00B1D2; } .flow-node.k-purple rect { stroke: #9B6BFF; } .flow-node.k-amber rect { stroke: #F2CB0A; } .flow-node.k-green rect { stroke: #3FD47A; }
+.flow-node.is-on rect { fill: #1D3563; stroke-width: 3.5; filter: drop-shadow(0 0 10px rgba(0,177,210,.8)); }
+.flow-node.k-red.is-on rect { fill: #4A1028; filter: drop-shadow(0 0 12px rgba(255,43,95,.9)); }
+.flow-node.k-purple.is-on rect { fill: #2E1F5E; filter: drop-shadow(0 0 12px rgba(155,107,255,.9)); }
+.flow-node.k-amber.is-on rect { fill: #4A3D06; filter: drop-shadow(0 0 12px rgba(242,203,10,.9)); }
+.flow-node.k-green.is-on rect { fill: #0E3F25; filter: drop-shadow(0 0 12px rgba(63,212,122,.9)); }
+.flow-node.is-dim { opacity: .35; }
+.flow-node.is-bad rect { stroke: #FF2B5F; fill: #3A0D1C; }
+.flow-link { stroke: #3A5A8C; stroke-width: 2.2; fill: none; transition: all .35s; }
+.flow-link.dashed { stroke-dasharray: 7 6; }
+.flow-link.is-on { stroke: #00B1D2; stroke-width: 3.5; }
+.flow-link.is-on.red { stroke: #FF2B5F; } .flow-link.is-on.purple { stroke: #9B6BFF; } .flow-link.is-on.amber { stroke: #F2CB0A; } .flow-link.is-on.green { stroke: #3FD47A; }
+.flow-link-lbl { fill: #B8C6DA; font: 600 12px var(--fonte); paint-order: stroke; stroke: #0B1424; stroke-width: 5px; stroke-linejoin: round; }
+.flow-pkt { fill: #00B1D2; filter: drop-shadow(0 0 6px #00B1D2); }
+.flow-pkt.red { fill: #FF2B5F; filter: drop-shadow(0 0 6px #FF2B5F); }
+.flow-pkt.purple { fill: #9B6BFF; filter: drop-shadow(0 0 6px #9B6BFF); }
+.flow-pkt.amber { fill: #F2CB0A; filter: drop-shadow(0 0 6px #F2CB0A); }
+.flow-pkt.green { fill: #3FD47A; filter: drop-shadow(0 0 6px #3FD47A); }
+.flow-cap { display: flex; gap: 12px; align-items: center; padding: 9px 12px; background: #0F1B33; border-top: 1px solid #22314F; flex: none; }
+.flow-cap .txt { flex: 1; color: #DCE3EE; font: 15.5px/1.4 var(--fonte); min-height: 2.8em; display: flex; flex-direction: column; justify-content: center; }
+.flow-cap .txt b { color: #F2CB0A; font-size: 16px; }
+.flow-cap .cnt { color: #7F8FA9; font: 700 12px var(--fonte); white-space: nowrap; }
+
+/* ---------- Cena 3D ---------- */
+.scene3d { flex: 1 1 auto; min-height: 0; position: relative; border-radius: 12px; overflow: hidden; background: radial-gradient(ellipse at center, #0F2347 0%, #050B18 75%); border: 1px solid #22314F; cursor: grab; }
+
+/* ---------- Roteiro do laboratório (Objetivo, Faça, Observe, Conclusão) ---------- */
+.roteiro-lab { display: grid; gap: .55rem; }
+.roteiro-lab .rl { border-left: 4px solid #00B1D2; padding: .15rem 0 .15rem .7rem; color: #E6EDF3; line-height: 1.45; }
+.roteiro-lab .rl > b { display: block; font-size: .78rem; letter-spacing: .1em; text-transform: uppercase; color: #F2CB0A; }
+.roteiro-lab .rl.obj { border-color: #F2CB0A; } .roteiro-lab .rl.obs { border-color: #9B6BFF; } .roteiro-lab .rl.conc { border-color: #3FD47A; }
+.roteiro-lab code { background: rgba(255,255,255,.12); color: #fff; padding: .05em .3em; border-radius: 4px; }
+
+/* ---------- VS Code em tela cheia ----------
+   Labs.vscode marca o slide com .vsc-full: o editor ocupa a área inteira do slide, como se
+   estivesse aberto no computador do professor. O roteiro (.lab-side) vira painel sobreposto,
+   aberto pelo botão "Roteiro" da barra de status ou pela tecla G. */
+.slide.slide-lab.vsc-full { padding: 0; }
+.slide.slide-lab.vsc-full .lab-head { display: none; }
+.slide.slide-lab.vsc-full > .slide-content { width: 100%; height: 100%; max-width: none; margin: 0; padding: 0; gap: 0; background: #1E1E1E; }
+.slide.slide-lab.vsc-full .lab-split { display: flex; position: relative; gap: 0; height: 100%; }
+.slide.slide-lab.vsc-full .lab-area { flex: 1 1 auto; min-width: 0; height: 100%; }
+.slide.slide-lab.vsc-full .vsc { border: 0; border-radius: 0; box-shadow: none; }
+.slide.slide-lab.vsc-full .vsc-panel { flex-basis: 42%; }
+.slide.slide-lab.vsc-full .lab-side {
+  display: none; position: absolute; z-index: 5; top: 2.6rem; right: 1rem; bottom: 2.2rem; width: min(30rem, 38vw);
+  background: #0B1424F2; border: 1px solid #2F3B55; border-radius: 12px; padding: 1rem 1.1rem;
+  box-shadow: 0 18px 50px rgba(0,0,0,.6); overflow: auto;
+}
+.slide.slide-lab.vsc-full.show-side .lab-side { display: block; }
+.vsc-status .vsc-guia { background: none; border: 0; color: inherit; font: inherit; cursor: pointer; padding: 0 .4em; opacity: .9; }
+.vsc-status .vsc-guia:hover { background: rgba(255,255,255,.18); }
+.lab-btn.setup { background: #1F4E8C; border-color: #3B82D6; }
+.lab-btn.setup.feito { background: transparent; border-color: #2EA043; color: #56D364; }
+/* O botão "Voltar ao cronograma" ficaria por cima do laboratório. */
+.slide-container:has(> .slide.active.slide-lab) > a.btn.position-absolute { display: none; }
+.slide.slide-lab, .slide.slide-lab .slide-content { text-align: left; }
+.vsc-title span { cursor: default; }
+
+/* ---------- Vídeo simulado (Labs.video) ---------- */
+.vid { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: .5rem; }
+.vid-brw { position: relative; }
+.vid-page { position: relative; background: #fff; }
+.vid-cursor {
+  position: absolute; left: 50%; top: 50%; width: 22px; height: 22px; z-index: 20; pointer-events: none;
+  transition: left .6s cubic-bezier(.4,0,.2,1), top .6s cubic-bezier(.4,0,.2,1);
+  background: no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M3 2l7 19 2.6-7.6L20 11z' fill='%23111' stroke='%23fff' stroke-width='1.6' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.vid-cursor::after { content: ''; position: absolute; left: -9px; top: -9px; width: 24px; height: 24px; border-radius: 50%; background: rgba(9,105,218,.45); transform: scale(0); }
+.vid-cursor.clk::after { animation: vidclk .35s ease-out; }
+@keyframes vidclk { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+.vid-hit { outline: 3px solid rgba(9,105,218,.55); outline-offset: 2px; transition: outline .2s; }
+.vid-ctrl { display: flex; align-items: center; gap: .5rem; flex: none; }
+.vid-ctrl .lab-btn.ghost { color: #333; border-color: #C9CED8; }
+.vid-bar { flex: 1; height: 6px; background: #D8DDE6; border-radius: 3px; overflow: hidden; }
+.vid-bar i { display: block; height: 100%; width: 0; background: var(--sl-primary, #DD2476); transition: width .4s; }
+.vid-cnt { font: 700 .8rem var(--fonte); color: #555; min-width: 3.5em; text-align: right; }
+.vid-cap { flex: none; min-height: 2.6em; background: #0B1424; color: #E6EDF3; border-radius: 10px; padding: .55rem .9rem; font-size: clamp(.95rem, 1.2vw, 1.15rem); line-height: 1.4; }
+.vid-cap b { color: #F2CB0A; }
+
+/* Peças de interface usadas nas cenas do vídeo (GitHub, Codespaces, OpenRouter) */
+.gh { font: 14px/1.5 -apple-system, 'Segoe UI', system-ui, sans-serif; color: #1F2328; min-height: 100%; background: #fff; }
+.gh-top { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: #F6F8FA; border-bottom: 1px solid #D1D9E0; }
+.gh-top .logo { width: 30px; height: 30px; border-radius: 50%; background: #1F2328; flex: none; }
+.gh-top .path { font-weight: 600; }
+.gh-body { padding: 18px 24px; }
+.gh-btn { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 6px; border: 1px solid #D1D9E0; background: #F6F8FA; font-weight: 600; font-size: 13px; color: #1F2328; }
+.gh-btn.green { background: #1F883D; border-color: #1A7F37; color: #fff; }
+.gh-btn.blue { background: #0969DA; border-color: #0969DA; color: #fff; }
+.gh-input { display: block; min-height: 32px; border: 1px solid #D1D9E0; border-radius: 6px; padding: 5px 10px; background: #fff; font: 14px var(--mono); }
+.gh-menu { position: absolute; z-index: 4; background: #fff; border: 1px solid #D1D9E0; border-radius: 12px; box-shadow: 0 8px 24px rgba(140,149,159,.3); padding: 12px; width: 360px; }
+.gh-tabs { display: flex; gap: 18px; border-bottom: 1px solid #D1D9E0; margin-bottom: 10px; }
+.gh-tabs span { padding: 6px 2px; font-weight: 600; color: #59636E; }
+.gh-tabs span.on { color: #1F2328; border-bottom: 2px solid #FD8C73; }
+.gh-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #EEF1F4; }
+.gh-load { display: grid; place-items: center; min-height: 100%; background: #0D1117; color: #E6EDF3; text-align: center; gap: .6rem; padding: 2rem; }
+.gh-load .bar { width: 260px; height: 4px; background: #30363D; border-radius: 2px; overflow: hidden; }
+.gh-load .bar i { display: block; height: 100%; width: 35%; background: #2F81F7; animation: ghload 1.2s linear infinite; }
+@keyframes ghload { from { margin-left: -35%; } to { margin-left: 100%; } }
+.web-vsc { display: grid; grid-template-rows: 1fr 46%; min-height: 100%; background: #1E1E1E; color: #D4D4D4; font: 13px/1.5 var(--mono); }
+.web-vsc .ed { padding: 10px 16px; white-space: pre; overflow: hidden; border-bottom: 1px solid #3C3C3C; }
+.web-vsc .tm { padding: 8px 14px; white-space: pre-wrap; overflow: auto; }
+.web-vsc .tm .pr { color: #3FD47A; }
+.oc-tui { background: #0A0A0A; color: #E6EDF3; font: 13px/1.5 var(--mono); padding: 12px 16px; min-height: 100%; white-space: pre-wrap; }
+.oc-tui .logo { color: #F2CB0A; font-weight: 700; }
+.oc-tui .box { border: 1px solid #3C3C3C; border-radius: 6px; padding: 8px 10px; margin-top: 8px; }
+
+@media (max-width: 900px) { .lab-split { grid-template-columns: 1fr; } .vsc-explorer { display: none; } }
+@media print { .term-ctrl, .flow-cap button, .vsc-panel-tabs .lab-btn, .vid-ctrl { display: none; } }
+.flow-stage { min-height: 300px; }
+
+/* O sino de avisos (js/avisos.js) e o selo da semana cobrem o canto do VS Code simulado:
+   somem enquanto um slide de laboratório está ativo e voltam nos demais. */
+body:has(.slide.active.slide-lab) .hbav-fab,
+body:has(.slide.active.slide-lab) .hbav-semana { display: none !important; }

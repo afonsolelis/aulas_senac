@@ -14,6 +14,7 @@ Você cria e edita **slides** e **materiais** do Hub de Aulas Senac. Fonte da ve
 |---|---|---|---|---|
 | `qualidade` | Qualidade de Software (2026.1) | `pages/qualidade/` | `pages/qualidade/material/` | `disciplina-qualidade.json` |
 | `qualidade2` | Qualidade de Software (2026.2) | `pages/qualidade2/` | `pages/qualidade2/material/` | `disciplina-qualidade2.json` |
+| `qualidade3` | Qualidade de Software (2027.1) | `pages/qualidade3/` | `pages/qualidade3/material/` | `disciplina-qualidade3.json` |
 | `logica` | Introdução à Lógica | `pages/logica/` | `pages/logica/material/` | `disciplina-logica.json` |
 | `tcc` | TCC1 | `pages/tcc/` | `pages/tcc/material/` | `disciplina-tcc.json` |
 | `tcc2` | TCC2 (2026.2) | `pages/tcc2/` | `pages/tcc2/material/` | `disciplina-tcc2.json` |

@@ -8,6 +8,7 @@ describe('Footer dos Slides - Elementos Obrigatórios', () => {
   // Mapeamento de disciplinas para suas home pages
   const disciplineHomeMap = {
     'qualidade': 'home_qualidade.html',
+    'qualidade3': 'home_qualidade_2027_1.html',
     'logica': 'home_logica.html',
     'tcc': 'home_tcc.html'
   };

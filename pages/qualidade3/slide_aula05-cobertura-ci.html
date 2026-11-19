@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="cobertura de código, node --test, experimental-test-coverage, ESLint 9, flat config, complexidade, GitHub Actions, integração contínua, qualidade de software" />
+    <title>Aula 05 - Cobertura, CI e análise estática</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 05: Cobertura, CI e análise estática</h1>
+          <p class="fs-4 text-secondary">Cobertura nativa do Node com meta, ESLint 9 e GitHub Actions protegendo a main</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 9 · 01/03 a 05/03</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Cobertura</span><span class="keyword">ESLint</span><span class="keyword">GitHub Actions</span><span class="keyword">Trabalho 1</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Cobertura de linhas, ramos e funções (25 min)</li><li>Metas e o limite da cobertura (20 min)</li><li>ESLint 9 e complexidade (25 min)</li><li>GitHub Actions e a regra da main (30 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 1: cobertura com meta (30 min)</li><li>Prompt 2: ESLint no seu repositório (20 min)</li><li>Prompt 3: workflow de CI e badge (25 min)</li><li>Checklist do Trabalho 1 e checagem na mesa (25 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. O que a cobertura mede -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">O que a cobertura mede</h2>
+          <p class="lead text-center text-muted mb-4">Enquanto os testes rodam, o Node conta quais partes de <code>src/</code> foram executadas. O relatório responde a uma pergunta: que código nenhum teste chegou a rodar?</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-grip-lines me-2" aria-hidden="true"></i>Linhas</h3><p class="mb-0">Fração das linhas executadas pelo menos uma vez. A coluna <code>uncovered lines</code> diz quais faltam, como <code>9-10 15-16</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-code-branch me-2" aria-hidden="true"></i>Ramos</h3><p class="mb-0">Fração dos caminhos de cada decisão (<code>if</code>, <code>else</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>?:</code>) que algum teste percorreu. Um <code>if</code> testado só no caso verdadeiro deixa um ramo descoberto.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-cube me-2" aria-hidden="true"></i>Funções</h3><p class="mb-0">Fração das funções chamadas por algum teste. Uma função exportada e nunca chamada aparece aqui antes de aparecer em produção.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-4 mb-0 text-start"><b class="d-block mb-1">Ligação com a Aula 03</b>Cobertura de ramos é a medida automática da caixa branca: cada ramo descoberto aponta um caso de teste que a análise de caminhos teria pedido.</div>
+        </div>
+      </div>
+
+      <!-- 4. Lab 1: relatório -->
+      <div class="slide slide-lab" id="slide-4">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Gerar o relatório de cobertura nativo do Node e localizar os ramos que nenhum teste percorre.</div>
+                <div class="rl"><b>Faça</b>1. Rode a cobertura sem filtro e depois só de <code>src/</code>.<br>2. Peça ao opencode a leitura do relatório.<br>3. Confira as linhas apontadas no próprio arquivo.</div>
+                <div class="rl obs"><b>Observe</b>Sem <code>--test-coverage-include</code>, os arquivos de teste entram na conta e inflam a média. As linhas 9-10 e 15-16 são as recusas por multa e por reserva.</div>
+                <div class="rl conc"><b>Conclusão</b>O agente lê a tabela rápido, mas a conferência é sua: abra as linhas citadas e veja se a regra descrita é a que está lá.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-relatorio"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Lab 2: metas -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Transformar a cobertura em meta que reprova a execução, e cobrir os ramos que faltam.</div>
+                <div class="rl"><b>Faça</b>1. Peça ao opencode o script <code>test:cov</code>.<br>2. Confira o script e rode: a meta de ramos reprova.<br>3. Peça os testes que faltam, sem mexer em <code>src/</code>.<br>4. Confira o diff e rode de novo.</div>
+                <div class="rl obs"><b>Observe</b>Com <code>--test-coverage-branches=80</code>, 71,43% de ramos encerra o comando com código 1, mesmo com todos os testes verdes.</div>
+                <div class="rl conc"><b>Conclusão</b>A meta vira uma regra que o CI consegue aplicar. A revisão humana confere que os testes novos têm asserção e que o diff não tocou no código de produção.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-metas"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 100% não prova correção -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Por que 100% não prova correção</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-eye-slash me-2" aria-hidden="true"></i>Executar não é conferir</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">it('calcula multa com atraso', () =&gt; {
+  const multa = calcularMulta(previsto, devolvido);
+  assert.ok(multa &gt; 0);
+});</pre>
+                <p class="small text-muted mb-0">Esse teste roda todas as linhas de <code>calcularMulta</code> e passa com 450, com 3000 ou com 99999. A cobertura chega a 100% e a regra continua sem verificação.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-ruler me-2" aria-hidden="true"></i>O que a cobertura não enxerga</h3>
+                <ul class="mb-2"><li>Fronteiras: <code>&gt;</code> e <code>&gt;=</code> dão a mesma cobertura; só um teste no limite separa os dois.</li><li>Regra esquecida: se a especificação pede o teto e o código não tem o teto, não há linha descoberta.</li><li>Asserção fraca: <code>assert.ok</code> no lugar do valor exato.</li></ul>
+                <p class="small text-muted mb-0">Use a cobertura como alarme de código que nenhum teste rodou, e a meta de 80% como piso, não como objetivo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Lab 3: 100% com bug -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ver um bug sobreviver a 100% de cobertura e encontrá-lo com asserções exatas.</div>
+                <div class="rl"><b>Faça</b>1. Rode a cobertura: 100% e tudo verde.<br>2. Peça ao opencode valores exatos nos testes.<br>3. Rode <code>npm test</code>: o bug aparece.<br>4. Peça a correção e confira com <code>test:cov</code>.</div>
+                <div class="rl obs"><b>Observe</b>O código usa <code>Math.max</code> onde a regra pede <code>Math.min</code>: 3 dias de atraso custam 3000 centavos. O teste antigo, com <code>assert.ok(multa &gt; 0)</code>, não percebia.</div>
+                <div class="rl conc"><b>Conclusão</b>A revisão que pegou o bug foi ler a asserção, não olhar o número da cobertura. É esse o trabalho que o agente não faz por você.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-cem"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. ESLint -->
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Análise estática com ESLint 9</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-file-code me-2" aria-hidden="true"></i><code>eslint.config.js</code> (flat config)</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  { ignores: ['coverage/', 'node_modules/'] },
+  js.configs.recommended,
+  {
+    languageOptions: {
+      ecmaVersion: 2024, sourceType: 'module',
+      globals: globals.node
+    },
+    rules: { complexity: ['error', 6] }
+  }
+];</pre>
+                <p class="small text-muted mb-0">Dependências de desenvolvimento: <code>eslint</code>, <code>@eslint/js</code> e <code>globals</code>. Script: <code>"lint": "eslint ."</code>.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-magnifying-glass-chart me-2" aria-hidden="true"></i>O que ela encontra sem rodar o código</h3>
+                <ul class="mb-2"><li><code>recommended</code>: variável sem uso, nome não declarado, código inalcançável, chave duplicada.</li><li><code>complexity</code>: número de caminhos independentes da função. Cada <code>if</code>, <code>&amp;&amp;</code>, <code>||</code> e <code>case</code> soma 1.</li></ul>
+                <p class="small text-muted mb-0">Complexidade 7 pede pelo menos 7 testes para cobrir todos os ramos. O limite de 6 força a quebrar a função antes que ela fique difícil de testar.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Lab 4: ESLint -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Configurar o ESLint 9 com o agente e corrigir o que ele aponta sem desligar regras.</div>
+                <div class="rl"><b>Faça</b>1. Peça ao opencode a instalação e o <code>eslint.config.js</code>, e autorize o <code>npm install</code>.<br>2. Confira o diff e rode <code>npm run lint</code>.<br>3. Peça a correção.<br>4. Confira que não há <code>eslint-disable</code> e que os testes seguem verdes.</div>
+                <div class="rl obs"><b>Observe</b><code>situacaoDoAluno</code> tem complexidade 7 e dois imports sem uso. A correção extrai <code>estaBloqueado</code> e troca o aninhamento por retornos antecipados.</div>
+                <div class="rl conc"><b>Conclusão</b>Um agente pressionado a zerar o lint pode inserir <code>// eslint-disable</code>. O <code>git grep</code> depois da correção é a revisão que impede isso.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-eslint"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Flow: CI -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Integração contínua</p><h2>Do push ao badge verde</h2></div></div>
+          <div class="lab-area" id="flow-ci"></div>
+        </div>
+      </div>
+
+      <!-- 11. Lab 5: workflow -->
+      <div class="slide slide-lab" id="slide-11">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Criar o workflow com o agente, integrar na main e reagir a um CI vermelho.</div>
+                <div class="rl"><b>Faça</b>1. Peça o <code>ci.yml</code> e o badge.<br>2. Rode o gate local antes do merge.<br>3. Faça o merge <code>--ff-only</code> e o push.<br>4. Acompanhe com <code>gh run watch</code>: vermelho.<br>5. Peça o diagnóstico ao opencode.<br>6. Confira e mande o commit <code>fix</code>.</div>
+                <div class="rl obs"><b>Observe</b>Localmente tudo passou, porque o <code>node_modules</code> já estava instalado. No CI, <code>npm ci</code> recusa um <code>package-lock.json</code> fora de sincronia: ele ficou fora do commit do ESLint.</div>
+                <div class="rl conc"><b>Conclusão</b>CI vermelho na main vira commit <code>fix</code> imediato, antes de qualquer outra mudança. O diagnóstico do agente só vale depois de você conferir o <code>git status</code>.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-ci"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Vídeo: aba Actions -->
+      <div class="slide slide-lab" id="slide-12">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Demonstração</p><h2>A aba Actions, do vermelho ao verde</h2></div></div>
+          <div class="lab-area" id="vid-actions"></div>
+        </div>
+      </div>
+
+      <!-- 13. Laboratório -->
+      <div class="slide" id="slide-13">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">Cobertura, lint e CI no seu repositório</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Sequência</h3>
+                <ol class="mb-0"><li><code>test/cobertura</code>: script <code>test:cov</code> e testes até 80% de linhas e ramos.</li><li><code>chore/eslint</code>: flat config, <code>complexity</code> e correções.</li><li><code>chore/ci</code>: workflow, badge e primeiro run verde.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Regra da main</h3>
+                <ul class="mb-0"><li>Antes de cada merge: <code>npm run lint &amp;&amp; npm run test:cov</code> verdes na sua máquina.</li><li>Merge local com <code>git merge --ff-only</code>, sem pull request.</li><li>CI vermelho depois do push: o próximo commit é o <code>fix</code>.</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>A meta de cobertura se alcança com testes que conferem valores. Excluir arquivo da cobertura ou escrever teste sem asserção para subir o número será cobrado na prova oral.</div>
+        </div>
+      </div>
+
+      <!-- 14. Prompt 1 -->
+      <div class="slide" id="slide-14">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Cobertura com meta</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch test/cobertura do repositório organizacao-recursos, adicione ao package.json o script "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'", sem nenhuma dependência nova. Rode npm run test:cov e me mostre a tabela. Liste, arquivo por arquivo, as linhas e os ramos não cobertos e diga qual regra do domínio cada um representa (sobreposição de intervalos, capacidade da sala, professor em duas aulas, material indisponível, reserva no passado). Depois, um teste por vez, escreva testes que cubram esses ramos com asserção de valor exato ou da mensagem de erro, sem alterar nada em src/ e sem excluir arquivos da cobertura. Pare depois de cada teste para eu rodar npm run test:cov e commitar como test(escopo): ....</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: todo teste novo confere valor ou mensagem, nada de <code>assert.ok</code> genérico, e o <code>git diff</code> não toca em <code>src/</code>.</div>
+        </div>
+      </div>
+
+      <!-- 15. Prompt 2 -->
+      <div class="slide" id="slide-15">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">ESLint no seu repositório</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch chore/eslint, instale como devDependencies eslint, @eslint/js e globals. Crie eslint.config.js no formato flat do ESLint 9, exportando um array com: ignores para coverage/ e node_modules/; js.configs.recommended; e um bloco com languageOptions { ecmaVersion: 2024, sourceType: 'module', globals: globals.node } e a regra complexity: ['error', 6]. Adicione o script "lint": "eslint .". Rode npm run lint e me mostre os problemas agrupados por regra. Corrija um arquivo por vez, sem usar comentários eslint-disable e sem desligar regras; para complexidade, extraia funções pequenas ou use retornos antecipados. Rode npm test depois de cada correção e pare para eu commitar.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: <code>git grep eslint-disable</code> vazio, <code>package-lock.json</code> no commit e <code>npm test</code> verde depois de cada refatoração.</div>
+        </div>
+      </div>
+
+      <!-- 16. Prompt 3 -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Workflow de CI e badge</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch chore/ci, crie .github/workflows/ci.yml com name CI, disparado em push e workflow_dispatch, com um job qualidade em ubuntu-latest e os passos: actions/checkout@v4; actions/setup-node@v4 com node-version 22 e cache npm; npm ci; npm run lint; npm run test:cov. Acrescente no topo do README.md o badge ![CI](https://github.com/MEU-USUARIO/organizacao-recursos/actions/workflows/ci.yml/badge.svg), perguntando antes qual é o meu usuário do GitHub. Não crie pull request nem outros workflows. Antes de terminar, rode npm ci, npm run lint e npm run test:cov localmente e me mostre o resultado de cada um.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: rode você mesmo <code>npm run lint &amp;&amp; npm run test:cov</code>, faça o merge <code>--ff-only</code>, o push e acompanhe com <code>gh run watch</code>. Vermelho vira commit <code>fix</code> na hora.</div>
+        </div>
+      </div>
+
+      <!-- 17. Checklist do Trabalho 1 -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Trabalho 1</span><span class="badge bg-light text-dark border">Entrega na semana 10</span></div>
+          <h2 class="h2 fw-bold text-center mb-3">Checklist do Trabalho 1</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h3 class="h6 fw-bold">Conteúdo do repositório</h3>
+                <ul class="small mb-0"><li><code>docs/qualidade.md</code> com requisitos mensuráveis (Aula 01).</li><li>Especificação e critérios de aceite (Aula 02).</li><li>Casos de teste de caixa preta e de caixa branca (Aula 03).</li><li>Regras de reserva feitas em TDD, com o trio <code>test</code>, <code>feat</code>, <code>refactor</code> no histórico (Aula 04).</li><li><code>npm run test:cov</code> com pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h3 class="h6 fw-bold">Estado no GitHub</h3>
+                <ul class="small mb-0"><li>Repositório público <code>organizacao-recursos</code>, com README e badge do CI.</li><li>Último run da main verde na aba Actions.</li><li>Histórico linear, Conventional Commits em português, branches curtas apagadas.</li><li>Issues de feedback respondidas com <code>fix(...): ... (#N)</code> e <code>Closes #N</code>.</li><li>Você consegue explicar qualquer commit na prova oral, inclusive os gerados com o opencode.</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-3"><a href="trabalho-1.html" class="btn btn-danger rounded-pill"><i class="fas fa-file-lines me-2" aria-hidden="true"></i>Enunciado do Trabalho 1</a></div>
+        </div>
+      </div>
+
+      <!-- 18. Entregável -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 05</span>
+          <p class="fs-4 mb-4"><code>test:cov</code> com meta de 80%, <code>eslint.config.js</code>, <code>.github/workflows/ci.yml</code> e badge verde no README, tudo integrado na main.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>O badge e o último run da main estão verdes na aba Actions.</li><li><code>npm run test:cov</code> mostra pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>git grep eslint-disable</code> não encontra nada.</li><li>Todo push que deixou o CI vermelho tem um commit <code>fix</code> logo depois.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. Dúvidas -->
+      <div class="slide cover-bg" id="slide-19">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: entrega do Trabalho 1 (semana 10).</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 19</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Cobertura, CI e análise estática · Semana 9</div>
+      <a href="material/material_aula05-cobertura-ci.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PROF = '@professor ➜ /workspaces/biblioteca-campus ';
+const OC = (linhas) => linhas.map((l) => (/^▸ /.test(l) ? '[mute] ' + l : l));
+const PERMISSAO = (cmd) => ['[warn] ? O opencode quer executar: ' + cmd, '[warn]   (s) permitir uma vez  (a) sempre  (n) recusar', '› s'];
+const SEP = 'ℹ ----------------------------------------------------------------------';
+const CAB = 'ℹ file                 | line % | branch % | funcs % | uncovered lines';
+const TABELA = (linhas, total) => ['ℹ start of coverage report', SEP, CAB, SEP, ...linhas, SEP, total, SEP, 'ℹ end of coverage report'];
+
+const EMPRESTIMO =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const LIMITE_ATIVOS = 3;
+export const PRAZO_DIAS = 14;
+export const MULTA_POR_DIA = 150;
+export const TETO_MULTA = 3000;
+
+export function emprestar(aluno, livro, hoje) {
+  if (aluno.multaPendente > 0) {
+    throw new Error('aluno com multa pendente');
+  }
+  if (aluno.ativos.length >= LIMITE_ATIVOS) {
+    throw new Error('limite de 3 empréstimos ativos');
+  }
+  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {
+    throw new Error('livro reservado por outro aluno');
+  }
+  const previsto = new Date(hoje.getTime() + PRAZO_DIAS * DIA_MS);
+  return { alunoId: aluno.id, livroId: livro.id, retirada: hoje, previsto };
+}
+
+export function calcularMulta(previsto, devolvido) {
+  const atraso = Math.ceil((devolvido - previsto) / DIA_MS);
+  if (atraso <= 0) return 0;
+  return Math.min(atraso * MULTA_POR_DIA, TETO_MULTA);
+}`;
+const TESTE_BASE =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar, calcularMulta } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-03-01T12:00:00Z');
+const livro = { id: 'l1', reservadoPor: null };
+
+describe('emprestar', () => {
+  it('define a devolução prevista para 14 dias depois', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+
+    const e = emprestar(aluno, livro, hoje);
+
+    assert.equal(e.previsto.toISOString(), '2027-03-15T12:00:00.000Z');
+  });
+
+  it('recusa quando o aluno já tem 3 empréstimos ativos', () => {
+    const aluno = { id: 'a1', ativos: ['l7', 'l8', 'l9'], multaPendente: 0 };
+
+    assert.throws(() => emprestar(aluno, livro, hoje), /limite de 3/);
+  });
+});
+
+describe('calcularMulta', () => {
+  it('devolve 0 no prazo', () => {
+    assert.equal(calcularMulta(hoje, hoje), 0);
+  });
+
+  it('cobra 450 centavos por 3 dias de atraso', () => {
+    assert.equal(calcularMulta(hoje, new Date('2027-03-04T12:00:00Z')), 450);
+  });
+});`;
+const TESTES_NOVOS =
+`
+
+describe('emprestar: ramos que faltavam', () => {
+  it('recusa quando o aluno tem multa pendente', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 450 };
+
+    assert.throws(() => emprestar(aluno, livro, hoje), /multa pendente/);
+  });
+
+  it('recusa livro reservado por outro aluno', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+    const reservado = { id: 'l2', reservadoPor: 'a2' };
+
+    assert.throws(() => emprestar(aluno, reservado, hoje), /reservado por outro aluno/);
+  });
+
+  it('aceita livro reservado pelo próprio aluno', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+    const reservado = { id: 'l2', reservadoPor: 'a1' };
+
+    assert.equal(emprestar(aluno, reservado, hoje).livroId, 'l2');
+  });
+});`;
+
+/* ---------- 4. Lab 1: relatório ---------- */
+Labs.vscode('#lab-relatorio', {
+  folder: 'biblioteca-campus', status: 'Cobertura', branch: 'test/cobertura', open: 'src/emprestimo.js',
+  prompt: PROF + '(test/cobertura) $ ',
+  files: [
+    { path: 'src/emprestimo.js', hl: [9, 10, 15, 16], code: EMPRESTIMO },
+    { path: 'test/emprestimo.test.js', code: TESTE_BASE }
+  ],
+  run: [
+    { label: 'Cobertura sem filtro', cmd: 'node --test --experimental-test-coverage', out: [
+      '▶ emprestar', '[ok] ✔ emprestar (1.62ms)', '▶ calcularMulta', '[ok] ✔ calcularMulta (0.71ms)',
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0',
+      ...TABELA([
+        'ℹ src                  |        |          |         | ',
+        '[warn] ℹ  emprestimo.js        |  84.00 |    71.43 |  100.00 | 9-10 15-16',
+        'ℹ test                 |        |          |         | ',
+        'ℹ  emprestimo.test.js   | 100.00 |   100.00 |  100.00 | '
+      ], 'ℹ all files            |  91.30 |    85.71 |  100.00 | '),
+      '[warn] Os próprios testes entraram na média e a puxaram para cima.' ] },
+    { label: 'Só src/', clear: false, cmd: "node --test --experimental-test-coverage --test-coverage-include='src/**'", out: [
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0',
+      ...TABELA([
+        'ℹ src                  |        |          |         | ',
+        '[warn] ℹ  emprestimo.js        |  84.00 |    71.43 |  100.00 | 9-10 15-16'
+      ], '[warn] ℹ all files            |  84.00 |    71.43 |  100.00 | ') ] },
+    { label: 'opencode: ler o relatório', kind: 'purple',
+      cmd: 'opencode run "Rode a cobertura só de src/ e explique, linha por linha, quais regras de src/emprestimo.js nenhum teste exercita. Não escreva código."',
+      out: [ ...PERMISSAO("node --test --experimental-test-coverage --test-coverage-include='src/**'"),
+        ...OC(["▸ bash node --test --experimental-test-coverage --test-coverage-include='src/**'", '▸ read src/emprestimo.js', '▸ read test/emprestimo.test.js']), '',
+        'Ramos de src/emprestimo.js que nenhum teste percorre:',
+        '  linhas 9-10   recusa de aluno com multa pendente (if da linha 8, caso verdadeiro)',
+        '  linhas 15-16  recusa de livro reservado por outro aluno (if da linha 14)',
+        '  linha 14      lado direito do && nunca avaliado: nenhum teste usa livro reservado',
+        'Faltam 3 testes: multa pendente, reservado por outro aluno e reservado pelo próprio aluno.' ] },
+    { label: 'Conferir as linhas', kind: 'blue', cmd: "sed -n '8,16p' src/emprestimo.js", file: 'src/emprestimo.js', out: [
+      "  if (aluno.multaPendente > 0) {", "[warn]     throw new Error('aluno com multa pendente');", '[warn]   }',
+      '  if (aluno.ativos.length >= LIMITE_ATIVOS) {', "    throw new Error('limite de 3 empréstimos ativos');", '  }',
+      '  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {', "[warn]     throw new Error('livro reservado por outro aluno');", '[warn]   }',
+      '[info] Confere: as linhas apontadas são as duas recusas que os testes nunca provocam.' ] }
+  ]
+});
+
+/* ---------- 5. Lab 2: metas ---------- */
+const PKG_SEM =
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}`;
+const PKG_COV =
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'"
+  }
+}`;
+const arqMetas = [
+  { path: 'package.json', code: PKG_SEM },
+  { path: 'src/emprestimo.js', code: EMPRESTIMO },
+  { path: 'test/emprestimo.test.js', code: TESTE_BASE }
+];
+const P_COV = PROF + '(test/cobertura) $ ';
+Labs.vscode('#lab-metas', {
+  folder: 'biblioteca-campus', status: 'Meta de cobertura', branch: 'test/cobertura', open: 'package.json',
+  prompt: P_COV,
+  files: arqMetas,
+  run: [
+    { label: 'opencode: script test:cov', kind: 'purple', file: 'package.json',
+      cmd: 'opencode run "Adicione ao package.json o script test:cov com cobertura nativa do Node, meta de 80% de linhas e de ramos e só src/ na conta. Nenhuma dependência nova."',
+      out: [ ...OC(['▸ read package.json', '▸ edit package.json']), '',
+        'Adicionei "test:cov" com --experimental-test-coverage, --test-coverage-lines=80,',
+        "--test-coverage-branches=80 e --test-coverage-include='src/**'." ] },
+    { label: 'Conferir e rodar', kind: 'red', clear: false, cmd: 'git diff --stat && npm run test:cov; echo "saída: $?"', file: 'package.json', out: [
+      ' package.json | 3 ++-', ' 1 file changed, 2 insertions(+), 1 deletion(-)', '',
+      '> biblioteca-campus@1.0.0 test:cov', '> node --test --experimental-test-coverage --test-coverage-lines=80 ...', '',
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0',
+      ...TABELA(['ℹ  emprestimo.js        |  84.00 |    71.43 |  100.00 | 9-10 15-16'], 'ℹ all files            |  84.00 |    71.43 |  100.00 | '),
+      '[err] ℹ Error: 71.43% branch coverage does not meet threshold of 80%.',
+      '[err] saída: 1',
+      '[info] Todos os testes passaram e o comando reprovou: a meta de ramos é que falhou.' ] },
+    { label: 'opencode: cobrir os ramos', kind: 'purple', file: 'test/emprestimo.test.js',
+      cmd: 'opencode run "Escreva testes para as linhas 9-10 e 15-16 de src/emprestimo.js e para o caso de livro reservado pelo próprio aluno. Asserção da mensagem de erro ou do valor exato. Não altere src/."',
+      out: [ ...OC(['▸ read src/emprestimo.js', '▸ read test/emprestimo.test.js', '▸ edit test/emprestimo.test.js']), ...PERMISSAO('npm run test:cov'), ...OC(['▸ bash npm run test:cov']),
+        '[mute]   all files | 100.00 | 100.00 | 100.00', '',
+        'Acrescentei 3 testes num describe novo. Cada um confere a mensagem do erro ou o livroId.' ] },
+    { label: 'Conferir de novo', clear: false, cmd: 'git diff --stat && npm run test:cov; echo "saída: $?"', out: [
+      ' test/emprestimo.test.js | 22 ++++++++++++++++++++++', ' 1 file changed, 22 insertions(+)', '',
+      'ℹ tests 7', '[ok] ℹ pass 7', 'ℹ fail 0',
+      ...TABELA(['ℹ  emprestimo.js        | 100.00 |   100.00 |  100.00 | '], '[ok] ℹ all files            | 100.00 |   100.00 |  100.00 | '),
+      '[ok] saída: 0',
+      '[info] O diff só tem teste. Cada teste novo usa assert.throws com a mensagem ou assert.equal.',
+      '[ok] ' + P_COV + 'git commit -am "test(emprestimo): cobre recusas por multa e por reserva"' ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) { arqMetas[0].hl = [7]; api.setCode('package.json', PKG_COV); }
+    if (k === 2) {
+      const novo = TESTE_BASE + TESTES_NOVOS;
+      const ini = TESTE_BASE.split('\n').length + 2;
+      arqMetas[2].hl = Array.from({ length: 21 }, (_, i) => ini + i);
+      arqMetas[2].scrollTo = ini;
+      api.setCode('test/emprestimo.test.js', novo);
+    }
+  }
+});
+
+/* ---------- 7. Lab 3: 100% com bug ---------- */
+const MULTA_BUG =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const MULTA_POR_DIA = 150;
+export const TETO_MULTA = 3000;
+
+export function calcularMulta(previsto, devolvido) {
+  const atraso = Math.ceil((devolvido - previsto) / DIA_MS);
+  if (atraso <= 0) return 0;
+  return Math.max(atraso * MULTA_POR_DIA, TETO_MULTA);
+}`;
+const TESTE_FRACO =
+`import { it } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/multa.js';
+
+const previsto = new Date('2027-03-08T12:00:00Z');
+
+it('não cobra no prazo', () => {
+  assert.equal(calcularMulta(previsto, previsto), 0);
+});
+
+it('calcula multa com atraso', () => {
+  const multa = calcularMulta(previsto, new Date('2027-03-11T12:00:00Z'));
+  assert.ok(multa > 0);
+});`;
+const TESTE_FORTE =
+`import { it } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/multa.js';
+
+const previsto = new Date('2027-03-08T12:00:00Z');
+const dias = (n) => new Date(previsto.getTime() + n * 24 * 60 * 60 * 1000);
+
+it('devolve 0 quando o livro volta no prazo', () => {
+  assert.equal(calcularMulta(previsto, previsto), 0);
+});
+
+it('cobra 450 centavos por 3 dias de atraso', () => {
+  assert.equal(calcularMulta(previsto, dias(3)), 450);
+});
+
+it('cobra 3000 centavos com 20 dias de atraso, no limite do teto', () => {
+  assert.equal(calcularMulta(previsto, dias(20)), 3000);
+});
+
+it('limita a multa a 3000 centavos com 25 dias de atraso', () => {
+  assert.equal(calcularMulta(previsto, dias(25)), 3000);
+});`;
+const arqCem = [
+  { path: 'src/multa.js', hl: [8], code: MULTA_BUG },
+  { path: 'test/multa.test.js', hl: [13], code: TESTE_FRACO }
+];
+const P_BUG = PROF + '(fix/multa) $ ';
+Labs.vscode('#lab-cem', {
+  folder: 'biblioteca-campus', status: '100% e um bug', branch: 'fix/multa', open: 'test/multa.test.js',
+  prompt: P_BUG,
+  files: arqCem,
+  run: [
+    { label: 'Cobertura: 100%', cmd: 'npm run test:cov', out: [
+      '[ok] ✔ não cobra no prazo (0.33ms)', '[ok] ✔ calcula multa com atraso (0.12ms)', 'ℹ tests 2', '[ok] ℹ pass 2', 'ℹ fail 0',
+      ...TABELA(['ℹ  multa.js             | 100.00 |   100.00 |  100.00 | '], '[ok] ℹ all files            | 100.00 |   100.00 |  100.00 | '),
+      '[ok] ' + P_BUG + 'grep -n "assert.ok" test/multa.test.js',
+      '[warn] 13:  assert.ok(multa > 0);',
+      '[warn] Revisão: esse teste aceita qualquer multa positiva. Ele roda a linha 8, mas não confere o valor.' ] },
+    { label: 'opencode: valores exatos', kind: 'purple', file: 'test/multa.test.js',
+      cmd: 'opencode run "Reescreva test/multa.test.js com valores exatos: no prazo 0, 3 dias 450, 20 dias 3000 e 25 dias 3000 (teto). Troque assert.ok por assert.equal. Não altere src/ e não rode correções."',
+      out: [ ...OC(['▸ read src/multa.js', '▸ read test/multa.test.js', '▸ write test/multa.test.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ✖ cobra 450 centavos por 3 dias de atraso', '',
+        'Os testes ficaram com valores exatos. Um deles falha: com 3 dias, calcularMulta',
+        'devolve 3000. Pela regra, src/multa.js linha 8 deveria usar Math.min. Não corrigi, como pedido.' ] },
+    { label: 'Conferir: npm test', kind: 'red', clear: false, cmd: 'git diff --stat && npm test', out: [
+      ' test/multa.test.js | 20 ++++++++++++--------', '',
+      '[ok] ✔ devolve 0 quando o livro volta no prazo (0.30ms)',
+      '[err] ✖ cobra 450 centavos por 3 dias de atraso (0.71ms)',
+      '[ok] ✔ cobra 3000 centavos com 20 dias de atraso, no limite do teto (0.09ms)',
+      '[ok] ✔ limita a multa a 3000 centavos com 25 dias de atraso (0.08ms)',
+      'ℹ tests 4', 'ℹ pass 3', '[err] ℹ fail 1', '',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '', '[err]   3000 !== 450', '',
+      '[info] Bug confirmado por você: a cobertura era 100% e a regra estava errada.',
+      '[ok] ' + P_BUG + 'git commit -am "test(multa): confere valores exatos da multa e do teto"' ] },
+    { label: 'opencode: corrigir', kind: 'purple', file: 'src/multa.js',
+      cmd: 'opencode run "Corrija calcularMulta para os testes passarem. Não altere os testes."',
+      out: [ ...OC(['▸ read test/multa.test.js', '▸ edit src/multa.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ℹ pass 4  ℹ fail 0', '', 'Troquei Math.max por Math.min na linha 8: o teto limita a multa.' ] },
+    { label: 'Conferir: test:cov', kind: 'blue', clear: false, cmd: 'git diff && npm run test:cov', out: [
+      '[mute] --- a/src/multa.js', '[mute] +++ b/src/multa.js',
+      '[err] -  return Math.max(atraso * MULTA_POR_DIA, TETO_MULTA);',
+      '[ok] +  return Math.min(atraso * MULTA_POR_DIA, TETO_MULTA);', '',
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0',
+      ...TABELA(['ℹ  multa.js             | 100.00 |   100.00 |  100.00 | '], '[ok] ℹ all files            | 100.00 |   100.00 |  100.00 | '),
+      '[ok] ' + P_BUG + 'git commit -am "fix(multa): limita a multa ao teto com Math.min"' ] }
+  ],
+  onRun(k, api) {
+    if (k === 1) { arqCem[1].hl = [12, 13, 14, 16, 17, 18, 20, 21, 22]; api.setCode('test/multa.test.js', TESTE_FORTE); }
+    if (k === 3) { api.setCode('src/multa.js', MULTA_BUG.replace('Math.max', 'Math.min')); }
+  }
+});
+
+/* ---------- 9. Lab 4: ESLint ---------- */
+const SITUACAO_RUIM =
+`import { calcularMulta, PRAZO_DIAS } from './emprestimo.js';
+
+export function situacaoDoAluno(aluno, hoje) {
+  if (aluno.bloqueado) {
+    return 'bloqueado';
+  } else {
+    if (aluno.multaPendente > 0) {
+      if (aluno.multaPendente >= 3000) {
+        return 'bloqueado';
+      }
+      return 'com multa';
+    } else if (aluno.ativos.length >= 3) {
+      return 'no limite';
+    } else if (aluno.ativos.some((e) => e.previsto < hoje)) {
+      return 'com atraso';
+    } else if (aluno.ativos.length === 0) {
+      return 'sem empréstimos';
+    }
+  }
+  return 'regular';
+}`;
+const SITUACAO_BOA =
+`import { LIMITE_ATIVOS, TETO_MULTA } from './emprestimo.js';
+
+function estaBloqueado(aluno) {
+  return aluno.bloqueado || aluno.multaPendente >= TETO_MULTA;
+}
+
+export function situacaoDoAluno(aluno, hoje) {
+  if (estaBloqueado(aluno)) return 'bloqueado';
+  if (aluno.multaPendente > 0) return 'com multa';
+  if (aluno.ativos.length >= LIMITE_ATIVOS) return 'no limite';
+  if (aluno.ativos.some((e) => e.previsto < hoje)) return 'com atraso';
+  if (aluno.ativos.length === 0) return 'sem empréstimos';
+  return 'regular';
+}`;
+const ESLINT_CFG =
+`import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  { ignores: ['coverage/', 'node_modules/'] },
+  js.configs.recommended,
+  {
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: globals.node
+    },
+    rules: {
+      complexity: ['error', 6]
+    }
+  }
+];`;
+const PKG_LINT =
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'",
+    "lint": "eslint ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  }
+}`;
+const arqLint = [
+  { path: 'eslint.config.js', code: '// o opencode vai escrever este arquivo' },
+  { path: 'package.json', code: PKG_COV },
+  { path: 'src/situacao-aluno.js', hl: [1, 3], code: SITUACAO_RUIM }
+];
+const P_LINT = PROF + '(chore/eslint) $ ';
+Labs.vscode('#lab-eslint', {
+  folder: 'biblioteca-campus', status: 'ESLint 9', branch: 'chore/eslint', open: 'src/situacao-aluno.js',
+  prompt: P_LINT,
+  files: arqLint,
+  run: [
+    { label: 'opencode: configurar', kind: 'purple', file: 'eslint.config.js',
+      cmd: 'opencode run "Instale eslint, @eslint/js e globals como devDependencies. Crie eslint.config.js flat do ESLint 9 com recommended, globals.node, ignores para coverage/ e complexity error 6. Adicione o script lint. Não corrija nada ainda."',
+      out: [ ...OC(['▸ read package.json']), ...PERMISSAO('npm install -D eslint @eslint/js globals'), ...OC(['▸ bash npm install -D eslint @eslint/js globals']),
+        '[mute]   added 98 packages, and audited 99 packages in 6s', ...OC(['▸ write eslint.config.js', '▸ edit package.json']), '',
+        'Configurei o ESLint 9 em formato flat e o script "lint": "eslint .". Não rodei correções.' ] },
+    { label: 'Conferir: diff e lint', kind: 'red', clear: false, cmd: 'git status --short && npm run lint', out: [
+      ' M package-lock.json', ' M package.json', '?? eslint.config.js', '',
+      '> biblioteca-campus@1.0.0 lint', '> eslint .', '',
+      '/workspaces/biblioteca-campus/src/situacao-aluno.js',
+      "[err]   1:10  error  'calcularMulta' is defined but never used  no-unused-vars",
+      "[err]   1:25  error  'PRAZO_DIAS' is defined but never used     no-unused-vars",
+      "[err]   3:8   error  Function 'situacaoDoAluno' has a complexity of 7. Maximum allowed is 6  complexity", '',
+      '[err] ✖ 3 problems (3 errors, 0 warnings)', '',
+      '[info] Três arquivos mudaram. O package-lock.json também precisa ir no commit.',
+      '[ok] ' + P_LINT + 'git add package.json package-lock.json eslint.config.js && git commit -m "chore(lint): configura ESLint 9 com limite de complexidade"' ] },
+    { label: 'opencode: corrigir', kind: 'purple', file: 'src/situacao-aluno.js',
+      cmd: 'opencode run "Corrija os problemas de npm run lint em src/situacao-aluno.js sem eslint-disable e sem desligar regras. Para a complexidade, extraia funções ou use retornos antecipados. Rode npm test depois."',
+      out: [ ...OC(['▸ bash npm run lint', '▸ read src/situacao-aluno.js', '▸ edit src/situacao-aluno.js']), ...PERMISSAO('npm run lint && npm test'), ...OC(['▸ bash npm run lint && npm test']),
+        '[mute]   ℹ pass 12  ℹ fail 0', '',
+        'Tirei os dois imports sem uso, extraí estaBloqueado e troquei o aninhamento por',
+        'retornos antecipados. Complexidade de situacaoDoAluno: 6. Comportamento igual.' ] },
+    { label: 'Conferir: grep, lint e testes', kind: 'blue', clear: false, cmd: 'git grep -n "eslint-disable" ; npm run lint && npm test', out: [
+      '[mute] (git grep não encontrou eslint-disable)', '',
+      '> eslint .', '[ok] (nenhum problema)', '',
+      '> node --test', '▶ situacaoDoAluno', '[ok] ✔ situacaoDoAluno (1.40ms)', 'ℹ tests 12', '[ok] ℹ pass 12', 'ℹ fail 0',
+      '[ok] ' + P_LINT + 'git commit -am "refactor(situacao): reduz complexidade com retornos antecipados"' ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) {
+      arqLint[0].hl = [5, 6, 11, 14]; api.setCode('eslint.config.js', ESLINT_CFG);
+      arqLint[1].hl = [8, 11, 12, 13]; api.setCode('package.json', PKG_LINT);
+    }
+    if (k === 2) { arqLint[2].hl = [3, 4, 5, 8]; api.setCode('src/situacao-aluno.js', SITUACAO_BOA); }
+  }
+});
+
+/* ---------- 10. Flow: CI ---------- */
+Labs.flow('#flow-ci', {
+  w: 1000, h: 420,
+  nodes: [
+    { id: 'gate', x: 120, y: 110, label: 'Gate local', sub: 'lint && test:cov', k: 'amber' },
+    { id: 'merge', x: 340, y: 110, label: 'merge --ff-only', sub: 'push da main', w: 180 },
+    { id: 'gh', x: 570, y: 110, label: 'GitHub Actions', sub: 'ci.yml, ubuntu-latest', w: 190 },
+    { id: 'ci', x: 120, y: 300, label: 'npm ci', sub: 'instala pelo lock' },
+    { id: 'lint', x: 340, y: 300, label: 'npm run lint', sub: 'ESLint 9' },
+    { id: 'cov', x: 570, y: 300, label: 'npm run test:cov', sub: 'meta 80%', w: 190 },
+    { id: 'ok', x: 850, y: 210, label: 'Badge verde', sub: 'main protegida', k: 'green' },
+    { id: 'fix', x: 850, y: 360, label: 'Commit fix', sub: 'na hora', k: 'red' }
+  ],
+  links: [ { from: 'gate', to: 'merge' }, { from: 'merge', to: 'gh' }, { from: 'gh', to: 'ci', curve: 30 }, { from: 'ci', to: 'lint' }, { from: 'lint', to: 'cov' }, { from: 'cov', to: 'ok' }, { from: 'cov', to: 'fix', dashed: true } ],
+  steps: [
+    { title: 'Antes do merge', text: 'Na sua branch, npm run lint && npm run test:cov. Se algo falhar, a branch não entra na main.', on: ['gate'] },
+    { title: 'Integração local', text: 'git switch main, git merge --ff-only, git push. Sem pull request: o histórico fica linear.', on: ['merge'], links: [['gate', 'merge']] },
+    { title: 'O workflow dispara', text: 'O push na main dispara .github/workflows/ci.yml numa máquina limpa, com checkout e setup-node 22.', on: ['gh'], links: [['merge', 'gh']] },
+    { title: 'Os três passos', text: 'npm ci instala exatamente o que está no package-lock.json; depois lint e testes com meta. Qualquer falha encerra o job.', on: ['ci', 'lint', 'cov'], links: [['gh', 'ci'], ['ci', 'lint'], ['lint', 'cov']] },
+    { title: 'Verde', text: 'O badge do README mostra passing. A main é o que o professor clona para corrigir.', on: ['ok'], links: [['cov', 'ok', 'green']] },
+    { title: 'Vermelho', text: 'Um push que deixa o CI vermelho vira um commit fix imediato, antes de qualquer outra mudança.', on: ['fix'], bad: ['cov'], links: [['cov', 'fix', 'red']] }
+  ]
+});
+
+/* ---------- 11. Lab 5: workflow ---------- */
+const CI_YML =
+`name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cov`;
+const README_BADGE =
+`# biblioteca-campus
+
+![CI](https://github.com/professor-senac/biblioteca-campus/actions/workflows/ci.yml/badge.svg)
+
+Empréstimo de livros da biblioteca do campus: limite de 3 empréstimos,
+prazo de 14 dias, reservas e multa de 150 centavos por dia (teto de 3000).
+
+## Comandos
+- npm test
+- npm run test:cov
+- npm run lint`;
+const arqCi = [
+  { path: '.github/workflows/ci.yml', code: '# o opencode vai escrever este arquivo' },
+  { path: 'README.md', code: README_BADGE.replace('![CI](https://github.com/professor-senac/biblioteca-campus/actions/workflows/ci.yml/badge.svg)\n\n', '') }
+];
+const P_CI = PROF + '$ ';
+const P_MAIN = P_CI;
+Labs.vscode('#lab-ci', {
+  folder: 'biblioteca-campus', status: 'GitHub Actions', branch: 'chore/ci', open: 'README.md',
+  prompt: P_CI,
+  files: arqCi,
+  run: [
+    { label: 'opencode: ci.yml e badge', kind: 'purple', file: '.github/workflows/ci.yml',
+      cmd: 'opencode run "Crie .github/workflows/ci.yml: push e workflow_dispatch, job qualidade em ubuntu-latest com checkout@v4, setup-node@v4 Node 22 com cache npm, npm ci, npm run lint e npm run test:cov. Ponha o badge do workflow no topo do README. Meu usuário é professor-senac."',
+      out: [ ...OC(['▸ read package.json', '▸ glob .github/**', '▸ write .github/workflows/ci.yml', '▸ edit README.md']), '',
+        'Criei o workflow CI com um job e cinco passos, e o badge no README apontando para',
+        'professor-senac/biblioteca-campus.' ] },
+    { label: 'Gate local', clear: false, cmd: 'npm run lint && npm run test:cov', out: [
+      '> eslint .', '[ok] (nenhum problema)', '',
+      '> node --test --experimental-test-coverage ...', 'ℹ tests 12', '[ok] ℹ pass 12', 'ℹ fail 0',
+      '[ok] ℹ all files            |  96.30 |    91.67 |  100.00 | ',
+      '[ok] ' + P_CI + 'git add .github README.md && git commit -m "ci: roda lint e testes com meta no GitHub Actions"',
+      '[chore/ci 5e1a0d2] ci: roda lint e testes com meta no GitHub Actions' ] },
+    { label: 'Merge e push', clear: false, cmd: 'git switch main && git pull --rebase && git merge --ff-only chore/ci && git push && git branch -d chore/ci', out: [
+      "Switched to branch 'main'", 'Already up to date.', 'Updating 7b3c9e4..5e1a0d2', 'Fast-forward',
+      ' .github/workflows/ci.yml | 18 ++++++++++++++++++', ' README.md                |  2 ++',
+      '   7b3c9e4..5e1a0d2  main -> main', 'Deleted branch chore/ci (was 5e1a0d2).' ], },
+    { label: 'gh run watch', kind: 'red', clear: false, cmd: 'gh run watch', out: [
+      { t: '[mute] Refreshing run status every 3 seconds.', d: 600 },
+      'X main CI · 13088412345', 'Triggered via push about 1 minute ago', '', 'JOBS',
+      '[err] X qualidade in 19s (ID 36612)', '[ok]   ✓ Set up job', '[ok]   ✓ Run actions/checkout@v4', '[ok]   ✓ Run actions/setup-node@v4',
+      '[err]   X Run npm ci', '[mute]   - Run npm run lint', '[mute]   - Run npm run test:cov', '',
+      '[err] npm error `npm ci` can only install packages when your package.json and package-lock.json are in sync.',
+      '[err] npm error Missing: eslint@9.17.0 from lock file',
+      '[err] X Run CI (13088412345) completed with \'failure\'' ] },
+    { label: 'opencode: diagnóstico', kind: 'purple',
+      cmd: 'opencode run "O CI falhou no npm ci com Missing: eslint@9.17.0 from lock file. Descubra a causa e proponha a correção, sem fazer commit."',
+      out: [ ...PERMISSAO('gh run view --log-failed'), ...OC(['▸ bash gh run view --log-failed', '▸ bash git status --short', '▸ bash git log --stat -3 -- package-lock.json']), '',
+        'Causa: o commit do ESLint levou package.json, mas o package-lock.json com eslint,',
+        '@eslint/js e globals ficou só na sua máquina. Localmente o node_modules já existia;',
+        'no CI, npm ci compara os dois arquivos e recusa. Correção: commitar o package-lock.json.' ] },
+    { label: 'Conferir e mandar o fix', kind: 'blue', clear: false, cmd: 'git status --short && npm ci && npm run lint && npm run test:cov', out: [
+      ' M package-lock.json', '[mute] added 98 packages in 4s', '[ok] (lint sem problemas)', '[ok] ℹ pass 12  ℹ fail 0  all files 96.30 | 91.67',
+      '[ok] ' + P_MAIN + 'git switch -c fix/lock && git commit -am "fix(ci): versiona package-lock.json com o eslint" && git switch main && git merge --ff-only fix/lock && git push && gh run watch',
+      '[ok] ✓ main CI · 13088420117', '[ok]   ✓ Run npm ci', '[ok]   ✓ Run npm run lint', '[ok]   ✓ Run npm run test:cov',
+      "[ok] ✓ Run CI (13088420117) completed with 'success'" ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) {
+      arqCi[0].hl = [4, 5, 12, 14, 16, 17, 18]; api.setCode('.github/workflows/ci.yml', CI_YML);
+      arqCi[1].hl = [3]; api.setCode('README.md', README_BADGE);
+    }
+    if (k === 2) { api.open('.github/workflows/ci.yml'); }
+  }
+});
+
+/* ---------- 12. Vídeo: aba Actions ---------- */
+const GH_TOP = '<div class="gh-top"><span class="logo"></span><span class="path">professor-senac / biblioteca-campus</span><span class="ms-auto gh-btn">Public</span></div>';
+const GH_TABS = '<div class="gh-tabs px-4 pt-2 mb-0"><span>&lt;&gt; Code</span><span>Issues</span><span class="on" id="t-actions">Actions</span><span>Settings</span></div>';
+const RUN_ROW = (id, ok, msg, sha, quando) => '<div class="gh-row" id="' + id + '"><span style="color:' + (ok ? '#1A7F37' : '#D1242F') + ';font-weight:700;width:18px">' + (ok ? '✓' : '✕') + '</span><div><b>' + msg + '</b><div class="small text-muted">CI #' + sha + ' · push na main · ' + quando + '</div></div><span class="ms-auto small text-muted">' + (ok ? '41s' : '19s') + '</span></div>';
+Labs.video('#vid-actions', {
+  scenes: [
+    { url: 'github.com/professor-senac/biblioteca-campus/actions', caption: '<b>1.</b> Depois do push, a aba Actions mostra o run do workflow CI. O X vermelho aparece em menos de 30 segundos.',
+      html: '<div class="gh">' + GH_TOP + GH_TABS + '<div class="gh-body"><h3 class="h5 fw-bold mb-2">All workflows</h3>' +
+        RUN_ROW('r1', false, 'ci: roda lint e testes com meta no GitHub Actions', 12, 'há 1 minuto') +
+        RUN_ROW('r0', true, 'refactor(situacao): reduz complexidade com retornos antecipados', 11, 'ontem') + '</div></div>',
+      steps: [ { to: '#t-actions' }, { click: '#r1', wait: 600 } ] },
+    { url: 'github.com/professor-senac/biblioteca-campus/actions/runs/13088412345', caption: '<b>2.</b> No job <code>qualidade</code>, o passo <code>npm ci</code> falhou. Os passos seguintes nem rodaram. O log diz o motivo: o lock está fora de sincronia.',
+      html: '<div class="gh">' + GH_TOP + '<div class="gh-body"><div class="d-flex gap-3"><div style="width:180px" class="small"><b>Jobs</b><div class="gh-row" style="color:#D1242F">✕ qualidade</div></div>' +
+        '<div class="flex-grow-1" style="background:#0D1117;color:#E6EDF3;border-radius:8px;padding:10px 14px;font:12.5px/1.6 var(--mono)">' +
+        '<div style="color:#3FD47A">✓ Set up job</div><div style="color:#3FD47A">✓ Run actions/checkout@v4</div><div style="color:#3FD47A">✓ Run actions/setup-node@v4</div>' +
+        '<div style="color:#FF5C7A" id="passo">✕ Run npm ci</div><pre id="log" style="margin:0 0 0 14px;color:#FF5C7A;white-space:pre-wrap"></pre>' +
+        '<div style="color:#7D8590">○ Run npm run lint</div><div style="color:#7D8590">○ Run npm run test:cov</div></div></div></div></div>',
+      steps: [ { click: '#passo' }, { lines: '#log', speed: 380, out: ['npm error code EUSAGE', 'npm error `npm ci` can only install packages when your package.json', 'npm error and package-lock.json are in sync.', 'npm error Missing: eslint@9.17.0 from lock file', 'Error: Process completed with exit code 1.'] } ] },
+    { url: 'github.com/professor-senac/biblioteca-campus/actions', caption: '<b>3.</b> O commit <code>fix(ci)</code> chega à main e dispara um run novo. Todos os passos ficam verdes.',
+      html: '<div class="gh">' + GH_TOP + GH_TABS + '<div class="gh-body"><h3 class="h5 fw-bold mb-2">All workflows</h3>' +
+        '<div id="novo" hidden>' + RUN_ROW('r2', true, 'fix(ci): versiona package-lock.json com o eslint', 13, 'agora') + '</div>' +
+        RUN_ROW('r1', false, 'ci: roda lint e testes com meta no GitHub Actions', 12, 'há 6 minutos') +
+        RUN_ROW('r0', true, 'refactor(situacao): reduz complexidade com retornos antecipados', 11, 'ontem') + '</div></div>',
+      steps: [ { wait: 600 }, { show: '#novo' }, { click: '#r2', wait: 800 } ] },
+    { url: 'github.com/professor-senac/biblioteca-campus', caption: '<b>4.</b> No README, o badge passa a mostrar <code>passing</code>. É o primeiro item que confiro na entrega do Trabalho 1.',
+      html: '<div class="gh">' + GH_TOP + '<div class="gh-body"><div style="border:1px solid #D1D9E0;border-radius:8px;padding:18px 22px">' +
+        '<h2 class="h4 fw-bold">biblioteca-campus</h2><p id="badge"><span style="display:inline-flex;font:11px/1 Verdana,sans-serif;border-radius:3px;overflow:hidden"><span style="background:#555;color:#fff;padding:4px 6px">CI</span><span style="background:#3FB950;color:#fff;padding:4px 6px">passing</span></span></p>' +
+        '<p>Empréstimo de livros da biblioteca do campus: limite de 3 empréstimos, prazo de 14 dias, reservas e multa de 150 centavos por dia (teto de 3000).</p></div></div></div>',
+      steps: [ { to: '#badge', wait: 1200 } ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

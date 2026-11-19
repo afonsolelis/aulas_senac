@@ -1,0 +1,1145 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="teste de integração, PostgreSQL, Testcontainers, migrações, DER, 3FN, pg, node:test, GitHub Actions, qualidade de software" />
+    <title>Aula 10 - Testes de integração com banco de dados real</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 10: Testes de integração com banco de dados real</h1>
+          <p class="fs-4 text-secondary">DER na 3FN, migrações versionadas, repositório com pg e PostgreSQL no teste com Testcontainers</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 14 · 05/04 a 09/04</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">PostgreSQL</span><span class="keyword">Testcontainers</span><span class="keyword">migrações</span><span class="keyword">3FN</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Retomada e Trabalho 2 (10 min)</li><li>Unidade e integração (15 min)</li><li>DER na 3FN e restrições (25 min)</li><li>Migrações e repositório com pg (20 min)</li><li>Testcontainers, isolamento e CI (30 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 1: DER e migrações (30 min)</li><li>Prompt 2: repositório e testes de integração (35 min)</li><li>Prompt 3: scripts e CI (20 min)</li><li>Checagem na mesa (15 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Retomada -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Começo do segundo bloco</h2>
+          <p class="lead text-center text-muted mb-4">As provas orais do Trabalho 1 terminaram. O mesmo repositório <code>organizacao-recursos</code> continua, agora com dados que sobrevivem ao reinício do processo.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-flag-checkered me-2" aria-hidden="true"></i>Trabalho 1</h3><p class="mb-0">Regras de reserva testadas por unidade, cobertura medida e CI na main. Tudo isso fica: os testes antigos passam a morar em <code>test/unidade</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-database me-2" aria-hidden="true"></i>Trabalho 2</h3><p class="mb-0">Aberto na semana 11. PostgreSQL com migrações, DER na 3FN e cadastro de alunos e professores com endereço pela ViaCEP. Entrega na semana 17.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-route me-2" aria-hidden="true"></i>Três aulas</h3><p class="mb-0">Hoje, banco real no teste. Aula 11, dublês e ViaCEP. Aula 12, BDD e teste de carga. Cada aula cobre uma parte do Trabalho 2.</p></div></div>
+          </div>
+          <div class="text-center mt-4"><a href="trabalho-2.html" class="btn btn-danger rounded-pill px-4"><i class="fas fa-file-lines me-2" aria-hidden="true"></i>Abrir o enunciado do Trabalho 2</a></div>
+        </div>
+      </div>
+
+      <!-- 4. Unidade e integração -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Teste de unidade e teste de integração</h2>
+          <div class="table-responsive">
+            <table class="table align-middle bg-white shadow-sm mb-3 fs-6 text-start">
+              <thead class="table-light"><tr><th></th><th>Unidade</th><th>Integração com banco</th></tr></thead>
+              <tbody>
+                <tr><td class="fw-bold">O que exercita</td><td>Uma função ou módulo, sem rede, sem disco e sem banco</td><td>O seu código junto com o PostgreSQL: SQL, tipos, restrições e transações</td></tr>
+                <tr><td class="fw-bold">Exemplo</td><td><code>calcularMulta(5)</code> devolve 750</td><td><code>contarAtivos(1)</code> lê a tabela e devolve 1</td></tr>
+                <tr><td class="fw-bold">Tempo</td><td>Milissegundos; roda a cada salvamento</td><td>Segundos (o container sobe uma vez por arquivo)</td></tr>
+                <tr><td class="fw-bold">Erro que pega</td><td>Regra de negócio errada</td><td>SQL errado, coluna inexistente, restrição faltando, conversão de tipo</td></tr>
+                <tr><td class="fw-bold">Comando</td><td><code>npm test</code> (<code>node --test test/unidade</code>)</td><td><code>npm run test:int</code> (<code>node --test test/integracao</code>)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0 text-start">Um teste de unidade com dublê no lugar do banco confere a chamada que você escreveu. Ele não confere se o PostgreSQL entende aquele SQL do jeito que você imaginou. O próximo laboratório mostra um caso assim.</div>
+        </div>
+      </div>
+
+      <!-- 5. Lab 1: unidade verde, integração vermelha -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 1 de 7</p><h2>A unidade passa e a integração reprova</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ver um defeito que só aparece quando o SQL roda num PostgreSQL de verdade.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o repositório" e leia o resumo do agente.<br>2. Abra <code>src/repositorios/emprestimos.js</code> e leia a linha destacada.<br>3. Rode "Testes de unidade" e "Testes de integração".<br>4. Rode "Depois da correção".</div>
+                <div class="rl obs"><b>Observe</b><code>devolvido_em = NULL</code> nunca é verdadeiro em SQL, então a contagem sempre dá zero. O fake em memória usa <code>=== null</code> de JavaScript e passa.</div>
+                <div class="rl conc"><b>Conclusão</b>O agente disse que os testes passavam, e passavam. Com a contagem zerada, o limite de 3 empréstimos nunca seria aplicado; só o teste contra o banco real mostrou isso.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-unidade-integracao"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 3FN -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Modelagem relacional até a 3FN</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">1FN</h3><p class="mb-2">Cada coluna guarda um valor atômico e não há grupos repetidos.</p><p class="small text-muted mb-0">Errado: <code>livros_emprestados = '12,15,31'</code> na tabela de alunos. Certo: uma linha por empréstimo em <code>emprestimos</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">2FN</h3><p class="mb-2">Toda coluna depende da chave inteira, e não de parte dela.</p><p class="small text-muted mb-0">Errado: <code>titulo</code> dentro de <code>emprestimos</code>, que depende só de <code>livro_id</code>. Certo: o título fica em <code>livros</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">3FN</h3><p class="mb-2">Nenhuma coluna depende de outra coluna que não é chave.</p><p class="small text-muted mb-0">Cidade e UF dependem do CEP, e o CEP depende do aluno. Por isso o endereço vai para a tabela <code>ceps</code>.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 text-start">Na prática, cada forma normal remove uma chance de o mesmo fato aparecer em dois lugares com valores diferentes. Se o título do livro estiver em 40 empréstimos, uma correção de grafia precisa acertar 40 linhas.</div>
+        </div>
+      </div>
+
+      <!-- 7. Flow: DER -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">DER da biblioteca-campus</p><h2>Quatro tabelas do domínio na 3FN</h2></div></div>
+          <div class="lab-area" id="flow-der"></div>
+        </div>
+      </div>
+
+      <!-- 8. Restrições como regra -->
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Restrições guardam regras de negócio</h2>
+          <p class="text-center text-muted mb-3">O que o banco garante vale para qualquer caminho de escrita: API, script de carga, psql ou um bug no serviço.</p>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-3 fs-6 text-start">
+              <thead class="table-light"><tr><th>Regra</th><th>Onde fica</th><th>Erro do PostgreSQL</th></tr></thead>
+              <tbody>
+                <tr><td>E-mail e matrícula não se repetem</td><td><code>UNIQUE</code></td><td><code>23505</code> unique_violation</td></tr>
+                <tr><td>CEP tem 8 dígitos; exemplares maior que zero</td><td><code>CHECK</code></td><td><code>23514</code> check_violation</td></tr>
+                <tr><td>Empréstimo aponta para aluno e livro existentes</td><td><code>FOREIGN KEY ... ON DELETE RESTRICT</code></td><td><code>23503</code> foreign_key_violation</td></tr>
+                <tr><td>O mesmo aluno não pega o mesmo livro duas vezes ao mesmo tempo</td><td><code>UNIQUE INDEX ... WHERE devolvido_em IS NULL</code></td><td><code>23505</code></td></tr>
+                <tr><td>No máximo 3 empréstimos ativos; prazo de 14 dias; multa</td><td>Serviço, testado por unidade e por integração</td><td>Erro de domínio</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0 text-start">No seu projeto, a regra central (sala sem duas reservas no mesmo horário) cabe numa restrição de exclusão: <code>EXCLUDE USING gist (sala_id WITH =, periodo WITH &amp;&amp;)</code>, com a extensão <code>btree_gist</code>. O erro dela é <code>23P01</code>.</div>
+        </div>
+      </div>
+
+      <!-- 9. Lab 2: migrações -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 2 de 7</p><h2>Migrações versionadas</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Criar o esquema por arquivos numerados que qualquer máquina aplica na mesma ordem.</div>
+                <div class="rl"><b>Faça</b>1. "Preparar o ambiente" sobe o PostgreSQL de desenvolvimento no Docker do Codespace.<br>2. Rode "opencode gera as migrações" e leia <code>scripts/migrar.js</code>.<br>3. Rode "Migrar", "Migrar de novo" e "Ver schema_migrations".</div>
+                <div class="rl obs"><b>Observe</b>Na segunda execução nada é aplicado: o script compara a pasta com a tabela <code>schema_migrations</code>. Cada arquivo roda dentro de uma transação.</div>
+                <div class="rl conc"><b>Conclusão</b>Migração aplicada não se edita. Mudança nova vira arquivo novo, com o próximo número.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-migracoes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Lab 3: restrições quebradas -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 3 de 7</p><h2>Quebrando as regras no psql</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ver o banco recusar dados que violam as regras do DER.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Perguntar ao opencode": ele propõe os INSERTs que deveriam falhar.<br>2. Rode "Descrever emprestimos" e as quatro inserções inválidas.<br>3. Compare o nome da restrição em cada erro com <code>003_cria_emprestimos.sql</code>.</div>
+                <div class="rl obs"><b>Observe</b>Cada erro traz o código (23505, 23503, 23514) e o nome da restrição. São esses dois campos que o teste de integração vai conferir.</div>
+                <div class="rl conc"><b>Conclusão</b>Dar nome às restrições deixa o erro legível e o teste preciso.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-restricoes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Lab 4: repositório com pg -->
+      <div class="slide slide-lab" id="slide-11">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 4 de 7</p><h2>Repositório com pg e queries parametrizadas</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Escrever o acesso a dados com <code>pg.Pool</code> e parâmetros <code>$1</code>, <code>$2</code>.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera a busca" e depois "Procurar concatenação" no diff.<br>2. Rode "Versão concatenada" com a entrada maliciosa.<br>3. Rode "Versão parametrizada" e "Pedir a correção".</div>
+                <div class="rl obs"><b>Observe</b>Concatenando, a aspa da entrada fecha a string do SQL e o <code>OR '1'='1'</code> devolve todos os alunos. Com parâmetro, o valor viaja separado do comando e vira só um texto.</div>
+                <div class="rl conc"><b>Conclusão</b>Nenhum valor vindo de fora entra no texto do SQL. O repositório recebe o pool por parâmetro, o que permite trocar por um client numa transação.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-repositorio"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Banco real no teste -->
+      <div class="slide" id="slide-12">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Por que um PostgreSQL de verdade no teste</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-feather me-2" aria-hidden="true"></i>SQLite no lugar</h3><p class="mb-0 small">Outro dialeto: não tem <code>EXCLUDE USING gist</code>, <code>timestamptz</code> nem <code>RESTART IDENTITY</code>; foreign keys vêm desligadas por padrão; os códigos de erro são outros. O teste passa num banco que não vai para produção.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-mask me-2" aria-hidden="true"></i>Mock do pg</h3><p class="mb-0 small">Confere que <code>query</code> foi chamada com a string que você escreveu. Um <code>= NULL</code> no lugar de <code>IS NULL</code> passa, e uma restrição esquecida na migração também.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fab fa-docker me-2" aria-hidden="true"></i>Testcontainers</h3><p class="mb-0 small">O teste sobe <code>postgres:16-alpine</code> num container descartável, aplica as migrações e derruba tudo no fim. No Codespace, o Docker vem da feature <code>docker-in-docker</code> do devcontainer.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 text-start">Dublês continuam valendo para o que está fora do seu controle, como a ViaCEP na próxima aula. O banco é parte do seu sistema: as migrações e o SQL são código seu e precisam de teste.</div>
+        </div>
+      </div>
+
+      <!-- 13. Lab 5: Testcontainers -->
+      <div class="slide slide-lab" id="slide-13">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 5 de 7</p><h2>PostgreSQL no teste com Testcontainers</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Rodar a suíte de integração contra um PostgreSQL 16 que nasce e morre com o teste.</div>
+                <div class="rl"><b>Faça</b>1. "Preparar o ambiente" instala as dependências e confere o Docker.<br>2. Rode "opencode gera o helper" e leia <code>helpers/banco.js</code>.<br>3. Confira você mesmo com "test:int com logs" e "docker ps durante o teste".</div>
+                <div class="rl obs"><b>Observe</b>O Ryuk sobe junto: é ele que remove o container mesmo se o teste quebrar no meio. Os testes conferem <code>code</code> e <code>constraint</code> do erro do pg.</div>
+                <div class="rl conc"><b>Conclusão</b>Com <code>DATABASE_URL_TESTE</code> definida, o helper usa esse banco; sem ela, sobe o container. O mesmo arquivo serve ao Codespace e ao CI.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-testcontainers"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Lab 6: isolamento -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 6 de 7</p><h2>Isolamento entre testes</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fazer cada teste começar com o banco no mesmo estado, em qualquer ordem.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera mais testes" e, em seguida, "Sem isolamento".<br>2. Rode "Pedir o isolamento" e confira com "Com TRUNCATE".<br>3. Abra <code>transacao.test.js</code> e rode "Com ROLLBACK".</div>
+                <div class="rl obs"><b>Observe</b><code>TRUNCATE ... RESTART IDENTITY CASCADE</code> também zera os ids, então o primeiro aluno de cada teste é sempre o id 1.</div>
+                <div class="rl conc"><b>Conclusão</b>ROLLBACK é mais rápido, mas só funciona se todo o código testado usar o mesmo client. Na dúvida, TRUNCATE.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-isolamento"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. Lab 7: scripts e CI -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 7 de 7</p><h2>Duas suítes, dois jobs no CI</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Separar a suíte rápida da suíte com banco e rodar as duas no GitHub Actions.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o CI" e leia o <code>ci.yml</code> que ele editou.<br>2. Veja os scripts em <code>package.json</code>.<br>3. Rode "npm test sem Docker", "Commit e push" e "Acompanhar o CI".</div>
+                <div class="rl obs"><b>Observe</b><code>npm test</code> termina sem Docker, porque a unidade não depende de banco. O job <code>integracao</code> só começa se <code>unidade</code> passar.</div>
+                <div class="rl conc"><b>Conclusão</b>Sem o bloco <code>services</code>, o mesmo job funciona com Testcontainers, porque o runner ubuntu-latest já tem Docker.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-ci"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Laboratório -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">PostgreSQL no organizacao-recursos</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 1 · modelo e esquema (30 min)</h3>
+                <ol class="mb-0"><li>Abra o Codespace e confira <code>docker info</code>.</li><li>Rode o prompt 1 numa branch <code>feat/banco-esquema</code>.</li><li>Suba o banco de desenvolvimento com <code>docker run</code> e aplique as migrações duas vezes.</li><li>Confira no psql com <code>\d reservas</code>.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 2 · testes e CI (55 min)</h3>
+                <ol class="mb-0"><li>Prompt 2 numa branch <code>test/integracao-reservas</code>.</li><li>Prompt 3 numa branch <code>chore/ci-integracao</code>.</li><li>Cada branch volta para a main com <code>git merge --ff-only</code>.</li><li>Confira os dois jobs verdes na aba Actions.</li></ol>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>A senha do banco de desenvolvimento vai no <code>.env</code>, que está no <code>.gitignore</code>. No repositório só entra o <code>.env.example</code>.</div>
+        </div>
+      </div>
+
+      <!-- 17. Prompt 1 -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">DER na 3FN e migrações</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Você está no repositório organizacao-recursos, em JavaScript puro com ES modules e testes em node:test. O sistema reserva salas, professores e materiais da universidade sem conflito de horário e agora passa a guardar os dados em PostgreSQL 16. Antes de escrever código, crie docs/der.md com um diagrama erDiagram em Mermaid e uma tabela por entidade (coluna, tipo, nulo, chave, restrição) para alunos, professores, salas, materiais, reservas e a tabela de ligação entre reservas e materiais. Para cada tabela, justifique em uma frase por que ela está na 1FN, na 2FN e na 3FN; trate logradouro, bairro, cidade e uf como dependentes do CEP, numa tabela própria de CEPs. Depois crie as migrações migrations/001_*.sql em diante, uma por assunto, com chave primária em toda tabela, foreign keys com ON DELETE RESTRICT, UNIQUE em e-mail e matrícula, CHECK do CEP com 8 dígitos, CHECK de fim maior que início e duas restrições EXCLUDE USING gist (extensão btree_gist) que impeçam reservas sobrepostas da mesma sala e do mesmo professor. Dê nome a todas as restrições. O conflito de materiais pode ficar no serviço; registre essa decisão no docs/der.md. Crie scripts/migrar.js exportando migrar(pool), que cria a tabela schema_migrations se não existir, aplica em ordem só os arquivos que ainda não estão nela, cada um dentro de uma transação, e pode ser executado direto com node scripts/migrar.js lendo DATABASE_URL. Mostre o SQL antes de gravar.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: rode <code>node scripts/migrar.js</code> duas vezes; a segunda não pode aplicar nada. No psql, <code>\d reservas</code> precisa listar as duas restrições de exclusão.</div>
+        </div>
+      </div>
+
+      <!-- 18. Prompt 2 -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Repositório e testes de integração</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Instale pg como dependência e @testcontainers/postgresql como devDependency. Crie src/db.js exportando criarPool(), que lê DATABASE_URL e falha com mensagem clara se ela não existir. Crie src/repositorios/reservas.js exportando repositorioReservas(db), em que db é um pool ou um client, com as funções criar, listarPorSala e cancelar. Toda query usa parâmetros $1, $2; nenhuma monta SQL concatenando valores. Crie test/integracao/helpers/banco.js exportando iniciarBanco(): se DATABASE_URL_TESTE existir, usa esse banco; se não, sobe postgres:16-alpine com PostgreSqlContainer. Em seguida aplica migrar(pool) e devolve { pool, limpar, parar }, em que limpar() faz TRUNCATE de todas as tabelas com RESTART IDENTITY CASCADE. Em test/integracao/reservas.test.js, com node:test e node:assert/strict, chame limpar() no beforeEach e cubra: reserva válida gravada e lida de volta; reserva sobreposta da mesma sala rejeitada com code 23P01; reservas encostadas (uma termina às 10h, a outra começa às 10h) aceitas; professor inexistente rejeitado com code 23503; e-mail de aluno repetido rejeitado com code 23505. Confira também o nome da restrição no erro. Não use SQLite nem mock do pg nesses testes.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: comente a restrição EXCLUDE da sala, rode <code>npm run test:int</code> e confira que o teste de sobreposição fica vermelho. Desfaça com <code>git restore</code>. Procure <code>+</code> ou template string montando SQL no diff.</div>
+        </div>
+      </div>
+
+      <!-- 19. Prompt 3 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Scripts separados e job de integração no CI</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Mova os testes do Trabalho 1 para test/unidade sem alterar o conteúdo deles, corrigindo apenas os caminhos de import. No package.json, deixe "test": "node --test test/unidade", crie "test:int": "node --test test/integracao" e "migrar": "node scripts/migrar.js". Em .github/workflows/ci.yml, mantenha o job atual de lint, testes de unidade e cobertura com o nome unidade e acrescente o job integracao, com needs: unidade, Node 22, npm ci e npm run test:int, usando o serviço postgres:16-alpine com healthcheck pg_isready e a variável DATABASE_URL_TESTE apontando para ele. Crie .env.example com uma DATABASE_URL de desenvolvimento sem senha real e confirme que .env está no .gitignore. Atualize o README com os comandos para subir o banco de desenvolvimento com docker run, aplicar as migrações e rodar cada suíte.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: pare o container de desenvolvimento e rode <code>npm test</code>; ele precisa passar sem banco. Depois do push, os jobs <code>unidade</code> e <code>integracao</code> aparecem verdes na aba Actions.</div>
+        </div>
+      </div>
+
+      <!-- 20. Entregável -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 10</span>
+          <p class="fs-4 mb-4"><code>docs/der.md</code>, migrações com <code>scripts/migrar.js</code>, repositório de reservas com queries parametrizadas e <code>test/integracao</code> rodando contra PostgreSQL real, com os dois jobs do CI verdes na main.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li><code>npm run test:int</code> no seu Codespace sobe o postgres e passa.</li><li>Você aponta uma restrição no DER e mostra o teste que a reprova.</li><li>Nenhum SQL em <code>src/</code> é montado por concatenação.</li><li>O <code>git log</code> é linear, com commits <code>feat(banco)</code> e <code>test(integracao)</code>.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 21. Dúvidas -->
+      <div class="slide cover-bg" id="slide-21">
+        <div class="glass-cover text-center">
+          <i class="fas fa-database fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: dublês de teste e chamadas de API seguras com a ViaCEP.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 21</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Integração com banco real · Semana 14</div>
+      <a href="material/material_aula10-integracao-banco.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PROMPT_PROF = (branch) => '@professor ➜ /workspaces/biblioteca-campus (' + branch + ') $ ';
+
+const PACKAGE_JSON = `{
+  "name": "biblioteca-campus",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/unidade",
+    "test:int": "node --test test/integracao",
+    "test:cov": "node --test --experimental-test-coverage test/unidade",
+    "lint": "eslint .",
+    "migrar": "node scripts/migrar.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": { "express": "^5.1.0", "pg": "^8.13.1" },
+  "devDependencies": {
+    "@testcontainers/postgresql": "^10.16.0",
+    "eslint": "^9.17.0",
+    "supertest": "^7.0.0"
+  }
+}`;
+
+const MIG_ALUNOS = `-- 001: alunos. O endereço fica em ceps (004): cidade e uf dependem do CEP.
+CREATE TABLE alunos (
+  id         integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  matricula  text NOT NULL CONSTRAINT alunos_matricula_unica UNIQUE,
+  nome       text NOT NULL CONSTRAINT alunos_nome_preenchido CHECK (length(trim(nome)) > 0),
+  email      text NOT NULL CONSTRAINT alunos_email_unico UNIQUE,
+  cep        char(8) NOT NULL CONSTRAINT alunos_cep_formato CHECK (cep ~ '^[0-9]{8}$'),
+  numero     text,
+  criado_em  timestamptz NOT NULL DEFAULT now()
+);`;
+
+const MIG_LIVROS = `-- 002: livros do acervo
+CREATE TABLE livros (
+  id          integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  isbn        char(13) NOT NULL CONSTRAINT livros_isbn_unico UNIQUE,
+  titulo      text NOT NULL,
+  autoria     text NOT NULL,
+  exemplares  integer NOT NULL CONSTRAINT livros_exemplares_positivo CHECK (exemplares > 0)
+);`;
+
+const MIG_EMPRESTIMOS = `-- 003: empréstimos ligam aluno e livro
+CREATE TABLE emprestimos (
+  id                  integer GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  aluno_id            integer NOT NULL REFERENCES alunos (id) ON DELETE RESTRICT,
+  livro_id            integer NOT NULL REFERENCES livros (id) ON DELETE RESTRICT,
+  emprestado_em       date NOT NULL DEFAULT current_date,
+  devolucao_prevista  date NOT NULL,
+  devolvido_em        date,
+  CONSTRAINT prazo_valido CHECK (devolucao_prevista > emprestado_em),
+  CONSTRAINT devolucao_valida CHECK (devolvido_em IS NULL OR devolvido_em >= emprestado_em)
+);
+
+-- o mesmo aluno não fica com dois empréstimos ativos do mesmo livro
+CREATE UNIQUE INDEX emprestimos_ativo_unico
+  ON emprestimos (aluno_id, livro_id)
+  WHERE devolvido_em IS NULL;`;
+
+const MIG_CEPS = `-- 004: endereço por CEP, preenchido pela ViaCEP (Aula 11).
+-- alunos.cep não tem FOREIGN KEY para cá de propósito: o aluno pode ser
+-- cadastrado antes de o CEP ser confirmado (endereço pendente).
+CREATE TABLE ceps (
+  cep            char(8) PRIMARY KEY CONSTRAINT ceps_formato CHECK (cep ~ '^[0-9]{8}$'),
+  logradouro     text NOT NULL,
+  bairro         text NOT NULL,
+  localidade     text NOT NULL,
+  uf             char(2) NOT NULL,
+  consultado_em  timestamptz NOT NULL DEFAULT now()
+);`;
+
+const MIGRAR_JS = `import { readdir, readFile } from 'node:fs/promises';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import pg from 'pg';
+
+const PASTA = fileURLToPath(new URL('../migrations/', import.meta.url));
+
+export async function migrar(pool, { log = console.log } = {}) {
+  await pool.query(
+    'CREATE TABLE IF NOT EXISTS schema_migrations (' +
+    ' versao text PRIMARY KEY, aplicada_em timestamptz NOT NULL DEFAULT now())'
+  );
+  const { rows } = await pool.query('SELECT versao FROM schema_migrations');
+  const aplicadas = new Set(rows.map((r) => r.versao));
+  const arquivos = (await readdir(PASTA)).filter((f) => f.endsWith('.sql')).sort();
+
+  for (const arquivo of arquivos) {
+    if (aplicadas.has(arquivo)) continue;
+    const sql = await readFile(join(PASTA, arquivo), 'utf8');
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+      await client.query(sql);
+      await client.query('INSERT INTO schema_migrations (versao) VALUES ($1)', [arquivo]);
+      await client.query('COMMIT');
+      log('aplicada ' + arquivo);
+    } catch (erro) {
+      await client.query('ROLLBACK');
+      throw new Error('falha em ' + arquivo + ': ' + erro.message, { cause: erro });
+    } finally {
+      client.release();
+    }
+  }
+}
+
+// node scripts/migrar.js
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+  await migrar(pool);
+  await pool.end();
+}`;
+
+const DB_JS = `import pg from 'pg';
+
+// colunas date voltam como texto 'AAAA-MM-DD', sem conversão de fuso
+pg.types.setTypeParser(1082, (valor) => valor);
+
+export function criarPool(url = process.env.DATABASE_URL) {
+  if (!url) throw new Error('DATABASE_URL não definida (veja .env.example)');
+  return new pg.Pool({ connectionString: url, max: 10 });
+}`;
+
+const REPO_EMPRESTIMOS = `export function repositorioEmprestimos(db) {
+  return {
+    async registrar({ alunoId, livroId, emprestadoEm, devolucaoPrevista }) {
+      const { rows } = await db.query(
+        'INSERT INTO emprestimos (aluno_id, livro_id, emprestado_em, devolucao_prevista) ' +
+        'VALUES ($1, $2, $3, $4) RETURNING *',
+        [alunoId, livroId, emprestadoEm, devolucaoPrevista]
+      );
+      return rows[0];
+    },
+
+    async contarAtivos(alunoId) {
+      const { rows } = await db.query(
+        'SELECT count(*)::int AS total FROM emprestimos ' +
+        'WHERE aluno_id = $1 AND devolvido_em IS NULL',
+        [alunoId]
+      );
+      return rows[0].total;
+    },
+
+    async devolver(id, data) {
+      const { rows } = await db.query(
+        'UPDATE emprestimos SET devolvido_em = $2 ' +
+        'WHERE id = $1 AND devolvido_em IS NULL RETURNING *',
+        [id, data]
+      );
+      return rows[0] ?? null;
+    }
+  };
+}`;
+
+const HELPER_BANCO = `import pg from 'pg';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { migrar } from '../../../scripts/migrar.js';
+
+// DATABASE_URL_TESTE (CI com services) ou um container descartável.
+// Nunca usa DATABASE_URL: o TRUNCATE apagaria o banco de desenvolvimento.
+export async function iniciarBanco() {
+  let container = null;
+  let url = process.env.DATABASE_URL_TESTE;
+  if (!url) {
+    container = await new PostgreSqlContainer('postgres:16-alpine').start();
+    url = container.getConnectionUri();
+  }
+  const pool = new pg.Pool({ connectionString: url });
+  await migrar(pool, { log: () => {} });
+
+  return {
+    pool,
+    async limpar() {
+      await pool.query('TRUNCATE emprestimos, livros, alunos, ceps RESTART IDENTITY CASCADE');
+    },
+    async parar() {
+      await pool.end();
+      if (container) await container.stop();
+    }
+  };
+}`;
+
+const TESTE_INT = `import { describe, it, before, after, beforeEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { iniciarBanco } from './helpers/banco.js';
+import { repositorioEmprestimos } from '../../src/repositorios/emprestimos.js';
+
+describe('repositório de empréstimos (PostgreSQL real)', () => {
+  let banco, repo;
+
+  before(async () => {
+    banco = await iniciarBanco();
+    repo = repositorioEmprestimos(banco.pool);
+  });
+  after(() => banco.parar());
+
+  beforeEach(async () => {
+    await banco.limpar();
+    await banco.pool.query(
+      "INSERT INTO alunos (matricula, nome, email, cep) VALUES ('2027001', 'Ana', 'ana@campus.br', '01001000')"
+    );
+    await banco.pool.query(
+      "INSERT INTO livros (isbn, titulo, autoria, exemplares) VALUES ('9788535902778', 'Dom Casmurro', 'Machado de Assis', 2)"
+    );
+  });
+
+  it('conta só os empréstimos sem devolução', async () => {
+    const e = await repo.registrar({ alunoId: 1, livroId: 1, emprestadoEm: '2027-04-05', devolucaoPrevista: '2027-04-19' });
+    assert.equal(await repo.contarAtivos(1), 1);
+    await repo.devolver(e.id, '2027-04-10');
+    assert.equal(await repo.contarAtivos(1), 0);
+  });
+
+  it('rejeita aluno inexistente pela foreign key', async () => {
+    await assert.rejects(
+      repo.registrar({ alunoId: 999, livroId: 1, emprestadoEm: '2027-04-05', devolucaoPrevista: '2027-04-19' }),
+      { code: '23503', constraint: 'emprestimos_aluno_id_fkey' }
+    );
+  });
+
+  it('rejeita o mesmo livro duas vezes para o mesmo aluno', async () => {
+    const dados = { alunoId: 1, livroId: 1, emprestadoEm: '2027-04-05', devolucaoPrevista: '2027-04-19' };
+    await repo.registrar(dados);
+    await assert.rejects(repo.registrar(dados), { code: '23505', constraint: 'emprestimos_ativo_unico' });
+  });
+
+  it('rejeita prazo que termina antes do empréstimo', async () => {
+    await assert.rejects(
+      repo.registrar({ alunoId: 1, livroId: 1, emprestadoEm: '2027-04-05', devolucaoPrevista: '2027-04-01' }),
+      { code: '23514', constraint: 'prazo_valido' }
+    );
+  });
+});`;
+
+const CI_YML = `name: CI
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  unidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cov
+
+  integracao:
+    needs: unidade
+    runs-on: ubuntu-latest
+    # Sem este bloco e sem DATABASE_URL_TESTE, o Testcontainers
+    # sobe o próprio postgres usando o Docker do runner.
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: teste
+          POSTGRES_PASSWORD: teste
+          POSTGRES_DB: biblioteca
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U teste"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL_TESTE: postgres://teste:teste@localhost:5432/biblioteca
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run test:int`;
+
+/* ---------- 5. Lab 1: unidade verde, integração vermelha ---------- */
+Labs.vscode('#lab-unidade-integracao', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/limite-emprestimos', open: 'src/repositorios/emprestimos.js',
+  prompt: PROMPT_PROF('feat/limite-emprestimos'),
+  files: [
+    { path: 'src/repositorios/emprestimos.js', hl: [6], code:
+`export function repositorioEmprestimos(db) {
+  return {
+    async contarAtivos(alunoId) {
+      const { rows } = await db.query(
+        'SELECT count(*)::int AS total FROM emprestimos ' +
+        'WHERE aluno_id = $1 AND devolvido_em = NULL',
+        [alunoId]
+      );
+      return rows[0].total;
+    }
+  };
+}` },
+    { path: 'src/dominio/emprestimo.js', code:
+`export const LIMITE_ATIVOS = 3;
+export const PRAZO_DIAS = 14;
+export const MULTA_POR_DIA = 150;   // centavos
+export const TETO_MULTA = 3000;     // centavos
+
+export function calcularMulta(diasAtraso) {
+  if (diasAtraso <= 0) return 0;
+  return Math.min(diasAtraso * MULTA_POR_DIA, TETO_MULTA);
+}
+
+export async function podeEmprestar(repo, alunoId) {
+  return (await repo.contarAtivos(alunoId)) < LIMITE_ATIVOS;
+}` },
+    { path: 'test/unidade/emprestimo.test.js', hl: [6, 7, 8], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta, podeEmprestar } from '../../src/dominio/emprestimo.js';
+
+// fake: conta em memória, com a regra escrita em JavaScript
+const fake = (lista) => ({
+  contarAtivos: async (id) => lista.filter((e) => e.alunoId === id && e.devolvidoEm === null).length
+});
+
+test('multa de 5 dias é 750 centavos', () => assert.equal(calcularMulta(5), 750));
+test('multa respeita o teto de 3000', () => assert.equal(calcularMulta(40), 3000));
+
+test('bloqueia o quarto empréstimo ativo', async () => {
+  const ativos = [1, 2, 3].map((n) => ({ alunoId: 1, livroId: n, devolvidoEm: null }));
+  assert.equal(await podeEmprestar(fake(ativos), 1), false);
+});` },
+    { path: 'test/integracao/emprestimos.test.js', code: TESTE_INT }
+  ],
+  run: [
+    { label: 'opencode gera o repositório', kind: 'purple', cmd: 'opencode run "Crie src/repositorios/emprestimos.js com contarAtivos(alunoId) usando pg e parâmetros, e um teste de unidade para podeEmprestar com fake em memória"', file: 'src/repositorios/emprestimos.js', speed: 110, out: [
+      '[mute] ▸ read src/dominio/emprestimo.js',
+      '[mute] ▸ read AGENTS.md',
+      '[mute] ▸ write src/repositorios/emprestimos.js',
+      '[mute] ▸ write test/unidade/emprestimo.test.js',
+      '[mute] ▸ bash npm test',
+      '[ok]   ✔ 3 testes passaram',
+      'Criei contarAtivos com a query parametrizada ($1) e um fake em memória para',
+      'testar podeEmprestar. Todos os testes de unidade passam.' ] },
+    { label: 'Testes de unidade', cmd: 'npm test', file: 'test/unidade/emprestimo.test.js', out: [
+      '', '> biblioteca-campus@1.0.0 test', '> node --test test/unidade', '',
+      '[ok] ✔ multa de 5 dias é 750 centavos (0.62ms)',
+      '[ok] ✔ multa respeita o teto de 3000 (0.11ms)',
+      '[ok] ✔ bloqueia o quarto empréstimo ativo (0.40ms)',
+      '[info] ℹ tests 3', '[info] ℹ pass 3', '[info] ℹ fail 0', '[info] ℹ duration_ms 61.8' ] },
+    { label: 'Testes de integração', kind: 'red', cmd: 'npm run test:int', file: 'src/repositorios/emprestimos.js', out: [
+      '', '> biblioteca-campus@1.0.0 test:int', '> node --test test/integracao', '',
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      { t: '  ✖ conta só os empréstimos sem devolução (21.4ms)', c: 'err', d: 500 },
+      '[err]    AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
+      '[err]    0 !== 1',
+      '[mute]        at TestContext.<anonymous> (test/integracao/emprestimos.test.js:27:12)',
+      '[ok]   ✔ rejeita aluno inexistente pela foreign key (6.1ms)',
+      '[ok]   ✔ rejeita o mesmo livro duas vezes para o mesmo aluno (5.8ms)',
+      '[ok]   ✔ rejeita prazo que termina antes do empréstimo (3.9ms)',
+      '[err] ✖ repositório de empréstimos (PostgreSQL real) (4187.2ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 3', '[err] ℹ fail 1',
+      '[warn] O agente escreveu "devolvido_em = NULL". Em SQL isso dá desconhecido e nenhuma linha entra; o fake em JavaScript não percebeu.' ] },
+    { label: 'Depois da correção', kind: 'blue', cmd: "sed -i 's/devolvido_em = NULL/devolvido_em IS NULL/' src/repositorios/emprestimos.js && npm run test:int", out: [
+      '', '> node --test test/integracao', '',
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      '[ok]   ✔ conta só os empréstimos sem devolução (19.7ms)',
+      '[ok]   ✔ rejeita aluno inexistente pela foreign key (5.9ms)',
+      '[ok]   ✔ rejeita o mesmo livro duas vezes para o mesmo aluno (6.0ms)',
+      '[ok]   ✔ rejeita prazo que termina antes do empréstimo (3.7ms)',
+      '[ok] ✔ repositório de empréstimos (PostgreSQL real) (4032.5ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[info] ℹ fail 0' ] }
+  ]
+});
+
+/* ---------- 7. DER ---------- */
+Labs.flow('#flow-der', {
+  w: 1000, h: 440,
+  nodes: [
+    { id: 'alunos', x: 170, y: 120, w: 250, h: 74, label: 'alunos', sub: 'id PK · matricula UQ · email UQ · cep', k: 'blue' },
+    { id: 'emprestimos', x: 500, y: 300, w: 300, h: 74, label: 'emprestimos', sub: 'aluno_id FK · livro_id FK · 3 datas', k: 'amber' },
+    { id: 'livros', x: 830, y: 120, w: 250, h: 74, label: 'livros', sub: 'id PK · isbn UQ · exemplares > 0', k: 'blue' },
+    { id: 'ceps', x: 170, y: 340, w: 250, h: 74, label: 'ceps', sub: 'cep PK · logradouro · localidade · uf', k: 'purple' },
+    { id: 'mig', x: 830, y: 340, w: 230, h: 64, label: 'schema_migrations', sub: 'versao PK · aplicada_em', k: 'green' }
+  ],
+  links: [
+    { from: 'alunos', to: 'emprestimos', label: '1 : N' },
+    { from: 'livros', to: 'emprestimos', label: '1 : N' },
+    { from: 'alunos', to: 'ceps', dashed: true, label: 'cep (sem FK)' }
+  ],
+  steps: [
+    { title: 'As entidades do domínio', text: 'Aluno pega livro emprestado. O empréstimo é uma tabela própria porque tem datas e porque um aluno faz muitos empréstimos ao longo do tempo.', on: ['alunos', 'livros', 'emprestimos'] },
+    { title: 'Chaves estrangeiras', text: 'emprestimos.aluno_id e emprestimos.livro_id apontam para as chaves primárias. ON DELETE RESTRICT impede apagar um aluno que tem histórico.', on: ['emprestimos'], links: [['alunos', 'emprestimos'], ['livros', 'emprestimos']] },
+    { title: '1FN e 2FN', text: 'Nenhuma lista dentro de coluna; o título mora em livros e não se repete em cada empréstimo.', on: ['livros', 'emprestimos'], links: [['livros', 'emprestimos', 'green']] },
+    { title: '3FN no endereço', text: 'Logradouro, bairro, localidade e uf dependem do CEP, que não é chave de alunos. Eles vão para ceps; alunos guarda só o CEP e o número.', on: ['alunos', 'ceps'], links: [['alunos', 'ceps', 'purple']] },
+    { title: 'Ligação sem FK, por decisão', text: 'O aluno pode ser cadastrado com a ViaCEP fora do ar (Aula 11). O endereço pendente é o CEP que ainda não tem linha em ceps.', on: ['ceps'], bad: [], links: [['alunos', 'ceps', 'amber']] },
+    { title: 'Controle das migrações', text: 'schema_migrations registra cada arquivo aplicado. É a única tabela criada pelo script, e não por migração.', on: ['mig'] }
+  ]
+});
+
+/* ---------- 9. Lab 2: migrações ---------- */
+Labs.vscode('#lab-migracoes', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/banco-esquema', open: 'scripts/migrar.js',
+  prompt: PROMPT_PROF('feat/banco-esquema'),
+  setupLabel: 'Subir o PostgreSQL de desenvolvimento',
+  setup: [
+    { cmd: 'docker run -d --name pg-dev -p 5432:5432 -e POSTGRES_USER=biblioteca -e POSTGRES_PASSWORD=dev-local -e POSTGRES_DB=biblioteca postgres:16-alpine', out: [
+      "Unable to find image 'postgres:16-alpine' locally", '[mute] 16-alpine: Pulling from library/postgres', '[mute] Digest: sha256:9b4c…e1a2', '[mute] Status: Downloaded newer image for postgres:16-alpine', '7c41d2a9f0be3e5b8f1c…' ] },
+    { cmd: 'cp .env.example .env && export $(grep -v "^#" .env | xargs)', out: [] },
+    { cmd: 'echo $DATABASE_URL', out: ['postgres://biblioteca:dev-local@localhost:5432/biblioteca'] }
+  ],
+  files: [
+    { path: 'scripts/migrar.js', hl: [10, 11, 12, 14, 15, 23, 24, 25, 26], code: MIGRAR_JS },
+    { path: 'migrations/001_cria_alunos.sql', code: MIG_ALUNOS },
+    { path: 'migrations/002_cria_livros.sql', code: MIG_LIVROS },
+    { path: 'migrations/003_cria_emprestimos.sql', code: MIG_EMPRESTIMOS },
+    { path: 'migrations/004_cria_ceps.sql', code: MIG_CEPS },
+    { path: '.env.example', code: `# copie para .env (que está no .gitignore) e ajuste\nDATABASE_URL=postgres://biblioteca:dev-local@localhost:5432/biblioteca` },
+    { path: 'package.json', hl: [9], code: PACKAGE_JSON }
+  ],
+  run: [
+    { label: 'opencode gera as migrações', kind: 'purple', cmd: 'opencode run "Crie migrations/001 a 004 para alunos, livros, emprestimos e ceps conforme docs/der.md, com restrições nomeadas, e scripts/migrar.js com schema_migrations e uma transação por arquivo"', file: 'migrations/003_cria_emprestimos.sql', speed: 110, out: [
+      '[mute] ▸ read docs/der.md',
+      '[mute] ▸ read package.json',
+      '[mute] ▸ write migrations/001_cria_alunos.sql',
+      '[mute] ▸ write migrations/002_cria_livros.sql',
+      '[mute] ▸ write migrations/003_cria_emprestimos.sql',
+      '[mute] ▸ write migrations/004_cria_ceps.sql',
+      '[mute] ▸ write scripts/migrar.js',
+      '[mute] ▸ edit package.json  (+ "migrar": "node scripts/migrar.js")',
+      '[warn] △ Permissão: bash npm run migrar   [a] permitir uma vez  [s] sempre  [r] recusar',
+      '[mute] › r (recusado: o professor roda à mão para ver a saída)',
+      'Criei quatro migrações e o script. alunos.cep ficou sem FOREIGN KEY para ceps,',
+      'como pede o DER, porque o endereço pode ficar pendente.' ] },
+    { label: 'Migrar', cmd: 'npm run migrar', out: [
+      '', '> biblioteca-campus@1.0.0 migrar', '> node scripts/migrar.js', '',
+      '[ok] aplicada 001_cria_alunos.sql', '[ok] aplicada 002_cria_livros.sql', '[ok] aplicada 003_cria_emprestimos.sql', '[ok] aplicada 004_cria_ceps.sql' ] },
+    { label: 'Migrar de novo', clear: false, cmd: 'npm run migrar', out: [
+      '', '> biblioteca-campus@1.0.0 migrar', '> node scripts/migrar.js', '', '[mute] (nenhuma migração pendente)' ] },
+    { label: 'Ver schema_migrations', kind: 'blue', cmd: "docker exec pg-dev psql -U biblioteca -c '\\dt' -c 'SELECT * FROM schema_migrations'", out: [
+      '                 List of relations',
+      ' Schema |       Name        | Type  |   Owner',
+      '--------+-------------------+-------+------------',
+      ' public | alunos            | table | biblioteca',
+      ' public | ceps              | table | biblioteca',
+      ' public | emprestimos       | table | biblioteca',
+      ' public | livros            | table | biblioteca',
+      ' public | schema_migrations | table | biblioteca',
+      '(5 rows)', '',
+      '          versao           |          aplicada_em',
+      '---------------------------+-------------------------------',
+      ' 001_cria_alunos.sql       | 2027-04-06 22:14:03.481+00',
+      ' 002_cria_livros.sql       | 2027-04-06 22:14:03.502+00',
+      ' 003_cria_emprestimos.sql  | 2027-04-06 22:14:03.519+00',
+      ' 004_cria_ceps.sql         | 2027-04-06 22:14:03.533+00',
+      '(4 rows)' ] },
+    { label: 'Migração com erro', kind: 'red', cmd: "echo 'ALTER TABLE livros ADD COLUMN ano integer CHECK (ano > 1400' > migrations/005_ano_livro.sql && npm run migrar", out: [
+      '', '> node scripts/migrar.js', '',
+      '[err] Error: falha em 005_ano_livro.sql: syntax error at end of input',
+      '[mute]     at migrar (scripts/migrar.js:27:13)',
+      '[warn] ROLLBACK: a coluna não foi criada e 005 não entrou em schema_migrations. Corrija o arquivo e rode de novo.' ] }
+  ]
+});
+
+/* ---------- 10. Lab 3: restrições no psql ---------- */
+Labs.vscode('#lab-restricoes', {
+  folder: 'biblioteca-campus', status: 'psql · pg-dev', branch: 'feat/banco-esquema', open: 'migrations/003_cria_emprestimos.sql',
+  prompt: 'biblioteca=# ',
+  intro: ['[mute]$ docker exec -it pg-dev psql -U biblioteca', 'psql (16.6)', 'Type "help" for help.', ''],
+  files: [
+    { path: 'migrations/001_cria_alunos.sql', hl: [4, 6, 7], code: MIG_ALUNOS },
+    { path: 'migrations/003_cria_emprestimos.sql', hl: [4, 5, 9, 10, 14, 15, 16], code: MIG_EMPRESTIMOS },
+    { path: 'sql/dados-exemplo.sql', code:
+`INSERT INTO alunos (matricula, nome, email, cep)
+VALUES ('2027001', 'Ana Souza', 'ana@campus.br', '01001000');
+
+INSERT INTO livros (isbn, titulo, autoria, exemplares)
+VALUES ('9788535902778', 'Dom Casmurro', 'Machado de Assis', 2);
+
+INSERT INTO emprestimos (aluno_id, livro_id, devolucao_prevista)
+VALUES (1, 1, current_date + 14);` }
+  ],
+  run: [
+    { label: 'Perguntar ao opencode', kind: 'purple', cmd: '\\! opencode run "Liste as restrições de migrations/003_cria_emprestimos.sql e escreva um INSERT que viole cada uma"', file: 'migrations/003_cria_emprestimos.sql', speed: 110, out: [
+      '[mute] ▸ read migrations/001_cria_alunos.sql',
+      '[mute] ▸ read migrations/003_cria_emprestimos.sql',
+      'Restrições: emprestimos_aluno_id_fkey, emprestimos_livro_id_fkey, prazo_valido,',
+      'devolucao_valida e o índice parcial emprestimos_ativo_unico.',
+      'INSERTs sugeridos: aluno 999 (FK), devolucao_prevista antes do empréstimo (CHECK),',
+      'o mesmo aluno e livro duas vezes sem devolução (índice parcial).',
+      '[warn] Não executei nada: rode no psql e confira o nome de cada restrição no erro.' ] },
+    { label: 'Descrever emprestimos', cmd: '\\d emprestimos', file: 'migrations/003_cria_emprestimos.sql', out: [
+      '                          Table "public.emprestimos"',
+      '       Column       |  Type   | Nullable |           Default',
+      '--------------------+---------+----------+------------------------------',
+      ' id                 | integer | not null | generated always as identity',
+      ' aluno_id           | integer | not null |',
+      ' livro_id           | integer | not null |',
+      ' emprestado_em      | date    | not null | CURRENT_DATE',
+      ' devolucao_prevista | date    | not null |',
+      ' devolvido_em       | date    |          |',
+      'Indexes:',
+      '    "emprestimos_pkey" PRIMARY KEY, btree (id)',
+      '    "emprestimos_ativo_unico" UNIQUE, btree (aluno_id, livro_id) WHERE devolvido_em IS NULL',
+      'Check constraints:',
+      '    "devolucao_valida" CHECK (devolvido_em IS NULL OR devolvido_em >= emprestado_em)',
+      '    "prazo_valido" CHECK (devolucao_prevista > emprestado_em)',
+      'Foreign-key constraints:',
+      '    "emprestimos_aluno_id_fkey" FOREIGN KEY (aluno_id) REFERENCES alunos(id) ON DELETE RESTRICT',
+      '    "emprestimos_livro_id_fkey" FOREIGN KEY (livro_id) REFERENCES livros(id) ON DELETE RESTRICT' ] },
+    { label: 'E-mail repetido', kind: 'red', clear: false, cmd: "INSERT INTO alunos (matricula, nome, email, cep) VALUES ('2027002', 'Ana S.', 'ana@campus.br', '01001000');", file: 'migrations/001_cria_alunos.sql', out: [
+      '[err] ERROR:  duplicate key value violates unique constraint "alunos_email_unico"',
+      '[err] DETAIL:  Key (email)=(ana@campus.br) already exists.', '[mute] -- SQLSTATE 23505' ] },
+    { label: 'CEP com hífen', kind: 'red', clear: false, cmd: "INSERT INTO alunos (matricula, nome, email, cep) VALUES ('2027003', 'Bruno', 'bruno@campus.br', '0100-100');", file: 'migrations/001_cria_alunos.sql', out: [
+      '[err] ERROR:  new row for relation "alunos" violates check constraint "alunos_cep_formato"',
+      '[err] DETAIL:  Failing row contains (3, 2027003, Bruno, bruno@campus.br, 0100-100, null, 2027-04-06 22:20:41.1+00).', '[mute] -- SQLSTATE 23514' ] },
+    { label: 'Aluno inexistente', kind: 'red', clear: false, cmd: 'INSERT INTO emprestimos (aluno_id, livro_id, devolucao_prevista) VALUES (999, 1, current_date + 14);', file: 'migrations/003_cria_emprestimos.sql', out: [
+      '[err] ERROR:  insert or update on table "emprestimos" violates foreign key constraint "emprestimos_aluno_id_fkey"',
+      '[err] DETAIL:  Key (aluno_id)=(999) is not present in table "alunos".', '[mute] -- SQLSTATE 23503' ] },
+    { label: 'Mesmo livro, de novo', kind: 'red', clear: false, cmd: 'INSERT INTO emprestimos (aluno_id, livro_id, devolucao_prevista) VALUES (1, 1, current_date + 14);', file: 'migrations/003_cria_emprestimos.sql', out: [
+      '[err] ERROR:  duplicate key value violates unique constraint "emprestimos_ativo_unico"',
+      '[err] DETAIL:  Key (aluno_id, livro_id)=(1, 1) already exists.', '[mute] -- SQLSTATE 23505',
+      '[info] Depois de UPDATE emprestimos SET devolvido_em = current_date WHERE id = 1, a mesma inserção passa: o índice só olha os ativos.' ] }
+  ]
+});
+
+/* ---------- 11. Lab 4: repositório com pg ---------- */
+Labs.vscode('#lab-repositorio', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/repositorio-alunos', open: 'src/repositorios/alunos.js',
+  prompt: PROMPT_PROF('feat/repositorio-alunos'),
+  files: [
+    { path: 'src/db.js', hl: [4], code: DB_JS },
+    { path: 'src/repositorios/alunos.js', hl: [5, 6], code:
+`export function repositorioAlunos(db) {
+  return {
+    async buscarPorNome(nome) {
+      const { rows } = await db.query(
+        'SELECT id, nome, email FROM alunos WHERE nome = $1',
+        [nome]
+      );
+      return rows;
+    }
+  };
+}` },
+    { path: 'src/repositorios/alunos-ERRADO.js', hl: [5], code:
+`// primeira proposta do agente, recusada na revisão
+export function repositorioAlunosErrado(db) {
+  return {
+    async buscarPorNome(nome) {
+      const { rows } = await db.query("SELECT id, nome, email FROM alunos WHERE nome = '" + nome + "'");
+      return rows;
+    }
+  };
+}` },
+    { path: 'src/repositorios/emprestimos.js', code: REPO_EMPRESTIMOS },
+    { path: 'scripts/demo-busca.js', code:
+`import { criarPool } from '../src/db.js';
+import { repositorioAlunos } from '../src/repositorios/alunos.js';
+import { repositorioAlunosErrado } from '../src/repositorios/alunos-ERRADO.js';
+
+const pool = criarPool();
+const entrada = process.argv[3];
+const repo = process.argv[2] === 'errado' ? repositorioAlunosErrado(pool) : repositorioAlunos(pool);
+console.table(await repo.buscarPorNome(entrada));
+await pool.end();` }
+  ],
+  run: [
+    { label: 'opencode gera a busca', kind: 'purple', cmd: 'opencode run "Crie buscarPorNome(nome) no repositório de alunos e um script scripts/demo-busca.js para testar"', file: 'src/repositorios/alunos-ERRADO.js', speed: 110, out: [
+      '[mute] ▸ read src/db.js',
+      '[mute] ▸ read src/repositorios/emprestimos.js',
+      '[mute] ▸ write src/repositorios/alunos-ERRADO.js',
+      '[mute] ▸ write scripts/demo-busca.js',
+      'Criei buscarPorNome montando o WHERE com o nome recebido e um script de demonstração.' ] },
+    { label: 'Procurar concatenação', kind: 'red', cmd: "git diff --stat && grep -rnE \"query\\((\\\"|').*(\\+|\\$\\{)\" src/", out: [
+      ' scripts/demo-busca.js              | 9 +++++++++',
+      ' src/repositorios/alunos-ERRADO.js  | 9 +++++++++',
+      '[err] src/repositorios/alunos-ERRADO.js:5:      const { rows } = await db.query("SELECT id, nome, email FROM alunos WHERE nome = \'" + nome + "\'");',
+      '[warn] O agente concatenou o nome no SQL, mesmo com o AGENTS.md pedindo parâmetros.' ] },
+    { label: 'Versão concatenada', kind: 'red', cmd: "node scripts/demo-busca.js errado \"x' OR '1'='1\"", file: 'src/repositorios/alunos-ERRADO.js', out: [
+      '[mute] SQL enviado: SELECT id, nome, email FROM alunos WHERE nome = \'x\' OR \'1\'=\'1\'',
+      '┌─────────┬────┬──────────────┬────────────────────┐',
+      '│ (index) │ id │ nome         │ email              │',
+      '├─────────┼────┼──────────────┼────────────────────┤',
+      '│ 0       │ 1  │ \'Ana Souza\'  │ \'ana@campus.br\'    │',
+      '│ 1       │ 2  │ \'Bruno Lima\' │ \'bruno@campus.br\'  │',
+      '│ 2       │ 3  │ \'Carla Reis\' │ \'carla@campus.br\'  │',
+      '└─────────┴────┴──────────────┴────────────────────┘',
+      '[err] Injeção de SQL: a entrada virou parte do comando e devolveu todos os alunos.' ] },
+    { label: 'Versão parametrizada', kind: 'blue', cmd: "node scripts/demo-busca.js certo \"x' OR '1'='1\"", file: 'src/repositorios/alunos.js', out: [
+      "[mute] SQL enviado: SELECT id, nome, email FROM alunos WHERE nome = $1   parâmetros: [\"x' OR '1'='1\"]",
+      '┌─────────┐', '│ (index) │', '├─────────┤', '└─────────┘',
+      '[ok] Nenhum aluno se chama literalmente x\' OR \'1\'=\'1. O valor não altera o comando.' ] },
+    { label: 'Pedir a correção', kind: 'purple', cmd: 'opencode run "Reescreva buscarPorNome com parâmetro $1, sem concatenar valores no SQL, em src/repositorios/alunos.js, e apague a versão anterior"', file: 'src/repositorios/alunos.js', speed: 110, out: [
+      '[mute] ▸ write src/repositorios/alunos.js',
+      '[warn] △ Permissão: bash rm src/repositorios/alunos-ERRADO.js   [a] permitir uma vez  [s] sempre  [r] recusar',
+      '[mute] › a',
+      '[mute] ▸ bash rm src/repositorios/alunos-ERRADO.js',
+      'buscarPorNome agora usa db.query(sql, [nome]). Nenhuma query em src/ concatena valores.' ] }
+  ]
+});
+
+/* ---------- 13. Lab 5: Testcontainers ---------- */
+Labs.vscode('#lab-testcontainers', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/integracao-emprestimos', open: 'test/integracao/helpers/banco.js',
+  prompt: PROMPT_PROF('test/integracao-emprestimos'),
+  setup: [
+    { cmd: 'npm install pg && npm install -D @testcontainers/postgresql', out: ['[mute] added 112 packages, and audited 287 packages in 9s', '[ok] found 0 vulnerabilities'] },
+    { cmd: 'docker info --format "{{.ServerVersion}} {{.OperatingSystem}}"', out: ['27.3.1 Debian GNU/Linux 12 (bookworm)', '[mute] Docker disponível pela feature docker-in-docker do devcontainer'] }
+  ],
+  files: [
+    { path: 'test/integracao/helpers/banco.js', hl: [10, 11, 12, 13, 14, 15, 21], code: HELPER_BANCO },
+    { path: 'test/integracao/emprestimos.test.js', hl: [33, 41], code: TESTE_INT },
+    { path: '.devcontainer/devcontainer.json', hl: [4], code:
+`{
+  "name": "biblioteca-campus",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
+  "postCreateCommand": "npm ci && curl -fsSL https://opencode.ai/install | bash",
+  "secrets": {
+    "OPENROUTER_API_KEY": { "description": "Chave da OpenRouter usada pelo opencode" }
+  }
+}` }
+  ],
+  run: [
+    { label: 'opencode gera o helper', kind: 'purple', cmd: 'opencode run "Crie test/integracao/helpers/banco.js com Testcontainers (postgres:16-alpine) ou DATABASE_URL_TESTE, aplicando migrar(pool), e test/integracao/emprestimos.test.js cobrindo as restrições pelo code e pelo constraint do erro"', file: 'test/integracao/helpers/banco.js', speed: 110, out: [
+      '[mute] ▸ read scripts/migrar.js',
+      '[mute] ▸ read migrations/003_cria_emprestimos.sql',
+      '[mute] ▸ read src/repositorios/emprestimos.js',
+      '[mute] ▸ write test/integracao/helpers/banco.js',
+      '[mute] ▸ write test/integracao/emprestimos.test.js',
+      '[warn] △ Permissão: bash npm run test:int   [a] permitir uma vez  [s] sempre  [r] recusar',
+      '[mute] › a',
+      '[mute] ▸ bash npm run test:int',
+      '[ok]   ✔ 4 testes passaram (4.5 s)',
+      'O helper usa DATABASE_URL_TESTE quando existe e, sem ela, sobe postgres:16-alpine.',
+      'Os testes conferem code e constraint de cada erro.' ] },
+    { label: 'test:int com logs', cmd: 'DEBUG=testcontainers* npm run test:int', file: 'test/integracao/emprestimos.test.js', speed: 70, out: [
+      '', '> node --test test/integracao', '',
+      '[mute] testcontainers [INFO] Container runtime: docker (unix:///var/run/docker.sock), Docker 27.3.1',
+      '[mute] testcontainers [DEBUG] Pulling image "testcontainers/ryuk:0.11.0"',
+      '[mute] testcontainers [INFO] Started reaper (Ryuk) e1f3c09a7b2d',
+      '[mute] testcontainers [DEBUG] Pulling image "postgres:16-alpine"',
+      '[mute] testcontainers [INFO] Starting container for image "postgres:16-alpine"...',
+      { t: '[mute] testcontainers [DEBUG] [5b8e21c4d9aa] Waiting for log message "database system is ready to accept connections" (2 times)', d: 900 },
+      '[mute] testcontainers [INFO] [5b8e21c4d9aa] Started container for image "postgres:16-alpine" (3.6s)',
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      '[ok]   ✔ conta só os empréstimos sem devolução (19.7ms)',
+      '[ok]   ✔ rejeita aluno inexistente pela foreign key (5.9ms)',
+      '[ok]   ✔ rejeita o mesmo livro duas vezes para o mesmo aluno (6.0ms)',
+      '[ok]   ✔ rejeita prazo que termina antes do empréstimo (3.7ms)',
+      '[ok] ✔ repositório de empréstimos (PostgreSQL real) (4032.5ms)',
+      '[mute] testcontainers [INFO] [5b8e21c4d9aa] Stopped container (0.4s)',
+      '[info] ℹ tests 4', '[info] ℹ suites 1', '[info] ℹ pass 4', '[info] ℹ fail 0', '[info] ℹ duration_ms 4511.9' ] },
+    { label: 'docker ps durante o teste', kind: 'blue', cmd: 'docker ps --format "table {{.Image}}\\t{{.Status}}\\t{{.Ports}}"', out: [
+      'IMAGE                       STATUS         PORTS',
+      'postgres:16-alpine          Up 2 seconds   0.0.0.0:32771->5432/tcp',
+      'testcontainers/ryuk:0.11.0  Up 3 seconds   0.0.0.0:32770->8080/tcp',
+      'postgres:16-alpine          Up 41 minutes  0.0.0.0:5432->5432/tcp',
+      '[mute] O container do teste usa uma porta sorteada (32771). O pg-dev, na 5432, não é tocado.' ] },
+    { label: 'Sem Docker', kind: 'red', cmd: 'sudo service docker stop && npm run test:int', out: [
+      '[mute]  * Stopping Docker: docker',
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      '[err]   ✖ repositório de empréstimos (PostgreSQL real) (12.3ms)',
+      '[err]     Error: Could not find a working container runtime strategy',
+      '[mute]         at getContainerRuntimeClient (node_modules/testcontainers/build/container-runtime/clients/client.js:62:11)',
+      '[info] ℹ tests 4', '[err] ℹ cancelled 4',
+      '[warn] Os quatro testes foram cancelados porque o before falhou. Religue com sudo service docker start.' ] }
+  ]
+});
+
+/* ---------- 14. Lab 6: isolamento ---------- */
+Labs.vscode('#lab-isolamento', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/integracao-emprestimos', open: 'test/integracao/emprestimos.test.js',
+  prompt: PROMPT_PROF('test/integracao-emprestimos'),
+  files: [
+    { path: 'test/integracao/emprestimos.test.js', hl: [15, 16], code: TESTE_INT },
+    { path: 'test/integracao/transacao.test.js', hl: [15, 16, 17, 18, 19, 20, 21], code:
+`import { describe, it, before, after, beforeEach, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { iniciarBanco } from './helpers/banco.js';
+import { repositorioEmprestimos } from '../../src/repositorios/emprestimos.js';
+
+// Alternativa ao TRUNCATE: cada teste roda numa transação desfeita no fim.
+// Só funciona se todo o código testado usar o mesmo client.
+describe('isolamento por transação', () => {
+  let banco, client, repo;
+
+  before(async () => { banco = await iniciarBanco(); });
+  after(() => banco.parar());
+
+  beforeEach(async () => {
+    client = await banco.pool.connect();
+    await client.query('BEGIN');
+    repo = repositorioEmprestimos(client);
+  });
+  afterEach(async () => {
+    await client.query('ROLLBACK');
+    client.release();
+  });
+
+  it('o que um teste grava some antes do próximo', async () => {
+    const { rows } = await client.query('SELECT count(*)::int AS n FROM alunos');
+    assert.equal(rows[0].n, 0);
+  });
+});` },
+    { path: 'test/integracao/helpers/banco.js', hl: [20, 21, 22], code: HELPER_BANCO }
+  ],
+  run: [
+    { label: 'opencode gera mais testes', kind: 'purple', cmd: 'opencode run "Acrescente três testes de integração para as restrições de emprestimos, semeando um aluno e um livro antes de cada teste"', file: 'test/integracao/emprestimos.test.js', speed: 110, out: [
+      '[mute] ▸ read test/integracao/emprestimos.test.js',
+      '[mute] ▸ edit test/integracao/emprestimos.test.js  (+3 testes, beforeEach com dois INSERT)',
+      'Acrescentei três testes e um beforeEach que insere Ana e Dom Casmurro.',
+      '[warn] Não rodei a suíte de integração.' ] },
+    { label: 'Sem isolamento', kind: 'red', cmd: 'npm run test:int  # beforeEach sem limpar()', out: [
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      '[ok]   ✔ conta só os empréstimos sem devolução (20.2ms)',
+      '[err]   ✖ rejeita aluno inexistente pela foreign key (4.4ms)',
+      '[err]     error: duplicate key value violates unique constraint "alunos_matricula_unica"',
+      '[err]     code: \'23505\'',
+      '[mute]       at beforeEach (test/integracao/emprestimos.test.js:17:5)',
+      '[err]   ✖ rejeita o mesmo livro duas vezes para o mesmo aluno (3.1ms)',
+      '[err]   ✖ rejeita prazo que termina antes do empréstimo (2.9ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 1', '[err] ℹ fail 3',
+      '[warn] O beforeEach do agente insere a Ana de novo sem limpar o banco. O resultado depende da ordem dos testes.' ] },
+    { label: 'Pedir o isolamento', kind: 'purple', cmd: 'opencode run "Os testes de integração falham com 23505 em alunos_matricula_unica a partir do segundo. Chame banco.limpar() no início do beforeEach e rode npm run test:int"', speed: 110, out: [
+      '[mute] ▸ read test/integracao/helpers/banco.js',
+      '[mute] ▸ edit test/integracao/emprestimos.test.js  (+ await banco.limpar())',
+      '[warn] △ Permissão: bash npm run test:int   [a] permitir uma vez  [s] sempre  [r] recusar',
+      '[mute] › a',
+      '[mute] ▸ bash npm run test:int',
+      '[ok]   ✔ 4 testes passaram',
+      'limpar() faz TRUNCATE com RESTART IDENTITY CASCADE antes de cada teste.' ] },
+    { label: 'Com TRUNCATE', cmd: 'npm run test:int', file: 'test/integracao/emprestimos.test.js', out: [
+      '▶ repositório de empréstimos (PostgreSQL real)',
+      '[ok]   ✔ conta só os empréstimos sem devolução (19.7ms)',
+      '[ok]   ✔ rejeita aluno inexistente pela foreign key (5.9ms)',
+      '[ok]   ✔ rejeita o mesmo livro duas vezes para o mesmo aluno (6.0ms)',
+      '[ok]   ✔ rejeita prazo que termina antes do empréstimo (3.7ms)',
+      '[ok] ✔ repositório de empréstimos (PostgreSQL real) (4032.5ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[info] ℹ fail 0' ] },
+    { label: 'Com ROLLBACK', kind: 'blue', cmd: 'node --test test/integracao/transacao.test.js', file: 'test/integracao/transacao.test.js', out: [
+      '▶ isolamento por transação',
+      '[ok]   ✔ o que um teste grava some antes do próximo (2.8ms)',
+      '[ok] ✔ isolamento por transação (3712.4ms)',
+      '[info] ℹ tests 1', '[info] ℹ pass 1', '[info] ℹ fail 0' ] }
+  ]
+});
+
+/* ---------- 15. Lab 7: scripts e CI ---------- */
+Labs.vscode('#lab-ci', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'chore/ci-integracao', open: '.github/workflows/ci.yml',
+  prompt: PROMPT_PROF('chore/ci-integracao'),
+  files: [
+    { path: '.github/workflows/ci.yml', hl: [18, 19, 22, 23, 24, 25, 26, 34, 35, 41], code: CI_YML },
+    { path: 'package.json', hl: [5, 6], code: PACKAGE_JSON },
+    { path: '.gitignore', code: 'node_modules/\ncoverage/\n.env\n*.log' }
+  ],
+  run: [
+    { label: 'opencode gera o CI', kind: 'purple', cmd: 'opencode run "Acrescente ao ci.yml um job integracao, com needs: unidade, serviço postgres:16-alpine com healthcheck e DATABASE_URL_TESTE, rodando npm run test:int"', file: '.github/workflows/ci.yml', speed: 110, out: [
+      '[mute] ▸ read .github/workflows/ci.yml',
+      '[mute] ▸ read test/integracao/helpers/banco.js',
+      '[mute] ▸ edit .github/workflows/ci.yml  (+26 linhas: job integracao)',
+      'Criei o job integracao depois de unidade. A senha teste vale só para o container',
+      'descartável do runner e não é segredo.',
+      '[warn] Para conferir: git diff .github e, depois do push, gh run watch.' ] },
+    { label: 'npm test sem Docker', cmd: 'docker stop pg-dev && npm test', file: 'package.json', out: [
+      'pg-dev', '', '> node --test test/unidade', '',
+      '[ok] ✔ multa de 5 dias é 750 centavos (0.62ms)',
+      '[ok] ✔ multa respeita o teto de 3000 (0.11ms)',
+      '[ok] ✔ bloqueia o quarto empréstimo ativo (0.40ms)',
+      '[ok] ✔ prazo de devolução é 14 dias (0.20ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[info] ℹ fail 0', '[info] ℹ duration_ms 58.3' ] },
+    { label: 'Commit e push', prompt: PROMPT_PROF('main'), branch: 'main', cmd: 'git add .github package.json && git commit -m "ci: roda testes de integração com postgres" && git switch main && git merge --ff-only chore/ci-integracao && git push', out: [
+      '[chore/ci-integracao 4d2e9b1] ci: roda testes de integração com postgres', ' 2 files changed, 24 insertions(+), 1 deletion(-)',
+      "Switched to branch 'main'", 'Updating 9a7c3f0..4d2e9b1', 'Fast-forward',
+      'To github.com:professor/biblioteca-campus.git', '   9a7c3f0..4d2e9b1  main -> main' ] },
+    { label: 'Acompanhar o CI', kind: 'blue', clear: false, cmd: 'gh run watch', speed: 160, out: [
+      '[mute] Refreshing run status every 3 seconds.',
+      'main CI · 4d2e9b1', 'Triggered via push less than a minute ago', '',
+      'JOBS',
+      '[ok] ✓ unidade in 31s (ID 30214455120)',
+      '[ok]   ✓ Run npm run lint', '[ok]   ✓ Run npm run test:cov',
+      '[ok] ✓ integracao in 48s (ID 30214455987)',
+      '[mute]   ✓ Initialize containers  (postgres:16-alpine healthy)',
+      '[ok]   ✓ Run npm run test:int', '',
+      '[ok] ✓ Run CI (12937718842) completed with \'success\'' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

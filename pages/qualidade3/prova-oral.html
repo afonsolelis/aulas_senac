@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prova oral - Qualidade 2027.1</title>
+  <meta name="description" content="Orientações da prova oral individual dos Trabalhos 1 e 2 de Qualidade de Software 2027.1.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body data-avisos-escopo="qualidade3">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../pages/home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+  <header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../pages/home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Qualidade de Software &middot; 2027.1</span><h1 class="h3 fw-bold text-white mb-0">Prova oral &middot; Trabalhos 1 e 2</h1></div></div></header>
+  <main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-10 mx-auto">
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold mb-3">Como funciona</h2>
+<ul class="text-muted mb-0"><li>Cada trabalho tem três dias de prova oral: semanas 11, 12 e 13 para o Trabalho 1 e semanas 18, 19 e 20 para o Trabalho 2.</li><li>A ordem de chamada é publicada no quadro de avisos antes do primeiro dia. Cada aluno tem cerca de 10 minutos.</li><li>Quem não está sendo arguido trabalha nas issues de feedback do próprio repositório.</li><li>A arguição é feita no Codespace do aluno, aberto na tag do trabalho (<code>git switch --detach trabalho-1</code> ou <code>trabalho-2</code>).</li></ul>
+</section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold mb-3">Roteiro da arguição</h2>
+<ol class="text-muted mb-0"><li>Rodar a suíte na frente do professor: <code>npm test</code> e, no Trabalho 2, <code>npm run test:int</code>.</li><li>Explicar um commit escolhido pelo professor no <code>git log</code>: o que mudou, por que, e qual teste prova a mudança.</li><li>Mudar uma regra ao vivo (por exemplo, a capacidade ou o intervalo de horário) e mostrar qual teste falha e por quê.</li><li>Explicar de qual técnica veio um caso de teste: partição, valor-limite, tabela de decisão, ramo ou caminho.</li><li>No Trabalho 2: mostrar uma restrição do banco recusando dado inválido e o dublê que substitui a ViaCEP.</li><li>Responder a uma pergunta conceitual sobre o conteúdo das aulas do bloco.</li></ol>
+</section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold mb-3">Critérios</h2>
+<div class="table-responsive"><table class="table table-sm align-middle mb-0"><thead class="table-light"><tr><th>Critério</th><th>O que o professor observa</th></tr></thead><tbody><tr><td>Autoria</td><td>O aluno navega no próprio código sem procurar, e sabe por que cada decisão foi tomada.</td></tr><tr><td>Domínio da técnica</td><td>Liga cada teste à técnica que o originou e explica o que ele protege.</td></tr><tr><td>Modificação ao vivo</td><td>Consegue alterar uma regra, prever qual teste falha e corrigir.</td></tr><tr><td>Histórico</td><td>Os commits contam a evolução do trabalho e respondem às issues de feedback.</td></tr></tbody></table></div>
+</section>
+<section class="glass-card p-4 p-md-5 mb-4"><h2 class="h4 fw-bold mb-3">Antes do seu dia</h2>
+<ul class="text-muted mb-0"><li>Abra o Codespace com antecedência; a primeira inicialização leva alguns minutos.</li><li>Confirme que a tag foi enviada: <code>git ls-remote --tags origin</code>.</li><li>Releia o seu <code>docs/spec.md</code> e o <code>docs/casos-de-teste.md</code>.</li><li>O uso do opencode durante a arguição não é permitido.</li></ul>
+</section>
+  </div></div></main>
+  <footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+  <script src="../../js/avisos.js" defer></script>
+</body>
+</html>

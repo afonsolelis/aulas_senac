@@ -1,0 +1,1131 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="BDD, Gherkin, cucumber-js, supertest, World, tags, k6, teste de carga, p95, thresholds, opencode, qualidade de software" />
+    <title>Aula 12 - BDD e testes de carga</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 12: BDD e testes de carga</h1>
+          <p class="fs-4 text-secondary">Cenários em Gherkin com cucumber-js e supertest, carga com k6 e thresholds</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 16 · 19/04 a 23/04</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">BDD</span><span class="keyword">Gherkin</span><span class="keyword">cucumber-js</span><span class="keyword">k6</span><span class="keyword">p95</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Exemplo como especificação e Gherkin (20 min)</li><li>Demonstração: cucumber-js, World e passos com supertest (45 min)</li><li>Esquema do Cenário, tags e relatório (35 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Tipos de teste de carga e métricas (20 min)</li><li>Demonstração: k6 com thresholds no Codespace (30 min)</li><li>Prompts no organizacao-recursos (40 min)</li><li>Checklist do Trabalho 2 e checagem na mesa (10 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Exemplo como especificação -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Exemplo como especificação</h2>
+          <p class="lead text-center text-muted mb-3">BDD parte dos critérios de aceite que a spec já tem desde a Aula 02 e os reescreve como exemplos concretos, com dados, que uma ferramenta consegue executar.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h3 class="h6 fw-bold"><i class="fas fa-file-lines me-2" aria-hidden="true"></i>specs/emprestimo.md</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-0" style="white-space: pre-wrap">CA-01 Com menos de 3 empréstimos ativos, o aluno
+      pega o livro e a devolução prevista é hoje + 14 dias.
+CA-02 Com 3 empréstimos ativos, o pedido é recusado.
+CA-03 Livro reservado por outro aluno não sai.
+CA-04 Aluno com multa pendente não pega livro.</pre>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <h3 class="h6 fw-bold"><i class="fas fa-list-check me-2" aria-hidden="true"></i>features/emprestimo.feature</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-0" style="white-space: pre-wrap"># CA-02
+Cenário: Quarto empréstimo é recusado
+  Dado que "Ana" tem 3 empréstimos ativos
+  Quando "Ana" pede o livro "Clean Code"
+  Então o empréstimo é recusado com a mensagem
+        "limite de 3 empréstimos ativos"</pre>
+              </div>
+            </div>
+          </div>
+          <div class="row g-3 mt-1 text-start">
+            <div class="col-md-4"><div class="alert alert-light border mb-0 small"><b class="d-block mb-1">Conversa</b>O exemplo com "Ana" e "3 empréstimos" tira a ambiguidade antes do código existir.</div></div>
+            <div class="col-md-4"><div class="alert alert-light border mb-0 small"><b class="d-block mb-1">Documentação viva</b>O arquivo .feature descreve o comportamento e falha quando deixa de ser verdade.</div></div>
+            <div class="col-md-4"><div class="alert alert-light border mb-0 small"><b class="d-block mb-1">Teste de aceitação</b>Roda pela API, como quem usa o sistema, acima dos testes de unidade.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Gherkin em português -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Gherkin em português</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 fs-6 text-start">
+              <thead class="table-light"><tr><th>Palavra-chave</th><th>Para que serve</th></tr></thead>
+              <tbody>
+                <tr><td><code># language: pt</code></td><td>Primeira linha do arquivo. Sem ela, o parser espera Feature, Given, When, Then.</td></tr>
+                <tr><td><code>Funcionalidade:</code></td><td>Uma por arquivo. As linhas seguintes descrevem quem usa, o que quer e para quê.</td></tr>
+                <tr><td><code>Contexto:</code></td><td>Passos repetidos antes de cada cenário do arquivo.</td></tr>
+                <tr><td><code>Cenário:</code></td><td>Um exemplo, com um único comportamento sob teste.</td></tr>
+                <tr><td><code>Esquema do Cenário:</code> + <code>Exemplos:</code></td><td>O mesmo roteiro com uma linha da tabela por execução; <code>&lt;multa&gt;</code> é trocado pelo valor da coluna.</td></tr>
+                <tr><td><code>Dado</code> / <code>Quando</code> / <code>Então</code></td><td>Estado inicial, a ação de quem usa e o resultado que ele observa.</td></tr>
+                <tr><td><code>E</code> / <code>Mas</code></td><td>Continuam o passo anterior sem repetir a palavra.</td></tr>
+                <tr><td><code>@wip</code>, <code>@multa</code></td><td>Tags: selecionam o que roda com <code>--tags</code> ou no perfil do <code>cucumber.js</code>.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-dark mt-3 mb-0 fs-6">Escreva do ponto de vista de quem usa: nada de rota, SQL ou nome de função no .feature. Esses detalhes ficam nas step definitions.</div>
+        </div>
+      </div>
+
+      <!-- 5. VS Code: o arquivo .feature -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Pedir ao opencode os cenários dos quatro critérios de aceite do empréstimo e conferir se nenhum ficou de fora.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e acompanhe o que o agente lê e escreve.<br>2. Rode "Conferir os critérios": cada <code># CA-0N</code> da spec tem cenário?<br>3. Rode "Rodar sem passos".</div>
+                <div class="rl obs"><b>Observe</b>O agente leu <code>specs/emprestimo.md</code> antes de escrever. O cucumber-js já entende o arquivo gerado: 4 cenários e 25 passos, todos indefinidos.</div>
+                <div class="rl conc"><b>Conclusão</b>O .feature vem primeiro e não depende de código. Quem confere a cobertura dos critérios é o aluno, não o agente.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-feature"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Flow: do cenário à API -->
+      <div class="slide slide-lab" id="slide-6">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Como o cucumber-js executa um cenário</p><h2>Do passo em português até a API Express</h2></div></div>
+          <div class="lab-area" id="flow-bdd"></div>
+        </div>
+      </div>
+
+      <!-- 7. VS Code: configuração e World -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fazer o opencode configurar o cucumber-js num projeto ES module e criar o World, revisando o diff antes de aceitar.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e veja o pedido de permissão do <code>npm install</code>.<br>2. Rode "Conferir o diff".<br>3. Peça a correção e rode em seco.</div>
+                <div class="rl obs"><b>Observe</b>O agente pôs <code>@cucumber/cucumber</code> e <code>supertest</code> em <code>dependencies</code>. Pacote de teste fica em <code>devDependencies</code>; o diff mostra isso, o resumo do agente não.</div>
+                <div class="rl conc"><b>Conclusão</b>Cada cenário recebe um World novo, com repositório em memória e relógio fixo. A configuração só entra na main depois do diff lido.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-config"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. VS Code: step definitions com supertest -->
+      <div class="slide slide-lab" id="slide-8">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Gerar as step definitions com supertest e verificar se o resultado do agente bate com o terminal.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e compare com o resumo do agente.<br>3. Peça o passo que faltou e confira que nenhum .feature mudou.</div>
+                <div class="rl obs"><b>Observe</b>O resumo diz que os passos foram implementados, mas o passo da multa pendente fica com <code>?</code> e os seguintes com <code>-</code> (pulados). Só a execução mostra isso.</div>
+                <div class="rl conc"><b>Conclusão</b>A step definition traduz a frase em requisição e asserção. A frase do .feature não muda para facilitar o código, e o <code>git diff</code> prova isso.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-steps"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. VS Code: Esquema do Cenário -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Cobrir os valores-limite da multa com Esquema do Cenário e decidir o que fazer quando um exemplo falha.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia a pergunta que o agente faz no fim.<br>2. Rode "Verificar" e leia a falha.<br>3. Peça a correção no código, não no exemplo.</div>
+                <div class="rl obs"><b>Observe</b>Com a devolução um dia antes, a função devolve <code>-150</code>. O agente oferece trocar a linha da tabela para <code>-150</code>: o teste passaria e a spec deixaria de valer. A resposta é não.</div>
+                <div class="rl conc"><b>Conclusão</b>Quando o exemplo vem da spec, quem muda é o código. As técnicas de caixa preta da Aula 03 escolhem as linhas da tabela.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-esquema"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. VS Code: tags, perfis e relatório -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Separar o que está pronto do que está em construção e gerar um relatório HTML.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" para criar a renovação marcada com <code>@wip</code>.<br>2. Rode as três verificações na ordem.</div>
+                <div class="rl obs"><b>Observe</b>O perfil padrão exclui <code>@wip</code>, então a main continua verde. Com <code>-p wip</code>, o passo indefinido faz o comando sair com código 1.</div>
+                <div class="rl conc"><b>Conclusão</b>Tag escolhe o que roda; perfil guarda a escolha; o relatório em <code>relatorios/cucumber.html</code> mostra cada passo para quem não lê o terminal.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-tags"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Tipos de teste de carga -->
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Tipos de teste de carga</h2>
+          <p class="text-center text-muted mb-3">O script é o mesmo; muda o perfil de usuários virtuais (VUs) ao longo do tempo e a pergunta que o teste responde.</p>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 fs-6 text-start">
+              <thead class="table-light"><tr><th>Tipo</th><th>Perfil de VUs</th><th>Duração típica</th><th>Pergunta</th></tr></thead>
+              <tbody>
+                <tr><td><b>Smoke</b></td><td>1 VU</td><td>30 s</td><td>O script e a API funcionam antes de pôr carga?</td></tr>
+                <tr><td><b>Carga</b></td><td>sobe até a carga esperada (50), mantém, desce</td><td>2 a 10 min</td><td>A meta de desempenho vale no uso normal?</td></tr>
+                <tr><td><b>Estresse</b></td><td>degraus acima do esperado (100, 200, 300)</td><td>5 a 15 min</td><td>Onde o sistema degrada e como ele falha?</td></tr>
+                <tr><td><b>Pico</b></td><td>salto de 10 para 400 em segundos</td><td>1 a 3 min</td><td>Aguenta a abertura do semestre e volta ao normal depois?</td></tr>
+                <tr><td><b>Resistência</b></td><td>carga normal mantida (40)</td><td>horas</td><td>Há vazamento de memória, de conexões do pool ou de disco?</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-dark mt-3 mb-0 fs-6">O Trabalho 2 exige o teste de carga com a meta do <code>docs/qualidade.md</code>. Os outros perfis aparecem na demonstração para você saber configurá-los.</div>
+        </div>
+      </div>
+
+      <!-- 12. Métricas -->
+      <div class="slide" id="slide-12">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Métricas que o k6 entrega</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Vazão</h3><p class="small mb-1"><code>http_reqs</code> por segundo.</p><p class="small text-muted mb-0">Quanto trabalho o sistema conclui. Para de crescer quando ele satura.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">p95</h3><p class="small mb-1"><code>http_req_duration</code>, percentil 95.</p><p class="small text-muted mb-0">95% das requisições terminaram até esse tempo; 1 em 20 demorou mais.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">p99</h3><p class="small mb-1">Percentil 99.</p><p class="small text-muted mb-0">A cauda: o que 1 em cada 100 usuários sente. Peça com <code>summaryTrendStats</code>.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Taxa de erro</h3><p class="small mb-1"><code>http_req_failed</code>.</p><p class="small text-muted mb-0">Fração de respostas com status fora de 200 a 399 ou sem resposta.</p></div></div>
+          </div>
+          <div class="row g-3 mt-1">
+            <div class="col-md-6"><div class="alert alert-light border mb-0 small"><b class="d-block mb-1">Por que não a média</b>100 requisições: 95 em 50 ms e 5 em 2000 ms. A média dá 147,5 ms e parece ótima. O p95 é 50 ms e o p99 é 2000 ms: a cauda aparece.</div></div>
+            <div class="col-md-6"><div class="alert alert-light border mb-0 small"><b class="d-block mb-1">Threshold</b><code>http_req_duration: ['p(95)&lt;300']</code> transforma a meta em critério. Se cruzar, o k6 marca ✗ e o comando sai com código 99.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. VS Code: smoke com checks -->
+      <div class="slide slide-lab" id="slide-13">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Subir a API no Codespace e pedir ao opencode um smoke test com checks, antes de qualquer carga.</div>
+                <div class="rl"><b>Faça</b>1. Clique em "Preparar o ambiente": banco, migrações, API e versão do k6.<br>2. Rode "Pedir ao opencode" e veja a permissão para rodar o k6.<br>3. Rode "Verificar" você mesmo.</div>
+                <div class="rl obs"><b>Observe</b>Check não reprova o teste sozinho: ele só conta acertos. Quem reprova é o threshold <code>checks: ['rate==1.0']</code>.</div>
+                <div class="rl conc"><b>Conclusão</b>Com 1 VU, um erro aqui é de script ou de API, nunca de carga. Só depois disso vale subir usuários.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-smoke"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. VS Code: stages e thresholds -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fazer o opencode transformar a meta do <code>docs/qualidade.md</code> em threshold e conferir o número.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Conferir a meta" e compare com a linha 5 de <code>docs/qualidade.md</code>.<br>3. Peça a correção, rode a carga e depois "Sem o índice de busca".</div>
+                <div class="rl obs"><b>Observe</b>O agente escreveu <code>p(95)&lt;500</code>, mas a meta é 300 ms; com 500 o teste passaria mesmo sem o índice. Corrigido, o k6 imprime ✗ e <code>echo $?</code> mostra 99.</div>
+                <div class="rl conc"><b>Conclusão</b>O requisito da Aula 01 virou um teste que reprova. Uma migração que apaga um índice é pega antes de chegar à main.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-carga"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. VS Code: perfis de carga -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Pedir ao opencode os perfis smoke, carga, estresse, pico e resistência no mesmo script, escolhidos por variável.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia o objeto <code>PERFIS</code> gerado.<br>2. Rode "Pico" e "Estresse".<br>3. Compare vazão, p(95) e taxa de erro.</div>
+                <div class="rl obs"><b>Observe</b><code>-e PERFIL=pico</code> chega ao script como <code>__ENV.PERFIL</code>. No estresse, a vazão para de subir perto de 200 VUs e a taxa de erro aparece.</div>
+                <div class="rl conc"><b>Conclusão</b>Estresse e pico podem reprovar e ainda assim cumprir o papel: mostram o limite e o modo de falha.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-perfis"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Laboratório -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">BDD e carga no seu organizacao-recursos</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 1 · cenários (55 min)</h3>
+                <ol class="mb-0"><li>Branch <code>test/bdd-reserva</code>.</li><li>Prompt 1: cenários a partir dos critérios de aceite da sua spec.</li><li>Prompt 2: <code>cucumber.js</code>, World e step definitions com supertest.</li><li><code>npm run bdd</code> verde, merge com <code>--ff-only</code>.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 2 · carga (35 min)</h3>
+                <ol class="mb-0"><li>Branch <code>test/carga</code>.</li><li>Confira <code>k6 version</code> no Codespace.</li><li>Prompt 3: <code>carga/busca.js</code> com a meta do <code>docs/qualidade.md</code>.</li><li>API ligada, <code>npm run carga</code>, merge na main.</li></ol>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Rode a carga contra a API local do Codespace. Nunca aponte o k6 para a ViaCEP nem para qualquer serviço de terceiros.</div>
+        </div>
+      </div>
+
+      <!-- 17. Prompt 1 -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Cenários a partir dos critérios de aceite</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Leia a especificação em specs/ deste repositório organizacao-recursos, em especial os critérios de aceite da reserva de salas, professores e materiais. Crie features/reserva.feature começando com # language: pt, com uma Funcionalidade que diga quem usa e para quê, um Contexto com os dados comuns a todos os cenários e um Cenário por critério de aceite, cada um precedido de um comentário com o identificador do critério (por exemplo # CA-03). Inclua um Esquema do Cenário com Exemplos para os limites de horário: reserva que termina exatamente quando a outra começa, sobreposição de um minuto e reserva dentro de outra. Escreva as frases do ponto de vista de quem usa o sistema, sem rotas, SQL ou nomes de função, e use um único Quando por cenário. Não crie step definitions nem altere código em src/.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: todo critério de aceite da spec tem pelo menos um cenário, e nenhum cenário cita rota, tabela ou função.</div>
+        </div>
+      </div>
+
+      <!-- 18. Prompt 2 -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">cucumber.js, World e step definitions</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Instale @cucumber/cucumber e supertest como devDependencies. Crie cucumber.js como ES module, com export default contendo paths ['features/**/*.feature'], import ['features/support/**/*.js', 'features/step_definitions/**/*.js'], format ['progress', 'html:relatorios/cucumber.html'] e tags 'not @wip', e um perfil exportado wip com tags '@wip'. Adicione o script "bdd": "cucumber-js" ao package.json e relatorios/ ao .gitignore. Crie features/support/world.js com uma classe que estende World e monta o app Express de src/app.js com repositório em memória e relógio fixo, para cada cenário começar com estado limpo. Crie as step definitions em features/step_definitions/, chamando a API com supertest sem subir servidor e verificando com node:assert/strict. Não altere as frases dos arquivos .feature para facilitar os passos. Rode npm run bdd e mostre a saída completa.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: rode <code>npm run bdd</code> duas vezes e compare. Depois quebre uma regra em <code>src/</code> e confira que um cenário falha.</div>
+        </div>
+      </div>
+
+      <!-- 19. Prompt 3 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Teste de carga com a meta do docs/qualidade.md</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Leia docs/qualidade.md e encontre o requisito de eficiência de desempenho. Crie carga/busca.js para o k6, em JavaScript, que exercite a consulta de disponibilidade de salas da API deste repositório. Use BASE_URL vindo de __ENV com padrão http://localhost:3000, options.stages com subida, patamar e descida até o número de usuários do requisito, thresholds http_req_duration com p(95) igual à meta do docs/qualidade.md e http_req_failed com rate&lt;0.01, e checks de status 200 e de corpo em JSON. Comente cada estágio dizendo por que ele existe. Adicione o script "carga": "k6 run carga/busca.js" ao package.json. Se a meta ou o número de usuários não estiver no docs/qualidade.md, pare e me pergunte em vez de inventar.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: o número do threshold é o mesmo do <code>docs/qualidade.md</code> e a URL aponta para localhost. Anote o p(95) obtido no corpo do commit.</div>
+        </div>
+      </div>
+
+      <!-- 20. Checklist do Trabalho 2 -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-dark">Trabalho 2</span><span class="badge bg-light text-dark border">entrega na semana 17</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Checklist do Trabalho 2</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <ul class="mb-0"><li>PostgreSQL com migrações versionadas e teste de integração com <code>@testcontainers/postgresql</code>.</li><li>ViaCEP isolada por dublê nos testes de unidade, com um teste para a ViaCEP fora do ar.</li><li>Cenários BDD em português, um por critério de aceite, com <code>npm run bdd</code>.</li><li>Teste de carga com a meta do <code>docs/qualidade.md</code>, com <code>npm run carga</code>.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-3 h-100">
+                <ul class="mb-0"><li><code>npm test</code>, lint e cobertura verdes no GitHub Actions.</li><li>Histórico linear, branches curtas e Conventional Commits em português.</li><li>Issues de feedback fechadas por commit com <code>Closes #N</code>.</li><li>README explicando como rodar cada tipo de teste no Codespace.</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="text-center mt-3"><a href="trabalho-2.html" class="btn btn-danger rounded-pill px-4"><i class="fas fa-file-signature me-2" aria-hidden="true"></i>Enunciado do Trabalho 2</a></div>
+          <p class="small text-muted text-center mt-2 mb-0">A lista ajuda a conferir antes de entregar. Se houver diferença, vale o enunciado.</p>
+        </div>
+      </div>
+
+      <!-- 21. Entregável -->
+      <div class="slide" id="slide-21">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 12</span>
+          <p class="fs-4 mb-4"><code>features/</code> com cenários e step definitions, <code>cucumber.js</code>, <code>carga/busca.js</code> e os scripts <code>bdd</code> e <code>carga</code>, integrados na main por branches curtas.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li><code>npm run bdd</code> passa e cada cenário cita um critério de aceite.</li><li><code>npm run carga</code> mostra os thresholds, e a meta bate com o <code>docs/qualidade.md</code>.</li><li>Você explica o que é p95 com um número do seu próprio resumo do k6.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 22. Dúvidas -->
+      <div class="slide cover-bg" id="slide-22">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Entrega do Trabalho 2.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 22</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · BDD e testes de carga · Semana 16</div>
+      <a href="material/material_aula12-bdd-carga.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PR = (branch) => '@professor ➜ /workspaces/biblioteca-campus (' + branch + ') $ ';
+const ST = 'Codespaces: professor';
+
+const FEATURE_EMPRESTIMO =
+`# language: pt
+@emprestimo
+Funcionalidade: Empréstimo de livros
+  Como aluno da biblioteca do campus
+  Quero pegar livros emprestados
+  Para estudar fora da biblioteca
+
+  Contexto:
+    Dado que hoje é "2027-04-20"
+    E o aluno "Ana" está cadastrado
+    E o livro "Clean Code" está disponível
+
+  # CA-01
+  Cenário: Empréstimo dentro do limite
+    Dado que "Ana" tem 2 empréstimos ativos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é aceito
+    E a devolução prevista é "2027-05-04"
+
+  # CA-02
+  Cenário: Quarto empréstimo é recusado
+    Dado que "Ana" tem 3 empréstimos ativos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "limite de 3 empréstimos ativos"
+
+  # CA-03
+  Cenário: Livro reservado por outro aluno
+    Dado que o livro "Clean Code" está reservado para "Bruno"
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "livro reservado por outro aluno"
+
+  # CA-04
+  Cenário: Aluno com multa pendente
+    Dado que "Ana" tem multa pendente de 450 centavos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "multa pendente"`;
+
+const SPEC_EMPRESTIMO =
+`# Especificação · Empréstimo (RF-02)
+
+## Regras
+- Um aluno tem no máximo 3 empréstimos ativos.
+- O prazo de devolução é de 14 dias corridos.
+- A multa é de 150 centavos por dia de atraso, com teto de 3000 centavos.
+
+## Critérios de aceite
+- CA-01 Com menos de 3 empréstimos ativos, o aluno pega o livro e a devolução prevista é hoje + 14 dias.
+- CA-02 Com 3 empréstimos ativos, o pedido é recusado.
+- CA-03 Livro reservado por outro aluno não sai.
+- CA-04 Aluno com multa pendente não pega livro.`;
+
+const WORLD =
+`import { setWorldConstructor, World } from '@cucumber/cucumber';
+import request from 'supertest';
+import { criarApp } from '../../src/app.js';
+import { criarRepoMemoria } from '../../src/repo-memoria.js';
+
+// Um World novo nasce a cada cenário: nada vaza de um cenário para outro.
+class MundoBiblioteca extends World {
+  constructor(options) {
+    super(options);
+    this.repo = criarRepoMemoria();
+    this.hoje = new Date('2027-01-01');
+    this.app = criarApp({ repo: this.repo, relogio: () => this.hoje });
+    this.resposta = null;
+  }
+
+  api() {
+    return request(this.app);
+  }
+}
+
+setWorldConstructor(MundoBiblioteca);`;
+
+const CUCUMBER_CFG =
+`// Configuração do cucumber-js (ES module). Lida por "npm run bdd".
+const comum = {
+  paths: ['features/**/*.feature'],
+  import: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+};
+
+// perfil padrão: tudo o que está pronto, com relatório HTML
+export default {
+  ...comum,
+  format: ['progress', 'html:relatorios/cucumber.html'],
+  tags: 'not @wip',
+};
+
+// npx cucumber-js -p wip: só o que está em construção
+export const wip = {
+  ...comum,
+  format: ['progress'],
+  tags: '@wip',
+};`;
+
+const PKG = (deps, dev) =>
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "lint": "eslint .",
+    "bdd": "cucumber-js",
+    "carga": "k6 run carga/busca.js"
+  },
+  "dependencies": {
+` + deps + `
+  },
+  "devDependencies": {
+` + dev + `
+  }
+}`;
+const PKG_ERRADO = PKG(
+`    "@cucumber/cucumber": "^12.2.0",
+    "express": "^5.1.0",
+    "pg": "^8.16.3",
+    "supertest": "^7.1.4"`,
+`    "@testcontainers/postgresql": "^11.5.1",
+    "eslint": "^9.35.0"`);
+const PKG_CERTO = PKG(
+`    "express": "^5.1.0",
+    "pg": "^8.16.3"`,
+`    "@cucumber/cucumber": "^12.2.0",
+    "@testcontainers/postgresql": "^11.5.1",
+    "eslint": "^9.35.0",
+    "supertest": "^7.1.4"`);
+
+const STEPS =
+`import { Given, When, Then } from '@cucumber/cucumber';
+import assert from 'node:assert/strict';
+
+Given('que hoje é {string}', function (data) {
+  this.hoje = new Date(data);
+});
+
+Given('o aluno {string} está cadastrado', async function (nome) {
+  await this.repo.salvarAluno({ id: nome, nome, multaPendente: 0 });
+});
+
+Given('o livro {string} está disponível', async function (titulo) {
+  await this.repo.salvarLivro({ id: titulo, titulo, reservadoPara: null });
+});
+
+Given('que {string} tem {int} empréstimos ativos', async function (aluno, n) {
+  for (let i = 1; i <= n; i++) {
+    await this.repo.salvarEmprestimo({ aluno, livro: 'Livro ' + i, devolvido: null });
+  }
+});
+
+Given('que o livro {string} está reservado para {string}', async function (titulo, outro) {
+  await this.repo.reservar(titulo, outro);
+});
+
+When('{string} pede o livro {string}', async function (aluno, livro) {
+  this.resposta = await this.api().post('/emprestimos').send({ aluno, livro });
+});
+
+Then('o empréstimo é aceito', function () {
+  assert.equal(this.resposta.status, 201);
+});
+
+Then('a devolução prevista é {string}', function (data) {
+  assert.equal(this.resposta.body.devolucaoPrevista, data);
+});
+
+Then('o empréstimo é recusado com a mensagem {string}', function (mensagem) {
+  assert.equal(this.resposta.status, 422);
+  assert.equal(this.resposta.body.erro, mensagem);
+});`;
+
+const STEPS_COM_MULTA = STEPS + `
+
+Given('que {string} tem multa pendente de {int} centavos', async function (aluno, centavos) {
+  await this.repo.salvarAluno({ id: aluno, nome: aluno, multaPendente: centavos });
+});`;
+
+/* ---------- 5. VS Code: o arquivo .feature gerado pelo opencode ---------- */
+Labs.vscode('#lab-feature', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/bdd-emprestimo', open: 'specs/emprestimo.md',
+  prompt: PR('test/bdd-emprestimo'),
+  files: [
+    { path: 'features/emprestimo.feature', hl: [13, 20, 26, 32], code: FEATURE_EMPRESTIMO },
+    { path: 'specs/emprestimo.md', hl: [9, 10, 11, 12], code: SPEC_EMPRESTIMO }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Leia specs/emprestimo.md e escreva features/emprestimo.feature em Gherkin com # language: pt: uma Funcionalidade, um Contexto com a data, o aluno e o livro, e um Cenário por critério de aceite, precedido do comentário # CA-0N. Frases do ponto de vista do aluno, sem rotas nem nomes de função. Não crie step definitions."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md',
+      '[mute] ▸ glob features/**/*.feature',
+      '[mute]   nenhum arquivo encontrado',
+      '[mute] ▸ write features/emprestimo.feature',
+      '[warn] ? Permitir executar "npx cucumber-js --dry-run"? (s/n) s',
+      '[mute] ▸ bash npx cucumber-js --dry-run',
+      '[mute]   4 scenarios (4 undefined)',
+      'Criei features/emprestimo.feature com 4 cenários (CA-01 a CA-04) e um Contexto de 3 passos.',
+      'Os passos estão indefinidos porque ainda não há step definitions, como pedido.' ] },
+    { label: '2. Conferir os critérios', kind: 'blue', file: 'features/emprestimo.feature', cmd: "grep -c '^- CA-' specs/emprestimo.md; grep -c '# CA-' features/emprestimo.feature; grep -nE 'POST|/emprestimos|emprestar\\(' features/emprestimo.feature", out: [
+      '4', '4', '[ok] Um cenário para cada critério de aceite, e nenhuma rota ou função no .feature.' ] },
+    { label: '3. Rodar sem passos', clear: false, cmd: 'npx cucumber-js features/emprestimo.feature', out: [
+      'UUUUUUUUUUUUUUUUUUUUUUUUU', '',
+      '[warn] Warnings:', '',
+      '[warn] 1) Cenário: Empréstimo dentro do limite # features/emprestimo.feature:14',
+      '[warn]    ? Dado que hoje é "2027-04-20"',
+      '       Undefined. Implement with the following snippet:', '',
+      "         Given('que hoje é {string}', function (string) {",
+      "           // Write code here that turns the phrase above into concrete actions",
+      "           return 'pending';", '         });', '',
+      '[mute]    (mais 9 passos indefinidos, cada um com snippet sugerido)', '',
+      '[warn] 4 scenarios (4 undefined)', '[warn] 25 steps (25 undefined)', '0m00.031s (executing steps: 0m00.000s)' ] }
+  ]
+});
+
+/* ---------- 6. Flow: do cenário à API ---------- */
+Labs.flow('#flow-bdd', {
+  w: 1000, h: 400,
+  nodes: [
+    { id: 'feat', x: 110, y: 90, label: 'emprestimo.feature', sub: 'Gherkin em português', k: 'amber' },
+    { id: 'cuc', x: 370, y: 90, label: 'cucumber-js', sub: 'lê cucumber.js' },
+    { id: 'world', x: 630, y: 90, label: 'World', sub: 'um por cenário', k: 'purple' },
+    { id: 'steps', x: 370, y: 250, label: 'Step definitions', sub: 'Given / When / Then' },
+    { id: 'st', x: 630, y: 250, label: 'supertest', sub: 'request(this.app)' },
+    { id: 'app', x: 880, y: 250, label: 'API Express', sub: 'POST /emprestimos' },
+    { id: 'repo', x: 880, y: 90, label: 'Repositório', sub: 'em memória', k: 'green' },
+    { id: 'res', x: 110, y: 250, label: 'Resultado', sub: 'progress + HTML', k: 'amber' }
+  ],
+  links: [ { from: 'feat', to: 'cuc' }, { from: 'cuc', to: 'world' }, { from: 'world', to: 'repo' }, { from: 'cuc', to: 'steps' }, { from: 'steps', to: 'st' }, { from: 'st', to: 'app' }, { from: 'app', to: 'repo' }, { from: 'steps', to: 'res' } ],
+  steps: [
+    { title: 'O arquivo .feature', text: 'O cucumber-js encontra os arquivos pelo campo <code>paths</code> do <code>cucumber.js</code> e lê cada cenário, já com os passos do Contexto na frente.', on: ['feat', 'cuc'], links: [['feat', 'cuc', 'amber']] },
+    { title: 'Um World por cenário', text: 'Antes do primeiro passo, ele cria um World novo: repositório vazio em memória e relógio fixo. É o <code>this</code> de todos os passos daquele cenário.', on: ['world', 'repo'], links: [['cuc', 'world', 'purple'], ['world', 'repo', 'green']] },
+    { title: 'Casar frase com código', text: 'Cada frase procura uma step definition cuja expressão case com ela. <code>{string}</code> e <code>{int}</code> viram argumentos da função.', on: ['steps'], links: [['cuc', 'steps']] },
+    { title: 'Chamar a API como cliente', text: 'O passo Quando usa supertest: a requisição entra no app Express sem abrir porta, passa pelas regras de <code>emprestar</code> e grava no repositório.', on: ['st', 'app', 'repo'], links: [['steps', 'st'], ['st', 'app'], ['app', 'repo', 'green']] },
+    { title: 'Verificar e relatar', text: 'O passo Então confere status e corpo com <code>node:assert/strict</code>. Cada passo vira um ponto no terminal e uma linha no relatório HTML.', on: ['steps', 'res'], links: [['steps', 'res', 'amber']] }
+  ]
+});
+
+/* ---------- 7. VS Code: configuração e World ---------- */
+Labs.vscode('#lab-config', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/bdd-emprestimo', open: 'cucumber.js',
+  prompt: PR('test/bdd-emprestimo'),
+  files: [
+    { path: 'cucumber.js', hl: [3, 4, 10, 11], code: CUCUMBER_CFG },
+    { path: 'package.json', hl: [13, 16], code: PKG_ERRADO },
+    { path: 'features/support/world.js', hl: [10, 11, 12], code: WORLD },
+    { path: 'features/emprestimo.feature', code: FEATURE_EMPRESTIMO }
+  ],
+  onRun(k, api) { if (k === 2) { api.setCode('package.json', PKG_CERTO); api.open('package.json'); } },
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Configure o cucumber-js neste projeto ES module: instale @cucumber/cucumber e supertest, crie cucumber.js com export default (paths, import, format progress e html:relatorios/cucumber.html, tags not @wip) e um perfil wip, adicione o script bdd e crie features/support/world.js com um World que monta o app com repositório em memória e relógio fixo."', speed: 120, out: [
+      '[mute] ▸ read package.json', '[mute] ▸ read src/app.js', '[mute] ▸ read src/repo-memoria.js',
+      '[warn] ? Permitir executar "npm install @cucumber/cucumber supertest"? (s/n) s',
+      '[mute] ▸ bash npm install @cucumber/cucumber supertest',
+      '[mute]   added 112 packages, and audited 287 packages in 7s',
+      '[mute] ▸ write cucumber.js', '[mute] ▸ edit package.json', '[mute] ▸ write features/support/world.js',
+      '[mute] ▸ bash npm run bdd -- --dry-run',
+      '[mute]   4 scenarios (4 undefined)',
+      'Pronto: cucumber-js 12.2.0 configurado, script "bdd" no package.json e World com estado por cenário.' ] },
+    { label: '2. Conferir o diff', kind: 'red', clear: false, file: 'package.json', cmd: 'git diff package.json', out: [
+      '[mute] @@ -11,9 +11,11 @@', '   "dependencies": {',
+      '[ok] +    "@cucumber/cucumber": "^12.2.0",', '     "express": "^5.1.0",', '     "pg": "^8.16.3",',
+      '[ok] +    "supertest": "^7.1.4"', '   },',
+      '[warn] Os dois pacotes de teste entraram em dependencies, que vão para produção. Não aceitar assim.' ] },
+    { label: '3. Pedir a correção', clear: false, cmd: 'opencode run "@cucumber/cucumber e supertest só servem para teste. Mova os dois para devDependencies."', out: [
+      '[mute] ▸ read package.json',
+      '[warn] ? Permitir executar "npm install --save-dev @cucumber/cucumber supertest"? (s/n) s',
+      '[mute] ▸ bash npm install --save-dev @cucumber/cucumber supertest',
+      'Os dois pacotes agora estão em devDependencies; dependencies ficou com express e pg.' ] },
+    { label: '4. Rodar em seco', kind: 'blue', cmd: 'npm run bdd -- --dry-run', out: [
+      '', '> biblioteca-campus@1.0.0 bdd', '> cucumber-js --dry-run', '',
+      'UUUUUUUUUUUUUUUUUUUUUUUUU', '',
+      '[warn] 4 scenarios (4 undefined)', '[warn] 25 steps (25 undefined)', '0m00.028s (executing steps: 0m00.000s)',
+      '[info] Configuração e World carregam sem erro; faltam as step definitions.' ] }
+  ]
+});
+
+/* ---------- 8. VS Code: step definitions ---------- */
+Labs.vscode('#lab-steps', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/bdd-emprestimo', open: 'features/step_definitions/emprestimo.steps.js',
+  prompt: PR('test/bdd-emprestimo'),
+  files: [
+    { path: 'features/step_definitions/emprestimo.steps.js', hl: [26, 27, 28, 38, 39, 40], code: STEPS },
+    { path: 'features/emprestimo.feature', hl: [33, 34, 35, 36], code: FEATURE_EMPRESTIMO },
+    { path: 'features/support/world.js', code: WORLD }
+  ],
+  onRun(k, api) { if (k === 2) { api.setCode('features/step_definitions/emprestimo.steps.js', STEPS_COM_MULTA); } },
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Crie features/step_definitions/emprestimo.steps.js para os passos de features/emprestimo.feature. Use o World de features/support/world.js, chame a API com supertest por this.api() e verifique com node:assert/strict. Não altere nenhum .feature."', speed: 120, out: [
+      '[mute] ▸ read features/emprestimo.feature', '[mute] ▸ read features/support/world.js', '[mute] ▸ read src/app.js',
+      '[mute] ▸ write features/step_definitions/emprestimo.steps.js',
+      'Step definitions implementadas para os passos de emprestimo.feature, usando supertest e node:assert/strict.' ] },
+    { label: '2. Verificar', kind: 'red', cmd: 'npm run bdd', out: [
+      '', '> biblioteca-campus@1.0.0 bdd', '> cucumber-js', '',
+      '......................U--', '',
+      '[warn] Warnings:', '',
+      '[warn] 1) Cenário: Aluno com multa pendente # features/emprestimo.feature:33',
+      '[ok]    ✔ Dado que hoje é "2027-04-20" # features/step_definitions/emprestimo.steps.js:4',
+      '[ok]    ✔ E o aluno "Ana" está cadastrado # features/step_definitions/emprestimo.steps.js:8',
+      '[ok]    ✔ E o livro "Clean Code" está disponível # features/step_definitions/emprestimo.steps.js:12',
+      '[warn]    ? Dado que "Ana" tem multa pendente de 450 centavos',
+      '       Undefined. Implement with the following snippet:', '',
+      "         Given('que {string} tem multa pendente de {int} centavos', function (string, int) {",
+      "           return 'pending';", '         });', '',
+      '[mute]    - Quando "Ana" pede o livro "Clean Code" # features/step_definitions/emprestimo.steps.js:26',
+      '[mute]    - Então o empréstimo é recusado com a mensagem "multa pendente" # features/step_definitions/emprestimo.steps.js:38', '',
+      '[warn] 4 scenarios (1 undefined, 3 passed)', '[warn] 25 steps (1 undefined, 2 skipped, 22 passed)', '0m00.184s (executing steps: 0m00.151s)',
+      '[warn] O resumo do agente não falou do passo que faltou.' ] },
+    { label: '3. Pedir o passo que faltou', clear: false, cmd: 'opencode run "npm run bdd mostra o passo indefinido \'que {string} tem multa pendente de {int} centavos\'. Implemente esse passo gravando a multa no aluno pelo repositório."', out: [
+      '[mute] ▸ read features/step_definitions/emprestimo.steps.js', '[mute] ▸ edit features/step_definitions/emprestimo.steps.js',
+      '[mute] ▸ bash npm run bdd', '[mute]   4 scenarios (4 passed)',
+      'Passo de multa pendente adicionado no fim do arquivo; os 4 cenários passam.' ] },
+    { label: '4. Conferir e commitar', kind: 'blue', file: 'features/step_definitions/emprestimo.steps.js', cmd: 'git diff --stat -- "*.feature"; npm run bdd && git add features && git commit -m "test(emprestimo): cenários BDD dos critérios CA-01 a CA-04"', out: [
+      '[ok] (nenhuma linha: o agente não mexeu nos .feature)', '',
+      '> biblioteca-campus@1.0.0 bdd', '> cucumber-js', '',
+      '.........................', '',
+      '[ok] 4 scenarios (4 passed)', '[ok] 25 steps (25 passed)', '0m00.176s (executing steps: 0m00.149s)',
+      '[test/bdd-emprestimo 5d2e9a1] test(emprestimo): cenários BDD dos critérios CA-01 a CA-04', ' 4 files changed, 96 insertions(+)' ] }
+  ]
+});
+
+/* ---------- 9. VS Code: Esquema do Cenário ---------- */
+const FEATURE_MULTA =
+`# language: pt
+@multa
+Funcionalidade: Multa por atraso
+  Regra da spec: 150 centavos por dia de atraso, com teto de 3000 centavos.
+
+  Esquema do Cenário: Multa calculada na devolução
+    Dado um empréstimo com devolução prevista para "<previsto>"
+    Quando o livro é devolvido em "<devolvido>"
+    Então a multa é de <multa> centavos
+
+    Exemplos:
+      | previsto   | devolvido  | multa |
+      | 2027-05-04 | 2027-05-04 | 0     |
+      | 2027-05-04 | 2027-05-03 | 0     |
+      | 2027-05-04 | 2027-05-05 | 150   |
+      | 2027-05-04 | 2027-05-24 | 3000  |
+      | 2027-05-04 | 2027-05-25 | 3000  |
+      | 2027-05-04 | 2027-06-30 | 3000  |`;
+const MULTA_BUG =
+`const DIA_MS = 86_400_000;
+
+export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((new Date(devolvido) - new Date(previsto)) / DIA_MS);
+  return Math.min(dias * 150, 3000);
+}`;
+const MULTA_OK =
+`const DIA_MS = 86_400_000;
+
+export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((new Date(devolvido) - new Date(previsto)) / DIA_MS);
+  if (dias <= 0) return 0;
+  return Math.min(dias * 150, 3000);
+}`;
+Labs.vscode('#lab-esquema', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/bdd-multa', open: 'features/multa.feature',
+  prompt: PR('test/bdd-multa'),
+  files: [
+    { path: 'features/multa.feature', hl: [14], code: FEATURE_MULTA },
+    { path: 'features/step_definitions/multa.steps.js', code:
+`import { Given, When, Then } from '@cucumber/cucumber';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../../src/emprestimo.js';
+
+Given('um empréstimo com devolução prevista para {string}', function (data) {
+  this.previsto = data;
+});
+
+When('o livro é devolvido em {string}', function (data) {
+  this.multa = calcularMulta(this.previsto, data);
+});
+
+Then('a multa é de {int} centavos', function (esperada) {
+  assert.equal(this.multa, esperada);
+});` },
+    { path: 'src/emprestimo.js', hl: [4, 5], code: MULTA_BUG }
+  ],
+  onRun(k, api) { if (k === 2) { api.setCode('src/emprestimo.js', MULTA_OK); api.open('src/emprestimo.js'); } },
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Crie features/multa.feature com um Esquema do Cenário para calcularMulta, com Exemplos nos limites da regra da spec: devolução no dia, um dia antes, um dia depois, 20 dias, 21 dias e muito depois. Crie as step definitions chamando calcularMulta de src/emprestimo.js e rode os cenários."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md', '[mute] ▸ read src/emprestimo.js',
+      '[mute] ▸ write features/multa.feature', '[mute] ▸ write features/step_definitions/multa.steps.js',
+      '[mute] ▸ bash npx cucumber-js features/multa.feature',
+      '[mute]   6 scenarios (1 failed, 5 passed)',
+      'Um exemplo falhou: devolução um dia antes do previsto devolve -150 em vez de 0.',
+      '[warn] ? Posso trocar a multa esperada dessa linha para -150 para o esquema passar? (s/n) n' ] },
+    { label: '2. Verificar', kind: 'red', cmd: 'npx cucumber-js features/multa.feature', out: [
+      '.....F............', '',
+      '[err] Failures:', '',
+      '[err] 1) Cenário: Multa calculada na devolução # features/multa.feature:14',
+      '[ok]    ✔ Dado um empréstimo com devolução prevista para "2027-05-04" # features/step_definitions/multa.steps.js:5',
+      '[ok]    ✔ Quando o livro é devolvido em "2027-05-03" # features/step_definitions/multa.steps.js:9',
+      '[err]    ✖ Então a multa é de 0 centavos # features/step_definitions/multa.steps.js:13',
+      '[err]        AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '',
+      '[err]        -150 !== 0', '',
+      '[mute]            at World.<anonymous> (features/step_definitions/multa.steps.js:14:10)', '',
+      '[err] 6 scenarios (1 failed, 5 passed)', '[err] 18 steps (1 failed, 17 passed)', '0m00.019s (executing steps: 0m00.004s)' ] },
+    { label: '3. Corrigir o código', clear: false, cmd: 'opencode run "A spec só prevê multa com atraso. Corrija calcularMulta em src/emprestimo.js para devolver 0 quando a devolução for no dia ou antes. Não mexa em features/multa.feature."', out: [
+      '[mute] ▸ read src/emprestimo.js', '[mute] ▸ edit src/emprestimo.js',
+      '[mute] ▸ bash npx cucumber-js features/multa.feature', '[mute]   6 scenarios (6 passed)',
+      'Adicionei a guarda "if (dias <= 0) return 0" na linha 5. O .feature não foi alterado.' ] },
+    { label: '4. Conferir e commitar', kind: 'blue', file: 'src/emprestimo.js', cmd: 'git diff --stat && npx cucumber-js features/multa.feature && git add -A && git commit -m "fix(multa): devolução antecipada não gera multa"', out: [
+      ' features/multa.feature                   | 18 ++++++++++', ' features/step_definitions/multa.steps.js | 15 ++++++++', ' src/emprestimo.js                        |  1 +', '',
+      '..................', '',
+      '[ok] 6 scenarios (6 passed)', '[ok] 18 steps (18 passed)', '0m00.017s (executing steps: 0m00.003s)',
+      '[test/bdd-multa 81c4f07] fix(multa): devolução antecipada não gera multa', ' 3 files changed, 34 insertions(+)' ] }
+  ]
+});
+
+/* ---------- 10. VS Code: tags, perfis e relatório ---------- */
+Labs.vscode('#lab-tags', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/bdd-renovacao', open: 'features/renovacao.feature',
+  prompt: PR('test/bdd-renovacao'),
+  files: [
+    { path: 'features/renovacao.feature', hl: [2], code:
+`# language: pt
+@wip
+Funcionalidade: Renovação de empréstimo
+
+  Cenário: Renovar antes do vencimento
+    Dado que hoje é "2027-05-01"
+    E "Ana" tem o livro "Clean Code" com devolução prevista para "2027-05-04"
+    Quando "Ana" renova o empréstimo
+    Então a devolução prevista passa a ser "2027-05-18"` },
+    { path: 'cucumber.js', hl: [11, 18], code: CUCUMBER_CFG },
+    { path: 'features/multa.feature', code: FEATURE_MULTA },
+    { path: 'features/emprestimo.feature', code: FEATURE_EMPRESTIMO }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Escreva features/renovacao.feature com um cenário de renovação antes do vencimento (prazo de mais 14 dias) e marque a funcionalidade com @wip. Não implemente os passos."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md', '[mute] ▸ read cucumber.js',
+      '[mute] ▸ write features/renovacao.feature',
+      'Cenário criado com a tag @wip. O perfil padrão do cucumber.js usa "not @wip", então ele fica fora de npm run bdd até os passos existirem.' ] },
+    { label: '2. Perfil padrão', kind: 'blue', file: 'cucumber.js', cmd: 'npm run bdd && ls relatorios/', out: [
+      '', '> biblioteca-campus@1.0.0 bdd', '> cucumber-js', '',
+      '...........................................', '',
+      '[ok] 10 scenarios (10 passed)', '[ok] 43 steps (43 passed)', '0m00.201s (executing steps: 0m00.163s)',
+      'cucumber.html' ] },
+    { label: '3. Perfil wip', kind: 'red', file: 'features/renovacao.feature', cmd: 'npx cucumber-js -p wip; echo "código de saída: $?"', out: [
+      '.U--', '',
+      '[warn] Warnings:', '',
+      '[warn] 1) Cenário: Renovar antes do vencimento # features/renovacao.feature:5',
+      '[ok]    ✔ Dado que hoje é "2027-05-01" # features/step_definitions/emprestimo.steps.js:4',
+      '[warn]    ? E "Ana" tem o livro "Clean Code" com devolução prevista para "2027-05-04"',
+      '       Undefined. Implement with the following snippet:', '',
+      "         Given('{string} tem o livro {string} com devolução prevista para {string}', function (string, string2, string3) {",
+      "           return 'pending';", '         });', '',
+      '[mute]    - Quando "Ana" renova o empréstimo',
+      '[mute]    - Então a devolução prevista passa a ser "2027-05-18"', '',
+      '[warn] 1 scenario (1 undefined)', '[warn] 4 steps (1 undefined, 2 skipped, 1 passed)', '0m00.012s (executing steps: 0m00.002s)',
+      '[err] código de saída: 1' ] },
+    { label: '4. Só uma tag', kind: 'blue', file: 'features/multa.feature', cmd: 'npx cucumber-js --tags "@multa"', out: [
+      '..................', '',
+      '[ok] 6 scenarios (6 passed)', '[ok] 18 steps (18 passed)', '0m00.018s (executing steps: 0m00.003s)',
+      '[info] Expressões aceitas: "@multa or @emprestimo", "@emprestimo and not @lento", "not @wip".' ] }
+  ]
+});
+
+/* ---------- 13. VS Code: smoke com checks ---------- */
+Labs.vscode('#lab-smoke', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/carga', open: 'carga/smoke.js',
+  prompt: PR('test/carga'),
+  setup: [
+    { cmd: 'docker compose up -d db', out: ['[mute] Container biblioteca-campus-db-1  Started', '[ok] postgres:16-alpine pronto na porta 5432'] },
+    { cmd: 'npm run migrar', out: ['[mute] 001_cria_tabelas.sql   aplicada', '[mute] 002_semeia_acervo.sql   aplicada (5000 livros)', '[ok] 003_indice_busca.sql   aplicada'] },
+    { cmd: 'npm start &', out: ['[1] 4127', '[ok] biblioteca-campus ouvindo em http://localhost:3000'] },
+    { cmd: 'k6 version', out: ['k6 v1.3.0 (go1.24.6, linux/amd64)'] }
+  ],
+  files: [
+    { path: 'carga/smoke.js', hl: [8, 9, 10, 11, 12, 13], code:
+`// Smoke: 1 usuário por 30 s. Confere script e API antes de pôr carga.
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+export const options = {
+  vus: 1,
+  duration: '30s',
+  thresholds: {
+    http_req_failed: ['rate<0.01'],
+    checks: ['rate==1.0'],
+  },
+};
+
+export default function () {
+  const res = http.get(BASE + '/livros?busca=clean');
+  check(res, {
+    'status 200': (r) => r.status === 200,
+    'corpo é uma lista': (r) => Array.isArray(r.json()),
+    'responde em menos de 300 ms': (r) => r.timings.duration < 300,
+  });
+  sleep(1);
+}` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Crie carga/smoke.js para o k6: 1 VU por 30 s contra GET /livros?busca=clean em BASE_URL (padrão http://localhost:3000), com checks de status 200, corpo em lista e tempo abaixo de 300 ms, e thresholds para http_req_failed e checks. Rode o script."', speed: 120, out: [
+      '[mute] ▸ read src/rotas/livros.js', '[mute] ▸ read docs/qualidade.md',
+      '[mute] ▸ write carga/smoke.js',
+      '[warn] ? Permitir executar "k6 run carga/smoke.js"? (s/n) s',
+      '[mute] ▸ bash k6 run carga/smoke.js',
+      '[mute]   29 complete and 0 interrupted iterations',
+      'Smoke criado e executado: 29 iterações, todos os checks passaram.' ] },
+    { label: '2. Verificar', kind: 'blue', cmd: 'k6 run carga/smoke.js', speed: 30, out: [
+      '[mute]      execution: local', '[mute]         script: carga/smoke.js', '[mute]         output: -',
+      '[mute]      scenarios: (100.00%) 1 scenario, 1 max VUs, 1m0s max duration (incl. graceful stop):',
+      '[mute]               * default: 1 looping VUs for 30s (gracefulStop: 30s)', '',
+      '  █ THRESHOLDS', '',
+      '    checks', "[ok]     ✓ 'rate==1.0' rate=100.00%", '',
+      '    http_req_failed', "[ok]     ✓ 'rate<0.01' rate=0.00%", '',
+      '  █ TOTAL RESULTS', '',
+      '    checks_total.......................: 87      2.89/s',
+      '    checks_succeeded...................: 100.00% 87 out of 87',
+      '    checks_failed......................: 0.00%   0 out of 87', '',
+      '[ok]     ✓ status 200', '[ok]     ✓ corpo é uma lista', '[ok]     ✓ responde em menos de 300 ms', '',
+      '    HTTP',
+      '    http_req_duration..................: avg=11.42ms min=7.03ms med=10.88ms max=31.2ms p(90)=14.1ms p(95)=16.7ms',
+      '    http_req_failed....................: 0.00%   0 out of 29',
+      '    http_reqs..........................: 29      0.96/s', '',
+      '    EXECUTION',
+      '    iterations.........................: 29      0.96/s',
+      '    vus................................: 1       min=1      max=1', '',
+      'running (0m30.2s), 0/1 VUs, 29 complete and 0 interrupted iterations',
+      '[ok] default ✓ [======================================] 1 VUs  30s' ] },
+    { label: '3. Conferir a URL', kind: 'blue', cmd: 'grep -n "http" carga/smoke.js', out: [
+      "5:const BASE = __ENV.BASE_URL || 'http://localhost:3000';",
+      '[ok] Só localhost: o script não toca a ViaCEP nem outro serviço de terceiros.' ] }
+  ]
+});
+
+/* ---------- 14. VS Code: stages e thresholds ---------- */
+const K6_CAB = (script, vus, max, linha) => [
+  '[mute]      execution: local', '[mute]         script: ' + script, '[mute]         output: -',
+  '[mute]      scenarios: (100.00%) 1 scenario, ' + vus + ' max VUs, ' + max + ' max duration (incl. graceful stop):',
+  '[mute]               * default: ' + linha, ''
+];
+const BUSCA = (meta) =>
+`// Carga: a busca do acervo sob o uso esperado (requisito de desempenho em docs/qualidade.md).
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+export const options = {
+  stages: [
+    { duration: '30s', target: 50 }, // subida: 0 a 50 usuários
+    { duration: '1m', target: 50 },  // patamar: 50 usuários, a carga do requisito
+    { duration: '15s', target: 0 },  // descida
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)<` + meta + `'], // meta do docs/qualidade.md
+    http_req_failed: ['rate<0.01'],   // menos de 1% de erro
+    checks: ['rate>0.99'],
+  },
+  summaryTrendStats: ['avg', 'med', 'p(90)', 'p(95)', 'p(99)', 'max'],
+};
+
+const TERMOS = ['clean', 'teste', 'banco', 'redes', 'algoritmos'];
+
+export default function () {
+  const termo = TERMOS[Math.floor(Math.random() * TERMOS.length)];
+  const res = http.get(BASE + '/livros?busca=' + termo, { tags: { name: 'GET /livros' } });
+  check(res, {
+    'status 200': (r) => r.status === 200,
+    'corpo é uma lista': (r) => Array.isArray(r.json()),
+  });
+  sleep(1);
+}`;
+const CARGA_CAB = ['', '> biblioteca-campus@1.0.0 carga', '> k6 run carga/busca.js', '',
+  ...K6_CAB('carga/busca.js', 50, '2m15s', 'Up to 50 looping VUs for 1m45s over 3 stages (gracefulRampDown: 30s, gracefulStop: 30s)')];
+Labs.vscode('#lab-carga', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/carga', open: 'carga/busca.js',
+  prompt: PR('test/carga'),
+  files: [
+    { path: 'carga/busca.js', hl: [9, 10, 11, 14, 15], code: BUSCA(500) },
+    { path: 'docs/qualidade.md', hl: [5], code:
+`# Requisitos de qualidade · biblioteca-campus
+
+| Característica | Requisito | Métrica | Meta | Como será verificado |
+|---|---|---|---|---|
+| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 do tempo de resposta com 50 usuários | < 300 ms | teste de carga (k6) |
+| Confiabilidade | Falha da ViaCEP não impede o cadastro | cadastros perdidos com ViaCEP fora | 0 | dublê de teste |
+| Manutenibilidade | Regras de empréstimo testadas | cobertura de ramos em src/emprestimo.js | >= 90% | cobertura no CI |` },
+    { path: 'migrations/003_indice_busca.sql', code:
+`-- Índice usado pela busca de GET /livros?busca=
+CREATE EXTENSION IF NOT EXISTS pg_trgm;
+CREATE INDEX livros_titulo_trgm ON livros USING gin (titulo gin_trgm_ops);` }
+  ],
+  onRun(k, api) { if (k === 2) { api.setCode('carga/busca.js', BUSCA(300)); api.open('carga/busca.js'); } },
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Leia docs/qualidade.md e crie carga/busca.js para o k6: GET /livros?busca= com termos variados, stages de subida, patamar e descida até a carga do requisito, thresholds de http_req_duration p(95) e http_req_failed rate<0.01, e checks. Adicione o script carga ao package.json."', speed: 120, out: [
+      '[mute] ▸ read docs/qualidade.md', '[mute] ▸ read package.json',
+      '[mute] ▸ write carga/busca.js', '[mute] ▸ edit package.json',
+      'Criei carga/busca.js com 3 estágios até 50 VUs e thresholds de latência (p95) e de erro. Script "carga" adicionado.' ] },
+    { label: '2. Conferir a meta', kind: 'red', clear: false, cmd: "grep -n 'p95' docs/qualidade.md; grep -n 'p(95)' carga/busca.js", out: [
+      '5:| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 do tempo de resposta com 50 usuários | < 300 ms | teste de carga (k6) |',
+      "[err] 14:    http_req_duration: ['p(95)<500'], // meta do docs/qualidade.md",
+      '[warn] O comentário diz "meta do docs/qualidade.md", mas o número é outro: 500 em vez de 300.' ] },
+    { label: '3. Pedir a correção', clear: false, cmd: 'opencode run "O threshold de p(95) em carga/busca.js precisa ser exatamente a meta da linha 5 de docs/qualidade.md: 300 ms."', out: [
+      '[mute] ▸ read docs/qualidade.md', '[mute] ▸ edit carga/busca.js',
+      "Threshold corrigido para 'p(95)<300'." ] },
+    { label: '4. Rodar a carga', kind: 'blue', cmd: 'npm run carga; echo "código de saída: $?"', speed: 30, out: [
+      ...CARGA_CAB,
+      '  █ THRESHOLDS', '',
+      '    checks', "[ok]     ✓ 'rate>0.99' rate=100.00%",
+      '    http_req_duration', "[ok]     ✓ 'p(95)<300' p(95)=131.8ms",
+      '    http_req_failed', "[ok]     ✓ 'rate<0.01' rate=0.00%", '',
+      '  █ TOTAL RESULTS', '',
+      '    checks_succeeded...................: 100.00% 8024 out of 8024', '',
+      '    HTTP',
+      '    http_req_duration..................: avg=48.21ms med=39.5ms p(90)=96.3ms p(95)=131.8ms p(99)=244.9ms max=402.7ms',
+      '    http_req_failed....................: 0.00%   0 out of 4012',
+      '    http_reqs..........................: 4012    38.21/s', '',
+      '    EXECUTION',
+      '    iterations.........................: 4012    38.21/s',
+      '    vus_max............................: 50      min=50     max=50', '',
+      'running (1m45.0s), 00/50 VUs, 4012 complete and 0 interrupted iterations',
+      '[ok] default ✓ [======================================] 00/50 VUs  1m45s',
+      '[ok] código de saída: 0' ] },
+    { label: '5. Sem o índice de busca', kind: 'red', cmd: 'psql "$DATABASE_URL" -c "DROP INDEX livros_titulo_trgm" && npm run carga; echo "código de saída: $?"', speed: 30, out: [
+      'DROP INDEX', ...CARGA_CAB,
+      '  █ THRESHOLDS', '',
+      '    checks', "[ok]     ✓ 'rate>0.99' rate=99.71%",
+      '    http_req_duration', "[err]     ✗ 'p(95)<300' p(95)=487.3ms",
+      '    http_req_failed', "[ok]     ✓ 'rate<0.01' rate=0.29%", '',
+      '  █ TOTAL RESULTS', '',
+      '    checks_succeeded...................: 99.71%  7159 out of 7180', '',
+      '    HTTP',
+      '    http_req_duration..................: avg=211.6ms med=176.2ms p(90)=402.8ms p(95)=487.3ms p(99)=911.4ms max=2.31s',
+      '    http_req_failed....................: 0.29%   21 out of 3590',
+      '    http_reqs..........................: 3590    34.19/s', '',
+      '    EXECUTION',
+      '    iterations.........................: 3590    34.19/s', '',
+      'running (1m45.0s), 00/50 VUs, 3590 complete and 0 interrupted iterations',
+      '[err] default ✗ [======================================] 00/50 VUs  1m45s',
+      "[err] ✗ thresholds on metrics 'http_req_duration' have been crossed",
+      '[err] código de saída: 99',
+      '[warn] Com o threshold de 500 ms que o agente propôs, esta execução teria passado.' ] }
+  ]
+});
+
+/* ---------- 15. VS Code: perfis de carga ---------- */
+Labs.vscode('#lab-perfis', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/carga', open: 'carga/perfis.js',
+  prompt: PR('test/carga'),
+  files: [
+    { path: 'carga/perfis.js', hl: [8, 9, 11, 14, 17, 21], code:
+`// Um script, cinco perfis. Uso: k6 run -e PERFIL=pico carga/perfis.js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+const PERFIS = {
+  smoke: { vus: 1, duration: '30s' },
+  carga: { stages: [
+    { duration: '30s', target: 50 }, { duration: '1m', target: 50 }, { duration: '15s', target: 0 } ] },
+  estresse: { stages: [
+    { duration: '1m', target: 100 }, { duration: '1m', target: 200 },
+    { duration: '1m', target: 300 }, { duration: '30s', target: 0 } ] },
+  pico: { stages: [
+    { duration: '10s', target: 10 }, { duration: '5s', target: 400 },
+    { duration: '30s', target: 400 }, { duration: '5s', target: 10 }, { duration: '20s', target: 10 } ] },
+  resistencia: { stages: [
+    { duration: '2m', target: 40 }, { duration: '2h', target: 40 }, { duration: '2m', target: 0 } ] },
+};
+
+const perfil = __ENV.PERFIL || 'smoke';
+
+export const options = {
+  ...PERFIS[perfil],
+  thresholds: {
+    http_req_duration: ['p(95)<300'],
+    http_req_failed: ['rate<0.01'],
+  },
+};
+
+export default function () {
+  const res = http.get(BASE + '/livros?busca=clean');
+  check(res, { 'status 200': (r) => r.status === 200 });
+  sleep(1);
+}` },
+    { path: 'package.json', code: PKG_CERTO }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Crie carga/perfis.js com um objeto PERFIS (smoke, carga, estresse, pico e resistencia) escolhido por __ENV.PERFIL, mantendo os thresholds de carga/busca.js. Comente a pergunta que cada perfil responde. Não rode estresse nem resistência."', speed: 120, out: [
+      '[mute] ▸ read carga/busca.js', '[mute] ▸ read docs/qualidade.md',
+      '[mute] ▸ write carga/perfis.js',
+      '[warn] ? Permitir executar "k6 inspect -e PERFIL=pico carga/perfis.js"? (s/n) s',
+      '[mute] ▸ bash k6 inspect -e PERFIL=pico carga/perfis.js',
+      'carga/perfis.js criado com 5 perfis; k6 inspect confirmou o perfil de pico com 5 estágios até 400 VUs.' ] },
+    { label: '2. Pico', kind: 'blue', cmd: 'k6 run -e PERFIL=pico carga/perfis.js', speed: 30, out: [
+      ...K6_CAB('carga/perfis.js', 400, '1m40s', 'Up to 400 looping VUs for 1m10s over 5 stages (gracefulRampDown: 30s, gracefulStop: 30s)'),
+      '  █ THRESHOLDS', '',
+      '    http_req_duration', "[err]     ✗ 'p(95)<300' p(95)=842.6ms",
+      '    http_req_failed', "[ok]     ✓ 'rate<0.01' rate=0.61%", '',
+      '    http_req_duration..................: avg=233.9ms med=88.4ms p(90)=611.2ms p(95)=842.6ms',
+      '    http_reqs..........................: 13482   192.6/s',
+      '    vus_max............................: 400     min=400    max=400', '',
+      "[err] ✗ thresholds on metrics 'http_req_duration' have been crossed",
+      '[warn] Leitura: o salto de 10 para 400 VUs estoura a meta; nos 20 s finais, com 10 VUs, o tempo volta ao normal.' ] },
+    { label: '3. Estresse', kind: 'red', cmd: 'k6 run -e PERFIL=estresse carga/perfis.js', speed: 30, out: [
+      ...K6_CAB('carga/perfis.js', 300, '4m0s', 'Up to 300 looping VUs for 3m30s over 4 stages (gracefulRampDown: 30s, gracefulStop: 30s)'),
+      '  █ THRESHOLDS', '',
+      '    http_req_duration', "[err]     ✗ 'p(95)<300' p(95)=1.94s",
+      '    http_req_failed', "[err]     ✗ 'rate<0.01' rate=4.82%", '',
+      '    http_req_duration..................: avg=612.4ms med=301.7ms p(90)=1.42s p(95)=1.94s',
+      '    http_req_failed....................: 4.82%   1544 out of 32031',
+      '    http_reqs..........................: 32031   152.5/s',
+      '    vus_max............................: 300     min=300    max=300', '',
+      "[err] ✗ thresholds on metrics 'http_req_duration, http_req_failed' have been crossed",
+      '[warn] Leitura: acima de ~200 VUs a vazão para de crescer e os erros são "too many clients" do pool do PostgreSQL.' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

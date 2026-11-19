@@ -1,0 +1,1016 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="caixa preta, caixa branca, partição de equivalência, valor-limite, tabela de decisão, cobertura, grafo de fluxo, complexidade ciclomática, node:test" />
+    <title>Aula 03 - Caixa branca e caixa preta</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 03: Caixa branca e caixa preta</h1>
+          <p class="fs-4 text-secondary">Partição de equivalência, valor-limite e tabela de decisão; grafo de fluxo, complexidade ciclomática e cobertura com node:test</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 7 · 15/02 a 19/02</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">partições</span><span class="keyword">valor-limite</span><span class="keyword">tabela de decisão</span><span class="keyword">complexidade ciclomática</span><span class="keyword">cobertura</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Caixa preta e caixa branca (10 min)</li><li>Partição de equivalência e valor-limite, com demonstração (35 min)</li><li>Tabela de decisão, com demonstração (15 min)</li><li>Grafo de fluxo, complexidade e cobertura (40 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Laboratório: partições e limites do seu projeto (30 min)</li><li>Laboratório: tabela de decisão da reserva (25 min)</li><li>Laboratório: caixa branca e cobertura (35 min)</li><li>Checagem na mesa (10 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Caixa preta e caixa branca -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Caixa preta e caixa branca</h2>
+          <p class="lead text-center text-muted mb-4">Testar todas as entradas possíveis é inviável: <code>calcularMulta</code> aceita qualquer par de datas. As técnicas escolhem poucos casos que têm mais chance de achar defeito.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-box me-2" aria-hidden="true"></i>Caixa preta (funcional)</h3>
+                <p class="mb-2">Os casos saem da especificação, sem olhar o código. Dá para escrever antes de o código existir.</p>
+                <ul class="mb-0"><li>Partição de equivalência</li><li>Análise de valor-limite</li><li>Tabela de decisão</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-box-open me-2" aria-hidden="true"></i>Caixa branca (estrutural)</h3>
+                <p class="mb-2">Os casos saem da estrutura do código: decisões, ramos e caminhos que a execução pode seguir.</p>
+                <ul class="mb-0"><li>Grafo de fluxo de controle</li><li>Complexidade ciclomática e caminhos básicos</li><li>Cobertura de comandos, ramos e caminhos</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-dark mt-4 mb-0 fs-6">O agente gera tabelas e testes em segundos. A técnica serve para você conferir se ele escolheu os casos certos: a revisão é a etapa de qualidade.</div>
+        </div>
+      </div>
+
+      <!-- 4. Partição de equivalência -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Partição de equivalência</h2>
+          <p class="text-center text-muted mb-3">Divide-se o domínio de uma entrada em classes que o programa deveria tratar do mesmo jeito. Um representante por classe basta: se ele passa, supõe-se que os outros da classe também passam.</p>
+          <div class="table-responsive">
+            <table class="table align-middle bg-white shadow-sm mb-3 text-start">
+              <thead class="table-light"><tr><th colspan="5"><code>calcularMulta(previsto, devolvido)</code> · RN05 · variável: dias de atraso</th></tr><tr><th>Classe</th><th>Faixa</th><th>Tipo</th><th>Representante</th><th>Esperado</th></tr></thead>
+              <tbody>
+                <tr><td>P1</td><td>dias ≤ 0</td><td>válida</td><td>devolve 2 dias antes</td><td>0</td></tr>
+                <tr><td>P2</td><td>1 ≤ dias ≤ 19</td><td>válida</td><td>5 dias de atraso</td><td>750</td></tr>
+                <tr><td>P3</td><td>dias ≥ 20</td><td>válida</td><td>30 dias de atraso</td><td>3000 (teto)</td></tr>
+                <tr><td>P4</td><td>data inválida</td><td>inválida</td><td><code>devolvido = 'ontem'</code></td><td><code>TypeError</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted mb-0 text-start">Por que 20 dias? 20 × 150 = 3000: a partir daí o teto vale, então o comportamento muda. As classes nascem nos pontos em que a regra muda de comportamento, e é a spec que diz onde eles estão.</p>
+        </div>
+      </div>
+
+      <!-- 5. VS Code: partições -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Pedir ao agente as partições de <code>calcularMulta</code> e conferir se cada classe virou um teste.</div>
+                <div class="rl"><b>Faça</b>1. Rode o prompt e leia <code>docs/casos-de-teste.md</code>.<br>2. Rode <code>npm test</code>.<br>3. Confira à mão o que a função devolve para "ontem".<br>4. Peça a correção e rode de novo.</div>
+                <div class="rl obs"><b>Observe</b>As classes válidas passam. A inválida, P4, revela que a função devolve <code>NaN</code> em silêncio.</div>
+                <div class="rl conc"><b>Conclusão</b>A classe inválida achou o defeito. Quem decide se ele é defeito é você, lendo a spec, e não o agente.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-particoes"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Valor-limite -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Análise de valor-limite</h2>
+          <p class="text-center text-muted mb-3">Os defeitos se concentram nas fronteiras entre classes: um <code>&gt;</code> que devia ser <code>&gt;=</code>, um <code>&lt;</code> que devia ser <code>&lt;=</code>. Testa-se cada fronteira, e não o meio da classe.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Dois valores ou três valores</h3>
+                <p class="mb-2">Dois valores: o último de uma classe e o primeiro da seguinte. Três valores: o limite, logo abaixo e logo acima.</p>
+                <ul class="mb-0"><li>RN01, limite 3 ativos: <code>2</code>, <code>3</code>, <code>4</code></li><li>RN05, início da multa: <code>-1</code>, <code>0</code>, <code>1</code> dia</li><li>RN05, teto: <code>19</code>, <code>20</code>, <code>21</code> dias</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">No seu projeto</h3>
+                <p class="mb-2">Reserva das 19h às 21h contra outra que começa:</p>
+                <ul class="mb-0"><li>às <code>20h59</code>: conflita</li><li>às <code>21h00</code>: não conflita (regra do Trabalho 1)</li><li>às <code>21h01</code>: não conflita</li></ul>
+                <p class="small text-muted mt-2 mb-0">O mesmo vale para 07h e 23h, duração de exatamente 4 horas e turma do tamanho exato da sala.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Laboratório interativo -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório interativo</p><h2>Calculadora de partições e valores-limite</h2></div></div>
+          <div class="lab-area" id="lab-calc"></div>
+        </div>
+      </div>
+
+      <!-- 8. VS Code: valores-limite -->
+      <div class="slide slide-lab" id="slide-8">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Gerar testes de valor-limite em formato de tabela e ver um <code>&gt;</code> no lugar de <code>&gt;=</code> ser pego.</div>
+                <div class="rl"><b>Faça</b>1. Rode o prompt e leia a tabela de casos.<br>2. Rode <code>npm test</code> e leia a falha.<br>3. Procure a comparação no código.<br>4. Peça a correção e confira o <code>git diff</code>.</div>
+                <div class="rl obs"><b>Observe</b>Os testes com 2 e 4 ativos passam com o código errado. Só o caso de exatamente 3 reprova.</div>
+                <div class="rl conc"><b>Conclusão</b>O agente parou e perguntou antes de mexer em <code>src/</code>. Conferir a fronteira na spec e aprovar a correção é trabalho seu.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-limites"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Tabela de decisão -->
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Tabela de decisão</h2>
+          <p class="text-center text-muted mb-3">Quando o resultado depende da combinação de várias condições, cada combinação vira uma regra. Com 3 condições de sim ou não são 2³ = 8 regras; a spec costuma permitir reduzir.</p>
+          <div class="row g-3 align-items-start">
+            <div class="col-md-7">
+              <div class="table-responsive">
+                <table class="table table-sm table-bordered align-middle bg-white shadow-sm mb-0 text-center">
+                  <thead class="table-light"><tr><th class="text-start">emprestar</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead>
+                  <tbody>
+                    <tr><td class="text-start">C1 multa pendente (RN04)</td><td>S</td><td>N</td><td>N</td><td>N</td></tr>
+                    <tr><td class="text-start">C2 3 ou mais ativos (RN01)</td><td>-</td><td>S</td><td>N</td><td>N</td></tr>
+                    <tr><td class="text-start">C3 reservado por outro (RN03)</td><td>-</td><td>-</td><td>S</td><td>N</td></tr>
+                    <tr class="table-light"><td class="text-start"><code>MULTA_PENDENTE</code></td><td>X</td><td></td><td></td><td></td></tr>
+                    <tr class="table-light"><td class="text-start"><code>LIMITE_ATINGIDO</code></td><td></td><td>X</td><td></td><td></td></tr>
+                    <tr class="table-light"><td class="text-start"><code>LIVRO_RESERVADO</code></td><td></td><td></td><td>X</td><td></td></tr>
+                    <tr class="table-light"><td class="text-start">empresta</td><td></td><td></td><td></td><td>X</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="col-md-5 text-start">
+              <div class="card border-0 shadow-sm p-3 mb-2"><b>Redução</b><span class="small text-muted">RN06 diz que vale o primeiro impedimento na ordem RN04, RN01, RN03. Depois dele, as outras condições ficam indiferentes (<code>-</code>): 8 regras viram 4.</span></div>
+              <div class="card border-0 shadow-sm p-3"><b>Representante do "-"</b><span class="small text-muted">Use S. Um aluno com multa, 3 ativos e livro reservado por outro prova que a ordem é respeitada; com N, a ordem nunca é testada.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. VS Code: tabela de decisão -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Gerar a tabela de decisão de <code>emprestar</code> e um teste por regra, e conferir a ordem dos motivos.</div>
+                <div class="rl"><b>Faça</b>1. Rode o prompt e compare a tabela com a do slide anterior.<br>2. Rode <code>npm test</code>.<br>3. Confira RN06 na spec.<br>4. Peça a correção e confira.</div>
+                <div class="rl obs"><b>Observe</b>R2 falha: com limite atingido e livro reservado, o código responde <code>LIVRO_RESERVADO</code>. Os testes escritos só com N no lugar do <code>-</code> passariam.</div>
+                <div class="rl conc"><b>Conclusão</b>Você revisa a escolha do representante do <code>-</code>. Um teste que não exercita a combinação não protege a regra.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-decisao"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. Critérios de cobertura -->
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Critérios de cobertura</h2>
+          <div class="table-responsive">
+            <table class="table align-middle bg-white shadow-sm mb-3 text-start">
+              <thead class="table-light"><tr><th>Critério</th><th>O que exige</th><th>Como medir</th></tr></thead>
+              <tbody>
+                <tr><td>Comandos (linhas)</td><td>Cada linha executada ao menos uma vez</td><td><code>line %</code> do <code>node --test --experimental-test-coverage</code></td></tr>
+                <tr><td>Ramos (decisões)</td><td>Cada decisão avaliada como verdadeira e como falsa</td><td><code>branch %</code> da mesma tabela</td></tr>
+                <tr><td>Caminhos básicos</td><td>Um teste por caminho independente; o número é a complexidade ciclomática</td><td>Grafo de fluxo e V(G); ESLint mede V(G) com a regra <code>complexity</code></td></tr>
+                <tr><td>Todos os caminhos</td><td>Toda combinação de ramos; cresce de forma exponencial e, com laços, pode ser infinita</td><td>Inviável na prática, serve de referência</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0 text-start"><code>if (dias &lt;= 0) return 0;</code> numa linha só: um teste com 5 dias de atraso executa a linha e marca 100% de linhas, mas o ramo verdadeiro nunca rodou. Cobertura de ramos é mais exigente que cobertura de linhas.</div>
+        </div>
+      </div>
+
+      <!-- 12. Grafo de fluxo -->
+      <div class="slide slide-lab" id="slide-12">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Caixa branca</p><h2>Grafo de fluxo de controle de emprestar</h2></div></div>
+          <div class="lab-area" id="flow-grafo"></div>
+        </div>
+      </div>
+
+      <!-- 13. Complexidade ciclomática -->
+      <div class="slide" id="slide-13">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Complexidade ciclomática</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-5">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Três jeitos de calcular V(G)</h3>
+                <ul class="mb-2"><li><code>E - N + 2</code> = 13 - 10 + 2 = 5</li><li>decisões simples + 1 = 4 + 1 = 5</li><li>regiões fechadas do grafo + 1 = 5</li></ul>
+                <p class="small text-muted mb-0">V(G) é o número de caminhos independentes: o mínimo de testes para cobrir todos os ramos passando por caminhos básicos. A condição <code>a &amp;&amp; b</code> conta como duas decisões.</p>
+              </div>
+            </div>
+            <div class="col-md-7">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle bg-white shadow-sm mb-0">
+                  <thead class="table-light"><tr><th>Caminho</th><th>Entrada</th><th>Resultado</th></tr></thead>
+                  <tbody>
+                    <tr><td>C1</td><td>multa 300</td><td><code>MULTA_PENDENTE</code></td></tr>
+                    <tr><td>C2</td><td>sem multa, 3 ativos</td><td><code>LIMITE_ATINGIDO</code></td></tr>
+                    <tr><td>C3</td><td>sem multa, 1 ativo, livro sem reserva</td><td>empresta</td></tr>
+                    <tr><td>C4</td><td>sem multa, 1 ativo, reservado por Ana, quem pede é Bruno</td><td><code>LIVRO_RESERVADO</code></td></tr>
+                    <tr><td>C5</td><td>sem multa, 1 ativo, reservado por Ana, quem pede é Ana</td><td>empresta</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 text-start">Faixas usuais: até 10 é tratável; acima disso a função pede refatoração. No Trabalho 1, o ESLint barra função com complexidade acima de 8.</div>
+        </div>
+      </div>
+
+      <!-- 14. VS Code: cobertura -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Configurar a cobertura nativa do Node com meta e ler a tabela de linhas e ramos.</div>
+                <div class="rl"><b>Faça</b>1. Rode o prompt que configura <code>test:cov</code>.<br>2. Rode <code>npm run test:cov</code> e leia a falha.<br>3. Peça testes para os ramos descobertos.<br>4. Rode de novo e compare linhas e ramos.</div>
+                <div class="rl obs"><b>Observe</b>No fim, linhas em 100% e ramos em 91,67%: o caso de Ana retirar o livro que ela reservou continua sem teste, dentro de uma linha já coberta.</div>
+                <div class="rl conc"><b>Conclusão</b>A biblioteca usa 90% de ramos (<code>docs/qualidade.md</code>); o seu trabalho, 80%. Bater a meta não dispensa ler o que ficou de fora.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-cobertura"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. VS Code: caminhos básicos e complexidade -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Pedir ao agente os caminhos básicos de <code>emprestar</code> e medir a complexidade com o ESLint.</div>
+                <div class="rl"><b>Faça</b>1. Rode o prompt e compare os caminhos com o grafo.<br>2. Rode <code>npm test</code>.<br>3. Meça a complexidade de cada função.<br>4. Rode o lint do projeto.</div>
+                <div class="rl obs"><b>Observe</b>O ESLint confirma V(G) = 5 para <code>emprestar</code>. <code>situacaoDoAluno</code> tem 9 e reprova no limite de 8.</div>
+                <div class="rl conc"><b>Conclusão</b>Conte as decisões você mesmo e compare com o número do agente e do ESLint. Se divergirem, alguém errou, e você precisa saber quem.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-caminhos"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Síntese -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Da técnica ao teste com node:test</h2>
+          <div class="table-responsive">
+            <table class="table align-middle bg-white shadow-sm mb-3 text-start">
+              <thead class="table-light"><tr><th>Técnica</th><th>Pergunta</th><th>Vira no repositório</th></tr></thead>
+              <tbody>
+                <tr><td>Partição de equivalência</td><td>Quais entradas o código trata do mesmo jeito?</td><td>Um <code>test</code> por classe, nome começando por <code>P1</code>, <code>P2</code>...</td></tr>
+                <tr><td>Valor-limite</td><td>Onde a regra muda de comportamento?</td><td>Array de casos percorrido com <code>for</code>, um <code>test</code> por linha</td></tr>
+                <tr><td>Tabela de decisão</td><td>Que combinação de condições leva a qual ação?</td><td>Um <code>test</code> por regra reduzida, com S no lugar do <code>-</code></td></tr>
+                <tr><td>Caminhos básicos</td><td>Quais caminhos independentes o código tem?</td><td>V(G) testes, nomes <code>C1</code> a <code>Cn</code></td></tr>
+                <tr><td>Cobertura</td><td>O que nenhum teste executou?</td><td><code>npm run test:cov</code> com meta de 80% de linhas e ramos</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0 text-start">Tudo fica registrado em <code>docs/casos-de-teste.md</code>, que é evidência do Trabalho 1. Na prova oral eu aponto um teste e pergunto de qual técnica ele saiu.</div>
+        </div>
+      </div>
+
+      <!-- 17. Laboratório -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">Casos de teste do seu organizacao-recursos</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Caixa preta (30 min)</h3><p class="mb-0">Branch <code>test/particoes</code>. Prompt 1: partições e limites de sobreposição, capacidade e intervalo.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Decisão (25 min)</h3><p class="mb-0">Branch <code>test/decisao</code>. Prompt 2: tabela de decisão da criação de reserva e um teste por regra.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Caixa branca (35 min)</h3><p class="mb-0">Branch <code>test/caminhos</code>. Prompt 3: grafo, V(G), caminhos básicos e <code>test:cov</code>.</p></div></div>
+          </div>
+          <div class="alert alert-dark mt-3 mb-0"><i class="fas fa-user-check me-2" aria-hidden="true"></i>Depois de cada prompt: leia o <code>docs/casos-de-teste.md</code>, rode <code>npm test</code> você mesmo e só então commite. Teste que falha pode ser defeito no código ou na spec; decida antes de pedir correção.</div>
+        </div>
+      </div>
+
+      <!-- 18. Prompt 1 -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Partições e valores-limite</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Leia docs/spec.md. Para três regras do meu projeto, sobreposição de reservas da mesma sala (RF02), capacidade da sala (RF04) e validação do intervalo (RF07: término posterior ao início, duração máxima de 4 horas, entre 07h e 23h), escreva em docs/casos-de-teste.md, para cada uma: a variável de entrada analisada; as classes de equivalência válidas e inválidas, numeradas P1, P2..., com um representante concreto de cada; os valores-limite de cada fronteira pela análise de três valores (o limite, logo abaixo e logo acima), com o resultado esperado segundo a spec. Use horários concretos, como 19:00–21:00 contra 20:59, 21:00 e 21:01. Depois crie test/particoes.test.js com node:test e node:assert/strict: um test por classe, com o nome começando pela classe, e os valores-limite em formato de tabela, num array de casos percorrido com for. Se o resultado esperado de algum caso não estiver na spec, não invente: registre em Perguntas em aberto. Não altere src/. Rode npm test e mostre a saída.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: o caso 21:00 está lá e espera "não conflita"? Existe pelo menos uma classe inválida por regra? Teste vermelho é informação; confira na spec se o erro é do código.</div>
+        </div>
+      </div>
+
+      <!-- 19. Prompt 2 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Tabela de decisão da reserva</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Monte uma tabela de decisão para a criação de reserva do meu projeto. Condições, cada uma de sim ou não: sala livre no intervalo (RF02), professor livre no intervalo (RF03), capacidade da sala suficiente para a turma (RF04), sala fora de manutenção no intervalo (RF06). Ações: criar a reserva ou recusar com o código de motivo definido na spec. Escreva em docs/casos-de-teste.md a tabela completa com as 16 regras e depois a versão reduzida, usando - para condição indiferente e explicando qual regra da spec permite cada redução. Se a spec não disser qual motivo prevalece quando há mais de um impedimento, pare e escreva a pergunta em Perguntas em aberto, sem escolher uma ordem. Crie test/decisao.test.js com um teste por regra da tabela reduzida, usando S (condição verdadeira) como representante do -, rode npm test e mostre a saída. Não altere src/.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: conte as colunas da tabela completa (16) e confira que cada redução cita uma regra da spec. Se o agente escolheu uma ordem de motivos que você nunca decidiu, recuse.</div>
+        </div>
+      </div>
+
+      <!-- 20. Prompt 3 -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Caixa branca e cobertura</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Agora caixa branca. Abra a função de src/ que verifica conflito de reserva (a T01 da aula passada). 1. Desenhe em docs/casos-de-teste.md o grafo de fluxo de controle em texto: numere os nós, liste as arestas e separe condições compostas com &amp;&amp; e || em decisões simples. 2. Calcule a complexidade ciclomática de dois jeitos, E - N + 2 e decisões + 1, e confira se batem. 3. Liste os caminhos básicos independentes e, para cada um, os dados de entrada que o percorrem. 4. Crie test/caminhos.test.js com um teste por caminho, nomes começando por C1, C2... 5. No package.json, crie o script test:cov valendo node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**', rode npm run test:cov e mostre a tabela. Não altere src/ para aumentar a cobertura.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: conte as decisões da função você mesmo e compare com o V(G) do agente. Rode <code>npx eslint src/ --rule '{"complexity": ["warn", 1]}'</code> para conferir o número.</div>
+        </div>
+      </div>
+
+      <!-- 21. Entregável -->
+      <div class="slide" id="slide-21">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 03</span>
+          <p class="fs-4 mb-4"><code>docs/casos-de-teste.md</code> com partições, limites, tabela de decisão, grafo e V(G); <code>test/particoes.test.js</code>, <code>test/decisao.test.js</code>, <code>test/caminhos.test.js</code> e o script <code>test:cov</code>, tudo na main.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>Aponto um teste e você diz de qual técnica e de qual classe, limite, regra ou caminho ele saiu.</li><li>Peço o V(G) da sua função de conflito, contado no papel.</li><li><code>npm run test:cov</code> com a tabela de cobertura e as perguntas em aberto que surgiram hoje.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 22. Dúvidas -->
+      <div class="slide cover-bg" id="slide-22">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: TDD com node:test, escrevendo o teste antes do código.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 22</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Caixa branca e caixa preta · Semana 7</div>
+      <a href="material/material_aula03-caixa-branca-preta.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const P = (branch) => '@professor ➜ /workspaces/biblioteca-campus (' + branch + ') $ ';
+const PERMISSAO = (cmd) => ['[warn] △ Permissão: bash ' + cmd, '[mute]   (s) permitir uma vez · (a) sempre · (n) recusar › s'];
+const NPM_TEST = ['', '> biblioteca-campus@1.0.0 test', '> node --test', ''];
+
+/* Código de referência da biblioteca-campus */
+const EMPRESTIMO =
+`const PRAZO_DIAS = 14;      // RN02
+const LIMITE_ATIVOS = 3;    // RN01
+const DIA_MS = 24 * 60 * 60 * 1000;
+
+export class RegraDeEmprestimo extends Error {
+  constructor(codigo, mensagem) {
+    super(mensagem);
+    this.codigo = codigo;
+  }
+}
+
+export function emprestar(aluno, livro, hoje) {
+  if (aluno.multaPendente > 0) {
+    throw new RegraDeEmprestimo('MULTA_PENDENTE', 'Aluno com multa pendente');
+  }
+  if (aluno.ativos >= LIMITE_ATIVOS) {
+    throw new RegraDeEmprestimo('LIMITE_ATINGIDO', 'Aluno já tem 3 empréstimos ativos');
+  }
+  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {
+    throw new RegraDeEmprestimo('LIVRO_RESERVADO', 'Livro reservado por outro aluno');
+  }
+  const previsto = new Date(hoje.getTime() + PRAZO_DIAS * DIA_MS);
+  return { alunoId: aluno.id, livroId: livro.id, inicio: hoje, previsto };
+}
+
+export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((devolvido - previsto) / DIA_MS);
+  if (dias <= 0) return 0;
+  return Math.min(dias * 150, 3000);
+}`;
+
+/* ---------- 5. Partições ---------- */
+const MULTA_SEM_VALIDACAO =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+
+export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((devolvido - previsto) / DIA_MS);
+  if (dias <= 0) return 0;
+  return Math.min(dias * 150, 3000);
+}`;
+const MULTA_COM_VALIDACAO =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+const dataValida = (d) => d instanceof Date && !Number.isNaN(d.getTime());
+
+export function calcularMulta(previsto, devolvido) {
+  if (!dataValida(previsto) || !dataValida(devolvido)) {
+    throw new TypeError('previsto e devolvido precisam ser datas válidas');
+  }
+  const dias = Math.ceil((devolvido - previsto) / DIA_MS);
+  if (dias <= 0) return 0;
+  return Math.min(dias * 150, 3000);
+}`;
+Labs.vscode('#lab-particoes', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/particoes', open: 'docs/casos-de-teste.md',
+  prompt: P('test/particoes'),
+  files: [
+    { path: 'docs/casos-de-teste.md', hl: [11], code:
+`# Casos de teste · biblioteca-campus
+
+## calcularMulta(previsto, devolvido) · RN05
+Variável: dias de atraso = devolvido - previsto, em dias, arredondado para cima.
+
+| Classe | Faixa           | Tipo     | Representante         | Esperado  |
+|--------|-----------------|----------|-----------------------|-----------|
+| P1     | dias <= 0       | válida   | devolve 2 dias antes  | 0         |
+| P2     | 1 <= dias <= 19 | válida   | 5 dias de atraso      | 750       |
+| P3     | dias >= 20      | válida   | 30 dias de atraso     | 3000      |
+| P4     | data inválida   | inválida | devolvido = 'ontem'   | TypeError |
+
+Fronteiras: 0|1 (começa a multa) e 19|20 (20 x 150 = 3000, começa o teto).` },
+    { path: 'src/multa.js', code: MULTA_SEM_VALIDACAO },
+    { path: 'test/multa.particoes.test.js', hl: [18, 19, 20], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/multa.js';
+
+const DIA = 86_400_000;
+const previsto = new Date('2027-03-15');
+const atraso = (dias) => new Date(previsto.getTime() + dias * DIA);
+
+test('P1 devolução 2 dias antes do prazo: multa 0', () => {
+  assert.equal(calcularMulta(previsto, atraso(-2)), 0);
+});
+test('P2 5 dias de atraso: 750 centavos', () => {
+  assert.equal(calcularMulta(previsto, atraso(5)), 750);
+});
+test('P3 30 dias de atraso: teto de 3000 centavos', () => {
+  assert.equal(calcularMulta(previsto, atraso(30)), 3000);
+});
+test('P4 data de devolução inválida lança TypeError', () => {
+  assert.throws(() => calcularMulta(previsto, 'ontem'), TypeError);
+});` }
+  ],
+  run: [
+    { label: '1. Prompt: partições', cmd: 'opencode run "Derive as partições de equivalência de calcularMulta a partir de RN05, válidas e inválidas, escreva docs/casos-de-teste.md e test/multa.particoes.test.js com um teste por classe. Não altere src/."', file: 'docs/casos-de-teste.md', out: [
+      '[mute] ▸ read AGENTS.md', '[mute] ▸ read docs/spec.md', '[mute] ▸ read src/multa.js',
+      '[mute] ▸ write docs/casos-de-teste.md  (+13)', '[mute] ▸ write test/multa.particoes.test.js  (+20)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 3 · fail 1',
+      '3 classes válidas (P1 a P3) e 1 inválida (P4). P4 falhou: a função não valida as datas.',
+      '[warn] A spec não diz o que fazer com data inválida. Não alterei src/; decida antes.' ] },
+    { label: '2. Conferir: npm test', kind: 'red', cmd: 'npm test', file: 'test/multa.particoes.test.js', out: [
+      ...NPM_TEST,
+      '[ok] ✔ P1 devolução 2 dias antes do prazo: multa 0 (0.81ms)',
+      '[ok] ✔ P2 5 dias de atraso: 750 centavos (0.12ms)',
+      '[ok] ✔ P3 30 dias de atraso: teto de 3000 centavos (0.09ms)',
+      '[err] ✖ P4 data de devolução inválida lança TypeError (0.55ms)',
+      'ℹ tests 4', 'ℹ pass 3', '[err] ℹ fail 1', '',
+      '[err] ✖ failing tests:', '',
+      'test at test/multa.particoes.test.js:18:1',
+      '[err] ✖ P4 data de devolução inválida lança TypeError (0.55ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: Missing expected exception (TypeError).' ] },
+    { label: '3. Conferir à mão', clear: false, cmd: `node -e "import('./src/multa.js').then(m => console.log(m.calcularMulta(new Date('2027-03-15'), 'ontem')))"`, file: 'src/multa.js', out: [
+      '[warn] NaN', '[mute] NaN <= 0 é falso e Math.min(NaN, 3000) é NaN: a multa sai como NaN, sem erro.' ] },
+    { label: '4. Prompt: validar datas', kind: 'blue', cmd: 'opencode run "Decidi: data inválida em calcularMulta lança TypeError. Acrescente RN07 na spec e a validação em src/multa.js."', out: [
+      '[mute] ▸ read docs/spec.md', '[mute] ▸ edit docs/spec.md  (+1)', '[mute] ▸ edit src/multa.js  (+5)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 4 · fail 0',
+      'RN07: previsto e devolvido precisam ser datas válidas; caso contrário, TypeError.' ] },
+    { label: '5. Conferir de novo', cmd: 'git diff --stat && npm test', out: [
+      ' docs/spec.md | 1 +', ' src/multa.js | 5 +++++', ' 2 files changed, 6 insertions(+)',
+      ...NPM_TEST,
+      '[ok] ✔ P1 devolução 2 dias antes do prazo: multa 0 (0.79ms)', '[ok] ✔ P2 5 dias de atraso: 750 centavos (0.11ms)',
+      '[ok] ✔ P3 30 dias de atraso: teto de 3000 centavos (0.08ms)', '[ok] ✔ P4 data de devolução inválida lança TypeError (0.14ms)',
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0' ] }
+  ],
+  onRun(k, api) { if (k === 3) api.setCode('src/multa.js', MULTA_COM_VALIDACAO); }
+});
+
+/* ---------- 7. Calculadora de partições e limites ---------- */
+Labs.register('#lab-calc', (el) => {
+  el.innerHTML = `
+  <div class="row g-3 flex-grow-1" style="min-height:0">
+    <div class="col-md-6 d-flex">
+      <div class="card border-0 shadow-sm p-3 w-100 text-start">
+        <h3 class="h5 fw-bold mb-1">Multa · RN05</h3>
+        <p class="small text-muted mb-2">Digite os dias de atraso (negativo = devolveu antes).</p>
+        <div class="d-flex gap-2 align-items-center mb-2">
+          <input type="number" class="form-control" id="calc-dias" value="5" style="max-width:110px" aria-label="Dias de atraso" />
+          <div class="d-flex flex-wrap gap-1" id="calc-dias-atalhos"></div>
+        </div>
+        <div class="position-relative mb-1" style="height:30px" aria-hidden="true">
+          <div class="d-flex h-100 rounded overflow-hidden small fw-semibold text-center">
+            <div class="bg-success-subtle d-flex align-items-center justify-content-center" style="width:18.3%">P1 · ≤ 0</div>
+            <div class="bg-warning-subtle d-flex align-items-center justify-content-center" style="width:63.4%">P2 · 1 a 19</div>
+            <div class="bg-danger-subtle d-flex align-items-center justify-content-center" style="width:18.3%">P3 · ≥ 20</div>
+          </div>
+          <div id="calc-marca" class="position-absolute bg-dark rounded" style="top:-4px;width:4px;height:38px;transition:left .25s"></div>
+        </div>
+        <div class="position-relative small text-muted mb-3 mx-2" style="height:1.2em" aria-hidden="true"><span class="position-absolute" style="left:0.0%;transform:translateX(-50%)">-5</span><span class="position-absolute" style="left:16.7%;transform:translateX(-50%)">0</span><span class="position-absolute" style="left:50.0%;transform:translateX(-50%)">10</span><span class="position-absolute" style="left:83.3%;transform:translateX(-50%)">20</span><span class="position-absolute" style="left:100.0%;transform:translateX(-50%)">25</span></div>
+        <div id="calc-dias-saida" class="fs-6"></div>
+        <p class="small text-muted mt-auto mb-0">As fronteiras ficam entre 0 e 1 (começa a multa) e entre 19 e 20 (começa o teto). Os botões ao lado do campo são os valores da análise de três valores.</p>
+      </div>
+    </div>
+    <div class="col-md-6 d-flex">
+      <div class="card border-0 shadow-sm p-3 w-100 text-start">
+        <h3 class="h5 fw-bold mb-1">Limite de empréstimos · RN01</h3>
+        <p class="small text-muted mb-2">Digite quantos empréstimos ativos o aluno já tem.</p>
+        <div class="d-flex gap-2 align-items-center mb-2">
+          <input type="number" class="form-control" id="calc-ativos" value="1" style="max-width:110px" aria-label="Empréstimos ativos" />
+          <div class="d-flex flex-wrap gap-1" id="calc-ativos-atalhos"></div>
+        </div>
+        <div id="calc-ativos-saida" class="fs-6 mb-2"></div>
+        <h4 class="h6 fw-bold mt-auto mb-1">Tabela de casos que você montou</h4>
+        <pre id="calc-tabela" class="bg-dark text-info p-2 rounded small mb-1" style="min-height:5.5em;max-height:7.5em;overflow:auto"></pre>
+        <div class="d-flex gap-2"><button type="button" class="btn btn-sm btn-outline-dark" id="calc-add">Adicionar os dois valores à tabela</button><button type="button" class="btn btn-sm btn-outline-secondary" id="calc-limpar">Limpar</button></div>
+      </div>
+    </div>
+  </div>`;
+  const $ = (s) => el.querySelector(s);
+  const LIM_DIAS = { '-1': 'abaixo do limite 0', '0': 'limite 0 (último sem multa)', '1': 'acima do limite 0 (primeiro com multa)', '19': 'abaixo do limite 20', '20': 'limite 20 (primeiro no teto)', '21': 'acima do limite 20' };
+  const LIM_ATIVOS = { '2': 'abaixo do limite 3 (último que empresta)', '3': 'limite 3 (primeiro recusado)', '4': 'acima do limite 3' };
+  const linhas = [];
+  function multa(v) {
+    if (v === '' || !Number.isInteger(Number(v))) return { classe: 'P4 · inválida', esperado: 'TypeError', cor: 'secondary' };
+    const d = Number(v);
+    if (d <= 0) return { classe: 'P1 · no prazo', esperado: 0, cor: 'success' };
+    if (d <= 19) return { classe: 'P2 · atraso abaixo do teto', esperado: d * 150, cor: 'warning' };
+    return { classe: 'P3 · teto', esperado: 3000, cor: 'danger' };
+  }
+  function ativos(v) {
+    if (v === '' || !Number.isInteger(Number(v)) || Number(v) < 0) return { classe: 'inválida · contagem negativa ou fracionária', esperado: 'TypeError', cor: 'secondary' };
+    return Number(v) < 3 ? { classe: 'V1 · abaixo do limite', esperado: "'empresta'", cor: 'success' } : { classe: 'V2 · limite atingido', esperado: "'LIMITE_ATINGIDO'", cor: 'danger' };
+  }
+  function desenha() {
+    const vd = $('#calc-dias').value, va = $('#calc-ativos').value;
+    const m = multa(vd), a = ativos(va);
+    const pos = Math.max(-5, Math.min(25, Number(vd) || 0));
+    $('#calc-marca').style.left = 'calc(' + ((pos + 5) / 30 * 100) + '% - 2px)';
+    $('#calc-dias-saida').innerHTML = '<span class="badge bg-' + m.cor + ' me-2">' + m.classe + '</span>esperado: <code>' + m.esperado + '</code>' +
+      (LIM_DIAS[vd] ? '<div class="small mt-1"><i class="fas fa-ruler me-1" aria-hidden="true"></i>valor-limite: ' + LIM_DIAS[vd] + '</div>' : (m.esperado === 'TypeError' ? '<div class="small text-muted mt-1">classe inválida: a spec precisa dizer o que acontece</div>' : '<div class="small text-muted mt-1">valor do meio da classe; experimente as fronteiras</div>'));
+    $('#calc-ativos-saida').innerHTML = '<span class="badge bg-' + a.cor + ' me-2">' + a.classe + '</span>esperado: <code>' + a.esperado + '</code>' +
+      (LIM_ATIVOS[va] ? '<div class="small mt-1"><i class="fas fa-ruler me-1" aria-hidden="true"></i>valor-limite: ' + LIM_ATIVOS[va] + '</div>' : '');
+  }
+  function atalhos(id, alvo, valores) {
+    valores.forEach((v) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'btn btn-sm btn-outline-secondary py-0 px-2'; b.textContent = v;
+      b.addEventListener('click', () => { $(alvo).value = v; desenha(); });
+      $(id).appendChild(b);
+    });
+  }
+  atalhos('#calc-dias-atalhos', '#calc-dias', [-1, 0, 1, 19, 20, 21]);
+  atalhos('#calc-ativos-atalhos', '#calc-ativos', [2, 3, 4]);
+  $('#calc-dias').addEventListener('input', desenha);
+  $('#calc-ativos').addEventListener('input', desenha);
+  $('#calc-add').addEventListener('click', () => {
+    const vd = $('#calc-dias').value, va = $('#calc-ativos').value;
+    linhas.push('[' + vd + ', ' + multa(vd).esperado + '],   // multa', '[' + va + ', ' + ativos(va).esperado + '],   // ativos');
+    $('#calc-tabela').textContent = 'const casos = [\n  ' + linhas.join('\n  ') + '\n];';
+    $('#calc-tabela').scrollTop = 1e4;
+  });
+  $('#calc-limpar').addEventListener('click', () => { linhas.length = 0; $('#calc-tabela').textContent = ''; });
+  desenha();
+  return {};
+});
+
+/* ---------- 8. Valores-limite ---------- */
+const COM_BUG = EMPRESTIMO.replace('aluno.ativos >= LIMITE_ATIVOS', 'aluno.ativos > LIMITE_ATIVOS');
+Labs.vscode('#lab-limites', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/limites', open: 'test/limites.test.js',
+  prompt: P('test/limites'),
+  files: [
+    { path: 'test/limites.test.js', hl: [9, 10, 11, 27, 28], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar, calcularMulta } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-03-01');
+const livre = { id: 'L1', reservadoPor: null };
+
+const limitesDeAtivos = [
+  [2, 'empresta'],          // abaixo do limite
+  [3, 'LIMITE_ATINGIDO'],   // no limite
+  [4, 'LIMITE_ATINGIDO'],   // acima do limite
+];
+for (const [ativos, esperado] of limitesDeAtivos) {
+  test(\`RN01 \${ativos} ativos -> \${esperado}\`, () => {
+    const aluno = { id: 'A1', ativos, multaPendente: 0 };
+    if (esperado === 'empresta') {
+      assert.equal(emprestar(aluno, livre, hoje).livroId, 'L1');
+    } else {
+      assert.throws(() => emprestar(aluno, livre, hoje), { codigo: esperado });
+    }
+  });
+}
+
+const DIA = 86_400_000;
+const previsto = new Date('2027-03-15');
+const limitesDeMulta = [
+  [-1, 0], [0, 0], [1, 150],         // fronteira do início da multa
+  [19, 2850], [20, 3000], [21, 3000] // fronteira do teto
+];
+for (const [dias, centavos] of limitesDeMulta) {
+  test(\`RN05 \${dias} dia(s) -> \${centavos}\`, () => {
+    const devolvido = new Date(previsto.getTime() + dias * DIA);
+    assert.equal(calcularMulta(previsto, devolvido), centavos);
+  });
+}` },
+    { path: 'src/emprestimo.js', hl: [16], scrollTo: 16, code: COM_BUG }
+  ],
+  run: [
+    { label: '1. Prompt: valores-limite', cmd: 'opencode run "Gere test/limites.test.js com análise de valor-limite de três valores para RN01 (ativos) e RN05 (dias de atraso), em formato de tabela percorrida com for. Não altere src/."', out: [
+      '[mute] ▸ read AGENTS.md', '[mute] ▸ read docs/spec.md', '[mute] ▸ read docs/casos-de-teste.md',
+      '[mute] ▸ write test/limites.test.js  (+35)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 8 · fail 1',
+      'Fronteiras: 3 ativos (RN01), 0|1 e 19|20 dias (RN05). 9 casos.',
+      '[warn] "RN01 3 ativos" falhou: o empréstimo foi aceito. Pela CA02.1 o teste está certo.',
+      '[warn] Não alterei src/. Quer que eu corrija a comparação?' ] },
+    { label: '2. Conferir: npm test', kind: 'red', cmd: 'npm test', out: [
+      ...NPM_TEST,
+      '[ok] ✔ RN01 2 ativos -> empresta (0.84ms)',
+      "[err] ✖ RN01 3 ativos -> LIMITE_ATINGIDO (0.47ms)",
+      '[ok] ✔ RN01 4 ativos -> LIMITE_ATINGIDO (0.10ms)',
+      '[ok] ✔ RN05 -1 dia(s) -> 0 (0.07ms)', '[ok] ✔ RN05 0 dia(s) -> 0 (0.05ms)', '[ok] ✔ RN05 1 dia(s) -> 150 (0.05ms)',
+      '[ok] ✔ RN05 19 dia(s) -> 2850 (0.04ms)', '[ok] ✔ RN05 20 dia(s) -> 3000 (0.04ms)', '[ok] ✔ RN05 21 dia(s) -> 3000 (0.04ms)',
+      'ℹ tests 9', 'ℹ pass 8', '[err] ℹ fail 1', '',
+      'test at test/limites.test.js:14:3',
+      '[err] ✖ RN01 3 ativos -> LIMITE_ATINGIDO (0.47ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: Missing expected exception.' ] },
+    { label: '3. Procurar a comparação', clear: false, cmd: 'grep -n "LIMITE_ATIVOS" src/emprestimo.js', file: 'src/emprestimo.js', out: [
+      '2:const LIMITE_ATIVOS = 3;    // RN01', '[err] 16:  if (aluno.ativos > LIMITE_ATIVOS) {',
+      '[mute] Com > o terceiro empréstimo ativo não é barrado: 3 > 3 é falso.' ] },
+    { label: '4. Prompt: corrigir', kind: 'blue', cmd: 'opencode run "Sim, corrija a comparação de RN01 em src/emprestimo.js"', file: 'src/emprestimo.js', out: [
+      '[mute] ▸ read src/emprestimo.js', '[mute] ▸ edit src/emprestimo.js  (+1 −1)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 9 · fail 0',
+      'Troquei > por >= na linha 16. Sugestão: fix(emprestimo): barra o empréstimo com 3 ativos' ] },
+    { label: '5. Conferir o diff', cmd: 'git diff src/ && npm test', out: [
+      'diff --git a/src/emprestimo.js b/src/emprestimo.js', '@@ -13,7 +13,7 @@ export function emprestar(aluno, livro, hoje) {',
+      '[err] -  if (aluno.ativos > LIMITE_ATIVOS) {', '[ok] +  if (aluno.ativos >= LIMITE_ATIVOS) {',
+      ...NPM_TEST, 'ℹ tests 9', '[ok] ℹ pass 9', 'ℹ fail 0' ] }
+  ],
+  onRun(k, api) { if (k === 3) api.setCode('src/emprestimo.js', EMPRESTIMO); }
+});
+
+/* ---------- 10. Tabela de decisão ---------- */
+const ORDEM_ERRADA = EMPRESTIMO.replace(
+`  if (aluno.ativos >= LIMITE_ATIVOS) {
+    throw new RegraDeEmprestimo('LIMITE_ATINGIDO', 'Aluno já tem 3 empréstimos ativos');
+  }
+  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {
+    throw new RegraDeEmprestimo('LIVRO_RESERVADO', 'Livro reservado por outro aluno');
+  }`,
+`  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {
+    throw new RegraDeEmprestimo('LIVRO_RESERVADO', 'Livro reservado por outro aluno');
+  }
+  if (aluno.ativos >= LIMITE_ATIVOS) {
+    throw new RegraDeEmprestimo('LIMITE_ATINGIDO', 'Aluno já tem 3 empréstimos ativos');
+  }`);
+Labs.vscode('#lab-decisao', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/decisao', open: 'docs/casos-de-teste.md',
+  prompt: P('test/decisao'),
+  files: [
+    { path: 'docs/casos-de-teste.md', code:
+`## emprestar · tabela de decisão (RN01, RN03, RN04, RN06)
+
+| Condição / ação         | R1 | R2 | R3 | R4 |
+|-------------------------|----|----|----|----|
+| C1 multa pendente       | S  | N  | N  | N  |
+| C2 3 ou mais ativos     | -  | S  | N  | N  |
+| C3 reservado por outro  | -  | -  | S  | N  |
+| MULTA_PENDENTE          | X  |    |    |    |
+| LIMITE_ATINGIDO         |    | X  |    |    |
+| LIVRO_RESERVADO         |    |    | X  |    |
+| empresta                |    |    |    | X  |
+
+Completa: 2^3 = 8 regras. RN06 (ordem RN04, RN01, RN03) torna
+indiferentes as condições depois do primeiro impedimento: 8 -> 4.
+Representante do '-': S, para que a ordem seja exercitada.` },
+    { path: 'test/decisao.test.js', hl: [8, 9, 10, 11], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-03-01');
+const regras = [
+  // regra, multaPendente, ativos, reservadoPor, esperado
+  ['R1', 300, 3, 'ana', 'MULTA_PENDENTE'],
+  ['R2', 0, 3, 'ana', 'LIMITE_ATINGIDO'],
+  ['R3', 0, 1, 'ana', 'LIVRO_RESERVADO'],
+  ['R4', 0, 1, null, 'empresta'],
+];
+
+for (const [regra, multaPendente, ativos, reservadoPor, esperado] of regras) {
+  test(\`\${regra} -> \${esperado}\`, () => {
+    const aluno = { id: 'bruno', ativos, multaPendente };
+    const livro = { id: 'L7', reservadoPor };
+    if (esperado === 'empresta') {
+      assert.equal(emprestar(aluno, livro, hoje).livroId, 'L7');
+    } else {
+      assert.throws(() => emprestar(aluno, livro, hoje), { codigo: esperado });
+    }
+  });
+}` },
+    { path: 'src/emprestimo.js', hl: [16, 19], scrollTo: 13, code: ORDEM_ERRADA }
+  ],
+  run: [
+    { label: '1. Prompt: tabela de decisão', cmd: 'opencode run "Monte a tabela de decisão de emprestar com as condições de RN01, RN03 e RN04, reduza com - usando RN06, use S como representante do - e gere test/decisao.test.js com um teste por regra. Não altere src/."', file: 'docs/casos-de-teste.md', out: [
+      '[mute] ▸ read docs/spec.md', '[mute] ▸ read src/emprestimo.js',
+      '[mute] ▸ edit docs/casos-de-teste.md  (+15)', '[mute] ▸ write test/decisao.test.js  (+24)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 3 · fail 1',
+      'Tabela completa com 8 regras, reduzida para 4 por RN06.',
+      '[warn] R2 falhou: com 3 ativos e livro reservado, o código devolve LIVRO_RESERVADO.' ] },
+    { label: '2. Conferir: npm test', kind: 'red', cmd: 'npm test', file: 'test/decisao.test.js', out: [
+      ...NPM_TEST,
+      '[ok] ✔ R1 -> MULTA_PENDENTE (0.92ms)', '[err] ✖ R2 -> LIMITE_ATINGIDO (0.61ms)', '[ok] ✔ R3 -> LIVRO_RESERVADO (0.10ms)', '[ok] ✔ R4 -> empresta (0.08ms)',
+      'ℹ tests 4', 'ℹ pass 3', '[err] ℹ fail 1', '',
+      'test at test/decisao.test.js:15:3',
+      '[err] ✖ R2 -> LIMITE_ATINGIDO (0.61ms)',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:',
+      '  + actual - expected', '',
+      '    Comparison {', "[ok] +     codigo: 'LIVRO_RESERVADO'", "[err] -     codigo: 'LIMITE_ATINGIDO'", '    }' ] },
+    { label: '3. Conferir na spec', clear: false, cmd: "grep -n 'RN06' docs/spec.md", out: [
+      '20:- RN06 Se mais de uma regra impedir, vale a primeira nesta ordem: RN04, RN01, RN03.',
+      '[mute] RN01 (limite) vem antes de RN03 (reserva). O defeito está no código.' ] },
+    { label: '4. Prompt: corrigir a ordem', kind: 'blue', cmd: 'opencode run "R2 falhou e conferi RN06: reordene as verificações de emprestar para RN04, RN01, RN03"', file: 'src/emprestimo.js', out: [
+      '[mute] ▸ read src/emprestimo.js', '[mute] ▸ edit src/emprestimo.js  (+3 −3)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 4 · fail 0',
+      'Movi a verificação de limite para antes da reserva, como pede RN06.' ] },
+    { label: '5. Conferir', cmd: 'git diff --stat && npm test', out: [
+      ' src/emprestimo.js | 6 +++---', ' 1 file changed, 3 insertions(+), 3 deletions(-)',
+      ...NPM_TEST, '[ok] ✔ R1 -> MULTA_PENDENTE', '[ok] ✔ R2 -> LIMITE_ATINGIDO', '[ok] ✔ R3 -> LIVRO_RESERVADO', '[ok] ✔ R4 -> empresta',
+      'ℹ tests 4', '[ok] ℹ pass 4', 'ℹ fail 0' ] }
+  ],
+  onRun(k, api) { if (k === 3) api.setCode('src/emprestimo.js', EMPRESTIMO); }
+});
+
+/* ---------- 12. Grafo de fluxo ---------- */
+Labs.flow('#flow-grafo', {
+  w: 1000, h: 460,
+  nodes: [
+    { id: 'n1', x: 200, y: 40, label: 'início', sub: 'linha 12', w: 200, h: 50 },
+    { id: 'd1', x: 200, y: 130, label: 'multaPendente > 0 ?', sub: 'linha 13', k: 'amber', w: 290, h: 56 },
+    { id: 'd2', x: 200, y: 225, label: 'ativos >= 3 ?', sub: 'linha 16', k: 'amber', w: 290, h: 56 },
+    { id: 'd3', x: 200, y: 320, label: 'reservadoPor ?', sub: 'linha 19, parte 1', k: 'amber', w: 290, h: 56 },
+    { id: 'd4', x: 200, y: 415, label: 'reservadoPor !== aluno.id ?', sub: 'linha 19, parte 2', k: 'amber', w: 290, h: 56 },
+    { id: 'e1', x: 560, y: 130, label: 'MULTA_PENDENTE', sub: 'throw, linha 14', k: 'red', w: 220, h: 56 },
+    { id: 'e2', x: 560, y: 225, label: 'LIMITE_ATINGIDO', sub: 'throw, linha 17', k: 'red', w: 220, h: 56 },
+    { id: 'ok', x: 560, y: 320, label: 'empresta', sub: 'linhas 22 e 23', k: 'green', w: 220, h: 56 },
+    { id: 'e3', x: 560, y: 415, label: 'LIVRO_RESERVADO', sub: 'throw, linha 20', k: 'red', w: 220, h: 56 },
+    { id: 'fim', x: 870, y: 270, label: 'fim', sub: 'saída da função', w: 170, h: 56 }
+  ],
+  links: [
+    { from: 'n1', to: 'd1' },
+    { from: 'd1', to: 'e1', label: 'S' }, { from: 'd1', to: 'd2', label: 'N', dx: 14 },
+    { from: 'd2', to: 'e2', label: 'S' }, { from: 'd2', to: 'd3', label: 'N', dx: 14 },
+    { from: 'd3', to: 'd4', label: 'S', dx: 14 }, { from: 'd3', to: 'ok', label: 'N' },
+    { from: 'd4', to: 'e3', label: 'S' }, { from: 'd4', to: 'ok', label: 'N', dy: 18 },
+    { from: 'e1', to: 'fim' }, { from: 'e2', to: 'fim' }, { from: 'ok', to: 'fim' }, { from: 'e3', to: 'fim' }
+  ],
+  steps: [
+    { title: 'Nós e arestas', text: 'Cada decisão vira um nó com duas saídas. A condição composta da linha 19 vira dois nós. São 10 nós (N) e 13 arestas (E).', on: ['d1', 'd2', 'd3', 'd4'] },
+    { title: 'C1: multa pendente', text: 'multaPendente = 300. A primeira decisão já desvia para o erro.', on: ['n1', 'd1', 'e1', 'fim'], dim: true, links: [['n1', 'd1'], ['d1', 'e1', 'red'], ['e1', 'fim', 'red']] },
+    { title: 'C2: limite atingido', text: 'Sem multa e com 3 ativos.', on: ['n1', 'd1', 'd2', 'e2', 'fim'], dim: true, links: [['n1', 'd1'], ['d1', 'd2'], ['d2', 'e2', 'red'], ['e2', 'fim', 'red']] },
+    { title: 'C3: livro sem reserva', text: 'Sem multa, 1 ativo, reservadoPor = null: empresta.', on: ['n1', 'd1', 'd2', 'd3', 'ok', 'fim'], dim: true, links: [['n1', 'd1'], ['d1', 'd2'], ['d2', 'd3'], ['d3', 'ok', 'green'], ['ok', 'fim', 'green']] },
+    { title: 'C4: reservado por outro aluno', text: 'L7 reservado por Ana, quem pede é Bruno: LIVRO_RESERVADO.', on: ['n1', 'd1', 'd2', 'd3', 'd4', 'e3', 'fim'], dim: true, links: [['n1', 'd1'], ['d1', 'd2'], ['d2', 'd3'], ['d3', 'd4'], ['d4', 'e3', 'red'], ['e3', 'fim', 'red']] },
+    { title: 'C5: reservado pelo próprio aluno', text: 'L7 reservado por Ana, quem pede é Ana: empresta. Este caminho fica escondido quando se lê a linha 19 como uma decisão só.', on: ['n1', 'd1', 'd2', 'd3', 'd4', 'ok', 'fim'], dim: true, links: [['n1', 'd1'], ['d1', 'd2'], ['d2', 'd3'], ['d3', 'd4'], ['d4', 'ok', 'green'], ['ok', 'fim', 'green']] },
+    { title: 'V(G) = E - N + 2 = 13 - 10 + 2 = 5', text: 'Também 4 decisões + 1 = 5. Cinco caminhos básicos, cinco testes no mínimo para cobrir todos os ramos por caminhos independentes.', on: ['n1', 'd1', 'd2', 'd3', 'd4', 'e1', 'e2', 'ok', 'e3', 'fim'] }
+  ]
+});
+
+/* ---------- 14. Cobertura ---------- */
+const TESTES_INICIAIS =
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar, calcularMulta } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-03-01');
+const livre = { id: 'L1', reservadoPor: null };
+const aluno = (extra) => ({ id: 'A1', ativos: 0, multaPendente: 0, ...extra });
+
+test('CA01.1 registra o empréstimo com devolução em 15/03/2027', () => {
+  assert.deepEqual(emprestar(aluno(), livre, hoje).previsto, new Date('2027-03-15'));
+});
+test('CA02.1 recusa o quarto empréstimo ativo', () => {
+  assert.throws(() => emprestar(aluno({ ativos: 3 }), livre, hoje), { codigo: 'LIMITE_ATINGIDO' });
+});
+test('CA02.4 recusa aluno com multa pendente', () => {
+  assert.throws(() => emprestar(aluno({ multaPendente: 300 }), livre, hoje), { codigo: 'MULTA_PENDENTE' });
+});
+test('CA03.2 três dias de atraso custam 450 centavos', () => {
+  assert.equal(calcularMulta(new Date('2027-03-15'), new Date('2027-03-18')), 450);
+});`;
+const TESTES_AMPLIADOS = TESTES_INICIAIS + `
+test('CA02.2 recusa L7 reservado por Ana para Bruno', () => {
+  const l7 = { id: 'L7', reservadoPor: 'ana' };
+  assert.throws(() => emprestar(aluno({ id: 'bruno' }), l7, hoje), { codigo: 'LIVRO_RESERVADO' });
+});
+test('CA03.1 devolução antes do prazo não gera multa', () => {
+  assert.equal(calcularMulta(new Date('2027-03-15'), new Date('2027-03-13')), 0);
+});`;
+const TABELA = (linha, ramo, desc, cor) => [
+  'ℹ start of coverage report',
+  'ℹ ------------------------------------------------------------',
+  'ℹ file              | line % | branch % | funcs % | uncovered lines',
+  'ℹ ------------------------------------------------------------',
+  cor + 'ℹ src/emprestimo.js | ' + linha + ' |    ' + ramo + ' |  100.00 | ' + desc,
+  'ℹ ------------------------------------------------------------',
+  cor + 'ℹ all files         | ' + linha + ' |    ' + ramo + ' |  100.00 |',
+  'ℹ ------------------------------------------------------------',
+  'ℹ end of coverage report'
+];
+Labs.vscode('#lab-cobertura', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/cobertura', open: 'package.json',
+  prompt: P('test/cobertura'),
+  files: [
+    { path: 'package.json', hl: [7], code:
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=90 --test-coverage-include='src/**'"
+  }
+}` },
+    { path: 'src/emprestimo.js', hl: [19, 20, 28], code: EMPRESTIMO },
+    { path: 'test/emprestimo.test.js', code: TESTES_INICIAIS }
+  ],
+  run: [
+    { label: '1. Prompt: configurar test:cov', cmd: 'opencode run "Crie o script test:cov com a cobertura nativa do Node, só para src/, com as metas de docs/qualidade.md"', out: [
+      '[mute] ▸ read docs/qualidade.md', '[mute] ▸ read package.json', '[mute] ▸ edit package.json  (+1)',
+      'test:cov usa --experimental-test-coverage com --test-coverage-include=\'src/**\'.',
+      'Metas lidas de docs/qualidade.md: 80% de linhas e 90% de ramos em src/emprestimo.js.' ] },
+    { label: '2. Conferir: test:cov', kind: 'red', cmd: 'npm run test:cov', file: 'src/emprestimo.js', out: [
+      '[mute] ... 4 testes passando ...',
+      ...TABELA(' 96.67', '75.00', '20', '[warn] '),
+      '[err] ℹ Error: 75.00% branch coverage does not meet threshold of 90%.',
+      '[mute] Linha 20 nunca rodou (livro reservado). A linha 28 rodou, mas o "return 0" não: ramo descoberto.' ] },
+    { label: '3. Prompt: ramos descobertos', kind: 'blue', cmd: 'opencode run "Leia a saída de npm run test:cov e escreva testes para os ramos não cobertos, citando o CA da spec. Não altere src/."', file: 'test/emprestimo.test.js', out: [
+      '[mute] ▸ bash npm run test:cov', '[mute] ▸ read src/emprestimo.js', '[mute] ▸ read docs/spec.md',
+      '[mute] ▸ edit test/emprestimo.test.js  (+7)',
+      ...PERMISSAO('npm run test:cov'),
+      '[mute] ▸ bash npm run test:cov', '[mute]   branch 91.67%, meta de 90% atingida',
+      'Acrescentei CA02.2 (linha 20) e CA03.1 (ramo verdadeiro da linha 28).',
+      '[warn] Ainda falta um ramo da linha 19: reservadoPor igual a aluno.id (CA02.3).' ] },
+    { label: '4. Conferir de novo', cmd: 'npm run test:cov', out: [
+      '[mute] ... 6 testes passando ...',
+      ...TABELA('100.00', '91.67', '', '[ok] '),
+      '[info] 100% das linhas e 91,67% dos ramos. A meta passou, mas o caso de Ana retirar o próprio livro segue sem teste.' ] }
+  ],
+  onRun(k, api) { if (k === 2) api.setCode('test/emprestimo.test.js', TESTES_AMPLIADOS); }
+});
+
+/* ---------- 15. Caminhos básicos e complexidade ---------- */
+Labs.vscode('#lab-caminhos', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/caminhos', open: 'test/emprestimo.caminhos.test.js',
+  prompt: P('test/caminhos'),
+  files: [
+    { path: 'test/emprestimo.caminhos.test.js', code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+// emprestar: 10 nós, 13 arestas, V(G) = 13 - 10 + 2 = 5
+const hoje = new Date('2027-03-01');
+const aluno = (extra) => ({ id: 'ana', ativos: 1, multaPendente: 0, ...extra });
+const livro = (reservadoPor) => ({ id: 'L7', reservadoPor });
+
+test('C1 multa pendente: d1 S', () => {
+  assert.throws(() => emprestar(aluno({ multaPendente: 300 }), livro(null), hoje), { codigo: 'MULTA_PENDENTE' });
+});
+test('C2 limite: d1 N, d2 S', () => {
+  assert.throws(() => emprestar(aluno({ ativos: 3 }), livro(null), hoje), { codigo: 'LIMITE_ATINGIDO' });
+});
+test('C3 sem reserva: d1 N, d2 N, d3 N', () => {
+  assert.equal(emprestar(aluno(), livro(null), hoje).livroId, 'L7');
+});
+test('C4 reservado por outro: d3 S, d4 S', () => {
+  assert.throws(() => emprestar(aluno({ id: 'bruno' }), livro('ana'), hoje), { codigo: 'LIVRO_RESERVADO' });
+});
+test('C5 reservado pelo próprio aluno: d3 S, d4 N', () => {
+  assert.equal(emprestar(aluno(), livro('ana'), hoje).livroId, 'L7');
+});` },
+    { path: 'eslint.config.js', hl: [13], code:
+`import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  js.configs.recommended,
+  {
+    files: ['**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: globals.node
+    },
+    rules: { complexity: ['error', 8] }
+  },
+  { ignores: ['coverage/', 'node_modules/'] }
+];` },
+    { path: 'src/relatorio.js', hl: [3, 4, 8, 9, 10], code:
+`export function situacaoDoAluno(aluno, emprestimos, hoje) {
+  let atrasados = 0;
+  for (const e of emprestimos) {
+    if (!e.devolvido && e.previsto < hoje) {
+      atrasados++;
+    }
+  }
+  if (aluno.multaPendente > 0 && atrasados > 0) return 'BLOQUEADO';
+  if (aluno.multaPendente > 0 || atrasados > 0) return 'PENDENTE';
+  if (emprestimos.length >= 3) return 'NO_LIMITE';
+  return 'REGULAR';
+}` },
+    { path: 'src/emprestimo.js', code: EMPRESTIMO }
+  ],
+  run: [
+    { label: '1. Prompt: caminhos básicos', cmd: 'opencode run "Para emprestar em src/emprestimo.js, desenhe o grafo de fluxo em docs/casos-de-teste.md separando condições compostas, calcule V(G) e crie test/emprestimo.caminhos.test.js com um teste por caminho básico"', out: [
+      '[mute] ▸ read src/emprestimo.js', '[mute] ▸ edit docs/casos-de-teste.md  (+22)', '[mute] ▸ write test/emprestimo.caminhos.test.js  (+24)',
+      ...PERMISSAO('npm test'),
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 5 · fail 0',
+      'Grafo com 10 nós e 13 arestas; a linha 19 virou duas decisões (d3 e d4).',
+      'V(G) = 13 - 10 + 2 = 5 = 4 decisões + 1. Cinco testes, C1 a C5.' ] },
+    { label: '2. Conferir: npm test', cmd: 'npm test', out: [
+      ...NPM_TEST,
+      '[ok] ✔ C1 multa pendente: d1 S (0.86ms)', '[ok] ✔ C2 limite: d1 N, d2 S (0.12ms)', '[ok] ✔ C3 sem reserva: d1 N, d2 N, d3 N (0.09ms)',
+      '[ok] ✔ C4 reservado por outro: d3 S, d4 S (0.08ms)', '[ok] ✔ C5 reservado pelo próprio aluno: d3 S, d4 N (0.07ms)',
+      'ℹ tests 5', '[ok] ℹ pass 5', 'ℹ fail 0' ] },
+    { label: '3. Medir a complexidade', kind: 'blue', clear: false, cmd: `npx eslint src/ --rule '{"complexity": ["warn", 1]}'`, file: 'src/emprestimo.js', out: [
+      '', '/workspaces/biblioteca-campus/src/emprestimo.js',
+      "[warn]   12:8  warning  Function 'emprestar' has a complexity of 5. Maximum allowed is 1  complexity",
+      "[warn]   26:8  warning  Function 'calcularMulta' has a complexity of 2. Maximum allowed is 1  complexity", '',
+      '/workspaces/biblioteca-campus/src/relatorio.js',
+      "[warn]    1:8  warning  Function 'situacaoDoAluno' has a complexity of 9. Maximum allowed is 1  complexity", '',
+      '[warn] ✖ 3 problems (0 errors, 3 warnings)',
+      '[mute] O limite 1 é um truque para o ESLint imprimir a complexidade de cada função.' ] },
+    { label: '4. Conferir: npm run lint', kind: 'red', cmd: 'npm run lint', file: 'src/relatorio.js', out: [
+      '', '> biblioteca-campus@1.0.0 lint', '> eslint .', '',
+      '/workspaces/biblioteca-campus/src/relatorio.js',
+      "[err]   1:8  error  Function 'situacaoDoAluno' has a complexity of 9. Maximum allowed is 8  complexity", '',
+      '[err] ✖ 1 problem (1 error, 0 warnings)',
+      '[mute] 1 (base) + for + if + && + if + && + if + || + if = 9. Refatoração fica para a Aula 04.' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

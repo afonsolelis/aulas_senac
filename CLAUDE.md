@@ -25,7 +25,7 @@ node scripts/capture-slides.mjs pages/<slug>/slide_<arq>.html .tmp/shots 1280 72
 
 ## Arquitetura (navegação em 4 níveis)
 
-1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **4** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`, `pages/home_2027_1.html`. 2027.1 tem só placeholders (`qualidade3`, `tcc1`).
+1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **4** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`, `pages/home_2027_1.html`. 2027.1: `qualidade3` com conteúdo; `tcc1` ainda placeholder.
 2. **`pages/home_<ano>_<sem>.html`** — home do semestre: lista as disciplinas daquele período como cartões.
 3. **`pages/home_<disciplina>.html`** — cronograma da disciplina (cards de aula → slides). Padrão de nome **não uniforme**: 2026.1 usa `home_<slug>.html` (`home_qualidade.html`); 2026.2 usa nome dedicado (`home_qualidade_2026_2.html`, `home_tcc2.html`).
 4. **`pages/<slug>/slide_*.html`** e **`pages/<slug>/material/material_*.html`** — slides e materiais escritos, linkados nos dois sentidos.
@@ -54,6 +54,26 @@ A partir da **Semana 34 (Aula 03)**, Qualidade 2026.2 tem um case fio-condutor *
 - Escopos: `E1` Identidade & Conta, `E2` Sessão & Acesso, `E3` Assinatura, `E4` Conteúdo.
 - **Aulas 09 a 17 (Semanas 41–50) são só prática em sala com prompts**, aplicadas ao projeto das equipes (Organização de Recursos), sem teoria. Cada deck segue capa → agenda dos dois blocos → "Antes de abrir o agente" → um slide por prompt (com "Antes de aceitar") → entregável e checagem na mesa → dúvidas; o material repete os prompts com botão de copiar. Os nove pares são gerados a partir de um único conjunto de dados; edite os prompts no slide e no material juntos.
 - Registrado em `config/semestres.json` no campo `case` da disciplina `qualidade2` (nome, stack, escopos, personas, fora de escopo); o trabalho avaliado fica em `projeto_avaliado`. Ao criar aula nova, alinhe o incremento com a tabela "Incremento por semana" da especificação — a coluna do projeto fala de salas/professores/materiais, não do Foot Fanatics.
+
+## Qualidade 2027.1 (`qualidade3`)
+
+Home `pages/home_qualidade_2027_1.html`, slides e materiais em `pages/qualidade3/`. Paleta herdada por
+`data-disciplina="qualidade"` (mesma regra de 2026.2).
+
+- **Tudo individual, sem grupos.** Dois trabalhos no mesmo repositório do aluno (`organizacao-recursos`):
+  `trabalho-1.html` (entrega semana 10, prova oral 11–13) e `trabalho-2.html` (entrega 17, oral 18–20);
+  revisão na 21 e recuperação na 22. Orientações da oral em `prova-oral.html`.
+- **Entrega, correção e feedback no GitHub.** Cards de entrega não têm slide nem material, só o botão
+  **Entregar** → `qualidade3/entrega/entrega.html` (nome completo + link do repositório; formulários
+  `senac-qs-2027-1-trabalho-{1,2}` em `supabase/entregas-qualidade3-2027-1.sql`, `max_integrantes = 1`).
+  Feedback chega como issue; o aluno responde com commit `... (#N)` e `Closes #N`. Sem pull request.
+- **Stack JavaScript puro:** Node 22, ES modules, node:test, cobertura nativa, ESLint 9, GitHub Actions,
+  Express 5 + supertest, PostgreSQL + Testcontainers, cucumber-js, k6. Ambiente: Codespaces + opencode
+  com OpenRouter (OpenLLM como alternativa local). Git trunk-based com branches curtas.
+- **Demonstrações simuladas:** todo deck usa `css/labs.css` + `js/labs.js` (VS Code em tela cheia,
+  terminal, navegador, diagrama e `Labs.video`, que substitui GIF). Tecla G abre o roteiro do laboratório.
+  O código das demos aparece sendo gerado pelo opencode e revisado pelo aluno. O case das demos é
+  `biblioteca-campus`; o projeto avaliado é Organização de Recursos.
 
 ## Banco das atividades: PostgREST na VPS
 

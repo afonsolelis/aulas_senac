@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spec-Driven Development: da especificação ao código - Material</title>
+<meta name="description" content="Material da Aula 02 de Qualidade de Software 2027.1: Spec-Driven Development com opencode, spec.md, critérios de aceite, plano, tarefas, AGENTS.md, rastreabilidade e abertura do Trabalho 1.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 02 &middot; Semana 5 &middot; 01/02 a 05/02</span><h1 class="h3 fw-bold text-white mb-0">Spec-Driven Development: da especificação ao código</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Sair da aula com a especificação do seu <code>organizacao-recursos</code> em <code>docs/spec.md</code>, o plano e as tarefas que o agente vai seguir, o <code>AGENTS.md</code> apontando para a spec e a primeira tarefa implementada, testada e integrada na main.</p>
+<p class="text-muted mb-0">No primeiro bloco, o professor mostra o fluxo completo no repositório <code>biblioteca-campus</code>, sempre com o opencode gerando os arquivos e o professor conferindo o resultado. No segundo bloco abre-se o Trabalho 1 e cada aluno aplica o mesmo fluxo no próprio repositório, com os três prompts desta página.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. O problema do prompt solto</h2>
+<p class="text-muted">Na disciplina, o código é gerado por um agente de LLM. O agente responde a qualquer pedido, inclusive aos incompletos. Quando o pedido é uma frase como "crie a função de multa da biblioteca", cada decisão que a frase não tomou é tomada pelo modelo, sem aviso: multa em reais ou em centavos, quanto por dia, se existe teto, se a devolução no dia previsto paga.</p>
+<p class="text-muted">Na demonstração, o agente escolheu R$ 1,50 por dia, em reais, sem teto. O código compila e parece razoável. Os três testes escritos a partir da especificação da biblioteca reprovaram:</p>
+<pre class="bg-dark text-info p-3 rounded small">✖ CA03.1 devolução antes do prazo não gera multa
+  -3 !== 0
+✖ CA03.2 três dias de atraso custam 450 centavos
+  4.5 !== 450
+✖ CA03.3 a multa para em 3000 centavos
+  60 !== 3000</pre>
+<p class="text-muted mb-0">Com o prompt "Implemente calcularMulta em src/multa.js seguindo RN05 e os critérios CA03.1 a CA03.3 de docs/spec.md", o rastro do agente mostra a leitura da spec e dos testes antes da edição, e os três testes passam. O ganho não veio de um modelo melhor: veio de uma fonte da verdade que o agente pôde ler e de testes que o aluno pôde rodar.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Spec-Driven Development</h2>
+<p class="text-muted">No Spec-Driven Development (SDD), a especificação é escrita antes do código, fica versionada no repositório e é tratada como fonte da verdade. O código é derivado dela, tarefa por tarefa, e os testes verificam os critérios de aceite que ela define. Quando a spec não responde a uma dúvida, a dúvida volta para a spec como pergunta, e não para o código como suposição.</p>
+<ol class="text-muted">
+<li>O problema é descrito em <code>docs/spec.md</code>: requisitos, regras, critérios de aceite, fora de escopo e perguntas em aberto.</li>
+<li>A spec é quebrada em <code>docs/plano.md</code> (como o código se organiza) e <code>docs/tarefas.md</code> (o que fazer, em que ordem).</li>
+<li>O <code>AGENTS.md</code> diz ao opencode que a spec é a fonte da verdade e que ele implementa uma tarefa por vez.</li>
+<li>O agente implementa a próxima tarefa com o teste do critério de aceite correspondente.</li>
+<li>Você revisa: lê o diff, roda <code>npm test</code> e só então commita. Se algo estiver errado, a tarefa volta para o agente.</li>
+</ol>
+<p class="text-muted mb-0">A etapa de qualidade é a revisão humana. O agente produz rápido; a spec e os testes dão a você um critério objetivo para aceitar ou recusar o que ele produziu.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Anatomia do docs/spec.md</h2>
+<ul class="text-muted">
+<li>Requisitos funcionais numerados (<code>RF01</code>, <code>RF02</code>): o que o sistema faz. O número liga requisito, tarefa, teste e commit.</li>
+<li>Regras de negócio numeradas (<code>RN01</code>...): os limites e números do domínio.</li>
+<li>Critérios de aceite (<code>CA02.1</code>: critério 1 do RF02) em Dado/Quando/Então, com valores concretos, citando o RF e as RN que verificam.</li>
+<li>Fora de escopo: o que esta versão não faz. Impede o agente de criar cadastro, banco ou tela que ninguém pediu.</li>
+<li>Perguntas em aberto (<code>P01</code>...): decisões ainda não tomadas. O agente para quando uma tarefa depende delas.</li>
+</ul>
+<p class="text-muted">A spec da biblioteca usada na demonstração, gerada pelo opencode a partir das anotações de uma reunião e revisada pelo professor:</p>
+<pre class="bg-dark text-info p-3 rounded small" style="max-height:28rem;overflow:auto"># Especificação · biblioteca-campus
+
+Versão 1.2 · 02/02/2027 · fonte da verdade do projeto
+
+## 1. Contexto
+Empréstimo de livros da biblioteca do campus. Esta versão cobre só as
+regras de empréstimo e de multa, em JavaScript puro, sem banco e sem interface.
+
+## 2. Requisitos funcionais
+- RF01 Registrar o empréstimo de um livro para um aluno, com data de início e data prevista de devolução.
+- RF02 Recusar o empréstimo quando uma regra impedir, devolvendo o código do motivo.
+- RF03 Calcular a multa de uma devolução, em centavos.
+
+## 3. Regras de negócio
+- RN01 Um aluno tem no máximo 3 empréstimos ativos.
+- RN02 O prazo é de 14 dias corridos a partir da data do empréstimo.
+- RN03 Livro reservado por outro aluno não sai; quem reservou pode retirá-lo.
+- RN04 Aluno com multa pendente não pega livro.
+- RN05 Multa de 150 centavos por dia de atraso, com teto de 3000. Devolução no prazo não gera multa.
+- RN06 Se mais de uma regra impedir, vale a primeira nesta ordem: RN04, RN01, RN03.
+
+## 4. Critérios de aceite
+### CA01.1 (RF01, RN02)
+Dado um aluno sem multa e com 0 empréstimos ativos
+Quando ele pega um livro livre em 01/03/2027
+Então o empréstimo é registrado com devolução prevista para 15/03/2027
+
+### CA02.1 (RF02, RN01)
+Dado um aluno com 3 empréstimos ativos
+Quando ele tenta pegar outro livro
+Então o empréstimo é recusado com o código LIMITE_ATINGIDO
+
+### CA02.2 (RF02, RN03)
+Dado o livro L7 reservado pela aluna Ana
+Quando o aluno Bruno tenta pegar L7
+Então o empréstimo é recusado com o código LIVRO_RESERVADO
+
+### CA02.3 (RF01, RN03)
+Dado o livro L7 reservado pela aluna Ana
+Quando Ana pega L7
+Então o empréstimo é registrado
+
+### CA02.4 (RF02, RN04)
+Dado um aluno com multa pendente de 300 centavos
+Quando ele tenta pegar um livro livre
+Então o empréstimo é recusado com o código MULTA_PENDENTE
+
+### CA02.5 (RF02, RN06)
+Dado um aluno com multa pendente e 3 empréstimos ativos
+Quando ele tenta pegar um livro reservado por outro aluno
+Então o empréstimo é recusado com o código MULTA_PENDENTE
+
+### CA03.1 (RF03, RN05)
+Dado um empréstimo com devolução prevista para 15/03/2027
+Quando o livro volta em 13/03/2027
+Então a multa é 0
+
+### CA03.2 (RF03, RN05)
+Dado um empréstimo com devolução prevista para 15/03/2027
+Quando o livro volta em 18/03/2027
+Então a multa é 450 centavos
+
+### CA03.3 (RF03, RN05)
+Dado um empréstimo com devolução prevista para 15/03/2027
+Quando o livro volta em 24/04/2027
+Então a multa é 3000 centavos
+
+## 5. Fora de escopo
+- Renovação de empréstimo e pagamento de multa.
+- Cadastro de alunos e de livros.
+- Persistência: o banco entra no Trabalho 2.
+
+## 6. Perguntas em aberto
+- P01 A reserva expira? Se sim, em quantos dias?
+- P02 Devolução no dia previsto, depois do fechamento, conta como atraso?</pre>
+<p class="text-muted mb-0">Repare que as anotações diziam "não sei se a reserva vence". O agente não inventou um prazo: registrou a dúvida como <code>P01</code>. Esse é o comportamento que o prompt e o <code>AGENTS.md</code> precisam pedir.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. Critérios de aceite que um teste consegue reprovar</h2>
+<p class="text-muted">Um critério de aceite é útil quando dá para escrever um <code>assert</code> a partir dele. O Dado descreve o estado antes da ação, com valores concretos; o Quando é uma única ação, a que o teste executa; o Então é um resultado observável.</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Vago</th><th>Testável</th></tr></thead>
+<tbody>
+<tr><td>O sistema calcula a multa corretamente.</td><td>CA03.2: Dado devolução prevista para 15/03/2027, quando o livro volta em 18/03/2027, então a multa é 450 centavos.</td></tr>
+<tr><td>O aluno não pode pegar livros demais.</td><td>CA02.1: Dado um aluno com 3 empréstimos ativos, quando ele tenta pegar outro livro, então o empréstimo é recusado com <code>LIMITE_ATINGIDO</code>.</td></tr>
+<tr><td>A reserva deve ser respeitada.</td><td>CA02.3: Dado L7 reservado por Ana, quando Ana pega L7, então o empréstimo é registrado.</td></tr>
+</tbody></table></div>
+<p class="text-muted mb-0">Na leitura de testador pedida ao agente, ele apontou critérios que faltavam: a devolução no próprio dia previsto, o dia em que a multa atinge o teto (20 dias) e o aluno com exatamente 2 empréstimos. São valores-limite, tema da Aula 03. Quem decide quais propostas entram na spec é você.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Plano, tarefas e AGENTS.md</h2>
+<p class="text-muted">O plano diz como o código se organiza: módulos, assinatura das funções, formato dos erros e onde ficam os testes. As tarefas são do tamanho de um commit e citam os RF, RN e CA que atendem, em ordem de dependência.</p>
+<pre class="bg-dark text-info p-3 rounded small"># Tarefas · uma por commit, nesta ordem
+
+- [x] T01 Registrar empréstimo com prazo de 14 dias (RF01, RN02, CA01.1)
+- [ ] T02 Recusar o quarto empréstimo ativo (RF02, RN01, CA02.1)
+- [ ] T03 Recusar livro reservado por outro aluno (RF02, RN03, CA02.2, CA02.3)
+- [ ] T04 Recusar aluno com multa pendente (RF02, RN04, CA02.4)
+- [ ] T05 Aplicar a ordem dos motivos (RN06, CA02.5)
+- [ ] T06 Calcular multa com teto (RF03, RN05, CA03.1, CA03.2, CA03.3)
+- [ ] T07 Script de rastreabilidade (todos os CA)</pre>
+<p class="text-muted">O <code>AGENTS.md</code> é lido pelo opencode no início de cada sessão. É nele que o fluxo do SDD vira regra para o agente:</p>
+<pre class="bg-dark text-info p-3 rounded small"># Regras para o agente
+
+## Fonte da verdade
+- A especificação é docs/spec.md. Plano em docs/plano.md, tarefas em docs/tarefas.md.
+- Se a spec não responder a uma dúvida, pare e pergunte. Não decida sozinho.
+
+## Como trabalhar
+- Implemente uma tarefa por vez, na ordem de docs/tarefas.md.
+- O nome de cada teste começa pelo CA que ele verifica.
+- Rode npm test antes de propor o commit e marque a tarefa com [x].
+
+## Projeto
+- JavaScript puro com ES modules. Sem TypeScript.
+- Testes com node:test e node:assert/strict.
+- Commits em Conventional Commits, em português.</pre>
+<p class="text-muted mb-0">Antes de aceitar o plano, confira o tamanho das tarefas. Tarefa que não cabe num commit volta para o agente dividir.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. Uma tarefa por vez, com revisão</h2>
+<p class="text-muted">Na demonstração, o pedido foi só "Implemente a próxima tarefa pendente de docs/tarefas.md". O rastro do agente mostra o que ele leu (<code>AGENTS.md</code>, <code>docs/tarefas.md</code>, <code>docs/spec.md</code>, o código atual), o que editou, o pedido de permissão para rodar <code>npm test</code> e a sugestão de commit. Quando se pediu "T03 e T04 de uma vez", o agente seguiu o <code>AGENTS.md</code> e fez só a T03.</p>
+<p class="text-muted">O agente dizer que os testes passaram não é evidência. A conferência é sua, sempre nesta ordem:</p>
+<pre class="bg-dark text-info p-3 rounded small">git switch -c feat/limite-emprestimos
+opencode run "Implemente a próxima tarefa pendente de docs/tarefas.md"
+git diff --stat          # só os arquivos esperados mudaram?
+git diff                 # o código faz o que a RN diz?
+npm test                 # o teste com o CA no nome passa?
+git add -A
+git commit -m "feat(emprestimo): recusa o quarto empréstimo ativo (T02)"
+git switch main
+git merge --ff-only feat/limite-emprestimos
+git push
+git branch -d feat/limite-emprestimos</pre>
+<p class="text-muted mb-0">O teste gerado para a T02 tem o identificador do critério no nome, <code>test('CA02.1 recusa o quarto empréstimo ativo', ...)</code>, e o commit cita a tarefa. É essa repetição de identificadores que permite a rastreabilidade da próxima seção.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. Rastreabilidade de requisito a teste</h2>
+<p class="text-muted">Rastreabilidade é poder responder, para qualquer regra, onde ela está implementada e qual teste a protege. Ela depende de o mesmo identificador aparecer em todos os artefatos:</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Artefato</th><th>Onde</th><th>Exemplo</th></tr></thead>
+<tbody>
+<tr><td>Requisito e regra</td><td><code>docs/spec.md</code></td><td><code>RF02</code>, <code>RN01</code></td></tr>
+<tr><td>Critério de aceite</td><td><code>docs/spec.md</code></td><td><code>### CA02.1 (RF02, RN01)</code></td></tr>
+<tr><td>Tarefa</td><td><code>docs/tarefas.md</code></td><td><code>T02 ... (RF02, RN01, CA02.1)</code></td></tr>
+<tr><td>Teste</td><td><code>test/emprestimo.test.js</code></td><td><code>test('CA02.1 ...')</code></td></tr>
+<tr><td>Commit</td><td><code>git log</code></td><td><code>feat(emprestimo): recusa o quarto empréstimo ativo (T02)</code></td></tr>
+</tbody></table></div>
+<p class="text-muted">O script abaixo, gerado pelo agente na demonstração, lê os critérios da spec, procura cada um no nome dos testes e sai com código 1 quando algum ficou sem teste. Ligado ao <code>npm test</code>, ele roda junto com os testes e, a partir da Aula 05, no CI.</p>
+<pre class="bg-dark text-info p-3 rounded small">import { readFileSync, readdirSync } from 'node:fs';
+
+const spec = readFileSync('docs/spec.md', 'utf8');
+const criterios = [...spec.matchAll(/^### (CA\d{2}\.\d+)/gm)].map((m) =&gt; m[1]);
+
+const testes = readdirSync('test')
+  .filter((arquivo) =&gt; arquivo.endsWith('.test.js'))
+  .map((arquivo) =&gt; readFileSync('test/' + arquivo, 'utf8'))
+  .join('\n');
+const semTeste = criterios.filter((id) =&gt; !testes.includes("'" + id + ' '));
+
+for (const id of criterios) {
+  console.log((semTeste.includes(id) ? '✖ ' : '✔ ') + id);
+}
+if (semTeste.length &gt; 0) {
+  console.error(semTeste.length + ' critério(s) sem teste: ' + semTeste.join(', '));
+  process.exit(1);
+}
+console.log(criterios.length + ' critérios, todos com teste.');</pre>
+<p class="text-muted mb-0">Na primeira execução faltavam <code>CA02.3</code> (o próprio aluno retira o livro que reservou) e <code>CA02.5</code> (ordem dos motivos), justamente os casos mais fáceis de esquecer. O script não julga se o teste é bom; ler os testes gerados continua sendo trabalho seu.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Trabalho 1: regras de alocação sem conflito</h2>
+<p class="text-muted">O Trabalho 1 é individual. Cada aluno constrói, no próprio repositório <code>organizacao-recursos</code>, o núcleo de regras de um sistema que reserva salas, professores e materiais da universidade sem conflito de horário, em JavaScript puro e ainda sem banco. O enunciado completo, com os requisitos RF01 a RF09 e os pesos da avaliação, está na página do <a href="../trabalho-1.html">Trabalho 1</a>.</p>
+<ul class="text-muted">
+<li>Especificação em <code>docs/spec.md</code>, com plano e tarefas.</li>
+<li>Testes de unidade com <code>node:test</code>, escritos com TDD a partir da Aula 04.</li>
+<li>Cobertura de pelo menos 80% de linhas e 80% de ramos em <code>src/</code>.</li>
+<li>ESLint 9 sem erros e GitHub Actions rodando lint e testes, verde no commit entregue.</li>
+<li>Histórico trunk-based: branches curtas, Conventional Commits em português, merge <code>--ff-only</code>, sem pull request.</li>
+<li>Tag <code>trabalho-1</code> no commit entregue. Entrega na semana 10 (08/03 a 12/03) pelo formulário, com nome completo e link do repositório público.</li>
+<li>Prova oral individual nas semanas 11, 12 e 13, sobre o repositório entregue.</li>
+</ul>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Semana</th><th>Aula</th><th>O que entra no repositório</th></tr></thead>
+<tbody>
+<tr><td>5</td><td>02 · SDD</td><td><code>docs/spec.md</code>, <code>docs/plano.md</code>, <code>docs/tarefas.md</code>, <code>AGENTS.md</code> e a T01</td></tr>
+<tr><td>6</td><td>Carnaval</td><td>Sem aula. Responda às perguntas em aberto da sua spec.</td></tr>
+<tr><td>7</td><td>03 · Caixas</td><td><code>docs/casos-de-teste.md</code> com partições, limites, tabela de decisão e complexidade</td></tr>
+<tr><td>8</td><td>04 · TDD</td><td>Regras implementadas teste a teste, com commits <code>test</code>, <code>feat</code> e <code>refactor</code></td></tr>
+<tr><td>9</td><td>05 · Cobertura e CI</td><td>Meta de 80% de linhas e ramos, ESLint e GitHub Actions</td></tr>
+<tr><td>10</td><td>Entrega</td><td>Tag <code>trabalho-1</code> e formulário</td></tr>
+<tr><td>11 a 13</td><td>Prova oral</td><td>Individual</td></tr>
+</tbody></table></div>
+<p class="text-muted">Como o repositório da biblioteca ficou no dia da tag, com a configuração gerada pelo agente (os detalhes de cobertura e CI são da Aula 05):</p>
+<pre class="bg-dark text-info p-3 rounded small">"scripts": {
+  "test": "node --test &amp;&amp; npm run rastreio",
+  "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'",
+  "lint": "eslint .",
+  "rastreio": "node scripts/rastreio.js"
+}</pre>
+<pre class="bg-dark text-info p-3 rounded small">// eslint.config.js
+import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  js.configs.recommended,
+  {
+    files: ['**/*.js'],
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.node },
+    rules: { complexity: ['error', 8] }
+  },
+  { ignores: ['coverage/', 'node_modules/'] }
+];</pre>
+<pre class="bg-dark text-info p-3 rounded small"># .github/workflows/ci.yml
+name: CI
+on: [push]
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm test
+      - run: npm run test:cov</pre>
+<pre class="bg-dark text-info p-3 rounded small">git tag trabalho-1
+git push origin trabalho-1</pre>
+<div class="alert alert-warning mb-0"><i class="fas fa-triangle-exclamation me-1" aria-hidden="true"></i> Repositório privado ou sem a tag na data da entrega não é avaliado. O feedback chega como issue no seu repositório; responda com um commit <code>fix(...): ... (#N)</code> que tenha <code>Closes #N</code> no corpo.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Prompt 1 · especificação do organizacao-recursos</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min · branch <code>docs/spec</code></p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Atue como analista de requisitos. Este repositório, organizacao-recursos, é o meu trabalho individual: um sistema de Organização de Recursos de uma universidade, que reserva salas, professores e materiais sem conflito de horário. Escreva docs/spec.md com estas seções, nesta ordem. 1. Contexto: um parágrafo dizendo que esta versão é JavaScript puro, com dados em memória, sem banco e sem interface. 2. Requisitos funcionais numerados RF01 a RF09: criar reserva de sala com início, fim, professor e turma; recusar sobreposição na mesma sala; recusar professor em dois lugares ao mesmo tempo; recusar sala com capacidade menor que a turma; reservar materiais com quantidade sem passar do estoque; recusar sala em manutenção; validar o intervalo; cancelar reserva; consultar salas livres num intervalo com capacidade mínima. 3. Regras de negócio numeradas RN01, RN02..., com os números exatos: uma reserva que termina às 21h e outra que começa às 21h não conflitam; término posterior ao início; duração máxima de 4 horas; horário entre 07h e 23h. 4. Critérios de aceite numerados CA&lt;número do RF&gt;.&lt;sequência&gt;, por exemplo CA02.1, no formato Dado/Quando/Então, com datas, horários e capacidades concretos, citando entre parênteses o RF e as RN que verificam. Pelo menos dois critérios por RF. 5. Fora de escopo. 6. Perguntas em aberto numeradas P01, P02... Quando uma regra depender de uma decisão que eu não tomei, escreva a pergunta em vez de inventar a resposta. Não crie código. Mostre o arquivo antes de gravar.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: todo RF tem pelo menos dois CA e todo CA tem número no Então. Procure as palavras "adequado", "rápido" e "válido": se aparecerem sem valor, peça a correção.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Prompt 2 · leitura de testador da sua spec</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 20 min · mesma branch</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia docs/spec.md como o testador que vai escrever os testes deste sistema. Sem alterar o arquivo, liste: (a) regras de negócio que nenhum critério de aceite verifica; (b) critérios de aceite sem valor concreto ou com palavras vagas como rápido, adequado, válido ou normalmente; (c) pares de regras que se contradizem ou que não dizem qual vale quando as duas se aplicam, por exemplo sala ocupada e professor ocupado ao mesmo tempo; (d) casos de borda sem critério, como intervalos que se tocam, reserva começando às 07h ou terminando às 23h, duração de exatamente 4 horas e turma com o mesmo número de alunos que a capacidade da sala. Para cada item, proponha a correção em uma linha e numere as propostas. Depois espere eu dizer quais números aceitar antes de editar a spec.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: escolha você as propostas. Quando a decisão for de negócio e você não souber, ela vai para Perguntas em aberto, não para uma regra inventada.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">11. Prompt 3 · plano, tarefas, AGENTS.md e a T01</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min · branch <code>docs/plano</code> e depois <code>feat/</code> para a T01</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Com base em docs/spec.md, escreva docs/plano.md com a organização do código em src/ (um módulo por assunto, funções puras que recebem dados e devolvem o resultado ou lançam um erro com código de motivo) e a lista de arquivos de teste em test/. Escreva docs/tarefas.md com tarefas T01, T02..., cada uma pequena o bastante para um commit, citando os RF, RN e CA que atende, em ordem de dependência, começando pela verificação de sobreposição de dois intervalos. Atualize AGENTS.md acrescentando: a fonte da verdade é docs/spec.md; implemente uma tarefa por vez, na ordem de docs/tarefas.md; o nome de cada teste começa pelo CA que ele verifica; se a spec não responder a uma dúvida, pare e pergunte. Crie package.json com "type": "module" e o script test valendo node --test. Depois implemente somente a T01, com o teste correspondente em node:test e node:assert/strict, rode npm test e mostre a saída. Não implemente outras tarefas.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode <code>npm test</code> você mesmo, leia o <code>git diff --stat</code> e confira que só a T01 mudou em <code>src/</code>. O teste da T01 cobre os intervalos que se tocam às 21h?</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">12. Entregável e checagem</h2>
+<p class="text-muted"><code>docs/spec.md</code>, <code>docs/plano.md</code>, <code>docs/tarefas.md</code>, <code>AGENTS.md</code> atualizado, <code>package.json</code> e a T01 com teste passando, tudo integrado na main por branches curtas.</p>
+<h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
+<ul class="text-muted mb-0"><li>Um CA escolhido na hora da sua spec e o teste correspondente.</li><li>Qual proposta do prompt 2 você recusou e por quê.</li><li><code>npm test</code> verde e <code>git log --oneline --graph</code> linear, com commits <code>docs</code> e <code>feat</code> separados.</li></ul>
+<p class="text-muted mt-3 mb-0">Próxima aula: caixa branca e caixa preta, na semana 7, depois do Carnaval. Use a semana 6 para responder às perguntas em aberto da sua spec.</p>
+</section>
+
+<div class="text-center"><a href="../slide_aula02-spec-driven.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

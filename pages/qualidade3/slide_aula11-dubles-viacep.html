@@ -1,0 +1,1167 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="dublês de teste, stub, spy, mock, fake, dummy, node:test, ViaCEP, fetch, AbortSignal, Express 5, supertest, teste de contrato, qualidade de software" />
+    <title>Aula 11 - Dublês de teste e chamadas de API seguras</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 11: Dublês de teste e chamadas de API seguras</h1>
+          <p class="fs-4 text-secondary">Dummy, stub, spy, mock e fake no node:test, ViaCEP isolada por injeção de fetch e cadastro que sobrevive à falha</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 15 · 12/04 a 16/04</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">dublês</span><span class="keyword">ViaCEP</span><span class="keyword">supertest</span><span class="keyword">contrato</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>O problema da dependência externa (10 min)</li><li>Os cinco dublês no node:test (35 min)</li><li>ViaCEP: formato, falhas e timeout (25 min)</li><li>Express 5 e supertest com dublê (20 min)</li><li>Contrato leve e segredos (10 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 1: buscarEndereco e testes com dublês (30 min)</li><li>Prompt 2: POST /alunos e /professores com supertest (35 min)</li><li>Prompt 3: contrato, guarda de rede e segredos (20 min)</li><li>Checagem na mesa (15 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Problema -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">O cadastro depende de um serviço de terceiros</h2>
+          <p class="lead text-center text-muted mb-4">O Trabalho 2 pede o endereço de alunos e professores pela ViaCEP. Você não controla a ViaCEP, e o seu teste também não.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-plug-circle-xmark me-2" aria-hidden="true"></i>Fora do ar</h3><p class="small mb-0">Sem rede no CI, DNS falhando ou o serviço em manutenção.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-hourglass-half me-2" aria-hidden="true"></i>Lenta</h3><p class="small mb-0">A resposta demora 20 s e prende a requisição do usuário.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-circle-question me-2" aria-hidden="true"></i>CEP inexistente</h3><p class="small mb-0">Resposta 200 com <code>{"erro": "true"}</code>, sem endereço.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-shuffle me-2" aria-hidden="true"></i>Formato muda</h3><p class="small mb-0">Um campo é renomeado e o seu código lê <code>undefined</code>.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-4 mb-0 text-start">Se o teste de unidade chama a ViaCEP de verdade, ele fica lento, falha sem rede e não consegue reproduzir o timeout nem o CEP inexistente quando você quer. A saída é trocar a ViaCEP por um dublê no teste e deixar uma conferência separada, e opcional, contra o serviço real.</div>
+        </div>
+      </div>
+
+      <!-- 4. Os cinco dublês -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Os cinco dublês de teste</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-3 fs-6 text-start">
+              <thead class="table-light"><tr><th>Dublê</th><th>O que faz</th><th>No node:test</th><th>Exemplo da aula</th></tr></thead>
+              <tbody>
+                <tr><td class="fw-bold">Dummy</td><td>Preenche um parâmetro que o caminho testado nunca usa</td><td>um objeto vazio <code>{}</code></td><td>logger no cadastro bem-sucedido</td></tr>
+                <tr><td class="fw-bold">Stub</td><td>Devolve uma resposta pronta</td><td><code>mock.fn(async () =&gt; ENDERECO)</code></td><td>ViaCEP que sempre acha o CEP</td></tr>
+                <tr><td class="fw-bold">Spy</td><td>Registra chamadas e argumentos para o teste conferir depois</td><td><code>fn.mock.callCount()</code>, <code>mock.method(obj, 'warn')</code></td><td>quantas vezes o fetch foi chamado e com qual URL</td></tr>
+                <tr><td class="fw-bold">Mock</td><td>Carrega a expectativa e falha na chamada errada</td><td><code>mock.fn</code> com <code>assert</code> dentro; <code>mock.timers</code></td><td>repositório que exige CEP normalizado; data fixa da multa</td></tr>
+                <tr><td class="fw-bold">Fake</td><td>Implementação real e simplificada</td><td>classe ou objeto próprio</td><td>repositório de alunos em memória</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mb-0 text-start">A classificação é de Gerard Meszaros (xUnit Test Patterns). No dia a dia todos viram "mock", mas o nome certo diz o que o teste confere: o resultado (stub, fake) ou a interação (spy, mock).</div>
+        </div>
+      </div>
+
+      <!-- 5. Lab 1: dummy e stub -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 1 de 8</p><h2>Dummy e stub</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Testar o cadastro sem ViaCEP e sem banco, controlando o que a dependência devolve.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera os testes" e leia <code>stub.test.js</code>.<br>2. Rode "Conferir os testes".<br>3. Rode "Dummy usado sem querer".</div>
+                <div class="rl obs"><b>Observe</b>O dummy <code>{}</code> não tem <code>warn</code>. Quando o caminho testado passa a usar o logger, o teste quebra com TypeError e avisa que aquele parâmetro deixou de ser irrelevante.</div>
+                <div class="rl conc"><b>Conclusão</b>O stub decide a resposta da ViaCEP; o teste confere só o resultado do cadastro.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-stub"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Lab 2: spy -->
+      <div class="slide slide-lab" id="slide-6">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 2 de 8</p><h2>Spy: quem chamou, quantas vezes e com o quê</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Conferir a interação com a dependência: número de chamadas e argumentos.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera os spies".<br>2. Rode "Conferir os spies" e leia os diagnósticos <code>ℹ</code>.<br>3. Rode "Sem validação do CEP".</div>
+                <div class="rl obs"><b>Observe</b><code>mock.method(logger, 'warn')</code> espiona um método existente. <code>fetch.mock.calls[0].arguments</code> traz a URL e o objeto com o <code>signal</code>.</div>
+                <div class="rl conc"><b>Conclusão</b>"CEP inválido não chega à rede" só se prova com um spy: <code>callCount()</code> igual a zero.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-spy"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Lab 3: mock e mock.timers -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 3 de 8</p><h2>Mock com expectativa e relógio controlado</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fixar a expectativa dentro do dublê e controlar a data com <code>mock.timers</code>.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o teste da multa" e "Rodar no dia 26".<br>2. Rode "Rodar no dia 30": o teste do agente depende da data de hoje.<br>3. Rode "Pedir mock.timers" e "Conferir de novo".</div>
+                <div class="rl obs"><b>Observe</b>Com <code>t.mock.timers.enable({ apis: ['Date'], now })</code>, <code>new Date()</code> devolve a data do teste, e o teto de 3000 centavos é testado sem esperar 30 dias.</div>
+                <div class="rl conc"><b>Conclusão</b>Teste que lê o relógio real passa hoje e falha amanhã. O relógio também é uma dependência.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-mock"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Lab 4: fake -->
+      <div class="slide slide-lab" id="slide-8">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 4 de 8</p><h2>Fake: repositório em memória</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Trocar o PostgreSQL por uma implementação em memória que se comporta como ele.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o fake".<br>2. Abra <code>contrato-repositorio.js</code>: a mesma suíte roda no fake e no pg.<br>3. Rode "Contrato no fake" e "Contrato no PostgreSQL".</div>
+                <div class="rl obs"><b>Observe</b>O fake devolve o mesmo <code>code: '23505'</code> que o pg para e-mail repetido; é isso que permite a rota responder 409 nos dois casos.</div>
+                <div class="rl conc"><b>Conclusão</b>Um fake só vale se passar na mesma suíte que o real. Sem isso, ele pode mentir, como na Aula 10.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-fake"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Navegador: ViaCEP -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">ViaCEP de verdade</p><h2>O formato que o código precisa respeitar</h2></div></div>
+          <div class="lab-area" id="brw-viacep"></div>
+        </div>
+      </div>
+
+      <!-- 10. Flow: cadastro -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Fluxo do cadastro</p><h2>Cadastro, ViaCEP e banco</h2></div></div>
+          <div class="lab-area" id="flow-cadastro"></div>
+        </div>
+      </div>
+
+      <!-- 11. Chamada segura -->
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Uma chamada de API segura</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">1. Validar antes de chamar</h3><p class="small mb-0">Remover hífen e espaços e exigir 8 dígitos. CEP inválido vira 400 sem gastar uma requisição.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">2. Limitar o tempo</h3><p class="small mb-0"><code>fetch(url, { signal: AbortSignal.timeout(3000) })</code>. Sem isso, o fetch espera o tempo que a rede quiser.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">3. Classificar a falha</h3><p class="small mb-0"><code>CepInvalidoError</code> (400), <code>CepNaoEncontradoError</code> (422) e <code>ViaCepIndisponivelError</code> para timeout, rede e status fora de 2xx.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">4. Degradar sem perder o cadastro</h3><p class="small mb-0">ViaCEP indisponível: o aluno é salvo com o endereço pendente e a resposta é 201. O erro fica no log.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">5. Injetar a dependência</h3><p class="small mb-0"><code>buscarEndereco(cep, { fetch })</code>: em produção vale o <code>globalThis.fetch</code>; no teste, um <code>mock.fn</code>.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">6. Segredos fora do código</h3><p class="small mb-0">A ViaCEP não pede chave, mas <code>DATABASE_URL</code> e a chave da OpenRouter vêm de <code>process.env</code>, de secrets do Codespaces ou do Actions.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Lab 5: buscarEndereco -->
+      <div class="slide slide-lab" id="slide-12">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 5 de 8</p><h2>buscarEndereco com fetch injetado</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Gerar o cliente da ViaCEP e testar sucesso, CEP inexistente, CEP inválido e timeout sem rede.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o cliente" e leia <code>viacep.js</code>.<br>2. Rode "Conferir os testes" e olhe o tempo do teste de timeout.<br>3. Rode "Pedir stub de timeout" e "Conferir de novo".</div>
+                <div class="rl obs"><b>Observe</b>O agente testou o timeout esperando 3 s de verdade. O stub que rejeita com <code>TimeoutError</code> prova o mesmo caminho em 1 ms.</div>
+                <div class="rl conc"><b>Conclusão</b>Olhe o <code>duration_ms</code>. Teste de unidade lento costuma esconder uma dependência real.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-viacep"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Lab 6: guarda de rede -->
+      <div class="slide slide-lab" id="slide-13">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 6 de 8</p><h2>O teste que reprova quem chama a internet</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Garantir que nenhum teste da suíte padrão acesse a ViaCEP de verdade.</div>
+                <div class="rl"><b>Faça</b>1. Leia <code>test/unidade/helpers/sem-rede.js</code>.<br>2. Rode "opencode gera o teste da rota" e depois "npm test".<br>3. Rode "Pedir o dublê" e "npm test de novo".</div>
+                <div class="rl obs"><b>Observe</b>O agente esqueceu de injetar <code>buscarEndereco</code>, e o padrão caiu no <code>globalThis.fetch</code>. O guarda registra a URL e falha no <code>afterEach</code>, mesmo com o cadastro tendo engolido o erro.</div>
+                <div class="rl conc"><b>Conclusão</b>Sem o guarda, esse teste passaria no Codespace e falharia no CI sem rede, ou passaria com o endereço pendente sem ninguém notar.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-sem-rede"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Lab 7: Express + supertest -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 7 de 8</p><h2>POST /alunos com Express 5 e supertest</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Testar a rota HTTP inteira com o dublê da ViaCEP e o fake do repositório.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera a rota" e leia <code>src/app.js</code>.<br>2. Rode "npm test" e leia os cinco status.<br>3. Rode "Servidor de verdade" para ver a resposta com a ViaCEP real.</div>
+                <div class="rl obs"><b>Observe</b><code>criarApp</code> recebe as dependências e não chama <code>listen</code>; o supertest abre uma porta efêmera. No Express 5, a promessa rejeitada da rota chega sozinha ao middleware de erro.</div>
+                <div class="rl conc"><b>Conclusão</b>Quem monta o app com a ViaCEP real e o pool é só <code>src/server.js</code>, que o teste não importa.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-supertest"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 15. Lab 8: contrato -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Laboratório 8 de 8</p><h2>Teste de contrato leve, separado e opcional</h2></div></div>
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Conferir de tempos em tempos que a ViaCEP real ainda responde no formato que os stubs imitam.</div>
+                <div class="rl"><b>Faça</b>1. Rode "opencode gera o contrato" e leia o <code>skip</code>.<br>2. Rode "Sem CONTRATO" e "npm run test:contrato".<br>3. Rode "Se a ViaCEP mudar".</div>
+                <div class="rl obs"><b>Observe</b>O contrato confere tipos e nomes de campo, e não o valor do logradouro. Ele roda num job agendado por semana, fora do push.</div>
+                <div class="rl conc"><b>Conclusão</b>Os stubs e o contrato usam o mesmo JSON de exemplo. Se o contrato falhar, os stubs estão desatualizados.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-contrato"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Onde cada teste roda -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Onde cada teste roda</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-3 fs-6 text-start">
+              <thead class="table-light"><tr><th>Suíte</th><th>Comando</th><th>Rede</th><th>Banco</th><th>Quando roda</th></tr></thead>
+              <tbody>
+                <tr><td class="fw-bold">Unidade</td><td><code>npm test</code></td><td>proibida (guarda)</td><td>fake</td><td>a cada mudança e no push</td></tr>
+                <tr><td class="fw-bold">Integração</td><td><code>npm run test:int</code></td><td>proibida</td><td>PostgreSQL real</td><td>antes do merge e no push</td></tr>
+                <tr><td class="fw-bold">Contrato</td><td><code>npm run test:contrato</code></td><td>ViaCEP real</td><td>nenhum</td><td>job semanal e quando a ViaCEP mudar</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="row g-3 text-start">
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-key me-2" aria-hidden="true"></i>Segredos</h3><p class="small mb-0"><code>.env</code> no <code>.gitignore</code>, <code>.env.example</code> sem valores reais, secrets do Codespaces para o ambiente e secrets do Actions para o CI. O código lê <code>process.env</code> e falha com mensagem clara se faltar algo.</p></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-robot me-2" aria-hidden="true"></i>Revisão do que o agente gerou</h3><p class="small mb-0">Antes do commit: <code>npm test</code> com o guarda de rede, <code>duration_ms</code> baixo, <code>git diff</code> sem URL real fora de <code>src/servicos</code> e sem segredo.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 17. Laboratório -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">ViaCEP no organizacao-recursos</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 1 · cliente e dublês (30 min)</h3>
+                <ol class="mb-0"><li>Branch <code>feat/viacep</code>.</li><li>Rode o prompt 1 no opencode.</li><li>Confira cada dublê: ele é dummy, stub, spy, mock ou fake?</li><li>Confira que nenhum teste espera 3 s de verdade.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 2 · rotas e contrato (55 min)</h3>
+                <ol class="mb-0"><li>Prompt 2 numa branch <code>feat/cadastro-endereco</code>.</li><li>Prompt 3 numa branch <code>test/contrato-viacep</code>.</li><li><code>npm test</code>, <code>npm run test:int</code> e merge com <code>--ff-only</code>.</li><li>Responda à issue de feedback da Aula 10 com <code>fix(...): ... (#N)</code>.</li></ol>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Se o opencode propuser chamar a ViaCEP dentro de <code>test/unidade</code>, recuse. O único lugar com rede de verdade é <code>test/contrato</code>.</div>
+        </div>
+      </div>
+
+      <!-- 18. Prompt 1 -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Cliente da ViaCEP e testes com dublês</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">No repositório organizacao-recursos, em JavaScript puro com ES modules, crie src/servicos/viacep.js exportando as classes CepInvalidoError, CepNaoEncontradoError e ViaCepIndisponivelError, a função normalizarCep(cep) e a função buscarEndereco(cep, { fetch = globalThis.fetch, timeoutMs = 3000 } = {}). buscarEndereco remove hífen e espaços e exige 8 dígitos; se não houver, lança CepInvalidoError sem chamar o fetch. Chama https://viacep.com.br/ws/{cep}/json/ com signal: AbortSignal.timeout(timeoutMs). Se a resposta tiver erro igual a "true" ou true, lança CepNaoEncontradoError. Timeout, falha de rede e status fora de 2xx viram ViaCepIndisponivelError com a causa original em cause. No sucesso, devolve { cep, logradouro, bairro, cidade, uf }. Escreva test/unidade/viacep.test.js com node:test e node:assert/strict usando só dublês: stub de fetch com mock.fn devolvendo Response.json com o JSON real de 01001000; stub para {"erro": "true"}; spy conferindo que o fetch foi chamado uma vez, com a URL certa e um AbortSignal; spy provando zero chamadas para CEP com 7 dígitos; stub que rejeita com new DOMException('timeout', 'TimeoutError') para o timeout. Nenhum teste pode acessar a internet nem esperar o timeout real. Ao terminar, rode npm test e mostre o duration_ms.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: o teste do CEP inválido confere <code>fetch.mock.callCount() === 0</code>, e a suíte inteira termina em menos de 1 s.</div>
+        </div>
+      </div>
+
+      <!-- 19. Prompt 2 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Cadastro de alunos e professores com endereço</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Crie src/app.js exportando criarApp({ repositorios, buscarEndereco, logger }) com Express 5 e as rotas POST /alunos e POST /professores. O corpo traz nome, email, cep e numero. CEP inválido responde 400; CEP inexistente responde 422; ViaCEP indisponível não impede o cadastro: grava com o endereço pendente (na tabela de CEPs ou na coluna que o seu docs/der.md definiu), chama logger.warn com o CEP e responde 201 com endereco nulo e endereco_pendente verdadeiro; sucesso responde 201 com o endereço. E-mail repetido (code 23505) responde 409. Use um middleware de erro com quatro parâmetros. Crie src/server.js, o único arquivo que monta o app com o buscarEndereco real e o pool de DATABASE_URL e chama listen. Instale supertest como devDependency. Crie test/unidade/fakes/repositorio-em-memoria.js com o mesmo comportamento do repositório pg, inclusive o erro com code 23505, e test/unidade/app.test.js com supertest, o fake e stubs de buscarEndereco feitos com mock.fn, cobrindo os cinco casos para alunos e o caso de sucesso para professores. Use mock.method(logger, 'warn') para conferir que a falha da ViaCEP foi registrada uma vez com o CEP.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: <code>app.test.js</code> não importa <code>server.js</code> nem <code>pg</code>, e todo <code>criarApp</code> do teste recebe um <code>buscarEndereco</code> que é <code>mock.fn</code>.</div>
+        </div>
+      </div>
+
+      <!-- 20. Prompt 3 -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Contrato opcional, guarda de rede e segredos</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Crie test/unidade/helpers/sem-rede.js exportando proibirRede(), que usa mock.method(globalThis, 'fetch') para lançar erro com a URL pedida e registra um afterEach que falha se houve alguma chamada, listando as URLs. Chame proibirRede() no topo de todo arquivo de test/unidade que envolva HTTP. Crie test/contrato/viacep.contrato.test.js, que só chama a ViaCEP de verdade quando CONTRATO=1 e, fora disso, aparece como pulado com o motivo. Ele confere que a resposta de 01001000 tem cep, logradouro, bairro, localidade e uf como strings e que a de 99999999 é exatamente { erro: "true" }, com AbortSignal.timeout(5000). Mova o JSON de exemplo para test/fixtures/viacep-01001000.json e use o mesmo arquivo nos stubs. Acrescente o script "test:contrato": "CONTRATO=1 node --test test/contrato" e o workflow .github/workflows/contrato.yml com schedule semanal e workflow_dispatch, fora do CI de push. Por fim, liste qualquer chave, senha ou DATABASE_URL real encontrada em src/, test/ ou .github/; tudo deve vir de process.env ou de secrets.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: troque um stub de <code>app.test.js</code> pelo <code>buscarEndereco</code> real e rode <code>npm test</code>; o guarda precisa reprovar com a URL da ViaCEP. Desfaça com <code>git restore</code>.</div>
+        </div>
+      </div>
+
+      <!-- 21. Entregável -->
+      <div class="slide" id="slide-21">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 11</span>
+          <p class="fs-4 mb-4"><code>buscarEndereco</code> com fetch injetado, POST /alunos e /professores com degradação testados por supertest, guarda de rede na suíte de unidade e contrato opcional da ViaCEP, tudo na main com o CI verde.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>Você aponta, em cada teste, qual dos cinco dublês usou e por quê.</li><li>Com o stub de ViaCEP indisponível, o cadastro responde 201 com endereço pendente.</li><li>Troco um stub pelo real e o guarda de rede reprova.</li><li>A issue de feedback está fechada por um commit <code>fix(...): ... (#N)</code> com <code>Closes #N</code>.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 22. Dúvidas -->
+      <div class="slide cover-bg" id="slide-22">
+        <div class="glass-cover text-center">
+          <i class="fas fa-masks-theater fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: BDD com Cucumber e testes de carga com k6.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 22</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Dublês de teste e ViaCEP · Semana 15</div>
+      <a href="material/material_aula11-dubles-viacep.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PROMPT_PROF = (branch) => '@professor ➜ /workspaces/biblioteca-campus (' + branch + ') $ ';
+const PERMISSAO = (cmd) => ['[warn] △ Permissão: bash ' + cmd + '   [a] permitir uma vez  [s] sempre  [r] recusar', '[mute] › a', '[mute] ▸ bash ' + cmd];
+
+const VIACEP_JS = `export class CepInvalidoError extends Error { name = 'CepInvalidoError'; }
+export class CepNaoEncontradoError extends Error { name = 'CepNaoEncontradoError'; }
+export class ViaCepIndisponivelError extends Error { name = 'ViaCepIndisponivelError'; }
+
+const URL_BASE = 'https://viacep.com.br/ws/';
+
+export function normalizarCep(cep) {
+  const digitos = String(cep ?? '').replace(/[\\s-]/g, '');
+  if (!/^\\d{8}$/.test(digitos)) throw new CepInvalidoError('CEP deve ter 8 dígitos: ' + cep);
+  return digitos;
+}
+
+export async function buscarEndereco(cep, { fetch = globalThis.fetch, timeoutMs = 3000 } = {}) {
+  const limpo = normalizarCep(cep);                     // inválido: nem chega à rede
+  let resposta;
+  try {
+    resposta = await fetch(URL_BASE + limpo + '/json/', { signal: AbortSignal.timeout(timeoutMs) });
+  } catch (causa) {                                     // TimeoutError, DNS, conexão recusada
+    throw new ViaCepIndisponivelError('ViaCEP não respondeu', { cause: causa });
+  }
+  if (!resposta.ok) throw new ViaCepIndisponivelError('ViaCEP respondeu ' + resposta.status);
+
+  const dados = await resposta.json();
+  if (dados.erro === true || dados.erro === 'true') {
+    throw new CepNaoEncontradoError('CEP não encontrado: ' + limpo);
+  }
+  return { cep: limpo, logradouro: dados.logradouro, bairro: dados.bairro, cidade: dados.localidade, uf: dados.uf };
+}`;
+
+const CADASTRO_JS = `import { ViaCepIndisponivelError, normalizarCep } from './viacep.js';
+
+export function criarCadastro({ repositorio, buscarEndereco, logger }) {
+  return async function cadastrarAluno(dados) {
+    const cep = normalizarCep(dados.cep);              // CepInvalidoError: 400
+    let endereco = null;
+    try {
+      endereco = await buscarEndereco(cep);             // CepNaoEncontradoError: 422
+    } catch (erro) {
+      if (!(erro instanceof ViaCepIndisponivelError)) throw erro;
+      logger.warn('ViaCEP indisponível; cadastro com endereço pendente', { cep });
+    }
+    return repositorio.salvarAluno({ ...dados, cep }, endereco);
+  };
+}`;
+
+const FAKE_JS = `// Fake: mesmo comportamento do repositório pg, guardado num Map
+export function repositorioEmMemoria() {
+  const alunos = new Map();
+  let proximoId = 1;
+  return {
+    async salvarAluno(aluno, endereco) {
+      for (const existente of alunos.values()) {
+        if (existente.email === aluno.email) {
+          // o mesmo code que o pg devolve para unique_violation
+          throw Object.assign(new Error('email repetido'), { code: '23505', constraint: 'alunos_email_unico' });
+        }
+      }
+      const salvo = { id: proximoId++, ...aluno, endereco, endereco_pendente: endereco === null };
+      alunos.set(salvo.id, salvo);
+      return salvo;
+    },
+    async buscarAluno(id) {
+      return alunos.get(id) ?? null;
+    }
+  };
+}`;
+
+const FIXTURE = `{
+  "cep": "01001-000",
+  "logradouro": "Praça da Sé",
+  "complemento": "lado ímpar",
+  "unidade": "",
+  "bairro": "Sé",
+  "localidade": "São Paulo",
+  "uf": "SP",
+  "estado": "São Paulo",
+  "regiao": "Sudeste",
+  "ibge": "3550308",
+  "gia": "1004",
+  "ddd": "11",
+  "siafi": "7107"
+}`;
+
+const SEM_REDE_JS = `import { mock, afterEach } from 'node:test';
+import assert from 'node:assert/strict';
+
+// Troca o fetch global por um dublê que lança e anota a URL.
+// O afterEach reprova o teste mesmo se o código engoliu o erro.
+export function proibirRede() {
+  const rede = mock.method(globalThis, 'fetch', async (url) => {
+    throw new Error('teste tentou acessar a rede: ' + url);
+  });
+  afterEach(() => {
+    const urls = rede.mock.calls.map((c) => String(c.arguments[0]));
+    rede.mock.resetCalls();
+    assert.deepEqual(urls, [], 'teste acessou a rede: ' + urls.join(', '));
+  });
+  return rede;
+}`;
+
+const APP_JS = `import express from 'express';
+import { CepInvalidoError, CepNaoEncontradoError } from './servicos/viacep.js';
+import { criarCadastro } from './servicos/cadastro.js';
+
+export function criarApp({ repositorio, buscarEndereco, logger = console }) {
+  const app = express();
+  app.use(express.json());
+  const cadastrar = criarCadastro({ repositorio, buscarEndereco, logger });
+
+  app.post('/alunos', async (req, res) => {
+    const aluno = await cadastrar(req.body);   // Express 5: rejeição vai ao middleware de erro
+    res.status(201).json(aluno);
+  });
+
+  app.use((erro, req, res, _next) => {
+    if (erro instanceof CepInvalidoError) return res.status(400).json({ erro: erro.message });
+    if (erro instanceof CepNaoEncontradoError) return res.status(422).json({ erro: erro.message });
+    if (erro.code === '23505') return res.status(409).json({ erro: 'e-mail já cadastrado' });
+    logger.error(erro);
+    res.status(500).json({ erro: 'erro interno' });
+  });
+  return app;
+}`;
+
+const SERVER_JS = `import { criarApp } from './app.js';
+import { criarPool } from './db.js';
+import { repositorioAlunos } from './repositorios/alunos.js';
+import { buscarEndereco } from './servicos/viacep.js';
+
+// único lugar com ViaCEP real e banco real; os testes não importam este arquivo
+const app = criarApp({ repositorio: repositorioAlunos(criarPool()), buscarEndereco });
+const porta = Number(process.env.PORT ?? 3000);
+app.listen(porta, () => console.log('biblioteca-campus ouvindo na porta ' + porta));`;
+
+const APP_TEST = `import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import request from 'supertest';
+import { criarApp } from '../../src/app.js';
+import { ViaCepIndisponivelError, CepNaoEncontradoError } from '../../src/servicos/viacep.js';
+import { repositorioEmMemoria } from './fakes/repositorio-em-memoria.js';
+import { proibirRede } from './helpers/sem-rede.js';
+
+proibirRede();
+const ENDERECO = { cep: '01001000', logradouro: 'Praça da Sé', bairro: 'Sé', cidade: 'São Paulo', uf: 'SP' };
+const ANA = { nome: 'Ana', email: 'ana@campus.br', cep: '01001-000', numero: '100' };
+
+function montar(buscarEndereco) {
+  const logger = { warn() {}, error() {} };
+  const warn = mock.method(logger, 'warn');
+  const app = criarApp({ repositorio: repositorioEmMemoria(), buscarEndereco, logger });
+  return { app, warn };
+}
+
+test('201 com o endereço da ViaCEP', async () => {
+  const { app } = montar(mock.fn(async () => ENDERECO));
+  const res = await request(app).post('/alunos').send(ANA).expect(201);
+  assert.equal(res.body.endereco.logradouro, 'Praça da Sé');
+});
+
+test('201 com endereço pendente quando a ViaCEP cai', async () => {
+  const { app, warn } = montar(mock.fn(async () => { throw new ViaCepIndisponivelError('timeout'); }));
+  const res = await request(app).post('/alunos').send(ANA).expect(201);
+  assert.equal(res.body.endereco_pendente, true);
+  assert.equal(warn.mock.callCount(), 1);
+  assert.deepEqual(warn.mock.calls[0].arguments[1], { cep: '01001000' });
+});
+
+test('400 para CEP com 7 dígitos, sem chamar a ViaCEP', async () => {
+  const buscar = mock.fn(async () => ENDERECO);
+  const { app } = montar(buscar);
+  await request(app).post('/alunos').send({ ...ANA, cep: '0100100' }).expect(400);
+  assert.equal(buscar.mock.callCount(), 0);
+});
+
+test('422 para CEP inexistente', async () => {
+  const { app } = montar(mock.fn(async () => { throw new CepNaoEncontradoError('99999999'); }));
+  await request(app).post('/alunos').send({ ...ANA, cep: '99999999' }).expect(422);
+});
+
+test('409 para e-mail repetido', async () => {
+  const { app } = montar(mock.fn(async () => ENDERECO));
+  await request(app).post('/alunos').send(ANA).expect(201);
+  await request(app).post('/alunos').send(ANA).expect(409);
+});`;
+
+/* ---------- 5. Lab 1: dummy e stub ---------- */
+Labs.vscode('#lab-stub', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/dubles', open: 'test/unidade/dubles/stub.test.js',
+  prompt: PROMPT_PROF('test/dubles'),
+  files: [
+    { path: 'test/unidade/dubles/stub.test.js', hl: [10, 11, 20], code:
+`import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { criarCadastro } from '../../../src/servicos/cadastro.js';
+import { ViaCepIndisponivelError } from '../../../src/servicos/viacep.js';
+import { repositorioEmMemoria } from '../fakes/repositorio-em-memoria.js';
+
+const ENDERECO = { cep: '01001000', logradouro: 'Praça da Sé', bairro: 'Sé', cidade: 'São Paulo', uf: 'SP' };
+
+test('stub: devolve um endereço pronto e o cadastro guarda', async () => {
+  const buscarEndereco = mock.fn(async () => ENDERECO);   // stub
+  const loggerDummy = {};                                 // dummy: este caminho não loga
+  const cadastrar = criarCadastro({ repositorio: repositorioEmMemoria(), buscarEndereco, logger: loggerDummy });
+  const aluno = await cadastrar({ nome: 'Ana', email: 'ana@campus.br', cep: '01001-000' });
+  assert.equal(aluno.endereco.cidade, 'São Paulo');
+  assert.equal(aluno.endereco_pendente, false);
+});
+
+test('stub: ViaCEP fora do ar deixa o endereço pendente', async () => {
+  const buscarEndereco = mock.fn(async () => { throw new ViaCepIndisponivelError('timeout'); });
+  const logger = { warn() {} };
+  const cadastrar = criarCadastro({ repositorio: repositorioEmMemoria(), buscarEndereco, logger });
+  const aluno = await cadastrar({ nome: 'Ana', email: 'ana@campus.br', cep: '01001000' });
+  assert.equal(aluno.endereco, null);
+  assert.equal(aluno.endereco_pendente, true);
+});` },
+    { path: 'src/servicos/cadastro.js', hl: [11], code: CADASTRO_JS },
+    { path: 'test/unidade/fakes/repositorio-em-memoria.js', code: FAKE_JS }
+  ],
+  run: [
+    { label: 'opencode gera os testes', kind: 'purple', cmd: 'opencode run "Escreva test/unidade/dubles/stub.test.js para criarCadastro: um stub de buscarEndereco que acha o CEP e outro que lança ViaCepIndisponivelError. Use um dummy no logger quando ele não for usado"', speed: 110, out: [
+      '[mute] ▸ read src/servicos/cadastro.js',
+      '[mute] ▸ read src/servicos/viacep.js',
+      '[mute] ▸ read test/unidade/fakes/repositorio-em-memoria.js',
+      '[mute] ▸ write test/unidade/dubles/stub.test.js',
+      'Criei dois testes. No primeiro o logger é um dummy ({}), porque o caminho feliz não',
+      'registra nada; no segundo é um objeto com warn vazio.' ] },
+    { label: 'Conferir os testes', cmd: 'node --test test/unidade/dubles/stub.test.js', out: [
+      '[ok] ✔ stub: devolve um endereço pronto e o cadastro guarda (1.1ms)',
+      '[ok] ✔ stub: ViaCEP fora do ar deixa o endereço pendente (0.4ms)',
+      '[info] ℹ tests 2', '[info] ℹ pass 2', '[info] ℹ fail 0', '[info] ℹ duration_ms 52.6' ] },
+    { label: 'Dummy usado sem querer', kind: 'red', cmd: "sed -i 's/const logger = { warn() {} };/const logger = {};/' test/unidade/dubles/stub.test.js && node --test test/unidade/dubles/stub.test.js", out: [
+      '[ok] ✔ stub: devolve um endereço pronto e o cadastro guarda (1.0ms)',
+      '[err] ✖ stub: ViaCEP fora do ar deixa o endereço pendente (0.6ms)',
+      '[err]   TypeError: logger.warn is not a function',
+      '[mute]       at cadastrarAluno (src/servicos/cadastro.js:11:14)',
+      '[info] ℹ tests 2', '[info] ℹ pass 1', '[err] ℹ fail 1',
+      '[warn] No caminho de falha o logger é usado: ali ele precisa ser um stub ou um spy, e não um dummy.' ] }
+  ]
+});
+
+/* ---------- 6. Lab 2: spy ---------- */
+Labs.vscode('#lab-spy', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/dubles', open: 'test/unidade/dubles/spy.test.js',
+  prompt: PROMPT_PROF('test/dubles'),
+  files: [
+    { path: 'test/unidade/dubles/spy.test.js', hl: [10, 14, 15, 19, 21, 25, 26, 27, 33], code:
+`import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { buscarEndereco, ViaCepIndisponivelError } from '../../../src/servicos/viacep.js';
+import { criarCadastro } from '../../../src/servicos/cadastro.js';
+import { repositorioEmMemoria } from '../fakes/repositorio-em-memoria.js';
+import viacepSe from '../../fixtures/viacep-01001000.json' with { type: 'json' };
+
+test('spy: registra a falha da ViaCEP uma vez, com o CEP', async (t) => {
+  const logger = { warn() {} };
+  const warn = mock.method(logger, 'warn');                 // espiona um método existente
+  const buscarEndereco = async () => { throw new ViaCepIndisponivelError('timeout'); };
+  await criarCadastro({ repositorio: repositorioEmMemoria(), buscarEndereco, logger })({ nome: 'Ana', email: 'a@c.br', cep: '01001-000' });
+  t.diagnostic('warn chamado ' + warn.mock.callCount() + ' vez(es)');
+  assert.equal(warn.mock.callCount(), 1);
+  assert.deepEqual(warn.mock.calls[0].arguments[1], { cep: '01001000' });
+});
+
+test('spy: fetch chamado uma vez, com a URL e um AbortSignal', async (t) => {
+  const fetch = mock.fn(async () => Response.json(viacepSe));
+  await buscarEndereco('01001-000', { fetch });
+  const [url, opcoes] = fetch.mock.calls[0].arguments;
+  t.diagnostic('chamadas: ' + fetch.mock.callCount());
+  t.diagnostic('argumentos[0]: ' + url);
+  t.diagnostic('argumentos[1].signal: ' + opcoes.signal.constructor.name);
+  assert.equal(fetch.mock.callCount(), 1);
+  assert.equal(url, 'https://viacep.com.br/ws/01001000/json/');
+  assert.ok(opcoes.signal instanceof AbortSignal);
+});
+
+test('spy: CEP com 7 dígitos não chega à rede', async () => {
+  const fetch = mock.fn();
+  await assert.rejects(buscarEndereco('0100100', { fetch }), { name: 'CepInvalidoError' });
+  assert.equal(fetch.mock.callCount(), 0);
+});` },
+    { path: 'src/servicos/viacep.js', hl: [9, 14, 17], code: VIACEP_JS },
+    { path: 'test/fixtures/viacep-01001000.json', code: FIXTURE }
+  ],
+  run: [
+    { label: 'opencode gera os spies', kind: 'purple', cmd: 'opencode run "Escreva test/unidade/dubles/spy.test.js: espie logger.warn com mock.method, espie o fetch injetado com mock.fn e mostre contagem e argumentos com t.diagnostic"', speed: 110, out: [
+      '[mute] ▸ read src/servicos/viacep.js',
+      '[mute] ▸ read test/fixtures/viacep-01001000.json',
+      '[mute] ▸ write test/unidade/dubles/spy.test.js',
+      ...PERMISSAO('node --test test/unidade/dubles/spy.test.js'),
+      '[ok]   ✔ 3 testes passaram',
+      'Três testes: warn registrado uma vez com o CEP, fetch com URL e AbortSignal, e',
+      'zero chamadas para CEP inválido.' ] },
+    { label: 'Conferir os spies', cmd: 'node --test test/unidade/dubles/spy.test.js', out: [
+      '[ok] ✔ spy: registra a falha da ViaCEP uma vez, com o CEP (0.9ms)',
+      '[info]   ℹ warn chamado 1 vez(es)',
+      '[ok] ✔ spy: fetch chamado uma vez, com a URL e um AbortSignal (1.4ms)',
+      '[info]   ℹ chamadas: 1',
+      '[info]   ℹ argumentos[0]: https://viacep.com.br/ws/01001000/json/',
+      '[info]   ℹ argumentos[1].signal: AbortSignal',
+      '[ok] ✔ spy: CEP com 7 dígitos não chega à rede (0.3ms)',
+      '[info] ℹ tests 3', '[info] ℹ pass 3', '[info] ℹ fail 0', '[info] ℹ duration_ms 55.0' ] },
+    { label: 'Sem validação do CEP', kind: 'red', cmd: "sed -i 's/const limpo = normalizarCep(cep);/const limpo = String(cep);/' src/servicos/viacep.js && node --test test/unidade/dubles/spy.test.js", file: 'src/servicos/viacep.js', out: [
+      '[ok] ✔ spy: registra a falha da ViaCEP uma vez, com o CEP (0.9ms)',
+      '[ok] ✔ spy: fetch chamado uma vez, com a URL e um AbortSignal (1.3ms)',
+      '[err] ✖ spy: CEP com 7 dígitos não chega à rede (0.8ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:',
+      "[err]   + name: 'TypeError'",
+      "[err]   - name: 'CepInvalidoError'",
+      '[mute]       at test/unidade/dubles/spy.test.js:32:9',
+      '[info] ℹ tests 3', '[info] ℹ pass 2', '[err] ℹ fail 1',
+      '[warn] Sem a validação, o fetch foi chamado com /ws/0100100/json/. O spy registrou 1 chamada onde deveria haver 0.' ] }
+  ]
+});
+
+/* ---------- 7. Lab 3: mock e mock.timers ---------- */
+Labs.vscode('#lab-mock', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/dubles', open: 'test/unidade/dubles/mock.test.js',
+  prompt: PROMPT_PROF('test/dubles'),
+  files: [
+    { path: 'test/unidade/dubles/mock.test.js', hl: [9, 10, 11, 17, 21, 26, 31], code:
+`import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { criarCadastro } from '../../../src/servicos/cadastro.js';
+import { multaNaDevolucao, prazoDevolucao } from '../../../src/dominio/emprestimo.js';
+
+test('mock: o repositório exige CEP normalizado e endereço nulo', async () => {
+  const repositorio = {
+    // a expectativa mora no próprio dublê: chamada errada falha aqui dentro
+    salvarAluno: mock.fn(async (aluno, endereco) => {
+      assert.equal(aluno.cep, '01001000');
+      assert.equal(endereco, null);
+      return { id: 1, ...aluno, endereco, endereco_pendente: true };
+    })
+  };
+  const cadastrar = criarCadastro({ repositorio, buscarEndereco: async () => null, logger: {} });
+  await cadastrar({ nome: 'Ana', email: 'a@c.br', cep: '01001-000' });
+  assert.equal(repositorio.salvarAluno.mock.callCount(), 1);
+});
+
+test('mock.timers: prazo de devolução é hoje + 14 dias', (t) => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-04-12T12:00:00-03:00') });
+  assert.equal(prazoDevolucao(), '2027-04-26');
+});
+
+test('mock.timers: 5 dias de atraso geram 750 centavos', (t) => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-05-01T12:00:00-03:00') });
+  assert.equal(multaNaDevolucao('2027-04-26'), 750);
+});
+
+test('mock.timers: 30 dias de atraso param no teto de 3000', (t) => {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-05-26T12:00:00-03:00') });
+  assert.equal(multaNaDevolucao('2027-04-26'), 3000);
+});` },
+    { path: 'test/unidade/dubles/mock-AGENTE.test.js', hl: [6], code:
+`// primeira versão do agente: depende do dia em que o teste roda
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { multaNaDevolucao } from '../../../src/dominio/emprestimo.js';
+
+test('5 dias de atraso geram 750 centavos', () => {
+  assert.equal(multaNaDevolucao('2027-04-21'), 750);   // só vale em 26/04/2027
+});` },
+    { path: 'src/dominio/emprestimo.js', hl: [6, 10, 11], code:
+`export const PRAZO_DIAS = 14;
+export const MULTA_POR_DIA = 150;   // centavos
+export const TETO_MULTA = 3000;     // centavos
+const DIA = 24 * 60 * 60 * 1000;
+
+export function prazoDevolucao(hoje = new Date()) {
+  return new Date(hoje.getTime() + PRAZO_DIAS * DIA).toISOString().slice(0, 10);
+}
+
+export function multaNaDevolucao(devolucaoPrevista, hoje = new Date()) {
+  const atraso = Math.floor((hoje - new Date(devolucaoPrevista)) / DIA);
+  if (atraso <= 0) return 0;
+  return Math.min(atraso * MULTA_POR_DIA, TETO_MULTA);
+}` }
+  ],
+  run: [
+    { label: 'opencode gera o teste da multa', kind: 'purple', cmd: 'opencode run "Teste multaNaDevolucao com 5 dias de atraso"', file: 'test/unidade/dubles/mock-AGENTE.test.js', speed: 110, out: [
+      '[mute] ▸ read src/dominio/emprestimo.js',
+      '[mute] ▸ write test/unidade/dubles/mock-AGENTE.test.js',
+      'Criei o teste com devolução prevista em 2027-04-21; hoje é 2027-04-26, então são',
+      '5 dias de atraso e 750 centavos.' ] },
+    { label: 'Rodar no dia 26', cmd: 'node --test test/unidade/dubles/mock-AGENTE.test.js', out: [
+      '[ok] ✔ 5 dias de atraso geram 750 centavos (0.5ms)', '[info] ℹ tests 1', '[info] ℹ pass 1' ] },
+    { label: 'Rodar no dia 30', kind: 'red', cmd: 'faketime "2027-04-30 20:00:00" node --test test/unidade/dubles/mock-AGENTE.test.js', out: [
+      '[err] ✖ 5 dias de atraso geram 750 centavos (0.7ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:',
+      '[err]   1350 !== 750',
+      '[info] ℹ tests 1', '[err] ℹ fail 1',
+      '[warn] O teste do agente lê o relógio real. Passou no dia 26 e falha no dia 30.' ] },
+    { label: 'Pedir mock.timers', kind: 'purple', cmd: 'opencode run "O teste da multa depende da data atual. Reescreva em mock.test.js com t.mock.timers.enable({ apis: [\'Date\'], now }) e cubra prazo de 14 dias, 5 dias de atraso e o teto de 3000. Inclua um mock de repositório com a expectativa dentro do mock.fn"', file: 'test/unidade/dubles/mock.test.js', speed: 110, out: [
+      '[mute] ▸ read test/unidade/dubles/mock-AGENTE.test.js',
+      '[mute] ▸ write test/unidade/dubles/mock.test.js',
+      ...PERMISSAO('rm test/unidade/dubles/mock-AGENTE.test.js'),
+      'Os testes de data agora fixam o relógio em cada caso. O mock de repositório falha',
+      'por dentro se receber o CEP com hífen ou um endereço que não seja nulo.' ] },
+    { label: 'Conferir de novo', cmd: 'faketime "2027-04-30 20:00:00" node --test test/unidade/dubles/mock.test.js', out: [
+      '[ok] ✔ mock: o repositório exige CEP normalizado e endereço nulo (1.2ms)',
+      '[ok] ✔ mock.timers: prazo de devolução é hoje + 14 dias (0.4ms)',
+      '[ok] ✔ mock.timers: 5 dias de atraso geram 750 centavos (0.2ms)',
+      '[ok] ✔ mock.timers: 30 dias de atraso param no teto de 3000 (0.2ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[info] ℹ fail 0',
+      '[mute] O faketime mudou a data do sistema e nada quebrou: o teste não depende mais dela.' ] }
+  ]
+});
+
+/* ---------- 8. Lab 4: fake ---------- */
+Labs.vscode('#lab-fake', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/dubles', open: 'test/compartilhado/contrato-repositorio.js',
+  prompt: PROMPT_PROF('test/dubles'),
+  files: [
+    { path: 'test/unidade/fakes/repositorio-em-memoria.js', hl: [10, 11], code: FAKE_JS },
+    { path: 'test/compartilhado/contrato-repositorio.js', hl: [5, 7, 18], code:
+`import { it, beforeEach } from 'node:test';
+import assert from 'node:assert/strict';
+
+// A mesma suíte roda no fake (unidade) e no pg (integração).
+export function contratoRepositorioAlunos(criar) {
+  let repo;
+  beforeEach(async () => { repo = await criar(); });
+
+  it('salva e devolve com id', async () => {
+    const a = await repo.salvarAluno({ nome: 'Ana', email: 'ana@campus.br', cep: '01001000' }, null);
+    assert.equal(typeof a.id, 'number');
+    assert.equal((await repo.buscarAluno(a.id)).email, 'ana@campus.br');
+  });
+
+  it('recusa e-mail repetido com code 23505', async () => {
+    const ana = { nome: 'Ana', email: 'ana@campus.br', cep: '01001000' };
+    await repo.salvarAluno(ana, null);
+    await assert.rejects(repo.salvarAluno(ana, null), { code: '23505' });
+  });
+
+  it('marca endereço pendente quando não há endereço', async () => {
+    const a = await repo.salvarAluno({ nome: 'Bia', email: 'bia@campus.br', cep: '01310100' }, null);
+    assert.equal(a.endereco_pendente, true);
+  });
+}` },
+    { path: 'test/unidade/repositorio-fake.test.js', code:
+`import { describe } from 'node:test';
+import { contratoRepositorioAlunos } from '../compartilhado/contrato-repositorio.js';
+import { repositorioEmMemoria } from './fakes/repositorio-em-memoria.js';
+
+describe('repositório de alunos (fake)', () => contratoRepositorioAlunos(() => repositorioEmMemoria()));` },
+    { path: 'test/integracao/repositorio-alunos.test.js', code:
+`import { describe, before, after } from 'node:test';
+import { contratoRepositorioAlunos } from '../compartilhado/contrato-repositorio.js';
+import { iniciarBanco } from './helpers/banco.js';
+import { repositorioAlunos } from '../../src/repositorios/alunos.js';
+
+describe('repositório de alunos (PostgreSQL)', () => {
+  let banco;
+  before(async () => { banco = await iniciarBanco(); });
+  after(() => banco.parar());
+  contratoRepositorioAlunos(async () => { await banco.limpar(); return repositorioAlunos(banco.pool); });
+});` }
+  ],
+  run: [
+    { label: 'opencode gera o fake', kind: 'purple', cmd: 'opencode run "Crie um fake em memória do repositório de alunos com o mesmo comportamento do pg, inclusive code 23505 para e-mail repetido, e uma suíte de contrato compartilhada que rode no fake e no repositório real"', file: 'test/unidade/fakes/repositorio-em-memoria.js', speed: 110, out: [
+      '[mute] ▸ read src/repositorios/alunos.js',
+      '[mute] ▸ read migrations/001_cria_alunos.sql',
+      '[mute] ▸ write test/unidade/fakes/repositorio-em-memoria.js',
+      '[mute] ▸ write test/compartilhado/contrato-repositorio.js',
+      '[mute] ▸ write test/unidade/repositorio-fake.test.js',
+      '[mute] ▸ write test/integracao/repositorio-alunos.test.js',
+      'O fake guarda os alunos num Map e lança { code: "23505" } como o pg. A suíte em',
+      'test/compartilhado roda nos dois.' ] },
+    { label: 'Contrato no fake', cmd: 'node --test test/unidade/repositorio-fake.test.js', out: [
+      '▶ repositório de alunos (fake)',
+      '[ok]   ✔ salva e devolve com id (0.6ms)',
+      '[ok]   ✔ recusa e-mail repetido com code 23505 (0.3ms)',
+      '[ok]   ✔ marca endereço pendente quando não há endereço (0.2ms)',
+      '[ok] ✔ repositório de alunos (fake) (2.1ms)',
+      '[info] ℹ tests 3', '[info] ℹ pass 3', '[info] ℹ duration_ms 49.7' ] },
+    { label: 'Contrato no PostgreSQL', kind: 'blue', clear: false, cmd: 'node --test test/integracao/repositorio-alunos.test.js', out: [
+      '[mute] testcontainers [INFO] Started container for image "postgres:16-alpine" (3.4s)',
+      '▶ repositório de alunos (PostgreSQL)',
+      '[ok]   ✔ salva e devolve com id (14.2ms)',
+      '[ok]   ✔ recusa e-mail repetido com code 23505 (6.8ms)',
+      '[ok]   ✔ marca endereço pendente quando não há endereço (4.9ms)',
+      '[ok] ✔ repositório de alunos (PostgreSQL) (3911.0ms)',
+      '[info] ℹ tests 3', '[info] ℹ pass 3', '[info] ℹ duration_ms 4302.6',
+      '[mute] Mesmos três testes, 50 ms no fake e 4,3 s no banco real.' ] }
+  ]
+});
+
+/* ---------- 9. Navegador: ViaCEP ---------- */
+(function () {
+  const pagina = (cep, json, nota) => '<div style="padding:14px 18px;font:14px/1.5 system-ui,sans-serif">' +
+    '<div style="display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap">' +
+    '<button type="button" class="lab-btn" data-cep="01001000">CEP 01001000</button>' +
+    '<button type="button" class="lab-btn red" data-cep="99999999">CEP 99999999</button>' +
+    '<button type="button" class="lab-btn ghost" style="color:#333;border-color:#C9CED8" data-cep="0100100">CEP 0100100</button></div>' +
+    '<pre style="background:#F6F8FA;border:1px solid #D1D9E0;border-radius:8px;padding:12px 16px;margin:0 0 10px;font:13.5px/1.5 var(--mono);color:#1F2328">' +
+    Labs.highlight(json, 'json').map((l) => l.replace(/tk-v/g, 'x').replace(/class="x"/g, 'style="color:#0550AE"').replace(/class="tk-s"/g, 'style="color:#0A3069"').replace(/class="tk-p"/g, 'style="color:#CF222E"')).join('\n') + '</pre>' +
+    '<p style="margin:0;color:#59636E">' + nota + '</p></div>';
+  const RESPOSTAS = {
+    '01001000': [FIXTURE, 'Status 200. O código usa cep, logradouro, bairro, localidade e uf. Os outros campos são ignorados.'],
+    '99999999': ['{\n  "erro": "true"\n}', 'Status 200 com o campo erro como texto. Sem tratar esse caso, o cadastro gravaria logradouro undefined.'],
+    '0100100': ['Bad Request (400)\n\nhttps://viacep.com.br/ws/0100100/json/: formato de CEP inválido', 'Com 7 dígitos a ViaCEP responde 400. A nossa validação recusa antes, sem fazer a requisição.']
+  };
+  Labs.browser('#brw-viacep', {
+    url: 'https://viacep.com.br/ws/01001000/json/',
+    html: pagina('01001000', RESPOSTAS['01001000'][0], RESPOSTAS['01001000'][1]),
+    onReady(page, api) {
+      page.querySelectorAll('[data-cep]').forEach((b) => b.addEventListener('click', () => {
+        const c = b.dataset.cep, r = RESPOSTAS[c];
+        api.go('https://viacep.com.br/ws/' + c + '/json/', pagina(c, r[0], r[1]));
+      }));
+    }
+  });
+})();
+
+/* ---------- 10. Flow: cadastro ---------- */
+Labs.flow('#flow-cadastro', {
+  w: 1000, h: 440,
+  nodes: [
+    { id: 'cli', x: 110, y: 110, w: 170, label: 'POST /alunos', sub: 'nome, email, cep', k: 'blue' },
+    { id: 'val', x: 340, y: 110, w: 190, label: 'normalizarCep', sub: '8 dígitos?', k: 'amber' },
+    { id: 'via', x: 620, y: 110, w: 210, label: 'ViaCEP', sub: 'timeout 3000 ms', k: 'purple' },
+    { id: 'db', x: 620, y: 320, w: 210, label: 'PostgreSQL', sub: 'alunos + ceps', k: 'green' },
+    { id: 'r400', x: 340, y: 320, w: 150, label: '400', sub: 'CEP inválido', k: 'red' },
+    { id: 'r422', x: 880, y: 110, w: 150, label: '422', sub: 'CEP inexistente', k: 'red' },
+    { id: 'r201', x: 880, y: 320, w: 150, label: '201', sub: 'com ou sem endereço', k: 'green' }
+  ],
+  links: [
+    { from: 'cli', to: 'val' }, { from: 'val', to: 'via', label: 'fetch injetado' }, { from: 'val', to: 'r400' },
+    { from: 'via', to: 'r422' }, { from: 'via', to: 'db', label: 'endereço ou pendente' }, { from: 'db', to: 'r201' }
+  ],
+  steps: [
+    { title: 'Chega o cadastro', text: 'O corpo traz o CEP como o usuário digitou: com hífen, espaço ou dígitos faltando.', on: ['cli'], links: [['cli', 'val']] },
+    { title: 'CEP inválido não sai do servidor', text: 'Menos de 8 dígitos: CepInvalidoError e resposta 400. O spy da ViaCEP registra zero chamadas.', on: ['val', 'r400'], bad: ['r400'], links: [['val', 'r400', 'red']] },
+    { title: 'Consulta com prazo', text: 'fetch com AbortSignal.timeout(3000). No teste, o fetch é um stub que devolve o JSON de exemplo.', on: ['val', 'via'], links: [['val', 'via', 'purple']] },
+    { title: 'CEP que não existe', text: 'A ViaCEP responde {"erro": "true"}. O cadastro é recusado com 422, porque o dado do usuário está errado.', on: ['via', 'r422'], bad: ['r422'], links: [['via', 'r422', 'red']] },
+    { title: 'Caminho feliz', text: 'Endereço encontrado: o aluno e o CEP são gravados e a resposta é 201 com o endereço.', on: ['via', 'db', 'r201'], links: [['via', 'db', 'green'], ['db', 'r201', 'green']] },
+    { title: 'Degradação', text: 'Timeout, rede ou status 5xx: o aluno é gravado com o endereço pendente, o logger registra o CEP e a resposta continua 201.', on: ['db', 'r201'], bad: ['via'], links: [['via', 'db', 'amber'], ['db', 'r201', 'amber']] }
+  ]
+});
+
+/* ---------- 12. Lab 5: buscarEndereco ---------- */
+Labs.vscode('#lab-viacep', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/viacep', open: 'src/servicos/viacep.js',
+  prompt: PROMPT_PROF('feat/viacep'),
+  files: [
+    { path: 'src/servicos/viacep.js', hl: [13, 14, 17, 19, 24], code: VIACEP_JS },
+    { path: 'test/unidade/viacep.test.js', hl: [27, 28, 29], code:
+`import { test, mock } from 'node:test';
+import assert from 'node:assert/strict';
+import { buscarEndereco } from '../../src/servicos/viacep.js';
+import { proibirRede } from './helpers/sem-rede.js';
+import viacepSe from '../fixtures/viacep-01001000.json' with { type: 'json' };
+
+proibirRede();
+
+test('devolve o endereço com cidade vinda de localidade', async () => {
+  const fetch = mock.fn(async () => Response.json(viacepSe));
+  const e = await buscarEndereco('01001-000', { fetch });
+  assert.deepEqual(e, { cep: '01001000', logradouro: 'Praça da Sé', bairro: 'Sé', cidade: 'São Paulo', uf: 'SP' });
+});
+
+test('CEP inexistente vira CepNaoEncontradoError', async () => {
+  const fetch = mock.fn(async () => Response.json({ erro: 'true' }));
+  await assert.rejects(buscarEndereco('99999999', { fetch }), { name: 'CepNaoEncontradoError' });
+});
+
+test('status 503 vira ViaCepIndisponivelError', async () => {
+  const fetch = mock.fn(async () => new Response('fora', { status: 503 }));
+  await assert.rejects(buscarEndereco('01001000', { fetch }), { name: 'ViaCepIndisponivelError' });
+});
+
+test('timeout vira ViaCepIndisponivelError com a causa', async () => {
+  const fetch = mock.fn(async () => { throw new DOMException('timeout', 'TimeoutError'); });
+  const erro = await buscarEndereco('01001000', { fetch }).catch((e) => e);
+  assert.equal(erro.name, 'ViaCepIndisponivelError');
+  assert.equal(erro.cause.name, 'TimeoutError');
+});` },
+    { path: 'test/fixtures/viacep-01001000.json', code: FIXTURE }
+  ],
+  run: [
+    { label: 'opencode gera o cliente', kind: 'purple', cmd: 'opencode run "Crie src/servicos/viacep.js com buscarEndereco(cep, { fetch }) e timeout de 3000 ms, e testes de unidade para sucesso, CEP inexistente, status 503 e timeout"', file: 'src/servicos/viacep.js', speed: 110, out: [
+      '[mute] ▸ read AGENTS.md',
+      '[mute] ▸ read test/fixtures/viacep-01001000.json',
+      '[mute] ▸ write src/servicos/viacep.js',
+      '[mute] ▸ write test/unidade/viacep.test.js',
+      ...PERMISSAO('npm test'),
+      '[ok]   ✔ 4 testes passaram',
+      'buscarEndereco valida o CEP, usa AbortSignal.timeout(timeoutMs) e classifica a falha.',
+      'Para o timeout, o teste usa um fetch que nunca responde e espera o AbortSignal.' ] },
+    { label: 'Conferir os testes', kind: 'red', cmd: 'node --test test/unidade/viacep.test.js', out: [
+      '[ok] ✔ devolve o endereço com cidade vinda de localidade (1.8ms)',
+      '[ok] ✔ CEP inexistente vira CepNaoEncontradoError (0.6ms)',
+      '[ok] ✔ status 503 vira ViaCepIndisponivelError (0.5ms)',
+      { t: '[warn] ✔ timeout vira ViaCepIndisponivelError com a causa (3004.7ms)', d: 900 },
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[warn] ℹ duration_ms 3061.2',
+      '[warn] Tudo verde, mas um teste de unidade levou 3 s: o agente esperou o timeout de verdade.' ] },
+    { label: 'Pedir stub de timeout', kind: 'purple', cmd: 'opencode run "O teste de timeout espera 3 s reais. Troque por um stub de fetch que rejeita com new DOMException(\'timeout\', \'TimeoutError\') e confira erro.cause.name"', file: 'test/unidade/viacep.test.js', speed: 110, out: [
+      '[mute] ▸ read test/unidade/viacep.test.js',
+      '[mute] ▸ edit test/unidade/viacep.test.js  (teste de timeout com stub que rejeita)',
+      'O teste agora simula o TimeoutError que o AbortSignal produziria, sem esperar.' ] },
+    { label: 'Conferir de novo', cmd: 'node --test test/unidade/viacep.test.js', out: [
+      '[ok] ✔ devolve o endereço com cidade vinda de localidade (1.7ms)',
+      '[ok] ✔ CEP inexistente vira CepNaoEncontradoError (0.6ms)',
+      '[ok] ✔ status 503 vira ViaCepIndisponivelError (0.5ms)',
+      '[ok] ✔ timeout vira ViaCepIndisponivelError com a causa (0.4ms)',
+      '[info] ℹ tests 4', '[info] ℹ pass 4', '[info] ℹ fail 0', '[ok] ℹ duration_ms 57.9' ] }
+  ]
+});
+
+/* ---------- 13. Lab 6: guarda de rede ---------- */
+Labs.vscode('#lab-sem-rede', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/cadastro-endereco', open: 'test/unidade/helpers/sem-rede.js',
+  prompt: PROMPT_PROF('feat/cadastro-endereco'),
+  files: [
+    { path: 'test/unidade/helpers/sem-rede.js', hl: [7, 8, 10, 11, 13], code: SEM_REDE_JS },
+    { path: 'test/unidade/app-AGENTE.test.js', hl: [6, 11], code:
+`// primeira versão do agente: criarApp sem buscarEndereco
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import request from 'supertest';
+import { criarApp } from '../../src/app.js';
+import { buscarEndereco } from '../../src/servicos/viacep.js';
+import { repositorioEmMemoria } from './fakes/repositorio-em-memoria.js';
+import { proibirRede } from './helpers/sem-rede.js';
+
+proibirRede();
+const app = criarApp({ repositorio: repositorioEmMemoria(), buscarEndereco, logger: { warn() {} } });
+
+test('cadastra aluno com endereço', async () => {
+  const res = await request(app).post('/alunos')
+    .send({ nome: 'Ana', email: 'ana@campus.br', cep: '01001-000' }).expect(201);
+  assert.ok(res.body.id);
+});` },
+    { path: 'test/unidade/app.test.js', code: APP_TEST }
+  ],
+  run: [
+    { label: 'opencode gera o teste da rota', kind: 'purple', cmd: 'opencode run "Escreva um teste com supertest para POST /alunos"', file: 'test/unidade/app-AGENTE.test.js', speed: 110, out: [
+      '[mute] ▸ read src/app.js',
+      '[mute] ▸ read src/servicos/viacep.js',
+      '[mute] ▸ write test/unidade/app-AGENTE.test.js',
+      'Criei um teste que cadastra Ana e confere o status 201. Usei o buscarEndereco',
+      'do próprio projeto para o teste ficar mais realista.' ] },
+    { label: 'npm test', kind: 'red', cmd: 'npm test', out: [
+      '', '> node --test test/unidade', '',
+      '[err] ✖ cadastra aluno com endereço (41.3ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: teste acessou a rede: https://viacep.com.br/ws/01001000/json/',
+      '[err]   + actual - expected',
+      "[err]   + [ 'https://viacep.com.br/ws/01001000/json/' ]",
+      '[err]   - []',
+      '[mute]       at TestContext.<anonymous> (test/unidade/helpers/sem-rede.js:13:5)',
+      '[ok] ✔ devolve o endereço com cidade vinda de localidade (1.7ms)',
+      '[mute] … 14 testes ✔',
+      '[info] ℹ tests 16', '[info] ℹ pass 15', '[err] ℹ fail 1',
+      '[warn] A rota respondeu 201 (o cadastro engoliu o erro e salvou pendente). Só o guarda percebeu que houve rede.' ] },
+    { label: 'Pedir o dublê', kind: 'purple', cmd: 'opencode run "app-AGENTE.test.js acessou a ViaCEP real. Apague esse arquivo e use test/unidade/app.test.js, em que todo criarApp recebe um buscarEndereco feito com mock.fn"', file: 'test/unidade/app.test.js', speed: 110, out: [
+      '[mute] ▸ read test/unidade/app.test.js',
+      ...PERMISSAO('rm test/unidade/app-AGENTE.test.js'),
+      'Removi o teste que usava a ViaCEP real. app.test.js já injeta stubs em todos os casos.' ] },
+    { label: 'npm test de novo', cmd: 'npm test', out: [
+      '', '> node --test test/unidade', '',
+      '[mute] … 20 testes ✔',
+      '[info] ℹ tests 20', '[info] ℹ pass 20', '[info] ℹ fail 0', '[ok] ℹ duration_ms 312.4',
+      '[ok] Nenhum teste da suíte padrão chamou a internet.' ] }
+  ]
+});
+
+/* ---------- 14. Lab 7: Express + supertest ---------- */
+Labs.vscode('#lab-supertest', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'feat/cadastro-endereco', open: 'src/app.js',
+  prompt: PROMPT_PROF('feat/cadastro-endereco'),
+  files: [
+    { path: 'src/app.js', hl: [10, 11, 12, 15, 16, 17, 18], code: APP_JS },
+    { path: 'src/server.js', code: SERVER_JS },
+    { path: 'src/servicos/cadastro.js', code: CADASTRO_JS },
+    { path: 'test/unidade/app.test.js', hl: [13, 14, 15, 16, 17], code: APP_TEST }
+  ],
+  run: [
+    { label: 'opencode gera a rota', kind: 'purple', cmd: 'opencode run "Crie src/app.js com criarApp({ repositorio, buscarEndereco, logger }) em Express 5 e POST /alunos: 400 CEP inválido, 422 inexistente, 201 pendente com ViaCEP fora, 409 e-mail repetido. src/server.js é o único que chama listen. Teste com supertest, fake e stubs"', file: 'src/app.js', speed: 110, out: [
+      '[mute] ▸ read src/servicos/cadastro.js',
+      '[mute] ▸ read test/unidade/fakes/repositorio-em-memoria.js',
+      ...PERMISSAO('npm install express@5 && npm install -D supertest'),
+      '[mute] ▸ write src/app.js',
+      '[mute] ▸ write src/server.js',
+      '[mute] ▸ write test/unidade/app.test.js',
+      'criarApp recebe as dependências e mapeia cada erro para um status num middleware de',
+      'erro. O teste usa supertest, o fake e stubs de buscarEndereco.' ] },
+    { label: 'npm test', cmd: 'node --test test/unidade/app.test.js', file: 'test/unidade/app.test.js', out: [
+      '[ok] ✔ 201 com o endereço da ViaCEP (38.2ms)',
+      '[ok] ✔ 201 com endereço pendente quando a ViaCEP cai (4.1ms)',
+      '[ok] ✔ 400 para CEP com 7 dígitos, sem chamar a ViaCEP (3.0ms)',
+      '[ok] ✔ 422 para CEP inexistente (2.7ms)',
+      '[ok] ✔ 409 para e-mail repetido (4.9ms)',
+      '[info] ℹ tests 5', '[info] ℹ pass 5', '[info] ℹ fail 0', '[info] ℹ duration_ms 163.0' ] },
+    { label: 'Servidor de verdade', kind: 'blue', cmd: 'npm start & sleep 1; curl -s -X POST localhost:3000/alunos -H "content-type: application/json" -d \'{"nome":"Ana","email":"ana@campus.br","cep":"01001-000","numero":"100"}\' | jq', out: [
+      '[mute] biblioteca-campus ouvindo na porta 3000',
+      '{', '  "id": 1,', '  "nome": "Ana",', '  "email": "ana@campus.br",', '  "cep": "01001000",', '  "numero": "100",',
+      '  "endereco": {', '    "logradouro": "Praça da Sé",', '    "bairro": "Sé",', '    "cidade": "São Paulo",', '    "uf": "SP"', '  },',
+      '  "endereco_pendente": false', '}',
+      '[mute] Aqui a ViaCEP foi chamada de verdade: é o servidor em desenvolvimento, e não um teste.' ] }
+  ]
+});
+
+/* ---------- 15. Lab 8: contrato ---------- */
+Labs.vscode('#lab-contrato', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/contrato-viacep', open: 'test/contrato/viacep.contrato.test.js',
+  prompt: PROMPT_PROF('test/contrato-viacep'),
+  files: [
+    { path: 'test/contrato/viacep.contrato.test.js', hl: [4, 7, 16], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+
+const pular = process.env.CONTRATO !== '1' && 'defina CONTRATO=1 para chamar a ViaCEP de verdade';
+const URL = (cep) => 'https://viacep.com.br/ws/' + cep + '/json/';
+
+test('ViaCEP devolve os campos que o sistema usa', { skip: pular }, async () => {
+  const res = await fetch(URL('01001000'), { signal: AbortSignal.timeout(5000) });
+  assert.equal(res.status, 200);
+  const corpo = await res.json();
+  for (const campo of ['cep', 'logradouro', 'bairro', 'localidade', 'uf']) {
+    assert.equal(typeof corpo[campo], 'string', 'campo ' + campo);
+  }
+});
+
+test('ViaCEP sinaliza CEP inexistente com erro "true"', { skip: pular }, async () => {
+  const res = await fetch(URL('99999999'), { signal: AbortSignal.timeout(5000) });
+  assert.deepEqual(await res.json(), { erro: 'true' });
+});` },
+    { path: '.github/workflows/contrato.yml', hl: [3, 4, 5], code:
+`name: Contrato ViaCEP
+on:
+  schedule:
+    - cron: '0 11 * * 1'   # segundas, 8h em Brasília
+  workflow_dispatch:
+
+jobs:
+  contrato:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run test:contrato` },
+    { path: 'package.json', hl: [6], code:
+`{
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/unidade",
+    "test:int": "node --test test/integracao",
+    "test:contrato": "CONTRATO=1 node --test test/contrato",
+    "lint": "eslint .",
+    "start": "node src/server.js"
+  }
+}` }
+  ],
+  run: [
+    { label: 'opencode gera o contrato', kind: 'purple', cmd: 'opencode run "Crie test/contrato/viacep.contrato.test.js que só chama a ViaCEP real com CONTRATO=1, conferindo os tipos dos campos de 01001000 e o formato de 99999999, o script test:contrato e um workflow semanal"', file: 'test/contrato/viacep.contrato.test.js', speed: 110, out: [
+      '[mute] ▸ read test/fixtures/viacep-01001000.json',
+      '[mute] ▸ write test/contrato/viacep.contrato.test.js',
+      '[mute] ▸ write .github/workflows/contrato.yml',
+      '[mute] ▸ edit package.json  (+ "test:contrato")',
+      'O contrato confere nomes e tipos, não valores. Sem CONTRATO=1 os dois testes',
+      'aparecem como pulados.' ] },
+    { label: 'Sem CONTRATO', cmd: 'node --test test/contrato', out: [
+      '[mute] ﹣ ViaCEP devolve os campos que o sistema usa (0.4ms) # defina CONTRATO=1 para chamar a ViaCEP de verdade',
+      '[mute] ﹣ ViaCEP sinaliza CEP inexistente com erro "true" (0.1ms) # defina CONTRATO=1 para chamar a ViaCEP de verdade',
+      '[info] ℹ tests 2', '[info] ℹ pass 0', '[warn] ℹ skipped 2' ] },
+    { label: 'npm run test:contrato', kind: 'blue', cmd: 'npm run test:contrato', out: [
+      '', '> CONTRATO=1 node --test test/contrato', '',
+      '[ok] ✔ ViaCEP devolve os campos que o sistema usa (214.6ms)',
+      '[ok] ✔ ViaCEP sinaliza CEP inexistente com erro "true" (98.3ms)',
+      '[info] ℹ tests 2', '[info] ℹ pass 2', '[info] ℹ fail 0' ] },
+    { label: 'Se a ViaCEP mudar', kind: 'red', cmd: 'npm run test:contrato   # simulação: localidade renomeada para cidade', out: [
+      '[err] ✖ ViaCEP devolve os campos que o sistema usa (201.9ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: campo localidade',
+      "[err]   'undefined' !== 'string'",
+      '[ok] ✔ ViaCEP sinaliza CEP inexistente com erro "true" (97.0ms)',
+      '[info] ℹ tests 2', '[err] ℹ fail 1',
+      '[warn] Os testes de unidade continuariam verdes com o fixture antigo. O contrato avisa que o fixture e o código precisam mudar.' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

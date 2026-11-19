@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cobertura, CI e análise estática - Material</title>
+<meta name="description" content="Material da Aula 05 de Qualidade de Software 2027.1: cobertura nativa do Node com meta, limites da cobertura, ESLint 9 com flat config e complexidade, GitHub Actions e checklist do Trabalho 1.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 05 &middot; Semana 9 &middot; 01/03 a 05/03</span><h1 class="h3 fw-bold text-white mb-0">Cobertura, CI e análise estática</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Sair da aula com cobertura medida e com meta, ESLint configurado e um workflow do GitHub Actions que roda lint e testes a cada push na main do organizacao-recursos.</p>
+<p class="text-muted mb-0">É a última aula de conteúdo antes da entrega do Trabalho 1, na semana 10. Como nas aulas anteriores, o opencode gera a configuração e o código a partir de prompts, e a etapa de qualidade é a revisão de quem pediu: ler o diff, rodar os comandos e só então commitar. A seção 11 traz o checklist da entrega.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. O que a cobertura mede</h2>
+<p class="text-muted">Enquanto os testes rodam, o Node registra que partes do código foram executadas. O relatório responde a uma pergunta: que código nenhum teste chegou a rodar?</p>
+<ul class="text-muted">
+<li>Linhas: fração das linhas executadas pelo menos uma vez.</li>
+<li>Ramos: fração dos caminhos de cada decisão (<code>if</code>, <code>else</code>, <code>&amp;&amp;</code>, <code>||</code>, <code>?:</code>) que algum teste percorreu. Um <code>if</code> testado só no caso verdadeiro deixa um ramo descoberto.</li>
+<li>Funções: fração das funções chamadas por algum teste.</li>
+</ul>
+<p class="text-muted mb-0">A cobertura de ramos é a medida automática da caixa branca da Aula 03: cada ramo descoberto corresponde a um caso de teste que a análise de caminhos teria pedido.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Cobertura nativa do Node e metas</h2>
+<p class="text-muted">O Node 22 mede cobertura sem dependência extra, com <code>--experimental-test-coverage</code>. Sem filtro, os próprios arquivos de teste entram na conta e puxam a média para cima, por isso a disciplina usa <code>--test-coverage-include='src/**'</code>. As opções <code>--test-coverage-lines</code> e <code>--test-coverage-branches</code> transformam a medida em meta: abaixo do valor, o comando termina com código 1, mesmo que todos os testes passem.</p>
+<pre class="bg-dark text-info p-3 rounded small">"scripts": {
+  "test": "node --test",
+  "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'",
+  "lint": "eslint ."
+}</pre>
+<p class="text-muted">No laboratório, o script foi pedido assim, e a conferência veio antes do commit:</p>
+<pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">opencode run "Adicione ao package.json o script test:cov com cobertura nativa do Node, meta de 80% de linhas e de ramos e só src/ na conta. Nenhuma dependência nova."
+git diff --stat &amp;&amp; npm run test:cov; echo "saída: $?"</pre>
+<pre class="bg-dark text-info p-3 rounded small">ℹ tests 4
+ℹ pass 4
+ℹ fail 0
+ℹ start of coverage report
+ℹ ----------------------------------------------------------------------
+ℹ file                 | line % | branch % | funcs % | uncovered lines
+ℹ ----------------------------------------------------------------------
+ℹ  emprestimo.js        |  84.00 |    71.43 |  100.00 | 9-10 15-16
+ℹ ----------------------------------------------------------------------
+ℹ all files            |  84.00 |    71.43 |  100.00 |
+ℹ ----------------------------------------------------------------------
+ℹ end of coverage report
+ℹ Error: 71.43% branch coverage does not meet threshold of 80%.
+saída: 1</pre>
+<p class="text-muted mb-0">Os quatro testes passaram, a meta de linhas (84%) passou, e a de ramos (71,43%) reprovou o comando.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Ler o relatório e achar os ramos descobertos</h2>
+<p class="text-muted">A coluna <code>uncovered lines</code> aponta as linhas que nenhum teste executou. Em <code>src/emprestimo.js</code>, as linhas 9-10 e 15-16 são as duas recusas que os testes nunca provocam:</p>
+<pre class="bg-dark text-info p-3 rounded small"> 8  if (aluno.multaPendente &gt; 0) {
+ 9    throw new Error('aluno com multa pendente');
+10  }
+11  if (aluno.ativos.length &gt;= LIMITE_ATIVOS) {
+12    throw new Error('limite de 3 empréstimos ativos');
+13  }
+14  if (livro.reservadoPor &amp;&amp; livro.reservadoPor !== aluno.id) {
+15    throw new Error('livro reservado por outro aluno');
+16  }</pre>
+<p class="text-muted">Há também um ramo que não aparece como linha: o lado direito do <code>&amp;&amp;</code> da linha 14 nunca é avaliado, porque nenhum teste usa livro reservado. Ele só aparece na porcentagem de ramos. O agente pode ler o relatório e listar as regras correspondentes; a conferência é abrir as linhas citadas (por exemplo, <code>sed -n '8,16p' src/emprestimo.js</code>) e ver se a regra descrita é a que está lá.</p>
+<p class="text-muted mb-0">Os testes que fecham esses ramos precisam conferir a mensagem do erro ou o valor retornado, e o <code>git diff</code> deles não pode tocar em <code>src/</code>. Com eles, a tabela foi a 100% de linhas, ramos e funções e o comando terminou com código 0.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. Por que 100% de cobertura não prova correção</h2>
+<p class="text-muted">A cobertura mede o que foi executado, não o que foi conferido. No laboratório, <code>src/multa.js</code> estava com 100% de linhas, ramos e funções e mesmo assim errado:</p>
+<pre class="bg-dark text-info p-3 rounded small">return Math.max(atraso * MULTA_POR_DIA, TETO_MULTA);   // a regra pede Math.min
+
+it('calcula multa com atraso', () =&gt; {
+  const multa = calcularMulta(previsto, new Date('2027-03-11T12:00:00Z'));
+  assert.ok(multa &gt; 0);
+});</pre>
+<p class="text-muted">Com 3 dias de atraso a função devolvia 3000 centavos em vez de 450, e o teste passava, já que só exigia um valor positivo. A troca por valores exatos (0 no prazo, 450 com 3 dias, 3000 com 20 dias, 3000 com 25 dias) fez o teste falhar com <code>3000 !== 450</code>; a correção para <code>Math.min</code> o deixou verde.</p>
+<ul class="text-muted">
+<li>Fronteiras: <code>&gt;</code> e <code>&gt;=</code> produzem a mesma cobertura. Só um teste exatamente no limite distingue os dois.</li>
+<li>Regra esquecida: se a especificação pede um teto e o código não tem teto, não existe linha descoberta para avisar.</li>
+<li>Asserção fraca: <code>assert.ok</code> no lugar do valor exato executa o código sem verificar o resultado.</li>
+</ul>
+<p class="text-muted mb-0">Por isso a meta de 80% é um piso. A cobertura serve de alarme para código que nenhum teste rodou; a verificação da regra depende da asserção, e lê-la é trabalho de revisão, inclusive nos testes gerados pelo agente.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Análise estática com ESLint 9</h2>
+<p class="text-muted">Análise estática examina o código sem executá-lo. O ESLint 9 usa o formato flat: um arquivo <code>eslint.config.js</code> que exporta um array de configurações. As dependências de desenvolvimento são <code>eslint</code>, <code>@eslint/js</code> e <code>globals</code>.</p>
+<pre class="bg-dark text-info p-3 rounded small">npm install -D eslint @eslint/js globals</pre>
+<pre class="bg-dark text-info p-3 rounded small">import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  { ignores: ['coverage/', 'node_modules/'] },
+  js.configs.recommended,
+  {
+    languageOptions: {
+      ecmaVersion: 2024,
+      sourceType: 'module',
+      globals: globals.node
+    },
+    rules: {
+      complexity: ['error', 6]
+    }
+  }
+];</pre>
+<p class="text-muted">O conjunto <code>recommended</code> aponta variável sem uso, nome não declarado, código inalcançável e chave duplicada. A regra <code>complexity</code> conta os caminhos independentes de cada função: cada <code>if</code>, <code>&amp;&amp;</code>, <code>||</code> e <code>case</code> soma 1. Uma função de complexidade 7 exige pelo menos 7 testes para cobrir todos os ramos; o limite de 6 obriga a quebrá-la antes.</p>
+<pre class="bg-dark text-info p-3 rounded small">/workspaces/biblioteca-campus/src/situacao-aluno.js
+  1:10  error  'calcularMulta' is defined but never used  no-unused-vars
+  1:25  error  'PRAZO_DIAS' is defined but never used     no-unused-vars
+  3:8   error  Function 'situacaoDoAluno' has a complexity of 7. Maximum allowed is 6  complexity
+
+✖ 3 problems (3 errors, 0 warnings)</pre>
+<p class="text-muted">A correção pedida ao agente tirou os imports sem uso, extraiu <code>estaBloqueado</code> e trocou o aninhamento por retornos antecipados:</p>
+<pre class="bg-dark text-info p-3 rounded small">function estaBloqueado(aluno) {
+  return aluno.bloqueado || aluno.multaPendente &gt;= TETO_MULTA;
+}
+
+export function situacaoDoAluno(aluno, hoje) {
+  if (estaBloqueado(aluno)) return 'bloqueado';
+  if (aluno.multaPendente &gt; 0) return 'com multa';
+  if (aluno.ativos.length &gt;= LIMITE_ATIVOS) return 'no limite';
+  if (aluno.ativos.some((e) =&gt; e.previsto &lt; hoje)) return 'com atraso';
+  if (aluno.ativos.length === 0) return 'sem empréstimos';
+  return 'regular';
+}</pre>
+<p class="text-muted mb-0">Um agente pressionado a zerar o lint pode resolver com um comentário <code>// eslint-disable</code>. A revisão é <code>git grep -n "eslint-disable"</code>, que precisa voltar vazio, seguida de <code>npm run lint &amp;&amp; npm test</code>.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. GitHub Actions no seu repositório</h2>
+<p class="text-muted">Integração contínua roda as verificações numa máquina limpa a cada push. O workflow fica em <code>.github/workflows/ci.yml</code>, no repositório de cada aluno:</p>
+<pre class="bg-dark text-info p-3 rounded small">name: CI
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  qualidade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cov</pre>
+<p class="text-muted"><code>npm ci</code> instala exatamente as versões do <code>package-lock.json</code> e falha se ele não estiver em sincronia com o <code>package.json</code>. Qualquer passo que termine com código diferente de 0 encerra o job em vermelho. <code>workflow_dispatch</code> permite rodar o workflow pelo botão Run workflow da aba Actions.</p>
+<p class="text-muted">O badge no topo do README mostra o estado do último run:</p>
+<pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">![CI](https://github.com/MEU-USUARIO/organizacao-recursos/actions/workflows/ci.yml/badge.svg)</pre>
+<p class="text-muted mb-0">No terminal do Codespace, <code>gh run watch</code> acompanha o run do último push e <code>gh run view --log-failed</code> mostra só o log dos passos que falharam.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. A regra da main e o CI vermelho</h2>
+<ul class="text-muted">
+<li>A main só recebe merge local, com <code>git merge --ff-only</code>, depois de <code>npm run lint &amp;&amp; npm run test:cov</code> verdes na branch.</li>
+<li>Não há pull request: o CI roda no push da main e verifica o que já foi integrado.</li>
+<li>Um push que deixa o CI vermelho vira um commit <code>fix</code> imediato, antes de qualquer outra mudança.</li>
+</ul>
+<p class="text-muted">No laboratório, o gate local passou e o CI falhou no <code>npm ci</code>: o commit do ESLint levou o <code>package.json</code>, mas o <code>package-lock.json</code> atualizado ficou só no Codespace. Localmente o <code>node_modules</code> já existia; na máquina limpa do GitHub, não.</p>
+<pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">npm error `npm ci` can only install packages when your package.json and package-lock.json are in sync.
+npm error Missing: eslint@9.17.0 from lock file</pre>
+<p class="text-muted">O agente diagnosticou a causa a partir do log. A conferência foi <code>git status --short</code>, que mostrou o lock modificado, e <code>npm ci &amp;&amp; npm run lint &amp;&amp; npm run test:cov</code> antes do commit:</p>
+<pre class="bg-dark text-info p-3 rounded small">git switch -c fix/lock
+git commit -am "fix(ci): versiona package-lock.json com o eslint"
+git switch main
+git merge --ff-only fix/lock
+git push
+gh run watch</pre>
+<p class="text-muted mb-0">Na correção de trabalhos, o professor clona a main. Um badge vermelho na entrega significa que o que está lá não passa nas próprias verificações do aluno.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Prompt 1 · cobertura com meta</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch test/cobertura do repositório organizacao-recursos, adicione ao package.json o script "test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'", sem nenhuma dependência nova. Rode npm run test:cov e me mostre a tabela. Liste, arquivo por arquivo, as linhas e os ramos não cobertos e diga qual regra do domínio cada um representa (sobreposição de intervalos, capacidade da sala, professor em duas aulas, material indisponível, reserva no passado). Depois, um teste por vez, escreva testes que cubram esses ramos com asserção de valor exato ou da mensagem de erro, sem alterar nada em src/ e sem excluir arquivos da cobertura. Pare depois de cada teste para eu rodar npm run test:cov e commitar como test(escopo): ....</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: todo teste novo confere valor ou mensagem, nada de <code>assert.ok</code> genérico, e o <code>git diff</code> não toca em <code>src/</code>.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Prompt 2 · ESLint no seu repositório</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 20 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch chore/eslint, instale como devDependencies eslint, @eslint/js e globals. Crie eslint.config.js no formato flat do ESLint 9, exportando um array com: ignores para coverage/ e node_modules/; js.configs.recommended; e um bloco com languageOptions { ecmaVersion: 2024, sourceType: 'module', globals: globals.node } e a regra complexity: ['error', 6]. Adicione o script "lint": "eslint .". Rode npm run lint e me mostre os problemas agrupados por regra. Corrija um arquivo por vez, sem usar comentários eslint-disable e sem desligar regras; para complexidade, extraia funções pequenas ou use retornos antecipados. Rode npm test depois de cada correção e pare para eu commitar.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: <code>git grep eslint-disable</code> vazio, <code>package-lock.json</code> no commit e <code>npm test</code> verde depois de cada refatoração.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Prompt 3 · workflow de CI e badge</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch chore/ci, crie .github/workflows/ci.yml com name CI, disparado em push e workflow_dispatch, com um job qualidade em ubuntu-latest e os passos: actions/checkout@v4; actions/setup-node@v4 com node-version 22 e cache npm; npm ci; npm run lint; npm run test:cov. Acrescente no topo do README.md o badge ![CI](https://github.com/MEU-USUARIO/organizacao-recursos/actions/workflows/ci.yml/badge.svg), perguntando antes qual é o meu usuário do GitHub. Não crie pull request nem outros workflows. Antes de terminar, rode npm ci, npm run lint e npm run test:cov localmente e me mostre o resultado de cada um.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode você mesmo <code>npm run lint &amp;&amp; npm run test:cov</code>, faça o merge <code>--ff-only</code>, o push e acompanhe com <code>gh run watch</code>. Vermelho vira commit <code>fix</code> na hora.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">11. Checklist do Trabalho 1</h2>
+<p class="text-muted">A entrega é na semana 10, pelo link do repositório público, e a prova oral acontece nas semanas 11, 12 e 13. O trabalho é individual. Antes de entregar, confira:</p>
+<h3 class="h6 fw-bold">Conteúdo do repositório</h3>
+<ul class="text-muted">
+<li><code>docs/qualidade.md</code> com requisitos mensuráveis (Aula 01).</li>
+<li>Especificação e critérios de aceite (Aula 02).</li>
+<li>Casos de teste de caixa preta e de caixa branca (Aula 03).</li>
+<li>Regras de reserva feitas em TDD, com o trio <code>test</code>, <code>feat</code>, <code>refactor</code> no histórico (Aula 04).</li>
+<li><code>npm run test:cov</code> com pelo menos 80% de linhas e de ramos em <code>src/</code>.</li>
+<li><code>npm run lint</code> sem erros e sem <code>eslint-disable</code>.</li>
+</ul>
+<h3 class="h6 fw-bold">Estado no GitHub</h3>
+<ul class="text-muted">
+<li>Repositório público <code>organizacao-recursos</code>, com README e badge do CI.</li>
+<li>Último run da main verde na aba Actions.</li>
+<li>Histórico linear, Conventional Commits em português e branches curtas apagadas.</li>
+<li>Issues de feedback respondidas com <code>fix(...): ... (#N)</code> e <code>Closes #N</code>.</li>
+<li>Qualquer commit pode ser explicado na prova oral, inclusive os gerados com o opencode.</li>
+</ul>
+<p class="mb-0"><a href="../trabalho-1.html" class="btn btn-danger rounded-pill"><i class="fas fa-file-lines me-1" aria-hidden="true"></i> Enunciado do Trabalho 1</a></p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">12. Entregável e checagem</h2>
+<p class="text-muted">Script <code>test:cov</code> com meta de 80%, <code>eslint.config.js</code>, <code>.github/workflows/ci.yml</code> e badge verde no README, tudo integrado na main.</p>
+<h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
+<ul class="text-muted mb-0"><li>O badge e o último run da main estão verdes na aba Actions.</li><li><code>npm run test:cov</code> mostra pelo menos 80% de linhas e ramos em <code>src/</code>.</li><li><code>git grep eslint-disable</code> não encontra nada.</li><li>Todo push que deixou o CI vermelho tem um commit <code>fix</code> logo depois.</li></ul>
+</section>
+
+<div class="text-center"><a href="../slide_aula05-cobertura-ci.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

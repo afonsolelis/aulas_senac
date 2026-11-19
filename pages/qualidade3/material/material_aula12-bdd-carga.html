@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDD e testes de carga - Material</title>
+<meta name="description" content="Material da Aula 12 de Qualidade de Software 2027.1: BDD com Gherkin em português, cucumber-js e supertest, testes de carga com k6, métricas e thresholds.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 12 &middot; Semana 16 &middot; 19/04 a 23/04</span><h1 class="h3 fw-bold text-white mb-0">BDD e testes de carga</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Sair da aula com cenários BDD em português, nascidos dos critérios de aceite da sua spec e executados pela API com cucumber-js, e com um teste de carga no k6 que reprova quando a meta de desempenho do <code>docs/qualidade.md</code> não é cumprida.</p>
+<p class="text-muted mb-0">É a última aula de conteúdo antes da entrega do Trabalho 2, na semana 17. Como nas aulas anteriores, o código das demonstrações é gerado pelo opencode a partir de um prompt, e cada laboratório mostra o que o aluno confere antes de aceitar: o diff, a execução dos cenários e o resumo do k6. O professor demonstra no repositório <code>biblioteca-campus</code>; você aplica no seu <code>organizacao-recursos</code>.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. Exemplo como especificação</h2>
+<p class="text-muted">Um critério de aceite como "com 3 empréstimos ativos, o pedido é recusado" ainda deixa perguntas: recusado com qual mensagem? E com 2 empréstimos? Behavior-Driven Development (BDD) responde reescrevendo cada critério como um exemplo concreto, com nomes e números, numa linguagem que quem escreveu a spec consegue ler e que uma ferramenta consegue executar.</p>
+<div class="row g-3">
+<div class="col-md-6"><pre class="bg-dark text-info p-3 rounded small mb-0" style="white-space: pre-wrap">## Critérios de aceite (specs/emprestimo.md)
+- CA-01 Com menos de 3 empréstimos ativos, o aluno
+  pega o livro e a devolução prevista é hoje + 14 dias.
+- CA-02 Com 3 empréstimos ativos, o pedido é recusado.
+- CA-03 Livro reservado por outro aluno não sai.
+- CA-04 Aluno com multa pendente não pega livro.</pre></div>
+<div class="col-md-6"><pre class="bg-dark text-info p-3 rounded small mb-0" style="white-space: pre-wrap"># CA-02
+Cenário: Quarto empréstimo é recusado
+  Dado que "Ana" tem 3 empréstimos ativos
+  Quando "Ana" pede o livro "Clean Code"
+  Então o empréstimo é recusado com a mensagem
+        "limite de 3 empréstimos ativos"</pre></div>
+</div>
+<p class="text-muted mt-3 mb-0">O mesmo arquivo cumpre três papéis. Na conversa, o exemplo tira a ambiguidade antes do código existir. Como documentação, ele descreve o comportamento e falha quando deixa de ser verdade. Como teste de aceitação, ele roda pela API, do jeito que um cliente usa o sistema, acima dos testes de unidade da Aula 04. Os cenários não substituem as técnicas de caixa preta da Aula 03: são elas que escolhem quais exemplos valem a pena.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Gherkin em português</h2>
+<p class="text-muted">Gherkin é a linguagem dos arquivos <code>.feature</code>. A primeira linha <code># language: pt</code> troca as palavras-chave para o português.</p>
+<div class="table-responsive"><table class="table table-sm small">
+<thead class="table-light"><tr><th>Palavra-chave</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><code>Funcionalidade:</code></td><td>Uma por arquivo, seguida de linhas livres que dizem quem usa, o que quer e para quê.</td></tr>
+<tr><td><code>Contexto:</code></td><td>Passos executados antes de cada cenário do arquivo.</td></tr>
+<tr><td><code>Cenário:</code></td><td>Um exemplo com um único comportamento sob teste e um único Quando.</td></tr>
+<tr><td><code>Esquema do Cenário:</code> e <code>Exemplos:</code></td><td>Um roteiro com marcadores <code>&lt;nome&gt;</code>; cada linha da tabela de Exemplos vira um cenário.</td></tr>
+<tr><td><code>Dado</code>, <code>Quando</code>, <code>Então</code></td><td>Estado inicial, ação de quem usa, resultado observável.</td></tr>
+<tr><td><code>E</code>, <code>Mas</code></td><td>Continuam o passo anterior.</td></tr>
+<tr><td><code>@tag</code></td><td>Marca funcionalidades ou cenários para seleção (<code>@wip</code>, <code>@multa</code>).</td></tr>
+</tbody></table></div>
+<pre class="bg-dark text-info p-3 rounded small">
+# language: pt
+@emprestimo
+Funcionalidade: Empréstimo de livros
+  Como aluno da biblioteca do campus
+  Quero pegar livros emprestados
+  Para estudar fora da biblioteca
+
+  Contexto:
+    Dado que hoje é "2027-04-20"
+    E o aluno "Ana" está cadastrado
+    E o livro "Clean Code" está disponível
+
+  # CA-01
+  Cenário: Empréstimo dentro do limite
+    Dado que "Ana" tem 2 empréstimos ativos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é aceito
+    E a devolução prevista é "2027-05-04"
+
+  # CA-02
+  Cenário: Quarto empréstimo é recusado
+    Dado que "Ana" tem 3 empréstimos ativos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "limite de 3 empréstimos ativos"
+
+  # CA-03
+  Cenário: Livro reservado por outro aluno
+    Dado que o livro "Clean Code" está reservado para "Bruno"
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "livro reservado por outro aluno"
+
+  # CA-04
+  Cenário: Aluno com multa pendente
+    Dado que "Ana" tem multa pendente de 450 centavos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "multa pendente"</pre>
+<p class="text-muted mb-0">As frases ficam no ponto de vista de quem usa. Rota, SQL e nome de função ficam nas step definitions; se o .feature citar <code>POST /emprestimos</code>, ele quebra a cada mudança de API sem que o comportamento tenha mudado. Na demonstração, o opencode gera este arquivo a partir de <code>specs/emprestimo.md</code>, e o aluno confere com <code>grep -c '# CA-'</code> que cada critério tem cenário.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Configurar o cucumber-js</h2>
+<p class="text-muted">O <code>@cucumber/cucumber</code> e o <code>supertest</code> são dependências de teste e entram em <code>devDependencies</code>. Na demonstração, o agente os instalou em <code>dependencies</code> e anunciou que estava tudo pronto; só o <code>git diff package.json</code> mostrou o erro. A configuração fica em <code>cucumber.js</code>, na raiz. Num projeto com <code>"type": "module"</code>, os arquivos de passos são carregados pela chave <code>import</code>.</p>
+<pre class="bg-dark text-info p-3 rounded small">npm install --save-dev @cucumber/cucumber supertest</pre>
+<pre class="bg-dark text-info p-3 rounded small">// cucumber.js
+const comum = {
+  paths: ['features/**/*.feature'],
+  import: ['features/support/**/*.js', 'features/step_definitions/**/*.js'],
+};
+
+// perfil padrão: tudo o que está pronto, com relatório HTML
+export default {
+  ...comum,
+  format: ['progress', 'html:relatorios/cucumber.html'],
+  tags: 'not @wip',
+};
+
+// npx cucumber-js -p wip: só o que está em construção
+export const wip = {
+  ...comum,
+  format: ['progress'],
+  tags: '@wip',
+};</pre>
+<pre class="bg-dark text-info p-3 rounded small mb-0">"scripts": {
+  "test": "node --test",
+  "lint": "eslint .",
+  "bdd": "cucumber-js",
+  "carga": "k6 run carga/busca.js"
+}</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. World e step definitions com supertest</h2>
+<p class="text-muted">O cucumber-js cria um objeto World novo para cada cenário, e ele é o <code>this</code> de todos os passos daquele cenário. Por isso o estado não vaza: o empréstimo criado num cenário não existe no seguinte. O World da demonstração monta o app Express com o repositório em memória e um relógio fixo, injetados como os dublês da Aula 11, e o supertest faz a requisição direto no app, sem abrir porta.</p>
+<pre class="bg-dark text-info p-3 rounded small">// features/support/world.js
+import { setWorldConstructor, World } from '@cucumber/cucumber';
+import request from 'supertest';
+import { criarApp } from '../../src/app.js';
+import { criarRepoMemoria } from '../../src/repo-memoria.js';
+
+class MundoBiblioteca extends World {
+  constructor(options) {
+    super(options);
+    this.repo = criarRepoMemoria();
+    this.hoje = new Date('2027-01-01');
+    this.app = criarApp({ repo: this.repo, relogio: () => this.hoje });
+    this.resposta = null;
+  }
+
+  api() {
+    return request(this.app);
+  }
+}
+
+setWorldConstructor(MundoBiblioteca);</pre>
+<p class="text-muted">Cada step definition casa com uma frase por uma expressão do Cucumber: <code>{string}</code> captura um texto entre aspas e <code>{int}</code> um número inteiro.</p>
+<pre class="bg-dark text-info p-3 rounded small">// features/step_definitions/emprestimo.steps.js (trecho)
+import { Given, When, Then } from '@cucumber/cucumber';
+import assert from 'node:assert/strict';
+
+Given('que {string} tem {int} empréstimos ativos', async function (aluno, n) {
+  for (let i = 1; i &lt;= n; i++) {
+    await this.repo.salvarEmprestimo({ aluno, livro: 'Livro ' + i, devolvido: null });
+  }
+});
+
+When('{string} pede o livro {string}', async function (aluno, livro) {
+  this.resposta = await this.api().post('/emprestimos').send({ aluno, livro });
+});
+
+Then('o empréstimo é recusado com a mensagem {string}', function (mensagem) {
+  assert.equal(this.resposta.status, 422);
+  assert.equal(this.resposta.body.erro, mensagem);
+});</pre>
+<p class="text-muted">Na saída do formato <code>progress</code>, cada passo vira um símbolo: <code>.</code> passou, <code>F</code> falhou, <code>U</code> indefinido, <code>-</code> pulado. Um passo sem step definition aparece com <code>?</code> e com o snippet pronto para implementar:</p>
+<pre class="bg-dark text-info p-3 rounded small">......................U--
+
+Warnings:
+
+1) Cenário: Aluno com multa pendente # features/emprestimo.feature:33
+   ✔ Dado que hoje é "2027-04-20"
+   ✔ E o aluno "Ana" está cadastrado
+   ✔ E o livro "Clean Code" está disponível
+   ? Dado que "Ana" tem multa pendente de 450 centavos
+       Undefined. Implement with the following snippet:
+
+         Given('que {string} tem multa pendente de {int} centavos', function (string, int) {
+           return 'pending';
+         });
+
+   - Quando "Ana" pede o livro "Clean Code"
+   - Então o empréstimo é recusado com a mensagem "multa pendente"
+
+4 scenarios (1 undefined, 3 passed)
+25 steps (1 undefined, 2 skipped, 22 passed)</pre>
+<p class="text-muted mb-0">Na demonstração, o resumo do agente dizia que os passos estavam implementados, e foi a execução de <code>npm run bdd</code> pelo aluno que mostrou o passo indefinido. Depois da correção, <code>git diff --stat -- "*.feature"</code> vazio confirma que o agente não alterou as frases para fazer o teste passar.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Esquema do Cenário e Exemplos</h2>
+<p class="text-muted">Quando a mesma regra precisa de vários valores, o Esquema do Cenário evita copiar cenários. As linhas da tabela vêm da análise de valor-limite: no dia, um dia antes, um dia depois, exatamente no teto (20 dias de atraso, 3000 centavos), um dia depois do teto e muito depois.</p>
+<pre class="bg-dark text-info p-3 rounded small"># language: pt
+@multa
+Funcionalidade: Multa por atraso
+  Regra da spec: 150 centavos por dia de atraso, com teto de 3000 centavos.
+
+  Esquema do Cenário: Multa calculada na devolução
+    Dado um empréstimo com devolução prevista para "&lt;previsto&gt;"
+    Quando o livro é devolvido em "&lt;devolvido&gt;"
+    Então a multa é de &lt;multa&gt; centavos
+
+    Exemplos:
+      | previsto   | devolvido  | multa |
+      | 2027-05-04 | 2027-05-04 | 0     |
+      | 2027-05-04 | 2027-05-03 | 0     |
+      | 2027-05-04 | 2027-05-05 | 150   |
+      | 2027-05-04 | 2027-05-24 | 3000  |
+      | 2027-05-04 | 2027-05-25 | 3000  |
+      | 2027-05-04 | 2027-06-30 | 3000  |</pre>
+<p class="text-muted">Nem todo cenário precisa passar pela API. A multa é uma função pura, então os passos chamam <code>calcularMulta</code> direto. Na demonstração, a linha da devolução antecipada falhou com <code>-150 !== 0</code>, e o agente ofereceu trocar a multa esperada para <code>-150</code>. Aceitar faria o teste passar e o arquivo passaria a contradizer a spec. A resposta foi não, e a correção foi no código:</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((new Date(devolvido) - new Date(previsto)) / 86_400_000);
+  if (dias &lt;= 0) return 0;
+  return Math.min(dias * 150, 3000);
+}</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. Tags, perfis e relatório</h2>
+<p class="text-muted">Uma funcionalidade ainda sem passos recebe <code>@wip</code> (work in progress). O perfil padrão do <code>cucumber.js</code> usa <code>tags: 'not @wip'</code>, então <code>npm run bdd</code> continua verde na main. O perfil <code>wip</code> roda só o que está em construção. Por padrão o cucumber-js trata passo indefinido como falha: o comando sai com código 1, e por isso um cenário incompleto sem a tag quebra o CI.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">npm run bdd                              # perfil padrão: not @wip, gera relatorios/cucumber.html
+npx cucumber-js -p wip                   # só @wip
+npx cucumber-js --tags "@multa"          # só a multa
+npx cucumber-js --tags "@emprestimo and not @lento"
+npx cucumber-js --dry-run                # confere frases e passos sem executar</pre>
+<p class="text-muted mt-3 mb-0">O formato <code>html:relatorios/cucumber.html</code> grava um relatório navegável com cada passo e o erro de cada falha. Ponha <code>relatorios/</code> no <code>.gitignore</code>: o relatório é gerado, não versionado.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. Tipos de teste de carga</h2>
+<p class="text-muted">Teste de carga mede a eficiência de desempenho da ISO/IEC 25010 com usuários virtuais (VUs) fazendo requisições ao mesmo tempo. O script pode ser o mesmo; o que muda é o perfil de VUs ao longo do tempo e a pergunta respondida.</p>
+<div class="table-responsive"><table class="table table-sm small">
+<thead class="table-light"><tr><th>Tipo</th><th>Perfil</th><th>Pergunta</th></tr></thead>
+<tbody>
+<tr><td>Smoke</td><td>1 VU por 30 s</td><td>O script e a API funcionam? Erro aqui é de script ou de API, não de carga.</td></tr>
+<tr><td>Carga</td><td>sobe até a carga esperada, mantém, desce</td><td>A meta vale no uso normal?</td></tr>
+<tr><td>Estresse</td><td>degraus acima do esperado</td><td>Onde o sistema degrada e como ele falha?</td></tr>
+<tr><td>Pico</td><td>salto súbito de usuários</td><td>Aguenta a abertura do semestre e se recupera depois?</td></tr>
+<tr><td>Resistência (soak)</td><td>carga normal por horas</td><td>Há vazamento de memória, de conexões ou de disco?</td></tr>
+</tbody></table></div>
+<p class="text-muted mb-0">Estresse e pico costumam reprovar os thresholds, e isso é esperado: o resultado útil é saber a partir de quantos usuários a vazão para de crescer e qual erro aparece. Na demonstração, acima de cerca de 200 VUs, o pool do PostgreSQL recusou conexões.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Métricas</h2>
+<ul class="text-muted">
+<li>Vazão: <code>http_reqs</code> por segundo. Para de subir quando o sistema satura.</li>
+<li>p95: percentil 95 de <code>http_req_duration</code>. 95% das requisições terminaram até esse tempo; uma em cada 20 demorou mais.</li>
+<li>p99: percentil 99, a cauda que um em cada 100 usuários sente. O k6 só mostra se você pedir em <code>summaryTrendStats</code>.</li>
+<li>Taxa de erro: <code>http_req_failed</code>, fração de respostas fora de 200 a 399 ou sem resposta.</li>
+</ul>
+<p class="text-muted mb-0">A média esconde a cauda. Com 100 requisições, 95 em 50 ms e 5 em 2000 ms, a média dá 147,5 ms e parece confortável diante de uma meta de 300 ms. O p95 é 50 ms e o p99 é 2000 ms: cinco usuários em cada cem esperaram dois segundos. Por isso os requisitos da Aula 01 usam percentil.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. k6: script, checks e thresholds</h2>
+<p class="text-muted">O k6 roda scripts em JavaScript, mas não é Node: ele tem módulos próprios (<code>k6/http</code>, <code>k6</code>) e lê variáveis de ambiente por <code>__ENV</code>. Ele já vem instalado no Codespace da disciplina; confira com <code>k6 version</code>.</p>
+<pre class="bg-dark text-info p-3 rounded small">// carga/busca.js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+export const options = {
+  stages: [
+    { duration: '30s', target: 50 }, // subida
+    { duration: '1m', target: 50 },  // patamar: a carga do requisito
+    { duration: '15s', target: 0 },  // descida
+  ],
+  thresholds: {
+    http_req_duration: ['p(95)&lt;300'], // meta do docs/qualidade.md
+    http_req_failed: ['rate&lt;0.01'],
+    checks: ['rate&gt;0.99'],
+  },
+  summaryTrendStats: ['avg', 'med', 'p(90)', 'p(95)', 'p(99)', 'max'],
+};
+
+const TERMOS = ['clean', 'teste', 'banco', 'redes', 'algoritmos'];
+
+export default function () {
+  const termo = TERMOS[Math.floor(Math.random() * TERMOS.length)];
+  const res = http.get(BASE + '/livros?busca=' + termo, { tags: { name: 'GET /livros' } });
+  check(res, {
+    'status 200': (r) =&gt; r.status === 200,
+    'corpo é uma lista': (r) =&gt; Array.isArray(r.json()),
+  });
+  sleep(1);
+}</pre>
+<ul class="text-muted">
+<li><code>stages</code> descreve o perfil: cada estágio leva o número de VUs até <code>target</code> em <code>duration</code>. Para smoke, use <code>vus: 1</code> e <code>duration: '30s'</code>.</li>
+<li><code>check</code> registra acertos e erros, mas sozinho não reprova nada. Quem reprova é um threshold sobre <code>checks</code>.</li>
+<li><code>thresholds</code> são os critérios de aprovação. Se algum cruzar, o k6 marca ✗ e sai com código 99, o que derruba um script ou um job de CI.</li>
+<li>Um único script pode guardar vários perfis num objeto e escolher por variável: <code>k6 run -e PERFIL=pico carga/perfis.js</code> chega ao script como <code>__ENV.PERFIL</code>.</li>
+</ul>
+<p class="text-muted mb-0">Na demonstração, o opencode escreveu <code>p(95)&lt;500</code> com o comentário "meta do docs/qualidade.md", mas a meta é 300 ms. O <code>grep</code> nos dois arquivos mostrou a diferença. Com 500, a execução sem o índice da busca teria passado.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Rodar no Codespace e ler o resumo</h2>
+<p class="text-muted">A carga vai sempre contra a API local do Codespace. Nunca aponte o k6 para a ViaCEP ou para outro serviço de terceiros.</p>
+<pre class="bg-dark text-info p-3 rounded small">docker compose up -d db
+npm run migrar
+npm start &amp;
+k6 run carga/smoke.js        # primeiro o smoke
+npm run carga; echo $?       # depois a carga</pre>
+<pre class="bg-dark text-info p-3 rounded small">  █ THRESHOLDS
+
+    checks
+    ✓ 'rate&gt;0.99' rate=99.71%
+    http_req_duration
+    ✗ 'p(95)&lt;300' p(95)=487.3ms
+    http_req_failed
+    ✓ 'rate&lt;0.01' rate=0.29%
+
+  █ TOTAL RESULTS
+
+    HTTP
+    http_req_duration...: avg=211.6ms med=176.2ms p(90)=402.8ms p(95)=487.3ms p(99)=911.4ms max=2.31s
+    http_req_failed.....: 0.29%   21 out of 3590
+    http_reqs...........: 3590    34.19/s
+
+running (1m45.0s), 00/50 VUs, 3590 complete and 0 interrupted iterations
+✗ thresholds on metrics 'http_req_duration' have been crossed
+99</pre>
+<p class="text-muted mb-0">Leia de cima para baixo: primeiro a seção THRESHOLDS, que diz se passou; depois <code>http_req_duration</code> (média, mediana, p90, p95, p99, máximo), <code>http_req_failed</code> e a vazão em <code>http_reqs</code>. Esse resumo é de uma execução da demonstração em que a migração do índice de busca foi desfeita: o p95 subiu de 131,8 ms para 487,3 ms e o threshold reprovou. É a ligação com o requisito de desempenho escrito no <code>docs/qualidade.md</code> da Aula 01: a meta virou um teste que falha.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">11. Prompt 1 · cenários a partir dos critérios de aceite</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia a especificação em specs/ deste repositório organizacao-recursos, em especial os critérios de aceite da reserva de salas, professores e materiais. Crie features/reserva.feature começando com # language: pt, com uma Funcionalidade que diga quem usa e para quê, um Contexto com os dados comuns a todos os cenários e um Cenário por critério de aceite, cada um precedido de um comentário com o identificador do critério (por exemplo # CA-03). Inclua um Esquema do Cenário com Exemplos para os limites de horário: reserva que termina exatamente quando a outra começa, sobreposição de um minuto e reserva dentro de outra. Escreva as frases do ponto de vista de quem usa o sistema, sem rotas, SQL ou nomes de função, e use um único Quando por cenário. Não crie step definitions nem altere código em src/.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: todo critério de aceite da spec tem pelo menos um cenário, e nenhum cenário cita rota, tabela ou função.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">12. Prompt 2 · cucumber.js, World e step definitions</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Instale @cucumber/cucumber e supertest como devDependencies. Crie cucumber.js como ES module, com export default contendo paths ['features/**/*.feature'], import ['features/support/**/*.js', 'features/step_definitions/**/*.js'], format ['progress', 'html:relatorios/cucumber.html'] e tags 'not @wip', e um perfil exportado wip com tags '@wip'. Adicione o script "bdd": "cucumber-js" ao package.json e relatorios/ ao .gitignore. Crie features/support/world.js com uma classe que estende World e monta o app Express de src/app.js com repositório em memória e relógio fixo, para cada cenário começar com estado limpo. Crie as step definitions em features/step_definitions/, chamando a API com supertest sem subir servidor e verificando com node:assert/strict. Não altere as frases dos arquivos .feature para facilitar os passos. Rode npm run bdd e mostre a saída completa.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode <code>npm run bdd</code> duas vezes e compare. Depois quebre uma regra em <code>src/</code> e confira que um cenário falha.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">13. Prompt 3 · teste de carga com a meta do docs/qualidade.md</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia docs/qualidade.md e encontre o requisito de eficiência de desempenho. Crie carga/busca.js para o k6, em JavaScript, que exercite a consulta de disponibilidade de salas da API deste repositório. Use BASE_URL vindo de __ENV com padrão http://localhost:3000, options.stages com subida, patamar e descida até o número de usuários do requisito, thresholds http_req_duration com p(95) igual à meta do docs/qualidade.md e http_req_failed com rate&lt;0.01, e checks de status 200 e de corpo em JSON. Comente cada estágio dizendo por que ele existe. Adicione o script "carga": "k6 run carga/busca.js" ao package.json. Se a meta ou o número de usuários não estiver no docs/qualidade.md, pare e me pergunte em vez de inventar.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: o número do threshold é o mesmo do <code>docs/qualidade.md</code> e a URL aponta para localhost. Anote o p(95) obtido no corpo do commit.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">14. Checklist do Trabalho 2</h2>
+<p class="text-muted">A entrega é na semana 17, com prova oral nas semanas 18, 19 e 20. A lista abaixo serve para conferir o repositório antes de entregar; o enunciado oficial está em <a href="../trabalho-2.html">Trabalho 2</a>, e se houver diferença vale o enunciado.</p>
+<ul class="text-muted mb-0">
+<li>PostgreSQL com migrações versionadas e teste de integração com <code>@testcontainers/postgresql</code>.</li>
+<li>ViaCEP isolada por dublê nos testes de unidade, com um teste para a ViaCEP fora do ar.</li>
+<li>Cenários BDD em português, um por critério de aceite, rodando com <code>npm run bdd</code>.</li>
+<li>Teste de carga com a meta do <code>docs/qualidade.md</code>, rodando com <code>npm run carga</code>.</li>
+<li><code>npm test</code>, lint e cobertura verdes no GitHub Actions.</li>
+<li>Histórico linear, branches curtas e Conventional Commits em português.</li>
+<li>Issues de feedback fechadas por commit com <code>Closes #N</code>.</li>
+<li>README explicando como rodar cada tipo de teste no Codespace.</li>
+</ul>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">15. Entregável e checagem</h2>
+<p class="text-muted"><code>features/</code> com cenários e step definitions, <code>cucumber.js</code>, <code>carga/busca.js</code> e os scripts <code>bdd</code> e <code>carga</code>, integrados na main por branches curtas.</p>
+<h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
+<ul class="text-muted mb-0"><li><code>npm run bdd</code> passa e cada cenário cita um critério de aceite.</li><li><code>npm run carga</code> mostra os thresholds, e a meta bate com o <code>docs/qualidade.md</code>.</li><li>Você explica o que é p95 com um número do seu próprio resumo do k6.</li></ul>
+</section>
+
+<div class="text-center"><a href="../slide_aula12-bdd-carga.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

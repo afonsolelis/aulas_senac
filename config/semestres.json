@@ -154,34 +154,128 @@
         {
           "name": "Qualidade de Software",
           "slug": "qualidade3",
+          "config": "config/disciplina-qualidade3.json",
           "home": "pages/home_qualidade_2027_1.html",
-          "status": "placeholder",
-          "obs": "Cronograma provisório, sem slides. Quando ganhar slides, criar pages/qualidade3/, config/disciplina-qualidade3.json com data_disciplina=qualidade e registrar o slug nos mapas dos testes.",
+          "slides_dir": "pages/qualidade3",
+          "material_dir": "pages/qualidade3/material",
+          "status": "ativo",
+          "obs": "Calendário provisório. Tudo individual, sem grupos; entregas, correção e feedback no GitHub (issues no repositório do aluno). Demonstrações em VS Code simulado (js/labs.js), com código gerado pelo opencode.",
+          "stack": "JavaScript puro (Node 22, ES modules), node:test, cobertura nativa do Node, ESLint 9, GitHub Actions, Express 5 + supertest, PostgreSQL 16 + pg + Testcontainers, @cucumber/cucumber, k6. Ambiente: GitHub Codespaces + opencode com OpenRouter (alternativa local: OpenLLM).",
+          "git": "trunk-based: branches curtas, Conventional Commits em português, merge local --ff-only, sem pull request; tags trabalho-1 e trabalho-2 marcam as entregas",
+          "case_aula": "biblioteca-campus (empréstimos de livros), usado só nas demonstrações",
+          "projeto_avaliado": "Organização de Recursos (repositório organizacao-recursos de cada aluno)",
           "avaliacao": {
-            "prova_escrita": { "semana": 14, "conteudo": "Aulas 01 a 09 (semanas 4 a 13)" },
-            "correcao_prova": { "semana": 15, "ref": "devolução das provas, revisão das questões e correção em sala" },
-            "projeto_final": {
-              "formato": "grupos de 4",
-              "especificacao": "pages/qualidade3/projeto-final.html",
-              "abertura": 5,
-              "desenvolvimento_em_sala": [16, 17, 18],
-              "semana_entrega": 18,
-              "prova_oral": 19,
-              "foco": "Sistema completo com banco relacional modelado e justificado, integração com a ViaCEP e testes em todas as camadas.",
-              "exigencias": "Banco relacional com migrações versionadas e testado contra instância real, DER na terceira forma normal, ViaCEP isolada por dublê de teste, cenários BDD, teste de carga, medição de cobertura, quality gate de análise estática e CI. Linguagem, framework e suíte de testes ficam à escolha.",
-              "proposta": "Organização de Recursos (o mesmo projeto de 2026.2): alocação de salas, professores e materiais sem conflito, agora com cadastro de alunos e professores com endereço pela ViaCEP e modelagem relacional como entregável."
+            "trabalho_1": {
+              "especificacao": "pages/qualidade3/trabalho-1.html",
+              "conteudo": "Aulas 01 a 05 (semanas 4 a 9)",
+              "semana_entrega": 10,
+              "prova_oral": [
+                11,
+                12,
+                13
+              ],
+              "formulario": "senac-qs-2027-1-trabalho-1"
             },
-            "recuperacao": { "semana": 20 },
-            "acompanhamento": { "semanas": [21, 22] },
-            "encerramento": { "semana": 22, "encontros": 18, "carga_em_sala": "60h (18 × 3h20)" },
-            "ferramentas": "agnóstico: o cronograma e a especificação citam técnicas, não ferramentas"
+            "trabalho_2": {
+              "especificacao": "pages/qualidade3/trabalho-2.html",
+              "abertura": 11,
+              "conteudo": "Aulas 10 a 12 (semanas 14 a 16)",
+              "semana_entrega": 17,
+              "prova_oral": [
+                18,
+                19,
+                20
+              ],
+              "formulario": "senac-qs-2027-1-trabalho-2"
+            },
+            "entrega": "pages/qualidade3/entrega/entrega.html (nome completo e link do repositório; SQL em supabase/entregas-qualidade3-2027-1.sql)",
+            "prova_oral": "pages/qualidade3/prova-oral.html",
+            "revisao": {
+              "semana": 21
+            },
+            "recuperacao": {
+              "semana": 22
+            },
+            "encerramento": {
+              "semana": 22,
+              "encontros": 18,
+              "carga_em_sala": "60h (18 × 3h20)"
+            }
           },
+          "aulas": [
+            {
+              "aula": "01",
+              "semana": 4,
+              "slide": "slide_aula01-codespaces-qualidade.html"
+            },
+            {
+              "aula": "02",
+              "semana": 5,
+              "slide": "slide_aula02-spec-driven.html"
+            },
+            {
+              "aula": "03",
+              "semana": 7,
+              "slide": "slide_aula03-caixa-branca-preta.html"
+            },
+            {
+              "aula": "04",
+              "semana": 8,
+              "slide": "slide_aula04-tdd.html"
+            },
+            {
+              "aula": "05",
+              "semana": 9,
+              "slide": "slide_aula05-cobertura-ci.html"
+            },
+            {
+              "aula": "10",
+              "semana": 14,
+              "slide": "slide_aula10-integracao-banco.html"
+            },
+            {
+              "aula": "11",
+              "semana": 15,
+              "slide": "slide_aula11-dubles-viacep.html"
+            },
+            {
+              "aula": "12",
+              "semana": 16,
+              "slide": "slide_aula12-bdd-carga.html"
+            },
+            {
+              "aula": "17",
+              "semana": 21,
+              "slide": "slide_aula17-revisao.html"
+            }
+          ],
           "marcos": {
-            "prova": { "semana": 14 },
-            "correcao_prova": { "semana": 15 },
-            "entrega_projeto_final": { "semana": 18 },
-            "prova_oral": { "semana": 19 },
-            "recuperacao": { "semana": 20 }
+            "entrega_trabalho_1": {
+              "semana": 10
+            },
+            "prova_oral_trabalho_1": {
+              "semanas": [
+                11,
+                12,
+                13
+              ]
+            },
+            "entrega_trabalho_2": {
+              "semana": 17
+            },
+            "prova_oral_trabalho_2": {
+              "semanas": [
+                18,
+                19,
+                20
+              ]
+            },
+            "revisao": {
+              "semana": 21
+            },
+            "recuperacao": {
+              "semana": 22
+            }
           }
         },
         {

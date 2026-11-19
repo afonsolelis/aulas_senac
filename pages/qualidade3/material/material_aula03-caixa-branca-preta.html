@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caixa branca e caixa preta - Material</title>
+<meta name="description" content="Material da Aula 03 de Qualidade de Software 2027.1: partição de equivalência, valor-limite, tabela de decisão, grafo de fluxo, complexidade ciclomática e cobertura com node:test.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 03 &middot; Semana 7 &middot; 15/02 a 19/02</span><h1 class="h3 fw-bold text-white mb-0">Caixa branca e caixa preta</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Sair da aula com <code>docs/casos-de-teste.md</code> no seu <code>organizacao-recursos</code>: partições, valores-limite e tabela de decisão derivados da spec, grafo de fluxo e complexidade ciclomática da função de conflito, e os testes <code>node:test</code> que saem de cada técnica, com cobertura medida.</p>
+<p class="text-muted mb-0">No primeiro bloco, o professor aplica cada técnica no <code>biblioteca-campus</code>: o opencode gera tabelas e testes, e o professor confere o resultado contra a spec. No segundo bloco, cada aluno faz o mesmo no próprio repositório com os três prompts desta página.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. Caixa preta e caixa branca</h2>
+<p class="text-muted">Testar todas as entradas possíveis é inviável: <code>calcularMulta(previsto, devolvido)</code> aceita qualquer par de datas. As técnicas de projeto de casos de teste escolhem poucos casos com mais chance de encontrar defeito, e dizem por que aqueles casos e não outros.</p>
+<ul class="text-muted">
+<li>Caixa preta (funcional): os casos saem da especificação, sem olhar o código. Dá para escrevê-los antes de o código existir. Técnicas: partição de equivalência, análise de valor-limite e tabela de decisão.</li>
+<li>Caixa branca (estrutural): os casos saem da estrutura do código, isto é, das decisões, ramos e caminhos que a execução pode seguir. Técnicas: grafo de fluxo de controle, complexidade ciclomática, caminhos básicos e critérios de cobertura.</li>
+</ul>
+<p class="text-muted mb-0">O agente gera tabelas e testes em segundos. A técnica é o que permite a você conferir se ele escolheu os casos certos: sem ela, não há critério para aceitar ou recusar o que foi gerado.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Partição de equivalência</h2>
+<p class="text-muted">Divide-se o domínio de uma entrada em classes que o programa deveria tratar do mesmo jeito. Escolhe-se um representante por classe, supondo que, se ele passa, os outros valores da classe também passam. As classes inválidas, de entradas que o sistema deve recusar, entram na lista tanto quanto as válidas.</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Classe</th><th>Faixa (dias de atraso)</th><th>Tipo</th><th>Representante</th><th>Esperado (centavos)</th></tr></thead>
+<tbody>
+<tr><td>P1</td><td>dias ≤ 0</td><td>válida</td><td>devolve 2 dias antes</td><td>0</td></tr>
+<tr><td>P2</td><td>1 ≤ dias ≤ 19</td><td>válida</td><td>5 dias de atraso</td><td>750</td></tr>
+<tr><td>P3</td><td>dias ≥ 20</td><td>válida</td><td>30 dias de atraso</td><td>3000 (teto)</td></tr>
+<tr><td>P4</td><td>data inválida</td><td>inválida</td><td><code>devolvido = 'ontem'</code></td><td><code>TypeError</code></td></tr>
+</tbody></table></div>
+<p class="text-muted">As classes nascem nos pontos em que a regra muda de comportamento. Em RN05 eles são dois: o primeiro dia de atraso e o vigésimo, porque 20 × 150 = 3000 e a partir daí vale o teto. Cada classe vira um teste, com o nome começando pela classe:</p>
+<pre class="bg-dark text-info p-3 rounded small">import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/multa.js';
+
+const DIA = 86_400_000;
+const previsto = new Date('2027-03-15');
+const atraso = (dias) =&gt; new Date(previsto.getTime() + dias * DIA);
+
+test('P1 devolução 2 dias antes do prazo: multa 0', () =&gt; {
+  assert.equal(calcularMulta(previsto, atraso(-2)), 0);
+});
+test('P2 5 dias de atraso: 750 centavos', () =&gt; {
+  assert.equal(calcularMulta(previsto, atraso(5)), 750);
+});
+test('P3 30 dias de atraso: teto de 3000 centavos', () =&gt; {
+  assert.equal(calcularMulta(previsto, atraso(30)), 3000);
+});
+test('P4 data de devolução inválida lança TypeError', () =&gt; {
+  assert.throws(() =&gt; calcularMulta(previsto, 'ontem'), TypeError);
+});</pre>
+<p class="text-muted mb-0">Na demonstração, P4 falhou: a função devolvia <code>NaN</code> em silêncio, porque <code>NaN &lt;= 0</code> é falso e <code>Math.min(NaN, 3000)</code> é <code>NaN</code>. O agente parou e avisou que a spec não dizia o que fazer com data inválida. A decisão (lançar <code>TypeError</code>) foi do professor, registrada como RN07 na spec antes de virar código.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Análise de valor-limite</h2>
+<p class="text-muted">Os defeitos se concentram nas fronteiras entre classes: um <code>&gt;</code> que devia ser <code>&gt;=</code>, um <code>&lt;</code> que devia ser <code>&lt;=</code>. Por isso testa-se cada fronteira, e não o meio da classe. Na análise de dois valores, testam-se o último valor de uma classe e o primeiro da seguinte; na de três valores, o limite, o valor logo abaixo e o logo acima.</p>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Regra</th><th>Fronteira</th><th>Valores (três valores)</th><th>Esperado</th></tr></thead>
+<tbody>
+<tr><td>RN01</td><td>3 empréstimos ativos</td><td>2, 3, 4</td><td>empresta, <code>LIMITE_ATINGIDO</code>, <code>LIMITE_ATINGIDO</code></td></tr>
+<tr><td>RN05</td><td>início da multa</td><td>-1, 0, 1 dia</td><td>0, 0, 150</td></tr>
+<tr><td>RN05</td><td>teto</td><td>19, 20, 21 dias</td><td>2850, 3000, 3000</td></tr>
+</tbody></table></div>
+<p class="text-muted">Em <code>node:test</code>, valores-limite ficam bem num array de casos percorrido com <code>for</code>: cada linha vira um teste com nome próprio, e acrescentar um caso é acrescentar uma linha.</p>
+<pre class="bg-dark text-info p-3 rounded small">const limitesDeAtivos = [
+  [2, 'empresta'],          // abaixo do limite
+  [3, 'LIMITE_ATINGIDO'],   // no limite
+  [4, 'LIMITE_ATINGIDO'],   // acima do limite
+];
+for (const [ativos, esperado] of limitesDeAtivos) {
+  test(`RN01 ${ativos} ativos -&gt; ${esperado}`, () =&gt; {
+    const aluno = { id: 'A1', ativos, multaPendente: 0 };
+    if (esperado === 'empresta') {
+      assert.equal(emprestar(aluno, livre, hoje).livroId, 'L1');
+    } else {
+      assert.throws(() =&gt; emprestar(aluno, livre, hoje), { codigo: esperado });
+    }
+  });
+}</pre>
+<p class="text-muted">Na demonstração, o código tinha <code>if (aluno.ativos &gt; LIMITE_ATIVOS)</code>. Os casos com 2 e com 4 ativos passaram mesmo com o defeito; só o caso de exatamente 3 reprovou, com <code>Missing expected exception</code>. Um teste com um valor do meio da classe, como 5 ativos, nunca teria encontrado o erro.</p>
+<p class="text-muted mb-0">No seu projeto, a regra de sobreposição tem uma fronteira explícita no enunciado: uma reserva das 19h às 21h e outra que começa às 21h não conflitam. Os três valores são 20h59 (conflita), 21h00 e 21h01 (não conflitam). O mesmo raciocínio vale para 07h e 23h, para a duração de exatamente 4 horas e para a turma com o mesmo número de alunos que a capacidade da sala.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. Tabela de decisão</h2>
+<p class="text-muted">Quando o resultado depende da combinação de várias condições, cada combinação vira uma regra (uma coluna da tabela). Com três condições de sim ou não, a tabela completa tem 2³ = 8 regras. A spec costuma permitir reduzir: quando uma condição deixa de importar, marca-se com <code>-</code> (indiferente).</p>
+<div class="table-responsive"><table class="table table-sm table-bordered align-middle text-center">
+<thead class="table-light"><tr><th class="text-start">emprestar</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead>
+<tbody>
+<tr><td class="text-start">C1 multa pendente (RN04)</td><td>S</td><td>N</td><td>N</td><td>N</td></tr>
+<tr><td class="text-start">C2 3 ou mais ativos (RN01)</td><td>-</td><td>S</td><td>N</td><td>N</td></tr>
+<tr><td class="text-start">C3 reservado por outro (RN03)</td><td>-</td><td>-</td><td>S</td><td>N</td></tr>
+<tr><td class="text-start"><code>MULTA_PENDENTE</code></td><td>X</td><td></td><td></td><td></td></tr>
+<tr><td class="text-start"><code>LIMITE_ATINGIDO</code></td><td></td><td>X</td><td></td><td></td></tr>
+<tr><td class="text-start"><code>LIVRO_RESERVADO</code></td><td></td><td></td><td>X</td><td></td></tr>
+<tr><td class="text-start">empresta</td><td></td><td></td><td></td><td>X</td></tr>
+</tbody></table></div>
+<p class="text-muted">A redução de 8 para 4 regras se apoia em RN06: vale o primeiro impedimento na ordem RN04, RN01, RN03. Na hora de testar, o representante do <code>-</code> deve ser S: um aluno com multa, 3 ativos e livro reservado por outro prova que a multa prevalece. Com N no lugar do <code>-</code>, a ordem dos motivos nunca seria exercitada.</p>
+<pre class="bg-dark text-info p-3 rounded small">const regras = [
+  // regra, multaPendente, ativos, reservadoPor, esperado
+  ['R1', 300, 3, 'ana', 'MULTA_PENDENTE'],
+  ['R2', 0, 3, 'ana', 'LIMITE_ATINGIDO'],
+  ['R3', 0, 1, 'ana', 'LIVRO_RESERVADO'],
+  ['R4', 0, 1, null, 'empresta'],
+];</pre>
+<p class="text-muted mb-0">Na demonstração, R2 falhou: o código verificava a reserva antes do limite e respondia <code>LIVRO_RESERVADO</code>. Antes de pedir a correção, o professor conferiu RN06 na spec para decidir de que lado estava o erro. Quando a spec não define a ordem, a tabela de decisão é o lugar onde essa lacuna aparece; registre-a em Perguntas em aberto em vez de deixar o agente escolher.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Grafo de fluxo de controle</h2>
+<p class="text-muted">Na caixa branca, o código vira um grafo: cada comando ou decisão é um nó, e cada desvio possível da execução é uma aresta. Uma decisão tem duas arestas de saída, S e N. Condições compostas com <code>&amp;&amp;</code> ou <code>||</code> devem ser separadas em decisões simples, porque o curto-circuito cria caminhos próprios.</p>
+<pre class="bg-dark text-info p-3 rounded small">export function emprestar(aluno, livro, hoje) {                       // n1 (linha 12)
+  if (aluno.multaPendente &gt; 0) {                                        // d1 (linha 13)
+    throw new RegraDeEmprestimo('MULTA_PENDENTE', ...);                 // e1
+  }
+  if (aluno.ativos &gt;= LIMITE_ATIVOS) {                                  // d2 (linha 16)
+    throw new RegraDeEmprestimo('LIMITE_ATINGIDO', ...);                // e2
+  }
+  if (livro.reservadoPor &amp;&amp; livro.reservadoPor !== aluno.id) {          // d3 e d4 (linha 19)
+    throw new RegraDeEmprestimo('LIVRO_RESERVADO', ...);                // e3
+  }
+  const previsto = new Date(hoje.getTime() + PRAZO_DIAS * DIA_MS);      // ok
+  return { alunoId: aluno.id, livroId: livro.id, inicio: hoje, previsto };
+}                                                                       // fim
+
+Nós (N = 10): n1, d1, d2, d3, d4, e1, e2, e3, ok, fim
+Arestas (E = 13):
+  n1-d1   d1-e1 (S)  d1-d2 (N)   d2-e2 (S)  d2-d3 (N)
+  d3-d4 (S)  d3-ok (N)   d4-e3 (S)  d4-ok (N)
+  e1-fim  e2-fim  e3-fim  ok-fim</pre>
+<p class="text-muted mb-0">A linha 19 parece uma decisão só, mas tem duas: <code>reservadoPor</code> existe? E, se existe, é de outro aluno? Lida como uma decisão, ela esconde o caso de Ana retirar o livro que ela mesma reservou.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. Complexidade ciclomática e caminhos básicos</h2>
+<p class="text-muted">A complexidade ciclomática V(G) é o número de caminhos independentes do grafo, isto é, o mínimo de testes necessário para cobrir todos os ramos passando por caminhos básicos. Há três jeitos de calculá-la, que devem dar o mesmo número:</p>
+<ul class="text-muted">
+<li><code>V(G) = E - N + 2</code> = 13 - 10 + 2 = 5</li>
+<li><code>V(G)</code> = decisões simples + 1 = 4 + 1 = 5</li>
+<li><code>V(G)</code> = regiões fechadas do grafo desenhado no plano + 1 = 5</li>
+</ul>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Caminho</th><th>Decisões</th><th>Entrada</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>C1</td><td>d1 S</td><td>multa 300</td><td><code>MULTA_PENDENTE</code></td></tr>
+<tr><td>C2</td><td>d1 N, d2 S</td><td>sem multa, 3 ativos</td><td><code>LIMITE_ATINGIDO</code></td></tr>
+<tr><td>C3</td><td>d1 N, d2 N, d3 N</td><td>sem multa, 1 ativo, sem reserva</td><td>empresta</td></tr>
+<tr><td>C4</td><td>d3 S, d4 S</td><td>reservado por Ana, quem pede é Bruno</td><td><code>LIVRO_RESERVADO</code></td></tr>
+<tr><td>C5</td><td>d3 S, d4 N</td><td>reservado por Ana, quem pede é Ana</td><td>empresta</td></tr>
+</tbody></table></div>
+<p class="text-muted">Cada caminho básico vira um teste com nome <code>C1</code> a <code>C5</code>. Para conferir o V(G) que o agente calculou, o ESLint mede a complexidade de cada função. O limite 1 na linha de comando é um truque para que ele imprima o número de todas as funções:</p>
+<pre class="bg-dark text-info p-3 rounded small">npx eslint src/ --rule '{"complexity": ["warn", 1]}'
+
+src/emprestimo.js
+  12:8  warning  Function 'emprestar' has a complexity of 5. Maximum allowed is 1  complexity
+  26:8  warning  Function 'calcularMulta' has a complexity of 2. Maximum allowed is 1  complexity
+src/relatorio.js
+   1:8  warning  Function 'situacaoDoAluno' has a complexity of 9. Maximum allowed is 1  complexity</pre>
+<p class="text-muted mb-0">Até 10 costuma ser tratável; acima disso, a função pede refatoração. No Trabalho 1, o <code>eslint.config.js</code> usa <code>complexity: ['error', 8]</code>, e <code>situacaoDoAluno</code>, com 9 (1 de base, mais o <code>for</code>, três <code>if</code> de retorno, o <code>if</code> do laço, dois <code>&amp;&amp;</code> e um <code>||</code>), reprova no <code>npm run lint</code>.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. Cobertura de comandos, ramos e caminhos com node:test</h2>
+<div class="table-responsive"><table class="table table-sm align-middle">
+<thead class="table-light"><tr><th>Critério</th><th>O que exige</th><th>Como medir</th></tr></thead>
+<tbody>
+<tr><td>Comandos (linhas)</td><td>Cada linha executada ao menos uma vez</td><td><code>line %</code></td></tr>
+<tr><td>Ramos (decisões)</td><td>Cada decisão avaliada como verdadeira e como falsa</td><td><code>branch %</code></td></tr>
+<tr><td>Caminhos básicos</td><td>V(G) caminhos independentes</td><td>grafo e ESLint</td></tr>
+<tr><td>Todos os caminhos</td><td>Toda combinação de ramos</td><td>inviável: cresce de forma exponencial e, com laços, pode ser infinita</td></tr>
+</tbody></table></div>
+<p class="text-muted">O Node 22 mede cobertura sem dependência nenhuma. O script fica no <code>package.json</code>, com a meta no próprio comando: se a cobertura ficar abaixo, o comando sai com erro, no Codespace e no CI.</p>
+<pre class="bg-dark text-info p-3 rounded small">"test:cov": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**'"</pre>
+<p class="text-muted">A biblioteca usa 90% de ramos, a meta registrada em <code>docs/qualidade.md</code> na Aula 01; o seu trabalho usa 80%. Na primeira execução da demonstração:</p>
+<pre class="bg-dark text-info p-3 rounded small">ℹ file              | line % | branch % | funcs % | uncovered lines
+ℹ src/emprestimo.js |  96.67 |    75.00 |  100.00 | 20
+ℹ Error: 75.00% branch coverage does not meet threshold of 90%.</pre>
+<p class="text-muted mb-0">A linha 20 (livro reservado) nunca rodou. Além disso, <code>if (dias &lt;= 0) return 0;</code> está numa linha só: o teste com 3 dias de atraso executa a linha e a conta como coberta, mas o ramo verdadeiro nunca rodou. Depois que o agente acrescentou testes para esses dois ramos, a tabela marcou 100% de linhas e 91,67% de ramos. A meta passou, e mesmo assim o caso de Ana retirar o próprio livro (C5) continuava sem teste, escondido dentro de uma linha já coberta. Bater a meta não dispensa ler o que ficou de fora.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Revisando o que o agente gerou</h2>
+<p class="text-muted">Em todas as demonstrações, o agente produziu as tabelas e os testes, e a qualidade veio da conferência. Antes de cada commit, verifique:</p>
+<ul class="text-muted mb-0">
+<li>Cada classe de equivalência tem representante e teste, incluindo pelo menos uma classe inválida por regra.</li>
+<li>Cada fronteira tem os três valores, e o resultado esperado de cada um está escrito na spec.</li>
+<li>A tabela de decisão completa tem 2ⁿ regras, e cada redução cita a regra da spec que a permite.</li>
+<li>O V(G) do agente bate com a sua contagem de decisões e com o número do ESLint.</li>
+<li>Teste vermelho foi investigado: o defeito está no código ou na spec? Só depois peça a correção.</li>
+<li>O agente não alterou <code>src/</code> para fazer a cobertura subir.</li>
+</ul>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Prompt 1 · partições e valores-limite</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min · branch <code>test/particoes</code></p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia docs/spec.md. Para três regras do meu projeto, sobreposição de reservas da mesma sala (RF02), capacidade da sala (RF04) e validação do intervalo (RF07: término posterior ao início, duração máxima de 4 horas, entre 07h e 23h), escreva em docs/casos-de-teste.md, para cada uma: a variável de entrada analisada; as classes de equivalência válidas e inválidas, numeradas P1, P2..., com um representante concreto de cada; os valores-limite de cada fronteira pela análise de três valores (o limite, logo abaixo e logo acima), com o resultado esperado segundo a spec. Use horários concretos, como 19:00–21:00 contra 20:59, 21:00 e 21:01. Depois crie test/particoes.test.js com node:test e node:assert/strict: um test por classe, com o nome começando pela classe, e os valores-limite em formato de tabela, num array de casos percorrido com for. Se o resultado esperado de algum caso não estiver na spec, não invente: registre em Perguntas em aberto. Não altere src/. Rode npm test e mostre a saída.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: o caso 21:00 está lá e espera "não conflita"? Existe pelo menos uma classe inválida por regra? Teste vermelho é informação; confira na spec se o erro é do código.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Prompt 2 · tabela de decisão da reserva</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min · branch <code>test/decisao</code></p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Monte uma tabela de decisão para a criação de reserva do meu projeto. Condições, cada uma de sim ou não: sala livre no intervalo (RF02), professor livre no intervalo (RF03), capacidade da sala suficiente para a turma (RF04), sala fora de manutenção no intervalo (RF06). Ações: criar a reserva ou recusar com o código de motivo definido na spec. Escreva em docs/casos-de-teste.md a tabela completa com as 16 regras e depois a versão reduzida, usando - para condição indiferente e explicando qual regra da spec permite cada redução. Se a spec não disser qual motivo prevalece quando há mais de um impedimento, pare e escreva a pergunta em Perguntas em aberto, sem escolher uma ordem. Crie test/decisao.test.js com um teste por regra da tabela reduzida, usando S (condição verdadeira) como representante do -, rode npm test e mostre a saída. Não altere src/.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: conte as colunas da tabela completa (16) e confira que cada redução cita uma regra da spec. Se o agente escolheu uma ordem de motivos que você nunca decidiu, recuse.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">11. Prompt 3 · caixa branca e cobertura</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 35 min · branch <code>test/caminhos</code></p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Agora caixa branca. Abra a função de src/ que verifica conflito de reserva (a T01 da aula passada). 1. Desenhe em docs/casos-de-teste.md o grafo de fluxo de controle em texto: numere os nós, liste as arestas e separe condições compostas com &amp;&amp; e || em decisões simples. 2. Calcule a complexidade ciclomática de dois jeitos, E - N + 2 e decisões + 1, e confira se batem. 3. Liste os caminhos básicos independentes e, para cada um, os dados de entrada que o percorrem. 4. Crie test/caminhos.test.js com um teste por caminho, nomes começando por C1, C2... 5. No package.json, crie o script test:cov valendo node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-include='src/**', rode npm run test:cov e mostre a tabela. Não altere src/ para aumentar a cobertura.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: conte as decisões da função você mesmo e compare com o V(G) do agente. Rode <code>npx eslint src/ --rule '{"complexity": ["warn", 1]}'</code> para conferir o número.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">12. Entregável e checagem</h2>
+<p class="text-muted"><code>docs/casos-de-teste.md</code> com partições, limites, tabela de decisão, grafo e V(G); <code>test/particoes.test.js</code>, <code>test/decisao.test.js</code>, <code>test/caminhos.test.js</code> e o script <code>test:cov</code>, tudo integrado na main por branches curtas.</p>
+<h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
+<ul class="text-muted mb-0"><li>Um teste apontado na hora: de qual técnica e de qual classe, limite, regra ou caminho ele saiu.</li><li>O V(G) da sua função de conflito, contado no papel.</li><li><code>npm run test:cov</code> com a tabela de cobertura e as perguntas em aberto que surgiram hoje.</li></ul>
+<p class="text-muted mt-3 mb-0">Próxima aula: TDD com <code>node:test</code>, escrevendo o teste antes do código (Aula 04, semana 8).</p>
+</section>
+
+<div class="text-center"><a href="../slide_aula03-caixa-branca-preta.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,692 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="GitHub Codespaces, opencode, OpenRouter, OpenLLM, trunk-based, commits, ISO/IEC 25010, qualidade de software" />
+    <title>Aula 01 - Ambiente no Codespaces e introdução à qualidade</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 01: Ambiente no Codespaces e introdução à qualidade</h1>
+          <p class="fs-4 text-secondary">GitHub Codespaces, opencode com OpenRouter, Git com branches curtas e ISO/IEC 25010</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 4 · 25/01 a 29/01</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Codespaces</span><span class="keyword">opencode</span><span class="keyword">OpenRouter</span><span class="keyword">ISO/IEC 25010</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Como a disciplina funciona (15 min)</li><li>Demonstração: Codespaces, opencode, OpenRouter e o projeto Node criado pelo agente (35 min)</li><li>Git com branches curtas (15 min)</li><li>Introdução à qualidade e ISO/IEC 25010 (35 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Laboratório: repositório e Codespace de cada aluno (40 min)</li><li>Laboratório: opencode configurado e primeiro prompt (35 min)</li><li>Primeiro ciclo de commits na main (15 min)</li><li>Checagem na mesa (10 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Combinados -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-4">Como a disciplina funciona</h2>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h5 fw-bold"><i class="fas fa-user me-2" aria-hidden="true"></i>Tudo individual</h3>
+                <p class="mb-0">Não há grupos. Cada aluno tem o próprio repositório, o próprio Codespace e responde pelo próprio código na prova oral.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h5 fw-bold"><i class="fab fa-github me-2" aria-hidden="true"></i>Tudo no GitHub</h3>
+                <p class="mb-0">A entrega é o link do repositório público. A correção e os feedbacks chegam como issues no seu repositório, e a resposta é um commit que cita a issue.</p>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h5 fw-bold"><i class="fas fa-code-branch me-2" aria-hidden="true"></i>Sem pull request</h3>
+                <p class="mb-0">Como o trabalho é individual, não há revisão por PR. Vale o histórico: branches curtas, commits pequenos e a main sempre verde.</p>
+              </div>
+            </div>
+          </div>
+          <div class="table-responsive mt-4">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 fs-6">
+              <thead class="table-light"><tr><th>Bloco</th><th>Semanas</th><th>Avaliação</th></tr></thead>
+              <tbody>
+                <tr><td>Aulas 01 a 05 (conteúdo)</td><td>4 a 9</td><td>Trabalho 1, entregue na semana 10, com prova oral nas semanas 11, 12 e 13</td></tr>
+                <tr><td>Aulas 10 a 12 (conteúdo)</td><td>14 a 16</td><td>Trabalho 2, entregue na semana 17, com prova oral nas semanas 18, 19 e 20</td></tr>
+                <tr><td>Revisão e recuperação</td><td>21 e 22</td><td>Revisão geral e prova de recuperação</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. O que vamos montar -->
+      <div class="slide" id="slide-4">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">O ambiente que cada aluno vai ter</h2>
+          <p class="lead text-center text-muted mb-4">Nada é instalado no computador do laboratório. O ambiente roda no navegador, dentro do GitHub, e é igual para todos.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fab fa-github me-2" aria-hidden="true"></i>Repositório</h3><p class="small mb-0">Público, com README. É onde o trabalho vive e onde a correção acontece.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-cloud me-2" aria-hidden="true"></i>Codespace</h3><p class="small mb-0">Máquina virtual com VS Code no navegador, Node 22 e Docker, descrita em <code>.devcontainer/devcontainer.json</code>.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-robot me-2" aria-hidden="true"></i>opencode</h3><p class="small mb-0">Agente de código no terminal. Lê o repositório, propõe mudanças e roda comandos com a sua permissão.</p></div></div>
+            <div class="col-md-3"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-key me-2" aria-hidden="true"></i>OpenRouter</h3><p class="small mb-0">Uma chave dá acesso a vários modelos. A chave fica num secret do Codespaces e nunca entra no repositório.</p></div></div>
+          </div>
+          <div class="alert alert-dark mt-4 mb-0 fs-6">Os próximos slides são simulações. Use o botão de pausa para comentar cada passo, e as setas ⏮ ⏭ para voltar ou avançar uma cena.</div>
+        </div>
+      </div>
+
+      <!-- 5. Vídeo: repositório e Codespace -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Demonstração · 1 de 2</p><h2>Do repositório novo ao Codespace aberto</h2></div></div>
+          <div class="lab-area" id="vid-codespace"></div>
+        </div>
+      </div>
+
+      <!-- 6. Vídeo: chave da OpenRouter, secret e opencode -->
+      <div class="slide slide-lab" id="slide-6">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Demonstração · 2 de 2</p><h2>Chave da OpenRouter guardada como secret</h2></div></div>
+          <div class="lab-area" id="vid-openrouter"></div>
+        </div>
+      </div>
+
+      <!-- 7. VS Code: devcontainer e opencode.json -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Deixar o Codespace pronto para trabalhar com o opencode usando a OpenRouter.</div>
+                <div class="rl"><b>Faça</b>1. Clique em "Preparar o ambiente": o Codespace instala o opencode.<br>2. Abra <code>.devcontainer/devcontainer.json</code> e <code>opencode.json</code>.<br>3. Rode as três execuções na ordem.</div>
+                <div class="rl obs"><b>Observe</b>A chave aparece só como <code>{env:OPENROUTER_API_KEY}</code>. O valor vem do secret, fora do repositório.</div>
+                <div class="rl conc"><b>Conclusão</b>Quem clonar o repositório recebe o mesmo ambiente, mas não recebe a sua chave.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-setup"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7b. VS Code: o opencode monta o projeto Node -->
+      <div class="slide slide-lab" id="slide-8">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Criar o ambiente Node do projeto pedindo ao opencode, sem digitar arquivo à mão.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e acompanhe cada ferramenta que o agente usa.<br>2. Rode "Conferir o diff" antes de aceitar qualquer coisa.<br>3. Rode os testes e só então faça o commit na branch.</div>
+                <div class="rl obs"><b>Observe</b>O agente pede permissão para rodar <code>npm install</code> e diz que os testes passaram. Na revisão aparece um <code>"test": "jest"</code> que contraria o <code>AGENTS.md</code>; o aluno manda corrigir antes de commitar.</div>
+                <div class="rl conc"><b>Conclusão</b>A IA escreve, o aluno revisa. O diff lido e o teste rodado são a etapa de qualidade.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-node"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. VS Code: modelo local com OpenLLM -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ligar o opencode a um modelo servido localmente, sem chave e sem custo por token.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Subir o OpenLLM" (no seu computador, com GPU).<br>2. Veja o provedor <code>openllm</code> em <code>opencode.json</code>.<br>3. Rode "Testar o provedor local".</div>
+                <div class="rl obs"><b>Observe</b>O OpenLLM expõe uma API compatível com a da OpenAI em <code>/v1</code>; o opencode fala com ela pelo pacote <code>@ai-sdk/openai-compatible</code>.</div>
+                <div class="rl conc"><b>Conclusão</b>Os dois provedores convivem no mesmo arquivo. O Codespace gratuito não tem GPU, então em sala usamos a OpenRouter.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-openllm"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Teoria: trunk-based -->
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Git com branches curtas (trunk-based)</h2>
+          <p class="lead text-center text-muted mb-4">A main é o tronco e precisa estar sempre funcionando. Cada mudança nasce numa branch que dura horas, não semanas, e volta para a main por merge local.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-list-check me-2" aria-hidden="true"></i>Regras da disciplina</h3>
+                <ul class="mb-0"><li>Uma branch por mudança: <code>feat/</code>, <code>test/</code>, <code>fix/</code>, <code>docs/</code>, <code>chore/</code>.</li><li>A branch vive no máximo um dia e é apagada depois do merge.</li><li>Antes do merge: <code>git pull --rebase</code> e <code>npm test</code> verde.</li><li>Merge com <code>git merge --ff-only</code>, sem commit de merge.</li><li>Nada de <code>git push --force</code> na main.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-pen me-2" aria-hidden="true"></i>Mensagens de commit</h3>
+                <p class="mb-2">Padrão Conventional Commits: <code>tipo(escopo): o que mudou</code>, no imperativo e em português.</p>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">feat(reserva): impede reserva de sala ocupada
+test(reserva): cobre sala ocupada no mesmo horário
+fix(cep): trata CEP com hífen (#4)
+docs: descreve requisitos de qualidade</pre>
+                <p class="small text-muted mb-0">O <code>(#4)</code> liga o commit à issue de feedback. <code>Closes #4</code> no corpo fecha a issue quando o commit chega à main.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. VS Code: ciclo de branch curta -->
+      <div class="slide slide-lab" id="slide-11">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fazer uma mudança completa do jeito que será cobrado no semestre.</div>
+                <div class="rl"><b>Faça</b>Rode os quatro passos em sequência: abrir a branch, commitar, integrar na main e responder a uma issue de feedback.</div>
+                <div class="rl obs"><b>Observe</b>O <code>git log --oneline --graph</code> fica linear: sem bolhas de merge, um commit por intenção.</div>
+                <div class="rl conc"><b>Conclusão</b>O histórico vira evidência. Na prova oral eu abro o log e peço para você explicar um commit.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-git"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. O que é qualidade -->
+      <div class="slide" id="slide-12">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-4">O que chamamos de qualidade de software</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Conformidade</h3><p class="mb-0">O software faz o que a especificação diz. Mede-se comparando o comportamento com requisitos escritos.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Adequação ao uso</h3><p class="mb-0">O software resolve o problema de quem usa, no contexto em que usa. Uma especificação errada gera um produto conforme e inútil.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold">Qualidade do código</h3><p class="mb-0">O software continua fácil de mudar. Testes, legibilidade e baixa complexidade reduzem o custo da próxima mudança.</p></div></div>
+          </div>
+          <div class="row g-3 mt-1">
+            <div class="col-md-6"><div class="alert alert-light border mb-0"><b class="d-block mb-1">Verificação</b>Estamos construindo o produto do jeito certo? Testes, revisão, análise estática.</div></div>
+            <div class="col-md-6"><div class="alert alert-light border mb-0"><b class="d-block mb-1">Validação</b>Estamos construindo o produto certo? Conversa com o usuário, critérios de aceite, protótipo.</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. ISO/IEC 25010 -->
+      <div class="slide" id="slide-13">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-2">ISO/IEC 25010:2023 · qualidade do produto</h2>
+          <p class="text-center text-muted mb-3">Nove características. Cada uma vira requisito quando ganha uma métrica e um jeito de testar.</p>
+          <div class="row g-2 text-start small">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Adequação funcional</b><span class="text-muted">Completude, correção e pertinência das funções.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Eficiência de desempenho</b><span class="text-muted">Tempo de resposta, uso de recursos, capacidade.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Compatibilidade</b><span class="text-muted">Coexistência e interoperabilidade com outros sistemas.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Capacidade de interação</b><span class="text-muted">Antiga usabilidade: aprendizado, operação, proteção contra erro do usuário.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Confiabilidade</b><span class="text-muted">Ausência de falhas, disponibilidade, tolerância a falhas, recuperação.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Segurança</b><span class="text-muted">Confidencialidade, integridade, autenticidade, responsabilização.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Manutenibilidade</b><span class="text-muted">Modularidade, testabilidade, facilidade de análise e de modificação.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Flexibilidade</b><span class="text-muted">Antiga portabilidade: adaptação, instalação, escalabilidade.</span></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><b>Proteção (safety)</b><span class="text-muted">Nova em 2023: evitar dano a pessoas, patrimônio e ambiente.</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. VS Code: requisitos de qualidade mensuráveis -->
+      <div class="slide slide-lab" id="slide-14">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Transformar características da ISO/IEC 25010 em requisitos que um teste consegue reprovar.</div>
+                <div class="rl"><b>Faça</b>1. Abra <code>docs/qualidade.md</code> e compare as linhas vagas com as mensuráveis.<br>2. Rode o prompt no opencode e leia o que ele propôs.<br>3. Rode a checagem de requisitos vagos.</div>
+                <div class="rl obs"><b>Observe</b>"O sistema deve ser rápido" não tem número, então nenhum teste falha por ele. "p95 abaixo de 300 ms com 50 usuários" vira um teste de carga na Aula 12.</div>
+                <div class="rl conc"><b>Conclusão</b>Um requisito de qualidade tem característica, métrica, meta e a técnica que vai medi-lo.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-iso"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Mapa do semestre -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Mapa do semestre</p><h2>Onde cada técnica entra no seu repositório</h2></div></div>
+          <div class="lab-area" id="flow-semestre"></div>
+        </div>
+      </div>
+
+      <!-- 15. Laboratório -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">Seu repositório e seu Codespace</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 1 · ambiente (40 min)</h3>
+                <ol class="mb-0"><li>Crie o repositório público <code>organizacao-recursos</code> com README.</li><li>Abra um Codespace na main.</li><li>Crie a chave na OpenRouter com limite de crédito.</li><li>Cadastre o secret <code>OPENROUTER_API_KEY</code> só para esse repositório.</li><li>Recarregue o Codespace e confira com <code>echo ${OPENROUTER_API_KEY:0:8}</code>.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Parte 2 · opencode e primeiro ciclo (50 min)</h3>
+                <ol class="mb-0"><li>Rode o prompt 1 para criar o devcontainer e o <code>opencode.json</code>.</li><li>Rode o prompt 2 para o opencode montar o projeto Node.</li><li>Rode o prompt 3 para o <code>docs/qualidade.md</code> do seu projeto.</li><li>Faça cada mudança numa branch curta e integre na main.</li><li>Confira o <code>git log --oneline --graph</code> linear.</li></ol>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>A chave da OpenRouter nunca vai para arquivo, print ou prompt. Se vazar, revogue na OpenRouter e crie outra.</div>
+        </div>
+      </div>
+
+      <!-- 16. Prompt 1 -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Devcontainer e configuração do opencode</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Você está num GitHub Codespace, na raiz do repositório organizacao-recursos, que hoje só tem o README. Crie .devcontainer/devcontainer.json usando a imagem mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm, a feature ghcr.io/devcontainers/features/docker-in-docker:2, a extensão dbaeumer.vscode-eslint, o secret recomendado OPENROUTER_API_KEY com descrição em português e um postCreateCommand que instale o opencode com curl -fsSL https://opencode.ai/install | bash. Crie opencode.json com o $schema https://opencode.ai/config.json, o provedor openrouter lendo a chave por {env:OPENROUTER_API_KEY} e o modelo padrão que eu informar. Crie .gitignore para Node (node_modules, coverage, .env). Crie AGENTS.md dizendo que o projeto é em JavaScript puro com ES modules, sem TypeScript, que os testes usam node:test e que todo commit segue Conventional Commits em português. Não escreva nenhuma chave em arquivo. Mostre o conteúdo de cada arquivo antes de gravar.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: procure "sk-or" no diff. Se aparecer, recuse a mudança. Depois rode Rebuild Container e confira <code>opencode --version</code>.</div>
+        </div>
+      </div>
+
+      <!-- Prompt 2: projeto Node -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">O opencode monta o projeto Node</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Leia o AGENTS.md e transforme este repositório num projeto Node 22 com ES modules, sem TypeScript. Crie package.json com "type": "module", engines node >= 22 e os scripts test (node --test), test:cov (node --test --experimental-test-coverage --test-coverage-include='src/**') e lint (eslint .). Configure o ESLint 9 em eslint.config.js no formato flat, com @eslint/js recommended, globals do Node e a regra complexity limitada a 8. Crie src/intervalo.js com a função sobrepoe(a, b), que diz se dois intervalos [inicio, fim) de datas se sobrepõem, e test/intervalo.test.js com dois testes em node:test: intervalos que se cruzam e um que começa exatamente quando o outro termina. Peça permissão antes de instalar dependências. No fim, rode npm run lint e npm test e mostre a saída. Não use jest, mocha nem vitest.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: leia o <code>git diff</code> inteiro, confira que o script test é <code>node --test</code> e rode <code>npm run lint &amp;&amp; npm test</code> você mesmo.</div>
+        </div>
+      </div>
+
+      <!-- 17. Prompt 2 -->
+      <div class="slide" id="slide-19">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Requisitos de qualidade do seu projeto</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Atue como analista de qualidade. O projeto deste repositório é um sistema de Organização de Recursos de uma universidade: reserva de salas, professores e materiais sem conflito de horário. Escreva docs/qualidade.md com uma tabela de colunas Característica ISO/IEC 25010:2023, Requisito, Métrica, Meta e Como será verificado. Cubra pelo menos adequação funcional, eficiência de desempenho, confiabilidade, segurança e manutenibilidade. Cada meta precisa de número e unidade. Na coluna Como será verificado use apenas técnicas da disciplina: teste de unidade, teste de integração com banco, dublê de teste, cenário BDD, teste de carga, cobertura e análise estática. Quando faltar informação para fixar uma meta, escreva a pergunta numa seção Perguntas em aberto em vez de inventar o número. Não crie código.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: toda linha tem número e técnica. Apague as linhas que você não saberia explicar na prova oral.</div>
+        </div>
+      </div>
+
+      <!-- 18. Entregável -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 01</span>
+          <p class="fs-4 mb-4">Repositório público com devcontainer, <code>opencode.json</code>, <code>AGENTS.md</code>, <code>.gitignore</code>, projeto Node com <code>npm test</code> passando e <code>docs/qualidade.md</code>, tudo integrado na main por branches curtas.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>O Codespace abre e o <code>opencode</code> responde com o modelo da OpenRouter.</li><li>Nenhum arquivo do repositório contém a chave.</li><li>O <code>git log --oneline --graph</code> é linear e as mensagens seguem o padrão.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. Dúvidas -->
+      <div class="slide cover-bg" id="slide-21">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Spec-Driven Development e abertura do Trabalho 1.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 21</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Codespaces e introdução à qualidade · Semana 4</div>
+      <a href="material/material_aula01-codespaces-qualidade.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+/* ---------- 5. Vídeo: repositório e Codespace ---------- */
+Labs.video('#vid-codespace', {
+  scenes: [
+    { url: 'github.com/new', caption: '<b>1.</b> Em github.com/new, dê o nome <code>organizacao-recursos</code>, deixe o repositório público e marque "Add a README".',
+      html: `<div class="gh"><div class="gh-top"><span class="logo"></span><span class="path">Create a new repository</span></div><div class="gh-body">
+        <p class="mb-1 fw-semibold">Repository name *</p><span class="gh-input" id="nome" style="width:340px"></span>
+        <div class="gh-row mt-3"><input type="radio" checked id="pub"> <b>Public</b> <span class="text-muted small">Anyone on the internet can see this repository.</span></div>
+        <div class="gh-row"><input type="radio"> <b>Private</b></div>
+        <div class="gh-row"><input type="checkbox" id="readme"> <b>Add a README file</b></div>
+        <div class="mt-3"><span class="gh-btn green" id="criar">Create repository</span></div></div></div>`,
+      steps: [ { type: '#nome', text: 'organizacao-recursos' }, { click: '#pub' }, { click: '#readme' }, { add: ['#readme', 'checked'] }, { click: '#criar' } ] },
+    { url: 'github.com/aluna-senac/organizacao-recursos', caption: '<b>2.</b> No repositório, clique em <b>&lt;&gt; Code</b>, troque para a aba Codespaces e crie um Codespace na main.',
+      html: `<div class="gh"><div class="gh-top"><span class="logo"></span><span class="path">aluna-senac / organizacao-recursos</span><span class="ms-auto gh-btn">Public</span></div><div class="gh-body position-relative">
+        <div class="d-flex gap-2 align-items-center"><span class="gh-btn">⎇ main</span><span class="ms-auto gh-btn green" id="code">&lt;&gt; Code ▾</span></div>
+        <div class="gh-row mt-2"><span>📄 README.md</span><span class="ms-auto text-muted small">Initial commit</span></div>
+        <div class="gh-menu" id="menu" hidden style="right:24px;top:56px"><div class="gh-tabs"><span id="tab-local">Local</span><span id="tab-cs">Codespaces</span></div>
+          <p class="small text-muted mb-2" id="cs-vazio">No codespaces</p><span class="gh-btn green" id="novo">Create codespace on main</span></div></div></div>`,
+      steps: [ { click: '#code' }, { show: '#menu' }, { click: '#tab-cs' }, { add: ['#tab-cs', 'on'] }, { click: '#novo', wait: 900 } ] },
+    { url: 'aluna-senac-organizacao-recursos-x7q9.github.dev', caption: '<b>3.</b> O GitHub cria a máquina virtual e abre o VS Code no navegador. A primeira vez leva um ou dois minutos.',
+      html: `<div class="gh-load"><div><div class="fs-5 fw-semibold">Setting up your codespace</div><div class="bar mx-auto mt-2"><i></i></div></div><pre class="small text-start m-0" id="log" style="color:#8B949E;max-width:560px;white-space:pre-wrap"></pre></div>`,
+      steps: [ { lines: '#log', speed: 450, out: ['[mute] Creating container...', '[mute] Pulling mcr.microsoft.com/devcontainers/universal:2', '[mute] Starting VS Code server', '[ok] Container started'] } ] },
+    { url: 'aluna-senac-organizacao-recursos-x7q9.github.dev', caption: '<b>4.</b> Abra o terminal com Ctrl + `. O Node já está lá. Instale o opencode com o script oficial.',
+      html: `<div class="web-vsc"><div class="ed"># organizacao-recursos</div><div class="tm" id="tm"><span class="pr">@aluna-senac ➜ /workspaces/organizacao-recursos (main) $ </span><span id="c1"></span>
+</div></div>`,
+      steps: [ { type: '#c1', text: 'node --version', speed: 60 }, { lines: '#tm', out: ['v22.12.0', '[ok] @aluna-senac ➜ /workspaces/organizacao-recursos (main) $ curl -fsSL https://opencode.ai/install | bash', '[mute] Installing opencode...', '[mute] Downloading opencode-linux-x64', '[ok] opencode installed to ~/.opencode/bin/opencode'] , speed: 420 } ] }
+  ]
+});
+
+/* ---------- 6. Vídeo: chave, secret e opencode ---------- */
+Labs.video('#vid-openrouter', {
+  scenes: [
+    { url: 'openrouter.ai/settings/keys', caption: '<b>1.</b> Na OpenRouter, em Settings › Keys, crie uma chave só para a disciplina e defina um limite de crédito.',
+      html: `<div class="gh"><div class="gh-top"><span class="logo" style="background:#6467F2"></span><span class="path">OpenRouter · API Keys</span><span class="ms-auto gh-btn blue" id="nova">Create Key</span></div><div class="gh-body">
+        <div id="form" hidden><p class="mb-1 fw-semibold">Name</p><span class="gh-input" id="nome" style="width:320px"></span><p class="mb-1 mt-2 fw-semibold">Credit limit (USD)</p><span class="gh-input" id="lim" style="width:120px"></span>
+        <div class="mt-3"><span class="gh-btn blue" id="criar">Create</span></div></div>
+        <div id="chave" hidden class="mt-3 p-3 rounded" style="background:#FFF8C5;border:1px solid #D4A72C"><b>Your new key</b><br><code>sk-or-v1-••••••••••••••••••••••••4f2a</code><br><span class="small">Copie agora: ela não aparece de novo.</span></div></div></div>`,
+      steps: [ { click: '#nova' }, { show: '#form' }, { type: '#nome', text: 'codespaces-qualidade-2027' }, { type: '#lim', text: '5' }, { click: '#criar' }, { show: '#chave', wait: 1500 } ] },
+    { url: 'github.com/settings/codespaces', caption: '<b>2.</b> No GitHub, em Settings › Codespaces › Secrets, crie <code>OPENROUTER_API_KEY</code> e libere só para <code>organizacao-recursos</code>.',
+      html: `<div class="gh"><div class="gh-top"><span class="logo"></span><span class="path">Settings · Codespaces · New secret</span></div><div class="gh-body">
+        <p class="mb-1 fw-semibold">Name</p><span class="gh-input" id="nome" style="width:320px"></span>
+        <p class="mb-1 mt-2 fw-semibold">Value</p><span class="gh-input" id="val" style="width:420px;height:60px"></span>
+        <p class="mb-1 mt-2 fw-semibold">Repository access</p><span class="gh-input" id="repo" style="width:320px"></span>
+        <div class="mt-3"><span class="gh-btn green" id="add">Add secret</span></div></div></div>`,
+      steps: [ { type: '#nome', text: 'OPENROUTER_API_KEY' }, { type: '#val', text: '••••••••••••••••••••••••••••••••', speed: 20 }, { type: '#repo', text: 'aluna-senac/organizacao-recursos' }, { click: '#add' } ] },
+    { url: 'aluna-senac-organizacao-recursos-x7q9.github.dev', caption: '<b>3.</b> O Codespace avisa que há um secret novo. Recarregue e confira só os primeiros caracteres da variável.',
+      html: `<div class="web-vsc"><div class="ed" style="color:#F2CB0A">ⓘ Your codespace secrets have changed. Reload to apply.   [Reload to apply]</div><div class="tm" id="tm"><span class="pr">@aluna-senac ➜ /workspaces/organizacao-recursos (main) $ </span><span id="c1"></span>
+</div></div>`,
+      steps: [ { type: '#c1', text: 'echo ${OPENROUTER_API_KEY:0:8}', speed: 50 }, { lines: '#tm', out: ['sk-or-v1'] } ] },
+    { url: 'aluna-senac-organizacao-recursos-x7q9.github.dev', caption: '<b>4.</b> <code>opencode auth login</code> e depois <code>opencode</code>. O agente abre no terminal, já com um modelo da OpenRouter.',
+      html: `<div class="oc-tui" id="tui"><span class="logo">opencode</span>  v0.x · openrouter/qwen/qwen3-coder
+<div class="box">› <span id="p"></span></div><div id="resp" style="color:#B3C2D8;margin-top:8px"></div></div>`,
+      steps: [ { type: '#p', text: 'Liste os arquivos deste repositório e diga o que falta para começar o projeto.', speed: 30 }, { lines: '#resp', speed: 380, out: ['[mute] ▸ bash  ls -la', '[mute] ▸ read README.md', 'O repositório tem só o README.md. Faltam: .devcontainer/devcontainer.json,', 'opencode.json, .gitignore, AGENTS.md e package.json com "type": "module".'] } ] }
+  ]
+});
+
+/* ---------- 7. VS Code: devcontainer e opencode.json ---------- */
+Labs.vscode('#lab-setup', {
+  folder: 'organizacao-recursos', status: 'Codespaces: aluna-senac', open: '.devcontainer/devcontainer.json',
+  prompt: '@aluna-senac ➜ /workspaces/organizacao-recursos (main) $ ',
+  setup: [
+    { cmd: 'curl -fsSL https://opencode.ai/install | bash', out: ['[mute] Installing opencode...', '[ok] opencode installed to /home/node/.opencode/bin/opencode'] },
+    { cmd: 'opencode --version', out: ['0.15.8'] }
+  ],
+  files: [
+    { path: '.devcontainer/devcontainer.json', hl: [6, 7, 8], code:
+`{
+  "name": "organizacao-recursos",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bookworm",
+  "features": { "ghcr.io/devcontainers/features/docker-in-docker:2": {} },
+  "postCreateCommand": "curl -fsSL https://opencode.ai/install | bash",
+  "secrets": {
+    "OPENROUTER_API_KEY": { "description": "Chave da OpenRouter usada pelo opencode" }
+  },
+  "customizations": {
+    "vscode": { "extensions": ["dbaeumer.vscode-eslint"] }
+  }
+}` },
+    { path: 'opencode.json', hl: [3, 6], code:
+`{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openrouter/qwen/qwen3-coder",
+  "provider": {
+    "openrouter": {
+      "options": { "apiKey": "{env:OPENROUTER_API_KEY}" }
+    }
+  }
+}` },
+    { path: 'AGENTS.md', code:
+`# Regras para o agente
+
+- Projeto em JavaScript puro com ES modules ("type": "module"). Sem TypeScript.
+- Testes com node:test e node:assert/strict. Rode \`npm test\` antes de propor commit.
+- Commits em Conventional Commits, em português: feat, fix, test, docs, refactor, chore.
+- Nunca escreva chaves, tokens ou senhas em arquivos.` },
+    { path: '.gitignore', code:
+`node_modules/
+coverage/
+.env
+*.log` }
+  ],
+  run: [
+    { label: 'Fazer login', cmd: 'opencode auth login', file: 'opencode.json', out: [
+      '┌  Add credential', '│', '◇  Select provider', '│  OpenRouter', '│', '◇  Enter your API key', '│  ▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪▪', '[ok] └  Done' ] },
+    { label: 'Listar modelos', cmd: 'opencode models openrouter | head -4', out: [
+      'openrouter/anthropic/claude-sonnet-4.5', 'openrouter/google/gemini-2.5-flash', 'openrouter/openai/gpt-5-mini', 'openrouter/qwen/qwen3-coder' ] },
+    { label: 'Primeiro prompt', cmd: 'opencode run "Resuma o AGENTS.md em uma frase"', file: 'AGENTS.md', out: [
+      '[mute] ▸ read AGENTS.md',
+      'Projeto em JavaScript puro com ES modules, testado com node:test, com commits convencionais em português e sem segredos nos arquivos.' ] }
+  ]
+});
+
+/* ---------- 8. VS Code: o opencode monta o projeto Node ---------- */
+const PKG_CERTO = `{
+  "name": "organizacao-recursos",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-include='src/**'",
+    "lint": "eslint ."
+  },
+  "engines": { "node": ">=22" },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "globals": "^15.14.0"
+  }
+}`;
+const PKG_AGENTE = PKG_CERTO.replace('"test": "node --test",', '"test": "jest",');
+
+Labs.vscode('#lab-node', {
+  folder: 'organizacao-recursos', status: 'Codespaces · opencode', branch: 'chore/projeto-node', open: 'package.json',
+  prompt: '@aluna-senac ➜ /workspaces/organizacao-recursos (chore/projeto-node) $ ',
+  files: [
+    { path: 'package.json', hl: [6], code: PKG_AGENTE },
+    { path: 'eslint.config.js', code:
+`import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  js.configs.recommended,
+  {
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.node },
+    rules: { complexity: ['error', 8] }
+  },
+  { ignores: ['coverage/'] }
+];` },
+    { path: 'src/intervalo.js', code:
+`// Dois intervalos [inicio, fim) se sobrepõem quando um começa antes do outro terminar.
+export function sobrepoe(a, b) {
+  return a.inicio < b.fim && b.inicio < a.fim;
+}` },
+    { path: 'test/intervalo.test.js', code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { sobrepoe } from '../src/intervalo.js';
+
+const h = (hora) => new Date(\`2027-02-01T\${hora}:00-03:00\`);
+
+test('reservas que se cruzam se sobrepõem', () => {
+  assert.equal(sobrepoe({ inicio: h('19:00'), fim: h('21:00') }, { inicio: h('20:00'), fim: h('22:00') }), true);
+});
+
+test('reserva que começa quando a outra termina não se sobrepõe', () => {
+  assert.equal(sobrepoe({ inicio: h('19:00'), fim: h('21:00') }, { inicio: h('21:00'), fim: h('22:00') }), false);
+});` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Leia o AGENTS.md e transforme este repositório num projeto Node 22 com ES modules: package.json com scripts test, test:cov e lint, ESLint 9 em flat config com complexity 8, src/intervalo.js com a função sobrepoe e dois testes em node:test. Instale as dependências e rode os testes."', speed: 120, out: [
+      '[mute] ▸ read AGENTS.md',
+      '[mute] ▸ read .devcontainer/devcontainer.json',
+      '[mute] ▸ write package.json',
+      '[mute] ▸ write eslint.config.js',
+      '[mute] ▸ write src/intervalo.js',
+      '[mute] ▸ write test/intervalo.test.js',
+      '[warn] ? Permitir executar "npm install"? (s/n) s',
+      '[mute] ▸ bash npm install',
+      '[mute]   added 87 packages in 6s',
+      '[mute] ▸ bash npm install --save-dev jest',
+      '[mute] ▸ bash npm test',
+      '[ok]   PASS test/intervalo.test.js',
+      '[ok]   Tests: 2 passed, 2 total',
+      'Projeto Node criado: 4 arquivos, 4 dependências de desenvolvimento, 2 testes passando.' ] },
+    { label: '2. Conferir o diff', kind: 'red', cmd: 'git status --short && grep -n jest package.json', out: [
+      '?? eslint.config.js', '?? package-lock.json', '?? package.json', '?? src/', '?? test/',
+      '[err] 6:    "test": "jest",',
+      '[warn] O agente trocou o script de teste por jest, contrariando o AGENTS.md. Não aceitar assim.' ] },
+    { label: '3. Pedir a correção', clear: false, cmd: 'opencode run "O AGENTS.md exige node:test. Volte o script test para node --test e remova qualquer dependência do jest."', out: [
+      '[mute] ▸ read package.json', '[mute] ▸ edit package.json', '[mute] ▸ bash npm uninstall jest',
+      'Script test voltou para "node --test"; jest removido.' ] },
+    { label: '4. Rodar e commitar', kind: 'blue', clear: false, cmd: 'npm run lint && npm test && git add -A && git commit -m "chore: cria projeto Node com node:test e ESLint"', out: [
+      '[mute] > organizacao-recursos@0.1.0 lint', '[mute] > eslint .',
+      '[mute] > organizacao-recursos@0.1.0 test', '[mute] > node --test',
+      '[ok] ✔ reservas que se cruzam se sobrepõem (0.9ms)',
+      '[ok] ✔ reserva que começa quando a outra termina não se sobrepõe (0.2ms)',
+      'ℹ tests 2  ℹ pass 2  ℹ fail 0',
+      '[chore/projeto-node 5d2e91a] chore: cria projeto Node com node:test e ESLint',
+      ' 5 files changed, 1043 insertions(+)' ] }
+  ],
+  onRun(k, api) { if (k === 2) api.setCode('package.json', PKG_CERTO); }
+});
+
+/* ---------- 8. VS Code: OpenLLM local ---------- */
+Labs.vscode('#lab-openllm', {
+  folder: 'organizacao-recursos', status: 'Máquina local com GPU', open: 'opencode.json',
+  prompt: 'aluna@notebook:~/organizacao-recursos$ ',
+  files: [
+    { path: 'opencode.json', hl: [9, 10, 11, 12, 13, 14, 15, 16], code:
+`{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "openrouter/qwen/qwen3-coder",
+  "provider": {
+    "openrouter": {
+      "options": { "apiKey": "{env:OPENROUTER_API_KEY}" }
+    },
+    "openllm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "OpenLLM (local)",
+      "options": { "baseURL": "http://localhost:3000/v1" },
+      "models": {
+        "qwen2.5:7b": { "name": "Qwen 2.5 7B" }
+      }
+    }
+  }
+}` }
+  ],
+  run: [
+    { label: 'Subir o OpenLLM', cmd: 'pip install openllm && openllm serve qwen2.5:7b', out: [
+      '[mute] Successfully installed openllm', '[mute] Loading qwen2.5:7b on cuda:0 ...', '[ok] OpenLLM server running on http://localhost:3000 (OpenAI-compatible: /v1)' ] },
+    { label: 'Testar o provedor local', cmd: 'opencode run -m openllm/qwen2.5:7b "Diga oi em uma palavra"', out: [ 'Oi.' ] },
+    { label: 'Voltar para a OpenRouter', kind: 'blue', cmd: 'opencode run "Diga oi em uma palavra"', out: [ '[mute] modelo: openrouter/qwen/qwen3-coder', 'Olá.' ] }
+  ]
+});
+
+/* ---------- 10. VS Code: ciclo de branch curta ---------- */
+Labs.vscode('#lab-git', {
+  folder: 'organizacao-recursos', status: 'Codespaces', branch: 'main', open: 'docs/qualidade.md',
+  prompt: '@aluna-senac ➜ /workspaces/organizacao-recursos (main) $ ',
+  files: [
+    { path: 'docs/qualidade.md', code:
+`# Requisitos de qualidade
+
+| Característica | Requisito | Métrica | Meta | Como será verificado |
+|---|---|---|---|---|
+| Adequação funcional | Não aceitar duas reservas da mesma sala no mesmo horário | reservas conflitantes aceitas | 0 | teste de unidade |` },
+    { path: 'README.md', code: `# organizacao-recursos\n\nSistema de reserva de salas, professores e materiais sem conflito.` }
+  ],
+  run: [
+    { label: '1. Abrir a branch', cmd: 'git switch -c docs/requisitos-qualidade', out: [ "Switched to a new branch 'docs/requisitos-qualidade'" ], prompt: '@aluna-senac ➜ /workspaces/organizacao-recursos (docs/requisitos-qualidade) $ ', branch: 'docs/requisitos-qualidade' },
+    { label: '2. Commitar', clear: false, cmd: 'git add docs/qualidade.md && git commit -m "docs: descreve requisitos de qualidade"', file: 'docs/qualidade.md', out: [
+      '[docs/requisitos-qualidade 3b1c2d9] docs: descreve requisitos de qualidade', ' 1 file changed, 5 insertions(+)', ' create mode 100644 docs/qualidade.md' ] },
+    { label: '3. Integrar na main', clear: false, cmd: 'git switch main && git pull --rebase && git merge --ff-only docs/requisitos-qualidade && git push && git branch -d docs/requisitos-qualidade', out: [
+      "Switched to branch 'main'", 'Already up to date.', 'Updating a41f0e2..3b1c2d9', 'Fast-forward', ' docs/qualidade.md | 5 +++++', 'To github.com:aluna-senac/organizacao-recursos.git', '   a41f0e2..3b1c2d9  main -> main', '[ok] Deleted branch docs/requisitos-qualidade (was 3b1c2d9).' ], prompt: '@aluna-senac ➜ /workspaces/organizacao-recursos (main) $ ', branch: 'main' },
+    { label: '4. Responder ao feedback', kind: 'blue', clear: false, cmd: 'git log --oneline --graph -4', out: [
+      '* 8e0f7a1 (HEAD -> main, origin/main) fix(docs): coloca meta numérica no desempenho (#2)', '* 3b1c2d9 docs: descreve requisitos de qualidade', '* 9c4d118 chore: cria devcontainer e configuração do opencode', '* a41f0e2 Initial commit', '[info] Commit 8e0f7a1 tem "Closes #2" no corpo: a issue de feedback fechou sozinha quando chegou à main.' ] }
+  ]
+});
+
+/* ---------- 13. VS Code: requisitos de qualidade ---------- */
+Labs.vscode('#lab-iso', {
+  folder: 'biblioteca-campus', status: 'Exemplo da aula', open: 'docs/qualidade.md',
+  prompt: '@professor ➜ /workspaces/biblioteca-campus (docs/qualidade) $ ',
+  files: [
+    { path: 'docs/qualidade.md', hl: [5, 6, 7], code:
+`# Requisitos de qualidade · biblioteca-campus
+
+| Característica | Requisito | Métrica | Meta | Como será verificado |
+|---|---|---|---|---|
+| Eficiência de desempenho | O sistema deve ser rápido | ? | ? | ? |
+| Confiabilidade | O sistema não pode cair | ? | ? | ? |
+| Segurança | Os dados devem estar seguros | ? | ? | ? |
+| Adequação funcional | Empréstimo respeita limite de 3 livros por aluno | empréstimos acima do limite aceitos | 0 | teste de unidade |
+| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 do tempo de resposta com 50 usuários | < 300 ms | teste de carga (k6) |
+| Confiabilidade | Falha da ViaCEP não impede o cadastro | cadastros perdidos com ViaCEP fora | 0 | dublê de teste |
+| Manutenibilidade | Regras de empréstimo testadas | cobertura de ramos em src/emprestimo.js | >= 90% | cobertura no CI |
+| Segurança | Nenhum segredo versionado | ocorrências de chave no repositório | 0 | análise estática |
+
+## Perguntas em aberto
+- Qual o número de usuários simultâneos no pico de início de semestre?` }
+  ],
+  run: [
+    { label: 'Prompt no opencode', cmd: 'opencode run "Reescreva as três primeiras linhas de docs/qualidade.md com métrica, meta numérica e técnica de verificação"', out: [
+      '[mute] ▸ read docs/qualidade.md',
+      'Proposta:',
+      '| Eficiência de desempenho | Busca de livro responde rápido | p95 com 50 usuários | < 300 ms | teste de carga |',
+      '| Confiabilidade | Empréstimo não se perde se o banco reiniciar | empréstimos confirmados e ausentes após reinício | 0 | teste de integração com banco |',
+      '| Segurança | Aluno não vê empréstimos de outro aluno | respostas com dados de terceiros | 0 | cenário BDD |',
+      '[warn] Revise: a meta de 50 usuários depende da pergunta em aberto.' ] },
+    { label: 'Checar requisitos vagos', kind: 'red', cmd: "grep -n '| ? |' docs/qualidade.md", out: [
+      '[err] 5:| Eficiência de desempenho | O sistema deve ser rápido | ? | ? | ? |',
+      '[err] 6:| Confiabilidade | O sistema não pode cair | ? | ? | ? |',
+      '[err] 7:| Segurança | Os dados devem estar seguros | ? | ? | ? |',
+      '[mute] 3 requisitos sem métrica: nenhum teste consegue reprová-los.' ] }
+  ]
+});
+
+/* ---------- 14. Mapa do semestre ---------- */
+Labs.flow('#flow-semestre', {
+  w: 1000, h: 420,
+  nodes: [
+    { id: 'spec', x: 110, y: 90, label: 'Especificação', sub: 'Aula 02 · SDD', k: 'amber' },
+    { id: 'caixa', x: 330, y: 90, label: 'Casos de teste', sub: 'Aula 03 · caixas' },
+    { id: 'tdd', x: 550, y: 90, label: 'TDD', sub: 'Aula 04 · node:test' },
+    { id: 'ci', x: 800, y: 90, label: 'Cobertura e CI', sub: 'Aula 05 · gate', k: 'green' },
+    { id: 't1', x: 800, y: 210, label: 'Trabalho 1', sub: 'semana 10', k: 'purple' },
+    { id: 'db', x: 110, y: 330, label: 'Banco real', sub: 'Aula 10 · integração' },
+    { id: 'dbl', x: 330, y: 330, label: 'Dublês e ViaCEP', sub: 'Aula 11' },
+    { id: 'bdd', x: 550, y: 330, label: 'BDD e carga', sub: 'Aula 12 · cucumber, k6' },
+    { id: 't2', x: 800, y: 330, label: 'Trabalho 2', sub: 'semana 17', k: 'purple' }
+  ],
+  links: [ { from: 'spec', to: 'caixa' }, { from: 'caixa', to: 'tdd' }, { from: 'tdd', to: 'ci' }, { from: 'ci', to: 't1' }, { from: 't1', to: 'db', curve: 40, dashed: true, label: 'o mesmo repositório continua' }, { from: 'db', to: 'dbl' }, { from: 'dbl', to: 'bdd' }, { from: 'bdd', to: 't2' } ],
+  steps: [
+    { title: 'Especificar antes de codar', text: 'A Aula 02 transforma o problema em requisitos e critérios de aceite que o agente consegue seguir.', on: ['spec'] },
+    { title: 'Escolher casos de teste', text: 'Caixa preta (partições, limites) e caixa branca (caminhos, ramos) dizem quais testes escrever.', on: ['caixa'], links: [['spec', 'caixa']] },
+    { title: 'Escrever o teste primeiro', text: 'TDD com node:test: vermelho, verde, refatoração, um commit por passo.', on: ['tdd'], links: [['caixa', 'tdd']] },
+    { title: 'Medir e travar', text: 'Cobertura com meta, ESLint e GitHub Actions: a main só fica verde se tudo passar.', on: ['ci', 't1'], links: [['tdd', 'ci'], ['ci', 't1', 'green']] },
+    { title: 'Segundo bloco', text: 'O mesmo sistema ganha PostgreSQL, ViaCEP isolada por dublê, cenários BDD e teste de carga.', on: ['db', 'dbl', 'bdd', 't2'], links: [['t1', 'db', 'purple'], ['db', 'dbl'], ['dbl', 'bdd'], ['bdd', 't2', 'purple']] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

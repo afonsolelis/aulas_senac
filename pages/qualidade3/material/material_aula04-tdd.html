@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TDD: ciclo red, green e refactor - Material</title>
+<meta name="description" content="Material da Aula 04 de Qualidade de Software 2027.1: TDD com node:test, asserções, hooks, relógio injetado, padrão AAA, nomes de teste e um commit por passo, conduzido com o opencode.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 04 &middot; Semana 8 &middot; 22/02 a 26/02</span><h1 class="h3 fw-bold text-white mb-0">TDD: ciclo red, green e refactor</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Sair da aula com as primeiras regras do organizacao-recursos construídas em TDD, com node:test, um commit por passo do ciclo e testes que dão o mesmo resultado em qualquer dia.</p>
+<p class="text-muted mb-0">Na disciplina, o código e os testes são gerados pelo opencode a partir de prompts. A etapa de qualidade é a sua revisão: pedir um passo por vez, ler o que o agente escreveu, conferir com <code>git diff</code> e <code>npm test</code> e só então commitar. No primeiro bloco o professor mostra isso no repositório <code>biblioteca-campus</code>; no segundo, cada aluno aplica no próprio repositório com os três prompts desta página.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. O que é teste de unidade e o que não é</h2>
+<p class="text-muted">A regra "no máximo 3 empréstimos ativos por aluno" mora na função <code>emprestar(aluno, livro, hoje)</code>. Um teste de unidade chama essa função com objetos montados na memória e confere o resultado. Ele roda em milissegundos, não depende de banco, rede, arquivo nem do dia em que é executado, e falha por um único motivo, que o nome do teste anuncia.</p>
+<div class="table-responsive"><table class="table table-sm small">
+<thead class="table-light"><tr><th>O teste...</th><th>Classificação</th><th>Onde aparece na disciplina</th></tr></thead>
+<tbody>
+<tr><td>chama <code>emprestar</code> com objetos literais</td><td>unidade</td><td>Aula 04, <code>test/unidade/</code></td></tr>
+<tr><td>abre conexão com o PostgreSQL</td><td>integração</td><td>Aula 10, com Testcontainers, em <code>test/integracao/</code></td></tr>
+<tr><td>chama a ViaCEP de verdade</td><td>depende da rede</td><td>Aula 11 troca a chamada por um dublê</td></tr>
+<tr><td>sobe a API Express e faz requisição HTTP</td><td>teste de API</td><td>com supertest</td></tr>
+<tr><td>usa <code>new Date()</code> sem argumento</td><td>não determinístico</td><td>corrigido na seção 5</td></tr>
+</tbody></table></div>
+<p class="text-muted mb-0">Um repositório falso em memória, como <code>{ buscar: async (id) =&gt; ... }</code>, mantém o teste na categoria de unidade: nada sai do processo do Node.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Configurar o node:test</h2>
+<p class="text-muted">O Node 22 traz o executor de testes (<code>node:test</code>) e as asserções (<code>node:assert/strict</code>). Não há biblioteca de teste para instalar. O <code>package.json</code> precisa de <code>"type": "module"</code>, para os <code>import</code>, e do script de teste:</p>
+<pre class="bg-dark text-info p-3 rounded small">{
+  "name": "organizacao-recursos",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}</pre>
+<p class="text-muted">Sem argumentos, <code>node --test</code> procura os arquivos <code>*.test.js</code> e os arquivos dentro de pastas <code>test/</code>. Os scripts <code>test:cov</code> e <code>lint</code> entram na Aula 05.</p>
+<p class="text-muted">No laboratório do professor, o primeiro teste foi pedido assim ao agente:</p>
+<pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">opencode run "Crie test/emprestimo.test.js com node:test e node:assert/strict. Teste que emprestar define a devolução prevista 14 dias depois da retirada, com data fixa 2027-02-22T12:00:00Z e padrão AAA. Não altere src/."</pre>
+<p class="text-muted">O agente lê os arquivos, escreve o teste e pede permissão antes de rodar <code>npm test</code>. O resultado foi este arquivo:</p>
+<pre class="bg-dark text-info p-3 rounded small">import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-02-22T12:00:00Z');
+
+describe('emprestar', () =&gt; {
+  it('define a devolução prevista para 14 dias depois da retirada', () =&gt; {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+    const livro = { id: 'l1', reservadoPor: null };
+
+    const emprestimo = emprestar(aluno, livro, hoje);
+
+    assert.equal(emprestimo.previsto.toISOString(), '2027-03-08T12:00:00.000Z');
+  });
+});</pre>
+<p class="text-muted">A conferência do aluno vem antes do commit: <code>git status --short</code> deve listar só o arquivo de teste, e <code>npm test</code> deve passar. Para saber se o teste confere alguma coisa, mude a regra de propósito (o prazo para 13 dias) e veja o teste falhar:</p>
+<pre class="bg-dark text-info p-3 rounded small">▶ emprestar
+  ✖ define a devolução prevista para 14 dias depois da retirada (1.02ms)
+✖ emprestar (2.66ms)
+ℹ tests 1
+ℹ pass 0
+ℹ fail 1
+
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+
+  + '2027-03-07T12:00:00.000Z'
+  - '2027-03-08T12:00:00.000Z'</pre>
+<p class="text-muted mb-0">Um teste gerado que continua verde depois dessa mudança não verifica a regra, mesmo que execute a função.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Asserções, hooks e opções de execução</h2>
+<div class="table-responsive"><table class="table table-sm small">
+<thead class="table-light"><tr><th>Recurso</th><th>Uso</th></tr></thead>
+<tbody>
+<tr><td><code>describe</code>, <code>it</code>, <code>test</code></td><td>Agrupar e declarar testes; <code>it</code> e <code>test</code> são a mesma função.</td></tr>
+<tr><td><code>assert.equal(a, b)</code></td><td>Igualdade estrita (<code>===</code>) de valores primitivos.</td></tr>
+<tr><td><code>assert.deepEqual(a, b)</code></td><td>Igualdade estrutural de objetos e listas, conferindo tipos.</td></tr>
+<tr><td><code>assert.throws(fn, /msg/)</code></td><td>Função síncrona que deve lançar erro com a mensagem esperada.</td></tr>
+<tr><td><code>await assert.rejects(promessa, { message })</code></td><td>Promessa que deve ser rejeitada. Sem <code>await</code>, o teste termina antes e passa sempre.</td></tr>
+<tr><td><code>before</code>, <code>beforeEach</code></td><td>Preparar dados uma vez ou antes de cada teste; <code>beforeEach</code> impede que um teste contamine o seguinte.</td></tr>
+<tr><td><code>it.skip</code>, <code>it.todo</code></td><td>Pular um teste ou registrar um que falta escrever. Aparecem no resumo como <code># SKIP</code> e <code># TODO</code>, sem reprovar.</td></tr>
+<tr><td><code>node --test --watch</code></td><td>Reexecuta a cada arquivo salvo.</td></tr>
+<tr><td><code>node --test --test-name-pattern="reserva"</code></td><td>Roda só os testes cujo nome casa com o padrão.</td></tr>
+</tbody></table></div>
+<pre class="bg-dark text-info p-3 rounded small">beforeEach(() =&gt; {
+  aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+  livro = { id: 'l1', reservadoPor: null };
+});
+
+it('recusa livro reservado por outro aluno', () =&gt; {
+  livro.reservadoPor = 'a2';
+
+  const tentar = () =&gt; emprestar(aluno, livro, hoje);
+
+  assert.throws(tentar, /reservado por outro aluno/);
+});
+
+it('rejeita empréstimo inexistente', async () =&gt; {
+  await assert.rejects(registrarDevolucao(repo, 'e9', hoje), { message: 'empréstimo e9 não encontrado' });
+});
+
+it.skip('aceita professor sem limite de empréstimos', () =&gt; {});
+it.todo('renova o empréstimo uma única vez');</pre>
+<p class="text-muted mb-0">Ao revisar testes gerados, procure dois erros frequentes: <code>assert.rejects</code> sem <code>await</code> e <code>assert.ok(resultado)</code> no lugar de um valor exato.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. O ciclo red, green e refactor com o agente</h2>
+<p class="text-muted">TDD inverte a ordem habitual: o teste vem antes do código. Cada volta do ciclo tem três passos, e cada passo vira um commit.</p>
+<ol class="text-muted">
+<li>Red: um único teste novo, para o próximo comportamento, que falha por uma asserção. Commit <code>test(escopo): ...</code>.</li>
+<li>Green: o menor código que faz esse teste passar, sem antecipar regras. Commit <code>feat(escopo): ...</code>.</li>
+<li>Refactor: com tudo verde, melhorar nomes e estrutura sem mudar o resultado. Commit <code>refactor(escopo): ...</code>.</li>
+</ol>
+<p class="text-muted">Com o opencode, quem conduz o ciclo é o aluno. Se o prompt pedir "implemente a multa com testes", o agente escreve teste e código juntos, e não há como saber se o teste teria falhado sem o código. Por isso cada prompt pede um passo e manda parar:</p>
+<pre class="bg-dark text-info p-3 rounded small" style="white-space: pre-wrap">opencode run "Passo red. Acrescente em test/multa.test.js um único teste: 3 dias de atraso custam 450 centavos. Não altere nada em src/. Rode npm test e pare."
+git diff --stat &amp;&amp; npm test          # só o teste mudou? falhou com 0 !== 450?
+git add test/multa.test.js &amp;&amp; git commit -m "test(multa): cobra 150 centavos por dia de atraso"
+
+opencode run "Passo green. Escreva o mínimo em calcularMulta para o teste novo passar. Não mexa nos testes e não implemente o teto ainda."
+git diff --stat &amp;&amp; npm test          # só src/ mudou? tudo verde?
+git commit -am "feat(multa): calcula 150 centavos por dia de atraso"
+
+opencode run "Passo refactor. Melhore calcularMulta sem mudar comportamento: use DIA_MS e uma constante exportada MULTA_POR_DIA. Rode npm test depois."
+npm test
+git commit -am "refactor(multa): dá nome ao dia e ao valor por dia"</pre>
+<p class="text-muted">A conferência do red tem dois pontos. A falha precisa ser uma asserção (<code>0 !== 450</code>); um <code>SyntaxError</code> ou um erro de import significa que o teste quebrou por outro motivo. E o diff precisa mostrar só o arquivo de teste. Na conferência do green, o diff precisa mostrar só <code>src/</code>: um agente que altera o teste para fazê-lo passar desfaz o ciclo.</p>
+<pre class="bg-dark text-info p-3 rounded small">$ git log --oneline -4
+c81f3b0 (HEAD -&gt; feat/multa) refactor(multa): dá nome ao dia e ao valor por dia
+9a7e254 feat(multa): calcula 150 centavos por dia de atraso
+4d2e9a1 test(multa): cobra 150 centavos por dia de atraso
+2f60c3e (origin/main, main) feat(multa): devolve 0 quando o livro volta no prazo</pre>
+<p class="text-muted mb-0">O commit vermelho fica na branch; a branch só entra na main com <code>git merge --ff-only</code> depois do último passo verde. Na prova oral, <code>git show</code> de um commit <code>test(...)</code> deve mostrar apenas teste. O teto de 3000 centavos da multa é a próxima volta do ciclo.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Datas: relógio injetado e mock.timers</h2>
+<p class="text-muted">Um teste que lê o relógio do sistema muda de resultado conforme o dia. No laboratório, este teste passou em 22/02 e falhou em 10/03 sem nenhuma mudança no código:</p>
+<pre class="bg-dark text-info p-3 rounded small">export function estaAtrasado(emprestimo) {
+  return new Date() &gt; emprestimo.previsto;
+}</pre>
+<p class="text-muted">A correção tem duas partes. A regra de negócio recebe a data como parâmetro, e o teste passa a data que quiser:</p>
+<pre class="bg-dark text-info p-3 rounded small">export function estaAtrasado(emprestimo, hoje) {
+  return hoje &gt; emprestimo.previsto;
+}
+
+it('retorna true um dia depois da data prevista', () =&gt; {
+  assert.equal(estaAtrasado(emprestimo, new Date('2027-03-09T12:00:00Z')), true);
+});</pre>
+<p class="text-muted">A leitura do relógio fica concentrada numa função pequena, na borda do sistema. Para testá-la, <code>t.mock.timers</code> fixa a data só dentro do teste e restaura o relógio no fim:</p>
+<pre class="bg-dark text-info p-3 rounded small">export function registrarAtraso(emprestimo) {
+  const agora = new Date();
+  return { ...emprestimo, atrasado: estaAtrasado(emprestimo, agora), conferidoEm: agora };
+}
+
+it('usa o relógio do sistema quando ninguém informa a data', (t) =&gt; {
+  t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-03-10T12:00:00Z') });
+
+  const registro = registrarAtraso(emprestimo);
+
+  assert.equal(registro.atrasado, true);
+  assert.equal(registro.conferidoEm.toISOString(), '2027-03-10T12:00:00.000Z');
+});</pre>
+<p class="text-muted mb-0">Revisão rápida depois de qualquer teste gerado: <code>grep -rn "new Date()" test/</code> não deve encontrar nada.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. Padrão AAA e nomes de teste</h2>
+<p class="text-muted">Arrange, Act, Assert: montar os dados, executar uma única ação e conferir o resultado. Uma linha em branco separa os três blocos.</p>
+<pre class="bg-dark text-info p-3 rounded small">it('recusa quando o aluno já tem 3 empréstimos ativos', () =&gt; {
+  const aluno = { id: 'a1', ativos: ['l7', 'l8', 'l9'], multaPendente: 0 };
+
+  const tentar = () =&gt; emprestar(aluno, livroLivre, hoje);
+
+  assert.throws(tentar, /limite de 3 empréstimos ativos/);
+});</pre>
+<p class="text-muted">O nome do teste diz a condição e o resultado esperado. Quando um teste falha no CI, o nome é a primeira linha que aparece: <code>✖ teste 3</code> obriga a abrir o arquivo, enquanto <code>✖ recusa quando o aluno tem multa pendente</code> já diz qual regra quebrou.</p>
+<div class="table-responsive"><table class="table table-sm small mb-0">
+<thead class="table-light"><tr><th>Vago</th><th>Com condição e resultado</th></tr></thead>
+<tbody>
+<tr><td><code>teste 1</code></td><td><code>recusa quando o aluno já tem 3 empréstimos ativos</code></td></tr>
+<tr><td><code>teste 2</code></td><td><code>aceita o empréstimo quando o aluno tem 2 ativos</code></td></tr>
+<tr><td><code>multa ok</code></td><td><code>limita a multa a 3000 centavos</code></td></tr>
+<tr><td><code>caso reserva</code></td><td><code>aceita livro reservado pelo próprio aluno</code></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. Prompt 1 · node:test e a função de sobreposição</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Estamos no repositório organizacao-recursos, em JavaScript puro com ES modules e sem TypeScript. Crie a branch feat/intervalo. Garanta que o package.json tenha "type": "module" e o script "test": "node --test", sem nenhuma dependência de teste: use só node:test e node:assert/strict. Vamos implementar em TDD a função sobrepoe(a, b) em src/intervalo.js, que recebe dois intervalos { inicio, fim } com objetos Date e responde true quando eles se sobrepõem; um intervalo que termina exatamente quando o outro começa não se sobrepõe. Trabalhe em ciclos e pare ao fim de cada passo: 1) escreva um único teste novo em test/unidade/intervalo.test.js, rode npm test e me mostre a falha; 2) escreva o código mínimo para passar, rode npm test e mostre a saída verde; 3) proponha uma refatoração, se houver, e rode npm test de novo. Use o padrão Arrange, Act, Assert e nomes de teste que digam a condição e o resultado esperado. Não escreva o próximo teste antes de eu pedir.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: o vermelho tem que ser um <code>AssertionError</code>, não um erro de import. Commit por passo: <code>test(intervalo)</code>, <code>feat(intervalo)</code>, <code>refactor(intervalo)</code>.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Prompt 2 · regras de conflito da reserva em TDD</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 35 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch feat/reserva, crie em TDD a função reservar(reservas, pedido, recursos) em src/reserva.js. O pedido tem { salaId, professorId, materiais, inicio, fim, alunos }; recursos traz as salas com capacidade e os materiais com disponibilidade. Implemente as regras uma por ciclo, nesta ordem: 1) recusa se a sala já tem reserva com intervalo sobreposto; 2) recusa se o número de alunos passa da capacidade da sala; 3) recusa se o professor já está em outra aula no mesmo horário, em qualquer sala; 4) recusa se algum material pedido está indisponível ou já reservado no horário. Recusa é um erro lançado com mensagem que diga a regra violada; sucesso devolve a reserva criada. Reaproveite sobrepoe de src/intervalo.js. Para cada regra escreva primeiro o teste que falha, depois o código mínimo, depois refatore, e pare ao fim de cada passo para eu commitar. Inclua o caso de fronteira de cada regra, como uma reserva que começa exatamente quando a outra termina e uma turma com o número exato da capacidade. Use assert.throws com a mensagem esperada. Nada de banco, rede ou arquivo nos testes.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: cada regra tem um teste que recusa e um que aceita no limite. Se o agente juntou duas regras no mesmo passo, peça para separar.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Prompt 3 · relógio injetado e revisão dos testes</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 20 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 3"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Na branch feat/reserva-passado, acrescente em src/reserva.js a regra de que não se reserva no passado. A função reservar passa a receber um quarto parâmetro, agora, do tipo Date, e recusa pedidos cujo inicio seja anterior a agora. Faça em TDD, com testes que passam uma data fixa e não dependem do dia em que rodam. Se algum código precisar ler o relógio do sistema, isole essa leitura numa função pequena e teste essa função com t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-02-24T19:00:00Z') }). Depois revise todos os arquivos de teste: renomeie testes cujo nome não diga condição e resultado, separe Arrange, Act e Assert com uma linha em branco e aponte qualquer teste que dependa de banco, rede, arquivo ou da data atual. Mostre a lista de mudanças antes de aplicar.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode <code>node --test --test-name-pattern="passado"</code> e procure <code>new Date()</code> sem argumento dentro de <code>test/</code>.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Entregável e checagem</h2>
+<p class="text-muted"><code>src/intervalo.js</code> e <code>src/reserva.js</code> com testes em <code>test/unidade/</code>, construídos em TDD e integrados na main com <code>git merge --ff-only</code>.</p>
+<h3 class="h6 fw-bold">O que o professor confere na mesa</h3>
+<ul class="text-muted mb-0"><li>O <code>git log --oneline</code> mostra o trio <code>test</code>, <code>feat</code>, <code>refactor</code> em cada regra.</li><li>Um commit <code>test(...)</code> aberto com <code>git show</code> contém só teste.</li><li><code>npm test</code> fica verde e nenhum teste usa <code>new Date()</code> sem argumento.</li><li>Os nomes na saída do <code>npm test</code> explicam cada regra sem abrir o código.</li></ul>
+</section>
+
+<div class="text-center"><a href="../slide_aula04-tdd.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

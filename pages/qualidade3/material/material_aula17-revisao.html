@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revisão geral - Material</title>
+<meta name="description" content="Material da Aula 17 de Qualidade de Software 2027.1: revisão dos dez temas do semestre, questões no estilo da prova oral com respostas esperadas e orientações para a recuperação.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_qualidade_2027_1.html">Qualidade 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-quality d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_qualidade_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para Qualidade 2027.1</a><div><span class="badge bg-white text-danger mb-1">Aula 17 &middot; Semana 21 &middot; 24/05 a 28/05</span><h1 class="h3 fw-bold text-white mb-0">Revisão geral</h1></div></div></header>
+
+<main class="container py-5"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">Objetivo da aula</h2>
+<p class="lead text-muted">Retomar os dez temas do semestre antes da prova de recuperação, na semana 22, com uma síntese de cada técnica, um laboratório curto que a relembra no <code>biblioteca-campus</code> e questões abertas no estilo da prova oral.</p>
+<p class="text-muted mb-0">Cada laboratório segue o padrão do semestre: o opencode recebe um prompt e faz a tarefa; o aluno lê o rastro do agente e confere o resultado no terminal antes de aceitar. As respostas esperadas das questões estão na seção 13. Tente responder em voz alta antes de abrir cada uma.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">1. Mapa do semestre</h2>
+<div class="table-responsive"><table class="table table-sm small mb-0">
+<thead class="table-light"><tr><th>Aula</th><th>Tema</th><th>Onde aparece no repositório</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>Qualidade, ISO/IEC 25010 e Git trunk-based</td><td><code>docs/qualidade.md</code>, histórico da main</td></tr>
+<tr><td>02</td><td>Spec-Driven Development</td><td><code>specs/*.md</code> com critérios <code>CA-0N</code></td></tr>
+<tr><td>03</td><td>Caixa preta e caixa branca</td><td>testes de valor-limite e de tabela de decisão; complexidade e ramos</td></tr>
+<tr><td>04</td><td>TDD com node:test</td><td>pares de commits <code>test(...)</code> e <code>feat(...)</code></td></tr>
+<tr><td>05</td><td>Cobertura, ESLint e CI</td><td><code>package.json</code>, <code>eslint.config.js</code>, <code>.github/workflows/ci.yml</code></td></tr>
+<tr><td>10</td><td>Integração com banco real e migrações</td><td><code>migrations/</code>, <code>test/integracao/</code></td></tr>
+<tr><td>11</td><td>Dublês e ViaCEP</td><td><code>src/cep.js</code>, <code>test/cep.test.js</code></td></tr>
+<tr><td>12</td><td>BDD e carga</td><td><code>features/</code>, <code>cucumber.js</code>, <code>carga/</code></td></tr>
+</tbody></table></div>
+<p class="text-muted mt-3 mb-0">Há um fio que liga o começo ao fim: a meta de desempenho escrita no <code>docs/qualidade.md</code> da Aula 01 vira o threshold do k6 na Aula 12. O Trabalho 1 (semana 10) fecha as Aulas 01 a 05; o Trabalho 2 (semana 17) fecha as Aulas 10 a 12, no mesmo repositório.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">2. Como revisar o que o agente produz</h2>
+<p class="text-muted">Durante o semestre, o código foi gerado pelo opencode. A responsabilidade pelo que entra na main continua sendo do aluno, e a prova oral cobra a explicação de cada arquivo. A revisão acontece em três momentos.</p>
+<ul class="text-muted">
+<li>Antes do prompt: diga quais arquivos o agente pode alterar e quais não pode, aponte a fonte da verdade (spec, <code>docs/qualidade.md</code>, <code>AGENTS.md</code>) e peça que ele pare e pergunte quando faltar informação.</li>
+<li>Durante a execução: leia o rastro (<code>▸ read</code>, <code>▸ write</code>, <code>▸ edit</code>, <code>▸ bash</code>). Negue permissão para <code>git push</code>, para apagar arquivos e para qualquer mudança fora do escopo. Recuse ofertas de alterar o teste ou o exemplo para que ele passe.</li>
+<li>Depois: <code>git status</code> e <code>git diff</code> para achar arquivo inesperado, teste ou .feature alterado e dependência no lugar errado; rode você mesmo <code>npm test</code>, <code>npm run lint</code>, <code>npm run bdd</code> e <code>npm run carga</code>; compare números (metas, thresholds) com a fonte. O commit e a mensagem são seus.</li>
+</ul>
+<div class="table-responsive"><table class="table table-sm small mb-0">
+<thead class="table-light"><tr><th>Aula</th><th>O que o agente fez nas demonstrações</th><th>Como foi pego</th></tr></thead>
+<tbody>
+<tr><td>01</td><td>Trocou o script de teste por jest, contra o <code>AGENTS.md</code></td><td><code>grep jest package.json</code></td></tr>
+<tr><td>12</td><td>Instalou pacotes de teste em <code>dependencies</code></td><td><code>git diff package.json</code></td></tr>
+<tr><td>12</td><td>Resumiu sem mencionar um passo indefinido</td><td><code>npm run bdd</code> rodado pelo aluno</td></tr>
+<tr><td>12</td><td>Ofereceu mudar a multa esperada para <code>-150</code></td><td>permissão negada; correção no código</td></tr>
+<tr><td>12</td><td>Escreveu <code>p(95)&lt;500</code> com meta de 300 ms</td><td><code>grep</code> no requisito e no script</td></tr>
+<tr><td>17</td><td>Pediu permissão para <code>git push</code> ao conferir o CI</td><td>permissão negada</td></tr>
+</tbody></table></div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">3. Qualidade e ISO/IEC 25010</h2>
+<p class="text-muted">Qualidade tem três leituras: conformidade com a especificação, adequação ao uso e facilidade de mudar o código. Verificação pergunta se o produto foi construído do jeito certo (testes, revisão, análise estática); validação pergunta se é o produto certo (critérios de aceite discutidos, protótipo, conversa com quem usa). A ISO/IEC 25010:2023 organiza a qualidade do produto em nove características: adequação funcional, eficiência de desempenho, compatibilidade, capacidade de interação, confiabilidade, segurança, manutenibilidade, flexibilidade e proteção (safety).</p>
+<p class="text-muted">Uma característica vira requisito quando ganha métrica, meta numérica e a técnica que vai medi-la. No laboratório, o opencode apontou a linha de confiabilidade sem métrica e propôs uma meta de 99,5%; o <code>grep '| ? |'</code> confirmou a linha. O número proposto pelo agente é uma sugestão e precisa de confirmação.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 com 50 usuários | &lt; 300 ms | teste de carga (k6) |
+| Confiabilidade | O sistema não pode cair | ? | ? | ? |      &lt;- não reprova nada</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">4. Spec-Driven Development</h2>
+<p class="text-muted">A especificação vem antes do código e é o que o agente segue. Um arquivo <code>specs/&lt;funcionalidade&gt;.md</code> tem contexto, regras, critérios de aceite numerados e o que fica fora de escopo. Com o identificador do critério no nome do teste ou no comentário do cenário, a rastreabilidade vira um <code>grep</code>.</p>
+<pre class="bg-dark text-info p-3 rounded small">grep -rn "CA-03" test/ features/
+features/emprestimo.feature:26:  # CA-03</pre>
+<p class="text-muted mb-0">No laboratório, o CA-03 (livro reservado por outro aluno) tinha cenário BDD, mas nenhum teste de unidade. Os erros mais comuns: critério que não se verifica ("deve ser fácil de usar") e spec escrita depois do código, só para descrevê-lo.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">5. Caixa preta</h2>
+<p class="text-muted">As técnicas de caixa preta escolhem os casos olhando só a especificação. Partição de equivalência divide as entradas em classes que o sistema trata do mesmo jeito. Análise de valor-limite testa as fronteiras entre as classes, onde moram os erros de comparação. Tabela de decisão combina condições e define a ação de cada regra.</p>
+<div class="table-responsive"><table class="table table-sm small">
+<thead class="table-light"><tr><th>Regra</th><th>Multa pendente</th><th>3 ativos</th><th>Reservado por outro</th><th>Resultado</th></tr></thead>
+<tbody>
+<tr><td>R1</td><td>S</td><td>qualquer</td><td>qualquer</td><td>recusa: multa pendente</td></tr>
+<tr><td>R2</td><td>N</td><td>S</td><td>qualquer</td><td>recusa: limite de 3 empréstimos ativos</td></tr>
+<tr><td>R3</td><td>N</td><td>N</td><td>S</td><td>recusa: livro reservado por outro aluno</td></tr>
+<tr><td>R4</td><td>N</td><td>N</td><td>N</td><td>aceita, devolução em 14 dias</td></tr>
+</tbody></table></div>
+<pre class="bg-dark text-info p-3 rounded small">describe('emprestar: valor-limite de empréstimos ativos', () =&gt; {
+  it('0 ativos: aceita', () =&gt; assert.equal(emprestar(aluno({ ativos: 0 }), livro(), hoje).ok, true));
+  it('2 ativos: aceita', () =&gt; assert.equal(emprestar(aluno({ ativos: 2 }), livro(), hoje).ok, true));
+  it('3 ativos: recusa', () =&gt; assert.equal(emprestar(aluno({ ativos: 3 }), livro(), hoje).ok, false));
+});</pre>
+<p class="text-muted mb-0">No laboratório, trocar <code>&gt;=</code> por <code>&gt;</code> em <code>src/emprestimo.js</code> derrubou dois testes: "3 ativos: recusa" e a regra R2. O teste de 0 ativos continuou verde, o que mostra por que valores do meio da partição não bastam.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">6. Caixa branca</h2>
+<p class="text-muted">As técnicas de caixa branca olham o código. Cobertura de comandos pede que cada linha rode; cobertura de ramos pede que cada decisão seja exercitada como verdadeira e como falsa; cobertura de caminhos pede os caminhos independentes do grafo de fluxo. A complexidade ciclomática conta esses caminhos: V(G) = número de decisões + 1, ou arestas − nós + 2.</p>
+<pre class="bg-dark text-info p-3 rounded small">export function emprestar(aluno, livro, hoje) {
+  if (aluno.multaPendente &gt; 0) { ... }                               // decisão 1
+  if (aluno.ativos &gt;= LIMITE_ATIVOS) { ... }                         // decisão 2
+  if (livro.reservadoPara &amp;&amp; livro.reservadoPara !== aluno.id) { ... } // decisões 3 e 4
+  ...
+}
+// V(G) = 4 + 1 = 5</pre>
+<pre class="bg-dark text-info p-3 rounded small mb-0">npx eslint --rule '{"complexity": ["warn", 4]}' src/emprestimo.js
+  4:8  warning  Function 'emprestar' has a complexity of 5. Maximum allowed is 4  complexity
+
+node --test --experimental-test-coverage test/emprestimo.test.js
+ℹ src/emprestimo.js |  88.24 |    87.50 |  100.00 | 12</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">7. TDD com node:test</h2>
+<p class="text-muted">O ciclo é vermelho, verde, refatoração. O teste é escrito antes do código e precisa falhar pelo motivo certo; o código mínimo o faz passar; a refatoração melhora o código com os testes verdes. Cada passo vira um commit, e o histórico prova que o ciclo aconteceu.</p>
+<p class="text-muted">Com agente, TDD se faz dividindo o pedido. No laboratório, o primeiro prompt pediu só o teste do teto e proibiu mexer em <code>src/</code>; o aluno viu <code>3150 !== 3000</code> e commitou o vermelho. O segundo prompt pediu o mínimo para passar e proibiu mexer nos testes.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">7b0d3f5 feat(multa): limita a multa a 3000 centavos
+e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">8. Cobertura, ESLint e CI</h2>
+<p class="text-muted">A cobertura nativa do Node mede linhas, ramos e funções. Com as opções de meta, o próprio comando falha quando a cobertura cai:</p>
+<pre class="bg-dark text-info p-3 rounded small">"test:cov": "node --test --experimental-test-coverage --test-coverage-include='src/**' --test-coverage-lines=90 --test-coverage-branches=90"
+
+ℹ Error: 87.50% branch coverage does not meet threshold of 90%.</pre>
+<p class="text-muted">O ESLint 9 usa flat config em <code>eslint.config.js</code>, com <code>@eslint/js</code> recommended, globals do Node e a regra <code>complexity</code>. O GitHub Actions roda, a cada push na main, <code>npm ci</code>, <code>npm run lint</code> e <code>npm run test:cov</code>.</p>
+<pre class="bg-dark text-info p-3 rounded small">name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cov</pre>
+<p class="text-muted mb-0">Cobertura mostra o que não foi executado; ela não diz se o que foi executado está certo. Um teste sem asserção cobre a linha e não verifica nada.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">9. Integração com banco real e migrações</h2>
+<p class="text-muted">O teste de integração roda contra um PostgreSQL 16 de verdade, num container criado pelo <code>@testcontainers/postgresql</code>. Ele pega o que um mock do <code>pg</code> aceitaria: SQL inválido, tipo errado, chave estrangeira, índice único, migração que não aplica. O esquema evolui por migrações numeradas em <code>migrations/</code>, aplicadas em ordem; uma migração já aplicada não se edita, cria-se a seguinte.</p>
+<pre class="bg-dark text-info p-3 rounded small">-- migrations/001_cria_tabelas.sql (trecho)
+CREATE UNIQUE INDEX emprestimo_ativo_por_livro
+  ON emprestimos (livro_id) WHERE devolvido IS NULL;</pre>
+<pre class="bg-dark text-info p-3 rounded small mb-0">before(async () =&gt; {
+  container = await new PostgreSqlContainer('postgres:16-alpine').start();
+  pool = new pg.Pool({ connectionString: container.getConnectionUri() });
+  await migrar(pool);
+});
+
+test('o banco recusa dois empréstimos ativos do mesmo livro', async () =&gt; {
+  const sql = 'INSERT INTO emprestimos (aluno_id, livro_id, previsto) VALUES ($1, 1, $2)';
+  await pool.query(sql, [1, '2027-06-07']);
+  await assert.rejects(pool.query(sql, [2, '2027-06-07']), { code: '23505' });
+});</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">10. Dublês e ViaCEP</h2>
+<p class="text-muted">Dublês substituem dependências nos testes. Dummy preenche um parâmetro que não é usado; stub devolve uma resposta pronta; spy registra as chamadas; mock já traz a expectativa de como será chamado; fake é uma implementação simplificada que funciona, como o repositório em memória. Para trocar a ViaCEP por um dublê, o <code>fetch</code> entra por injeção de dependência.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">export async function buscarEndereco(cep, { fetch = globalThis.fetch } = {}) { ... }
+
+test('ViaCEP fora do ar deixa o endereço pendente', async (t) =&gt; {
+  const fetch = t.mock.fn(async () =&gt; { throw new TypeError('fetch failed'); });
+  assert.deepEqual(await buscarEndereco('01310-100', { fetch }), { status: 'pendente' });
+});</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">11. BDD e testes de carga</h2>
+<p class="text-muted">No BDD, cada critério de aceite vira um cenário em Gherkin com <code># language: pt</code>. O cucumber-js lê <code>cucumber.js</code>, cria um World por cenário e executa as step definitions, que chamam a API pelo supertest. Esquema do Cenário com Exemplos cobre valores-limite; <code>@wip</code> fica fora do perfil padrão.</p>
+<p class="text-muted">No k6, o mesmo script atende smoke, carga, estresse, pico e resistência, mudando o perfil de usuários. As métricas centrais são vazão, p95, p99 e taxa de erro, e os thresholds transformam a meta em critério: cruzou, o k6 marca ✗ e sai com código 99.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">npm run bdd      # 10 scenarios (10 passed)
+npm run carga    # ✓ 'p(95)&lt;300' p(95)=131.8ms</pre>
+<p class="text-muted mt-3 mb-0">No laboratório, o agente resumiu o p95 como "cerca de 130 ms". Na prova, cite o número do resumo do k6, que é a evidência.</p>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">12. Git trunk-based</h2>
+<p class="text-muted">A main é o tronco e está sempre verde. Cada mudança nasce numa branch que dura no máximo um dia, é testada e volta por merge local com <code>--ff-only</code>, sem pull request. Feedback do professor chega como issue e é respondido por commit.</p>
+<pre class="bg-dark text-info p-3 rounded small mb-0">git switch -c fix/cep-espacos
+# teste que reproduz a issue, correção, npm test
+git commit -am "fix(cep): normaliza o CEP antes de validar no cadastro (#7)" -m "Closes #7"
+git switch main
+git pull --rebase
+git merge --ff-only fix/cep-espacos
+git push
+git branch -d fix/cep-espacos</pre>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">13. Questões de revisão com respostas esperadas</h2>
+<p class="text-muted">Responda em voz alta antes de abrir a resposta. Na prova, troque os exemplos do <code>biblioteca-campus</code> pelos do seu <code>organizacao-recursos</code>.</p>
+
+<p class="fw-semibold mb-1">1. Qual a diferença entre verificação e validação? Dê um exemplo de cada no seu projeto.</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Verificação confere se o produto está de acordo com o que foi especificado (o produto foi construído do jeito certo?) e usa testes, revisão e análise estática; exemplo: o teste de unidade que recusa duas reservas da mesma sala no mesmo horário. Validação confere se a especificação resolve o problema de quem usa (é o produto certo?) e usa critérios de aceite discutidos, protótipo e conversa; exemplo: confirmar com a secretaria se reservas podem atravessar o intervalo entre os blocos de aula.</p></details>
+
+<p class="fw-semibold mb-1">2. Por que "o sistema deve ser rápido" não serve como requisito? Reescreva-o.</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Não tem métrica, meta nem técnica de verificação, então nenhum resultado consegue reprová-lo. Reescrita: "o p95 do tempo de resposta da consulta de disponibilidade de salas fica abaixo de 300 ms com 50 usuários simultâneos, verificado por teste de carga com k6". O número da meta deve vir de quem define o requisito ou ficar em Perguntas em aberto.</p></details>
+
+<p class="fw-semibold mb-1">3. O que torna um critério de aceite verificável? Mostre um da sua spec e o teste que o cobre.</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Uma condição observável e um resultado esperado sem ambiguidade, de preferência com valores concretos, e um identificador que permita rastreá-lo. Exemplo: "CA-02 Com 3 empréstimos ativos, o pedido é recusado", coberto pelo teste "3 ativos: recusa" e pelo cenário "Quarto empréstimo é recusado", ambos citando CA-02.</p></details>
+
+<p class="fw-semibold mb-1">4. Para "no máximo 3 empréstimos ativos", quais partições e valores-limite você testaria, e por quê?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Partição válida {0, 1, 2 ativos}, que aceita, e partição inválida {3 ou mais}, que recusa. Os valores-limite são 2 (último aceito) e 3 (primeiro recusado); 0 pode entrar como extremo inferior. A fronteira é onde um <code>&gt;</code> no lugar de <code>&gt;=</code> aparece, como o laboratório mostrou.</p></details>
+
+<p class="fw-semibold mb-1">5. Monte a tabela de decisão de <code>emprestar</code>. Quantas regras ela tem?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Condições: multa pendente, 3 ativos e livro reservado por outro aluno. Três condições binárias dão 8 combinações, mas como a primeira condição verdadeira (na ordem multa, limite, reserva) decide o resultado, elas se reduzem a 4 regras: R1 multa, R2 limite, R3 reserva por outro, R4 aceita. A reserva pelo próprio aluno cai em R4 e merece um teste próprio, porque exercita o segundo lado do <code>&amp;&amp;</code>.</p></details>
+
+<p class="fw-semibold mb-1">6. Qual é a complexidade ciclomática de <code>emprestar</code> e o que esse número diz?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">V(G) = 5: três <code>if</code> e um <code>&amp;&amp;</code> somam 4 decisões, mais 1. Há 5 caminhos independentes, então são necessários pelo menos 5 casos para percorrê-los. O número também indica o custo de entender e testar a função; a regra <code>complexity</code> do ESLint impõe um teto.</p></details>
+
+<p class="fw-semibold mb-1">7. 100% de cobertura de linhas garante 100% de ramos? Dê um contraexemplo.</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Não. Em <code>let r = 0; if (a) r = 1; return r;</code>, um único teste com <code>a</code> verdadeiro executa todas as linhas, mas o ramo em que <code>a</code> é falso nunca roda. Por isso a meta da disciplina é de cobertura de ramos.</p></details>
+
+<p class="fw-semibold mb-1">8. Mostre um ciclo de TDD no seu histórico. O que prova que o teste falhou antes?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Um commit <code>test(...)</code> anterior ao <code>feat(...)</code> da mesma funcionalidade. Fazendo <code>git switch --detach &lt;hash-do-test&gt;</code> e rodando <code>npm test</code>, o teste falha com a mensagem esperada (por exemplo <code>3150 !== 3000</code>). Depois vem o commit que o faz passar e, se houver, um <code>refactor(...)</code> com os testes verdes.</p></details>
+
+<p class="fw-semibold mb-1">9. Por que o teste de integração usa PostgreSQL em container e não um mock do <code>pg</code>?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">O mock aceita qualquer SQL e devolve o que foi programado. O banco real pega erro de sintaxe, tipo, chave estrangeira, índice único (o <code>23505</code> do laboratório) e migração que não aplica. O container dá um banco limpo e igual no Codespace e no CI, sem instalar nada na máquina.</p></details>
+
+<p class="fw-semibold mb-1">10. Diferencie stub, spy e mock no teste da ViaCEP. O que acontece com ela fora do ar?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Stub: o <code>fetch</code> falso que devolve o endereço pronto. Spy: o registro das chamadas, conferido com <code>fetch.mock.callCount()</code> e com a URL usada. Mock: um dublê com a expectativa embutida, que falha se não for chamado como previsto. Com a ViaCEP fora do ar, o <code>fetch</code> lança erro, <code>buscarEndereco</code> devolve <code>{ status: 'pendente' }</code> e o cadastro segue; o teste simula isso com um <code>fetch</code> que lança <code>TypeError</code>, sem rede.</p></details>
+
+<p class="fw-semibold mb-1">11. Em que um cenário BDD difere de um teste de unidade? Por que o .feature não cita rotas?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">O cenário descreve um comportamento observável por quem usa, na linguagem da spec, e é executado pela API (supertest), atravessando rota, regra e repositório. O teste de unidade exercita uma função isolada. O .feature descreve o que acontece, e as step definitions guardam como; se ele citasse rotas, quebraria a cada mudança de API sem que o comportamento tivesse mudado.</p></details>
+
+<p class="fw-semibold mb-1">12. O que significa <code>p(95)&lt;300</code>? Por que percentil e não média?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">Que 95% das requisições terminam em menos de 300 ms. A média esconde a cauda: com 95 requisições em 50 ms e 5 em 2000 ms, a média é 147,5 ms, mas cinco usuários em cem esperaram dois segundos. Se o threshold cruzar, o k6 marca ✗ e sai com código 99, o que derruba o script ou o CI.</p></details>
+
+<p class="fw-semibold mb-1">13. Por que <code>--ff-only</code>? Como você responde a uma issue de feedback?</p>
+<details class="mb-3 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0">O <code>--ff-only</code> só integra se a main puder avançar sem commit de merge. O histórico fica linear e o merge exige <code>git pull --rebase</code> antes, então o que chega à main foi testado sobre a main atual. Para a issue: branch curta <code>fix/...</code>, teste que reproduz, correção, <code>npm test</code>, commit <code>fix(escopo): ... (#N)</code> com <code>Closes #N</code> no corpo, merge <code>--ff-only</code> e push; a issue fecha sozinha.</p></details>
+
+<p class="fw-semibold mb-1">14. O agente disse que os testes passam. O que você confere antes de commitar?</p>
+<details class="mb-0 text-muted"><summary>Resposta esperada</summary><p class="mt-2 mb-0"><code>git status</code> e <code>git diff</code> (arquivos inesperados, testes ou .feature alterados, dependências no lugar errado), a execução dos comandos por você mesmo (<code>npm test</code>, lint, <code>bdd</code>, <code>carga</code>), os números comparados com a fonte (metas e thresholds) e o rastro do agente, procurando comandos que você não pediu. O resumo do agente não é evidência; a saída do terminal é.</p></details>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">14. Prompt 1 · perguntas de prova oral sobre o seu repositório</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 30 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 1"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Leia este repositório organizacao-recursos, incluindo docs/, specs/, src/, test/, features/, carga/, .github/workflows/ e o histórico de git log --oneline. Para cada tema da disciplina (requisitos de qualidade e ISO/IEC 25010, SDD, caixa preta, caixa branca e complexidade ciclomática, TDD, cobertura, ESLint e CI, integração com banco e migrações, dublês e ViaCEP, BDD, carga com k6, Git trunk-based), escreva duas perguntas abertas no estilo de prova oral que só possam ser respondidas olhando para um arquivo ou commit deste repositório, citando o caminho do arquivo ou o hash do commit. Não escreva as respostas e não altere nenhum arquivo.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: cada arquivo e cada hash citados existem (<code>ls</code>, <code>git show</code>). Depois responda em voz alta, sem abrir o agente.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">15. Prompt 2 · mapa de lacunas do seu repositório</h2>
+<p class="small text-muted"><i class="far fa-clock me-1" aria-hidden="true"></i> 25 min</p>
+<div class="position-relative"><button type="button" class="btn btn-sm btn-light position-absolute top-0 end-0 m-2 copiar-prompt" aria-label="Copiar o prompt 2"><i class="far fa-copy me-1" aria-hidden="true"></i> Copiar</button><pre class="bg-dark text-info p-3 pt-5 rounded small mb-3" style="white-space: pre-wrap"><code>Monte uma tabela em Markdown com as colunas Tema, Evidência no repositório (arquivo ou commit), Comando que demonstra e Situação (presente, parcial ou ausente), para os mesmos temas da disciplina. Rode apenas comandos de leitura e de teste (npm test, npm run lint, npm run bdd, git log) e peça permissão antes de cada um. Não rode npm run carga. Para cada item parcial ou ausente, descreva em uma frase o que falta, sem escrever código. Grave o resultado em docs/revisao.md e não altere nenhum outro arquivo.</code></pre></div>
+<div class="alert alert-success mb-0"><i class="fas fa-magnifying-glass me-1" aria-hidden="true"></i> Antes de aceitar: rode você mesmo cada comando da coluna "Comando que demonstra" e confira se a situação marcada é verdadeira.</div>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4">
+<h2 class="h3 fw-bold">16. Como será a recuperação</h2>
+<ul class="text-muted mb-0">
+<li>A prova de recuperação acontece na semana 22 e cobre o semestre inteiro, ou seja, os dez temas desta revisão.</li>
+<li>Estude pelo seu repositório: saiba explicar cada teste, cada arquivo de configuração e os seus commits.</li>
+<li>Refaça os laboratórios desta aula e responda às 14 questões da seção 13 em voz alta, com exemplos do <code>organizacao-recursos</code>.</li>
+<li>Formato, horário e o que pode ser consultado ficam no aviso da disciplina (o sino no canto da página) e na home de Qualidade 2027.1.</li>
+</ul>
+</section>
+
+<div class="text-center"><a href="../slide_aula17-revisao.html" class="btn btn-outline-danger rounded-pill me-2"><i class="fas fa-desktop me-1" aria-hidden="true"></i> Ver slides</a><a href="../../home_qualidade_2027_1.html" class="btn btn-outline-secondary rounded-pill"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar</a></div>
+
+</div></div></main>
+<footer class="bg-light text-dark py-4 mt-5"><div class="container text-center"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="25" class="mb-2 opacity-75"><p class="small text-muted mb-0">&copy; 2026 Senac, Hub de Aulas do Professor Afonso.</p></div></footer>
+<script>
+document.querySelectorAll('.copiar-prompt').forEach((botao) => {
+  botao.addEventListener('click', async () => {
+    const texto = botao.parentElement.querySelector('pre').innerText;
+    try { await navigator.clipboard.writeText(texto); botao.textContent = 'Copiado'; }
+    catch { botao.textContent = 'Selecione e copie'; }
+    setTimeout(() => { botao.innerHTML = '<i class="far fa-copy me-1" aria-hidden="true"></i> Copiar'; }, 2000);
+  });
+});
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

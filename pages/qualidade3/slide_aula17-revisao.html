@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="revisão, ISO/IEC 25010, SDD, caixa preta, caixa branca, complexidade ciclomática, TDD, cobertura, ESLint, CI, Testcontainers, dublês, ViaCEP, BDD, k6, trunk-based, opencode" />
+    <title>Aula 17 - Revisão geral</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 17: Revisão geral</h1>
+          <p class="fs-4 text-secondary">Os dez temas do semestre, cada um com síntese, laboratório curto e questões no estilo da prova oral</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 21 · 24/05 a 28/05</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">Revisão</span><span class="keyword">ISO/IEC 25010</span><span class="keyword">TDD</span><span class="keyword">BDD</span><span class="keyword">k6</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>Mapa do semestre e revisão do que o agente produz (15 min)</li><li>Qualidade, ISO/IEC 25010 e SDD (25 min)</li><li>Caixa preta e caixa branca (30 min)</li><li>TDD, cobertura, ESLint e CI (30 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Banco real, dublês e ViaCEP (25 min)</li><li>BDD, carga e Git trunk-based (25 min)</li><li>Questões de revisão em voz alta (25 min)</li><li>Prompts no organizacao-recursos e recuperação (25 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Como a revisão funciona -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-4">Como esta revisão funciona</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-layer-group me-2" aria-hidden="true"></i>Síntese</h3><p class="mb-0">Um slide por tema: a ideia central, como se configura ou se aplica e o erro que mais aparece na prova oral.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-code me-2" aria-hidden="true"></i>Laboratório curto</h3><p class="mb-0">No <code>biblioteca-campus</code>: o opencode faz a tarefa a partir de um prompt e o aluno confere o resultado no terminal.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-4 h-100"><h3 class="h5 fw-bold"><i class="fas fa-comments me-2" aria-hidden="true"></i>Questões</h3><p class="mb-0">Perguntas abertas como as da prova oral. A resposta esperada está no material escrito, não no slide.</p></div></div>
+          </div>
+          <div class="alert alert-dark mt-4 mb-0 fs-6">Cada laboratório tem o roteiro na tecla G. Responda as questões pensando no seu <code>organizacao-recursos</code>: na prova, o exemplo vem do seu repositório.</div>
+        </div>
+      </div>
+
+      <!-- 4. Mapa do semestre -->
+      <div class="slide slide-lab" id="slide-4">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Mapa do semestre</p><h2>Dez temas no mesmo repositório</h2></div></div>
+          <div class="lab-area" id="flow-semestre"></div>
+        </div>
+      </div>
+
+      <!-- 5. Revisar o que o agente produz -->
+      <div class="slide" id="slide-5">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Como revisar o que o agente produz</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-pen-to-square me-2" aria-hidden="true"></i>Antes do prompt</h3><ul class="small mb-0"><li>Diga quais arquivos ele pode mexer e quais não.</li><li>Aponte a fonte: spec, <code>docs/qualidade.md</code>, <code>AGENTS.md</code>.</li><li>Peça para parar e perguntar quando faltar dado.</li></ul></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-eye me-2" aria-hidden="true"></i>Durante</h3><ul class="small mb-0"><li>Leia o rastro: <code>▸ read</code>, <code>▸ write</code>, <code>▸ bash</code>.</li><li>Negue permissão para push, <code>rm</code> e mudanças fora do escopo.</li><li>Recuse "posso mudar o teste para passar?".</li></ul></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Depois</h3><ul class="small mb-0"><li><code>git status</code> e <code>git diff</code>: arquivo inesperado, teste alterado, dependência no lugar errado.</li><li>Rode você mesmo: <code>npm test</code>, lint, <code>bdd</code>, <code>carga</code>.</li><li>Confira números contra a fonte.</li></ul></div></div>
+          </div>
+          <div class="table-responsive mt-3">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 small text-start">
+              <thead class="table-light"><tr><th>Aula</th><th>O que o agente fez</th><th>Como foi pego</th></tr></thead>
+              <tbody>
+                <tr><td>01</td><td>Trocou <code>node --test</code> por jest</td><td><code>grep jest package.json</code></td></tr>
+                <tr><td>12</td><td>Pacotes de teste em <code>dependencies</code></td><td><code>git diff package.json</code></td></tr>
+                <tr><td>12</td><td>Resumo sem citar um passo indefinido</td><td><code>npm run bdd</code></td></tr>
+                <tr><td>12</td><td>Ofereceu mudar o exemplo para <code>-150</code></td><td>permissão negada</td></tr>
+                <tr><td>12</td><td>Threshold de 500 ms com meta de 300 ms</td><td><code>grep</code> nos dois arquivos</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Tema 1: Qualidade e ISO -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 1 de 10</span><span class="badge bg-light text-dark border">Aula 01</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Qualidade e ISO/IEC 25010</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ideia central</h3><p class="small mb-0">Qualidade tem três leituras: conformidade com a spec, adequação ao uso e facilidade de mudar o código. Verificação pergunta se o produto foi construído do jeito certo; validação, se é o produto certo.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Como se aplica</h3><p class="small mb-0">A ISO/IEC 25010:2023 tem nove características. Cada uma vira requisito em <code>docs/qualidade.md</code> com métrica, meta numérica e a técnica que vai medi-la.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Erro comum na prova</h3><p class="small mb-0">Requisito sem número, como "o sistema deve ser rápido". Nenhum teste consegue reprová-lo.</p></div></div>
+          </div>
+          <pre class="bg-dark text-info p-3 rounded small mt-3 mb-0 text-start">| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 com 50 usuários | &lt; 300 ms | teste de carga (k6) |</pre>
+        </div>
+      </div>
+
+      <!-- 7. Lab 1 -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Relembrar o que faz um requisito de qualidade ser verificável.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e compare a linha apontada com a proposta.</div>
+                <div class="rl obs"><b>Observe</b>A proposta do agente para confiabilidade traz métrica, meta e técnica. O número de 99,5% é dele: precisa de confirmação antes de entrar.</div>
+                <div class="rl conc"><b>Conclusão</b>Característica, métrica, meta e técnica. Faltando uma, o requisito não reprova nada.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-iso"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Tema 2: SDD -->
+      <div class="slide" id="slide-8">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 2 de 10</span><span class="badge bg-light text-dark border">Aula 02</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Spec-Driven Development</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ideia central</h3><p class="small mb-0">A especificação vem antes do código e é o que o agente segue. Regras e critérios de aceite escritos tiram do modelo a decisão sobre o comportamento.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Como se aplica</h3><p class="small mb-0"><code>specs/&lt;funcionalidade&gt;.md</code> com contexto, regras, critérios numerados (<code>CA-01</code>) e fora de escopo. Cada critério aparece em pelo menos um teste ou cenário.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Erro comum na prova</h3><p class="small mb-0">Critério que não se verifica ("deve ser fácil de usar") ou código pedido ao agente sem spec, e depois a spec escrita para descrever o código.</p></div></div>
+          </div>
+          <pre class="bg-dark text-info p-3 rounded small mt-3 mb-0 text-start">- CA-02 Com 3 empréstimos ativos, o pedido é recusado.   →   test('3 ativos: recusa') e Cenário: Quarto empréstimo é recusado</pre>
+        </div>
+      </div>
+
+      <!-- 9. Lab 2 -->
+      <div class="slide slide-lab" id="slide-9">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Rastrear cada critério de aceite da spec até um teste.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e confira a lacuna que ele apontou.</div>
+                <div class="rl obs"><b>Observe</b>O CA-03 aparece no cenário BDD, mas não em teste de unidade. O <code>grep</code> confirma a resposta do agente.</div>
+                <div class="rl conc"><b>Conclusão</b>O identificador do critério no nome do teste torna a rastreabilidade um <code>grep</code>.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-sdd"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Tema 3: Caixa preta -->
+      <div class="slide" id="slide-10">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 3 de 10</span><span class="badge bg-light text-dark border">Aula 03</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Caixa preta</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Partição de equivalência</h3><p class="small mb-0">Divide as entradas em classes que o sistema trata igual e testa um valor de cada. Ativos: {0, 1, 2} aceita; {3 ou mais} recusa.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Valor-limite</h3><p class="small mb-0">Os erros moram na fronteira. Testa-se 2 e 3 ativos; na multa, 20 e 21 dias de atraso, onde entra o teto de 3000 centavos.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Tabela de decisão</h3><p class="small mb-0">Combina condições (multa, limite, reserva) e define a ação de cada regra. Uma regra, um teste.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 small text-start"><b class="d-block mb-1">Erro comum na prova</b>Testar só valores do meio da partição (1 ativo, 10 dias) e deixar a fronteira sem teste. Um <code>&gt;</code> no lugar de <code>&gt;=</code> passa despercebido.</div>
+        </div>
+      </div>
+
+      <!-- 11. Lab 3 -->
+      <div class="slide slide-lab" id="slide-11">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ver o teste de valor-limite pegar um erro de fronteira.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia os testes gerados.<br>2. Rode "Verificar".<br>3. Rode "Trocar &gt;= por &gt;".</div>
+                <div class="rl obs"><b>Observe</b>Com <code>&gt;</code>, só o teste de 3 ativos falha (e a regra R2 da tabela). O teste de 0 ativos continua verde e não diria nada.</div>
+                <div class="rl conc"><b>Conclusão</b>A técnica escolhe os valores; o agente só escreve o código do teste.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-preta"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Tema 4: Caixa branca -->
+      <div class="slide" id="slide-12">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 4 de 10</span><span class="badge bg-light text-dark border">Aula 03</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Caixa branca</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ramos</h3><p class="small mb-0">Cada decisão precisa ser exercitada como verdadeira e como falsa. 100% de linhas pode conviver com um <code>else</code> implícito nunca percorrido.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Caminhos</h3><p class="small mb-0">Caminhos independentes do grafo de fluxo: cada um acrescenta pelo menos uma aresta nova. São o mínimo de casos para cobri-los.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Complexidade ciclomática</h3><p class="small mb-0">V(G) = decisões + 1 = arestas − nós + 2. Em <code>emprestar</code>: 3 <code>if</code> e um <code>&amp;&amp;</code>, então V(G) = 5.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 small text-start"><b class="d-block mb-1">Erro comum na prova</b>Dizer que V(G) é o número de testes que bastam. Ele é o número de caminhos independentes; os valores de cada caminho ainda vêm da caixa preta.</div>
+        </div>
+      </div>
+
+      <!-- 13. Lab 4 -->
+      <div class="slide slide-lab" id="slide-13">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Calcular V(G) de <code>emprestar</code> e conferir a conta com ferramentas.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "ESLint complexity" e "Cobertura de ramos".</div>
+                <div class="rl obs"><b>Observe</b>O ESLint conta 5, como o agente. A cobertura mostra 87,5% de ramos e a linha 12 sem execução: o caminho do livro reservado por outro aluno não tem teste.</div>
+                <div class="rl conc"><b>Conclusão</b>A conta manual, a do agente e a do ESLint precisam bater. Se não batem, alguém errou e você precisa saber quem.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-branca"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 14. Tema 5: TDD -->
+      <div class="slide" id="slide-14">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 5 de 10</span><span class="badge bg-light text-dark border">Aula 04</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">TDD com node:test</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ideia central</h3><p class="small mb-0">Vermelho, verde, refatoração. O teste é escrito antes e precisa falhar pelo motivo certo; o código mínimo o faz passar; a refatoração mantém tudo verde.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Como se aplica</h3><p class="small mb-0"><code>node:test</code> e <code>node:assert/strict</code>, um comportamento por teste. Um commit por passo: <code>test(...)</code>, <code>feat(...)</code>, <code>refactor(...)</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Erro comum na prova</h3><p class="small mb-0">Teste escrito depois e chamado de TDD. O histórico mostra: sem commit de teste vermelho antes do <code>feat</code>, não houve ciclo.</p></div></div>
+          </div>
+          <pre class="bg-dark text-info p-3 rounded small mt-3 mb-0 text-start">c41a9e2 refactor(multa): extrai DIA_MS e TETO_CENTAVOS
+7b0d3f5 feat(multa): limita a multa a 3000 centavos
+e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso</pre>
+        </div>
+      </div>
+
+      <!-- 15. Lab 5 -->
+      <div class="slide slide-lab" id="slide-15">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Refazer um ciclo de TDD com o agente, um passo por prompt.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Vermelho" e depois "Verificar o vermelho".<br>2. Rode "Verde" e "Conferir o histórico".</div>
+                <div class="rl obs"><b>Observe</b>O primeiro prompt proíbe mexer em <code>src/</code>; o aluno vê <code>3150 !== 3000</code> antes de pedir a implementação.</div>
+                <div class="rl conc"><b>Conclusão</b>Com agente, TDD é dividir o pedido: primeiro só o teste, depois só o código.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-tdd"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 16. Tema 6: Cobertura, ESLint e CI -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 6 de 10</span><span class="badge bg-light text-dark border">Aula 05</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Cobertura, ESLint e CI</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Cobertura nativa</h3><p class="small mb-0"><code>node --test --experimental-test-coverage</code> com <code>--test-coverage-branches=90</code>: abaixo da meta, o comando sai com erro.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">ESLint 9</h3><p class="small mb-0"><code>eslint.config.js</code> em flat config, com <code>@eslint/js</code> recommended, globals do Node e a regra <code>complexity</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">GitHub Actions</h3><p class="small mb-0">A cada push na main: Node 22, <code>npm ci</code>, lint e testes com cobertura. A main só fica verde se tudo passar.</p></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 small text-start"><b class="d-block mb-1">Erro comum na prova</b>Tratar cobertura como prova de qualidade. Um teste sem asserção cobre a linha e não verifica nada; a cobertura mostra o que não foi executado, não o que está certo.</div>
+        </div>
+      </div>
+
+      <!-- 17. Lab 6 -->
+      <div class="slide slide-lab" id="slide-17">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Confirmar que o CI reprova quando a cobertura de ramos cai.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar a cobertura" e "Lint".<br>3. Veja o histórico do CI.</div>
+                <div class="rl obs"><b>Observe</b>O agente pediu permissão para <code>git push</code> e recebeu não: push é decisão do aluno, depois de ver o comando falhar no Codespace.</div>
+                <div class="rl conc"><b>Conclusão</b>O gate só existe se a meta estiver no comando que o workflow roda.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-ci"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18. Tema 7: Banco real -->
+      <div class="slide" id="slide-18">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 7 de 10</span><span class="badge bg-light text-dark border">Aula 10</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Integração com banco real e migrações</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ideia central</h3><p class="small mb-0">O teste de integração roda contra um PostgreSQL 16 de verdade, num container, para pegar SQL errado, restrição e tipo que um mock do <code>pg</code> aceitaria.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Como se aplica</h3><p class="small mb-0"><code>@testcontainers/postgresql</code> sobe o banco no <code>before</code>, aplica <code>migrations/NNN_*.sql</code> em ordem e derruba no <code>after</code>. Cada teste limpa o que criou.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Erro comum na prova</h3><p class="small mb-0">Editar uma migração já aplicada. Mudança no esquema é sempre uma migração nova, com o número seguinte.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 19. Lab 7 -->
+      <div class="slide slide-lab" id="slide-19">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Provar com o banco real que um livro não tem dois empréstimos ativos.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode" e leia a migração e o teste.<br>2. Rode "Verificar".</div>
+                <div class="rl obs"><b>Observe</b>O teste espera o código <code>23505</code> (violação de unicidade) vindo do índice parcial da migração 001. Só um PostgreSQL de verdade devolve isso.</div>
+                <div class="rl conc"><b>Conclusão</b>Regra que mora no banco também precisa de teste, e esse teste precisa de banco.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-banco"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 20. Tema 8: Dublês e ViaCEP -->
+      <div class="slide" id="slide-20">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 8 de 10</span><span class="badge bg-light text-dark border">Aula 11</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Dublês de teste e ViaCEP</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 small text-start">
+              <thead class="table-light"><tr><th>Dublê</th><th>O que faz</th><th>No teste da ViaCEP</th></tr></thead>
+              <tbody>
+                <tr><td>Dummy</td><td>Preenche um parâmetro que não é usado</td><td>um logger vazio passado ao serviço</td></tr>
+                <tr><td>Stub</td><td>Devolve uma resposta pronta</td><td><code>fetch</code> que devolve o endereço da Av. Paulista</td></tr>
+                <tr><td>Spy</td><td>Registra as chamadas para conferir depois</td><td><code>fetch.mock.callCount()</code> e a URL chamada</td></tr>
+                <tr><td>Mock</td><td>Já nasce com a expectativa de como será chamado</td><td>falha se a URL não tiver o CEP sem hífen</td></tr>
+                <tr><td>Fake</td><td>Implementação simplificada que funciona</td><td>repositório em memória no lugar do PostgreSQL</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 small text-start"><b class="d-block mb-1">Erro comum na prova</b>Teste de unidade que chama a ViaCEP de verdade. Ele fica lento, falha sem internet e não consegue simular a ViaCEP fora do ar. O <code>fetch</code> entra por injeção de dependência.</div>
+        </div>
+      </div>
+
+      <!-- 21. Lab 8 -->
+      <div class="slide slide-lab" id="slide-21">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Isolar a ViaCEP com <code>t.mock.fn</code> e cobrir os três casos.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Verificar" e "Conferir a rede".</div>
+                <div class="rl obs"><b>Observe</b>O mesmo <code>t.mock.fn</code> serve de stub (resposta pronta) e de spy (<code>callCount</code>). Nenhum teste toca <code>viacep.com.br</code>.</div>
+                <div class="rl conc"><b>Conclusão</b>ViaCEP fora do ar vira um caso de teste comum: o cadastro segue com o endereço pendente.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-dubles"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 22. Tema 9: BDD e carga -->
+      <div class="slide" id="slide-22">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 9 de 10</span><span class="badge bg-light text-dark border">Aula 12</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">BDD e testes de carga</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">BDD com cucumber-js</h3><ul class="small mb-0"><li>Critério de aceite vira cenário em Gherkin (<code># language: pt</code>).</li><li>Step definitions chamam a API com supertest; um World por cenário.</li><li>Esquema do Cenário com Exemplos para valores-limite; <code>@wip</code> fora do perfil padrão.</li></ul></div></div>
+            <div class="col-md-6"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Carga com k6</h3><ul class="small mb-0"><li>Smoke, carga, estresse, pico e resistência: mesmo script, perfis diferentes.</li><li>Vazão, p95, p99 e taxa de erro; a média esconde a cauda.</li><li>Threshold com a meta do <code>docs/qualidade.md</code>; cruzou, sai com 99.</li></ul></div></div>
+          </div>
+          <div class="alert alert-light border mt-3 mb-0 small text-start"><b class="d-block mb-1">Erro comum na prova</b>Cenário com rota e SQL no texto, ou threshold com número diferente da meta escrita no requisito.</div>
+        </div>
+      </div>
+
+      <!-- 23. Lab 9 -->
+      <div class="slide slide-lab" id="slide-23">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Rodar a suíte de aceitação e a carga e ler os dois resumos.</div>
+                <div class="rl"><b>Faça</b>1. Rode "Pedir ao opencode".<br>2. Rode "Cenários" e "Carga" você mesmo.</div>
+                <div class="rl obs"><b>Observe</b>O agente resumiu o p95 como "cerca de 130 ms". No resumo do k6 está 131,8 ms; na prova, cite o número do resumo.</div>
+                <div class="rl conc"><b>Conclusão</b>Os dois comandos são a evidência do Trabalho 2: um cenário por critério e uma meta que reprova.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-bdd"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 24. Tema 10: Git -->
+      <div class="slide" id="slide-24">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Tema 10 de 10</span><span class="badge bg-light text-dark border">Aula 01 e semestre</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Git trunk-based</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Ideia central</h3><p class="small mb-0">A main é o tronco e está sempre verde. Cada mudança nasce numa branch que dura no máximo um dia e volta por merge local, sem pull request.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Como se aplica</h3><p class="small mb-0"><code>git pull --rebase</code>, testes verdes, <code>git merge --ff-only</code>. Conventional Commits em português. Feedback chega como issue e volta como <code>fix(...): ... (#N)</code> com <code>Closes #N</code>.</p></div></div>
+            <div class="col-md-4"><div class="card border-0 shadow-sm p-3 h-100"><h3 class="h6 fw-bold">Erro comum na prova</h3><p class="small mb-0">Commit "ajustes" com dez arquivos, ou branch de uma semana. Na prova, o log é aberto e cada commit precisa de explicação.</p></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 25. Lab 10 -->
+      <div class="slide slide-lab" id="slide-25">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Responder a uma issue de feedback do jeito cobrado no semestre.</div>
+                <div class="rl"><b>Faça</b>Rode os quatro passos em ordem: branch, correção pelo agente, revisão e commit, integração na main.</div>
+                <div class="rl obs"><b>Observe</b>O agente propõe a mensagem, mas o commit é do aluno e cita <code>(#7)</code> e <code>Closes #7</code>. O log fica linear.</div>
+                <div class="rl conc"><b>Conclusão</b>A issue fecha sozinha quando o commit chega à main. O histórico é a prova da correção.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-git"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 26. Questões 1 -->
+      <div class="slide" id="slide-26">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-dark">Questões de revisão</span><span class="badge bg-light text-dark border">1 de 2</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Responda em voz alta</h2>
+          <ol class="fs-5 text-start mb-0">
+            <li>Qual a diferença entre verificação e validação? Dê um exemplo de cada no seu projeto.</li>
+            <li>Por que "o sistema deve ser rápido" não serve como requisito? Reescreva-o.</li>
+            <li>O que torna um critério de aceite verificável? Mostre um da sua spec e o teste que o cobre.</li>
+            <li>Para "no máximo 3 empréstimos ativos", quais partições e valores-limite você testaria?</li>
+            <li>Monte a tabela de decisão de <code>emprestar</code>. Quantas regras ela tem?</li>
+            <li>Qual é a complexidade ciclomática de <code>emprestar</code> e o que esse número diz?</li>
+            <li>100% de linhas garante 100% de ramos? Dê um contraexemplo.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 27. Questões 2 -->
+      <div class="slide" id="slide-27">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-dark">Questões de revisão</span><span class="badge bg-light text-dark border">2 de 2</span></div>
+          <h2 class="display-6 fw-bold text-center mb-3">Responda em voz alta</h2>
+          <ol class="fs-5 text-start mb-0" start="8">
+            <li>Mostre um ciclo de TDD no seu histórico. O que prova que o teste falhou antes?</li>
+            <li>Por que o teste de integração usa PostgreSQL em container e não um mock do <code>pg</code>?</li>
+            <li>Diferencie stub, spy e mock no teste da ViaCEP. O que acontece com ela fora do ar?</li>
+            <li>Em que um cenário BDD difere de um teste de unidade? Por que o .feature não cita rotas?</li>
+            <li>O que significa <code>p(95)&lt;300</code>? Por que percentil e não média?</li>
+            <li>Por que <code>--ff-only</code>? Como você responde a uma issue de feedback?</li>
+            <li>O agente disse que os testes passam. O que você confere antes de commitar?</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- 28. Prompt 1 -->
+      <div class="slide" id="slide-28">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 2</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Perguntas de prova oral sobre o seu repositório</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Leia este repositório organizacao-recursos, incluindo docs/, specs/, src/, test/, features/, carga/, .github/workflows/ e o histórico de git log --oneline. Para cada tema da disciplina (requisitos de qualidade e ISO/IEC 25010, SDD, caixa preta, caixa branca e complexidade ciclomática, TDD, cobertura, ESLint e CI, integração com banco e migrações, dublês e ViaCEP, BDD, carga com k6, Git trunk-based), escreva duas perguntas abertas no estilo de prova oral que só possam ser respondidas olhando para um arquivo ou commit deste repositório, citando o caminho do arquivo ou o hash do commit. Não escreva as respostas e não altere nenhum arquivo.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: cada arquivo e cada hash citados existem (<code>ls</code>, <code>git show</code>). Depois responda em voz alta, sem abrir o agente.</div>
+        </div>
+      </div>
+
+      <!-- 29. Prompt 2 -->
+      <div class="slide" id="slide-29">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 2</span><span class="badge bg-light text-dark border">25 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Mapa de lacunas do seu repositório</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Monte uma tabela em Markdown com as colunas Tema, Evidência no repositório (arquivo ou commit), Comando que demonstra e Situação (presente, parcial ou ausente), para os mesmos temas da disciplina. Rode apenas comandos de leitura e de teste (npm test, npm run lint, npm run bdd, git log) e peça permissão antes de cada um. Não rode npm run carga. Para cada item parcial ou ausente, descreva em uma frase o que falta, sem escrever código. Grave o resultado em docs/revisao.md e não altere nenhum outro arquivo.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: rode você mesmo cada comando da coluna "Comando que demonstra" e confira se a situação marcada é verdadeira.</div>
+        </div>
+      </div>
+
+      <!-- 30. Recuperação -->
+      <div class="slide" id="slide-30">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Semana 22</span>
+          <h2 class="display-6 fw-bold mb-3">Como será a recuperação</h2>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <ul class="fs-5 mb-0">
+              <li>O conteúdo é o semestre inteiro: os dez temas desta revisão.</li>
+              <li>Estude pelo seu repositório. Saiba explicar cada teste, cada configuração e os seus commits.</li>
+              <li>Refaça os laboratórios desta aula e responda às 14 questões em voz alta, com exemplos do <code>organizacao-recursos</code>.</li>
+              <li>Formato, horário e o que pode ser consultado ficam no aviso da disciplina (sino) e na home.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 31. Dúvidas -->
+      <div class="slide cover-bg" id="slide-31">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: Prova de recuperação.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 31</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · Revisão geral · Semana 21</div>
+      <a href="material/material_aula17-revisao.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PR = (branch) => '@professor ➜ /workspaces/biblioteca-campus (' + branch + ') $ ';
+const ST = 'Codespaces: professor';
+
+const EMPRESTAR =
+`export const LIMITE_ATIVOS = 3;
+export const PRAZO_DIAS = 14;
+
+export function emprestar(aluno, livro, hoje) {
+  if (aluno.multaPendente > 0) {
+    return { ok: false, erro: 'multa pendente' };
+  }
+  if (aluno.ativos >= LIMITE_ATIVOS) {
+    return { ok: false, erro: 'limite de 3 empréstimos ativos' };
+  }
+  if (livro.reservadoPara && livro.reservadoPara !== aluno.id) {
+    return { ok: false, erro: 'livro reservado por outro aluno' };
+  }
+  const prevista = new Date(hoje);
+  prevista.setUTCDate(prevista.getUTCDate() + PRAZO_DIAS);
+  return { ok: true, devolucaoPrevista: prevista.toISOString().slice(0, 10) };
+}`;
+
+/* ---------- 4. Mapa do semestre ---------- */
+Labs.flow('#flow-semestre', {
+  w: 1000, h: 420,
+  nodes: [
+    { id: 'iso', x: 100, y: 80, label: 'Qualidade', sub: 'Aula 01 · ISO 25010', k: 'amber' },
+    { id: 'sdd', x: 300, y: 80, label: 'SDD', sub: 'Aula 02 · specs/' , k: 'amber' },
+    { id: 'cx', x: 500, y: 80, label: 'Caixas', sub: 'Aula 03 · preta e branca' },
+    { id: 'tdd', x: 700, y: 80, label: 'TDD', sub: 'Aula 04 · node:test' },
+    { id: 'ci', x: 900, y: 80, label: 'Cobertura e CI', sub: 'Aula 05 · gate', k: 'green' },
+    { id: 't1', x: 900, y: 210, label: 'Trabalho 1', sub: 'semana 10', k: 'purple' },
+    { id: 'db', x: 700, y: 340, label: 'Banco real', sub: 'Aula 10 · Testcontainers' },
+    { id: 'dbl', x: 500, y: 340, label: 'Dublês', sub: 'Aula 11 · ViaCEP' },
+    { id: 'bdd', x: 300, y: 340, label: 'BDD e carga', sub: 'Aula 12 · cucumber, k6' },
+    { id: 't2', x: 100, y: 340, label: 'Trabalho 2', sub: 'semana 17', k: 'purple' },
+    { id: 'git', x: 400, y: 210, w: 300, label: 'Git trunk-based e opencode', sub: 'todas as aulas', k: 'blue' }
+  ],
+  links: [ { from: 'iso', to: 'sdd' }, { from: 'sdd', to: 'cx' }, { from: 'cx', to: 'tdd' }, { from: 'tdd', to: 'ci' }, { from: 'ci', to: 't1' }, { from: 't1', to: 'db', dashed: true }, { from: 'db', to: 'dbl' }, { from: 'dbl', to: 'bdd' }, { from: 'bdd', to: 't2' }, { from: 'iso', to: 'bdd', dashed: true, curve: -60, label: 'meta de desempenho vira threshold' } ],
+  steps: [
+    { title: 'Definir o que é qualidade', text: 'A Aula 01 escreve <code>docs/qualidade.md</code>: característica, métrica, meta e técnica. A meta de desempenho reaparece no k6 da Aula 12.', on: ['iso', 'bdd'], links: [['iso', 'bdd', 'amber']] },
+    { title: 'Especificar e escolher casos', text: 'A spec da Aula 02 dá os critérios de aceite; caixa preta e caixa branca escolhem quais testes escrever.', on: ['sdd', 'cx'], links: [['iso', 'sdd'], ['sdd', 'cx']] },
+    { title: 'Escrever e travar', text: 'TDD com node:test e um gate no CI com cobertura de ramos e ESLint. Fecha o Trabalho 1.', on: ['tdd', 'ci', 't1'], links: [['cx', 'tdd'], ['tdd', 'ci'], ['ci', 't1', 'purple']] },
+    { title: 'Sair da unidade', text: 'O mesmo repositório ganha PostgreSQL em container, ViaCEP isolada por dublê, cenários BDD e carga com thresholds. Fecha o Trabalho 2.', on: ['db', 'dbl', 'bdd', 't2'], links: [['t1', 'db', 'purple'], ['db', 'dbl'], ['dbl', 'bdd'], ['bdd', 't2', 'purple']] },
+    { title: 'O que atravessa tudo', text: 'Branches curtas, Conventional Commits, merge <code>--ff-only</code> e o opencode gerando código que o aluno revisa antes de commitar.', on: ['git'], dim: true }
+  ]
+});
+
+/* ---------- 7. Lab 1: ISO ---------- */
+Labs.vscode('#lab-iso', {
+  folder: 'biblioteca-campus', status: ST, branch: 'main', open: 'docs/qualidade.md',
+  prompt: PR('main'),
+  files: [
+    { path: 'docs/qualidade.md', hl: [6], code:
+`# Requisitos de qualidade · biblioteca-campus
+
+| Característica | Requisito | Métrica | Meta | Como será verificado |
+|---|---|---|---|---|
+| Eficiência de desempenho | Consulta de acervo responde sob carga | p95 com 50 usuários | < 300 ms | teste de carga (k6) |
+| Confiabilidade | O sistema não pode cair | ? | ? | ? |
+| Adequação funcional | Empréstimo respeita limite de 3 livros | empréstimos acima do limite aceitos | 0 | teste de unidade |
+| Manutenibilidade | Regras de empréstimo testadas | cobertura de ramos em src/emprestimo.js | >= 90% | cobertura no CI |` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Revise docs/qualidade.md: aponte as linhas sem métrica, meta numérica ou técnica de verificação e proponha a correção. Não grave nada."', speed: 120, out: [
+      '[mute] ▸ read docs/qualidade.md',
+      'Linha 6 (Confiabilidade) não tem métrica, meta nem técnica. Proposta:',
+      '| Confiabilidade | Busca do acervo disponível em horário de aula | requisições com sucesso / total | >= 99,5% | teste de carga (k6, http_req_failed) |',
+      '[warn] A meta de 99,5% é uma sugestão; confirme com quem define o requisito.' ] },
+    { label: '2. Verificar', kind: 'red', cmd: "grep -n '| ? |' docs/qualidade.md", out: [
+      '[err] 6:| Confiabilidade | O sistema não pode cair | ? | ? | ? |',
+      '[mute] 1 requisito sem métrica: nenhum teste consegue reprová-lo.' ] }
+  ]
+});
+
+/* ---------- 9. Lab 2: SDD ---------- */
+Labs.vscode('#lab-sdd', {
+  folder: 'biblioteca-campus', status: ST, branch: 'main', open: 'specs/emprestimo.md',
+  prompt: PR('main'),
+  files: [
+    { path: 'specs/emprestimo.md', hl: [13, 14, 15, 16], code:
+`# Especificação · Empréstimo (RF-02)
+
+## Contexto
+Alunos pegam livros do acervo do campus pela API.
+
+## Regras
+- No máximo 3 empréstimos ativos por aluno.
+- Prazo de 14 dias corridos.
+- Multa de 150 centavos por dia de atraso, com teto de 3000.
+
+## Critérios de aceite
+- CA-01 Com menos de 3 ativos, o aluno pega o livro e a devolução prevista é hoje + 14 dias.
+- CA-02 Com 3 empréstimos ativos, o pedido é recusado.
+- CA-03 Livro reservado por outro aluno não sai.
+- CA-04 Aluno com multa pendente não pega livro.
+
+## Fora de escopo
+- Renovação de empréstimo.` },
+    { path: 'test/emprestimo.test.js', code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-05-24');
+
+test('CA-01 com 2 ativos aceita e prevê devolução em 14 dias', () => {
+  const r = emprestar({ id: 'ana', ativos: 2, multaPendente: 0 }, { reservadoPara: null }, hoje);
+  assert.deepEqual(r, { ok: true, devolucaoPrevista: '2027-06-07' });
+});
+
+test('CA-02 com 3 ativos recusa', () => {
+  assert.equal(emprestar({ id: 'ana', ativos: 3, multaPendente: 0 }, { reservadoPara: null }, hoje).ok, false);
+});
+
+test('CA-04 com multa pendente recusa', () => {
+  assert.equal(emprestar({ id: 'ana', ativos: 0, multaPendente: 450 }, { reservadoPara: null }, hoje).erro, 'multa pendente');
+});` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Liste os critérios de aceite de specs/emprestimo.md e diga, para cada um, em quais testes de test/ e cenários de features/ ele aparece. Não altere arquivos."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md',
+      '[mute] ▸ grep "CA-0" test/ features/',
+      'CA-01  test/emprestimo.test.js:7   features/emprestimo.feature:13',
+      'CA-02  test/emprestimo.test.js:12  features/emprestimo.feature:20',
+      '[warn] CA-03  (sem teste de unidade)    features/emprestimo.feature:26',
+      'CA-04  test/emprestimo.test.js:16  features/emprestimo.feature:32' ] },
+    { label: '2. Verificar', kind: 'blue', cmd: 'grep -rn "CA-03" test/ features/', out: [
+      'features/emprestimo.feature:26:  # CA-03',
+      '[warn] Só o cenário BDD cobre o CA-03. Um teste de unidade para reserva por outro aluno fecha a lacuna.' ] }
+  ]
+});
+
+/* ---------- 11. Lab 3: caixa preta ---------- */
+const PRETA =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-05-24');
+const aluno = (extra = {}) => ({ id: 'ana', ativos: 0, multaPendente: 0, ...extra });
+const livro = (extra = {}) => ({ id: 'clean-code', reservadoPara: null, ...extra });
+
+describe('emprestar: valor-limite de empréstimos ativos', () => {
+  it('0 ativos: aceita', () => assert.equal(emprestar(aluno({ ativos: 0 }), livro(), hoje).ok, true));
+  it('2 ativos: aceita', () => assert.equal(emprestar(aluno({ ativos: 2 }), livro(), hoje).ok, true));
+  it('3 ativos: recusa', () => assert.equal(emprestar(aluno({ ativos: 3 }), livro(), hoje).ok, false));
+});
+
+describe('emprestar: tabela de decisão', () => {
+  const regras = [
+    ['R1 multa pendente', aluno({ multaPendente: 450 }), livro(), 'multa pendente'],
+    ['R2 limite atingido', aluno({ ativos: 3 }), livro(), 'limite de 3 empréstimos ativos'],
+    ['R3 reservado por outro', aluno(), livro({ reservadoPara: 'bruno' }), 'livro reservado por outro aluno'],
+    ['R4 reservado pelo próprio aluno', aluno(), livro({ reservadoPara: 'ana' }), undefined],
+  ];
+  for (const [nome, a, l, erro] of regras) {
+    it(nome, () => assert.equal(emprestar(a, l, hoje).erro, erro));
+  }
+});`;
+Labs.vscode('#lab-preta', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/caixa-preta', open: 'test/emprestimo.caixa-preta.test.js',
+  prompt: PR('test/caixa-preta'),
+  files: [
+    { path: 'test/emprestimo.caixa-preta.test.js', hl: [11, 12], code: PRETA },
+    { path: 'src/emprestimo.js', hl: [8], code: EMPRESTAR }
+  ],
+  onRun(k, api) { if (k === 2) api.setCode('src/emprestimo.js', EMPRESTAR.replace('ativos >= LIMITE', 'ativos > LIMITE')); },
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Escreva test/emprestimo.caixa-preta.test.js para emprestar: valores-limite de empréstimos ativos (0, 2 e 3) e uma regra da tabela de decisão por teste (multa, limite, reserva por outro, reserva pelo próprio aluno). Não altere src/."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md', '[mute] ▸ read src/emprestimo.js',
+      '[mute] ▸ write test/emprestimo.caixa-preta.test.js',
+      '[mute] ▸ bash node --test test/emprestimo.caixa-preta.test.js',
+      'Criei 7 testes em 2 suítes (3 de valor-limite, 4 regras da tabela de decisão). Todos passam.' ] },
+    { label: '2. Verificar', kind: 'blue', cmd: 'node --test test/emprestimo.caixa-preta.test.js', out: [
+      '▶ emprestar: valor-limite de empréstimos ativos',
+      '[ok]   ✔ 0 ativos: aceita (0.71ms)', '[ok]   ✔ 2 ativos: aceita (0.12ms)', '[ok]   ✔ 3 ativos: recusa (0.09ms)',
+      '[ok] ✔ emprestar: valor-limite de empréstimos ativos (1.42ms)',
+      '▶ emprestar: tabela de decisão',
+      '[ok]   ✔ R1 multa pendente (0.10ms)', '[ok]   ✔ R2 limite atingido (0.08ms)', '[ok]   ✔ R3 reservado por outro (0.07ms)', '[ok]   ✔ R4 reservado pelo próprio aluno (0.07ms)',
+      '[ok] ✔ emprestar: tabela de decisão (0.61ms)',
+      'ℹ tests 7', 'ℹ suites 2', 'ℹ pass 7', 'ℹ fail 0', 'ℹ duration_ms 48.3' ] },
+    { label: '3. Trocar >= por >', kind: 'red', cmd: "sed -i 's/ativos >= LIMITE/ativos > LIMITE/' src/emprestimo.js && node --test test/emprestimo.caixa-preta.test.js", file: 'src/emprestimo.js', out: [
+      '▶ emprestar: valor-limite de empréstimos ativos',
+      '[ok]   ✔ 0 ativos: aceita (0.70ms)', '[ok]   ✔ 2 ativos: aceita (0.11ms)',
+      '[err]   ✖ 3 ativos: recusa (0.88ms)',
+      '[err]     AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '[err]     true !== false',
+      '▶ emprestar: tabela de decisão',
+      '[ok]   ✔ R1 multa pendente (0.10ms)',
+      "[err]   ✖ R2 limite atingido (0.31ms)", "[err]     undefined !== 'limite de 3 empréstimos ativos'",
+      '[ok]   ✔ R3 reservado por outro (0.07ms)', '[ok]   ✔ R4 reservado pelo próprio aluno (0.06ms)',
+      'ℹ tests 7', 'ℹ pass 5', '[err] ℹ fail 2',
+      '[mute] git checkout src/emprestimo.js desfaz o erro plantado.' ] }
+  ]
+});
+
+/* ---------- 13. Lab 4: caixa branca ---------- */
+Labs.vscode('#lab-branca', {
+  folder: 'biblioteca-campus', status: ST, branch: 'main', open: 'src/emprestimo.js',
+  prompt: PR('main'),
+  files: [ { path: 'src/emprestimo.js', hl: [5, 8, 11], code: EMPRESTAR } ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Calcule a complexidade ciclomática de emprestar em src/emprestimo.js, mostre a conta, liste os caminhos independentes e diga quais não têm teste em test/emprestimo.test.js."', speed: 120, out: [
+      '[mute] ▸ read src/emprestimo.js', '[mute] ▸ read test/emprestimo.test.js',
+      'Decisões: if (linha 5), if (linha 8), if (linha 11) e o && da linha 11. V(G) = 4 + 1 = 5.',
+      'Caminhos: P1 multa | P2 limite | P3 reservado por outro | P4 sem reserva, aceita | P5 reservado pelo próprio aluno, aceita',
+      '[warn] Sem teste em test/emprestimo.test.js: P3 e P5.' ] },
+    { label: '2. ESLint complexity', kind: 'blue', cmd: 'npx eslint --rule \'{"complexity": ["warn", 4]}\' src/emprestimo.js', out: [
+      '', '/workspaces/biblioteca-campus/src/emprestimo.js',
+      "[warn]   4:8  warning  Function 'emprestar' has a complexity of 5. Maximum allowed is 4  complexity", '',
+      '[warn] ✖ 1 problem (0 errors, 1 warning)' ] },
+    { label: '3. Cobertura de ramos', kind: 'blue', cmd: 'node --test --experimental-test-coverage test/emprestimo.test.js', out: [
+      '[ok] ✔ CA-01 com 2 ativos aceita e prevê devolução em 14 dias (0.9ms)', '[ok] ✔ CA-02 com 3 ativos recusa (0.1ms)', '[ok] ✔ CA-04 com multa pendente recusa (0.1ms)',
+      'ℹ start of coverage report',
+      'ℹ ------------------------------------------------------------------',
+      'ℹ file              | line % | branch % | funcs % | uncovered lines',
+      'ℹ ------------------------------------------------------------------',
+      '[warn] ℹ src/emprestimo.js |  88.24 |    87.50 |  100.00 | 12',
+      'ℹ ------------------------------------------------------------------',
+      'ℹ end of coverage report' ] }
+  ]
+});
+
+/* ---------- 15. Lab 5: TDD ---------- */
+const MULTA_TESTE =
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/multa.js';
+
+test('1 dia de atraso custa 150 centavos', () => {
+  assert.equal(calcularMulta('2027-05-04', '2027-05-05'), 150);
+});
+
+test('21 dias de atraso param no teto de 3000 centavos', () => {
+  assert.equal(calcularMulta('2027-05-04', '2027-05-25'), 3000);
+});`;
+const MULTA_V1 =
+`const DIA_MS = 86_400_000;
+
+export function calcularMulta(previsto, devolvido) {
+  const dias = Math.ceil((new Date(devolvido) - new Date(previsto)) / DIA_MS);
+  if (dias <= 0) return 0;
+  return dias * 150;
+}`;
+Labs.vscode('#lab-tdd', {
+  folder: 'biblioteca-campus', status: ST, branch: 'feat/teto-multa', open: 'test/multa.test.js',
+  prompt: PR('feat/teto-multa'),
+  files: [
+    { path: 'test/multa.test.js', hl: [9, 10, 11], code: MULTA_TESTE },
+    { path: 'src/multa.js', hl: [6], code: MULTA_V1 }
+  ],
+  onRun(k, api) { if (k === 2) api.setCode('src/multa.js', MULTA_V1.replace('return dias * 150;', 'return Math.min(dias * 150, 3000);')); },
+  run: [
+    { label: '1. Vermelho', cmd: 'opencode run "TDD, passo vermelho: escreva em test/multa.test.js só o teste de 21 dias de atraso parando no teto de 3000 centavos. Não altere src/. Rode o teste e mostre a falha."', speed: 120, out: [
+      '[mute] ▸ read specs/emprestimo.md', '[mute] ▸ read test/multa.test.js',
+      '[mute] ▸ edit test/multa.test.js', '[mute] ▸ bash node --test test/multa.test.js',
+      'O teste novo falha com 3150 !== 3000, como esperado: o teto ainda não existe em src/multa.js.' ] },
+    { label: '2. Verificar o vermelho', kind: 'red', cmd: 'git diff --stat && node --test test/multa.test.js', out: [
+      ' test/multa.test.js | 4 ++++', ' 1 file changed, 4 insertions(+)',
+      '[ok] ✔ 1 dia de atraso custa 150 centavos (0.6ms)',
+      '[err] ✖ 21 dias de atraso param no teto de 3000 centavos (0.9ms)',
+      '[err]   AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '[err]   3150 !== 3000',
+      'ℹ tests 2', 'ℹ pass 1', '[err] ℹ fail 1',
+      '[mute] git commit -m "test(multa): cobre o teto de 3000 centavos com 21 dias de atraso"' ] },
+    { label: '3. Verde', cmd: 'opencode run "TDD, passo verde: altere só src/multa.js com o mínimo para o teste do teto passar. Não mexa nos testes."', out: [
+      '[mute] ▸ read src/multa.js', '[mute] ▸ edit src/multa.js', '[mute] ▸ bash node --test test/multa.test.js',
+      'Troquei "return dias * 150" por "return Math.min(dias * 150, 3000)". 2 testes passam.' ] },
+    { label: '4. Conferir o histórico', kind: 'blue', file: 'src/multa.js', cmd: 'node --test test/multa.test.js && git commit -qam "feat(multa): limita a multa a 3000 centavos" && git log --oneline -3', out: [
+      '[ok] ✔ 1 dia de atraso custa 150 centavos (0.6ms)', '[ok] ✔ 21 dias de atraso param no teto de 3000 centavos (0.2ms)',
+      'ℹ tests 2', 'ℹ pass 2', 'ℹ fail 0',
+      '7b0d3f5 (HEAD -> feat/teto-multa) feat(multa): limita a multa a 3000 centavos',
+      'e19c6a8 test(multa): cobre o teto de 3000 centavos com 21 dias de atraso',
+      '5a2c7d1 (main) feat(multa): calcula 150 centavos por dia de atraso' ] }
+  ]
+});
+
+/* ---------- 17. Lab 6: cobertura, ESLint e CI ---------- */
+Labs.vscode('#lab-ci', {
+  folder: 'biblioteca-campus', status: ST, branch: 'ci/gate-cobertura', open: '.github/workflows/ci.yml',
+  prompt: PR('ci/gate-cobertura'),
+  files: [
+    { path: '.github/workflows/ci.yml', hl: [15, 16], code:
+`name: CI
+on:
+  push:
+    branches: [main]
+
+jobs:
+  testes:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run test:cov` },
+    { path: 'package.json', hl: [6], code:
+`{
+  "name": "biblioteca-campus",
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:cov": "node --test --experimental-test-coverage --test-coverage-include='src/**' --test-coverage-lines=90 --test-coverage-branches=90",
+    "lint": "eslint ."
+  }
+}` },
+    { path: 'eslint.config.js', code:
+`import js from '@eslint/js';
+import globals from 'globals';
+
+export default [
+  js.configs.recommended,
+  {
+    languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.node },
+    rules: { complexity: ['error', 8] },
+  },
+  { ignores: ['coverage/', 'relatorios/'] },
+];` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Confira se o workflow em .github/workflows/ci.yml reprova quando a cobertura de ramos de src/ cai abaixo de 90%. Rode o mesmo comando localmente e mostre o resultado."', speed: 120, out: [
+      '[mute] ▸ read .github/workflows/ci.yml', '[mute] ▸ read package.json',
+      '[mute] ▸ bash npm run test:cov',
+      'Sim: o workflow roda npm run test:cov, que tem --test-coverage-branches=90. Hoje a cobertura de ramos está em 87,5% e o comando falha.',
+      '[warn] ? Permitir executar "git push"? (s/n) n' ] },
+    { label: '2. Verificar a cobertura', kind: 'red', cmd: 'npm run test:cov; echo "código de saída: $?"', out: [
+      '[mute] > node --test --experimental-test-coverage ...',
+      'ℹ tests 21', 'ℹ pass 21', 'ℹ fail 0',
+      'ℹ file              | line % | branch % | funcs % | uncovered lines',
+      'ℹ src/emprestimo.js |  88.24 |    87.50 |  100.00 | 12',
+      'ℹ src/multa.js      | 100.00 |   100.00 |  100.00 |',
+      '[err] ℹ Error: 87.50% branch coverage does not meet threshold of 90%.',
+      '[err] código de saída: 1' ] },
+    { label: '3. Lint', kind: 'blue', cmd: 'npm run lint', out: [
+      '[mute] > eslint .', '', '/workspaces/biblioteca-campus/src/cep.js',
+      "[err]   3:10  error  'formatarCep' is defined but never used  no-unused-vars", '',
+      '[err] ✖ 1 problem (1 error, 0 warnings)' ] },
+    { label: '4. Histórico do CI', kind: 'blue', cmd: 'gh run list --limit 3', out: [
+      'STATUS  TITLE                                              WORKFLOW  BRANCH  EVENT  ELAPSED',
+      '[err] X       refactor(cep): extrai normalização do CEP           CI        main    push   41s',
+      '[ok] ✓       test(emprestimo): cobre reserva por outro aluno   CI        main    push   38s',
+      '[ok] ✓       feat(multa): limita a multa a 3000 centavos       CI        main    push   37s' ] }
+  ]
+});
+
+/* ---------- 19. Lab 7: banco real ---------- */
+Labs.vscode('#lab-banco', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/integracao-emprestimo', open: 'test/integracao/emprestimo-repo.test.js',
+  prompt: PR('test/integracao-emprestimo'),
+  files: [
+    { path: 'migrations/001_cria_tabelas.sql', hl: [14, 15], code:
+`CREATE TABLE alunos (
+  id SERIAL PRIMARY KEY,
+  nome TEXT NOT NULL,
+  cep CHAR(8)
+);
+CREATE TABLE livros (id SERIAL PRIMARY KEY, titulo TEXT NOT NULL);
+CREATE TABLE emprestimos (
+  id SERIAL PRIMARY KEY,
+  aluno_id INTEGER NOT NULL REFERENCES alunos(id),
+  livro_id INTEGER NOT NULL REFERENCES livros(id),
+  previsto DATE NOT NULL,
+  devolvido DATE
+);
+-- um livro tem no máximo um empréstimo ativo
+CREATE UNIQUE INDEX emprestimo_ativo_por_livro
+  ON emprestimos (livro_id) WHERE devolvido IS NULL;` },
+    { path: 'test/integracao/emprestimo-repo.test.js', hl: [10, 11, 12], code:
+`import { before, after, test } from 'node:test';
+import assert from 'node:assert/strict';
+import pg from 'pg';
+import { PostgreSqlContainer } from '@testcontainers/postgresql';
+import { migrar } from '../../src/db/migrar.js';
+
+let container, pool;
+
+before(async () => {
+  container = await new PostgreSqlContainer('postgres:16-alpine').start();
+  pool = new pg.Pool({ connectionString: container.getConnectionUri() });
+  await migrar(pool);
+  await pool.query("INSERT INTO alunos (nome) VALUES ('Ana'), ('Bruno')");
+  await pool.query("INSERT INTO livros (titulo) VALUES ('Clean Code')");
+});
+
+after(async () => {
+  await pool.end();
+  await container.stop();
+});
+
+test('o banco recusa dois empréstimos ativos do mesmo livro', async () => {
+  const sql = 'INSERT INTO emprestimos (aluno_id, livro_id, previsto) VALUES ($1, 1, $2)';
+  await pool.query(sql, [1, '2027-06-07']);
+  await assert.rejects(pool.query(sql, [2, '2027-06-07']), { code: '23505' });
+});` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Escreva test/integracao/emprestimo-repo.test.js com @testcontainers/postgresql (postgres:16-alpine) que aplique as migrações e prove que o banco recusa dois empréstimos ativos do mesmo livro. Não altere migrações já aplicadas."', speed: 120, out: [
+      '[mute] ▸ read migrations/001_cria_tabelas.sql', '[mute] ▸ read src/db/migrar.js',
+      '[mute] ▸ write test/integracao/emprestimo-repo.test.js',
+      '[warn] ? Permitir executar "node --test test/integracao/" (sobe um container Docker)? (s/n) s',
+      '[mute] ▸ bash node --test test/integracao/',
+      'Teste criado: espera erro 23505 do índice emprestimo_ativo_por_livro. Passou em 4,1 s.' ] },
+    { label: '2. Verificar', kind: 'blue', cmd: 'git diff --stat -- migrations/; node --test test/integracao/', out: [
+      '[ok] (nenhuma linha: nenhuma migração foi alterada)',
+      '[ok] ✔ o banco recusa dois empréstimos ativos do mesmo livro (38.2ms)',
+      'ℹ tests 1', 'ℹ pass 1', 'ℹ fail 0', 'ℹ duration_ms 4127.9',
+      '[mute] O tempo vem da subida do container, não do teste.' ] }
+  ]
+});
+
+/* ---------- 21. Lab 8: dublês e ViaCEP ---------- */
+Labs.vscode('#lab-dubles', {
+  folder: 'biblioteca-campus', status: ST, branch: 'test/cep', open: 'test/cep.test.js',
+  prompt: PR('test/cep'),
+  files: [
+    { path: 'src/cep.js', hl: [1], code:
+`export async function buscarEndereco(cep, { fetch = globalThis.fetch } = {}) {
+  const limpo = String(cep).replace(/\\D/g, '');
+  if (limpo.length !== 8) throw new Error('CEP inválido');
+  try {
+    const res = await fetch('https://viacep.com.br/ws/' + limpo + '/json/', { signal: AbortSignal.timeout(2000) });
+    const dados = await res.json();
+    if (dados.erro) return { status: 'inexistente' };
+    return { status: 'ok', logradouro: dados.logradouro, cidade: dados.localidade, uf: dados.uf };
+  } catch {
+    return { status: 'pendente' };
+  }
+}` },
+    { path: 'test/cep.test.js', hl: [8, 11, 21], code:
+`import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { buscarEndereco } from '../src/cep.js';
+
+const resposta = (corpo) => ({ json: async () => corpo });
+
+test('CEP válido devolve o endereço', async (t) => {
+  const fetch = t.mock.fn(async () => resposta({ logradouro: 'Avenida Paulista', localidade: 'São Paulo', uf: 'SP' }));
+  const end = await buscarEndereco('01310-100', { fetch });
+  assert.equal(end.cidade, 'São Paulo');
+  assert.equal(fetch.mock.callCount(), 1);
+  assert.match(fetch.mock.calls[0].arguments[0], /01310100/);
+});
+
+test('CEP inexistente', async (t) => {
+  const fetch = t.mock.fn(async () => resposta({ erro: 'true' }));
+  assert.deepEqual(await buscarEndereco('99999-999', { fetch }), { status: 'inexistente' });
+});
+
+test('ViaCEP fora do ar deixa o endereço pendente', async (t) => {
+  const fetch = t.mock.fn(async () => { throw new TypeError('fetch failed'); });
+  assert.deepEqual(await buscarEndereco('01310-100', { fetch }), { status: 'pendente' });
+});` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Escreva test/cep.test.js para buscarEndereco com dublês de fetch criados por t.mock.fn: CEP válido, CEP inexistente e ViaCEP fora do ar. Nenhum teste pode acessar a rede."', speed: 120, out: [
+      '[mute] ▸ read src/cep.js', '[mute] ▸ write test/cep.test.js',
+      '[mute] ▸ bash node --test test/cep.test.js',
+      '3 testes criados e passando. O fetch é injetado; a ViaCEP real não é chamada.' ] },
+    { label: '2. Verificar', kind: 'blue', cmd: 'node --test test/cep.test.js', out: [
+      '[ok] ✔ CEP válido devolve o endereço (1.2ms)', '[ok] ✔ CEP inexistente (0.3ms)', '[ok] ✔ ViaCEP fora do ar deixa o endereço pendente (0.4ms)',
+      'ℹ tests 3', 'ℹ pass 3', 'ℹ fail 0', 'ℹ duration_ms 41.6' ] },
+    { label: '3. Conferir a rede', kind: 'blue', cmd: 'grep -rn "viacep.com.br" test/ || echo "nenhum teste cita a ViaCEP real"', out: [
+      '[ok] nenhum teste cita a ViaCEP real' ] }
+  ]
+});
+
+/* ---------- 23. Lab 9: BDD e carga ---------- */
+Labs.vscode('#lab-bdd', {
+  folder: 'biblioteca-campus', status: ST, branch: 'main', open: 'features/emprestimo.feature',
+  prompt: PR('main'),
+  files: [
+    { path: 'features/emprestimo.feature', hl: [13, 14, 15, 16, 17], code:
+`# language: pt
+@emprestimo
+Funcionalidade: Empréstimo de livros
+  Como aluno da biblioteca do campus
+  Quero pegar livros emprestados
+  Para estudar fora da biblioteca
+
+  Contexto:
+    Dado que hoje é "2027-04-20"
+    E o aluno "Ana" está cadastrado
+    E o livro "Clean Code" está disponível
+
+  # CA-02
+  Cenário: Quarto empréstimo é recusado
+    Dado que "Ana" tem 3 empréstimos ativos
+    Quando "Ana" pede o livro "Clean Code"
+    Então o empréstimo é recusado com a mensagem "limite de 3 empréstimos ativos"` },
+    { path: 'carga/busca.js', hl: [9, 10], code:
+`import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+const BASE = __ENV.BASE_URL || 'http://localhost:3000';
+
+export const options = {
+  stages: [{ duration: '30s', target: 50 }, { duration: '1m', target: 50 }, { duration: '15s', target: 0 }],
+  thresholds: {
+    http_req_duration: ['p(95)<300'],
+    http_req_failed: ['rate<0.01'],
+  },
+};
+
+export default function () {
+  const res = http.get(BASE + '/livros?busca=clean');
+  check(res, { 'status 200': (r) => r.status === 200 });
+  sleep(1);
+}` }
+  ],
+  run: [
+    { label: '1. Pedir ao opencode', cmd: 'opencode run "Rode npm run bdd e npm run carga com a API local ligada e diga se todos os critérios de aceite passam e se a meta de desempenho do docs/qualidade.md foi cumprida."', speed: 120, out: [
+      '[mute] ▸ read docs/qualidade.md',
+      '[mute] ▸ bash npm run bdd', '[mute]   10 scenarios (10 passed)',
+      '[warn] ? Permitir executar "npm run carga" (cerca de 2 minutos)? (s/n) s',
+      '[mute] ▸ bash npm run carga',
+      'Todos os 10 cenários passam. O p95 da busca ficou em cerca de 130 ms, abaixo da meta de 300 ms.' ] },
+    { label: '2. Cenários', kind: 'blue', cmd: 'npm run bdd', out: [
+      '', '> biblioteca-campus@1.0.0 bdd', '> cucumber-js', '',
+      '...........................................', '',
+      '[ok] 10 scenarios (10 passed)', '[ok] 43 steps (43 passed)', '0m00.201s (executing steps: 0m00.163s)' ] },
+    { label: '3. Carga', kind: 'blue', cmd: 'npm run carga', speed: 30, out: [
+      '[mute]      scenarios: (100.00%) 1 scenario, 50 max VUs, 2m15s max duration (incl. graceful stop):', '',
+      '  █ THRESHOLDS', '',
+      '    http_req_duration', "[ok]     ✓ 'p(95)<300' p(95)=131.8ms",
+      '    http_req_failed', "[ok]     ✓ 'rate<0.01' rate=0.00%", '',
+      '    http_req_duration..................: avg=48.21ms med=39.5ms p(90)=96.3ms p(95)=131.8ms',
+      '    http_reqs..........................: 4012    38.21/s', '',
+      '[ok] default ✓ [======================================] 00/50 VUs  1m45s' ] }
+  ]
+});
+
+/* ---------- 25. Lab 10: Git ---------- */
+Labs.vscode('#lab-git', {
+  folder: 'biblioteca-campus', status: ST, branch: 'main', open: 'src/rotas/alunos.js',
+  prompt: PR('main'),
+  files: [
+    { path: 'src/rotas/alunos.js', hl: [6, 7], code:
+`import { Router } from 'express';
+import { buscarEndereco } from '../cep.js';
+
+export function rotasAlunos({ repo }) {
+  const r = Router();
+  r.post('/alunos', async (req, res) => {
+    if (!/^\\d{5}-?\\d{3}$/.test(req.body.cep)) return res.status(422).json({ erro: 'CEP inválido' });
+    const endereco = await buscarEndereco(req.body.cep);
+    const aluno = await repo.salvarAluno({ nome: req.body.nome, cep: req.body.cep, endereco });
+    res.status(201).json(aluno);
+  });
+  return r;
+}` }
+  ],
+  run: [
+    { label: '1. Abrir a branch', cmd: 'gh issue view 7 --json title -q .title && git switch -c fix/cep-espacos', branch: 'fix/cep-espacos', prompt: PR('fix/cep-espacos'), out: [
+      'CEP com espaços no cadastro de aluno é recusado',
+      "Switched to a new branch 'fix/cep-espacos'" ] },
+    { label: '2. Pedir ao opencode', clear: false, cmd: 'opencode run "Leia a issue 7 com gh issue view 7. Escreva primeiro um teste em test/alunos.test.js que reproduza o problema, depois corrija o código. Rode npm test. Não faça commit nem push."', speed: 120, out: [
+      '[mute] ▸ bash gh issue view 7', '[mute] ▸ read src/rotas/alunos.js', '[mute] ▸ read src/cep.js',
+      '[mute] ▸ edit test/alunos.test.js',
+      '[mute] ▸ bash npm test', '[mute]   ✖ POST /alunos aceita CEP com espaços', '[mute]   ℹ pass 21  ℹ fail 1',
+      '[mute] ▸ edit src/rotas/alunos.js',
+      '[mute] ▸ bash npm test', '[mute]   ℹ pass 22  ℹ fail 0',
+      'A rota validava o CEP com /^\\d{5}-?\\d{3}$/ antes de normalizar. Agora normaliza com buscarEndereco e só depois valida.',
+      'Sugestão de commit: fix(cep): normaliza o CEP antes de validar no cadastro (#7)' ] },
+    { label: '3. Revisar e commitar', kind: 'blue', clear: false, cmd: 'git diff --stat && npm test --silent && git commit -qam "fix(cep): normaliza o CEP antes de validar no cadastro (#7)" -m "Closes #7"', out: [
+      ' src/rotas/alunos.js |  3 ++-', ' test/alunos.test.js |  6 ++++++', ' 2 files changed, 8 insertions(+), 1 deletion(-)',
+      'ℹ tests 22', 'ℹ pass 22', 'ℹ fail 0' ] },
+    { label: '4. Integrar na main', kind: 'blue', clear: false, branch: 'main', prompt: PR('main'), cmd: 'git switch main && git pull --rebase -q && git merge --ff-only fix/cep-espacos && git push -q && git branch -d fix/cep-espacos && git log --oneline --graph -3', out: [
+      "Switched to branch 'main'", 'Updating 4e1b0c2..9d7a3f6', 'Fast-forward',
+      '[ok] Deleted branch fix/cep-espacos (was 9d7a3f6).',
+      '* 9d7a3f6 (HEAD -> main, origin/main) fix(cep): normaliza o CEP antes de validar no cadastro (#7)',
+      '* 4e1b0c2 test(emprestimo): cobre reserva por outro aluno',
+      '* 7b0d3f5 feat(multa): limita a multa a 3000 centavos',
+      '[info] "Closes #7" no corpo do commit fechou a issue quando ele chegou à main.' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="TDD, red green refactor, node:test, node:assert, teste de unidade, AAA, mock.timers, Conventional Commits, qualidade de software" />
+    <title>Aula 04 - TDD: ciclo red, green e refactor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link rel="stylesheet" href="../../css/style.css" />
+    <link rel="stylesheet" href="../../css/slides.css" />
+    <link rel="stylesheet" href="../../css/base-styles.css" />
+    <link rel="stylesheet" href="../../css/labs.css" />
+  </head>
+  <body class="slide-body" data-disciplina="qualidade">
+    <div class="slide-container">
+      <a href="../home_qualidade_2027_1.html" class="btn btn-outline-secondary position-absolute top-0 start-0 m-4 rounded-pill"><i class="fas fa-arrow-left me-2" aria-hidden="true"></i> Voltar ao cronograma</a>
+
+      <!-- 1. Capa -->
+      <div class="slide active" id="slide-1">
+        <div class="glass-cover text-center">
+          <img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" height="80" class="mb-3" />
+          <h5 class="text-uppercase text-secondary fw-bold">Qualidade de Software · 2027.1</h5>
+          <h1 class="display-5 fw-bold text-dark">Aula 04: TDD, ciclo red, green e refactor</h1>
+          <p class="fs-4 text-secondary">node:test, asserções, relógio injetado, padrão AAA e um commit por passo</p>
+          <span class="badge bg-danger px-3 py-2 rounded-pill">Semana 8 · 22/02 a 26/02</span>
+          <div class="slide-keywords d-none" aria-hidden="true"><span class="keyword">TDD</span><span class="keyword">node:test</span><span class="keyword">AAA</span><span class="keyword">mock.timers</span></div>
+        </div>
+      </div>
+
+      <!-- 2. Agenda -->
+      <div class="slide" id="slide-2">
+        <div class="slide-content">
+          <h1 class="display-5 fw-bold text-center mb-3">Agenda</h1>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>19h10–20h50</h3>
+                <ol class="mb-0 fs-5"><li>O que é teste de unidade e o que não é (15 min)</li><li>node:test na prática: primeiro teste, asserções e hooks (30 min)</li><li>Ciclo red, green e refactor com um commit por passo (30 min)</li><li>Datas com relógio injetado, AAA e nomes de teste (25 min)</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100 text-start">
+                <h3 class="h4 fw-bold mb-3"><i class="far fa-clock me-2" aria-hidden="true"></i>21h05–22h45</h3>
+                <ol class="mb-0 fs-5"><li>Prompt 1: node:test e a função de sobreposição (30 min)</li><li>Prompt 2: regras de conflito da reserva em TDD (35 min)</li><li>Prompt 3: relógio injetado e revisão dos testes (20 min)</li><li>Checagem na mesa (15 min)</li></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Teste de unidade -->
+      <div class="slide" id="slide-3">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">O que é teste de unidade</h2>
+          <p class="lead text-center text-muted mb-4">A regra "no máximo 3 empréstimos ativos" mora numa função. Um teste de unidade chama essa função com dados montados na memória e confere o resultado, em milissegundos.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-check me-2 text-success" aria-hidden="true"></i>É teste de unidade</h3>
+                <ul class="mb-0"><li>Chama <code>emprestar(aluno, livro, hoje)</code> com objetos literais.</li><li>Roda sem banco, sem rede, sem arquivo e sem depender do dia.</li><li>Falha por um único motivo, que o nome do teste anuncia.</li><li>Roda em qualquer ordem e quantas vezes for preciso, com o mesmo resultado.</li></ul>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-xmark me-2 text-danger" aria-hidden="true"></i>Não é teste de unidade</h3>
+                <ul class="mb-0"><li>Abre conexão com o PostgreSQL: teste de integração (Aula 10).</li><li>Chama a ViaCEP de verdade: depende da rede (Aula 11 usa dublês).</li><li>Sobe a API e faz requisição HTTP: teste de API, com supertest.</li><li>Usa <code>new Date()</code> sem argumento: passa hoje e falha daqui a um mês.</li></ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. Flow: o ciclo -->
+      <div class="slide slide-lab" id="slide-4">
+        <div class="slide-content">
+          <div class="lab-head"><div><p class="kicker">Conceito</p><h2>O ciclo red, green e refactor</h2></div></div>
+          <div class="lab-area" id="flow-ciclo"></div>
+        </div>
+      </div>
+
+      <!-- 5. Lab 1: primeiro teste -->
+      <div class="slide slide-lab" id="slide-5">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Pedir ao opencode o primeiro teste com node:test e conferir o que ele gerou.</div>
+                <div class="rl"><b>Faça</b>1. "Preparar o ambiente".<br>2. "opencode: gerar o teste" e leia o arquivo criado.<br>3. "Conferir": <code>git status</code> e <code>npm test</code>.<br>4. "Ver uma falha", com o prazo trocado para 13 dias.</div>
+                <div class="rl obs"><b>Observe</b>O rastro <code>▸ read</code>, <code>▸ write</code>, <code>▸ bash</code> mostra o que o agente tocou, e ele pede permissão antes de rodar comando. Na falha, o Node mostra <code>+ actual</code>, <code>- expected</code> e a linha.</div>
+                <div class="rl conc"><b>Conclusão</b>O agente escreve; a etapa de qualidade é a sua revisão: ler o teste, ver que só ele mudou e provar que ele falha quando a regra quebra.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-primeiro"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. API do node:test -->
+      <div class="slide" id="slide-6">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">O que o node:test oferece</h2>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle bg-white shadow-sm mb-0 fs-6 text-start">
+              <thead class="table-light"><tr><th>Recurso</th><th>Para que serve</th><th>Exemplo</th></tr></thead>
+              <tbody>
+                <tr><td><code>describe</code>, <code>it</code>, <code>test</code></td><td>Agrupar e declarar testes (<code>it</code> e <code>test</code> são a mesma função)</td><td><code>it('recusa livro reservado', () =&gt; {...})</code></td></tr>
+                <tr><td><code>assert.equal</code></td><td>Igualdade estrita de valores primitivos</td><td><code>assert.equal(multa, 450)</code></td></tr>
+                <tr><td><code>assert.deepEqual</code></td><td>Igualdade estrutural de objetos e listas</td><td><code>assert.deepEqual(ids, ['l1', 'l2'])</code></td></tr>
+                <tr><td><code>assert.throws</code></td><td>Função síncrona que deve lançar erro</td><td><code>assert.throws(() =&gt; emprestar(...), /multa/)</code></td></tr>
+                <tr><td><code>assert.rejects</code></td><td>Promessa que deve ser rejeitada (use com <code>await</code>)</td><td><code>await assert.rejects(registrar(...))</code></td></tr>
+                <tr><td><code>before</code>, <code>beforeEach</code></td><td>Preparar dados uma vez ou antes de cada teste</td><td><code>beforeEach(() =&gt; { aluno = {...} })</code></td></tr>
+                <tr><td><code>it.skip</code>, <code>it.todo</code></td><td>Pular um teste ou registrar um que ainda falta escrever</td><td><code>it.todo('renova uma vez')</code></td></tr>
+                <tr><td><code>--watch</code></td><td>Reexecutar a cada arquivo salvo</td><td><code>node --test --watch</code></td></tr>
+                <tr><td><code>--test-name-pattern</code></td><td>Rodar só os testes cujo nome casa com o padrão</td><td><code>node --test --test-name-pattern="reserva"</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="small text-muted mt-2 mb-0">Importe sempre <code>node:assert/strict</code>: nele, <code>equal</code> compara com <code>===</code> e <code>deepEqual</code> também confere os tipos.</p>
+        </div>
+      </div>
+
+      <!-- 7. Lab 2: asserções e hooks -->
+      <div class="slide slide-lab" id="slide-7">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Usar as asserções e os hooks que o trabalho vai exigir.</div>
+                <div class="rl"><b>Faça</b>1. "opencode: gerar os testes" com o prompt que lista cada recurso.<br>2. Leia o arquivo: <code>beforeEach</code>, <code>deepEqual</code>, <code>throws</code>, <code>rejects</code>, <code>skip</code>, <code>todo</code>.<br>3. Rode a conferência, o filtro por nome e o modo watch.</div>
+                <div class="rl obs"><b>Observe</b>O <code>beforeEach</code> recria o aluno e o livro antes de cada teste, então o teste da reserva não contamina o seguinte. <code>skip</code> e <code>todo</code> aparecem no resumo sem reprovar a execução.</div>
+                <div class="rl conc"><b>Conclusão</b>Na revisão, procure o <code>await</code> antes de <code>assert.rejects</code>: sem ele o teste passa sempre. <code>--test-name-pattern</code> e <code>--watch</code> deixam a conferência rápida.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-assert"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Lab 3: ciclo red, green, refactor -->
+      <div class="slide slide-lab" id="slide-8">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Fazer um ciclo completo de TDD na regra da multa, com um commit por passo.</div>
+                <div class="rl"><b>Faça</b>Alterne pedido e conferência, nesta ordem:<br>1. Pedir só o teste; 2. conferir o red e commitar.<br>3. Pedir o green; 4. conferir e commitar.<br>5. Pedir o refactor; 6. conferir, commitar e ver o <code>git log</code>.</div>
+                <div class="rl obs"><b>Observe</b>Quem conduz o ciclo é você: cada prompt pede um passo e manda parar. No red, confira que a falha é <code>0 !== 450</code>, uma asserção; no green, que o <code>git diff</code> não mexeu no teste.</div>
+                <div class="rl conc"><b>Conclusão</b>A revisão entre um passo e outro é a etapa de qualidade. O commit <code>test(...)</code> guarda só o teste, o <code>feat(...)</code> só o código e o <code>refactor(...)</code> só a arrumação. O teto de 3000 centavos é o próximo ciclo.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-ciclo"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Datas -->
+      <div class="slide" id="slide-9">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Datas: o relógio entra como parâmetro</h2>
+          <p class="lead text-center text-muted mb-4">Um teste que lê o relógio do sistema muda de resultado conforme o dia em que roda. A regra de negócio recebe a data; só a borda do sistema lê o relógio.</p>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-calendar-day me-2" aria-hidden="true"></i>1. <code>hoje</code> como parâmetro</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">export function estaAtrasado(emprestimo, hoje) {
+  return hoje &gt; emprestimo.previsto;
+}</pre>
+                <p class="small text-muted mb-0">O teste passa a data que quiser: um dia antes, no dia, um dia depois. É a primeira opção, porque não exige ferramenta nenhuma.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-clock-rotate-left me-2" aria-hidden="true"></i>2. <code>mock.timers</code> na borda</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">it('usa o relógio do sistema', (t) =&gt; {
+  t.mock.timers.enable({
+    apis: ['Date'],
+    now: new Date('2027-03-10T12:00:00Z')
+  });
+  // new Date() devolve 10/03/2027 aqui dentro
+});</pre>
+                <p class="small text-muted mb-0">Para o pedaço que precisa chamar <code>new Date()</code>. Com <code>t.mock</code>, o relógio volta ao normal quando o teste termina.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10. Lab 4: relógio injetado -->
+      <div class="slide slide-lab" id="slide-10">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Ver um teste que depende do dia falhar e corrigi-lo com relógio injetado.</div>
+                <div class="rl"><b>Faça</b>1. "Hoje, 22/02": passa.<br>2. "O mesmo teste em 10/03": falha sem ninguém mexer no código.<br>3. Peça a correção ao opencode e releia os dois arquivos.<br>4. Confira com <code>grep</code> e <code>npm test</code>, depois filtre pelo relógio.</div>
+                <div class="rl obs"><b>Observe</b><code>estaAtrasado</code> recebe <code>hoje</code>; só <code>registrarAtraso</code> lê o relógio, e o teste dela fixa a data com <code>t.mock.timers</code>.</div>
+                <div class="rl conc"><b>Conclusão</b>O <code>grep</code> por <code>new Date()</code> nos testes é uma revisão que você faz em segundos e que pega o erro mais comum dos testes gerados.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-relogio"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 11. AAA e nomes -->
+      <div class="slide" id="slide-11">
+        <div class="slide-content">
+          <h2 class="display-6 fw-bold text-center mb-3">Padrão AAA e nomes de teste</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-layer-group me-2" aria-hidden="true"></i>Arrange, Act, Assert</h3>
+                <pre class="bg-dark text-info p-3 rounded small mb-2">it('recusa quando o aluno tem multa pendente', () =&gt; {
+  const aluno = { id: 'a1', ativos: [], multaPendente: 450 };
+
+  const tentar = () =&gt; emprestar(aluno, livro, hoje);
+
+  assert.throws(tentar, /multa pendente/);
+});</pre>
+                <p class="small text-muted mb-0">Montar os dados, executar uma ação, conferir o resultado. Uma linha em branco separa os três blocos; um teste tem uma única ação.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold"><i class="fas fa-tag me-2" aria-hidden="true"></i>Nome com condição e resultado</h3>
+                <table class="table table-sm small mb-2">
+                  <thead class="table-light"><tr><th>Vago</th><th>Descreve a regra</th></tr></thead>
+                  <tbody>
+                    <tr><td><code>teste 1</code></td><td><code>recusa quando o aluno já tem 3 empréstimos ativos</code></td></tr>
+                    <tr><td><code>multa ok</code></td><td><code>limita a multa a 3000 centavos</code></td></tr>
+                    <tr><td><code>reserva</code></td><td><code>aceita livro reservado pelo próprio aluno</code></td></tr>
+                  </tbody>
+                </table>
+                <p class="small text-muted mb-0">Quando o teste falha no CI, o nome é a primeira coisa que aparece. Ele precisa dizer qual regra quebrou sem que alguém abra o arquivo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 12. Lab 5: AAA, nomes e fronteira -->
+      <div class="slide slide-lab" id="slide-12">
+        <div class="slide-content">
+          <div class="lab-split">
+            <div class="lab-side">
+              <div class="roteiro-lab">
+                <div class="rl obj"><b>Objetivo</b>Comparar a saída de testes com nomes vagos e com nomes que descrevem a regra, e separar unidade de integração.</div>
+                <div class="rl"><b>Faça</b>1. "Nomes vagos": tente dizer qual regra quebrou.<br>2. Peça a revisão ao opencode e leia a proposta antes de aceitar.<br>3. Confira o diff e rode os testes de unidade.<br>4. Rode "Teste que fala com o banco".</div>
+                <div class="rl obs"><b>Observe</b>A mesma falha fica legível só na segunda saída. O teste da pasta <code>integracao/</code> demora 1,5 s e cai com <code>ECONNREFUSED</code>: ele depende de um PostgreSQL rodando.</div>
+                <div class="rl conc"><b>Conclusão</b>Pedir a lista antes de gravar deixa a decisão com você; confira que nenhuma asserção mudou. O que precisa de banco fica em <code>test/integracao/</code> e ganha Testcontainers na Aula 10.</div>
+              </div>
+            </div>
+            <div class="lab-area" id="lab-aaa"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 13. Laboratório -->
+      <div class="slide" id="slide-13">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Laboratório</span><span class="badge bg-light text-dark border">21h05–22h45</span></div>
+          <h2 class="h1 fw-bold text-center mb-3">TDD no seu organizacao-recursos</h2>
+          <div class="row g-3 text-start">
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Como trabalhar com o agente</h3>
+                <ol class="mb-0"><li>Uma branch curta por regra: <code>feat/intervalo</code>, <code>feat/reserva</code>.</li><li>O prompt manda o opencode parar ao fim de cada passo.</li><li>Você lê a saída do <code>npm test</code> antes de commitar.</li><li>Commit por passo: <code>test(...)</code>, <code>feat(...)</code>, <code>refactor(...)</code>.</li></ol>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="card border-0 shadow-sm p-4 h-100">
+                <h3 class="h5 fw-bold">Regras do domínio</h3>
+                <ul class="mb-0"><li>Dois intervalos que só se encostam não se sobrepõem.</li><li>Sala não aceita reserva com horário sobreposto.</li><li>Turma não passa da capacidade da sala.</li><li>Professor não está em duas aulas ao mesmo tempo.</li><li>Material indisponível ou já reservado não sai.</li></ul>
+              </div>
+            </div>
+          </div>
+          <div class="alert alert-warning mt-3 mb-0"><i class="fas fa-triangle-exclamation me-2" aria-hidden="true"></i>Se o agente escrever o teste e o código no mesmo passo, recuse e peça de novo só o teste. Sem ver o vermelho, não há como saber se o teste testa alguma coisa.</div>
+        </div>
+      </div>
+
+      <!-- 14. Prompt 1 -->
+      <div class="slide" id="slide-14">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 1 de 3</span><span class="badge bg-light text-dark border">30 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">node:test e a função de sobreposição</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Estamos no repositório organizacao-recursos, em JavaScript puro com ES modules e sem TypeScript. Crie a branch feat/intervalo. Garanta que o package.json tenha "type": "module" e o script "test": "node --test", sem nenhuma dependência de teste: use só node:test e node:assert/strict. Vamos implementar em TDD a função sobrepoe(a, b) em src/intervalo.js, que recebe dois intervalos { inicio, fim } com objetos Date e responde true quando eles se sobrepõem; um intervalo que termina exatamente quando o outro começa não se sobrepõe. Trabalhe em ciclos e pare ao fim de cada passo: 1) escreva um único teste novo em test/unidade/intervalo.test.js, rode npm test e me mostre a falha; 2) escreva o código mínimo para passar, rode npm test e mostre a saída verde; 3) proponha uma refatoração, se houver, e rode npm test de novo. Use o padrão Arrange, Act, Assert e nomes de teste que digam a condição e o resultado esperado. Não escreva o próximo teste antes de eu pedir.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: o vermelho tem que ser um <code>AssertionError</code>, não um erro de import. Commit por passo: <code>test(intervalo)</code>, <code>feat(intervalo)</code>, <code>refactor(intervalo)</code>.</div>
+        </div>
+      </div>
+
+      <!-- 15. Prompt 2 -->
+      <div class="slide" id="slide-15">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 2 de 3</span><span class="badge bg-light text-dark border">35 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Regras de conflito da reserva em TDD</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch feat/reserva, crie em TDD a função reservar(reservas, pedido, recursos) em src/reserva.js. O pedido tem { salaId, professorId, materiais, inicio, fim, alunos }; recursos traz as salas com capacidade e os materiais com disponibilidade. Implemente as regras uma por ciclo, nesta ordem: 1) recusa se a sala já tem reserva com intervalo sobreposto; 2) recusa se o número de alunos passa da capacidade da sala; 3) recusa se o professor já está em outra aula no mesmo horário, em qualquer sala; 4) recusa se algum material pedido está indisponível ou já reservado no horário. Recusa é um erro lançado com mensagem que diga a regra violada; sucesso devolve a reserva criada. Reaproveite sobrepoe de src/intervalo.js. Para cada regra escreva primeiro o teste que falha, depois o código mínimo, depois refatore, e pare ao fim de cada passo para eu commitar. Inclua o caso de fronteira de cada regra, como uma reserva que começa exatamente quando a outra termina e uma turma com o número exato da capacidade. Use assert.throws com a mensagem esperada. Nada de banco, rede ou arquivo nos testes.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: cada regra tem um teste que recusa e um que aceita no limite. Se o agente juntou duas regras no mesmo passo, peça para separar.</div>
+        </div>
+      </div>
+
+      <!-- 16. Prompt 3 -->
+      <div class="slide" id="slide-16">
+        <div class="slide-content">
+          <div class="d-flex justify-content-center gap-2 mb-2"><span class="badge bg-danger">Prompt 3 de 3</span><span class="badge bg-light text-dark border">20 min</span></div>
+          <h2 class="h2 fw-bold mb-3 text-dark text-center">Relógio injetado e revisão dos testes</h2>
+          <div class="card border-0 shadow-sm p-4 text-start" style="max-height: 50vh; overflow-y: auto">
+            <p class="small text-muted mb-0">Na branch feat/reserva-passado, acrescente em src/reserva.js a regra de que não se reserva no passado. A função reservar passa a receber um quarto parâmetro, agora, do tipo Date, e recusa pedidos cujo inicio seja anterior a agora. Faça em TDD, com testes que passam uma data fixa e não dependem do dia em que rodam. Se algum código precisar ler o relógio do sistema, isole essa leitura numa função pequena e teste essa função com t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-02-24T19:00:00Z') }). Depois revise todos os arquivos de teste: renomeie testes cujo nome não diga condição e resultado, separe Arrange, Act e Assert com uma linha em branco e aponte qualquer teste que dependa de banco, rede, arquivo ou da data atual. Mostre a lista de mudanças antes de aplicar.</p>
+          </div>
+          <div class="alert alert-success mt-3 mb-0"><i class="fas fa-magnifying-glass me-2" aria-hidden="true"></i>Antes de aceitar: rode <code>node --test --test-name-pattern="passado"</code> e procure <code>new Date()</code> sem argumento dentro de <code>test/</code>.</div>
+        </div>
+      </div>
+
+      <!-- 17. Entregável -->
+      <div class="slide" id="slide-17">
+        <div class="slide-content text-center">
+          <span class="badge bg-success fs-6 mb-3 px-4 py-2 rounded-pill">Entregável da Aula 04</span>
+          <p class="fs-4 mb-4"><code>src/intervalo.js</code> e <code>src/reserva.js</code> com testes em <code>test/unidade/</code>, construídos em TDD e integrados na main com <code>--ff-only</code>.</p>
+          <div class="card border-0 shadow-sm p-4 text-start">
+            <h3 class="h4 fw-bold"><i class="fas fa-chalkboard-user me-2" aria-hidden="true"></i>O que confiro na mesa</h3>
+            <ul class="fs-5 mb-0"><li>O <code>git log --oneline</code> mostra o trio <code>test</code>, <code>feat</code>, <code>refactor</code> em cada regra.</li><li>Abro um commit <code>test(...)</code> com <code>git show</code> e ele só tem teste.</li><li><code>npm test</code> fica verde e nenhum teste usa <code>new Date()</code> sem argumento.</li><li>Leio os nomes na saída e entendo cada regra sem abrir o código.</li></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 18. Dúvidas -->
+      <div class="slide cover-bg" id="slide-18">
+        <div class="glass-cover text-center">
+          <i class="fas fa-vial-circle-check fa-3x text-primary mb-3" aria-hidden="true"></i>
+          <h1 class="display-4 fw-bold text-dark">Dúvidas?</h1>
+          <p class="fs-4 text-secondary">Próxima aula: cobertura, CI e análise estática.</p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="slide-footer">
+      <div class="slide-controls">
+        <button id="prevBtn" disabled aria-label="Slide anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+        <div class="progress mx-3" style="width: 100px; height: 6px"><div id="progressBar" class="progress-bar bg-dark" role="progressbar" style="width: 0%"></div></div>
+        <span id="slideCounter" class="small text-muted fw-semibold me-2">1 / 18</span><button id="nextBtn" class="ms-2" aria-label="Próximo slide"><i class="fas fa-chevron-right" aria-hidden="true"></i></button><button id="fullscreenBtn" class="ms-2" aria-label="Alternar tela cheia"><i class="fas fa-expand" aria-hidden="true"></i></button>
+      </div>
+      <div class="text-center text-muted small d-none d-md-block">Qualidade · TDD: ciclo red, green e refactor · Semana 8</div>
+      <a href="material/material_aula04-tdd.html" class="btn btn-outline-primary btn-sm rounded-pill"><i class="fas fa-book me-1" aria-hidden="true"></i> Ver material escrito</a><a href="../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac" height="30" class="opacity-75" /></a>
+    </footer>
+
+    <script src="../../js/labs.js"></script>
+    <script>
+const PROF = '@professor ➜ /workspaces/biblioteca-campus ';
+const RESUMO = (t, p, f, s, td, ms) => [
+  'ℹ tests ' + t, 'ℹ suites ' + s, 'ℹ pass ' + p, (f ? '[err] ' : '') + 'ℹ fail ' + f, 'ℹ cancelled 0',
+  'ℹ skipped ' + (td && td.skip || 0), 'ℹ todo ' + (td && td.todo || 0), '[mute] ℹ duration_ms ' + ms
+];
+
+/* ---------- 4. Flow: o ciclo ---------- */
+Labs.flow('#flow-ciclo', {
+  w: 1000, h: 420,
+  nodes: [
+    { id: 'red', x: 170, y: 175, label: 'Red', sub: 'um teste novo falha', k: 'red' },
+    { id: 'green', x: 500, y: 175, label: 'Green', sub: 'código mínimo passa', k: 'green' },
+    { id: 'ref', x: 830, y: 175, label: 'Refactor', sub: 'melhora sem mudar resultado', k: 'blue', w: 220 },
+    { id: 'c1', x: 170, y: 345, label: 'test(multa): ...', sub: 'commit só do teste', k: 'red', w: 220 },
+    { id: 'c2', x: 500, y: 345, label: 'feat(multa): ...', sub: 'commit só do código', k: 'green', w: 220 },
+    { id: 'c3', x: 830, y: 345, label: 'refactor(multa): ...', sub: 'commit da arrumação', k: 'blue', w: 230 }
+  ],
+  links: [ { from: 'red', to: 'green' }, { from: 'green', to: 'ref' }, { from: 'ref', to: 'red', curve: 150, dashed: true, label: 'próxima regra', dy: -80 }, { from: 'red', to: 'c1' }, { from: 'green', to: 'c2' }, { from: 'ref', to: 'c3' } ],
+  steps: [
+    { title: 'Red', text: 'Você pede ao agente um único teste para o próximo comportamento e roda npm test. Ele precisa falhar por uma asserção: 0 !== 450.', on: ['red'] },
+    { title: 'Commit do vermelho', text: 'git commit -m "test(multa): cobra 150 centavos por dia de atraso". O commit fica na branch; a main só recebe a branch verde.', on: ['red', 'c1'], links: [['red', 'c1', 'red']] },
+    { title: 'Green', text: 'Você pede o menor código que faz esse teste passar, sem antecipar regras. Confere no git diff que o teste não mudou e roda tudo de novo.', on: ['green', 'c2'], links: [['red', 'green', 'green'], ['green', 'c2', 'green']] },
+    { title: 'Refactor', text: 'Com tudo verde, você pede a arrumação: nomes para as constantes, menos duplicação. Os testes continuam verdes a cada mudança.', on: ['ref', 'c3'], links: [['green', 'ref'], ['ref', 'c3']] },
+    { title: 'Próxima regra', text: 'O teto de 3000 centavos vira o próximo red. Cada volta do ciclo deixa três commits pequenos e explicáveis na prova oral.', on: ['red', 'green', 'ref'], links: [['ref', 'red', 'amber']] }
+  ]
+});
+
+/* ---------- 5. Lab 1: primeiro teste ---------- */
+const OC = (linhas) => linhas.map((l) => (/^▸ /.test(l) ? '[mute] ' + l : l));
+const PERMISSAO = (cmd) => ['[warn] ? O opencode quer executar: ' + cmd, '[warn]   (s) permitir uma vez  (a) sempre  (n) recusar', '› s'];
+const TESTE_PRIMEIRO =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+
+const hoje = new Date('2027-02-22T12:00:00Z');
+
+describe('emprestar', () => {
+  it('define a devolução prevista para 14 dias depois da retirada', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+    const livro = { id: 'l1', reservadoPor: null };
+
+    const emprestimo = emprestar(aluno, livro, hoje);
+
+    assert.equal(emprestimo.previsto.toISOString(), '2027-03-08T12:00:00.000Z');
+  });
+});`;
+const arqPrimeiro = [
+  { path: 'package.json', hl: [4, 6], code:
+`{
+  "name": "biblioteca-campus",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}` },
+  { path: 'src/emprestimo.js', hl: [2, 14], code:
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const PRAZO_DIAS = 14;
+
+export function emprestar(aluno, livro, hoje) {
+  if (aluno.multaPendente > 0) {
+    throw new Error('aluno com multa pendente');
+  }
+  if (aluno.ativos.length >= 3) {
+    throw new Error('limite de 3 empréstimos ativos');
+  }
+  if (livro.reservadoPor && livro.reservadoPor !== aluno.id) {
+    throw new Error('livro reservado por outro aluno');
+  }
+  const previsto = new Date(hoje.getTime() + PRAZO_DIAS * DIA_MS);
+  return { alunoId: aluno.id, livroId: livro.id, retirada: hoje, previsto };
+}` },
+  { path: 'test/emprestimo.test.js', code: '// arquivo ainda vazio: o opencode vai escrevê-lo' }
+];
+Labs.vscode('#lab-primeiro', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', open: 'src/emprestimo.js',
+  prompt: PROF + '(main) $ ',
+  setup: [
+    { cmd: 'node --version', out: ['v22.12.0'] },
+    { cmd: 'npm pkg set type=module scripts.test="node --test"', file: 'package.json', out: [] },
+    { cmd: 'npm ls --depth=0', out: ['biblioteca-campus@1.0.0 /workspaces/biblioteca-campus', '[mute] └── (empty)', '[info] Nenhuma dependência: node:test e node:assert vêm com o Node 22.'] }
+  ],
+  files: arqPrimeiro,
+  run: [
+    { label: 'opencode: gerar o teste', kind: 'purple', file: 'test/emprestimo.test.js',
+      cmd: 'opencode run "Crie test/emprestimo.test.js com node:test e node:assert/strict. Teste que emprestar define a devolução prevista 14 dias depois da retirada, com data fixa 2027-02-22T12:00:00Z e padrão AAA. Não altere src/."',
+      out: [ ...OC(['▸ read package.json', '▸ read src/emprestimo.js', '▸ write test/emprestimo.test.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ✔ define a devolução prevista para 14 dias depois da retirada', '',
+        'Criei test/emprestimo.test.js com um teste em describe/it. A data é fixa,',
+        'então o resultado não depende do dia. src/ não foi alterado.' ] },
+    { label: 'Conferir: git status e npm test', cmd: 'git status --short && npm test', file: 'test/emprestimo.test.js', out: [
+      '[ok] ?? test/emprestimo.test.js', '',
+      '> biblioteca-campus@1.0.0 test', '> node --test', '',
+      '▶ emprestar', '[ok]   ✔ define a devolução prevista para 14 dias depois da retirada (0.84ms)', '[ok] ✔ emprestar (2.31ms)',
+      ...RESUMO(1, 1, 0, 1, null, '61.42'), '[info] Só o arquivo de teste mudou, como o prompt pediu. Agora vale o commit.' ] },
+    { label: 'Ver uma falha', kind: 'red', cmd: 'npm test', file: 'src/emprestimo.js', out: [
+      '[mute] # PRAZO_DIAS trocado para 13 em src/emprestimo.js, de propósito', '',
+      '> biblioteca-campus@1.0.0 test', '> node --test', '',
+      '▶ emprestar', '[err]   ✖ define a devolução prevista para 14 dias depois da retirada (1.02ms)', '[err] ✖ emprestar (2.66ms)',
+      ...RESUMO(1, 0, 1, 1, null, '63.10'), '',
+      '[err] ✖ failing tests:', '', 'test/emprestimo.test.js:8:3',
+      '[err] ✖ define a devolução prevista para 14 dias depois da retirada (1.02ms)',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '  + actual - expected', '',
+      "[ok]   + '2027-03-07T12:00:00.000Z'", "[err]   - '2027-03-08T12:00:00.000Z'", '',
+      '[mute]       at TestContext.<anonymous> (file:///workspaces/biblioteca-campus/test/emprestimo.test.js:14:12)',
+      '[info] O teste gerado pega a mudança: ele confere o valor, e não só que a função rodou.' ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) { arqPrimeiro[2].hl = [1, 2, 7, 8, 14]; api.setCode('test/emprestimo.test.js', TESTE_PRIMEIRO); }
+  }
+});
+
+/* ---------- 7. Lab 2: asserções e hooks ---------- */
+const TESTE_ASSERT =
+`import { describe, it, before, beforeEach } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../src/emprestimo.js';
+import { registrarDevolucao } from '../src/devolucao.js';
+
+const hoje = new Date('2027-02-22T12:00:00Z');
+let aluno, livro;
+
+beforeEach(() => {
+  aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+  livro = { id: 'l1', reservadoPor: null };
+});
+
+describe('emprestar', () => {
+  it('devolve o aluno e o livro do empréstimo', () => {
+    const e = emprestar(aluno, livro, hoje);
+    assert.deepEqual({ alunoId: e.alunoId, livroId: e.livroId }, { alunoId: 'a1', livroId: 'l1' });
+  });
+
+  it('recusa livro reservado por outro aluno', () => {
+    livro.reservadoPor = 'a2';
+
+    const tentar = () => emprestar(aluno, livro, hoje);
+
+    assert.throws(tentar, /reservado por outro aluno/);
+  });
+
+  it.skip('aceita professor sem limite de empréstimos', () => {});
+  it.todo('renova o empréstimo uma única vez');
+});
+
+describe('registrarDevolucao', () => {
+  let repo;
+  before(() => {
+    repo = { buscar: async (id) => (id === 'e1' ? { id: 'e1' } : null) };
+  });
+
+  it('rejeita empréstimo inexistente', async () => {
+    await assert.rejects(registrarDevolucao(repo, 'e9', hoje), { message: 'empréstimo e9 não encontrado' });
+  });
+});`;
+let arqAssert;
+Labs.vscode('#lab-assert', {
+  folder: 'biblioteca-campus', status: 'Codespaces: professor', branch: 'test/emprestar', open: 'src/devolucao.js',
+  prompt: PROF + '(test/emprestar) $ ',
+  files: arqAssert = [
+    { path: 'test/emprestar.test.js', code: '// o opencode vai escrever este arquivo' },
+    { path: 'src/devolucao.js', hl: [3, 4], code:
+`export async function registrarDevolucao(repo, emprestimoId, devolvido) {
+  const emprestimo = await repo.buscar(emprestimoId);
+  if (!emprestimo) {
+    throw new Error('empréstimo ' + emprestimoId + ' não encontrado');
+  }
+  return { ...emprestimo, devolvido };
+}` }
+  ],
+  run: [
+    { label: 'opencode: gerar os testes', kind: 'purple', file: 'test/emprestar.test.js',
+      cmd: 'opencode run "Crie test/emprestar.test.js. Use beforeEach para recriar aluno e livro, deepEqual no retorno de emprestar, throws para livro reservado por outro aluno, rejects para registrarDevolucao com empréstimo inexistente, um it.skip para professor sem limite e um it.todo para renovação. Repositório falso em memória, sem banco."',
+      out: [ ...OC(['▸ read src/emprestimo.js', '▸ read src/devolucao.js', '▸ write test/emprestar.test.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ℹ pass 3  ℹ skipped 1  ℹ todo 1', '',
+        'Escrevi 5 testes em dois describe. O repositório de registrarDevolucao é um',
+        'objeto com buscar() assíncrono, então o teste não toca em banco.' ] },
+    { label: 'Conferir: npm test', cmd: 'npm test', file: 'test/emprestar.test.js', out: [
+      '', '> biblioteca-campus@1.0.0 test', '> node --test', '',
+      '▶ emprestar',
+      '[ok]   ✔ devolve o aluno e o livro do empréstimo (0.61ms)',
+      '[ok]   ✔ recusa livro reservado por outro aluno (0.22ms)',
+      '[warn]   ﹣ aceita professor sem limite de empréstimos (0.05ms) # SKIP',
+      '[warn]   ﹣ renova o empréstimo uma única vez (0.04ms) # TODO',
+      '[ok] ✔ emprestar (1.98ms)',
+      '▶ registrarDevolucao',
+      '[ok]   ✔ rejeita empréstimo inexistente (0.47ms)',
+      '[ok] ✔ registrarDevolucao (0.90ms)',
+      ...RESUMO(5, 3, 0, 2, { skip: 1, todo: 1 }, '64.87'), '[info] Confira no arquivo: o rejects tem await e a mensagem esperada; sem await, o teste passaria sempre.' ] },
+    { label: 'Só a reserva', clear: false, cmd: 'node --test --test-name-pattern="reserva"', out: [
+      '▶ emprestar', '[ok]   ✔ recusa livro reservado por outro aluno (0.31ms)', '[ok] ✔ emprestar (0.88ms)',
+      ...RESUMO(1, 1, 0, 1, null, '52.30'), '[mute] Os outros testes nem entraram na execução.' ] },
+    { label: 'Modo watch', kind: 'blue', clear: false, cmd: 'node --test --watch', file: 'src/devolucao.js', out: [
+      '▶ emprestar', '[ok] ✔ emprestar (1.91ms)', '▶ registrarDevolucao', '[ok] ✔ registrarDevolucao (0.88ms)',
+      ...RESUMO(5, 3, 0, 2, { skip: 1, todo: 1 }, '63.02'),
+      { t: '[mute] (arquivo salvo: src/devolucao.js, mensagem trocada para "não existe")', d: 900 },
+      '▶ registrarDevolucao',
+      '[err]   ✖ rejeita empréstimo inexistente (0.71ms)',
+      '[err] ✖ registrarDevolucao (1.12ms)',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:',
+      "[ok]   +   message: 'empréstimo e9 não existe'",
+      "[err]   -   message: 'empréstimo e9 não encontrado'",
+      '[mute] (aguardando novas alterações; Ctrl+C encerra)' ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) { arqAssert[0].hl = [9, 17, 25, 28, 29, 38]; api.setCode('test/emprestar.test.js', TESTE_ASSERT); }
+  }
+});
+
+/* ---------- 8. Lab 3: ciclo red, green, refactor ---------- */
+const MULTA_STUB =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const PRAZO_DIAS = 14;
+
+// emprestar(aluno, livro, hoje) segue igual, nas linhas abaixo
+
+export function calcularMulta(previsto, devolvido) {
+  return 0;
+}`;
+const MULTA_GREEN =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const PRAZO_DIAS = 14;
+
+// emprestar(aluno, livro, hoje) segue igual, nas linhas abaixo
+
+export function calcularMulta(previsto, devolvido) {
+  const atraso = Math.ceil((devolvido - previsto) / 86400000);
+  if (atraso > 0) {
+    return atraso * 150;
+  }
+  return 0;
+}`;
+const MULTA_REFACTOR =
+`const DIA_MS = 24 * 60 * 60 * 1000;
+export const PRAZO_DIAS = 14;
+export const MULTA_POR_DIA = 150;
+
+// emprestar(aluno, livro, hoje) segue igual, nas linhas abaixo
+
+export function calcularMulta(previsto, devolvido) {
+  const atraso = Math.ceil((devolvido - previsto) / DIA_MS);
+  return Math.max(atraso, 0) * MULTA_POR_DIA;
+}`;
+const TESTE_MULTA_1 =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/emprestimo.js';
+
+const previsto = new Date('2027-03-08T12:00:00Z');
+
+describe('calcularMulta', () => {
+  it('devolve 0 quando o livro volta no prazo', () => {
+    assert.equal(calcularMulta(previsto, previsto), 0);
+  });
+});`;
+const TESTE_MULTA_2 =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { calcularMulta } from '../src/emprestimo.js';
+
+const previsto = new Date('2027-03-08T12:00:00Z');
+
+describe('calcularMulta', () => {
+  it('devolve 0 quando o livro volta no prazo', () => {
+    assert.equal(calcularMulta(previsto, previsto), 0);
+  });
+
+  it('cobra 150 centavos por dia de atraso', () => {
+    const devolvido = new Date('2027-03-11T12:00:00Z');
+
+    assert.equal(calcularMulta(previsto, devolvido), 450);
+  });
+});`;
+const arqCiclo = [
+  { path: 'test/multa.test.js', code: TESTE_MULTA_1 },
+  { path: 'src/emprestimo.js', hl: [6, 7, 8], code: MULTA_STUB }
+];
+const P_MULTA = PROF + '(feat/multa) $ ';
+const VERDE3 = [
+  '> node --test', '',
+  '▶ calcularMulta',
+  '[ok]   ✔ devolve 0 quando o livro volta no prazo (0.39ms)',
+  '[ok]   ✔ cobra 150 centavos por dia de atraso (0.18ms)',
+  '[ok] ✔ calcularMulta (1.74ms)',
+  '▶ emprestar', '[ok] ✔ emprestar (0.69ms)',
+  'ℹ tests 3', '[ok] ℹ pass 3', 'ℹ fail 0', ''
+];
+Labs.vscode('#lab-ciclo', {
+  folder: 'biblioteca-campus', status: 'TDD: calcularMulta', branch: 'feat/multa', open: 'test/multa.test.js',
+  prompt: P_MULTA,
+  files: arqCiclo,
+  run: [
+    { label: '1. Pedir só o teste', kind: 'purple', file: 'test/multa.test.js',
+      cmd: 'opencode run "Passo red. Acrescente em test/multa.test.js um único teste: 3 dias de atraso custam 450 centavos. Não altere nada em src/. Rode npm test e pare."',
+      out: [ ...OC(['▸ read test/multa.test.js', '▸ read src/emprestimo.js', '▸ write test/multa.test.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ✖ cobra 150 centavos por dia de atraso', '',
+        'Acrescentei o teste "cobra 150 centavos por dia de atraso". Ele falha porque',
+        'calcularMulta ainda devolve 0. Parei aqui, como pedido.' ] },
+    { label: '2. Conferir o red', kind: 'red', clear: false, cmd: 'git diff --stat && npm test', out: [
+      ' test/multa.test.js | 6 ++++++', ' 1 file changed, 6 insertions(+)', '',
+      '> node --test', '',
+      '▶ calcularMulta',
+      '[ok]   ✔ devolve 0 quando o livro volta no prazo (0.41ms)',
+      '[err]   ✖ cobra 150 centavos por dia de atraso (0.93ms)',
+      '[err] ✖ calcularMulta (2.02ms)',
+      'ℹ tests 3', 'ℹ pass 2', '[err] ℹ fail 1', '',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '',
+      '[err]   0 !== 450', '',
+      '[info] Falhou pela razão certa: asserção, não erro de import. src/ ficou intacto.',
+      '[ok] ' + P_MULTA + 'git add test/multa.test.js && git commit -m "test(multa): cobra 150 centavos por dia de atraso"',
+      '[feat/multa 4d2e9a1] test(multa): cobra 150 centavos por dia de atraso' ] },
+    { label: '3. Pedir o green', kind: 'purple', file: 'src/emprestimo.js',
+      cmd: 'opencode run "Passo green. Escreva o mínimo em calcularMulta para o teste novo passar. Não mexa nos testes e não implemente o teto ainda."',
+      out: [ ...OC(['▸ read test/multa.test.js', '▸ read src/emprestimo.js', '▸ edit src/emprestimo.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ℹ pass 3  ℹ fail 0', '',
+        'calcularMulta agora conta os dias de atraso e multiplica por 150.',
+        'O teto de 3000 ficou de fora, como pedido.' ] },
+    { label: '4. Conferir o green', clear: false, cmd: 'git diff --stat && npm test', out: [
+      ' src/emprestimo.js | 6 +++++-', ' 1 file changed, 5 insertions(+), 1 deletion(-)', '',
+      ...VERDE3,
+      '[info] O diff só toca src/: o agente não "ajustou" o teste para passar.',
+      '[ok] ' + P_MULTA + 'git commit -am "feat(multa): calcula 150 centavos por dia de atraso"',
+      '[feat/multa 9a7e254] feat(multa): calcula 150 centavos por dia de atraso' ] },
+    { label: '5. Pedir o refactor', kind: 'purple', file: 'src/emprestimo.js',
+      cmd: 'opencode run "Passo refactor. Melhore calcularMulta sem mudar comportamento: use DIA_MS e uma constante exportada MULTA_POR_DIA. Rode npm test depois."',
+      out: [ ...OC(['▸ read src/emprestimo.js', '▸ edit src/emprestimo.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ℹ pass 3  ℹ fail 0', '',
+        'Troquei 86400000 por DIA_MS, criei MULTA_POR_DIA e tirei o if com Math.max.' ] },
+    { label: '6. Conferir e git log', kind: 'blue', clear: false, cmd: 'npm test', out: [
+      ...VERDE3,
+      '[ok] ' + P_MULTA + 'git commit -am "refactor(multa): dá nome ao dia e ao valor por dia"',
+      '[feat/multa c81f3b0] refactor(multa): dá nome ao dia e ao valor por dia',
+      '[ok] ' + P_MULTA + 'git log --oneline -4',
+      '[hi] c81f3b0 (HEAD -> feat/multa) refactor(multa): dá nome ao dia e ao valor por dia',
+      '[hi] 9a7e254 feat(multa): calcula 150 centavos por dia de atraso',
+      '[hi] 4d2e9a1 test(multa): cobra 150 centavos por dia de atraso',
+      '2f60c3e (origin/main, main) feat(multa): devolve 0 quando o livro volta no prazo',
+      '[info] git show 4d2e9a1 mostra só o teste; git show 9a7e254 mostra só o código que o fez passar.' ] }
+  ],
+  onRun(k, api) {
+    if (k === 0) { arqCiclo[0].hl = [12, 13, 14, 15, 16]; api.setCode('test/multa.test.js', TESTE_MULTA_2); }
+    if (k === 2) { arqCiclo[1].hl = [7, 8, 9, 10, 11]; api.setCode('src/emprestimo.js', MULTA_GREEN); }
+    if (k === 4) { arqCiclo[1].hl = [1, 3, 8, 9]; api.setCode('src/emprestimo.js', MULTA_REFACTOR); }
+  }
+});
+
+/* ---------- 10. Lab 4: relógio injetado ---------- */
+const SIT_BOM =
+`export function estaAtrasado(emprestimo, hoje) {
+  return hoje > emprestimo.previsto;
+}
+
+export function registrarAtraso(emprestimo) {
+  const agora = new Date();
+  return { ...emprestimo, atrasado: estaAtrasado(emprestimo, agora), conferidoEm: agora };
+}`;
+const TESTE_SIT_BOM =
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { estaAtrasado, registrarAtraso } from '../src/situacao.js';
+
+const emprestimo = { previsto: new Date('2027-03-08T12:00:00Z') };
+
+describe('estaAtrasado', () => {
+  it('retorna false um dia antes da data prevista', () => {
+    assert.equal(estaAtrasado(emprestimo, new Date('2027-03-07T12:00:00Z')), false);
+  });
+
+  it('retorna true um dia depois da data prevista', () => {
+    assert.equal(estaAtrasado(emprestimo, new Date('2027-03-09T12:00:00Z')), true);
+  });
+});
+
+describe('registrarAtraso', () => {
+  it('usa o relógio do sistema quando ninguém informa a data', (t) => {
+    t.mock.timers.enable({ apis: ['Date'], now: new Date('2027-03-10T12:00:00Z') });
+
+    const registro = registrarAtraso(emprestimo);
+
+    assert.equal(registro.atrasado, true);
+    assert.equal(registro.conferidoEm.toISOString(), '2027-03-10T12:00:00.000Z');
+  });
+});`;
+const arqRelogio = [
+  { path: 'src/situacao.js', hl: [2], code:
+`export function estaAtrasado(emprestimo) {
+  return new Date() > emprestimo.previsto;
+}` },
+  { path: 'test/situacao.test.js', hl: [9], code:
+`import { it } from 'node:test';
+import assert from 'node:assert/strict';
+import { estaAtrasado } from '../src/situacao.js';
+
+it('não está atrasado antes da data prevista', () => {
+  const emprestimo = { previsto: new Date('2027-03-08T12:00:00Z') };
+
+  // depende do dia em que o teste roda
+  assert.equal(estaAtrasado(emprestimo), false);
+});` }
+];
+Labs.vscode('#lab-relogio', {
+  folder: 'biblioteca-campus', status: 'Datas em teste', branch: 'fix/relogio', open: 'src/situacao.js',
+  prompt: PROF + '(fix/relogio) $ ',
+  files: arqRelogio,
+  run: [
+    { label: 'Hoje, 22/02', cmd: 'node --test test/situacao.test.js', out: [
+      '[mute] # date: seg 22 fev 2027', '[ok] ✔ não está atrasado antes da data prevista (0.52ms)', 'ℹ tests 1', '[ok] ℹ pass 1', 'ℹ fail 0' ] },
+    { label: 'O mesmo teste em 10/03', kind: 'red', clear: false, cmd: 'node --test test/situacao.test.js', out: [
+      '[mute] # date: qua 10 mar 2027 (nenhuma linha de código mudou)',
+      '[err] ✖ não está atrasado antes da data prevista (0.88ms)', 'ℹ tests 1', 'ℹ pass 0', '[err] ℹ fail 1', '',
+      '  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:', '', '[err]   true !== false', '',
+      '[warn] O teste ficou vermelho por causa do calendário, sem nenhuma mudança no código.' ] },
+    { label: 'opencode: injetar o relógio', kind: 'purple', file: 'src/situacao.js',
+      cmd: 'opencode run "estaAtrasado depende de new Date() e o teste quebra conforme o dia. Faça estaAtrasado receber hoje como parâmetro. Crie registrarAtraso(emprestimo), a única função que lê o relógio, e teste-a com t.mock.timers fixando 2027-03-10T12:00:00Z. Testes com um dia antes e um dia depois do previsto."',
+      out: [ ...OC(['▸ read src/situacao.js', '▸ read test/situacao.test.js', '▸ grep "new Date()" src test', '▸ edit src/situacao.js', '▸ write test/situacao.test.js']), ...PERMISSAO('npm test'), ...OC(['▸ bash npm test']),
+        '[mute]   ℹ pass 3  ℹ fail 0', '',
+        'estaAtrasado recebe hoje. registrarAtraso concentra a leitura do relógio e o',
+        'teste dela usa t.mock.timers.enable({ apis: [\'Date\'], now: ... }).' ] },
+    { label: 'Conferir: grep e npm test', kind: 'blue', cmd: 'grep -rn "new Date()" test/ ; npm test', file: 'test/situacao.test.js', out: [
+      '[mute] (grep não achou new Date() sem argumento nos testes)', '',
+      '> node --test', '',
+      '▶ estaAtrasado',
+      '[ok]   ✔ retorna false um dia antes da data prevista (0.44ms)',
+      '[ok]   ✔ retorna true um dia depois da data prevista (0.12ms)',
+      '[ok] ✔ estaAtrasado (1.40ms)',
+      '▶ registrarAtraso',
+      '[ok]   ✔ usa o relógio do sistema quando ninguém informa a data (0.96ms)',
+      '[ok] ✔ registrarAtraso (1.31ms)',
+      'ℹ tests 3', '[ok] ℹ pass 3', 'ℹ fail 0' ] },
+    { label: 'Só o relógio', kind: 'blue', clear: false, cmd: 'node --test --test-name-pattern="relógio"', out: [
+      '▶ registrarAtraso',
+      '[ok]   ✔ usa o relógio do sistema quando ninguém informa a data (0.91ms)',
+      '[ok] ✔ registrarAtraso (1.20ms)',
+      'ℹ tests 1', '[ok] ℹ pass 1', '[info] Rode em qualquer dia: a data dentro do teste é sempre 10/03/2027.' ] }
+  ],
+  onRun(k, api) {
+    if (k === 2) {
+      arqRelogio[0].hl = [1, 2, 6]; api.setCode('src/situacao.js', SIT_BOM);
+      arqRelogio[1].hl = [9, 13, 19]; api.setCode('test/situacao.test.js', TESTE_SIT_BOM);
+    }
+  }
+});
+
+/* ---------- 12. Lab 5: AAA, nomes e fronteira ---------- */
+Labs.vscode('#lab-aaa', {
+  folder: 'biblioteca-campus', status: 'Unidade e integração', branch: 'test/nomes', open: 'test/unidade/emprestar.test.js',
+  prompt: PROF + '(test/nomes) $ ',
+  files: [
+    { path: 'test/unidade/emprestar.test.js', hl: [9, 11, 13, 14, 16, 17], code:
+`import { describe, it } from 'node:test';
+import assert from 'node:assert/strict';
+import { emprestar } from '../../src/emprestimo.js';
+
+const hoje = new Date('2027-02-22T12:00:00Z');
+const livroLivre = { id: 'l1', reservadoPor: null };
+
+describe('emprestar', () => {
+  it('recusa quando o aluno já tem 3 empréstimos ativos', () => {
+    // Arrange
+    const aluno = { id: 'a1', ativos: ['l7', 'l8', 'l9'], multaPendente: 0 };
+    // Act
+    const tentar = () => emprestar(aluno, livroLivre, hoje);
+    // Assert
+    assert.throws(tentar, /limite de 3 empréstimos ativos/);
+  });
+
+  it('aceita o empréstimo quando o aluno tem 2 ativos', () => {
+    const aluno = { id: 'a1', ativos: ['l7', 'l8'], multaPendente: 0 };
+
+    const emprestimo = emprestar(aluno, livroLivre, hoje);
+
+    assert.equal(emprestimo.livroId, 'l1');
+  });
+
+  it('recusa quando o aluno tem multa pendente', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 450 };
+
+    const tentar = () => emprestar(aluno, livroLivre, hoje);
+
+    assert.throws(tentar, /multa pendente/);
+  });
+
+  it('aceita livro reservado pelo próprio aluno', () => {
+    const aluno = { id: 'a1', ativos: [], multaPendente: 0 };
+    const livro = { id: 'l2', reservadoPor: 'a1' };
+
+    const emprestimo = emprestar(aluno, livro, hoje);
+
+    assert.equal(emprestimo.livroId, 'l2');
+  });
+});` },
+    { path: 'test/integracao/emprestimo-repo.test.js', hl: [3, 6, 7], code:
+`import { it } from 'node:test';
+import assert from 'node:assert/strict';
+import pg from 'pg';
+
+it('grava o empréstimo na tabela emprestimos', async () => {
+  const pool = new pg.Pool({ connectionString: 'postgres://app:app@localhost:5432/biblioteca' });
+  const { rows } = await pool.query('select count(*) from emprestimos');
+
+  assert.equal(Number(rows[0].count), 0);
+  await pool.end();
+});` }
+  ],
+  run: [
+    { label: 'Nomes vagos', kind: 'red', cmd: 'node --test test/antigo/', out: [
+      '▶ emprestimo',
+      '[ok]   ✔ teste 1 (0.40ms)', '[ok]   ✔ teste 2 (0.15ms)', '[err]   ✖ teste 3 (0.62ms)', '[ok]   ✔ caso reserva (0.11ms)',
+      '[err] ✖ emprestimo (1.80ms)', 'ℹ tests 4', 'ℹ pass 3', '[err] ℹ fail 1', '',
+      '  AssertionError [ERR_ASSERTION]: Missing expected exception.',
+      '[warn] Qual regra quebrou? Só abrindo o arquivo para saber.' ] },
+    { label: 'opencode: revisar os testes', kind: 'purple', file: 'test/unidade/emprestar.test.js',
+      cmd: 'opencode run "Revise test/antigo/. Renomeie cada teste com condição e resultado, separe Arrange, Act e Assert, mova os testes de unidade para test/unidade/ e aponte os que dependem de banco, rede, arquivo ou data atual. Mostre a lista antes de gravar."',
+      out: [ ...OC(['▸ read test/antigo/emprestimo.test.js', '▸ read src/emprestimo.js', '▸ glob test/**/*.test.js']),
+        'Proposta:', '  teste 1        → recusa quando o aluno já tem 3 empréstimos ativos',
+        '  teste 2        → aceita o empréstimo quando o aluno tem 2 ativos',
+        '  teste 3        → recusa quando o aluno tem multa pendente',
+        '  caso reserva   → aceita livro reservado pelo próprio aluno',
+        '[warn]   test/integracao/emprestimo-repo.test.js abre conexão com PostgreSQL: não é unidade.',
+        '[warn] ? Aplicar as mudanças em 2 arquivos?  (s) sim  (n) não', '› s',
+        ...OC(['▸ write test/unidade/emprestar.test.js', '▸ bash git rm test/antigo/emprestimo.test.js']),
+        'Feito. Nenhuma asserção mudou; só nomes, organização e local do arquivo.' ] },
+    { label: 'Conferir: git diff e testes', cmd: 'git diff --stat HEAD && node --test test/unidade/', file: 'test/unidade/emprestar.test.js', out: [
+      ' test/{antigo/emprestimo.test.js => unidade/emprestar.test.js} | 24 ++++++++++++------',
+      '',
+      '▶ emprestar',
+      '[ok]   ✔ recusa quando o aluno já tem 3 empréstimos ativos (0.38ms)',
+      '[ok]   ✔ aceita o empréstimo quando o aluno tem 2 ativos (0.14ms)',
+      '[err]   ✖ recusa quando o aluno tem multa pendente (0.59ms)',
+      '[ok]   ✔ aceita livro reservado pelo próprio aluno (0.10ms)',
+      '[err] ✖ emprestar (1.71ms)', 'ℹ tests 4', 'ℹ pass 3', '[err] ℹ fail 1', '[mute] ℹ duration_ms 58.12', '',
+      '  AssertionError [ERR_ASSERTION]: Missing expected exception (/multa pendente/).',
+      '[info] A saída já diz: a regra da multa pendente deixou de ser aplicada.' ] },
+    { label: 'Teste que fala com o banco', kind: 'red', cmd: 'node --test test/integracao/', file: 'test/integracao/emprestimo-repo.test.js', out: [
+      { t: '[err] ✖ grava o empréstimo na tabela emprestimos (1532.40ms)', d: 1200 },
+      '  Error: connect ECONNREFUSED 127.0.0.1:5432',
+      '[mute]       at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1611:16)',
+      'ℹ tests 1', 'ℹ pass 0', '[err] ℹ fail 1', '[mute] ℹ duration_ms 1601.77', '',
+      '[warn] Depende de um PostgreSQL rodando: é teste de integração, assunto da Aula 10 com Testcontainers.' ] }
+  ]
+});
+    </script>
+    <script src="../../js/standard_slides.js"></script>
+    <script src="../../js/avisos.js" defer></script>
+  </body>
+</html>
