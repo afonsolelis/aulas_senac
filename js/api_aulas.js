@@ -16,6 +16,7 @@
  */
 (function () {
   const URL_API = 'https://aulas-senac-api.afonsolelis.tech';
+  const TAMANHO_PARTE = 8 * 1024 * 1024;
 
   async function rpc(fn, args) {
     try {
@@ -58,11 +59,29 @@
   // Só o bucket do depósito do TCC2 existe; os PDFs ficam no próprio Postgres.
   function balde() {
     return {
-      async upload(caminho, arquivo) {
-        let conteudo;
-        try { conteudo = await base64(arquivo); } catch (e) { return { data: null, error: { message: e.message } }; }
-        const { data, error } = await rpc('hubdeposito_subir', { p_caminho: caminho, p_conteudo: conteudo });
-        return error ? { data: null, error } : { data: { path: data.caminho }, error: null };
+      // O PDF vai em partes de 8 MB, uma por vez (hubdeposito_subir_parte): um corpo
+      // único de 150 MB em base64 estouraria o tempo do proxy em conexão lenta.
+      // opcoes.aoProgresso(enviadas, total) avisa a página a cada parte.
+      async upload(caminho, arquivo, opcoes) {
+        const aoProgresso = (opcoes && opcoes.aoProgresso) || function () {};
+        const total = Math.max(1, Math.ceil(arquivo.size / TAMANHO_PARTE));
+        let data = null;
+        for (let parte = 1; parte <= total; parte++) {
+          const pedaco = arquivo.slice((parte - 1) * TAMANHO_PARTE, parte * TAMANHO_PARTE);
+          let conteudo;
+          try { conteudo = await base64(pedaco); } catch (e) { return { data: null, error: { message: e.message } }; }
+          const args = { p_caminho: caminho, p_parte: parte, p_total: total, p_conteudo: conteudo };
+          let resp = await rpc('hubdeposito_subir_parte', args);
+          // Falha de rede ou do servidor (sem status ou 5xx): tenta a mesma parte mais uma vez.
+          if (resp.error && !(resp.error.status >= 400 && resp.error.status < 500)) {
+            resp = await rpc('hubdeposito_subir_parte', args);
+          }
+          if (resp.error) return { data: null, error: resp.error };
+          data = resp.data;
+          aoProgresso(parte, total);
+        }
+        if (!data || !data.completo) return { data: null, error: { message: 'O PDF não chegou inteiro. Envie de novo.' } };
+        return { data: { path: data.caminho }, error: null };
       },
       getPublicUrl(caminho) {
         return { data: { publicUrl: urlPdf(caminho) } };

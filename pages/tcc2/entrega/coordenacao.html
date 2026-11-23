@@ -40,7 +40,7 @@
   <div id="recado" class="alert d-none" role="status"></div>
   <div class="table-responsive">
     <table class="table align-middle mb-0">
-      <thead><tr><th scope="col">Turma</th><th scope="col">Integrantes</th><th scope="col">PDF</th><th scope="col">Enviado em</th></tr></thead>
+      <thead><tr><th scope="col">Turma</th><th scope="col">Título</th><th scope="col">Integrantes</th><th scope="col">PDF</th><th scope="col">Enviado em</th></tr></thead>
       <tbody id="linhas"></tbody>
     </table>
   </div>
@@ -95,13 +95,14 @@
     $('resumo').textContent = depositos.length === 1 ? '1 depósito.' : `${depositos.length} depósitos.`;
     $('baixar-todos').disabled = depositos.length === 0;
     if (!depositos.length) {
-      const tr = el('tr'); tr.append(el('td', 'Nenhum PDF depositado ainda.', { colspan: '4', class: 'text-muted' }));
+      const tr = el('tr'); tr.append(el('td', 'Nenhum PDF depositado ainda.', { colspan: '5', class: 'text-muted' }));
       corpo.append(tr);
       return;
     }
     for (const d of depositos) {
       const tr = el('tr');
       tr.append(el('td', d.turma));
+      tr.append(el('td', d.titulo || '—'));
       tr.append(el('td', d.integrantes, { style: 'white-space:pre-line' }));
       const td = el('td');
       td.append(el('a', d.nome_arquivo || 'Abrir PDF', { href: pdfUrl(d.arquivo), target: '_blank', rel: 'noopener noreferrer' }));

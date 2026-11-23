@@ -151,6 +151,7 @@
         valor instanceof Node ? dd.append(valor) : dd.textContent = valor || '—';
         dl.append(dd);
       };
+      linha('Título', r.titulo);
       linha('PDF', link(pdfUrl(r.arquivo), r.nome_arquivo || 'Abrir PDF'));
       linha('Integrantes', r.integrantes);
       card.append(dl);

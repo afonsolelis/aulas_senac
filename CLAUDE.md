@@ -179,9 +179,11 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
 - **Qualidade 2026.2** (`pages/qualidade2/entrega/`) e o formulário de turmas usam as tabelas e funções
   `entrega_*`, que são do repositório `aulas_mackenzie`. Daqui só se inserem formulários `senac-*`
   (`supabase/entregas-*.sql`). Token do professor: o mesmo da área de entregas do Mackenzie.
-- **TCC2 2026.2** (`pages/tcc2/entrega/`): o aluno deposita o **PDF final**, que fica no próprio
-  Postgres (`hubdeposito_arquivos`, fechada para a API): `hubdeposito_subir` recebe o PDF em
-  base64 (só PDF, até 30 MB; nome sorteado `<turma>/<uuid>.pdf`) e `hubdeposito_pdf` o devolve
+- **TCC2 2026.2** (`pages/tcc2/entrega/`): o aluno informa o **título exato do trabalho** (obrigatório,
+  coluna `titulo`, conferido em `hubdeposito_enviar`) e deposita o **PDF final**, que fica no próprio
+  Postgres (`hubdeposito_arquivos`, fechada para a API): a página manda o PDF em partes de 8 MB
+  por `hubdeposito_subir_parte` (só PDF, até 150 MB; nome sorteado `<turma>/<uuid>.pdf`; a última
+  parte junta o arquivo), porque o Traefik corta corpo que leva mais de 60 s, e `hubdeposito_pdf` o devolve
   pelo link público `GET /rpc/hubdeposito_pdf?p_caminho=...`, sem listagem. `hubdeposito_enviar`
   confere o arquivo e grava em `hubdeposito_respostas`. SQL do armazenamento:
   `postgrest/hubdeposito-arquivos.sql`. Abertura da turma vem de `entrega_formularios`
