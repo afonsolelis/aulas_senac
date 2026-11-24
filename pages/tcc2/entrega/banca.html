@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Banca do TCC2 - TCC2 2026.2</title>
-<meta name="description" content="Área do professor da banca do TCC2 2026.2: PDF final do trabalho e considerações.">
+<meta name="description" content="Área do professor da banca do TCC2 2026.2: PDF final do trabalho, nota e considerações.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="../../../css/style.css">
@@ -40,6 +40,17 @@
     <p class="text-muted mb-3" style="white-space:pre-line" id="integrantes"></p>
     <a class="btn btn-primary d-none" id="pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf me-1" aria-hidden="true"></i> Abrir o PDF final</a>
     <p class="text-muted small mt-2 mb-0" id="enviado"></p>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <h2 class="h5 fw-bold">Sua nota</h2>
+    <p class="text-muted small">De 0 a 10, com até duas casas decimais. Dá para alterar depois; vale a última nota salva.</p>
+    <form id="form-nota" class="d-flex gap-2 flex-wrap align-items-center">
+      <label class="visually-hidden" for="nota">Nota</label>
+      <input id="nota" class="form-control" style="max-width:8rem" inputmode="decimal" placeholder="0 a 10" autocomplete="off">
+      <button class="btn btn-dark" type="submit"><i class="fas fa-check me-1" aria-hidden="true"></i> Salvar nota</button>
+      <span class="small text-muted" id="estado-nota" role="status"></span>
+    </form>
   </section>
 
   <section class="glass-card p-4 p-md-5 mb-4">
@@ -98,6 +109,7 @@
         $('pdf').classList.remove('d-none');
         $('enviado').textContent = `Depositado em ${quando(d.enviado_em)}.`;
       }
+      mostrarNota(d.nota, d.nota_em, d.nota_por);
       salvo = d.consideracoes || '';
       $('texto').value = salvo;
       $('estado').textContent = d.atualizado_em ? `Salvo em ${quando(d.atualizado_em)}.` : '';
@@ -111,6 +123,30 @@
       avisarToken(e.message);
     }
   }
+
+  const fmtNota = (n) => Number(n).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  function mostrarNota(nota, em, por) {
+    $('nota').value = nota == null ? '' : fmtNota(nota);
+    $('estado-nota').textContent = nota == null ? 'Nota ainda não lançada.'
+      : `Nota ${fmtNota(nota)} salva em ${quando(em)}${por === 'coordenacao' ? ', lançada pela coordenação' : ''}.`;
+  }
+
+  $('form-nota').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const bruto = $('nota').value.trim().replace(',', '.');
+    const nota = bruto === '' ? null : Number(bruto);
+    if (nota !== null && (!Number.isFinite(nota) || nota < 0 || nota > 10)) {
+      $('estado-nota').textContent = 'A nota vai de 0 a 10.';
+      return;
+    }
+    $('estado-nota').textContent = 'Salvando…';
+    try {
+      const r = await rpc('hubbanca_nota', { p_nota: nota });
+      mostrarNota(r.nota, r.nota_em, 'professor');
+    } catch (e) {
+      $('estado-nota').textContent = `Não salvou: ${e.message}`;
+    }
+  });
 
   async function salvar() {
     clearTimeout(espera);

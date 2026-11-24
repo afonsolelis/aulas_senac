@@ -196,6 +196,11 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   copiar e mandar; não há e-mail nem SMTP. O token abre só aquele trabalho (PDF + campo de considerações, salvo
   sozinho e editável sempre). O banco guarda só o hash: token perdido se troca por **Gerar novo token**. A
   coordenação copia as considerações e repassa aos alunos. SQL: `postgrest/hubbanca.sql` (`hubbanca_*`).
+- **Notas e devolutiva do TCC2:** o professor lança a nota (0 a 10) em `banca.html`; a coordenação também lança ou
+  corrige a de qualquer um no diálogo da banca. Por trabalho, a coordenação grava prazo de revisão, "o que mudar
+  para o depósito final", nota final opcional (sem ela vale a média) e libera; **Gerar link do grupo** cria o link
+  `resultado.html#t=<token>` (só o hash fica no banco). O grupo só vê notas e considerações depois de liberado.
+  O quadro "Notas das bancas" da coordenação copia tudo para planilha.
 
 ## Acompanhamento do TCC1 2027.1 (`hubtcc_*`)
 

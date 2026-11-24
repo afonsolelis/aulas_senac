@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Devolutiva da banca - TCC2 2026.2</title>
+<meta name="description" content="Devolutiva da banca do TCC2 2026.2 para o grupo: notas, considerações, prazo de revisão e ajustes para o depósito final.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc2.html">TCC2 2026.2</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_tcc2.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC2 2026.2</a><div><span class="badge bg-white text-dark mb-1">TCC2 &middot; 2026.2 &middot; Banca</span><h1 class="h3 fw-bold text-white mb-0">Devolutiva da banca</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Acesso do grupo</h2>
+  <p class="text-muted small">Abra pelo link que a coordenação mandou ao grupo. Se o link vier sem o token, cole o token aqui.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:24rem" type="password"
+           autocomplete="off" placeholder="Token do grupo" required aria-label="Token do grupo">
+    <button class="btn btn-dark" type="submit">Abrir</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div class="d-none" id="painel">
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex gap-2 flex-wrap align-items-start mb-2">
+      <p class="text-muted small mb-0 me-auto" id="turma"></p>
+      <button class="btn btn-link btn-sm text-secondary p-0" type="button" id="sair">Sair</button>
+    </div>
+    <h2 class="h4 fw-bold" id="titulo"></h2>
+    <p class="text-muted mb-0" style="white-space:pre-line" id="integrantes"></p>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4 d-none" id="aguardando">
+    <h2 class="h5 fw-bold">Devolutiva ainda não liberada</h2>
+    <p class="mb-0">A banca ainda está registrando notas e considerações. Esta página mostra tudo assim que a coordenação liberar; o mesmo link continua valendo.</p>
+  </section>
+
+  <div class="d-none" id="devolutiva">
+    <section class="glass-card p-4 p-md-5 mb-4">
+      <div class="row g-3 text-center">
+        <div class="col-sm-6">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">Nota final</div>
+            <div class="display-6 fw-bold" id="nota-final"></div>
+            <div class="small text-muted" id="nota-origem"></div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="border rounded-3 p-3 h-100">
+            <div class="small text-muted">Prazo para o depósito revisado</div>
+            <div class="display-6 fw-bold" id="prazo"></div>
+            <div class="small text-muted" id="prazo-falta"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass-card p-4 p-md-5 mb-4">
+      <h2 class="h5 fw-bold">O que mudar para o depósito final</h2>
+      <div id="ajustes" style="white-space:pre-wrap"></div>
+      <div class="d-flex gap-2 flex-wrap align-items-center mt-3">
+        <a class="btn btn-primary" href="entrega.html"><i class="fas fa-upload me-1" aria-hidden="true"></i> Depositar a versão revisada</a>
+        <a class="btn btn-outline-secondary d-none" id="pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf me-1" aria-hidden="true"></i> PDF avaliado</a>
+      </div>
+      <p class="text-muted small mt-2 mb-0" id="ultimo-envio"></p>
+    </section>
+
+    <section class="glass-card p-4 p-md-5 mb-4">
+      <h2 class="h5 fw-bold">Banca</h2>
+      <ul class="list-unstyled mb-0" id="banca"></ul>
+    </section>
+  </div>
+</div>
+
+</div></div></main>
+
+<script>
+  const API = 'https://aulas-senac-api.afonsolelis.tech';
+  const pdfUrl = (caminho) => `${API}/rpc/hubdeposito_pdf?p_caminho=${encodeURIComponent(caminho)}`;
+  // O link chega como resultado.html#t=<token>; o token fica neste navegador até clicar em Sair.
+  const CHAVE = 'resultado_tcc2_token';
+  const $ = (id) => document.getElementById(id);
+  const lerToken = () => { try { return localStorage.getItem(CHAVE) || ''; } catch { return ''; } };
+  const gravarToken = (t) => { try { t ? localStorage.setItem(CHAVE, t) : localStorage.removeItem(CHAVE); } catch {} };
+  let token = lerToken();
+  const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+  const fmtNota = (n) => n == null ? '—' : Number(n).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+
+  // Tudo vem do banco: só textContent.
+  function el(tag, texto, attrs = {}) {
+    const e = document.createElement(tag);
+    if (texto != null) e.textContent = texto;
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  }
+
+  function prazoTexto(iso) {
+    if (!iso) return ['A definir', ''];
+    const [a, m, d] = iso.split('-').map(Number);
+    const hoje = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Sao_Paulo' }));
+    const dias = Math.round((Date.UTC(a, m - 1, d) - Date.UTC(hoje.getFullYear(), hoje.getMonth(), hoje.getDate())) / 864e5);
+    const falta = dias > 1 ? `Faltam ${dias} dias.` : dias === 1 ? 'Termina amanhã.'
+      : dias === 0 ? 'Termina hoje.' : 'Prazo encerrado.';
+    return [`${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}/${a}`, falta];
+  }
+
+  async function abrir() {
+    try {
+      const r = await fetch(`${API}/rpc/hubbanca_devolutiva`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ p_token: token }),
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d.message || 'Falha ao consultar o servidor.');
+      if (!d.ok) throw new Error(d.erro);
+      gravarToken(token);
+      $('turma').textContent = d.turma || '';
+      $('titulo').textContent = d.titulo || 'Trabalho sem título';
+      $('integrantes').textContent = d.integrantes || '';
+      $('aguardando').classList.toggle('d-none', d.liberado);
+      $('devolutiva').classList.toggle('d-none', !d.liberado);
+      if (d.liberado) desenhar(d);
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+    } catch (e) {
+      gravarToken('');
+      $('painel').classList.add('d-none');
+      $('tela-token').classList.remove('d-none');
+      $('recado-token').textContent = e.message;
+      $('recado-token').classList.remove('d-none');
+    }
+  }
+
+  function desenhar(d) {
+    $('nota-final').textContent = fmtNota(d.nota_final);
+    $('nota-origem').textContent = d.nota_final == null ? 'Ainda sem nota'
+      : d.media != null && Number(d.media) === Number(d.nota_final) ? 'Média das notas da banca' : 'Definida pela coordenação';
+    const [prazo, falta] = prazoTexto(d.prazo_revisao);
+    $('prazo').textContent = prazo;
+    $('prazo-falta').textContent = falta;
+    $('ajustes').textContent = d.ajustes || 'A coordenação não indicou ajustes além das considerações da banca.';
+    if (d.arquivo) {
+      $('pdf').href = pdfUrl(d.arquivo);
+      $('pdf').classList.remove('d-none');
+    }
+    $('ultimo-envio').textContent = d.enviado_em
+      ? (new Date(d.enviado_em) > new Date(d.liberado_em)
+        ? `Versão revisada recebida em ${quando(d.enviado_em)}.`
+        : `Último depósito em ${quando(d.enviado_em)}, antes da devolutiva.`)
+      : '';
+
+    const lista = $('banca');
+    lista.replaceChildren();
+    if (!d.banca.length) lista.append(el('li', 'Nenhum professor registrado.', { class: 'text-muted' }));
+    for (const a of d.banca) {
+      const li = el('li', null, { class: 'border rounded-3 p-3 mb-2' });
+      const topo = el('div', null, { class: 'd-flex gap-2 flex-wrap align-items-center' });
+      topo.append(el('strong', a.nome, { class: 'me-auto' }), el('span', `Nota ${fmtNota(a.nota)}`, { class: 'badge bg-dark' }));
+      li.append(topo);
+      li.append(el('div', a.consideracoes || 'Sem considerações escritas.',
+        { class: 'mt-2' + (a.consideracoes ? '' : ' text-muted small'), style: 'white-space:pre-wrap' }));
+      lista.append(li);
+    }
+  }
+
+  // Token no fragmento do link: guarda e tira da barra de endereço.
+  const doLink = new URLSearchParams(location.hash.slice(1)).get('t');
+  if (doLink) {
+    token = doLink.trim();
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    token = $('token').value.trim();
+    $('token').value = '';
+    abrir();
+  });
+  $('sair').addEventListener('click', () => { gravarToken(''); location.reload(); });
+
+  if (token) abrir();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

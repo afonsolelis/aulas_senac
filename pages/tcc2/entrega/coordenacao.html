@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Depósitos do TCC2 - Coordenação - TCC2 2026.2</title>
-<meta name="description" content="Acesso da coordenação aos PDFs finais do TCC2 2026.2 e à alocação das bancas.">
+<meta name="description" content="Acesso da coordenação aos PDFs finais do TCC2 2026.2, às bancas, às notas e à devolutiva dos grupos.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="../../../css/style.css">
@@ -46,6 +46,20 @@
   </div>
 </section>
 
+<section class="glass-card p-4 mb-4 d-none" id="quadro">
+  <div class="d-flex gap-2 flex-wrap align-items-center mb-2">
+    <h2 class="h4 fw-bold mb-0 me-auto">Notas das bancas</h2>
+    <button class="btn btn-outline-primary btn-sm" type="button" id="copiar-quadro"><i class="fas fa-table me-1" aria-hidden="true"></i> Copiar para planilha</button>
+  </div>
+  <p class="text-muted small">A nota final é a definida na devolutiva ou, sem ela, a média da banca. O grupo só vê a devolutiva depois de liberada.</p>
+  <div class="table-responsive">
+    <table class="table table-sm align-middle mb-0">
+      <thead><tr><th scope="col">Turma</th><th scope="col">Trabalho</th><th scope="col">Notas da banca</th><th scope="col">Média</th><th scope="col">Nota final</th><th scope="col">Prazo de revisão</th><th scope="col">Devolutiva</th></tr></thead>
+      <tbody id="quadro-linhas"></tbody>
+    </table>
+  </div>
+</section>
+
 </div></div></main>
 
 <dialog id="banca" class="border-0 rounded-4 shadow p-0" style="width:min(46rem,calc(100vw - 2rem))" aria-labelledby="banca-titulo">
@@ -72,10 +86,36 @@
       <button class="btn btn-dark" type="submit"><i class="fas fa-user-plus me-1" aria-hidden="true"></i> Alocar e gerar acesso</button>
     </form>
 
-    <div class="d-flex gap-2 flex-wrap align-items-center border-top pt-3">
-      <span class="small text-muted me-auto">Para repassar aos alunos, copie as considerações de todos os professores.</span>
+    <div class="d-flex gap-2 flex-wrap align-items-center border-top pt-3 mb-4">
+      <span class="small text-muted me-auto">Para repassar por outro meio, copie as considerações de todos os professores.</span>
       <button class="btn btn-outline-primary btn-sm" type="button" id="banca-copiar-todas"><i class="fas fa-copy me-1" aria-hidden="true"></i> Copiar considerações</button>
     </div>
+
+    <h3 class="h6 fw-bold">Devolutiva ao grupo</h3>
+    <p class="small text-muted">O grupo abre pelo link próprio e vê notas, considerações da banca, prazo e ajustes depois que você liberar.</p>
+    <form id="devolutiva-form">
+      <div class="row g-2 mb-2">
+        <div class="col-sm-6">
+          <label class="form-label small mb-1" for="dev-prazo">Prazo para o depósito revisado</label>
+          <input id="dev-prazo" class="form-control" type="date">
+        </div>
+        <div class="col-sm-6">
+          <label class="form-label small mb-1" for="dev-nota">Nota final (vazio usa a média)</label>
+          <input id="dev-nota" class="form-control" inputmode="decimal" autocomplete="off">
+        </div>
+      </div>
+      <label class="form-label small mb-1" for="dev-ajustes">O que mudar para o depósito final</label>
+      <textarea id="dev-ajustes" class="form-control mb-2" rows="6" maxlength="20000"></textarea>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" id="dev-liberar">
+        <label class="form-check-label" for="dev-liberar">Liberar a devolutiva para o grupo</label>
+      </div>
+      <div class="d-flex gap-2 flex-wrap align-items-center">
+        <button class="btn btn-dark btn-sm" type="submit"><i class="fas fa-floppy-disk me-1" aria-hidden="true"></i> Salvar devolutiva</button>
+        <button class="btn btn-outline-dark btn-sm" type="button" id="dev-link"><i class="fas fa-link me-1" aria-hidden="true"></i> Gerar link do grupo</button>
+        <span class="small text-muted" id="dev-estado" role="status"></span>
+      </div>
+    </form>
   </div>
 </dialog>
 
@@ -88,8 +128,19 @@
   const $ = (id) => document.getElementById(id);
   let depositos = [];
   let avaliadores = [];
+  let resultados = [];
   let aberto = null; // trabalho aberto no diálogo
   const LINK_BANCA = new URL('banca.html', location.href).href;
+  const LINK_RESULTADO = new URL('resultado.html', location.href).href;
+  const fmtNota = (n) => n == null ? '—' : Number(n).toLocaleString('pt-BR', { minimumFractionDigits: 1, maximumFractionDigits: 2 });
+  const lerNota = (texto) => {
+    const t = String(texto).trim().replace(',', '.');
+    if (t === '') return null;
+    const n = Number(t);
+    if (!Number.isFinite(n) || n < 0 || n > 10) throw new Error('A nota vai de 0 a 10.');
+    return n;
+  };
+  const dataBR = (iso) => iso ? iso.split('-').reverse().join('/') : '—';
 
   const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
     timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
@@ -124,15 +175,63 @@
 
   async function carregar() {
     depositos = (await rpc('hubdeposito_coordenacao')).depositos;
-    avaliadores = (await rpc('hubbanca_listar')).avaliadores;
+    await listarBanca();
     desenhar();
     if (aberto) desenharBanca();
   }
 
+  async function listarBanca() {
+    const d = await rpc('hubbanca_listar');
+    avaliadores = d.avaliadores;
+    resultados = d.resultados || [];
+  }
+
   const mesmoTrabalho = (d) => (a) => a.slug === d.slug && a.grupo.toLowerCase() === d.grupo.toLowerCase();
   const bancaDe = (d) => avaliadores.filter(mesmoTrabalho(d));
+  const resultadoDe = (d) => resultados.find(mesmoTrabalho(d)) || {};
+  const mediaDe = (d) => {
+    const notas = bancaDe(d).map((a) => a.nota).filter((n) => n != null).map(Number);
+    return notas.length ? Math.round(notas.reduce((x, y) => x + y, 0) / notas.length * 100) / 100 : null;
+  };
+  const finalDe = (d) => resultadoDe(d).nota_final ?? mediaDe(d);
+
+  function desenharQuadro() {
+    const corpo = $('quadro-linhas');
+    corpo.replaceChildren();
+    $('quadro').classList.toggle('d-none', !depositos.length);
+    for (const d of depositos) {
+      const r = resultadoDe(d);
+      const tr = el('tr');
+      tr.append(el('td', d.turma), el('td', d.titulo || d.grupo));
+      const banca = bancaDe(d);
+      tr.append(el('td', banca.length ? banca.map((a) => `${a.nome}: ${fmtNota(a.nota)}`).join('\n') : 'Sem banca',
+        { class: 'small', style: 'white-space:pre-line' }));
+      tr.append(el('td', fmtNota(mediaDe(d))), el('td', fmtNota(finalDe(d)), { class: 'fw-semibold' }));
+      tr.append(el('td', dataBR(r.prazo_revisao)));
+      const estado = r.liberado_em ? `Liberada em ${quando(r.liberado_em)}` : 'Não liberada';
+      const td = el('td', null, { class: 'small' });
+      td.append(el('div', estado));
+      if (r.liberado_em) td.append(el('div', r.acesso_em ? `Grupo abriu em ${quando(r.acesso_em)}` : 'Grupo ainda não abriu', { class: 'text-muted' }));
+      if (r.liberado_em && new Date(d.enviado_em) > new Date(r.liberado_em)) td.append(el('div', 'Nova versão depositada', { class: 'text-success' }));
+      tr.append(td);
+      corpo.append(tr);
+    }
+  }
+
+  function textoQuadro() {
+    const linhas = [['Turma', 'Trabalho', 'Integrantes', 'Banca', 'Média', 'Nota final', 'Prazo de revisão', 'Devolutiva', 'O que mudar']];
+    for (const d of depositos) {
+      const r = resultadoDe(d);
+      linhas.push([d.turma, d.titulo || d.grupo, d.integrantes.split('\n').join(', '),
+        bancaDe(d).map((a) => `${a.nome}: ${fmtNota(a.nota)}`).join('; '),
+        fmtNota(mediaDe(d)), fmtNota(finalDe(d)), dataBR(r.prazo_revisao),
+        r.liberado_em ? 'Liberada' : 'Não liberada', (r.ajustes || '').replace(/\s+/g, ' ')]);
+    }
+    return linhas.map((l) => l.map((c) => String(c ?? '').replace(/\t/g, ' ')).join('\t')).join('\n');
+  }
 
   function desenhar() {
+    desenharQuadro();
     const corpo = $('linhas');
     corpo.replaceChildren();
     $('resumo').textContent = depositos.length === 1 ? '1 depósito.' : `${depositos.length} depósitos.`;
@@ -154,8 +253,10 @@
       const tdB = el('td');
       if (banca.length) {
         const com = banca.filter((a) => a.consideracoes).length;
+        const notas = banca.filter((a) => a.nota != null).length;
         tdB.append(el('div', banca.map((a) => a.nome).join(', '), { class: 'small' }),
-          el('div', `${com} de ${banca.length} com considerações`, { class: 'small text-muted mb-1' }));
+          el('div', `${com} de ${banca.length} com considerações · ${notas} de ${banca.length} notas`, { class: 'small text-muted' }),
+          el('div', resultadoDe(d).liberado_em ? 'Devolutiva liberada' : 'Devolutiva não liberada', { class: 'small text-muted mb-1' }));
       }
       const b = el('button', banca.length ? 'Gerenciar banca' : 'Alocar banca',
         { type: 'button', class: 'btn btn-sm ' + (banca.length ? 'btn-outline-dark' : 'btn-dark') });
@@ -220,6 +321,7 @@
   ].join('\n');
 
   function mostrarConvite(nome, token) {
+    $('banca-convite').querySelector('p').textContent = 'Acesso gerado. O token só aparece agora; copie antes de fechar.';
     $('banca-convite-texto').textContent = textoConvite(nome, token);
     $('banca-convite').classList.remove('d-none');
   }
@@ -231,6 +333,7 @@
     $('banca-convite').classList.add('d-none');
     avisar($('banca-recado'), '');
     $('banca-nome').value = '';
+    preencherDevolutiva();
     desenharBanca();
     $('banca').showModal();
   }
@@ -269,6 +372,18 @@
         : a.acesso_em ? `Abriu o trabalho em ${quando(a.acesso_em)}, sem considerações ainda`
         : 'Ainda não acessou';
       li.append(el('div', estado, { class: 'small text-muted mt-1' }));
+      const fNota = el('form', null, { class: 'd-flex gap-2 flex-wrap align-items-center mt-2' });
+      const inNota = el('input', null, { class: 'form-control form-control-sm', style: 'max-width:6rem',
+        inputmode: 'decimal', autocomplete: 'off', placeholder: '0 a 10', 'aria-label': `Nota de ${a.nome}` });
+      inNota.value = a.nota == null ? '' : String(Number(a.nota)).replace('.', ',');
+      const bNota = el('button', 'Salvar nota', { type: 'submit', class: 'btn btn-sm btn-outline-dark' });
+      const quem = a.nota == null ? 'Sem nota' : `Nota ${fmtNota(a.nota)}, lançada ${a.nota_por === 'coordenacao' ? 'pela coordenação' : 'pelo professor'} em ${quando(a.nota_em)}`;
+      fNota.append(inNota, bNota, el('span', quem, { class: 'small text-muted' }));
+      fNota.addEventListener('submit', (ev) => {
+        ev.preventDefault();
+        acao(bNota, () => rpc('hubbanca_coord_nota', { p_id: a.id, p_nota: lerNota(inNota.value) }));
+      });
+      li.append(fNota);
       if (a.consideracoes) {
         li.append(el('div', a.consideracoes, { class: 'small mt-2 p-2 bg-light rounded', style: 'white-space:pre-wrap' }));
       }
@@ -276,13 +391,74 @@
     }
   }
 
+  // Prazo usado por último vira sugestão para o próximo trabalho.
+  const ultimoPrazo = () => resultados.filter((r) => r.prazo_revisao)
+    .sort((x, y) => (y.atualizado_em || '').localeCompare(x.atualizado_em || ''))[0]?.prazo_revisao || '';
+
+  function preencherDevolutiva() {
+    const r = resultadoDe(aberto);
+    $('dev-prazo').value = r.prazo_revisao || ultimoPrazo();
+    $('dev-nota').value = r.nota_final == null ? '' : String(Number(r.nota_final)).replace('.', ',');
+    $('dev-ajustes').value = r.ajustes || '';
+    $('dev-liberar').checked = !!r.liberado_em;
+    estadoDevolutiva();
+  }
+
+  function estadoDevolutiva() {
+    const r = resultadoDe(aberto);
+    const m = mediaDe(aberto);
+    $('dev-nota').placeholder = m == null ? 'Sem notas ainda' : `Média ${fmtNota(m)}`;
+    $('dev-estado').textContent = r.liberado_em ? `Liberada em ${quando(r.liberado_em)}.`
+      : r.atualizado_em ? 'Salva, ainda não liberada.' : '';
+    $('dev-link').innerHTML = `<i class="fas fa-link me-1" aria-hidden="true"></i> ${r.tem_link ? 'Gerar novo link do grupo' : 'Gerar link do grupo'}`;
+  }
+
+  const textoLinkGrupo = (token) => [
+    `Olá, grupo do TCC2 "${aberto.titulo || aberto.grupo}".`,
+    '',
+    'A devolutiva da banca está na página abaixo: notas, considerações dos professores, o prazo para o depósito revisado e o que mudar no depósito final.',
+    '',
+    `${LINK_RESULTADO}#t=${token}`,
+    '',
+    'O link é do grupo e dá acesso só a este trabalho. Se perder, peça outro à coordenação.',
+  ].join('\n');
+
+  $('devolutiva-form').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const botao = ev.submitter || $('devolutiva-form').querySelector('button[type=submit]');
+    acao(botao, async () => {
+      await rpc('hubbanca_resultado_salvar', {
+        p_slug: aberto.slug, p_grupo: aberto.grupo,
+        p_prazo: $('dev-prazo').value || null,
+        p_ajustes: $('dev-ajustes').value,
+        p_nota_final: lerNota($('dev-nota').value),
+        p_liberar: $('dev-liberar').checked,
+      });
+    });
+  });
+  $('dev-link').addEventListener('click', (ev) => acao(ev.currentTarget, async () => {
+    const { token } = await rpc('hubbanca_resultado_link', { p_slug: aberto.slug, p_grupo: aberto.grupo });
+    $('banca-convite').querySelector('p').textContent = 'Link do grupo gerado. Ele só aparece agora; copie antes de fechar. O link anterior deixou de valer.';
+    $('banca-convite-texto').textContent = textoLinkGrupo(token);
+    $('banca-convite').classList.remove('d-none');
+    $('banca').scrollTop = 0;
+  }));
+  $('copiar-quadro').addEventListener('click', async (ev) => {
+    const b = ev.currentTarget;
+    try { await navigator.clipboard.writeText(textoQuadro()); } catch { return avisar($('recado'), 'Não consegui copiar.', 'erro'); }
+    const antes = b.innerHTML;
+    b.textContent = 'Copiado: cole na planilha';
+    setTimeout(() => { b.innerHTML = antes; }, 2000);
+  });
+
   async function acao(botao, fn) {
     botao.disabled = true;
     try {
       await fn();
-      avaliadores = (await rpc('hubbanca_listar')).avaliadores;
+      await listarBanca();
       desenhar();
       desenharBanca();
+      estadoDevolutiva();
     } catch (e) {
       avisar($('banca-recado'), e.message, 'erro');
     }

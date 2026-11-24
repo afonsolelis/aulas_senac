@@ -33,6 +33,8 @@ mesmo do `aulas_mackenzie`, em projeto separado.
   aloca professores por trabalho e recebe um token único por professor; a página
   `pages/tcc2/entrega/banca.html` usa esse token para abrir o PDF e gravar as considerações.
   O arquivo é idempotente e também substitui `hubdeposito_coordenacao`, que passou a devolver o slug.
+  Também guarda a nota de cada professor e a devolutiva do grupo (`hubbanca_resultados`: prazo de revisão,
+  ajustes, nota final, liberação e token do grupo), lida por `pages/tcc2/entrega/resultado.html`.
 - O acompanhamento do TCC (`postgrest/hubtcc.sql`, prefixo `hubtcc_`) depende de `hubbanca.sql`
   (usa o token da coordenação). Guarda os PDFs em `hubtcc_arquivos`, com envio por partes em
   `hubtcc_subir_parte` e leitura em `GET /rpc/hubtcc_pdf?p_caminho=<edicao>/<uuid>.pdf`. Nova edição:
