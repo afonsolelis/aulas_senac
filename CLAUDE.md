@@ -188,9 +188,14 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   confere o arquivo e grava em `hubdeposito_respostas`. SQL do armazenamento:
   `postgrest/hubdeposito-arquivos.sql`. Abertura da turma vem de `entrega_formularios`
   (`senac-tcc2-*`). SQL: `supabase/hubdeposito-tcc2.sql` → `hubdeposito-coordenacao.sql`.
-- `professor.html` (token do professor, nota e comentário) e `coordenacao.html` (somente leitura,
+- `professor.html` (token do professor, nota e comentário) e `coordenacao.html` (PDFs só leitura,
   token próprio em `hubdeposito_acesso`, hash salgado, nunca versionado; baixa todos em .zip).
 - PDF enviado que não virou depósito some depois de um dia; PDF de depósito só sai com `delete` em `hubdeposito_arquivos`.
+- **Banca do TCC2:** em `coordenacao.html`, cada trabalho tem **Alocar banca**. A coordenação informa o nome do
+  professor e recebe o link de `pages/tcc2/entrega/banca.html` com um token único (`<codigo>-<segredo>`), para
+  copiar e mandar; não há e-mail nem SMTP. O token abre só aquele trabalho (PDF + campo de considerações, salvo
+  sozinho e editável sempre). O banco guarda só o hash: token perdido se troca por **Gerar novo token**. A
+  coordenação copia as considerações e repassa aos alunos. SQL: `postgrest/hubbanca.sql` (`hubbanca_*`).
 
 ## Quadro de avisos
 

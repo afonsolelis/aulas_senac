@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>Depósitos do TCC2 - Coordenação - TCC2 2026.2</title>
-<meta name="description" content="Acesso da coordenação aos PDFs finais do TCC2 2026.2, somente leitura.">
+<meta name="description" content="Acesso da coordenação aos PDFs finais do TCC2 2026.2 e à alocação das bancas.">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <link rel="stylesheet" href="../../../css/style.css">
@@ -20,7 +20,7 @@
 
 <section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
   <h2 class="h4 fw-bold">Token da coordenação</h2>
-  <p class="text-muted small">Acesso somente leitura aos PDFs finais depositados pelos alunos.</p>
+  <p class="text-muted small">Acesso aos PDFs finais depositados pelos alunos e à alocação das bancas.</p>
   <form id="form-token" class="d-flex gap-2 flex-wrap">
     <input id="token" class="form-control" style="max-width:16rem" type="password"
            autocomplete="current-password" placeholder="Token" required aria-label="Token da coordenação">
@@ -40,13 +40,44 @@
   <div id="recado" class="alert d-none" role="status"></div>
   <div class="table-responsive">
     <table class="table align-middle mb-0">
-      <thead><tr><th scope="col">Turma</th><th scope="col">Título</th><th scope="col">Integrantes</th><th scope="col">PDF</th><th scope="col">Enviado em</th></tr></thead>
+      <thead><tr><th scope="col">Turma</th><th scope="col">Título</th><th scope="col">Integrantes</th><th scope="col">PDF</th><th scope="col">Enviado em</th><th scope="col">Banca</th></tr></thead>
       <tbody id="linhas"></tbody>
     </table>
   </div>
 </section>
 
 </div></div></main>
+
+<dialog id="banca" class="border-0 rounded-4 shadow p-0" style="width:min(46rem,calc(100vw - 2rem))" aria-labelledby="banca-titulo">
+  <div class="p-4">
+    <div class="d-flex align-items-start gap-2 mb-1">
+      <h2 class="h5 fw-bold mb-0 me-auto" id="banca-titulo">Banca</h2>
+      <button class="btn-close" type="button" id="banca-fechar" aria-label="Fechar"></button>
+    </div>
+    <p class="text-muted small mb-3" id="banca-trabalho"></p>
+
+    <div id="banca-convite" class="alert alert-success d-none" role="status">
+      <p class="fw-semibold mb-2">Acesso gerado. O token só aparece agora; copie antes de fechar.</p>
+      <pre class="bg-white border rounded p-2 small mb-2" style="white-space:pre-wrap" id="banca-convite-texto"></pre>
+      <button class="btn btn-sm btn-success" type="button" id="banca-copiar-convite"><i class="fas fa-copy me-1" aria-hidden="true"></i> Copiar link e token</button>
+    </div>
+    <div id="banca-recado" class="alert d-none" role="alert"></div>
+
+    <h3 class="h6 fw-bold">Professores da banca</h3>
+    <ul class="list-unstyled mb-3" id="banca-lista"></ul>
+
+    <form id="banca-form" class="d-flex gap-2 flex-wrap mb-4">
+      <input id="banca-nome" class="form-control" style="max-width:22rem" maxlength="120" required
+             placeholder="Nome do professor" aria-label="Nome do professor">
+      <button class="btn btn-dark" type="submit"><i class="fas fa-user-plus me-1" aria-hidden="true"></i> Alocar e gerar acesso</button>
+    </form>
+
+    <div class="d-flex gap-2 flex-wrap align-items-center border-top pt-3">
+      <span class="small text-muted me-auto">Para repassar aos alunos, copie as considerações de todos os professores.</span>
+      <button class="btn btn-outline-primary btn-sm" type="button" id="banca-copiar-todas"><i class="fas fa-copy me-1" aria-hidden="true"></i> Copiar considerações</button>
+    </div>
+  </div>
+</dialog>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
@@ -56,6 +87,9 @@
   const CHAVE_SESSAO = 'depositos_tcc2_coordenacao';
   const $ = (id) => document.getElementById(id);
   let depositos = [];
+  let avaliadores = [];
+  let aberto = null; // trabalho aberto no diálogo
+  const LINK_BANCA = new URL('banca.html', location.href).href;
 
   const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
     timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
@@ -76,18 +110,27 @@
     return e;
   }
 
-  async function carregar() {
-    const r = await fetch(`${SUPABASE_URL}/rpc/hubdeposito_coordenacao`, {
+  async function rpc(nome, corpo = {}) {
+    const r = await fetch(`${SUPABASE_URL}/rpc/${nome}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p_token: lerToken() }),
+      body: JSON.stringify({ p_token: lerToken(), ...corpo }),
     });
     const data = await r.json();
     if (!r.ok) throw new Error(data.message || 'Falha ao consultar o servidor.');
     if (!data.ok) throw new Error(data.erro);
-    depositos = data.depositos;
-    desenhar();
+    return data;
   }
+
+  async function carregar() {
+    depositos = (await rpc('hubdeposito_coordenacao')).depositos;
+    avaliadores = (await rpc('hubbanca_listar')).avaliadores;
+    desenhar();
+    if (aberto) desenharBanca();
+  }
+
+  const mesmoTrabalho = (d) => (a) => a.slug === d.slug && a.grupo.toLowerCase() === d.grupo.toLowerCase();
+  const bancaDe = (d) => avaliadores.filter(mesmoTrabalho(d));
 
   function desenhar() {
     const corpo = $('linhas');
@@ -95,7 +138,7 @@
     $('resumo').textContent = depositos.length === 1 ? '1 depósito.' : `${depositos.length} depósitos.`;
     $('baixar-todos').disabled = depositos.length === 0;
     if (!depositos.length) {
-      const tr = el('tr'); tr.append(el('td', 'Nenhum PDF depositado ainda.', { colspan: '5', class: 'text-muted' }));
+      const tr = el('tr'); tr.append(el('td', 'Nenhum PDF depositado ainda.', { colspan: '6', class: 'text-muted' }));
       corpo.append(tr);
       return;
     }
@@ -107,6 +150,18 @@
       const td = el('td');
       td.append(el('a', d.nome_arquivo || 'Abrir PDF', { href: pdfUrl(d.arquivo), target: '_blank', rel: 'noopener noreferrer' }));
       tr.append(td, el('td', quando(d.enviado_em)));
+      const banca = bancaDe(d);
+      const tdB = el('td');
+      if (banca.length) {
+        const com = banca.filter((a) => a.consideracoes).length;
+        tdB.append(el('div', banca.map((a) => a.nome).join(', '), { class: 'small' }),
+          el('div', `${com} de ${banca.length} com considerações`, { class: 'small text-muted mb-1' }));
+      }
+      const b = el('button', banca.length ? 'Gerenciar banca' : 'Alocar banca',
+        { type: 'button', class: 'btn btn-sm ' + (banca.length ? 'btn-outline-dark' : 'btn-dark') });
+      b.addEventListener('click', () => abrirBanca(d));
+      tdB.append(b);
+      tr.append(tdB);
       corpo.append(tr);
     }
   }
@@ -143,6 +198,114 @@
     }
     botao.disabled = false;
   }
+
+  // ---- Banca ----
+  const copiar = async (texto, botao) => {
+    try { await navigator.clipboard.writeText(texto); } catch { return avisar($('banca-recado'), 'Não consegui copiar. Selecione o texto e copie à mão.', 'erro'); }
+    const antes = botao.innerHTML;
+    botao.textContent = 'Copiado';
+    setTimeout(() => { botao.innerHTML = antes; }, 1500);
+  };
+
+  const textoConvite = (nome, token) => [
+    `Olá, ${nome}.`,
+    '',
+    `Convidamos você para a banca do TCC2 "${aberto.titulo || aberto.grupo}" (${aberto.turma}).`,
+    'Na página abaixo você abre o PDF final e registra suas considerações. Dá para editar o texto quantas vezes quiser, inclusive durante a banca.',
+    '',
+    `Página: ${LINK_BANCA}`,
+    `Token de acesso: ${token}`,
+    '',
+    'O token é pessoal e dá acesso só a este trabalho.',
+  ].join('\n');
+
+  function mostrarConvite(nome, token) {
+    $('banca-convite-texto').textContent = textoConvite(nome, token);
+    $('banca-convite').classList.remove('d-none');
+  }
+
+  function abrirBanca(d) {
+    aberto = d;
+    $('banca-titulo').textContent = `Banca · ${d.titulo || d.grupo}`;
+    $('banca-trabalho').textContent = `${d.turma} · ${d.integrantes.split('\n').join(', ')}`;
+    $('banca-convite').classList.add('d-none');
+    avisar($('banca-recado'), '');
+    $('banca-nome').value = '';
+    desenharBanca();
+    $('banca').showModal();
+  }
+
+  function desenharBanca() {
+    const lista = $('banca-lista');
+    lista.replaceChildren();
+    const banca = bancaDe(aberto);
+    $('banca-copiar-todas').disabled = !banca.some((a) => a.consideracoes);
+    if (!banca.length) {
+      lista.append(el('li', 'Nenhum professor alocado ainda.', { class: 'text-muted small' }));
+      return;
+    }
+    for (const a of banca) {
+      const li = el('li', null, { class: 'border rounded-3 p-3 mb-2' });
+      const topo = el('div', null, { class: 'd-flex gap-2 flex-wrap align-items-center' });
+      topo.append(el('strong', a.nome, { class: 'me-auto' }));
+      const novo = el('button', 'Gerar novo token', { type: 'button', class: 'btn btn-sm btn-outline-secondary' });
+      novo.addEventListener('click', () => acao(novo, async () => {
+        const { token } = await rpc('hubbanca_novo_token', { p_id: a.id });
+        mostrarConvite(a.nome, token);
+      }));
+      const tirar = el('button', 'Remover', { type: 'button', class: 'btn btn-sm btn-outline-danger' });
+      tirar.addEventListener('click', () => {
+        if (tirar.dataset.confirmar !== '1') {
+          tirar.dataset.confirmar = '1';
+          tirar.textContent = 'Confirmar remoção';
+          setTimeout(() => { tirar.dataset.confirmar = ''; tirar.textContent = 'Remover'; }, 4000);
+          return;
+        }
+        acao(tirar, () => rpc('hubbanca_remover', { p_id: a.id }));
+      });
+      topo.append(novo, tirar);
+      li.append(topo);
+      const estado = a.atualizado_em ? `Considerações salvas em ${quando(a.atualizado_em)}`
+        : a.acesso_em ? `Abriu o trabalho em ${quando(a.acesso_em)}, sem considerações ainda`
+        : 'Ainda não acessou';
+      li.append(el('div', estado, { class: 'small text-muted mt-1' }));
+      if (a.consideracoes) {
+        li.append(el('div', a.consideracoes, { class: 'small mt-2 p-2 bg-light rounded', style: 'white-space:pre-wrap' }));
+      }
+      lista.append(li);
+    }
+  }
+
+  async function acao(botao, fn) {
+    botao.disabled = true;
+    try {
+      await fn();
+      avaliadores = (await rpc('hubbanca_listar')).avaliadores;
+      desenhar();
+      desenharBanca();
+    } catch (e) {
+      avisar($('banca-recado'), e.message, 'erro');
+    }
+    botao.disabled = false;
+  }
+
+  $('banca-form').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const nome = $('banca-nome').value.trim();
+    acao(ev.submitter || $('banca-form').querySelector('button'), async () => {
+      const { token } = await rpc('hubbanca_alocar', { p_slug: aberto.slug, p_grupo: aberto.grupo, p_nome: nome });
+      $('banca-nome').value = '';
+      mostrarConvite(nome, token);
+    });
+  });
+  $('banca-copiar-convite').addEventListener('click', (ev) => copiar($('banca-convite-texto').textContent, ev.currentTarget));
+  $('banca-copiar-todas').addEventListener('click', (ev) => {
+    const partes = bancaDe(aberto).filter((a) => a.consideracoes)
+      .map((a) => `Considerações de ${a.nome}:\n\n${a.consideracoes}`);
+    copiar([`TCC2 "${aberto.titulo || aberto.grupo}" (${aberto.turma})`, ...partes].join('\n\n'), ev.currentTarget);
+  });
+  $('banca-fechar').addEventListener('click', () => $('banca').close());
+  $('banca').addEventListener('close', () => { aberto = null; });
 
   async function entrar() {
     try {

@@ -29,6 +29,10 @@ mesmo do `aulas_mackenzie`, em projeto separado.
   link público usado pelo comprovante, pelo professor e pela coordenação. SQL em
   `postgrest/hubdeposito-arquivos.sql`. Upload que não vira depósito é apagado
   depois de um dia.
+- A banca do TCC2 (`postgrest/hubbanca.sql`, prefixo `hubbanca_`) roda só aqui. A coordenação
+  aloca professores por trabalho e recebe um token único por professor; a página
+  `pages/tcc2/entrega/banca.html` usa esse token para abrir o PDF e gravar as considerações.
+  O arquivo é idempotente e também substitui `hubdeposito_coordenacao`, que passou a devolver o slug.
 
 ## Aplicar SQL (seed de quiz ou TBL, ajuste de função)
 

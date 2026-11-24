@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Banca do TCC2 - TCC2 2026.2</title>
+<meta name="description" content="Área do professor da banca do TCC2 2026.2: PDF final do trabalho e considerações.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc2.html">TCC2 2026.2</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><div><span class="badge bg-white text-dark mb-1">TCC2 &middot; 2026.2 &middot; Banca</span><h1 class="h3 fw-bold text-white mb-0">Banca do TCC2</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token do professor</h2>
+  <p class="text-muted small">Use o token que a coordenação enviou. Ele abre só o trabalho da sua banca.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:24rem" type="password"
+           autocomplete="current-password" placeholder="Token" required aria-label="Token do professor">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div class="d-none" id="painel">
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex gap-2 flex-wrap align-items-start mb-2">
+      <p class="text-muted small mb-0 me-auto" id="ola"></p>
+      <button class="btn btn-link btn-sm text-secondary p-0" type="button" id="sair">Sair</button>
+    </div>
+    <h2 class="h4 fw-bold" id="titulo"></h2>
+    <p class="mb-1" id="turma"></p>
+    <p class="text-muted mb-3" style="white-space:pre-line" id="integrantes"></p>
+    <a class="btn btn-primary d-none" id="pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf me-1" aria-hidden="true"></i> Abrir o PDF final</a>
+    <p class="text-muted small mt-2 mb-0" id="enviado"></p>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <h2 class="h5 fw-bold">Suas considerações</h2>
+    <p class="text-muted small">Escreva quando quiser, antes ou durante a banca. O texto é salvo sozinho enquanto você digita e pode ser editado depois. A coordenação repassa as considerações aos alunos.</p>
+    <label class="visually-hidden" for="texto">Considerações</label>
+    <textarea id="texto" class="form-control mb-2" rows="14" maxlength="20000"></textarea>
+    <div class="d-flex gap-2 flex-wrap align-items-center">
+      <button class="btn btn-dark" type="button" id="salvar"><i class="fas fa-floppy-disk me-1" aria-hidden="true"></i> Salvar agora</button>
+      <span class="small text-muted" id="estado" role="status"></span>
+    </div>
+  </section>
+</div>
+
+</div></div></main>
+
+<script>
+  const API = 'https://aulas-senac-api.afonsolelis.tech';
+  const pdfUrl = (caminho) => `${API}/rpc/hubdeposito_pdf?p_caminho=${encodeURIComponent(caminho)}`;
+  // O professor volta à página em dias diferentes; o token fica neste navegador até clicar em Sair.
+  const CHAVE = 'banca_tcc2_token';
+  const $ = (id) => document.getElementById(id);
+  const lerToken = () => { try { return localStorage.getItem(CHAVE) || ''; } catch { return ''; } };
+  const gravarToken = (t) => { try { t ? localStorage.setItem(CHAVE, t) : localStorage.removeItem(CHAVE); } catch {} };
+  const quando = (iso) => new Date(iso).toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'short' });
+  let salvo = '';
+  let espera = null;
+
+  async function rpc(nome, corpo = {}) {
+    const r = await fetch(`${API}/rpc/${nome}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p_token: lerToken(), ...corpo }),
+    });
+    const data = await r.json();
+    if (!r.ok) throw new Error(data.message || 'Falha ao consultar o servidor.');
+    if (!data.ok) throw new Error(data.erro);
+    return data;
+  }
+
+  function avisarToken(texto) {
+    $('recado-token').textContent = texto;
+    $('recado-token').classList.toggle('d-none', !texto);
+  }
+
+  async function entrar() {
+    try {
+      const d = await rpc('hubbanca_abrir');
+      $('ola').textContent = `Banca de ${d.nome}`;
+      $('titulo').textContent = d.titulo || 'Trabalho sem título';
+      $('turma').textContent = d.turma || '';
+      $('integrantes').textContent = d.integrantes || '';
+      if (d.arquivo) {
+        $('pdf').href = pdfUrl(d.arquivo);
+        $('pdf').classList.remove('d-none');
+        $('enviado').textContent = `Depositado em ${quando(d.enviado_em)}.`;
+      }
+      salvo = d.consideracoes || '';
+      $('texto').value = salvo;
+      $('estado').textContent = d.atualizado_em ? `Salvo em ${quando(d.atualizado_em)}.` : '';
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+      avisarToken('');
+    } catch (e) {
+      gravarToken('');
+      $('painel').classList.add('d-none');
+      $('tela-token').classList.remove('d-none');
+      avisarToken(e.message);
+    }
+  }
+
+  async function salvar() {
+    clearTimeout(espera);
+    const texto = $('texto').value;
+    if (texto === salvo) return;
+    $('estado').textContent = 'Salvando…';
+    try {
+      const { atualizado_em } = await rpc('hubbanca_salvar', { p_texto: texto });
+      salvo = texto;
+      $('estado').textContent = `Salvo em ${quando(atualizado_em)}.`;
+    } catch (e) {
+      $('estado').textContent = `Não salvou: ${e.message}`;
+    }
+  }
+
+  $('texto').addEventListener('input', () => {
+    $('estado').textContent = 'Alterações não salvas.';
+    clearTimeout(espera);
+    espera = setTimeout(salvar, 2000);
+  });
+  $('salvar').addEventListener('click', salvar);
+  window.addEventListener('beforeunload', (ev) => {
+    if ($('texto').value !== salvo) { salvar(); ev.preventDefault(); }
+  });
+
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    gravarToken($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('sair').addEventListener('click', async () => { await salvar(); gravarToken(''); location.reload(); });
+
+  if (lerToken()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>
