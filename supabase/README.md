@@ -410,6 +410,11 @@ durante a aula: descartar desconecta quem estiver na sala.
 ## Depósito do TCC2 (`hubdeposito_*`)
 
 Ordem: `hubdeposito-tcc2.sql` (bucket `hub-tcc2-depositos`, policy de envio, tabela e funções)
-→ `hubdeposito-coordenacao.sql` (acesso somente leitura da coordenação). Ambos só criam objetos
+→ `hubdeposito-coordenacao.sql` (acesso da coordenação aos PDFs). Ambos só criam objetos
 novos. O token da coordenação não é versionado: o comando para criar ou trocar está no cabeçalho
 de `hubdeposito-coordenacao.sql`.
+
+Na VPS, depois desses dois, vêm `postgrest/hubdeposito-arquivos.sql` (PDF guardado no próprio Postgres)
+e `postgrest/hubbanca.sql` (alocação da banca e considerações dos professores, prefixo `hubbanca_`).
+Este último também redefine `hubdeposito_coordenacao` para devolver o slug da turma, que a
+alocação da banca usa.

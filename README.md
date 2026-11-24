@@ -25,6 +25,7 @@ aulas_senac/
 │   ├── qualidade2/                 # slides + material/ de Qualidade (2026.2)
 │   │   └── prova/                  # correção da prova escrita, uma página por turma
 │   └── tcc2/                       # slides + material/ de TCC2 (2026.2)
+│       └── entrega/                # depósito do PDF final, professor, coordenação e banca
 ├── css/                            # style.css, slides.css, base-styles.css
 ├── js/standard_slides.js           # navegação prev/next/fullscreen/progress
 ├── config/
@@ -82,6 +83,21 @@ npm run capture -- pages/qualidade2/slide_wiremock-api-seguras.html .tmp/shots-w
 ## Quizzes e integrações
 
 O frontend é estático. Quiz, TBL, entregas, depósito do TCC2 e avisos falam com o PostgREST do Senac na VPS (`https://aulas-senac-api.afonsolelis.tech`) pelo cliente `js/api_aulas.js`; operação em [postgrest/README.md](postgrest/README.md). Páginas do quiz em `pages/qualidade2/quiz/`; conteúdo SQL das questões e funções em [supabase/README.md](supabase/README.md). Os quizzes de retomada estão cadastrados da Aula 02 à Aula 08: cada aula cobra o conteúdo da aula anterior.
+
+## Depósito e banca do TCC2
+
+As páginas ficam em `pages/tcc2/entrega/`:
+
+| Página | Quem usa | O que faz |
+|---|---|---|
+| `entrega.html` | aluno | deposita o PDF final com o título exato do trabalho |
+| `professor.html` | professor da disciplina | lê os depósitos e lança nota e comentário |
+| `coordenacao.html` | coordenação | lê e baixa os PDFs e aloca a banca de cada trabalho |
+| `banca.html` | professor da banca | abre só o trabalho da sua banca e escreve as considerações |
+
+Na coordenação, **Alocar banca** gera para cada professor o link de `banca.html` e um token único, que a coordenação copia e manda por conta própria; o site não envia e-mail. O token abre apenas aquele trabalho. As considerações são salvas enquanto o professor digita e podem ser editadas a qualquer momento. A coordenação lê o texto no diálogo da banca e usa **Copiar considerações** para repassar aos alunos.
+
+O banco guarda só o hash dos tokens. Token de professor perdido se resolve com **Gerar novo token**, que invalida o anterior. O token da coordenação é trocado no banco com o comando do cabeçalho de `supabase/hubdeposito-coordenacao.sql` e não é versionado. SQL da banca: `postgrest/hubbanca.sql`.
 
 `scripts/discord-*.js` são ferramentas locais de administração e envio de mensagens, com scripts `discord:check`, `discord:post`, `discord:channel` e `discord:welcome` no `package.json`. Consulte o cabeçalho de uso de cada arquivo antes de operar; não fazem parte dos testes nem executam no site. `discord:post` trata texto livre como mensagem, inclusive `--help`.
 
