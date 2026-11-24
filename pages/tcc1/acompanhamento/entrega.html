@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Entrega de acompanhamento - TCC1 2027.1</title>
+<meta name="description" content="Entrega de acompanhamento do TCC1 2027.1: integrantes, orientador e primeira versão em PDF.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body data-edicao="tcc1-2027-1">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc1_2027_1.html">TCC1 2027.1</a></li><li class="nav-item"><a class="nav-link" href="aluno.html">Meu painel</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_tcc1_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC1 2027.1</a><div><span class="badge bg-white text-dark mb-1">TCC1 &middot; 2027.1</span><h1 class="h3 fw-bold text-white mb-0">Entrega de acompanhamento</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-8 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4">
+  <h2 class="h4 fw-bold">Antes de enviar</h2>
+  <ul class="text-muted mb-0">
+    <li>O TCC é individual, em dupla ou em trio. Um integrante envia pelo trabalho inteiro.</li>
+    <li>Escolha o orientador com quem você combinou. A coordenação confirma a orientação depois.</li>
+    <li>O arquivo é a primeira versão do trabalho em PDF, com até 100 MB. Não feche a página até aparecer o comprovante.</li>
+    <li>O comprovante traz o token do seu painel, onde você acompanha o orientador, as considerações e a liberação para a banca. Guarde o token: ele é o único acesso.</li>
+  </ul>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4" id="secao-form">
+  <h2 class="h4 fw-bold mb-3">Dados do trabalho</h2>
+  <div id="fechada" class="alert alert-warning d-none" role="status">A entrega está fechada no momento.</div>
+  <div id="recado" class="alert d-none" role="status"></div>
+
+  <form id="form-entrega" novalidate>
+    <div class="mb-3">
+      <label class="form-label fw-semibold" for="titulo">Título do trabalho <span class="text-muted fw-normal small">obrigatório, pode ser provisório</span></label>
+      <input class="form-control" id="titulo" required minlength="5" maxlength="300" autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold" for="integrante-1">Integrante 1 <span class="text-muted fw-normal small">nome completo, obrigatório</span></label>
+      <input class="form-control" id="integrante-1" name="integrante" required minlength="3" maxlength="120" autocomplete="off">
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold" for="integrante-2">Integrante 2 <span class="text-muted fw-normal small">opcional</span></label>
+      <input class="form-control" id="integrante-2" name="integrante" minlength="3" maxlength="120" autocomplete="off">
+    </div>
+    <div class="mb-3">
+      <label class="form-label fw-semibold" for="integrante-3">Integrante 3 <span class="text-muted fw-normal small">opcional</span></label>
+      <input class="form-control" id="integrante-3" name="integrante" minlength="3" maxlength="120" autocomplete="off">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label fw-semibold" for="orientador">Orientador <span class="text-muted fw-normal small">obrigatório</span></label>
+      <select class="form-select" id="orientador" required>
+        <option value="">Carregando a lista…</option>
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="form-label fw-semibold" for="arquivo">Primeira versão em PDF <span class="text-muted fw-normal small">obrigatório, até 100 MB</span></label>
+      <input class="form-control" id="arquivo" type="file" accept="application/pdf,.pdf" required>
+    </div>
+
+    <button class="btn btn-primary" type="submit" id="enviar"><i class="fas fa-file-pdf me-1" aria-hidden="true"></i> Enviar</button>
+  </form>
+</section>
+
+<section class="glass-card p-4 p-md-5 mb-4 d-none" id="comprovante">
+  <h2 class="h4 fw-bold">Comprovante</h2>
+  <p class="text-muted">Entrega registrada.</p>
+  <dl class="row mb-3" id="comprovante-dados"></dl>
+  <div class="alert alert-warning">
+    <p class="fw-semibold mb-2">Token do seu painel. Guarde agora: ele não aparece de novo.</p>
+    <p class="font-monospace fs-5 text-break mb-2" id="token-aluno"></p>
+    <div class="d-flex gap-2 flex-wrap">
+      <button class="btn btn-sm btn-dark" type="button" id="copiar-token"><i class="fas fa-copy me-1" aria-hidden="true"></i> Copiar link e token</button>
+      <a class="btn btn-sm btn-primary" href="aluno.html"><i class="fas fa-gauge me-1" aria-hidden="true"></i> Abrir meu painel</a>
+    </div>
+    <p class="small mb-0 mt-2">Mande o token para os outros integrantes. Se ele se perder, peça um novo à coordenação.</p>
+  </div>
+</section>
+
+</div></div></main>
+
+<script src="../../../js/api_aulas.js"></script>
+<script src="../../../js/hubtcc.js"></script>
+<script>
+  const { chamar, quando, el, guarda, subirPdf, copiar, edicao, pagina } = window.HubTcc;
+  const $ = (id) => document.getElementById(id);
+  const ED = edicao();
+  const tokenAluno = guarda(`hubtcc_aluno_${ED}`);
+  let maxIntegrantes = 3;
+
+  function avisar(texto, tipo) {
+    $('recado').textContent = texto;
+    $('recado').className = 'alert ' + (!texto ? 'd-none' : tipo === 'ok' ? 'alert-success' : 'alert-danger');
+  }
+
+  async function carregar() {
+    try {
+      const e = await chamar('hubtcc_edicao', { p_edicao: ED });
+      maxIntegrantes = e.max_integrantes;
+      const sel = $('orientador');
+      sel.replaceChildren(el('option', 'Escolha o orientador', { value: '' }));
+      for (const o of e.orientadores) sel.append(el('option', o.nome, { value: o.id }));
+      if (!e.entrega_aberta) {
+        $('fechada').classList.remove('d-none');
+        for (const c of $('form-entrega').elements) c.disabled = true;
+      } else if (e.prazo_entrega) {
+        $('fechada').textContent = `Prazo: ${quando(e.prazo_entrega)}.`;
+        $('fechada').className = 'alert alert-info';
+      }
+    } catch (err) {
+      avisar(err.message, 'erro');
+    }
+  }
+
+  $('form-entrega').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (!$('form-entrega').reportValidity()) return;
+    const integrantes = [...document.querySelectorAll('[name="integrante"]')].map((i) => i.value.trim()).filter(Boolean);
+    const titulo = $('titulo').value.trim().replace(/\s+/g, ' ');
+    const sel = $('orientador');
+    const arquivo = $('arquivo').files[0];
+    const botao = $('enviar');
+    botao.disabled = true;
+    try {
+      if (integrantes.length > maxIntegrantes) throw new Error(`O trabalho tem no máximo ${maxIntegrantes} integrantes.`);
+      avisar('Enviando o PDF…', 'ok');
+      const caminho = await subirPdf(arquivo, {
+        edicao: ED,
+        aoProgresso: (n, total) => total > 1 && avisar(`Enviando o PDF… ${Math.round(100 * n / total)}%. Não feche a página.`, 'ok'),
+      });
+      const d = await chamar('hubtcc_inscrever', {
+        p_edicao: ED, p_titulo: titulo, p_integrantes: integrantes,
+        p_orientador: sel.value, p_arquivo: caminho, p_nome_arquivo: arquivo.name,
+      });
+      tokenAluno.gravar(d.token);
+      avisar('', 'ok');
+      const dl = $('comprovante-dados');
+      dl.replaceChildren();
+      for (const [rotulo, valor] of [
+        ['Título', d.titulo], ['Integrantes', d.integrantes.join(', ')],
+        ['Orientador indicado', d.orientador], ['Arquivo', arquivo.name], ['Enviado em', quando(d.enviado_em)],
+      ]) {
+        dl.append(el('dt', rotulo, { class: 'col-sm-4' }), el('dd', valor, { class: 'col-sm-8 text-break' }));
+      }
+      $('token-aluno').textContent = d.token;
+      $('copiar-token').onclick = (e) => copiar(
+        `Painel do TCC1 "${d.titulo}"\n\nPágina: ${pagina('aluno.html')}\nToken: ${d.token}`, e.currentTarget);
+      $('secao-form').classList.add('d-none');
+      $('comprovante').classList.remove('d-none');
+      $('comprovante').scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      avisar(err.message, 'erro');
+    }
+    botao.disabled = false;
+  });
+
+  carregar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

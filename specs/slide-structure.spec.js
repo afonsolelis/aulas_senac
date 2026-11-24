@@ -30,6 +30,7 @@ const DISCIPLINE_HOME_MAP = {
   qualidade: 'home_qualidade.html',
   qualidade2: 'home_qualidade_2026_2.html',
   qualidade3: 'home_qualidade_2027_1.html',
+  tcc1: 'home_tcc1_2027_1.html',
   logica: 'home_logica.html',
   tcc: 'home_tcc.html',
   tcc2: 'home_tcc2.html',

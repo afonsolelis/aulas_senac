@@ -25,7 +25,7 @@ node scripts/capture-slides.mjs pages/<slug>/slide_<arq>.html .tmp/shots 1280 72
 
 ## Arquitetura (navegação em 4 níveis)
 
-1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **4** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`, `pages/home_2027_1.html`. 2027.1: `qualidade3` com conteúdo; `tcc1` ainda placeholder.
+1. **`index.html`** — seletor de semestre. `body.semester-hub`, exatamente **4** cards `.semester-card` (cada um é um `<a>`), apontando para `pages/home_2025_2.html`, `pages/home_2026_1.html`, `pages/home_2026_2.html`, `pages/home_2027_1.html`. 2027.1: `qualidade3` com conteúdo; `tcc1` com cronograma e acompanhamento (entrega, painéis).
 2. **`pages/home_<ano>_<sem>.html`** — home do semestre: lista as disciplinas daquele período como cartões.
 3. **`pages/home_<disciplina>.html`** — cronograma da disciplina (cards de aula → slides). Padrão de nome **não uniforme**: 2026.1 usa `home_<slug>.html` (`home_qualidade.html`); 2026.2 usa nome dedicado (`home_qualidade_2026_2.html`, `home_tcc2.html`).
 4. **`pages/<slug>/slide_*.html`** e **`pages/<slug>/material/material_*.html`** — slides e materiais escritos, linkados nos dois sentidos.
@@ -196,6 +196,27 @@ decisão → síntese. Portado de `~/repos/aulas` com prefixo **`hubtbl_`** — 
   copiar e mandar; não há e-mail nem SMTP. O token abre só aquele trabalho (PDF + campo de considerações, salvo
   sozinho e editável sempre). O banco guarda só o hash: token perdido se troca por **Gerar novo token**. A
   coordenação copia as considerações e repassa aos alunos. SQL: `postgrest/hubbanca.sql` (`hubbanca_*`).
+
+## Acompanhamento do TCC1 2027.1 (`hubtcc_*`)
+
+Páginas em `pages/tcc1/acompanhamento/` (helper comum `js/hubtcc.js`), banco em `postgrest/hubtcc.sql`,
+separado por **edição** (`<body data-edicao="tcc1-2027-1">`) para o TCC2 de 2027.2 reaproveitar.
+
+- **Ordem real:** grupos e orientadores só existem depois da **entrega de acompanhamento** (Semana 8,
+  fim do 1º mês). Antes dela, o Tiago cadastra em `coordenacao.html` os professores (cada um recebe
+  link e token únicos para o semestre) e abre a entrega.
+- `entrega.html`: individual, dupla ou trio; título, integrantes, orientador escolhido num dropdown (só
+  professores com "orienta") e PDF da primeira versão. O comprovante mostra o **token do aluno**.
+- `coordenacao.html` (token da coordenação do TCC2): prazos, professores, confirmar/trocar orientador,
+  filtros (sem orientador, grave, liberados), banca por trabalho e liberação das considerações da banca
+  ao aluno. Novo token de professor ou aluno invalida o anterior.
+- `professor.html`: um token abre orientandos e bancas. Orientador registra considerações com avaliação
+  **grave / esperado / supera** (histórico; a mais recente é o andamento) e libera ou não para a banca
+  (não liberar exige comentário). Banca escreve considerações com salvamento automático.
+- `aluno.html`: orientador, andamento, histórico, liberação, banca (depois de liberada), versões do PDF
+  (nova versão; a final quando a coordenação abre) e avisos da disciplina embutidos.
+- PDFs em `hubtcc_arquivos`, **não** em `hubdeposito_arquivos`: a limpeza do TCC2 apagaria. Baldes no
+  `js/api_aulas.js`: `hub-tcc2-depositos` e `hub-tcc`.
 
 ## Quadro de avisos
 

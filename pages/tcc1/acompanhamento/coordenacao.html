@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Coordenação - TCC1 2027.1</title>
+<meta name="description" content="Coordenação do TCC1 2027.1: professores, alocação de orientadores, acompanhamento e bancas.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body data-edicao="tcc1-2027-1">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc1_2027_1.html">TCC1 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_tcc1_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC1 2027.1</a><div><span class="badge bg-white text-dark mb-1">TCC1 &middot; 2027.1 &middot; Coordenação</span><h1 class="h3 fw-bold text-white mb-0">Acompanhamento do TCC1</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-xl-11 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token da coordenação</h2>
+  <p class="text-muted small">O mesmo token da coordenação do TCC2.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:16rem" type="password" autocomplete="current-password"
+           placeholder="Token" required aria-label="Token da coordenação">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div class="d-none" id="painel">
+  <div class="d-flex gap-2 align-items-center mb-3">
+    <p class="mb-0 me-auto text-muted small" id="resumo"></p>
+    <button class="btn btn-outline-secondary btn-sm" type="button" id="atualizar"><i class="fas fa-rotate me-1" aria-hidden="true"></i> Atualizar</button>
+    <button class="btn btn-link btn-sm text-secondary" type="button" id="sair">Sair</button>
+  </div>
+  <div id="recado" class="alert d-none" role="alert"></div>
+
+  <div id="convite" class="alert alert-success d-none" role="status">
+    <div class="d-flex align-items-start gap-2">
+      <p class="fw-semibold mb-2 me-auto">Acesso gerado. O token só aparece agora; copie antes de sair.</p>
+      <button class="btn-close" type="button" id="convite-fechar" aria-label="Fechar"></button>
+    </div>
+    <pre class="bg-white border rounded p-2 small mb-2" style="white-space:pre-wrap" id="convite-texto"></pre>
+    <button class="btn btn-sm btn-success" type="button" id="convite-copiar"><i class="fas fa-copy me-1" aria-hidden="true"></i> Copiar texto</button>
+  </div>
+
+  <section class="glass-card p-4 mb-4">
+    <h2 class="h5 fw-bold mb-3">Prazos</h2>
+    <form id="form-edicao" class="row g-3 align-items-end">
+      <div class="col-md-3"><div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="entrega-aberta">
+        <label class="form-check-label" for="entrega-aberta">Entrega de acompanhamento aberta</label>
+      </div></div>
+      <div class="col-md-3">
+        <label class="form-label small" for="prazo">Fecha sozinha em <span class="text-muted">(opcional)</span></label>
+        <input class="form-control form-control-sm" type="datetime-local" id="prazo">
+      </div>
+      <div class="col-md-3"><div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="final-aberta">
+        <label class="form-check-label" for="final-aberta">Envio da versão final aberto</label>
+      </div></div>
+      <div class="col-md-3"><button class="btn btn-dark btn-sm" type="submit">Salvar prazos</button></div>
+    </form>
+    <p class="small text-muted mt-3 mb-0">Abra a entrega só depois de cadastrar os orientadores: a lista do formulário vem daqui.</p>
+  </section>
+
+  <section class="glass-card p-4 mb-4">
+    <h2 class="h5 fw-bold mb-1">Professores</h2>
+    <p class="text-muted small">Cada professor tem um token para o semestre todo, que abre os orientandos e as bancas dele. Desmarque "orienta" para quem só participa de banca: ele sai da lista do formulário.</p>
+    <div class="table-responsive">
+      <table class="table align-middle small mb-3">
+        <thead><tr><th scope="col">Nome</th><th scope="col">Orienta</th><th scope="col">Orientandos</th><th scope="col">Bancas</th><th scope="col">Último acesso</th><th scope="col"><span class="visually-hidden">Ações</span></th></tr></thead>
+        <tbody id="professores"></tbody>
+      </table>
+    </div>
+    <form id="form-professor" class="d-flex gap-2 flex-wrap align-items-center">
+      <input class="form-control" style="max-width:22rem" id="prof-nome" maxlength="120" required placeholder="Nome do professor" aria-label="Nome do professor">
+      <div class="form-check mb-0">
+        <input class="form-check-input" type="checkbox" id="prof-orienta" checked>
+        <label class="form-check-label" for="prof-orienta">Orienta</label>
+      </div>
+      <button class="btn btn-dark" type="submit"><i class="fas fa-user-plus me-1" aria-hidden="true"></i> Cadastrar e gerar acesso</button>
+    </form>
+  </section>
+
+  <section class="glass-card p-4 mb-4">
+    <div class="d-flex gap-2 flex-wrap align-items-center mb-3">
+      <h2 class="h5 fw-bold mb-0 me-auto">Trabalhos</h2>
+      <button class="btn btn-outline-dark btn-sm" type="button" id="confirmar-todas">Confirmar todas as indicações</button>
+    </div>
+    <div class="btn-group btn-group-sm flex-wrap mb-3" role="group" aria-label="Filtro" id="filtros"></div>
+    <div class="table-responsive">
+      <table class="table align-middle small mb-0">
+        <thead><tr><th scope="col">Trabalho</th><th scope="col">Orientador</th><th scope="col">Andamento</th><th scope="col">Banca</th><th scope="col"><span class="visually-hidden">Ações</span></th></tr></thead>
+        <tbody id="trabalhos"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+</div></div></main>
+
+<dialog id="detalhe" class="border-0 rounded-4 shadow p-0" style="width:min(52rem,calc(100vw - 2rem))" aria-labelledby="det-titulo">
+  <div class="p-4">
+    <div class="d-flex align-items-start gap-2 mb-1">
+      <h2 class="h5 fw-bold mb-0 me-auto" id="det-titulo"></h2>
+      <button class="btn-close" type="button" id="det-fechar" aria-label="Fechar"></button>
+    </div>
+    <p class="text-muted small mb-3" id="det-integrantes"></p>
+    <div id="det-recado" class="alert d-none" role="alert"></div>
+    <div id="det-corpo"></div>
+  </div>
+</dialog>
+
+<script src="../../../js/api_aulas.js"></script>
+<script src="../../../js/hubtcc.js"></script>
+<script>
+  const { chamar, quando, el, guarda, seloAvaliacao, seloLiberacao, listaVersoes, listaRegistros, copiar, edicao, pagina } = window.HubTcc;
+  const $ = (id) => document.getElementById(id);
+  const ED = edicao();
+  const token = guarda('hubtcc_coordenacao', true);
+  let dados = null;
+  let filtro = 'todos';
+  let aberto = null;
+
+  const FILTROS = {
+    todos: ['Todos', () => true],
+    sem: ['Sem orientador', (t) => !t.orientador_id],
+    grave: ['Grave', (t) => t.avaliacao === 'grave'],
+    liberados: ['Liberados', (t) => t.liberado_banca === true],
+    nao: ['Não liberados', (t) => t.liberado_banca === false],
+  };
+
+  function avisar(alvo, texto, tipo) {
+    alvo.textContent = texto;
+    alvo.className = 'alert ' + (!texto ? 'd-none' : tipo === 'ok' ? 'alert-success' : 'alert-danger');
+  }
+
+  const rpc = (fn, args) => chamar(fn, { p_token: token.ler(), ...args });
+  const nomeProf = (id) => (dados.professores.find((p) => p.id === id) || {}).nome || '';
+
+  function mostrarConvite(texto) {
+    $('convite-texto').textContent = texto;
+    $('convite').classList.remove('d-none');
+    $('convite').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  const conviteProfessor = (nome, tk) => [
+    `Olá, ${nome}.`, '',
+    'Este é o seu acesso ao acompanhamento do TCC1 2027.1. Na página abaixo ficam os seus orientandos e as bancas em que você estiver: lá você lê os PDFs, registra considerações, avalia o andamento (grave, esperado ou supera) e libera ou não o trabalho para a banca.', '',
+    `Página: ${pagina('professor.html')}`, `Token: ${tk}`, '',
+    'O token é pessoal e vale para o semestre inteiro.',
+  ].join('\n');
+  const conviteAluno = (t, tk) => [
+    `Novo acesso ao painel do TCC1 "${t.titulo}". O token anterior deixou de valer.`, '',
+    `Página: ${pagina('aluno.html')}`, `Token: ${tk}`,
+  ].join('\n');
+
+  async function acao(botao, fn, alvo) {
+    if (botao) botao.disabled = true;
+    try { await fn(); await carregar(); avisar(alvo || $('recado'), ''); }
+    catch (e) { avisar(alvo || $('recado'), e.message, 'erro'); }
+    if (botao) botao.disabled = false;
+  }
+
+  function botaoConfirmar(rotulo, classe, fn) {
+    const b = el('button', rotulo, { type: 'button', class: classe });
+    b.addEventListener('click', () => {
+      if (b.dataset.confirmar !== '1') {
+        b.dataset.confirmar = '1'; b.textContent = 'Confirmar';
+        setTimeout(() => { b.dataset.confirmar = ''; b.textContent = rotulo; }, 4000);
+        return;
+      }
+      fn(b);
+    });
+    return b;
+  }
+
+  // ---------------- desenho
+
+  function desenharEdicao() {
+    const e = dados.edicao;
+    $('entrega-aberta').checked = e.entrega_aberta;
+    $('final-aberta').checked = e.final_aberta;
+    $('prazo').value = e.prazo_entrega
+      ? new Date(new Date(e.prazo_entrega).getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16) : '';
+  }
+
+  function desenharProfessores() {
+    const tb = $('professores'); tb.replaceChildren();
+    if (!dados.professores.length) {
+      const tr = el('tr'); tr.append(el('td', 'Nenhum professor cadastrado.', { colspan: '6', class: 'text-muted' })); tb.append(tr);
+    }
+    for (const p of dados.professores) {
+      const tr = el('tr');
+      const ori = el('input', null, { type: 'checkbox', class: 'form-check-input', 'aria-label': `${p.nome} orienta` });
+      ori.checked = p.orienta;
+      ori.addEventListener('change', () => acao(ori, () => rpc('hubtcc_coord_professor', { p_edicao: ED, p_id: p.id, p_nome: p.nome, p_orienta: ori.checked })));
+      const tdO = el('td'); tdO.append(ori);
+      const acoes = el('td', null, { class: 'text-end text-nowrap' });
+      const novo = el('button', 'Novo token', { type: 'button', class: 'btn btn-outline-secondary btn-sm me-1' });
+      novo.addEventListener('click', () => acao(novo, async () => {
+        const r = await rpc('hubtcc_coord_token', { p_tipo: 'professor', p_id: p.id });
+        mostrarConvite(conviteProfessor(p.nome, r.token));
+      }));
+      acoes.append(novo, botaoConfirmar('Remover', 'btn btn-outline-danger btn-sm',
+        (b) => acao(b, () => rpc('hubtcc_coord_remover', { p_tipo: 'professor', p_id: p.id }))));
+      tr.append(el('td', p.nome, { class: 'fw-semibold' }), tdO, el('td', String(p.orientandos)), el('td', String(p.bancas)),
+        el('td', p.acesso_em ? quando(p.acesso_em) : 'Nunca'), acoes);
+      tb.append(tr);
+    }
+  }
+
+  // Graves primeiro, depois sem orientador, depois o resto por data.
+  const ordem = (t) => (t.avaliacao === 'grave' ? 0 : !t.orientador_id ? 1 : 2);
+
+  function desenharTrabalhos() {
+    const ts = dados.trabalhos;
+    $('resumo').textContent = `${ts.length} trabalho(s) · ${ts.filter((t) => !t.orientador_id).length} sem orientador · `
+      + `${ts.filter((t) => t.avaliacao === 'grave').length} grave(s) · ${ts.filter((t) => t.liberado_banca === true).length} liberado(s) para a banca`;
+    const g = $('filtros'); g.replaceChildren();
+    for (const [k, [rotulo, f]] of Object.entries(FILTROS)) {
+      const b = el('button', `${rotulo} (${ts.filter(f).length})`, { type: 'button', class: 'btn ' + (k === filtro ? 'btn-dark' : 'btn-outline-dark') });
+      b.addEventListener('click', () => { filtro = k; desenharTrabalhos(); });
+      g.append(b);
+    }
+    $('confirmar-todas').disabled = !ts.some((t) => !t.orientador_id && t.orientador_indicado);
+
+    const tb = $('trabalhos'); tb.replaceChildren();
+    const lista = ts.filter(FILTROS[filtro][1]).sort((a, b) => ordem(a) - ordem(b) || a.criado_em.localeCompare(b.criado_em));
+    if (!lista.length) {
+      const tr = el('tr'); tr.append(el('td', 'Nenhum trabalho aqui.', { colspan: '5', class: 'text-muted' })); tb.append(tr);
+    }
+    for (const t of lista) {
+      const tr = el('tr');
+      const td1 = el('td');
+      td1.append(el('div', t.titulo, { class: 'fw-semibold' }), el('div', t.integrantes.split('\n').join(', '), { class: 'text-muted' }));
+      const td2 = el('td');
+      const sel = el('select', null, { class: 'form-select form-select-sm', style: 'min-width:12rem', 'aria-label': `Orientador de ${t.titulo}` });
+      sel.append(el('option', 'Sem orientador', { value: '' }));
+      for (const p of dados.professores) {
+        const o = el('option', p.nome + (p.id === t.orientador_indicado ? ' (indicado)' : ''), { value: p.id });
+        if (p.id === t.orientador_id) o.selected = true;
+        sel.append(o);
+      }
+      sel.addEventListener('change', () => acao(sel, () => rpc('hubtcc_coord_orientador', { p_trabalho: t.id, p_professor: sel.value || null })));
+      td2.append(sel);
+      if (!t.orientador_id && t.orientador_indicado) {
+        const c = el('button', `Confirmar ${nomeProf(t.orientador_indicado)}`, { type: 'button', class: 'btn btn-link btn-sm p-0 mt-1' });
+        c.addEventListener('click', () => acao(c, () => rpc('hubtcc_coord_orientador', { p_trabalho: t.id, p_professor: t.orientador_indicado })));
+        td2.append(c);
+      }
+      const td3 = el('td');
+      td3.append(seloAvaliacao(t.avaliacao), el('br'), seloLiberacao(t.liberado_banca));
+      const td4 = el('td');
+      const comTexto = t.banca.filter((b) => b.consideracoes).length;
+      td4.append(el('div', t.banca.length ? t.banca.map((b) => b.professor).join(', ') : 'Sem banca'));
+      if (t.banca.length) td4.append(el('div', `${comTexto} de ${t.banca.length} com considerações${t.banca_liberada_em ? ' · liberadas ao aluno' : ''}`, { class: 'text-muted' }));
+      const td5 = el('td', null, { class: 'text-end' });
+      const abrir = el('button', 'Abrir', { type: 'button', class: 'btn btn-dark btn-sm' });
+      abrir.addEventListener('click', () => abrirDetalhe(t.id));
+      td5.append(abrir);
+      tr.append(td1, td2, td3, td4, td5);
+      tb.append(tr);
+    }
+  }
+
+  function abrirDetalhe(id) {
+    aberto = id;
+    avisar($('det-recado'), '');
+    desenharDetalhe();
+    if (!$('detalhe').open) $('detalhe').showModal();
+  }
+
+  function desenharDetalhe() {
+    const t = dados.trabalhos.find((x) => x.id === aberto);
+    if (!t) { $('detalhe').close(); return; }
+    const alvo = $('det-recado');
+    $('det-titulo').textContent = t.titulo;
+    $('det-integrantes').textContent = `${t.integrantes.split('\n').join(', ')} · entregue em ${quando(t.criado_em)}`
+      + ` · orientação: ${nomeProf(t.orientador_id) || 'sem orientador'}`;
+    const c = $('det-corpo'); c.replaceChildren();
+
+    const selos = el('div', null, { class: 'd-flex gap-2 flex-wrap mb-2' });
+    selos.append(seloAvaliacao(t.avaliacao), seloLiberacao(t.liberado_banca));
+    c.append(selos);
+    if (t.liberacao_texto) c.append(el('p', t.liberacao_texto, { class: 'small', style: 'white-space:pre-wrap' }));
+
+    c.append(el('h3', 'PDFs', { class: 'h6 fw-bold mt-3' }), listaVersoes(t.versoes));
+    c.append(el('h3', 'Histórico do orientador', { class: 'h6 fw-bold mt-4' }), listaRegistros(t.registros));
+
+    // Banca
+    c.append(el('h3', 'Banca', { class: 'h6 fw-bold mt-4' }));
+    const ul = el('ul', null, { class: 'list-unstyled mb-2' });
+    if (!t.banca.length) ul.append(el('li', 'Nenhum professor na banca.', { class: 'text-muted small' }));
+    for (const b of t.banca) {
+      const li = el('li', null, { class: 'border rounded-3 p-2 mb-2' });
+      const topo = el('div', null, { class: 'd-flex gap-2 align-items-center' });
+      topo.append(el('strong', b.professor, { class: 'me-auto' }),
+        el('span', b.atualizado_em ? `salvo em ${quando(b.atualizado_em)}` : 'sem considerações', { class: 'small text-muted' }),
+        botaoConfirmar('Tirar', 'btn btn-outline-danger btn-sm',
+          (bt) => acao(bt, () => rpc('hubtcc_coord_banca', { p_trabalho: t.id, p_professor: b.professor_id, p_remover: true }), alvo)));
+      li.append(topo);
+      if (b.consideracoes) li.append(el('div', b.consideracoes, { class: 'small mt-2 p-2 bg-light rounded', style: 'white-space:pre-wrap' }));
+      ul.append(li);
+    }
+    c.append(ul);
+    const fb = el('form', null, { class: 'd-flex gap-2 flex-wrap mb-2' });
+    const sel = el('select', null, { class: 'form-select form-select-sm', style: 'max-width:18rem', 'aria-label': 'Professor da banca' });
+    sel.append(el('option', 'Escolha o professor', { value: '' }));
+    for (const p of dados.professores) {
+      if (t.banca.some((b) => b.professor_id === p.id)) continue;
+      sel.append(el('option', p.nome + (p.id === t.orientador_id ? ' (orientador)' : ''), { value: p.id }));
+    }
+    const add = el('button', 'Pôr na banca', { type: 'submit', class: 'btn btn-dark btn-sm' });
+    fb.append(sel, add);
+    fb.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (sel.value) acao(add, () => rpc('hubtcc_coord_banca', { p_trabalho: t.id, p_professor: sel.value, p_remover: false }), alvo);
+    });
+    c.append(fb);
+    if (t.liberado_banca !== true) c.append(el('p', 'O orientador ainda não liberou este trabalho para a banca.', { class: 'small text-warning-emphasis' }));
+    const linha = el('div', null, { class: 'd-flex gap-2 flex-wrap' });
+    const lib = el('button', t.banca_liberada_em ? 'Recolher considerações do aluno' : 'Liberar considerações ao aluno',
+      { type: 'button', class: 'btn btn-sm ' + (t.banca_liberada_em ? 'btn-outline-secondary' : 'btn-outline-primary') });
+    lib.disabled = !t.banca.some((b) => b.consideracoes) && !t.banca_liberada_em;
+    lib.addEventListener('click', () => acao(lib, () => rpc('hubtcc_coord_banca_liberar', { p_trabalho: t.id, p_liberar: !t.banca_liberada_em }), alvo));
+    const cop = el('button', 'Copiar considerações', { type: 'button', class: 'btn btn-sm btn-outline-dark' });
+    cop.disabled = !t.banca.some((b) => b.consideracoes);
+    cop.addEventListener('click', () => copiar([`TCC1 "${t.titulo}"`, ...t.banca.filter((b) => b.consideracoes)
+      .map((b) => `Considerações de ${b.professor}:\n\n${b.consideracoes}`)].join('\n\n'), cop));
+    linha.append(lib, cop);
+    c.append(linha);
+
+    // Acesso e remoção
+    c.append(el('h3', 'Acesso do aluno', { class: 'h6 fw-bold mt-4' }));
+    c.append(el('p', t.acesso_em ? `Último acesso ao painel: ${quando(t.acesso_em)}.` : 'O aluno ainda não abriu o painel.', { class: 'small text-muted mb-2' }));
+    const fim = el('div', null, { class: 'd-flex gap-2 flex-wrap' });
+    const nt = el('button', 'Gerar novo token do aluno', { type: 'button', class: 'btn btn-outline-secondary btn-sm' });
+    nt.addEventListener('click', () => acao(nt, async () => {
+      const r = await rpc('hubtcc_coord_token', { p_tipo: 'aluno', p_id: t.id });
+      $('detalhe').close();
+      mostrarConvite(conviteAluno(t, r.token));
+    }, alvo));
+    fim.append(nt, botaoConfirmar('Remover trabalho', 'btn btn-outline-danger btn-sm', (b) => acao(b, async () => {
+      await rpc('hubtcc_coord_remover', { p_tipo: 'trabalho', p_id: t.id });
+      $('detalhe').close();
+    }, alvo)));
+    c.append(fim);
+  }
+
+  async function carregar() {
+    dados = await rpc('hubtcc_coord', { p_edicao: ED });
+    desenharEdicao();
+    desenharProfessores();
+    desenharTrabalhos();
+    if (aberto && $('detalhe').open) desenharDetalhe();
+  }
+
+  async function entrar() {
+    try {
+      await carregar();
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+    } catch (e) {
+      token.gravar('');
+      $('painel').classList.add('d-none');
+      $('tela-token').classList.remove('d-none');
+      avisar($('recado-token'), e.message, 'erro');
+      $('recado-token').classList.add('mt-3');
+    }
+  }
+
+  // ---------------- eventos
+
+  $('form-edicao').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const prazo = $('prazo').value ? new Date($('prazo').value).toISOString() : null;
+    acao(ev.submitter, async () => {
+      await rpc('hubtcc_coord_edicao', { p_edicao: ED, p_entrega_aberta: $('entrega-aberta').checked,
+        p_prazo_entrega: prazo, p_final_aberta: $('final-aberta').checked });
+    });
+  });
+  $('form-professor').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    const nome = $('prof-nome').value.trim();
+    acao(ev.submitter, async () => {
+      const r = await rpc('hubtcc_coord_professor', { p_edicao: ED, p_id: null, p_nome: nome, p_orienta: $('prof-orienta').checked });
+      $('prof-nome').value = '';
+      mostrarConvite(conviteProfessor(nome, r.token));
+    });
+  });
+  $('confirmar-todas').addEventListener('click', (ev) => acao(ev.currentTarget, async () => {
+    for (const t of dados.trabalhos.filter((x) => !x.orientador_id && x.orientador_indicado)) {
+      await rpc('hubtcc_coord_orientador', { p_trabalho: t.id, p_professor: t.orientador_indicado });
+    }
+  }));
+  $('convite-copiar').addEventListener('click', (ev) => copiar($('convite-texto').textContent, ev.currentTarget));
+  $('convite-fechar').addEventListener('click', () => $('convite').classList.add('d-none'));
+  $('det-fechar').addEventListener('click', () => $('detalhe').close());
+  $('detalhe').addEventListener('close', () => { aberto = null; });
+  $('atualizar').addEventListener('click', () => carregar().catch((e) => avisar($('recado'), e.message, 'erro')));
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    token.gravar($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('sair').addEventListener('click', () => { token.gravar(''); location.reload(); });
+
+  if (token.ler()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

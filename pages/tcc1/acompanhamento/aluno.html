@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Meu painel - TCC1 2027.1</title>
+<meta name="description" content="Painel do aluno do TCC1 2027.1: orientador, considerações, liberação para a banca, versões e avisos.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body data-edicao="tcc1-2027-1" data-avisos-inline>
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc1_2027_1.html">TCC1 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><a href="../../home_tcc1_2027_1.html" class="btn btn-sm btn-outline-light rounded-pill mb-2"><i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Voltar para TCC1 2027.1</a><div><span class="badge bg-white text-dark mb-1">TCC1 &middot; 2027.1</span><h1 class="h3 fw-bold text-white mb-0">Meu painel</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-9 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token do trabalho</h2>
+  <p class="text-muted small">O token aparece no comprovante da <a href="entrega.html">entrega de acompanhamento</a>. Se ele se perdeu, peça um novo à coordenação.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:24rem" type="password" autocomplete="current-password"
+           placeholder="Token" required aria-label="Token do trabalho">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div class="d-none" id="painel">
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <div class="d-flex gap-2 align-items-start mb-2">
+      <h2 class="h4 fw-bold mb-0 me-auto" id="titulo"></h2>
+      <button class="btn btn-link btn-sm text-secondary p-0" type="button" id="sair">Sair</button>
+    </div>
+    <p class="text-muted mb-3" id="integrantes"></p>
+    <dl class="row mb-0">
+      <dt class="col-sm-4">Orientador</dt><dd class="col-sm-8" id="orientador"></dd>
+      <dt class="col-sm-4">Andamento</dt><dd class="col-sm-8" id="avaliacao"></dd>
+      <dt class="col-sm-4">Banca</dt><dd class="col-sm-8" id="liberacao"></dd>
+    </dl>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <h2 class="h5 fw-bold mb-3">Considerações do orientador</h2>
+    <div id="registros"></div>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4 d-none" id="secao-banca">
+    <h2 class="h5 fw-bold mb-3">Considerações da banca</h2>
+    <div id="banca"></div>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <h2 class="h5 fw-bold mb-3">Versões do trabalho</h2>
+    <div id="versoes" class="mb-4"></div>
+    <h3 class="h6 fw-bold">Enviar nova versão</h3>
+    <form id="form-versao" class="d-flex gap-2 flex-wrap align-items-center">
+      <input class="form-control" style="max-width:22rem" id="arquivo" type="file" accept="application/pdf,.pdf" required aria-label="PDF da nova versão">
+      <div class="form-check mb-0">
+        <input class="form-check-input" type="checkbox" id="final">
+        <label class="form-check-label" for="final" id="final-rotulo">Esta é a versão final</label>
+      </div>
+      <button class="btn btn-primary" type="submit" id="enviar"><i class="fas fa-upload me-1" aria-hidden="true"></i> Enviar PDF</button>
+    </form>
+    <div id="recado-versao" class="alert d-none mt-3" role="status"></div>
+  </section>
+
+  <section class="glass-card p-4 p-md-5 mb-4">
+    <h2 class="h5 fw-bold mb-3">Avisos da disciplina</h2>
+    <div id="quadro-avisos"></div>
+  </section>
+</div>
+
+</div></div></main>
+
+<script src="../../../js/api_aulas.js"></script>
+<script src="../../../js/hubtcc.js"></script>
+<script>
+  const { chamar, quando, el, guarda, seloAvaliacao, seloLiberacao, listaVersoes, listaRegistros, subirPdf, edicao } = window.HubTcc;
+  const $ = (id) => document.getElementById(id);
+  const ED = edicao();
+  const token = guarda(`hubtcc_aluno_${ED}`);
+  let avisosMontados = false;
+
+  // js/avisos.js carrega com defer: se ainda não chegou, monta o quadro no load.
+  function montarAvisos() {
+    if (avisosMontados) return;
+    if (!window.HubAvisos) { window.addEventListener('load', montarAvisos, { once: true }); return; }
+    window.HubAvisos.montarEm($('quadro-avisos'));
+    avisosMontados = true;
+  }
+
+  function avisarVersao(texto, tipo) {
+    $('recado-versao').textContent = texto;
+    $('recado-versao').className = 'alert mt-3 ' + (!texto ? 'd-none' : tipo === 'ok' ? 'alert-success' : 'alert-danger');
+  }
+
+  async function entrar() {
+    try {
+      const d = await chamar('hubtcc_aluno', { p_token: token.ler() });
+      $('titulo').textContent = d.titulo;
+      $('integrantes').textContent = d.integrantes.split('\n').join(', ');
+      $('orientador').textContent = d.orientador
+        || (d.orientador_indicado ? `${d.orientador_indicado} (indicado, aguardando a coordenação confirmar)` : 'Ainda não definido');
+      $('avaliacao').replaceChildren(seloAvaliacao(d.avaliacao));
+      const lib = $('liberacao');
+      lib.replaceChildren(seloLiberacao(d.liberado_banca));
+      if (d.liberacao_texto) lib.append(el('div', d.liberacao_texto, { class: 'small mt-1', style: 'white-space:pre-wrap' }));
+      if (d.liberacao_em) lib.append(el('div', quando(d.liberacao_em), { class: 'small text-muted' }));
+      $('registros').replaceChildren(listaRegistros(d.registros));
+      if (d.banca) {
+        const box = $('banca');
+        box.replaceChildren();
+        if (!d.banca.length) box.append(el('p', 'A banca não deixou considerações por escrito.', { class: 'text-muted small mb-0' }));
+        for (const b of d.banca) {
+          box.append(el('h3', b.professor, { class: 'h6 fw-bold mt-2' }),
+            el('div', b.consideracoes, { class: 'mb-3', style: 'white-space:pre-wrap' }));
+        }
+        $('secao-banca').classList.remove('d-none');
+      }
+      $('versoes').replaceChildren(listaVersoes(d.versoes));
+      $('final').disabled = !d.final_aberta;
+      $('final-rotulo').textContent = d.final_aberta ? 'Esta é a versão final' : 'Versão final (o envio ainda não abriu)';
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+      montarAvisos();
+    } catch (e) {
+      token.gravar('');
+      $('painel').classList.add('d-none');
+      $('tela-token').classList.remove('d-none');
+      $('recado-token').textContent = e.message;
+      $('recado-token').classList.remove('d-none');
+    }
+  }
+
+  $('form-versao').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const arquivo = $('arquivo').files[0];
+    if (!arquivo) return;
+    $('enviar').disabled = true;
+    try {
+      avisarVersao('Enviando o PDF…', 'ok');
+      const caminho = await subirPdf(arquivo, {
+        edicao: ED, token: token.ler(),
+        aoProgresso: (n, total) => total > 1 && avisarVersao(`Enviando o PDF… ${Math.round(100 * n / total)}%. Não feche a página.`, 'ok'),
+      });
+      await chamar('hubtcc_aluno_versao', {
+        p_token: token.ler(), p_arquivo: caminho, p_nome_arquivo: arquivo.name, p_final: $('final').checked });
+      avisarVersao('Versão registrada.', 'ok');
+      $('form-versao').reset();
+      await entrar();
+    } catch (e) {
+      avisarVersao(e.message, 'erro');
+    }
+    $('enviar').disabled = false;
+  });
+
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    token.gravar($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('sair').addEventListener('click', () => { token.gravar(''); location.reload(); });
+
+  if (token.ler()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>

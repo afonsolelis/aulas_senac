@@ -88,6 +88,35 @@
           </div>
         </div>
 
+        <div class="row mb-4 g-3">
+          <div class="col-md-6">
+            <a href="tcc1/acompanhamento/aluno.html"
+              class="alert alert-light border shadow-sm h-100 mb-0 d-flex align-items-center text-decoration-none">
+              <div class="bg-danger text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                style="width: 50px; height: 50px;">
+                <i class="fas fa-gauge fa-lg" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1 text-dark">Meu painel</h5>
+                <p class="small mb-0 text-muted">Orientador, considerações, liberação para a banca e versões</p>
+              </div>
+            </a>
+          </div>
+          <div class="col-md-6">
+            <a href="tcc1/acompanhamento/professor.html"
+              class="alert alert-light border shadow-sm h-100 mb-0 d-flex align-items-center text-decoration-none">
+              <div class="bg-dark text-white rounded-circle p-3 me-3 d-flex align-items-center justify-content-center"
+                style="width: 50px; height: 50px;">
+                <i class="fas fa-chalkboard-user fa-lg" aria-hidden="true"></i>
+              </div>
+              <div>
+                <h5 class="fw-bold mb-1 text-dark">Orientação e banca</h5>
+                <p class="small mb-0 text-muted">Área do professor, com o token enviado pela coordenação</p>
+              </div>
+            </a>
+          </div>
+        </div>
+
         <div class="glass-card p-4 mb-4">
           <h3 class="mb-4"><i class="fas fa-calendar-alt text-warning me-2" aria-hidden="true"></i> Cronograma de Entregas</h3>
 
@@ -144,13 +173,15 @@
             </div>
             <!-- Semana 8: Entrega formal da proposta -->
             <div class="col-12">
-              <div class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle no-actions">
+              <div class="list-group-item border border-danger rounded shadow-sm p-3 h-100 d-flex flex-column bg-danger-subtle">
                 <div class="d-flex w-100 align-items-center mb-2 gap-2 flex-wrap">
                   <h5 class="mb-0 fw-bold text-dark">Entrega formal da proposta</h5>
-                  <div class="ms-auto"></div>
+                  <div class="d-flex gap-2 ms-auto">
+                    <a href="tcc1/acompanhamento/entrega.html" class="btn btn-danger btn-sm"><i class="fas fa-upload me-1" aria-hidden="true"></i> Entregar</a>
+                  </div>
                   <span class="badge bg-danger text-white border fw-normal"><i class="fas fa-pen me-1" aria-hidden="true"></i> Semana 8</span>
                 </div>
-                <p class="mb-auto text-muted small mt-2">Aula 04 &middot; 22 a 26 fev &middot; Enviar o PDF da proposta</p>
+                <p class="mb-auto text-muted small mt-2">Aula 04 &middot; 22 a 26 fev &middot; Integrantes, orientador e PDF da primeira versão. O comprovante traz o token do seu painel.</p>
               </div>
             </div>
             <!-- Semana 9: Estudo de Viabilidade -->
@@ -342,13 +373,15 @@
             </div>
             <!-- Semana 26: Depósito TCC1 -->
             <div class="col-12">
-              <div class="list-group-item border border-success rounded shadow-sm p-3 h-100 d-flex flex-column bg-success-subtle no-actions">
+              <div class="list-group-item border border-success rounded shadow-sm p-3 h-100 d-flex flex-column bg-success-subtle">
                 <div class="d-flex w-100 align-items-center mb-2 gap-2 flex-wrap">
                   <h5 class="mb-0 fw-bold text-dark">Depósito TCC1</h5>
-                  <div class="ms-auto"></div>
+                  <div class="d-flex gap-2 ms-auto">
+                    <a href="tcc1/acompanhamento/aluno.html" class="btn btn-success btn-sm"><i class="fas fa-gauge me-1" aria-hidden="true"></i> Meu painel</a>
+                  </div>
                   <span class="badge bg-success text-white border fw-normal"><i class="fas fa-flag-checkered me-1" aria-hidden="true"></i> Semana 26</span>
                 </div>
-                <p class="mb-auto text-muted small mt-2">Aula 22 &middot; 28 jun a 02 jul &middot; Entrega final do TCC1 em PDF</p>
+                <p class="mb-auto text-muted small mt-2">Aula 22 &middot; 28 jun a 02 jul &middot; Entrega final do TCC1 em PDF, pelo painel do trabalho</p>
               </div>
             </div>
           </div>

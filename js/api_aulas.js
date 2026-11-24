@@ -11,6 +11,8 @@
  *   const { data, error } = await db.rpc('quiz_estado', { p_slug, ... });
  *   await db.storage.from('hub-tcc2-depositos').upload(caminho, arquivoPdf);
  *   db.storage.from('hub-tcc2-depositos').getPublicUrl(caminho).data.publicUrl;
+ * O acompanhamento do TCC (hubtcc_*) usa o balde 'hub-tcc', com funções e tabela
+ * próprias; opcoes.token manda o token do aluno ao enviar nova versão.
  * Não há Realtime: db.channel(...) existe só para não quebrar as páginas,
  * que consultam o estado a cada segundo.
  */
@@ -56,8 +58,14 @@
     });
   }
 
-  // Só o bucket do depósito do TCC2 existe; os PDFs ficam no próprio Postgres.
-  function balde() {
+  // Baldes: depósito do TCC2 e acompanhamento do TCC. Os PDFs ficam no próprio Postgres.
+  const BALDES = {
+    'hub-tcc2-depositos': { parte: 'hubdeposito_subir_parte', pdf: 'hubdeposito_pdf' },
+    'hub-tcc': { parte: 'hubtcc_subir_parte', pdf: 'hubtcc_pdf' },
+  };
+
+  function balde(nome) {
+    const cfg = BALDES[nome] || BALDES['hub-tcc2-depositos'];
     return {
       // O PDF vai em partes de 8 MB, uma por vez (hubdeposito_subir_parte): um corpo
       // único de 150 MB em base64 estouraria o tempo do proxy em conexão lenta.
@@ -71,10 +79,11 @@
           let conteudo;
           try { conteudo = await base64(pedaco); } catch (e) { return { data: null, error: { message: e.message } }; }
           const args = { p_caminho: caminho, p_parte: parte, p_total: total, p_conteudo: conteudo };
-          let resp = await rpc('hubdeposito_subir_parte', args);
+          if (opcoes && opcoes.token) args.p_token = opcoes.token;
+          let resp = await rpc(cfg.parte, args);
           // Falha de rede ou do servidor (sem status ou 5xx): tenta a mesma parte mais uma vez.
           if (resp.error && !(resp.error.status >= 400 && resp.error.status < 500)) {
-            resp = await rpc('hubdeposito_subir_parte', args);
+            resp = await rpc(cfg.parte, args);
           }
           if (resp.error) return { data: null, error: resp.error };
           data = resp.data;
@@ -84,13 +93,13 @@
         return { data: { path: data.caminho }, error: null };
       },
       getPublicUrl(caminho) {
-        return { data: { publicUrl: urlPdf(caminho) } };
+        return { data: { publicUrl: urlPdf(caminho, cfg.pdf) } };
       },
     };
   }
 
-  function urlPdf(caminho) {
-    return URL_API + '/rpc/hubdeposito_pdf?p_caminho=' + encodeURIComponent(caminho);
+  function urlPdf(caminho, fn) {
+    return URL_API + '/rpc/' + (fn || 'hubdeposito_pdf') + '?p_caminho=' + encodeURIComponent(caminho);
   }
 
   window.AULAS_API_URL = URL_API;

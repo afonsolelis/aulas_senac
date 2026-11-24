@@ -282,8 +282,8 @@
           "name": "TCC1",
           "slug": "tcc1",
           "home": "pages/home_tcc1_2027_1.html",
-          "status": "placeholder",
-          "obs": "Página sem conteúdo. O TCC1 de 2026.1 usa o slug tcc; este usa tcc1 para não misturar os semestres. Paleta futura: data_disciplina=tcc."
+          "status": "ativo",
+          "obs": "O TCC1 de 2026.1 usa o slug tcc; este usa tcc1 para não misturar os semestres. Paleta: data_disciplina=tcc. Acompanhamento em pages/tcc1/acompanhamento/ (edição tcc1-2027-1, banco postgrest/hubtcc.sql): a entrega de acompanhamento da Semana 8 cria o trabalho (individual, dupla ou trio, orientador escolhido numa lista); a coordenação cadastra os professores antes e confirma os orientadores; o orientador avalia (grave, esperado, supera) e libera ou não para a banca."
         }
       ]
     }

@@ -26,6 +26,7 @@ aulas_senac/
 │   │   └── prova/                  # correção da prova escrita, uma página por turma
 │   └── tcc2/                       # slides + material/ de TCC2 (2026.2)
 │       └── entrega/                # depósito do PDF final, professor, coordenação e banca
+│   └── tcc1/acompanhamento/        # TCC1 2027.1: entrega, painel do aluno, professor, coordenação
 ├── css/                            # style.css, slides.css, base-styles.css
 ├── js/standard_slides.js           # navegação prev/next/fullscreen/progress
 ├── config/
@@ -98,6 +99,19 @@ As páginas ficam em `pages/tcc2/entrega/`:
 Na coordenação, **Alocar banca** gera para cada professor o link de `banca.html` e um token único, que a coordenação copia e manda por conta própria; o site não envia e-mail. O token abre apenas aquele trabalho. As considerações são salvas enquanto o professor digita e podem ser editadas a qualquer momento. A coordenação lê o texto no diálogo da banca e usa **Copiar considerações** para repassar aos alunos.
 
 O banco guarda só o hash dos tokens. Token de professor perdido se resolve com **Gerar novo token**, que invalida o anterior. O token da coordenação é trocado no banco com o comando do cabeçalho de `supabase/hubdeposito-coordenacao.sql` e não é versionado. SQL da banca: `postgrest/hubbanca.sql`.
+
+## Acompanhamento do TCC1 2027.1
+
+Em `pages/tcc1/acompanhamento/`, com banco em `postgrest/hubtcc.sql`:
+
+| Página | Quem usa | O que faz |
+|---|---|---|
+| `entrega.html` | aluno | entrega de acompanhamento (Semana 8): título, até três integrantes, orientador e primeira versão em PDF; devolve o token do painel |
+| `aluno.html` | aluno | orientador, andamento, considerações, liberação para a banca, considerações da banca, novas versões e avisos |
+| `professor.html` | orientador e banca | considerações com avaliação grave, esperado ou supera, liberação para a banca e considerações de banca |
+| `coordenacao.html` | coordenação | prazos, cadastro de professores, confirmação do orientador, banca e liberação das considerações ao aluno |
+
+Os professores são cadastrados antes da entrega, porque a lista de orientadores do formulário vem do cadastro. Cada professor e cada trabalho têm um token próprio; o banco guarda só o hash, e a coordenação gera outro quando um se perde. O banco é separado por edição, então o TCC2 de 2027.2 usa as mesmas páginas trocando `data-edicao`.
 
 `scripts/discord-*.js` são ferramentas locais de administração e envio de mensagens, com scripts `discord:check`, `discord:post`, `discord:channel` e `discord:welcome` no `package.json`. Consulte o cabeçalho de uso de cada arquivo antes de operar; não fazem parte dos testes nem executam no site. `discord:post` trata texto livre como mensagem, inclusive `--help`.
 

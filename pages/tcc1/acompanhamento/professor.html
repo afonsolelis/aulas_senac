@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/png" href="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Área do professor - TCC1 2027.1</title>
+<meta name="description" content="Área do orientador e do professor de banca do TCC1 2027.1.">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link rel="stylesheet" href="../../../css/style.css">
+</head>
+<body data-edicao="tcc1-2027-1">
+<nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top shadow-sm"><div class="container"><a class="navbar-brand d-flex align-items-center" href="../../../index.html"><img src="https://res.cloudinary.com/dyhjjms8y/image/upload/v1759512534/logo-SENAC_k3d68v.png" alt="Senac Logo" class="me-2" style="height:40px"><span class="fw-bold text-dark">Hub de Aulas</span></a><div class="collapse navbar-collapse"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="../../home_tcc1_2027_1.html">TCC1 2027.1</a></li></ul></div></div></nav>
+
+<header class="hero-section bg-tcc d-flex align-items-center py-3" style="min-height:12vh"><div class="container"><div><span class="badge bg-white text-dark mb-1">TCC1 &middot; 2027.1 &middot; Professor</span><h1 class="h3 fw-bold text-white mb-0">Orientação e banca</h1></div></div></header>
+
+<main class="container py-5" id="conteudo-principal"><div class="row"><div class="col-lg-10 mx-auto">
+
+<section class="glass-card p-4 p-md-5 mb-4" id="tela-token">
+  <h2 class="h4 fw-bold">Token do professor</h2>
+  <p class="text-muted small">Use o token que a coordenação enviou. Ele vale para todos os seus orientandos e bancas do semestre.</p>
+  <form id="form-token" class="d-flex gap-2 flex-wrap">
+    <input id="token" class="form-control" style="max-width:24rem" type="password" autocomplete="current-password"
+           placeholder="Token" required aria-label="Token do professor">
+    <button class="btn btn-dark" type="submit">Entrar</button>
+  </form>
+  <div id="recado-token" class="alert alert-danger mt-3 d-none" role="alert"></div>
+</section>
+
+<div class="d-none" id="painel">
+  <div class="d-flex gap-2 align-items-center mb-3">
+    <p class="mb-0 me-auto fw-semibold" id="ola"></p>
+    <button class="btn btn-outline-secondary btn-sm" type="button" id="atualizar"><i class="fas fa-rotate me-1" aria-hidden="true"></i> Atualizar</button>
+    <button class="btn btn-link btn-sm text-secondary" type="button" id="sair">Sair</button>
+  </div>
+  <div id="recado" class="alert d-none" role="alert"></div>
+
+  <section class="mb-5">
+    <h2 class="h4 fw-bold mb-1">Orientandos</h2>
+    <p class="text-muted small">Registre considerações sempre que quiser; o aluno lê tudo no painel dele. A avaliação mais recente (grave, esperado ou supera) é o andamento atual do trabalho.</p>
+    <div id="orientandos"></div>
+  </section>
+
+  <section class="mb-4">
+    <h2 class="h4 fw-bold mb-1">Bancas</h2>
+    <p class="text-muted small">As considerações são salvas enquanto você digita e podem ser editadas a qualquer momento, inclusive durante a banca. A coordenação libera o texto para o aluno.</p>
+    <div id="bancas"></div>
+  </section>
+</div>
+
+</div></div></main>
+
+<script src="../../../js/api_aulas.js"></script>
+<script src="../../../js/hubtcc.js"></script>
+<script>
+  const { chamar, quando, el, guarda, seloAvaliacao, seloLiberacao, listaVersoes, listaRegistros, AVALIACAO, edicao } = window.HubTcc;
+  const $ = (id) => document.getElementById(id);
+  const token = guarda(`hubtcc_professor_${edicao()}`);
+  const pendentes = new Map(); // banca com texto ainda não salvo
+
+  function avisar(texto) {
+    $('recado').textContent = texto;
+    $('recado').className = 'alert ' + (texto ? 'alert-danger' : 'd-none');
+  }
+
+  function seletorAvaliacao(valor) {
+    const s = el('select', null, { class: 'form-select form-select-sm', style: 'max-width:12rem', 'aria-label': 'Avaliação' });
+    s.append(el('option', 'Sem avaliação', { value: '' }));
+    for (const [k, a] of Object.entries(AVALIACAO)) {
+      const o = el('option', a.rotulo, { value: k });
+      if (k === valor) o.selected = true;
+      s.append(o);
+    }
+    return s;
+  }
+
+  async function acao(botao, fn) {
+    botao.disabled = true;
+    try { await fn(); avisar(''); await carregar(); } catch (e) { avisar(e.message); } finally { botao.disabled = false; }
+  }
+
+  function cartaoOrientando(t) {
+    const card = el('article', null, { class: 'glass-card p-4 mb-4' });
+    card.append(el('h3', t.titulo, { class: 'h5 fw-bold' }),
+      el('p', t.integrantes.split('\n').join(', '), { class: 'text-muted small mb-2' }));
+    const selos = el('div', null, { class: 'd-flex gap-2 flex-wrap mb-3' });
+    selos.append(seloAvaliacao(t.avaliacao), seloLiberacao(t.liberado_banca));
+    card.append(selos, el('h4', 'PDFs', { class: 'h6 fw-bold' }), listaVersoes(t.versoes));
+
+    // Novo registro
+    const form = el('form', null, { class: 'mt-4' });
+    form.append(el('h4', 'Nova consideração', { class: 'h6 fw-bold' }));
+    const av = seletorAvaliacao('');
+    const txt = el('textarea', null, { class: 'form-control mb-2', rows: '4', maxlength: '20000', 'aria-label': 'Consideração' });
+    const linha = el('div', null, { class: 'd-flex gap-2 flex-wrap align-items-center' });
+    const btn = el('button', 'Registrar', { type: 'submit', class: 'btn btn-dark btn-sm' });
+    linha.append(av, btn);
+    form.append(txt, linha);
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      acao(btn, () => chamar('hubtcc_registrar', { p_token: token.ler(), p_trabalho: t.id, p_avaliacao: av.value || null, p_texto: txt.value }));
+    });
+    card.append(form);
+
+    // Histórico
+    card.append(el('h4', 'Histórico', { class: 'h6 fw-bold mt-4' }));
+    card.append(listaRegistros(t.registros, (r, li) => {
+      const botoes = el('div', null, { class: 'd-flex gap-2 mt-1' });
+      const editar = el('button', 'Editar', { type: 'button', class: 'btn btn-link btn-sm p-0' });
+      const apagar = el('button', 'Apagar', { type: 'button', class: 'btn btn-link btn-sm p-0 text-danger' });
+      editar.addEventListener('click', () => {
+        const f = el('form', null, { class: 'mt-2' });
+        const a2 = seletorAvaliacao(r.avaliacao || '');
+        const t2 = el('textarea', null, { class: 'form-control mb-2', rows: '4', maxlength: '20000', 'aria-label': 'Editar consideração' });
+        t2.value = r.texto || '';
+        const salvar = el('button', 'Salvar', { type: 'submit', class: 'btn btn-dark btn-sm' });
+        const l = el('div', null, { class: 'd-flex gap-2' }); l.append(a2, salvar);
+        f.append(t2, l);
+        f.addEventListener('submit', (ev) => {
+          ev.preventDefault();
+          acao(salvar, () => chamar('hubtcc_registro_alterar', { p_token: token.ler(), p_registro: r.id, p_avaliacao: a2.value || null, p_texto: t2.value, p_remover: false }));
+        });
+        botoes.replaceWith(f);
+      });
+      apagar.addEventListener('click', () => {
+        if (apagar.dataset.confirmar !== '1') {
+          apagar.dataset.confirmar = '1'; apagar.textContent = 'Confirmar';
+          setTimeout(() => { apagar.dataset.confirmar = ''; apagar.textContent = 'Apagar'; }, 4000);
+          return;
+        }
+        acao(apagar, () => chamar('hubtcc_registro_alterar', { p_token: token.ler(), p_registro: r.id, p_avaliacao: null, p_texto: null, p_remover: true }));
+      });
+      botoes.append(editar, apagar);
+      li.append(botoes);
+    }));
+
+    // Liberação para a banca
+    const lib = el('form', null, { class: 'mt-4 border-top pt-3' });
+    lib.append(el('h4', 'Liberação para a banca', { class: 'h6 fw-bold' }));
+    const opcoes = el('div', null, { class: 'd-flex gap-3 flex-wrap mb-2' });
+    for (const [valor, rotulo] of [['sim', 'Liberado'], ['nao', 'Não liberado'], ['pendente', 'Ainda não decidi']]) {
+      const id = `lib-${t.id}-${valor}`;
+      const d = el('div', null, { class: 'form-check' });
+      const r = el('input', null, { class: 'form-check-input', type: 'radio', name: `lib-${t.id}`, id, value: valor });
+      if ((t.liberado_banca === true && valor === 'sim') || (t.liberado_banca === false && valor === 'nao')
+          || (t.liberado_banca == null && valor === 'pendente')) r.checked = true;
+      d.append(r, el('label', rotulo, { class: 'form-check-label', for: id }));
+      opcoes.append(d);
+    }
+    const just = el('textarea', null, { class: 'form-control mb-2', rows: '2', maxlength: '5000',
+      placeholder: 'Comentário ao aluno (obrigatório quando não liberado)', 'aria-label': 'Comentário da liberação' });
+    just.value = t.liberacao_texto || '';
+    const salvarLib = el('button', 'Salvar decisão', { type: 'submit', class: 'btn btn-outline-dark btn-sm' });
+    lib.append(opcoes, just, salvarLib);
+    if (t.liberacao_em) lib.append(el('span', ` Decidido em ${quando(t.liberacao_em)}.`, { class: 'small text-muted' }));
+    lib.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      const v = lib.querySelector('input:checked').value;
+      acao(salvarLib, () => chamar('hubtcc_liberar', { p_token: token.ler(), p_trabalho: t.id,
+        p_liberado: v === 'sim' ? true : v === 'nao' ? false : null, p_texto: just.value }));
+    });
+    card.append(lib);
+    return card;
+  }
+
+  function cartaoBanca(b) {
+    const card = el('article', null, { class: 'glass-card p-4 mb-4' });
+    card.append(el('h3', b.titulo, { class: 'h5 fw-bold' }),
+      el('p', `${b.integrantes.split('\n').join(', ')}${b.orientador ? ' · orientação: ' + b.orientador : ''}`, { class: 'text-muted small mb-2' }));
+    const selos = el('div', null, { class: 'mb-3' }); selos.append(seloLiberacao(b.liberado_banca));
+    card.append(selos, el('h4', 'PDFs', { class: 'h6 fw-bold' }), listaVersoes(b.versoes));
+    card.append(el('h4', 'Suas considerações', { class: 'h6 fw-bold mt-4' }));
+    const txt = el('textarea', null, { class: 'form-control mb-2', rows: '10', maxlength: '20000', 'aria-label': 'Considerações da banca' });
+    txt.value = pendentes.has(b.id) ? pendentes.get(b.id).texto : (b.consideracoes || '');
+    const estado = el('span', b.atualizado_em ? `Salvo em ${quando(b.atualizado_em)}.` : '', { class: 'small text-muted', role: 'status' });
+    let espera = null;
+    const salvar = async () => {
+      clearTimeout(espera);
+      if (!pendentes.has(b.id)) return;
+      estado.textContent = 'Salvando…';
+      try {
+        const r = await chamar('hubtcc_banca_salvar', { p_token: token.ler(), p_trabalho: b.id, p_texto: txt.value });
+        pendentes.delete(b.id);
+        estado.textContent = `Salvo em ${quando(r.atualizado_em)}.`;
+      } catch (e) { estado.textContent = `Não salvou: ${e.message}`; }
+    };
+    txt.addEventListener('input', () => {
+      pendentes.set(b.id, { texto: txt.value, salvar });
+      estado.textContent = 'Alterações não salvas.';
+      clearTimeout(espera);
+      espera = setTimeout(salvar, 2000);
+    });
+    const botao = el('button', 'Salvar agora', { type: 'button', class: 'btn btn-dark btn-sm me-2' });
+    botao.addEventListener('click', salvar);
+    const rodape = el('div'); rodape.append(botao, estado);
+    card.append(txt, rodape);
+    return card;
+  }
+
+  async function carregar() {
+    const d = await chamar('hubtcc_professor', { p_token: token.ler() });
+    $('ola').textContent = `${d.nome} · ${d.edicao}`;
+    const o = $('orientandos'); o.replaceChildren();
+    if (!d.orientandos.length) o.append(el('p', 'Nenhum orientando confirmado pela coordenação ainda.', { class: 'text-muted' }));
+    for (const t of d.orientandos) o.append(cartaoOrientando(t));
+    const b = $('bancas'); b.replaceChildren();
+    if (!d.bancas.length) b.append(el('p', 'Nenhuma banca alocada para você ainda.', { class: 'text-muted' }));
+    for (const x of d.bancas) b.append(cartaoBanca(x));
+  }
+
+  async function entrar() {
+    try {
+      await carregar();
+      $('tela-token').classList.add('d-none');
+      $('painel').classList.remove('d-none');
+    } catch (e) {
+      token.gravar('');
+      $('painel').classList.add('d-none');
+      $('tela-token').classList.remove('d-none');
+      $('recado-token').textContent = e.message;
+      $('recado-token').classList.remove('d-none');
+    }
+  }
+
+  const salvarPendentes = () => Promise.all([...pendentes.values()].map((p) => p.salvar()));
+  window.addEventListener('beforeunload', (ev) => { if (pendentes.size) { salvarPendentes(); ev.preventDefault(); } });
+  $('atualizar').addEventListener('click', async () => { await salvarPendentes(); carregar().catch((e) => avisar(e.message)); });
+  $('form-token').addEventListener('submit', (ev) => {
+    ev.preventDefault();
+    token.gravar($('token').value.trim());
+    $('token').value = '';
+    entrar();
+  });
+  $('sair').addEventListener('click', async () => { await salvarPendentes(); token.gravar(''); location.reload(); });
+
+  if (token.ler()) entrar();
+</script>
+<script src="../../../js/avisos.js" defer></script>
+</body>
+</html>
